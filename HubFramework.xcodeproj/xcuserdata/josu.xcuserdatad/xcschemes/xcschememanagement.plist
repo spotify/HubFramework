@@ -9,10 +9,20 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>HubFrameworkTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>8A07549D1C21A79200AFAD38</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8ADD42981C21CF6500D1A801</key>
 		<dict>
 			<key>primary</key>
 			<true/>
