@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentNamespace The namespace under which to register the components. The namespace
  *         must be unique across the app.
  *
- *  The components you register will be identifiable using the namespace and component idnetifier
+ *  The components you register will be identifiable using the namespace and component identifier
  *  in combination, separated by a colon (:), like this: `namespace:component`. This mechanism helps
  *  prevent collisions between components registered from different parts of the app.
  *
