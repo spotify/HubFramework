@@ -8,6 +8,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Protocol implemented by objects that can provide a fallback component identifier, in
  *  case a component couldn't be found for a certain component identifier.
  *
+ *  The reason you need to implement this API is because we don't want to treat an invalid
+ *  component identifier in a JSON file (or in local data) to be treated as a fatal error - we
+ *  prefer rendering the content in a component other than the intended one rather than not
+ *  rendering it at all (or even worse - crashing).
+ *
  *  Implement this protocol in a custom object, and inject it when setting up the Hub
  *  Framework's `HUBManager`.
  */
