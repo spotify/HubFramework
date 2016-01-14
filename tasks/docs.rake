@@ -6,7 +6,6 @@ require 'rake'
 #
 
 config_default = '.jazzy.yml'
-sdk = 'iphonesimulator'
 
 namespace :docs do
 
@@ -25,10 +24,6 @@ namespace :docs do
 		system('bundle', 'exec', 'jazzy', *args)
 	end
 
-	def path_for_sdk(sdk)
-		system('xcrun', '--show-sdk-path', '--sdk', sdk)
-	end
-	
 end
 
 desc "Generate documentation"
