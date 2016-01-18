@@ -1,0 +1,23 @@
+author_name: Spotify
+author_url: https://hubs.spotify.net
+copyright: Copyright © 2015-2016 Spotify AB
+readme_path: README.md
+version: v0.0.1-HEAD
+
+output: docs/output
+
+github_url: https://ghe.spotify.net/iOS/HubFramework
+github_file_prefix: https://ghe.spotify.net/iOS/HubFramework/tree/master
+
+docset_platform: ios
+docset_icon: docs/resources/docset-icon@2x.png
+dash_url: https://hubs.spotify.net/docs/ios/dash.xml
+
+clean: true
+objc_mode: true
+sdk: iphonesimulator
+
+framework_root: .
+umbrella_header: include/HubFramework.h
+source_directory: sources
+module: HubFramework
