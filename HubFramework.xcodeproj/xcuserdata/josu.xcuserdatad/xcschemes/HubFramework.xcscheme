@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8ADD42981C21CF6500D1A801"
+               BuildableName = "HubFrameworkTests.xctest"
+               BlueprintName = "HubFrameworkTests"
+               ReferencedContainer = "container:HubFramework.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8A07549D1C21A79200AFAD38"
+            BuildableName = "libHubFramework.a"
+            BlueprintName = "HubFramework"
+            ReferencedContainer = "container:HubFramework.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
