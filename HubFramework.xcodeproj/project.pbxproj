@@ -19,7 +19,6 @@
 		8ADD42AA1C21D08100D1A801 /* HUBManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD42A91C21D08100D1A801 /* HUBManagerTests.m */; };
 		8ADD42B11C21D8D700D1A801 /* HUBComponentFallbackHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD42B01C21D8D700D1A801 /* HUBComponentFallbackHandlerMock.m */; };
 		8ADD43791C21DBE300D1A801 /* HUBComponentMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD43781C21DBE300D1A801 /* HUBComponentMock.m */; };
-		8ADD437C1C21DC5300D1A801 /* HUBComponentModelMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD437B1C21DC5300D1A801 /* HUBComponentModelMock.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,8 +76,6 @@
 		8ADD42B01C21D8D700D1A801 /* HUBComponentFallbackHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentFallbackHandlerMock.m; sourceTree = "<group>"; };
 		8ADD43771C21DBE300D1A801 /* HUBComponentMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentMock.h; sourceTree = "<group>"; };
 		8ADD43781C21DBE300D1A801 /* HUBComponentMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentMock.m; sourceTree = "<group>"; };
-		8ADD437A1C21DC5300D1A801 /* HUBComponentModelMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentModelMock.h; sourceTree = "<group>"; };
-		8ADD437B1C21DC5300D1A801 /* HUBComponentModelMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentModelMock.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,8 +132,6 @@
 			isa = PBXGroup;
 			children = (
 				8ADD42911C21C81100D1A801 /* HUBManager.m */,
-				8A88089E1C21AD0900ADB737 /* HUBComponentRegistryImplementation.h */,
-				8A88089F1C21AD0900ADB737 /* HUBComponentRegistryImplementation.m */,
 				8AA29C891C4FAD4200E972B7 /* Components */,
 			);
 			path = sources;
@@ -198,8 +193,6 @@
 			children = (
 				8ADD43771C21DBE300D1A801 /* HUBComponentMock.h */,
 				8ADD43781C21DBE300D1A801 /* HUBComponentMock.m */,
-				8ADD437A1C21DC5300D1A801 /* HUBComponentModelMock.h */,
-				8ADD437B1C21DC5300D1A801 /* HUBComponentModelMock.m */,
 				8ADD42AF1C21D8D700D1A801 /* HUBComponentFallbackHandlerMock.h */,
 				8ADD42B01C21D8D700D1A801 /* HUBComponentFallbackHandlerMock.m */,
 			);
@@ -311,7 +304,6 @@
 				8AA29CF81C4FE59100E972B7 /* HUBComponentModelBuilderTests.m in Sources */,
 				8ADD43791C21DBE300D1A801 /* HUBComponentMock.m in Sources */,
 				8ADD42B11C21D8D700D1A801 /* HUBComponentFallbackHandlerMock.m in Sources */,
-				8ADD437C1C21DC5300D1A801 /* HUBComponentModelMock.m in Sources */,
 				8ADD42AA1C21D08100D1A801 /* HUBManagerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

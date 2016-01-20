@@ -1,9 +1,9 @@
 #import <XCTest/XCTest.h>
 
 #import "HUBComponentRegistryImplementation.h"
+#import "HUBComponentModelImplementation.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBComponentMock.h"
-#import "HUBComponentModelMock.h"
 
 @interface HUBComponentRegistryTests : XCTestCase
 
@@ -38,10 +38,10 @@
     
     [self.registry registerComponents:components forNamespace:@"namespace"];
     
-    HUBComponentModelMock * const componentAModel = [[HUBComponentModelMock alloc] initWithComponentIdentifier:@"namespace:A"];
+    HUBComponentModelImplementation * const componentAModel = [self mockedComponentModelWithComponentIdentifier:@"namespace:A"];
     XCTAssertEqual([self.registry componentForModel:componentAModel], componentA);
     
-    HUBComponentModelMock * const componentBModel = [[HUBComponentModelMock alloc] initWithComponentIdentifier:@"namespace:B"];
+    HUBComponentModelImplementation * const componentBModel = [self mockedComponentModelWithComponentIdentifier:@"namespace:B"];
     XCTAssertEqual([self.registry componentForModel:componentBModel], componentB);
 }
 
@@ -66,8 +66,28 @@
     [self.registry registerComponents:@{self.fallbackHandler.fallbackComponentIdentifier: fallbackComponent}
                          forNamespace:self.fallbackHandler.fallbackComponentNamespace];
     
-    HUBComponentModelMock * const model = [[HUBComponentModelMock alloc] initWithComponentIdentifier:@"not_registered"];
+    HUBComponentModelImplementation * const model = [self mockedComponentModelWithComponentIdentifier:@"not_registered"];
     XCTAssertEqual([self.registry componentForModel:model], fallbackComponent);
+}
+
+#pragma mark - Utilities
+
+- (HUBComponentModelImplementation *)mockedComponentModelWithComponentIdentifier:(NSString *)componentIdentifier
+{
+    NSString * const identifier = [NSUUID UUID].UUIDString;
+    
+    return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
+                                                   componentIdentifier:componentIdentifier
+                                                     contentIdentifier:nil
+                                                                 title:nil
+                                                              subtitle:nil
+                                                        accessoryTitle:nil
+                                                       descriptionText:nil
+                                                             imageData:nil
+                                                             targetURL:nil
+                                                            customData:nil
+                                                           loggingData:nil
+                                                                  date:nil];
 }
 
 @end
