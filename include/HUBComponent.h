@@ -30,6 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Protocol implemented by objects that manage a Hub Framework component
  *
+ *  A component acts as a controller between a `HUBComponentModel` and a `UIView` that should be added
+ *  to the screen by the Hub Framework. Its responsibilities include model->view data binding, event
+ *  handling and rendering.
+ *
  *  You're free to setup your component object in whichever way you require, as long
  *  as you make sure any dependencies are carried over to new components returned from
  *  `-createNewComponent`.
