@@ -7,9 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Protocol defining the public API for a builder that builds image data objects
  *
- *  You use this API to construct image data objects in code, which can be used to implement
- *  custom logic that works completely offline and in parallel with the JSON-based API.
- *
  *  This builder acts like a mutable model counterpart for `HUBComponentImageData`, with the key
  *  difference that they are not related by inheritance.
  *
