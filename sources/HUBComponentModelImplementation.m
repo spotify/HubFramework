@@ -19,7 +19,18 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize loggingData = _loggingData;
 @synthesize date = _date;
 
-- (instancetype)initWithIdentifier:(NSString *)identifier componentIdentifier:(NSString *)componentIdentifier contentIdentifier:(nullable NSString *)contentIdentifier title:(nullable NSString *)title subtitle:(nullable NSString *)subtitle accessoryTitle:(nullable NSString *)accessoryTitle descriptionText:(nullable NSString *)descriptionText imageData:(nullable HUBComponentImageDataImplementation *)imageData targetURL:(nullable NSURL *)targetURL customData:(nullable NSDictionary<NSString *, NSObject *> *)customData loggingData:(nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)loggingData date:(nullable NSDate *)date
+- (instancetype)initWithIdentifier:(NSString *)identifier
+               componentIdentifier:(NSString *)componentIdentifier
+                 contentIdentifier:(nullable NSString *)contentIdentifier
+                             title:(nullable NSString *)title
+                          subtitle:(nullable NSString *)subtitle
+                    accessoryTitle:(nullable NSString *)accessoryTitle
+                   descriptionText:(nullable NSString *)descriptionText
+                         imageData:(nullable HUBComponentImageDataImplementation *)imageData
+                         targetURL:(nullable NSURL *)targetURL
+                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
+                       loggingData:(nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)loggingData
+                              date:(nullable NSDate *)date
 {
     NSParameterAssert(identifier != nil);
     NSParameterAssert(componentIdentifier != nil);
