@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize date = _date;
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
-               componentIdentifier:(NSString *)componentIdentifier
+               componentIdentifier:(nullable NSString *)componentIdentifier
                  contentIdentifier:(nullable NSString *)contentIdentifier
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle
@@ -33,7 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
                               date:(nullable NSDate *)date
 {
     NSParameterAssert(identifier != nil);
-    NSParameterAssert(componentIdentifier != nil);
     
     if (!(self = [super init])) {
         return nil;
