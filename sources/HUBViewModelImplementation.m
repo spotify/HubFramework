@@ -13,7 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
 
-- (instancetype)initWithIdentifier:(NSString *)identifier featureIdentifier:(NSString *)featureIdentifier entityIdentifier:(nullable NSString *)entityIdentifier navigationBarTitle:(nullable NSString *)navigationBarTitle headerComponentModels:(NSArray<id<HUBComponentModel>> *)headerComponentModels bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels extensionURL:(nullable NSURL *)extensionURL customData:(NSDictionary<NSString *,NSObject *> *)customData
+- (instancetype)initWithIdentifier:(NSString *)identifier
+                 featureIdentifier:(NSString *)featureIdentifier
+                  entityIdentifier:(nullable NSString *)entityIdentifier
+                navigationBarTitle:(nullable NSString *)navigationBarTitle
+             headerComponentModels:(NSArray<id<HUBComponentModel>> *)headerComponentModels
+               bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
+                      extensionURL:(nullable NSURL *)extensionURL
+                        customData:(NSDictionary<NSString *, NSObject *> *)customData
 {
     if (!(self = [super init])) {
         return nil;
