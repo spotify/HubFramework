@@ -47,6 +47,9 @@
 /* Begin PBXFileReference section */
 		8A07549E1C21A79200AFAD38 /* libHubFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libHubFramework.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A0754AC1C21A7C700AFAD38 /* HUBComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponent.h; sourceTree = "<group>"; };
+		8A786B981C58E3FB00B2AB9E /* HUBRemoteContentProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBRemoteContentProvider.h; sourceTree = "<group>"; };
+		8A786B991C58E4A300B2AB9E /* HUBContentProviderFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBContentProviderFactory.h; sourceTree = "<group>"; };
+		8A786B9A1C58E4AD00B2AB9E /* HUBLocalContentProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBLocalContentProvider.h; sourceTree = "<group>"; };
 		8A88089C1C21ACA600ADB737 /* spotify_shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = spotify_shared.xcconfig; path = ../../other/spotify_shared.xcconfig; sourceTree = "<group>"; };
 		8A88089E1C21AD0900ADB737 /* HUBComponentRegistryImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentRegistryImplementation.h; sourceTree = "<group>"; };
 		8A88089F1C21AD0900ADB737 /* HUBComponentRegistryImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentRegistryImplementation.m; sourceTree = "<group>"; };
@@ -127,6 +130,7 @@
 				8A880ACE1C21AE7A00ADB737 /* module.modulemap */,
 				8A880ACF1C21AE9000ADB737 /* HubFramework.h */,
 				8ADD42901C21C7BC00D1A801 /* HUBManager.h */,
+				8A786B971C58E3B100B2AB9E /* Content */,
 				8AF9FA021C5254CA003F3D6C /* View */,
 				8ADD42AC1C21D13B00D1A801 /* Components */,
 			);
@@ -141,6 +145,16 @@
 				8AA29C891C4FAD4200E972B7 /* Components */,
 			);
 			path = sources;
+			sourceTree = "<group>";
+		};
+		8A786B971C58E3B100B2AB9E /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				8A786B991C58E4A300B2AB9E /* HUBContentProviderFactory.h */,
+				8A786B981C58E3FB00B2AB9E /* HUBRemoteContentProvider.h */,
+				8A786B9A1C58E4AD00B2AB9E /* HUBLocalContentProvider.h */,
+			);
+			name = Content;
 			sourceTree = "<group>";
 		};
 		8A88089B1C21AC8C00ADB737 /* Build System */ = {
