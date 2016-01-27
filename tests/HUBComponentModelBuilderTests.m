@@ -13,14 +13,12 @@
 - (void)testPropertyAssignment
 {
     NSString * const modelIdentifier = @"model";
-    NSString * const componentIdentifier = @"component";
     
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:modelIdentifier
-                                                                                                                 componentIdentifier:componentIdentifier];
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:modelIdentifier];
     
     XCTAssertEqualObjects(builder.modelIdentifier, modelIdentifier);
-    XCTAssertEqualObjects(builder.componentIdentifier, componentIdentifier);
     
+    builder.componentIdentifier = @"component";
     builder.contentIdentifier = @"content";
     builder.title = @"title";
     builder.subtitle = @"subtitle";
@@ -36,6 +34,7 @@
     
     HUBComponentModelImplementation * const model = [builder build];
     
+    XCTAssertEqualObjects(model.componentIdentifier, builder.componentIdentifier);
     XCTAssertEqualObjects(model.contentIdentifier, builder.contentIdentifier);
     XCTAssertEqualObjects(model.title, builder.title);
     XCTAssertEqualObjects(model.subtitle, builder.subtitle);

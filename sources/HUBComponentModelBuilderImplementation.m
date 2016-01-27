@@ -26,17 +26,15 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize loggingData = _loggingData;
 @synthesize date = _date;
 
-- (instancetype)initWithModelIdentifier:(NSString *)modelIdentifier componentIdentifier:(NSString *)componentIdentifier
+- (instancetype)initWithModelIdentifier:(NSString *)modelIdentifier
 {
     NSParameterAssert(modelIdentifier != nil);
-    NSParameterAssert(componentIdentifier != nil);
     
     if (!(self = [super init])) {
         return nil;
     }
     
     _modelIdentifier = modelIdentifier;
-    _componentIdentifier = componentIdentifier;
     
     return self;
 }
