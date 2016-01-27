@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The identifier of the feature that the view belongs to
  *
  *  This property can be used to group views together, to be able to reason about them as a feature. Unless overriden in
- *  the content loading process, the default value is the identifier that the Hub Framework feature that this view belongs.
+ *  the content loading process, the default value is the identifier of the Hub Framework feature that this view belongs.
  */
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
 

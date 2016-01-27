@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  documentation in `HUBComponentModel`.
  */
 - (instancetype)initWithIdentifier:(NSString *)identifier
-               componentIdentifier:(NSString *)componentIdentifier
+               componentIdentifier:(nullable NSString *)componentIdentifier
                  contentIdentifier:(nullable NSString *)contentIdentifier
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle

@@ -8,13 +8,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBComponentModelBuilderImplementation : NSObject <HUBComponentModelBuilder>
 
 /**
- *  Initialize an instance of this class with its required data
+ *  Initialize an instance of this class with a component model identifier
  *
  *  @param modelIdentifier The identifier of the model that this builder is for
- *  @param componentIdentifier The identifier of the component that the model should be rendered using
  */
-- (instancetype)initWithModelIdentifier:(NSString *)modelIdentifier
-                    componentIdentifier:(NSString *)componentIdentifier NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithModelIdentifier:(NSString *)modelIdentifier NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Build an instance of `HUBComponentModelImplementation` from the data contained in this builder

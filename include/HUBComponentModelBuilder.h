@@ -19,8 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The identifier of the model that this builder is for
 @property (nonatomic, copy, readonly) NSString *modelIdentifier;
 
-/// The (fully namespaced) identifier of the component that this model should be rendered using
-@property (nonatomic, copy) NSString *componentIdentifier;
+/// The (namespaced) identifier of the model's component. If nil, a fallback component will be used.
+@property (nonatomic, copy, nullable) NSString *componentIdentifier;
 
 /// Any identifier for the model's content, that can be used for content tracking
 @property (nonatomic, copy, nullable) NSString *contentIdentifier;
