@@ -59,6 +59,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *navigationBarTitle;
 
 /**
+ *  The builder to use to build a model for the view's header component
+ *
+ *  If you plan to add a header to your view, you use this builder to setup the component that will make up the header.
+ *  You need to assign a `componentIdentifier` to this builder in case you want a header to be displayed, otherwise, this
+ *  builder will be ignored and a UINavigationBar-based header will be used instead of a component-based one.
+ *
+ *  In case no identifier is explicity defined for the view's header component model, it will use "header" as the default.
+ */
+@property (nonatomic, strong, readonly) id<HUBComponentModelBuilder> headerComponentModelBuilder;
+
+/**
  *  Any HTTP URL from which data can be downloaded to extend the view model
  *
  *  You can use this property to implement pagination for your view's content. When the user has scrolled to the
@@ -76,25 +87,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  is considered useful for other API users as well.
  */
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
-
-/**
- *  Return whether this builder contains a builder for a header component model with a certain identifier
- *
- *  @param identifier The identifier to look for
- */
-- (BOOL)builderExistsForHeaderComponentModelWithIdentifier:(NSString *)identifier;
-
-/**
- *  Get or create a builder for a header component model with a certain identifier
- *
- *  @param identifier The identifier that the component model should have
- *
- *  @return If a builder already exists for the supplied identifier, then it's returned. Otherwise a new builder is
- *  created, which can be used to build a header component model. Since this method lazily creates a builder in case
- *  one doesn't already exist, use the `-builderExistsForHeaderComponentModelWithIdentifier:` API instead if you simply
- *  wish to check for the existance of a builder. See `HUBComponentModelBuilder` for more information.
- */
-- (id<HUBComponentModelBuilder>)builderForHeaderComponentModelWithIdentifier:(NSString *)identifier;
 
 /**
  *  Return whether this builder contains a builder for a body component model with a certain identifier

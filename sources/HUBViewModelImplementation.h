@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureIdentifier The identifier of the feature that the view belongs to
  *  @param entityIdentifier The identifier of any entity that the view represents
  *  @param navigationBarTitle The title that the view should have in the navigation bar
- *  @param headerComponentModels The models for the components that make up the view's header
+ *  @param headerComponentModel The model for any component that make up the view's header
  *  @param bodyComponentModels The models for the components that make up the view's body
  *  @param extensionURL Any HTTP URL from which data can be downloaded to extend this view model
  *  @param customData Any custom data that should be associated with the view
@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
                  featureIdentifier:(NSString *)featureIdentifier
                   entityIdentifier:(nullable NSString *)entityIdentifier
                 navigationBarTitle:(nullable NSString *)navigationBarTitle
-             headerComponentModels:(NSArray<id<HUBComponentModel>> *)headerComponentModels
+              headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
                       extensionURL:(nullable NSURL *)extensionURL
                         customData:(NSDictionary<NSString *, NSObject *> *)customData NS_DESIGNATED_INITIALIZER;

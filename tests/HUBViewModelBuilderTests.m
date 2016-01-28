@@ -2,6 +2,7 @@
 
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBViewModelImplementation.h"
+#import "HUBComponentModelBuilder.h"
 
 @interface HUBViewModelBuilderTests : XCTestCase
 
@@ -35,19 +36,11 @@
     XCTAssertEqualObjects(model.customData, builder.customData);
 }
 
-- (void)testHeaderComponentBuilders
+- (void)testHeaderComponentBuilder
 {
-    NSString * const componentModelIdentifier = @"identifier";
-    
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
-    
-    XCTAssertFalse([builder builderExistsForHeaderComponentModelWithIdentifier:componentModelIdentifier]);
-    
-    id<HUBComponentModelBuilder> const componentBuilder = [builder builderForHeaderComponentModelWithIdentifier:componentModelIdentifier];
-    
-    XCTAssertNotNil(componentBuilder);
-    XCTAssertTrue([builder builderExistsForHeaderComponentModelWithIdentifier:componentModelIdentifier]);
-    XCTAssertEqual(componentBuilder,  [builder builderForHeaderComponentModelWithIdentifier:componentModelIdentifier]);
+    XCTAssertEqualObjects(builder.headerComponentModelBuilder.modelIdentifier, @"header");
+    XCTAssertNil(builder.headerComponentModelBuilder.componentIdentifier);
 }
 
 - (void)testBodyComponentBuilders

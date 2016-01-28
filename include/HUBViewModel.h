@@ -53,14 +53,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly, nullable) NSString *navigationBarTitle;
 
 /**
- *  The models for the components that make up the view's header
+ *  The model for any component that make up the view's header
  *
  *  If the view should not use a component-based header, and instead just display a normal UINavigationBar,
- *  this array should be empty.
+ *  this property will be `nil`.
  *
  *  See `HUBComponentModel` for more information on how component models work.
  */
-@property (nonatomic, strong, readonly) NSArray<id<HUBComponentModel>> *headerComponentModels;
+@property (nonatomic, strong, readonly, nullable) id<HUBComponentModel> headerComponentModel;
 
 /**
  *  The models for the components that make up the view's body

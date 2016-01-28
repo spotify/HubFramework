@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize featureIdentifier = _featureIdentifier;
 @synthesize entityIdentifier = _entityIdentifier;
 @synthesize navigationBarTitle = _navigationBarTitle;
-@synthesize headerComponentModels = _headerComponentModels;
+@synthesize headerComponentModel = _headerComponentModel;
 @synthesize bodyComponentModels = _bodyComponentModels;
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
                  featureIdentifier:(NSString *)featureIdentifier
                   entityIdentifier:(nullable NSString *)entityIdentifier
                 navigationBarTitle:(nullable NSString *)navigationBarTitle
-             headerComponentModels:(NSArray<id<HUBComponentModel>> *)headerComponentModels
+              headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
                       extensionURL:(nullable NSURL *)extensionURL
                         customData:(NSDictionary<NSString *, NSObject *> *)customData
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
     _featureIdentifier = featureIdentifier;
     _entityIdentifier = entityIdentifier;
     _navigationBarTitle = navigationBarTitle;
-    _headerComponentModels = headerComponentModels;
+    _headerComponentModel = headerComponentModel;
     _bodyComponentModels = bodyComponentModels;
     _extensionURL = extensionURL;
     _customData = customData;
