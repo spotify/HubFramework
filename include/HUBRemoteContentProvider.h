@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  its delegate when the operation was finished, or if an error was encountered. It's safe to cancel any previously
  *  unfinished requests at the time this method is called.
  *
- *  The Hub Framework calls this method if the current view's model has an `extensionURL` defined and additional contnent
+ *  The Hub Framework calls this method if the current view's model has an `extensionURL` defined and additional content
  *  is needed, or if the content provider is being used as part of the external data API.
  */
 - (void)loadContentFromURL:(NSURL *)contentURL;
