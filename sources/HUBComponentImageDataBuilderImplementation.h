@@ -9,8 +9,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Build an instance of `HUBComponentImageDataImplementation` from the data contained in this builder
+ *
+ *  If the builder has neither an `URL` or `iconIdentifier` associated with it, nil will be returned.
  */
-- (HUBComponentImageDataImplementation *)build;
+- (nullable HUBComponentImageDataImplementation *)build;
 
 @end
 

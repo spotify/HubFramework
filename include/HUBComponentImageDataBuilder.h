@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  All properties are briefly documented as part of this protocol, but for more extensive
  *  documentation and use case examples, see the full documentation in the `HUBComponentImageData`
  *  protocol definition.
+ *
+ *  In order to successfully build an image data object (and not return nil), the builder must
+ *  have either have a non-nil `URL` or `iconIdentifier` property.
  */
 @protocol HUBComponentImageDataBuilder <NSObject>
 
