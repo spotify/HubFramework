@@ -83,7 +83,9 @@
                                                               subtitle:nil
                                                         accessoryTitle:nil
                                                        descriptionText:nil
-                                                             imageData:nil
+                                                         mainImageData:nil
+                                                   backgroundImageData:nil
+                                                       customImageData:@{}
                                                              targetURL:nil
                                                             customData:nil
                                                            loggingData:nil

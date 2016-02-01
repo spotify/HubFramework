@@ -13,7 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize subtitle = _subtitle;
 @synthesize accessoryTitle = _accessoryTitle;
 @synthesize descriptionText = _descriptionText;
-@synthesize imageData = _imageData;
+@synthesize mainImageData = _mainImageData;
+@synthesize backgroundImageData = _backgroundImageData;
+@synthesize customImageData = _customImageData;
 @synthesize targetURL = _targetURL;
 @synthesize customData = _customData;
 @synthesize loggingData = _loggingData;
@@ -26,7 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
                           subtitle:(nullable NSString *)subtitle
                     accessoryTitle:(nullable NSString *)accessoryTitle
                    descriptionText:(nullable NSString *)descriptionText
-                         imageData:(nullable HUBComponentImageDataImplementation *)imageData
+                     mainImageData:(nullable id<HUBComponentImageData>)mainImageData
+               backgroundImageData:(nullable id<HUBComponentImageData>)backgroundImageData
+                   customImageData:(NSDictionary<NSString *, id<HUBComponentImageData>> *)customImageData
                          targetURL:(nullable NSURL *)targetURL
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
                        loggingData:(nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)loggingData
@@ -45,7 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
     _subtitle = subtitle;
     _accessoryTitle = accessoryTitle;
     _descriptionText = descriptionText;
-    _imageData = imageData;
+    _mainImageData = mainImageData;
+    _backgroundImageData = backgroundImageData;
+    _customImageData = customImageData;
     _targetURL = targetURL;
     _customData = customData;
     _loggingData = loggingData;

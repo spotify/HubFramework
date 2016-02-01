@@ -2,7 +2,7 @@
 
 #import "HUBComponentModelBuilderImplementation.h"
 #import "HUBComponentModelImplementation.h"
-#import "HUBComponentImageDataImplementation.h"
+#import "HUBComponentImageDataBuilder.h"
 
 @interface HUBComponentModelBuilderTests : XCTestCase
 
@@ -24,9 +24,8 @@
     builder.subtitle = @"subtitle";
     builder.accessoryTitle = @"accessory";
     builder.descriptionText = @"description";
-    builder.imageData.style = HUBComponentImageStyleCircular;
-    builder.imageData.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
-    builder.imageData.iconIdentifier = @"icon";
+    builder.mainImageDataBuilder.iconIdentifier = @"main";
+    builder.backgroundImageDataBuilder.iconIdentifier = @"background";
     builder.targetURL = [NSURL URLWithString:@"spotify:hub"];
     builder.customData = @{@"key": @"value"};
     builder.loggingData = @{@"logging": @"data"};
@@ -40,12 +39,30 @@
     XCTAssertEqualObjects(model.subtitle, builder.subtitle);
     XCTAssertEqualObjects(model.accessoryTitle, builder.accessoryTitle);
     XCTAssertEqualObjects(model.descriptionText, builder.descriptionText);
-    XCTAssertEqual(model.imageData.style, builder.imageData.style);
-    XCTAssertEqualObjects(model.imageData.URL, builder.imageData.URL);
-    XCTAssertEqualObjects(model.imageData.iconIdentifier, builder.imageData.iconIdentifier);
+    XCTAssertEqualObjects(model.mainImageData.iconIdentifier, builder.mainImageDataBuilder.iconIdentifier);
+    XCTAssertEqualObjects(model.backgroundImageData.iconIdentifier, builder.backgroundImageDataBuilder.iconIdentifier);
     XCTAssertEqualObjects(model.customData, builder.customData);
     XCTAssertEqualObjects(model.loggingData, builder.loggingData);
     XCTAssertEqualObjects(model.date, builder.date);
+}
+
+- (void)testCustomImageDataBuilder
+{
+    HUBComponentModelBuilderImplementation * const componentModelBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"id"];
+    NSString * const customImageIdentifier = @"customImage";
+    
+    XCTAssertFalse([componentModelBuilder builderExistsForCustomImageDataWithIdentifier:customImageIdentifier]);
+    
+    id<HUBComponentImageDataBuilder> const imageDataBuilder = [componentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier];
+    XCTAssertTrue([componentModelBuilder builderExistsForCustomImageDataWithIdentifier:customImageIdentifier]);
+    imageDataBuilder.iconIdentifier = @"icon";
+    
+    NSString * const emptyCustomImageBuilderIdentifier = @"empty";
+    [componentModelBuilder builderForCustomImageDataWithIdentifier:emptyCustomImageBuilderIdentifier];
+    
+    HUBComponentModelImplementation * const componentModel = [componentModelBuilder build];
+    XCTAssertEqualObjects([componentModel.customImageData objectForKey:customImageIdentifier].iconIdentifier, imageDataBuilder.iconIdentifier);
+    XCTAssertNil([componentModel.customImageData objectForKey:emptyCustomImageBuilderIdentifier]);
 }
 
 @end

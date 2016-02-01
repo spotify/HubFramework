@@ -83,13 +83,33 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable, readonly) NSString *descriptionText;
 
 /**
- *  Any image data that describes what type of image the component should render
+ *  Image data for any "main" image that the component should render
  *
- *  A component can use the properties of this image data object to determine the shape and other metadata that gives it hints
- *  on how it should render its main image. Some components may have support for additional images (should as backgrounds, acccessories,
- *  etc.), but for that data the `customData` dictionary should be used.
+ *  A main image is normally the image that has the most visual prominence in the component, but each component is free to
+ *  determine how this data is used.
+ *
+ *  See `HUBComponentImageData` for more information.
  */
-@property (nonatomic, strong, nullable, readonly) id<HUBComponentImageData> imageData;
+@property (nonatomic, strong, nullable, readonly) id<HUBComponentImageData> mainImageData;
+
+/**
+ *  Image data for any background image that the component should render
+ *
+ *  A background image is normally renderered behind the rest of the component's content, but each component is free to
+ *  determine how this data is used.
+ *
+ *  See `HUBComponentImageData` for more information.
+ */
+@property (nonatomic, strong, nullable, readonly) id<HUBComponentImageData> backgroundImageData;
+
+/**
+ *  Dictionary containing image data objects that describe how to render any custom images for the component
+ *
+ *  The keys in this dictionary specify the identifiers of the images, that the component can use to determine their layout.
+ *
+ *  For default images, see `mainImagedata` and `backgroundImageData`.
+ */
+@property (nonatomic, strong, readonly) NSDictionary<NSString *, id<HUBComponentImageData>> *customImageData;
 
 #pragma mark - Metadata
 
