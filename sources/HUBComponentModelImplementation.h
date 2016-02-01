@@ -17,7 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param subtitle Any subtitle that the component should render
  *  @param accessoryTitle Any accessory title that the component should render
  *  @param descriptionText Any description text that the component should render
- *  @param imageData Any image data that describes what type of image the component should render
+ *  @param mainImageData Any image data for the component's "main" image
+ *  @param backgroundImageData Any image data for the component's background image
+ *  @param customImageData Any image data objects describing layout properties for custom images for the component
  *  @param targetURL The URL that is the target of a user interaction with the component
  *  @param customData Any custom data that the component should use
  *  @param loggingData Any data that should be logged alongside interactions or impressions for the component
@@ -33,7 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
                           subtitle:(nullable NSString *)subtitle
                     accessoryTitle:(nullable NSString *)accessoryTitle
                    descriptionText:(nullable NSString *)descriptionText
-                         imageData:(nullable HUBComponentImageDataImplementation *)imageData
+                     mainImageData:(nullable id<HUBComponentImageData>)mainImageData
+               backgroundImageData:(nullable id<HUBComponentImageData>)backgroundImageData
+                   customImageData:(NSDictionary<NSString *, id<HUBComponentImageData>> *)customImageData
                          targetURL:(nullable NSURL *)targetURL
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
                        loggingData:(nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)loggingData

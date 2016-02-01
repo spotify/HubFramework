@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-#import "HUBComponentImageDataBuilder.h"
+@protocol HUBComponentImageDataBuilder;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -40,8 +40,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Any longer describing text that the component should render
 @property (nonatomic, copy, nullable) NSString *descriptionText;
 
-/// A builder that can be used to construct data that describes what type of image the component should render
-@property (nonatomic, strong, readonly) id<HUBComponentImageDataBuilder> imageData;
+/// A builder that can be used to construct data that describes how to render the component's "main" image
+@property (nonatomic, strong, readonly) id<HUBComponentImageDataBuilder> mainImageDataBuilder;
+
+/// A builder that can be used to construct data that describes how to render the component's background image
+@property (nonatomic, strong, readonly) id<HUBComponentImageDataBuilder> backgroundImageDataBuilder;
 
 /// Any URL that is the target of a user interaction with the component
 @property (nonatomic, copy, nullable) NSURL *targetURL;
@@ -54,6 +57,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Any date that is associated with the component
 @property (nonatomic, strong, nullable) NSDate *date;
+
+/**
+ *  Return whether this builder contains a builder for custom image data for a certain identifier
+ *
+ *  @param identifier The identifier to look for
+ */
+- (BOOL)builderExistsForCustomImageDataWithIdentifier:(NSString *)identifier;
+
+/**
+ *  Get or create a builder for data for a custom image with a certain identifier
+ *
+ *  @param identifier The identifier of the image
+ *
+ *  @return If a builder already exists for the supplied identifier, then it's returned. Otherwise a new builder is
+ *  created, which can be used to build an image data model. Since this method lazily creates a builder in case one
+ *  doesn't already exist, use the `-builderExistsForImageDataWithIdentifier:` API instead if you simply wish to
+ *  check for the existance of a builder. See `HUBComponentImageDataBuilder` for more information.
+ */
+- (id<HUBComponentImageDataBuilder>)builderForCustomImageDataWithIdentifier:(NSString *)identifier;
 
 @end
 
