@@ -1,3 +1,0 @@
-module HubFramework {
-    umbrella header "HubFramework.h"
-}
