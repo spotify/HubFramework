@@ -39,4 +39,16 @@
     XCTAssertNil([self.builder build]);
 }
 
+- (void)testOnlyURLNotProducingNil
+{
+    self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
+    XCTAssertNotNil([self.builder build]);
+}
+
+- (void)testOnlyIconIdentifierNotProducingNil
+{
+    self.builder.iconIdentifier = @"icon";
+    XCTAssertNotNil([self.builder build]);
+}
+
 @end
