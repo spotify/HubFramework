@@ -10,8 +10,12 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize URL = _URL;
 @synthesize iconIdentifier = _iconIdentifier;
 
-- (HUBComponentImageDataImplementation *)build
+- (nullable HUBComponentImageDataImplementation *)build
 {
+    if (self.URL == nil && self.iconIdentifier == nil) {
+        return nil;
+    }
+    
     return [[HUBComponentImageDataImplementation alloc] initWithStyle:self.style
                                                                   URL:self.URL
                                                        iconIdentifier:self.iconIdentifier];
