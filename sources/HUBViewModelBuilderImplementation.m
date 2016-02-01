@@ -52,7 +52,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponentModelBuilder>)builderForBodyComponentModelWithIdentifier:(NSString *)identifier
 {
-    return [self getOrCreateBuilderForComponentModelWithIdentifier:identifier fromDictionary:self.bodyComponentModelBuilders];
+    id<HUBComponentModelBuilder> const existingBuilder = [self.bodyComponentModelBuilders objectForKey:identifier];
+    
+    if (existingBuilder != nil) {
+        return existingBuilder;
+    }
+    
+    id<HUBComponentModelBuilder> const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier];
+    [self.bodyComponentModelBuilders setObject:newBuilder forKey:identifier];
+    return newBuilder;
 }
 
 #pragma mark - API
@@ -81,22 +89,6 @@ NS_ASSUME_NONNULL_BEGIN
                                               bodyComponentModels:[bodyComponentModels copy]
                                                      extensionURL:self.extensionURL
                                                        customData:[self.customData copy]];
-}
-
-#pragma mark - Private utilities
-
-- (id<HUBComponentModelBuilder>)getOrCreateBuilderForComponentModelWithIdentifier:(NSString *)identifier
-                                                                   fromDictionary:(NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *)dictionary
-{
-    id<HUBComponentModelBuilder> const existingBuilder = [dictionary objectForKey:identifier];
-    
-    if (existingBuilder != nil) {
-        return existingBuilder;
-    }
-    
-    id<HUBComponentModelBuilder> const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier];
-    [dictionary setObject:newBuilder forKey:identifier];
-    return newBuilder;
 }
 
 @end
