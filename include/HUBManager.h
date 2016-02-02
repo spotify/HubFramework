@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+@protocol HUBFeatureRegistry;
 @protocol HUBComponentRegistry;
 @protocol HUBComponentFallbackHandler;
 
@@ -12,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  and retain it in a central location (such as its App Delegate)
  */
 @interface HUBManager : NSObject
+
+/// The feature registry used by this Hub Manager. See the documentation for `HUBFeatureRegistry` for more info.
+@property (nonatomic, strong, readonly) id<HUBFeatureRegistry> featureRegistry;
 
 /// The component registry used by this Hub Manager. See the documentation for `HUBComponentRegistry` for more info.
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
