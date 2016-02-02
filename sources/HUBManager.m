@@ -1,5 +1,6 @@
 #import "HUBManager.h"
 
+#import "HUBFeatureRegistryImplementation.h"
 #import "HUBComponentRegistryImplementation.h"
 
 @implementation HUBManager
@@ -10,6 +11,7 @@
         return nil;
     }
     
+    _featureRegistry = [HUBFeatureRegistryImplementation new];
     _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler];
     
     return self;
