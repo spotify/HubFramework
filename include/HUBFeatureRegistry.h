@@ -40,10 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param configuration The configuration object to use to register the feature
  *
- *  Create a configuration object using this registry. Once the configuration object has been passed to this method, the
- *  registration process is complete and additional changes to the configuration object will not be taken into consideration.
- *  Registering a feature with the same root view URI as one that is already registered is considered a severe error and will
- *  trigger an assert.
+ *  Once the configuration object has been passed to this method, the registration process is complete and additional changes to
+ *  the configuration object will not be taken into consideration. Registering a feature with the same root view URI as one that is
+ *  already registered is considered a severe error and will trigger an assert.
  */
 - (void)registerFeatureWithConfiguration:(id<HUBFeatureConfiguration>)configuration;
 
