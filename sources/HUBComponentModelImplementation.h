@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param backgroundImageData Any image data for the component's background image
  *  @param customImageData Any image data objects describing layout properties for custom images for the component
  *  @param targetURL The URL that is the target of a user interaction with the component
+ *  @param targetInitialViewModel Any pre-computed view model that a view that is the target of `targetURL` should use
  *  @param customData Any custom data that the component should use
  *  @param loggingData Any data that should be logged alongside interactions or impressions for the component
  *  @param date Any date that is associated with the item
@@ -39,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
                backgroundImageData:(nullable id<HUBComponentImageData>)backgroundImageData
                    customImageData:(NSDictionary<NSString *, id<HUBComponentImageData>> *)customImageData
                          targetURL:(nullable NSURL *)targetURL
+            targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
                        loggingData:(nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)loggingData
                               date:(nullable NSDate *)date NS_DESIGNATED_INITIALIZER;

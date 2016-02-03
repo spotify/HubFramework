@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     _viewIdentifier = [NSUUID UUID].UUIDString;
     _featureIdentifier = featureIdentifier;
-    _headerComponentModelBuilderImplementation = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header"];
+    _headerComponentModelBuilderImplementation = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header" featureIdentifier:featureIdentifier];
     _bodyComponentModelBuilders = [NSMutableDictionary new];
     
     return self;
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
         return existingBuilder;
     }
     
-    id<HUBComponentModelBuilder> const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier];
+    id<HUBComponentModelBuilder> const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier featureIdentifier:self.featureIdentifier];
     [self.bodyComponentModelBuilders setObject:newBuilder forKey:identifier];
     return newBuilder;
 }
@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSMutableArray * const bodyComponentModels = [NSMutableArray new];
     
-    for (HUBComponentModelBuilderImplementation * const builder in self.bodyComponentModelBuilders) {
+    for (HUBComponentModelBuilderImplementation * const builder in self.bodyComponentModelBuilders.allValues) {
         [bodyComponentModels addObject:[builder build]];
     }
     

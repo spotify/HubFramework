@@ -58,4 +58,10 @@
     XCTAssertEqual(componentBuilder,  [builder builderForBodyComponentModelWithIdentifier:componentModelIdentifier]);
 }
 
+- (void)testFeatureIdentifierMatchingComponentTargetInitialViewModelFeatureIdentifier
+{
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    XCTAssertEqualObjects(builder.headerComponentModelBuilder.targetInitialViewModelBuilder.featureIdentifier, builder.featureIdentifier);
+}
+
 @end

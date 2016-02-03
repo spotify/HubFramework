@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize backgroundImageData = _backgroundImageData;
 @synthesize customImageData = _customImageData;
 @synthesize targetURL = _targetURL;
+@synthesize targetInitialViewModel = _targetInitialViewModel;
 @synthesize customData = _customData;
 @synthesize loggingData = _loggingData;
 @synthesize date = _date;
@@ -32,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
                backgroundImageData:(nullable id<HUBComponentImageData>)backgroundImageData
                    customImageData:(NSDictionary<NSString *, id<HUBComponentImageData>> *)customImageData
                          targetURL:(nullable NSURL *)targetURL
+            targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
                        loggingData:(nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)loggingData
                               date:(nullable NSDate *)date
@@ -53,6 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
     _backgroundImageData = backgroundImageData;
     _customImageData = customImageData;
     _targetURL = targetURL;
+    _targetInitialViewModel = targetInitialViewModel;
     _customData = customData;
     _loggingData = loggingData;
     _date = date;

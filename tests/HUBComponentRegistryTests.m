@@ -87,6 +87,7 @@
                                                    backgroundImageData:nil
                                                        customImageData:@{}
                                                              targetURL:nil
+                                                targetInitialViewModel:nil
                                                             customData:nil
                                                            loggingData:nil
                                                                   date:nil];
