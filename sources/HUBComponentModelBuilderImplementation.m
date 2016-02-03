@@ -3,14 +3,18 @@
 #import "HUBComponentModelImplementation.h"
 #import "HUBComponentImageDataBuilderImplementation.h"
 #import "HUBComponentImageDataImplementation.h"
+#import "HUBViewModelBuilderImplementation.h"
+#import "HUBViewModelImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBComponentModelBuilderImplementation ()
 
+@property (nonatomic, copy, readonly) NSString *featureIdentifier;
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *mainImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *backgroundImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentImageDataBuilderImplementation *> *customImageDataBuilders;
+@property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *targetInitialViewModelBuilderImplementation;
 
 @end
 
@@ -29,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize loggingData = _loggingData;
 @synthesize date = _date;
 
-- (instancetype)initWithModelIdentifier:(NSString *)modelIdentifier
+- (instancetype)initWithModelIdentifier:(NSString *)modelIdentifier featureIdentifier:(NSString *)featureIdentifier
 {
     NSParameterAssert(modelIdentifier != nil);
     
@@ -38,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     _modelIdentifier = modelIdentifier;
+    _featureIdentifier = featureIdentifier;
     _mainImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
     _backgroundImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
     _customImageDataBuilders = [NSMutableDictionary new];
@@ -55,6 +60,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBComponentImageDataBuilder>)backgroundImageDataBuilder
 {
     return self.backgroundImageDataBuilderImplementation;
+}
+
+- (id<HUBViewModelBuilder>)targetInitialViewModelBuilder
+{
+    // Lazily computed to avoid infinite recursion
+    if (self.targetInitialViewModelBuilderImplementation == nil) {
+        self.targetInitialViewModelBuilderImplementation = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier];
+    }
+    
+    return self.targetInitialViewModelBuilderImplementation;
 }
 
 - (BOOL)builderExistsForCustomImageDataWithIdentifier:(NSString *)identifier
@@ -92,6 +107,8 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
+    id<HUBViewModel> const targetInitialViewModel = [self.targetInitialViewModelBuilderImplementation build];
+    
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
                                                    componentIdentifier:self.componentIdentifier
                                                      contentIdentifier:self.contentIdentifier
@@ -103,6 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                    backgroundImageData:backgroundImageData
                                                        customImageData:customImageData
                                                              targetURL:self.targetURL
+                                                targetInitialViewModel:targetInitialViewModel
                                                             customData:self.customData
                                                            loggingData:self.loggingData
                                                                   date:self.date];

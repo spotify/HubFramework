@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol HUBComponentImageDataBuilder;
+@protocol HUBViewModelBuilder;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -48,6 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Any URL that is the target of a user interaction with the component
 @property (nonatomic, copy, nullable) NSURL *targetURL;
+
+/// A builder that can be used to construct a pre-computed view model for a view that is the target of `targetURL`
+@property (nonatomic, strong, readonly) id<HUBViewModelBuilder> targetInitialViewModelBuilder;
 
 /// Any custom data that the component should use
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;

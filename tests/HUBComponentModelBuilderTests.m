@@ -3,6 +3,8 @@
 #import "HUBComponentModelBuilderImplementation.h"
 #import "HUBComponentModelImplementation.h"
 #import "HUBComponentImageDataBuilder.h"
+#import "HUBViewModel.h"
+#import "HUBViewModelBuilder.h"
 
 @interface HUBComponentModelBuilderTests : XCTestCase
 
@@ -13,8 +15,9 @@
 - (void)testPropertyAssignment
 {
     NSString * const modelIdentifier = @"model";
+    NSString * const featureIdentifier = @"feature";
     
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:modelIdentifier];
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:modelIdentifier featureIdentifier:featureIdentifier];
     
     XCTAssertEqualObjects(builder.modelIdentifier, modelIdentifier);
     
@@ -41,6 +44,7 @@
     XCTAssertEqualObjects(model.descriptionText, builder.descriptionText);
     XCTAssertEqualObjects(model.mainImageData.iconIdentifier, builder.mainImageDataBuilder.iconIdentifier);
     XCTAssertEqualObjects(model.backgroundImageData.iconIdentifier, builder.backgroundImageDataBuilder.iconIdentifier);
+    XCTAssertEqualObjects(model.targetURL, builder.targetURL);
     XCTAssertEqualObjects(model.customData, builder.customData);
     XCTAssertEqualObjects(model.loggingData, builder.loggingData);
     XCTAssertEqualObjects(model.date, builder.date);
@@ -48,7 +52,7 @@
 
 - (void)testCustomImageDataBuilder
 {
-    HUBComponentModelBuilderImplementation * const componentModelBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"id"];
+    HUBComponentModelBuilderImplementation * const componentModelBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"id" featureIdentifier:@"feature"];
     NSString * const customImageIdentifier = @"customImage";
     
     XCTAssertFalse([componentModelBuilder builderExistsForCustomImageDataWithIdentifier:customImageIdentifier]);
@@ -63,6 +67,16 @@
     HUBComponentModelImplementation * const componentModel = [componentModelBuilder build];
     XCTAssertEqualObjects([componentModel.customImageData objectForKey:customImageIdentifier].iconIdentifier, imageDataBuilder.iconIdentifier);
     XCTAssertNil([componentModel.customImageData objectForKey:emptyCustomImageBuilderIdentifier]);
+}
+
+- (void)testTargetInitialViewModelBuilderLazyInit
+{
+    NSString * const featureIdentifier = @"feature";
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:featureIdentifier];
+    XCTAssertNil([builder build].targetInitialViewModel);
+    
+    builder.targetInitialViewModelBuilder.navigationBarTitle = @"hello";
+    XCTAssertEqualObjects([builder build].targetInitialViewModel.featureIdentifier, featureIdentifier);
 }
 
 @end
