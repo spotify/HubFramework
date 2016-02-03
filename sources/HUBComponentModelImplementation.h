@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
                          targetURL:(nullable NSURL *)targetURL
             targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
-                       loggingData:(nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)loggingData
+                       loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
                               date:(nullable NSDate *)date NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
