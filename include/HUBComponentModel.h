@@ -124,7 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable, readonly) NSURL *targetURL;
 
 /**
- *  Any pre-computed view model any view that is the target of `targetURL` should use, before it has loaded its own view model
+ *  Any pre-computed model for a Hub view that is the target of `targetURL`
  *
  *  This property can be used to setup several views up-front, either partially or completely. In case this property is not nil,
  *  and the target view is a Hub Framework-powered view as well, the framework will automatically setup that view using this view
