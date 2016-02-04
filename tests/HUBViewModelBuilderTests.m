@@ -3,6 +3,8 @@
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBViewModelImplementation.h"
 #import "HUBComponentModelBuilder.h"
+#import "HUBComponentModel.h"
+#import "HUBJSONSchemaImplementation.h"
 
 @interface HUBViewModelBuilderTests : XCTestCase
 
@@ -62,6 +64,48 @@
 {
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
     XCTAssertEqualObjects(builder.headerComponentModelBuilder.targetInitialViewModelBuilder.featureIdentifier, builder.featureIdentifier);
+}
+
+- (void)testAddingJSONData
+{
+    NSString * const viewIdentifier = @"identifier";
+    NSString * const featureIdentifier = @"feature";
+    NSString * const entityIdentifier = @"entity";
+    NSString * const navigationBarTitle = @"nav bar title";
+    NSString * const headerComponentIdentifier = @"headerComponent";
+    NSString * const bodyComponentIdentifier = @"bodyComponent";
+    NSURL * const extensionURL = [NSURL URLWithString:@"https://spotify.com/extension"];
+    NSDictionary * const customData = @{@"custom": @"data"};
+    
+    NSDictionary * const dictionary = @{
+        @"id": viewIdentifier,
+        @"feature": featureIdentifier,
+        @"entity": entityIdentifier,
+        @"title": navigationBarTitle,
+        @"header": @{
+            @"component": headerComponentIdentifier
+        },
+        @"body": @[
+            @{
+                @"component": bodyComponentIdentifier
+            }
+        ],
+        @"extension": extensionURL.absoluteString,
+        @"custom": customData
+    };
+    
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"temp"];
+    [builder addDataFromJSONDictionary:dictionary usingSchema:[HUBJSONSchemaImplementation new]];
+    HUBViewModelImplementation * const model = [builder build];
+    
+    XCTAssertEqualObjects(model.identifier, viewIdentifier);
+    XCTAssertEqualObjects(model.featureIdentifier, featureIdentifier);
+    XCTAssertEqualObjects(model.entityIdentifier, entityIdentifier);
+    XCTAssertEqualObjects(model.navigationBarTitle, navigationBarTitle);
+    XCTAssertEqualObjects(model.headerComponentModel.componentIdentifier, headerComponentIdentifier);
+    XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, bodyComponentIdentifier);
+    XCTAssertEqualObjects(model.extensionURL, extensionURL);
+    XCTAssertEqualObjects(model.customData, customData);
 }
 
 @end

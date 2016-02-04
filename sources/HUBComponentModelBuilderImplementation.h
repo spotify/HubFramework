@@ -1,11 +1,13 @@
 #import "HUBComponentModelBuilder.h"
+#import "HUBJSONCompatibleBuilder.h"
 
+@protocol HUBJSONSchema;
 @class HUBComponentModelImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBComponentModelBuilder` API
-@interface HUBComponentModelBuilderImplementation : NSObject <HUBComponentModelBuilder>
+@interface HUBComponentModelBuilderImplementation : NSObject <HUBComponentModelBuilder, HUBJSONCompatibleBuilder>
 
 /**
  *  Initialize an instance of this class with a component model identifier

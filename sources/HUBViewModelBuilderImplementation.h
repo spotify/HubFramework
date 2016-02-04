@@ -1,11 +1,12 @@
 #import "HUBViewModelBuilder.h"
+#import "HUBJSONCompatibleBuilder.h"
 
 @class HUBViewModelImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBViewModelBuilder` API
-@interface HUBViewModelBuilderImplementation : NSObject <HUBViewModelBuilder>
+@interface HUBViewModelBuilderImplementation : NSObject <HUBViewModelBuilder, HUBJSONCompatibleBuilder>
 
 /**
  *  Initialize an instance of this class with a feature identifier

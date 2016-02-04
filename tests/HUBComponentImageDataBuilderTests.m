@@ -2,7 +2,8 @@
 
 #import "HUBComponentImageDataBuilderImplementation.h"
 #import "HUBComponentImageDataImplementation.h"
-#import "HUBComponentImageDataJSONSchemaImplementation.h"
+#import "HUBJSONSchemaImplementation.h"
+#import "HUBComponentImageDataJSONSchema.h"
 
 @interface HUBComponentImageDataBuilderTests : XCTestCase
 
@@ -63,7 +64,7 @@
         @"icon": iconIdentifier
     };
     
-    [self.builder addDataFromJSONDictionary:dictionary usingSchema:[HUBComponentImageDataJSONSchemaImplementation new]];
+    [self.builder addDataFromJSONDictionary:dictionary usingSchema:[HUBJSONSchemaImplementation new]];
     
     XCTAssertEqual(self.builder.style, HUBComponentImageStyleCircular);
     XCTAssertEqualObjects(self.builder.URL, imageURL);
@@ -72,17 +73,17 @@
 
 - (void)testInvalidImageStyleStringProducingRectangularStyle
 {
-    [self.builder addDataFromJSONDictionary:@{} usingSchema:[HUBComponentImageDataJSONSchemaImplementation new]];
+    [self.builder addDataFromJSONDictionary:@{} usingSchema:[HUBJSONSchemaImplementation new]];
     XCTAssertEqual(self.builder.style, HUBComponentImageStyleRectangular);
     
-    [self.builder addDataFromJSONDictionary:@{@"style" : @"invalid"} usingSchema:[HUBComponentImageDataJSONSchemaImplementation new]];
+    [self.builder addDataFromJSONDictionary:@{@"style" : @"invalid"} usingSchema:[HUBJSONSchemaImplementation new]];
     XCTAssertEqual(self.builder.style, HUBComponentImageStyleRectangular);
 }
 
 - (void)testProtectionAgainstInvalidImageStyleEnumValues
 {
-    id<HUBComponentImageDataJSONSchema> const schema = [HUBComponentImageDataJSONSchemaImplementation new];
-    schema.styleStringMap = @{@"invalid": @(99)};
+    id<HUBJSONSchema> const schema = [HUBJSONSchemaImplementation new];
+    schema.componentImageDataSchema.styleStringMap = @{@"invalid": @(99)};
     [self.builder addDataFromJSONDictionary:@{@"style" : @"invalid"} usingSchema:schema];
     XCTAssertEqual(self.builder.style, HUBComponentImageStyleRectangular);
 }

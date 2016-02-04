@@ -5,6 +5,9 @@
 #import "HUBComponentImageDataImplementation.h"
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBViewModelImplementation.h"
+#import "HUBJSONSchema.h"
+#import "HUBComponentModelJSONSchema.h"
+#import "HUBJSONPath.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -64,12 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBViewModelBuilder>)targetInitialViewModelBuilder
 {
-    // Lazily computed to avoid infinite recursion
-    if (self.targetInitialViewModelBuilderImplementation == nil) {
-        self.targetInitialViewModelBuilderImplementation = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier];
-    }
-    
-    return self.targetInitialViewModelBuilderImplementation;
+    return [self getOrCreateBuilderForTargetInitialViewModel];
 }
 
 - (BOOL)builderExistsForCustomImageDataWithIdentifier:(NSString *)identifier
@@ -79,15 +77,54 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponentImageDataBuilder>)builderForCustomImageDataWithIdentifier:(NSString *)identifier
 {
-    id<HUBComponentImageDataBuilder> const existingBuilder = [self.customImageDataBuilders objectForKey:identifier];
+    return [self getOrCreateBuilderForCustomImageDataWithIdentifier:identifier];
+}
+
+#pragma mark - HUBJSONCompatibleBuilder
+
+- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary usingSchema:(id<HUBJSONSchema>)schema
+{
+    id<HUBComponentModelJSONSchema> componentModelSchema = schema.componentModelSchema;
     
-    if (existingBuilder != nil) {
-        return existingBuilder;
+    self.componentIdentifier = [componentModelSchema.componentIdentifierPath stringFromJSONDictionary:dictionary];
+    self.contentIdentifier = [componentModelSchema.contentIdentifierPath stringFromJSONDictionary:dictionary];
+    self.title = [componentModelSchema.titlePath stringFromJSONDictionary:dictionary];
+    self.subtitle = [componentModelSchema.subtitlePath stringFromJSONDictionary:dictionary];
+    self.accessoryTitle = [componentModelSchema.accessoryTitlePath stringFromJSONDictionary:dictionary];
+    self.descriptionText = [componentModelSchema.descriptionTextPath stringFromJSONDictionary:dictionary];
+    self.targetURL = [componentModelSchema.targetURLPath URLFromJSONDictionary:dictionary];
+    self.customData = [componentModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
+    self.loggingData = [componentModelSchema.loggingDataPath dictionaryFromJSONDictionary:dictionary];
+    self.date = [componentModelSchema.datePath dateFromJSONDictionary:dictionary];
+    
+    NSDictionary * const mainImageDataDictionary = [componentModelSchema.mainImageDataDictionaryPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (mainImageDataDictionary != nil) {
+        [self.mainImageDataBuilderImplementation addDataFromJSONDictionary:mainImageDataDictionary usingSchema:schema];
     }
     
-    id<HUBComponentImageDataBuilder> const newBuilder = [HUBComponentImageDataBuilderImplementation new];
-    [self.customImageDataBuilders setObject:newBuilder forKey:identifier];
-    return newBuilder;
+    NSDictionary * const backgroundImageDataDictionary = [componentModelSchema.backgroundImageDataDictionaryPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (backgroundImageDataDictionary != nil) {
+        [self.backgroundImageDataBuilderImplementation addDataFromJSONDictionary:backgroundImageDataDictionary usingSchema:schema];
+    }
+    
+    NSDictionary * const customImageDataDictionary = [componentModelSchema.customImageDataDictionaryPath dictionaryFromJSONDictionary:dictionary];
+    
+    for (NSString * const imageIdentifier in customImageDataDictionary.allKeys) {
+        NSDictionary * const imageDataDictionary = [customImageDataDictionary objectForKey:imageIdentifier];
+        
+        if ([imageDataDictionary isKindOfClass:[NSDictionary class]]) {
+            HUBComponentImageDataBuilderImplementation * const builder = [self getOrCreateBuilderForCustomImageDataWithIdentifier:imageIdentifier];
+            [builder addDataFromJSONDictionary:imageDataDictionary usingSchema:schema];
+        }
+    }
+    
+    NSDictionary * const targetInitialViewModelDictionary = [componentModelSchema.targetInitialViewModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (targetInitialViewModelDictionary != nil) {
+        [[self getOrCreateBuilderForTargetInitialViewModel] addDataFromJSONDictionary:targetInitialViewModelDictionary usingSchema:schema];
+    }
 }
 
 #pragma mark - API
@@ -124,6 +161,31 @@ NS_ASSUME_NONNULL_BEGIN
                                                             customData:self.customData
                                                            loggingData:self.loggingData
                                                                   date:self.date];
+}
+
+#pragma mark - Private utilities
+
+- (HUBComponentImageDataBuilderImplementation *)getOrCreateBuilderForCustomImageDataWithIdentifier:(NSString *)identifier
+{
+    HUBComponentImageDataBuilderImplementation * const existingBuilder = [self.customImageDataBuilders objectForKey:identifier];
+    
+    if (existingBuilder != nil) {
+        return existingBuilder;
+    }
+    
+    HUBComponentImageDataBuilderImplementation * const newBuilder = [HUBComponentImageDataBuilderImplementation new];
+    [self.customImageDataBuilders setObject:newBuilder forKey:identifier];
+    return newBuilder;
+}
+
+- (HUBViewModelBuilderImplementation *)getOrCreateBuilderForTargetInitialViewModel
+{
+    // Lazily computed to avoid infinite recursion
+    if (self.targetInitialViewModelBuilderImplementation == nil) {
+        self.targetInitialViewModelBuilderImplementation = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier];
+    }
+    
+    return self.targetInitialViewModelBuilderImplementation;
 }
 
 @end
