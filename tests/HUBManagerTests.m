@@ -9,10 +9,14 @@
 
 @implementation HUBManagerTests
 
-- (void)testComponentRegistrySetupOnInit
+- (void)testRegistries
 {
     id<HUBComponentFallbackHandler> const fallbackHandler = [HUBComponentFallbackHandlerMock new];
-    XCTAssertNotNil([[HUBManager alloc] initWithComponentFallbackHandler:fallbackHandler].componentRegistry);
+    HUBManager * const manager = [[HUBManager alloc] initWithComponentFallbackHandler:fallbackHandler];
+    
+    XCTAssertNotNil(manager.featureRegistry);
+    XCTAssertNotNil(manager.componentRegistry);
+    XCTAssertNotNil(manager.JSONSchemaRegistry);
 }
 
 @end

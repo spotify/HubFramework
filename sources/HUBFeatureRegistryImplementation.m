@@ -63,6 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     HUBFeatureRegistration * const registration = [[HUBFeatureRegistration alloc] initWithRootViewURI:configuration.rootViewURI
                                                                                contentProviderFactory:configuration.contentProviderFactory
+                                                                           customJSONSchemaIdentifier:configuration.customJSONSchemaIdentifier
                                                                                      viewURIQualifier:configuration.viewURIQualifier];
     
     [self.registrations setObject:registration forKey:registration.rootViewURI];
