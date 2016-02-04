@@ -150,7 +150,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The format of this dictionary is completely free form, but since at some point it will end up being serialized, make sure that
  *  it only contains serializable values.
  */
-@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject<NSCoding> *> *loggingData;
+@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *loggingData;
 
 /**
  *  Any date that is associated with the component

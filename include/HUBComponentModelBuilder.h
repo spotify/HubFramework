@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
 
 /// Any data that should be logged alongside interactions or impressions for the component
-@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject<NSCoding> *> *loggingData;
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *loggingData;
 
 /// Any date that is associated with the component
 @property (nonatomic, strong, nullable) NSDate *date;

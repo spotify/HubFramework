@@ -1,6 +1,7 @@
 #import "HUBComponentImageDataBuilderImplementation.h"
 
 #import "HUBComponentImageDataImplementation.h"
+#import "HUBJSONSchema.h"
 #import "HUBComponentImageDataJSONSchema.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -11,16 +12,20 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize URL = _URL;
 @synthesize iconIdentifier = _iconIdentifier;
 
-- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary usingSchema:(id<HUBComponentImageDataJSONSchema>)schema
+#pragma mark - HUBJSONCompatibleBuilder
+
+- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary usingSchema:(id<HUBJSONSchema>)schema
 {
-    self.style = HUBComponentImageStyleRectangular;
-    self.URL = [schema.URLPath URLFromJSONDictionary:dictionary];
-    self.iconIdentifier = [schema.iconIdentifierPath stringFromJSONDictionary:dictionary];
+    id<HUBComponentImageDataJSONSchema> const imageDataSchema = schema.componentImageDataSchema;
     
-    NSString * const styleString = [schema.styleStringPath stringFromJSONDictionary:dictionary];
+    self.style = HUBComponentImageStyleRectangular;
+    self.URL = [imageDataSchema.URLPath URLFromJSONDictionary:dictionary];
+    self.iconIdentifier = [imageDataSchema.iconIdentifierPath stringFromJSONDictionary:dictionary];
+    
+    NSString * const styleString = [imageDataSchema.styleStringPath stringFromJSONDictionary:dictionary];
     
     if (styleString != nil) {
-        NSNumber * const styleNumber = [schema.styleStringMap objectForKey:styleString];
+        NSNumber * const styleNumber = [imageDataSchema.styleStringMap objectForKey:styleString];
         
         if (styleNumber != nil) {
             NSUInteger const potentialImageStyle = styleNumber.unsignedIntegerValue;
@@ -37,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
 }
+
+#pragma mark - API
 
 - (nullable HUBComponentImageDataImplementation *)build
 {

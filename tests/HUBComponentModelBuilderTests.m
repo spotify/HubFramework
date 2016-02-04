@@ -3,8 +3,10 @@
 #import "HUBComponentModelBuilderImplementation.h"
 #import "HUBComponentModelImplementation.h"
 #import "HUBComponentImageDataBuilder.h"
+#import "HUBComponentImageData.h"
 #import "HUBViewModel.h"
 #import "HUBViewModelBuilder.h"
+#import "HUBJSONSchemaImplementation.h"
 
 @interface HUBComponentModelBuilderTests : XCTestCase
 
@@ -77,6 +79,79 @@
     
     builder.targetInitialViewModelBuilder.navigationBarTitle = @"hello";
     XCTAssertEqualObjects([builder build].targetInitialViewModel.featureIdentifier, featureIdentifier);
+}
+
+- (void)testAddingJSONData
+{
+    NSString * const componentIdentifier = @"componentIdentifier";
+    NSString * const contentIdentifier = @"contentIdentifier";
+    NSString * const title = @"A title";
+    NSString * const subtitle = @"A subtitle";
+    NSString * const accessoryTitle = @"An accessory title";
+    NSString * const descriptionText = @"A description text";
+    NSString * const mainImageIconIdentifier = @"mainIcon";
+    NSString * const backgroundImageIconIdentifier = @"backgroundIcon";
+    NSString * const customImageIdentifier = @"hologram";
+    NSString * const customImageIconIdentifier = @"hologramIcon";
+    NSURL * const targetURL = [NSURL URLWithString:@"spotify:hub:target"];
+    NSString * const targetTitle = @"Target title";
+    NSDictionary * const customData = @{@"custom": @"data"};
+    NSDictionary * const loggingData = @{@"logging": @"data"};
+    
+    NSDictionary * const dictionary = @{
+        @"component": componentIdentifier,
+        @"contentId": contentIdentifier,
+        @"title": title,
+        @"subtitle": subtitle,
+        @"accessoryTitle": accessoryTitle,
+        @"description": descriptionText,
+        @"images": @{
+            @"main": @{
+                @"icon": mainImageIconIdentifier
+            },
+            @"background": @{
+                @"icon": backgroundImageIconIdentifier
+            },
+            @"custom": @{
+                customImageIdentifier: @{
+                    @"icon": customImageIconIdentifier
+                }
+            }
+        },
+        @"target": @{
+            @"url": targetURL.absoluteString,
+            @"view": @{
+                @"title": targetTitle
+            }
+        },
+        @"custom": customData,
+        @"logging": loggingData,
+        @"date": @"2016-10-17"
+    };
+    
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:@"feature"];
+    [builder addDataFromJSONDictionary:dictionary usingSchema:[HUBJSONSchemaImplementation new]];
+    HUBComponentModelImplementation * const model = [builder build];
+    
+    XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
+    XCTAssertEqualObjects(model.contentIdentifier, contentIdentifier);
+    XCTAssertEqualObjects(model.title, title);
+    XCTAssertEqualObjects(model.subtitle, subtitle);
+    XCTAssertEqualObjects(model.accessoryTitle, accessoryTitle);
+    XCTAssertEqualObjects(model.descriptionText, descriptionText);
+    XCTAssertEqualObjects(model.mainImageData.iconIdentifier, mainImageIconIdentifier);
+    XCTAssertEqualObjects(model.backgroundImageData.iconIdentifier, backgroundImageIconIdentifier);
+    XCTAssertEqualObjects([model.customImageData objectForKey:customImageIdentifier].iconIdentifier, customImageIconIdentifier);
+    XCTAssertEqualObjects(model.targetURL, targetURL);
+    XCTAssertEqualObjects(model.targetInitialViewModel.navigationBarTitle, targetTitle);
+    XCTAssertEqualObjects(model.customData, customData);
+    XCTAssertEqualObjects(model.loggingData, loggingData);
+    
+    NSDateComponents * const expectedDateComponents = [NSDateComponents new];
+    expectedDateComponents.year = 2016;
+    expectedDateComponents.month = 10;
+    expectedDateComponents.day = 17;
+    XCTAssertEqualObjects(model.date, [[NSCalendar currentCalendar] dateFromComponents:expectedDateComponents]);
 }
 
 @end

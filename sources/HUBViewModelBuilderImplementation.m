@@ -3,6 +3,10 @@
 #import "HUBViewModelImplementation.h"
 #import "HUBComponentModelBuilderImplementation.h"
 #import "HUBComponentModelImplementation.h"
+#import "HUBJSONSchema.h"
+#import "HUBViewModelJSONSchema.h"
+#import "HUBComponentModelJSONSchema.h"
+#import "HUBJSONPath.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -52,15 +56,50 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponentModelBuilder>)builderForBodyComponentModelWithIdentifier:(NSString *)identifier
 {
-    id<HUBComponentModelBuilder> const existingBuilder = [self.bodyComponentModelBuilders objectForKey:identifier];
+    return [self getOrCreateBuilderForBodyComponentModelWithIdentifier:identifier];
+}
+
+#pragma mark - HUBJSONCompatibleBuilder
+
+- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary usingSchema:(id<HUBJSONSchema>)schema
+{
+    id<HUBViewModelJSONSchema> const viewModelSchema = schema.viewModelSchema;
     
-    if (existingBuilder != nil) {
-        return existingBuilder;
+    NSString * const viewIdentifier = [viewModelSchema.identifierPath stringFromJSONDictionary:dictionary];
+    
+    if (viewIdentifier != nil) {
+        self.viewIdentifier = viewIdentifier;
     }
     
-    id<HUBComponentModelBuilder> const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier featureIdentifier:self.featureIdentifier];
-    [self.bodyComponentModelBuilders setObject:newBuilder forKey:identifier];
-    return newBuilder;
+    NSString * const featureIdentifier = [viewModelSchema.featureIdentifierPath stringFromJSONDictionary:dictionary];
+    
+    if (featureIdentifier != nil) {
+        self.featureIdentifier = featureIdentifier;
+    }
+    
+    self.entityIdentifier = [viewModelSchema.entityIdentifierPath stringFromJSONDictionary:dictionary];
+    self.navigationBarTitle = [viewModelSchema.navigationBarTitlePath stringFromJSONDictionary:dictionary];
+    self.extensionURL = [viewModelSchema.extensionURLPath URLFromJSONDictionary:dictionary];
+    self.customData = [viewModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
+    
+    NSDictionary * const headerComponentModelDictionary = [viewModelSchema.headerComponentModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (headerComponentModelDictionary != nil) {
+        [self.headerComponentModelBuilderImplementation addDataFromJSONDictionary:headerComponentModelDictionary usingSchema:schema];
+    }
+    
+    NSArray * const bodyComponentModelDictionaries = [viewModelSchema.bodyComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
+    
+    for (NSDictionary * const componentModelDictionary in bodyComponentModelDictionaries) {
+        NSString * componentIdentifier = [schema.componentModelSchema.identifierPath stringFromJSONDictionary:componentModelDictionary];
+        
+        if (componentIdentifier == nil) {
+            componentIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
+        }
+        
+        HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForBodyComponentModelWithIdentifier:componentIdentifier];
+        [builder addDataFromJSONDictionary:componentModelDictionary usingSchema:schema];
+    }
 }
 
 #pragma mark - API
@@ -89,6 +128,23 @@ NS_ASSUME_NONNULL_BEGIN
                                               bodyComponentModels:[bodyComponentModels copy]
                                                      extensionURL:self.extensionURL
                                                        customData:[self.customData copy]];
+}
+
+#pragma mark - Private utilities
+
+- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier
+{
+    HUBComponentModelBuilderImplementation * const existingBuilder = [self.bodyComponentModelBuilders objectForKey:identifier];
+    
+    if (existingBuilder != nil) {
+        return existingBuilder;
+    }
+    
+    HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
+                                                                                                                      featureIdentifier:self.featureIdentifier];
+    
+    [self.bodyComponentModelBuilders setObject:newBuilder forKey:identifier];
+    return newBuilder;
 }
 
 @end
