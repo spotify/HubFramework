@@ -20,21 +20,22 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponentImageDataJSONSchema <NSObject>
 
-/// The path that points to a string that can be mapped to a `HUBComponentImageStyle`, according to `styleStringMap`
+/**
+ *  The path that points to a string that can be mapped to a `HUBComponentImageStyle`, according to `styleStringMap`
+ *  Maps to `style`, by using `styleStringMap`.
+ */
 @property (nonatomic, strong) id<HUBJSONStringPath> styleStringPath;
 
-/// The map to use to map a string retrieved from from `styleStringPath` into a `HUBComponentImageStyle` value
+/// The map to use to map a string extracted using `styleStringPath` into a `HUBComponentImageStyle` value
 @property (nonatomic, strong) NSDictionary<NSString *, NSNumber *> *styleStringMap;
 
-/// The path that points to a HTTP image URL for the image that the data is for
+/// The path that points to a HTTP image URL for the image that the data is for. Maps to `URL`.
 @property (nonatomic, strong) id<HUBJSONURLPath> URLPath;
 
-/// The path that points to an icon identifier for the image data
+/// The path that points to an icon identifier for the image data. Maps to `iconIdentifier`.
 @property (nonatomic, strong) id<HUBJSONStringPath> iconIdentifierPath;
 
-/**
- *  Create a copy of this schema, with the same paths
- */
+/// Create a copy of this schema, with the same paths
 - (id<HUBComponentImageDataJSONSchema>)copy;
 
 @end
