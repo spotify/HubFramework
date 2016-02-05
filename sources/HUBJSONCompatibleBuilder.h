@@ -6,7 +6,7 @@
 @protocol HUBJSONCompatibleBuilder <NSObject>
 
 /**
- *  Add data from a JSON dictionary containing image data to this builder
+ *  Add data from a JSON dictionary to this builder
  *
  *  @param dictionary The JSON dictionary to extract data from
  *  @param schema The JSON schema to use to extract the data from the dictionary
