@@ -40,6 +40,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) id<HUBContentProviderFactory> contentProviderFactory;
 
 /**
+ *  Any identifier of a custom JSON schema to use to parse remote content data
+ *
+ *  If this property is `nil`, the default Hub Framework JSON schema will be used to parse remote content JSON data
+ */
+@property (nonatomic, copy, nullable) NSString *customJSONSchemaIdentifier;
+
+/**
  *  Any view URI qualifier that the feature should use
  *
  *  A view URI qualifier can be used to disqualify certain view URIs from behing associated with a feature. For more information

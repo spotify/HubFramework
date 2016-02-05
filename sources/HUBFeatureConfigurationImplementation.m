@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize rootViewURI = _rootViewURI;
 @synthesize contentProviderFactory = _contentProviderFactory;
+@synthesize customJSONSchemaIdentifier = _customJSONSchemaIdentifier;
 @synthesize viewURIQualifier = _viewURIQualifier;
 
 - (instancetype)initWithRootViewURI:(NSURL *)rootViewURI contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory

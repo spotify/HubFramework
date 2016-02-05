@@ -56,12 +56,14 @@
     id<HUBFeatureConfiguration> const configuration = [self.registry createFeatureConfigurationForRootViewURI:rootViewURI
                                                                                        contentProviderFactory:contentProviderFactory];
     
+    configuration.customJSONSchemaIdentifier = @"custom schema";
     configuration.viewURIQualifier = [[HUBViewURIQualifierMock alloc] initWithDisqualifiedViewURIs:@[]];
     [self.registry registerFeatureWithConfiguration:configuration];
     
     HUBFeatureRegistration * const registration = [self.registry featureRegistrationForViewURI:rootViewURI];
     XCTAssertEqualObjects(registration.rootViewURI, configuration.rootViewURI);
     XCTAssertEqual(registration.contentProviderFactory, configuration.contentProviderFactory);
+    XCTAssertEqualObjects(registration.customJSONSchemaIdentifier, configuration.customJSONSchemaIdentifier);
     XCTAssertEqual(registration.viewURIQualifier, configuration.viewURIQualifier);
 }
 

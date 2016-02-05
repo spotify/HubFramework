@@ -2,6 +2,7 @@
 
 @protocol HUBFeatureRegistry;
 @protocol HUBComponentRegistry;
+@protocol HUBJSONSchemaRegistry;
 @protocol HUBComponentFallbackHandler;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -19,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The component registry used by this Hub Manager. See the documentation for `HUBComponentRegistry` for more info.
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
+
+/// The JSON schema registry used by this Hub Manager. See the documentation for `HUBJSONSchemaRegistry` for more info.
+@property (nonatomic, strong, readonly) id<HUBJSONSchemaRegistry> JSONSchemaRegistry;
 
 /**
  *  Initialize an instance of this class with a component fallback handler

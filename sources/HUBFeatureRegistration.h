@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The content provider factory that the feature is using
 @property (nonatomic, strong, readonly) id<HUBContentProviderFactory> contentProviderFactory;
 
+/// The identifier of any custom JSON schema that the feature is using
+@property (nonatomic, copy, readonly) NSString *customJSONSchemaIdentifier;
+
 /// Any view URI qualifier that the feature is using
 @property (nonatomic, strong, nullable, readonly) id<HUBViewURIQualifier> viewURIQualifier;
 
@@ -22,10 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param rootViewURI The root view URI of the feature
  *  @param contentProviderFactory The content provider factory that the feature will use
+ *  @param customJSONSchemaIdentifier The identifier of any custom JSON schema the feature will use
  *  @param viewURIQualifier Any view URI qualifier that the feature will use
  */
 - (instancetype)initWithRootViewURI:(NSURL *)rootViewURI
              contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory
+         customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
                    viewURIQualifier:(nullable id<HUBViewURIQualifier>)viewURIQualifier NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
