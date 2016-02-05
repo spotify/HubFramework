@@ -4,6 +4,7 @@
 @protocol HUBComponentRegistry;
 @protocol HUBJSONSchemaRegistry;
 @protocol HUBComponentFallbackHandler;
+@protocol HUBConnectivityStateResolver;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,8 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param componentFallbackHandler An object responsible for handling the case of an unrecognized component
  *         identifier. This object will be retained.
+ *  @param connectivityStateResolver An object responsible for determining the current connectivity state of
+ *         the application. This object will be retained.
  */
-- (instancetype)initWithComponentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithComponentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 
