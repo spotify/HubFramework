@@ -108,4 +108,24 @@
     XCTAssertEqualObjects(model.customData, customData);
 }
 
+- (void)testIsEmpty
+{
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    XCTAssertTrue(builder.isEmpty);
+}
+
+- (void)testNotEmptyAfterAddingHeaderComponentIdentifier
+{
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    builder.headerComponentModelBuilder.componentIdentifier = @"component";
+    XCTAssertFalse(builder.isEmpty);
+}
+
+- (void)testNotEmptyAfterAddingBodyComponentModel
+{
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    [builder builderForBodyComponentModelWithIdentifier:@"id"];
+    XCTAssertFalse(builder.isEmpty);
+}
+
 @end

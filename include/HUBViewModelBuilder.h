@@ -19,6 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HUBViewModelBuilder <NSObject>
 
 /**
+ *  Whether this builder is currently empty, and does not contain any content
+ *
+ *  As soon as any header or body component model has been added to this builder, it is no longer considered empty
+ */
+@property (nonatomic, readonly) BOOL isEmpty;
+
+/**
  *  The identifier that the view should have
  *
  *  The value of this property doesn't have any specific format or constraints and doesn't explicitly need to be
