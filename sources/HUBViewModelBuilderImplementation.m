@@ -91,14 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSArray * const bodyComponentModelDictionaries = [viewModelSchema.bodyComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
     
     for (NSDictionary * const componentModelDictionary in bodyComponentModelDictionaries) {
-        NSString * componentIdentifier = [schema.componentModelSchema.identifierPath stringFromJSONDictionary:componentModelDictionary];
-        
-        if (componentIdentifier == nil) {
-            componentIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
-        }
-        
-        HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForBodyComponentModelWithIdentifier:componentIdentifier];
-        [builder addDataFromJSONDictionary:componentModelDictionary usingSchema:schema];
+        [self addDataFromBodyComponentModelJSONDictionary:componentModelDictionary usingSchema:schema];
     }
 }
 
@@ -115,6 +108,27 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return YES;
+}
+
+- (void)addDataFromJSONArray:(NSArray<NSObject *> *)array usingSchema:(id<HUBJSONSchema>)schema
+{
+    for (NSObject * const object in array) {
+        if ([object isKindOfClass:[NSDictionary class]]) {
+            [self addDataFromBodyComponentModelJSONDictionary:(NSDictionary *)object usingSchema:schema];
+        }
+    }
+}
+
+- (void)addDataFromBodyComponentModelJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary usingSchema:(id<HUBJSONSchema>)schema
+{
+    NSString * componentIdentifier = [schema.componentModelSchema.identifierPath stringFromJSONDictionary:dictionary];
+    
+    if (componentIdentifier == nil) {
+        componentIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
+    }
+    
+    HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForBodyComponentModelWithIdentifier:componentIdentifier];
+    [builder addDataFromJSONDictionary:dictionary usingSchema:schema];
 }
 
 - (HUBViewModelImplementation *)build

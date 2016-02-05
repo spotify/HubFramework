@@ -66,7 +66,7 @@
     XCTAssertEqualObjects(builder.headerComponentModelBuilder.targetInitialViewModelBuilder.featureIdentifier, builder.featureIdentifier);
 }
 
-- (void)testAddingJSONData
+- (void)testAddingViewModelDictionaryJSONData
 {
     NSString * const viewIdentifier = @"identifier";
     NSString * const featureIdentifier = @"feature";
@@ -106,6 +106,28 @@
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, bodyComponentIdentifier);
     XCTAssertEqualObjects(model.extensionURL, extensionURL);
     XCTAssertEqualObjects(model.customData, customData);
+}
+
+- (void)testAddingComponentModelArrayJSONData
+{
+    NSString * const firstComponentIdentifier = @"component1";
+    NSString * const lastComponentIdentifier = @"component2";
+    
+    NSArray * const array = @[
+        @{
+            @"component": firstComponentIdentifier
+        },
+        @{
+            @"component": lastComponentIdentifier
+        }
+    ];
+    
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"temp"];
+    [builder addDataFromJSONArray:array usingSchema:[HUBJSONSchemaImplementation new]];
+    HUBViewModelImplementation * const model = [builder build];
+    
+    XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, firstComponentIdentifier);
+    XCTAssertEqualObjects([model.bodyComponentModels lastObject].componentIdentifier, lastComponentIdentifier);
 }
 
 - (void)testIsEmpty
