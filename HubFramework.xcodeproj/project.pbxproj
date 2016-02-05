@@ -15,7 +15,6 @@
 		8A786BA81C5A2E8F00B2AB9E /* HUBJSONSchemaRegistryImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BA71C5A2E8F00B2AB9E /* HUBJSONSchemaRegistryImplementation.m */; };
 		8A786BAB1C5A326300B2AB9E /* HUBJSONSchemaImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BAA1C5A326300B2AB9E /* HUBJSONSchemaImplementation.m */; };
 		8A786BB21C5A383800B2AB9E /* HUBViewModelJSONSchemaImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BB11C5A383800B2AB9E /* HUBViewModelJSONSchemaImplementation.m */; };
-		8A786BB51C5A385800B2AB9E /* HUBComponentModelJSONSchemaImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BB41C5A385800B2AB9E /* HUBComponentModelJSONSchemaImplementation.m */; };
 		8A786BB81C5A4CB400B2AB9E /* HUBMutableJSONPathImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BB71C5A4CB400B2AB9E /* HUBMutableJSONPathImplementation.m */; };
 		8A786BBB1C5A4F1800B2AB9E /* HUBJSONParsingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BBA1C5A4F1800B2AB9E /* HUBJSONParsingOperation.m */; };
 		8A786BBE1C5A595900B2AB9E /* HUBJSONPathImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BBD1C5A595900B2AB9E /* HUBJSONPathImplementation.m */; };
@@ -92,7 +91,6 @@
 		8A786BAF1C5A37F000B2AB9E /* HUBComponentModelJSONSchema.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentModelJSONSchema.h; sourceTree = "<group>"; };
 		8A786BB01C5A383800B2AB9E /* HUBViewModelJSONSchemaImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewModelJSONSchemaImplementation.h; sourceTree = "<group>"; };
 		8A786BB11C5A383800B2AB9E /* HUBViewModelJSONSchemaImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBViewModelJSONSchemaImplementation.m; sourceTree = "<group>"; };
-		8A786BB41C5A385800B2AB9E /* HUBComponentModelJSONSchemaImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentModelJSONSchemaImplementation.m; sourceTree = "<group>"; };
 		8A786BB61C5A4CB400B2AB9E /* HUBMutableJSONPathImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBMutableJSONPathImplementation.h; sourceTree = "<group>"; };
 		8A786BB71C5A4CB400B2AB9E /* HUBMutableJSONPathImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBMutableJSONPathImplementation.m; sourceTree = "<group>"; };
 		8A786BB91C5A4F1800B2AB9E /* HUBJSONParsingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBJSONParsingOperation.h; sourceTree = "<group>"; };
@@ -487,7 +485,6 @@
 				8AA97C111C60BB380078F19D /* HUBFeatureConfigurationImplementation.m in Sources */,
 				8AF9FA071C5254F5003F3D6C /* HUBViewModelImplementation.m in Sources */,
 				8A786BAB1C5A326300B2AB9E /* HUBJSONSchemaImplementation.m in Sources */,
-				8A786BB51C5A385800B2AB9E /* HUBComponentModelJSONSchemaImplementation.m in Sources */,
 				8AD064561C64B6DB0086C081 /* HUBComponentModelJSONSchemaImplementation.m in Sources */,
 				8A786BA81C5A2E8F00B2AB9E /* HUBJSONSchemaRegistryImplementation.m in Sources */,
 				8AA97C0D1C60BA4E0078F19D /* HUBFeatureRegistryImplementation.m in Sources */,
