@@ -104,11 +104,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
+- (BOOL)isEmpty
+{
+    if (![self headerComponentModelBuilderIsConsideredEmpty]) {
+        return NO;
+    }
+    
+    if (self.bodyComponentModelBuilders.count > 0) {
+        return NO;
+    }
+    
+    return YES;
+}
+
 - (HUBViewModelImplementation *)build
 {
     HUBComponentModelImplementation *headerComponentModel;
     
-    if (self.headerComponentModelBuilder.componentIdentifier != nil) {
+    if (![self headerComponentModelBuilderIsConsideredEmpty]) {
         headerComponentModel = [self.headerComponentModelBuilderImplementation build];
     } else {
         headerComponentModel = nil;
@@ -145,6 +158,11 @@ NS_ASSUME_NONNULL_BEGIN
     
     [self.bodyComponentModelBuilders setObject:newBuilder forKey:identifier];
     return newBuilder;
+}
+
+- (BOOL)headerComponentModelBuilderIsConsideredEmpty
+{
+    return self.headerComponentModelBuilder.componentIdentifier == nil;
 }
 
 @end
