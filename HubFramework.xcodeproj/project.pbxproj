@@ -190,7 +190,6 @@
 		8A0754951C21A79200AFAD38 = {
 			isa = PBXGroup;
 			children = (
-				DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */,
 				8A0754AA1C21A7B600AFAD38 /* include */,
 				8A0754AB1C21A7B600AFAD38 /* sources */,
 				8ADD42A41C21CFE800D1A801 /* tests */,
@@ -220,7 +219,8 @@
 				8AF9FA021C5254CA003F3D6C /* View */,
 				8ADD42AC1C21D13B00D1A801 /* Components */,
 			);
-			path = include;
+			name = include;
+			path = include/HubFramework;
 			sourceTree = "<group>";
 		};
 		8A0754AB1C21A7B600AFAD38 /* sources */ = {
@@ -289,6 +289,7 @@
 		8A88089B1C21AC8C00ADB737 /* Build System */ = {
 			isa = PBXGroup;
 			children = (
+				DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */,
 				DDBCF36B1C68DD2300693038 /* UIKit.framework */,
 				DD13758E1C68C76000AD3499 /* project.xcconfig */,
 				DD13758F1C68C76000AD3499 /* spotify_os.xcconfig */,
