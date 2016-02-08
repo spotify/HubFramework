@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
-@property (nonatomic, strong, readonly) id<HUBRemoteContentProvider> remoteContentProvider;
-@property (nonatomic, strong, readonly) id<HUBLocalContentProvider> localContentProvider;
+@property (nonatomic, strong, readonly, nullable) id<HUBRemoteContentProvider> remoteContentProvider;
+@property (nonatomic, strong, readonly, nullable) id<HUBLocalContentProvider> localContentProvider;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 @property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *builder;
@@ -116,7 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
         self.builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier];
     }
     
-    return self.builder;
+    return (id<HUBViewModelBuilder>)self.builder;
 }
 
 - (void)localContentProviderDidLoad:(id<HUBLocalContentProvider>)contentProvider
@@ -142,10 +142,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)allPhasesCompletedWithError:(nullable NSError *)error
 {
+    id<HUBViewModelLoaderDelegate> const delegate = self.delegate;
+    
+    if (delegate == nil) {
+        return;
+    }
+    
     if (error == nil) {
-        [self.delegate viewModelLoader:self didLoadViewModel:[self.builder build]];
+        if (self.builder == nil) {
+            return;
+        }
+        
+        id<HUBViewModel> const viewModel = [self.builder build];
+        [delegate viewModelLoader:self didLoadViewModel:viewModel];
     } else {
-        [self.delegate viewModelLoader:self didFailLoadingWithError:error];
+        NSError * const nonNilError = error;
+        [delegate viewModelLoader:self didFailLoadingWithError:nonNilError];
     }
 }
 
