@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
                       extensionURL:(nullable NSURL *)extensionURL
-                        customData:(NSDictionary<NSString *, NSObject *> *)customData NS_DESIGNATED_INITIALIZER;
+                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 

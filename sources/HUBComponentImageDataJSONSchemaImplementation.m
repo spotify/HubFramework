@@ -43,7 +43,7 @@
 
 #pragma mark - HUBComponentImageDataJSONSchema
 
-- (id<HUBComponentImageDataJSONSchema>)copy
+- (id)copy
 {
     return [[HUBComponentImageDataJSONSchemaImplementation alloc] initWithStyleStringPath:self.styleStringPath
                                                                            styleStringMap:self.styleStringMap

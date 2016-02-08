@@ -41,6 +41,10 @@
 		8ADD43791C21DBE300D1A801 /* HUBComponentMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD43781C21DBE300D1A801 /* HUBComponentMock.m */; };
 		8AE278A01C6236E400DFAF99 /* HUBComponentImageDataJSONSchemaImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AE2789F1C6236E400DFAF99 /* HUBComponentImageDataJSONSchemaImplementation.m */; };
 		8AF9FA071C5254F5003F3D6C /* HUBViewModelImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF9FA061C5254F5003F3D6C /* HUBViewModelImplementation.m */; };
+		DDBCF36C1C68DD2300693038 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36B1C68DD2300693038 /* UIKit.framework */; };
+		DDBCF36E1C68DE2C00693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
+		DDBCF36F1C68DE4900693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
+		DDBCF3701C68DE5000693038 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36B1C68DD2300693038 /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,7 +102,6 @@
 		8A786BBA1C5A4F1800B2AB9E /* HUBJSONParsingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBJSONParsingOperation.m; sourceTree = "<group>"; };
 		8A786BBC1C5A595900B2AB9E /* HUBJSONPathImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBJSONPathImplementation.h; sourceTree = "<group>"; };
 		8A786BBD1C5A595900B2AB9E /* HUBJSONPathImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBJSONPathImplementation.m; sourceTree = "<group>"; };
-		8A88089C1C21ACA600ADB737 /* spotify_shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = spotify_shared.xcconfig; path = ../../other/spotify_shared.xcconfig; sourceTree = "<group>"; };
 		8A88089E1C21AD0900ADB737 /* HUBComponentRegistryImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentRegistryImplementation.h; sourceTree = "<group>"; };
 		8A88089F1C21AD0900ADB737 /* HUBComponentRegistryImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentRegistryImplementation.m; sourceTree = "<group>"; };
 		8A880ACF1C21AE9000ADB737 /* HubFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HubFramework.h; sourceTree = "<group>"; };
@@ -155,6 +158,10 @@
 		8AF9FA031C5254D5003F3D6C /* HUBViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBViewModel.h; sourceTree = "<group>"; };
 		8AF9FA051C5254F5003F3D6C /* HUBViewModelImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewModelImplementation.h; sourceTree = "<group>"; };
 		8AF9FA061C5254F5003F3D6C /* HUBViewModelImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBViewModelImplementation.m; sourceTree = "<group>"; };
+		DD13758E1C68C76000AD3499 /* project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
+		DD13758F1C68C76000AD3499 /* spotify_os.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = spotify_os.xcconfig; sourceTree = "<group>"; };
+		DDBCF36B1C68DD2300693038 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +169,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDBCF36E1C68DE2C00693038 /* CoreGraphics.framework in Frameworks */,
+				DDBCF36C1C68DD2300693038 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +178,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDBCF3701C68DE5000693038 /* UIKit.framework in Frameworks */,
+				DDBCF36F1C68DE4900693038 /* CoreGraphics.framework in Frameworks */,
 				8ADD429E1C21CF6500D1A801 /* libHubFramework.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -179,6 +190,7 @@
 		8A0754951C21A79200AFAD38 = {
 			isa = PBXGroup;
 			children = (
+				DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */,
 				8A0754AA1C21A7B600AFAD38 /* include */,
 				8A0754AB1C21A7B600AFAD38 /* sources */,
 				8ADD42A41C21CFE800D1A801 /* tests */,
@@ -277,7 +289,9 @@
 		8A88089B1C21AC8C00ADB737 /* Build System */ = {
 			isa = PBXGroup;
 			children = (
-				8A88089C1C21ACA600ADB737 /* spotify_shared.xcconfig */,
+				DDBCF36B1C68DD2300693038 /* UIKit.framework */,
+				DD13758E1C68C76000AD3499 /* project.xcconfig */,
+				DD13758F1C68C76000AD3499 /* spotify_os.xcconfig */,
 			);
 			name = "Build System";
 			sourceTree = "<group>";
@@ -535,78 +549,22 @@
 /* Begin XCBuildConfiguration section */
 		8A0754A51C21A79200AFAD38 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD13758E1C68C76000AD3499 /* project.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		8A0754A61C21A79200AFAD38 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD13758E1C68C76000AD3499 /* project.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -615,7 +573,6 @@
 		};
 		8A0754A81C21A79200AFAD38 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A88089C1C21ACA600ADB737 /* spotify_shared.xcconfig */;
 			buildSettings = {
 				DEFINES_MODULE = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -626,7 +583,6 @@
 		};
 		8A0754A91C21A79200AFAD38 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A88089C1C21ACA600ADB737 /* spotify_shared.xcconfig */;
 			buildSettings = {
 				DEFINES_MODULE = NO;
 				OTHER_LDFLAGS = "-ObjC";

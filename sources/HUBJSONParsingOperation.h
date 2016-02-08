@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param block The block that contains the logic of the parsing operation
  */
-- (instancetype)initWithBlock:(nullable NSArray<NSObject *> *(^)(NSObject *))block NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBlock:(NSArray<NSObject *> * _Nullable (^)(NSObject *))block NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Return an array of parsed values for performing this operation with a certain input

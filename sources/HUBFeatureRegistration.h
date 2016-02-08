@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBContentProviderFactory> contentProviderFactory;
 
 /// The identifier of any custom JSON schema that the feature is using
-@property (nonatomic, copy, readonly) NSString *customJSONSchemaIdentifier;
+@property (nonatomic, copy, nullable, readonly) NSString *customJSONSchemaIdentifier;
 
 /// Any view URI qualifier that the feature is using
 @property (nonatomic, strong, nullable, readonly) id<HUBViewURIQualifier> viewURIQualifier;
