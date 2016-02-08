@@ -36,6 +36,9 @@ ALWAYS_SEARCH_USER_PATHS = NO
 INSTALL_PATH = @rpath
 DYLIB_INSTALL_NAME_BASE = @rpath
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_path/Frameworks
+COPY_PHASE_STRIP_Debug = NO
+COPY_PHASE_STRIP_Release = YES
+COPY_PHASE_STRIP = $(COPY_PHASE_STRIP_$(CONFIGURATION))
 
 // Spotify language and std-library standards
 GCC_C_LANGUAGE_STANDARD = gnu99
