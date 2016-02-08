@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  This dictionary contains any custom data passed from the server side, or added in the local content loading process.
  */
-@property (nonatomic, strong, readonly) NSDictionary<NSString *, NSObject *> *customData;
+@property (nonatomic, strong, readonly, nullable) NSDictionary<NSString *, NSObject *> *customData;
 
 @end
 

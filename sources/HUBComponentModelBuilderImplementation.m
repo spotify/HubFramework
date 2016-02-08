@@ -185,7 +185,7 @@ NS_ASSUME_NONNULL_BEGIN
         self.targetInitialViewModelBuilderImplementation = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier];
     }
     
-    return self.targetInitialViewModelBuilderImplementation;
+    return (HUBViewModelBuilderImplementation *)self.targetInitialViewModelBuilderImplementation;
 }
 
 @end

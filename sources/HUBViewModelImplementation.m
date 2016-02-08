@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
                       extensionURL:(nullable NSURL *)extensionURL
-                        customData:(NSDictionary<NSString *, NSObject *> *)customData
+                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
 {
     if (!(self = [super init])) {
         return nil;

@@ -4,13 +4,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBJSONParsingOperation ()
 
-@property (nonatomic, copy, readonly) _Nullable id(^block)(id);
+@property (nonatomic, copy, readonly) id (^block)(id);
 
 @end
 
 @implementation HUBJSONParsingOperation
 
-- (instancetype)initWithBlock:(nullable NSArray<NSObject *> *(^)(NSObject *))block
+- (instancetype)initWithBlock:(NSArray<NSObject *> *(^)(NSObject *))block
 {
     NSParameterAssert(block != nil);
     
