@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Protocol defining the public API of an object that can used to configure a feature for use with the Hub Framework
  *
- *  A feature is the top-level entity in the Hub Framework, that is used to ecapsulate related views into a logical group.
+ *  A feature is the top-level entity in the Hub Framework, that is used to encapsulate related views into a logical group.
  *  Views that belong to the same feature share a common root view URI as a prefix, as well as content providing logic
  *  and overrides.
  *
