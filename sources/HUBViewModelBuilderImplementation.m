@@ -129,10 +129,6 @@ NS_ASSUME_NONNULL_BEGIN
         componentIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
     }
     
-    if (![self builderExistsForBodyComponentModelWithIdentifier:componentIdentifier]) {
-        [self.bodyComponentIdentifierOrder addObject:componentIdentifier];
-    }
-    
     HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForBodyComponentModelWithIdentifier:componentIdentifier];
     [builder addDataFromJSONDictionary:dictionary usingSchema:schema];
 }
@@ -181,6 +177,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                       featureIdentifier:self.featureIdentifier];
     
     [self.bodyComponentModelBuilders setObject:newBuilder forKey:identifier];
+    [self.bodyComponentIdentifierOrder addObject:identifier];
+    
     return newBuilder;
 }
 
