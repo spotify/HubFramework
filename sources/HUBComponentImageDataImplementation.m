@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     _style = style;
-    _URL = URL;
-    _iconIdentifier = iconIdentifier;
+    _URL = [URL copy];
+    _iconIdentifier = [iconIdentifier copy];
     
     return self;
 }

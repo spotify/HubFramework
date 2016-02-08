@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    _block = block;
+    _block = [block copy];
     
     return self;
 }

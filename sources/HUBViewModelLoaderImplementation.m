@@ -43,8 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    _viewURI = viewURI;
-    _featureIdentifier = featureIdentifier;
+    _viewURI = [viewURI copy];
+    _featureIdentifier = [featureIdentifier copy];
     _remoteContentProvider = remoteContentProvider;
     _localContentProvider = localContentProvider;
     _JSONSchema = JSONSchema;

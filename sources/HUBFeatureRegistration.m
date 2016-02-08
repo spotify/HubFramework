@@ -19,9 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     _featureIdentifier = [featureIdentifier copy];
-    _rootViewURI = rootViewURI;
+    _rootViewURI = [rootViewURI copy];
     _contentProviderFactory = contentProviderFactory;
-    _customJSONSchemaIdentifier = customJSONSchemaIdentifier;
+    _customJSONSchemaIdentifier = [customJSONSchemaIdentifier copy];
     _viewURIQualifier = viewURIQualifier;
     
     return self;

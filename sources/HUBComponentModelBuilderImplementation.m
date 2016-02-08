@@ -44,8 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    _modelIdentifier = modelIdentifier;
-    _featureIdentifier = featureIdentifier;
+    _modelIdentifier = [modelIdentifier copy];
+    _featureIdentifier = [featureIdentifier copy];
     _mainImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
     _backgroundImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
     _customImageDataBuilders = [NSMutableDictionary new];

@@ -44,17 +44,17 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    _identifier = identifier;
-    _componentIdentifier = componentIdentifier;
-    _contentIdentifier = contentIdentifier;
-    _title = title;
-    _subtitle = subtitle;
-    _accessoryTitle = accessoryTitle;
-    _descriptionText = descriptionText;
+    _identifier = [identifier copy];
+    _componentIdentifier = [componentIdentifier copy];
+    _contentIdentifier = [contentIdentifier copy];
+    _title = [title copy];
+    _subtitle = [subtitle copy];
+    _accessoryTitle = [accessoryTitle copy];
+    _descriptionText = [descriptionText copy];
     _mainImageData = mainImageData;
     _backgroundImageData = backgroundImageData;
     _customImageData = customImageData;
-    _targetURL = targetURL;
+    _targetURL = [targetURL copy];
     _targetInitialViewModel = targetInitialViewModel;
     _customData = customData;
     _loggingData = loggingData;
