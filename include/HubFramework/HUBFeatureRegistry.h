@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Create a new feature configuration object that can be used to setup a feature for use with the Hub Framework
  *
+ *  @param featureIdentifier The identifier of the feature
  *  @param rootViewURI The root view URI of the feature
  *  @param contentProviderFactory The content provider factory that the feature should use
  *
@@ -32,8 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  See `HUBFeatureConfiguration` and `HUBContentProviderFactory` for more information.
  */
-- (id<HUBFeatureConfiguration>)createFeatureConfigurationForRootViewURI:(NSURL *)rootViewURI
-                                                 contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory;
+- (id<HUBFeatureConfiguration>)createConfigurationForFeatureWithIdentifier:(NSString *)featureIdentifier
+                                                               rootViewURI:(NSURL *)rootViewURI
+                                                    contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory;
 
 /**
  *  Register a feature with the Hub Framework using a configuration object

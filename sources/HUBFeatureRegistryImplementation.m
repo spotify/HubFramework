@@ -50,9 +50,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBFeatureRegistry
 
-- (id<HUBFeatureConfiguration>)createFeatureConfigurationForRootViewURI:(NSURL *)rootViewURI contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory
+- (id<HUBFeatureConfiguration>)createConfigurationForFeatureWithIdentifier:(NSString *)featureIdentifier
+                                                               rootViewURI:(NSURL *)rootViewURI
+                                                    contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory
 {
-    return [[HUBFeatureConfigurationImplementation alloc] initWithRootViewURI:rootViewURI contentProviderFactory:contentProviderFactory];
+    return [[HUBFeatureConfigurationImplementation alloc] initWithFeatureIdentifier:featureIdentifier
+                                                                        rootViewURI:rootViewURI
+                                                             contentProviderFactory:contentProviderFactory];
 }
 
 - (void)registerFeatureWithConfiguration:(id<HUBFeatureConfiguration>)configuration
@@ -61,10 +65,11 @@ NS_ASSUME_NONNULL_BEGIN
              @"Attempted to register a Hub Framework feature for a root view URI that is already registered: %@",
              configuration.rootViewURI);
     
-    HUBFeatureRegistration * const registration = [[HUBFeatureRegistration alloc] initWithRootViewURI:configuration.rootViewURI
-                                                                               contentProviderFactory:configuration.contentProviderFactory
-                                                                           customJSONSchemaIdentifier:configuration.customJSONSchemaIdentifier
-                                                                                     viewURIQualifier:configuration.viewURIQualifier];
+    HUBFeatureRegistration * const registration = [[HUBFeatureRegistration alloc] initWithFeatureIdentifier:configuration.featureIdentifier
+                                                                                                rootViewURI:configuration.rootViewURI
+                                                                                     contentProviderFactory:configuration.contentProviderFactory
+                                                                                 customJSONSchemaIdentifier:configuration.customJSONSchemaIdentifier
+                                                                                           viewURIQualifier:configuration.viewURIQualifier];
     
     [self.registrations setObject:registration forKey:registration.rootViewURI];
 }

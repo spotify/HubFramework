@@ -8,6 +8,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Model object representing a feature registered with the Hub Framework
 @interface HUBFeatureRegistration : NSObject
 
+/// The identifier of the feature that this registration is for
+@property (nonatomic, copy, readonly) NSString *featureIdentifier;
+
 /// The root view URI of the feature
 @property (nonatomic, copy, readonly) NSURL *rootViewURI;
 
@@ -23,15 +26,17 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Initialize an instance of this class with its possible values
  *
+ *  @param featureIdentifier The identifier of the feature
  *  @param rootViewURI The root view URI of the feature
  *  @param contentProviderFactory The content provider factory that the feature will use
  *  @param customJSONSchemaIdentifier The identifier of any custom JSON schema the feature will use
  *  @param viewURIQualifier Any view URI qualifier that the feature will use
  */
-- (instancetype)initWithRootViewURI:(NSURL *)rootViewURI
-             contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory
-         customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
-                   viewURIQualifier:(nullable id<HUBViewURIQualifier>)viewURIQualifier NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
+                              rootViewURI:(NSURL *)rootViewURI
+                   contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory
+               customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
+                         viewURIQualifier:(nullable id<HUBViewURIQualifier>)viewURIQualifier NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 
