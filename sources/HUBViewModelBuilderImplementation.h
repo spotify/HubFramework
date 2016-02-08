@@ -16,6 +16,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier NS_DESIGNATED_INITIALIZER;
 
 /**
+ *  Add data from a JSON array to this builder
+ *
+ *  @param array The JSON array to extract data from
+ *  @param schema The JSON schema to use to extract the data from the dictionary
+ *
+ *  Each element in the array will be type-checked to be a dictionary, and then parsed as a body
+ *  component model dictionary.
+ */
+- (void)addDataFromJSONArray:(NSArray<NSObject *> *)array
+                 usingSchema:(id<HUBJSONSchema>)schema;
+
+/**
  *  Build an instance of `HUBViewModelImplementation` from the data contained in this builder
  */
 - (HUBViewModelImplementation *)build;
