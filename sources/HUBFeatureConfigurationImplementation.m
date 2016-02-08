@@ -4,13 +4,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBFeatureConfigurationImplementation
 
+@synthesize featureIdentifier = _featureIdentifier;
 @synthesize rootViewURI = _rootViewURI;
 @synthesize contentProviderFactory = _contentProviderFactory;
 @synthesize customJSONSchemaIdentifier = _customJSONSchemaIdentifier;
 @synthesize viewURIQualifier = _viewURIQualifier;
 
-- (instancetype)initWithRootViewURI:(NSURL *)rootViewURI contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory
+- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
+                              rootViewURI:(NSURL *)rootViewURI
+                   contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory
 {
+    NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(rootViewURI != nil);
     NSParameterAssert(contentProviderFactory != nil);
     
@@ -18,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
+    _featureIdentifier = featureIdentifier;
     _rootViewURI = rootViewURI;
     _contentProviderFactory = contentProviderFactory;
     

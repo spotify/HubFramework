@@ -19,6 +19,15 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HUBFeatureConfiguration <NSObject>
 
 /**
+ *  The identifier of the feature
+ *
+ *  A feature's identifier is mainly used for logging (and can be overriden in the view model building phase through either JSON or
+ *  the `HUBLocalContentProvider` API, for any view that belongs to the feature). It's recommended that each feature identifier is
+ *  unique, but this is not a strict requirement.
+ */
+@property (nonatomic, copy) NSString *featureIdentifier;
+
+/**
  *  The root view URI of the feature
  *
  *  The Hub Framework will consider all views that have this view URI as a prefix to be part of the feature that this
