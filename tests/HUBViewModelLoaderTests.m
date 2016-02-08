@@ -53,7 +53,7 @@
 - (void)testSuccessfullyLoadingRemoteDictionaryContent
 {
     [self createLoaderWithRemoteContentProvider:YES localContentProvider:NO connectivityState:HUBConnectivityStateOnline];
-    self.remoteContentProvider.data = [NSJSONSerialization dataWithJSONObject:@{} options:0 error:nil];
+    self.remoteContentProvider.data = [NSJSONSerialization dataWithJSONObject:@{} options:(NSJSONWritingOptions)0 error:nil];
     
     [self.loader loadViewModel];
     
@@ -65,7 +65,7 @@
 - (void)testSuccessfullyLoadingRemoteArrayContent
 {
     [self createLoaderWithRemoteContentProvider:YES localContentProvider:NO connectivityState:HUBConnectivityStateOnline];
-    self.remoteContentProvider.data = [NSJSONSerialization dataWithJSONObject:@[] options:0 error:nil];
+    self.remoteContentProvider.data = [NSJSONSerialization dataWithJSONObject:@[] options:(NSJSONWritingOptions)0 error:nil];
     
     [self.loader loadViewModel];
     
@@ -104,12 +104,14 @@
     
     __block BOOL contentLoadingBlockCalled = NO;
     __block BOOL contentLoadingBlockCalledToLoadFallbackContent = NO;
-    __weak typeof(self) _self = self;
+    __weak __typeof(self) weakSelf = self;
     
     self.localContentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        
         contentLoadingBlockCalled = YES;
         contentLoadingBlockCalledToLoadFallbackContent = loadFallbackContent;
-        id<HUBViewModelBuilder> const builder = [_self.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:_self.localContentProvider];
+        id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
         [builder builderForBodyComponentModelWithIdentifier:@"component"];
     };
     
@@ -118,7 +120,7 @@
     XCTAssertTrue(contentLoadingBlockCalled);
     XCTAssertFalse(contentLoadingBlockCalledToLoadFallbackContent);
     XCTAssertNil(self.errorFromFailureDelegateMethod);
-    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, 1);
+    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)1);
 }
 
 - (void)testLocalContentLoadingError
@@ -152,11 +154,13 @@
     
     NSString * const localContentProviderAssignedComponentTitle = @"Local content title";
     
-    __weak typeof(self) _self = self;
+    __weak __typeof(self) weakSelf = self;
     
-    self.remoteContentProvider.data = [NSJSONSerialization dataWithJSONObject:remoteContentDictionary options:0 error:nil];
+    self.remoteContentProvider.data = [NSJSONSerialization dataWithJSONObject:remoteContentDictionary options:(NSJSONWritingOptions)0 error:nil];
     self.localContentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
-        id<HUBViewModelBuilder> const builder = [_self.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:_self.localContentProvider];
+        __typeof(self) strongSelf = weakSelf;
+        
+        id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
         builder.headerComponentModelBuilder.componentIdentifier = @"component";
         builder.headerComponentModelBuilder.title = localContentProviderAssignedComponentTitle;
         [builder builderForBodyComponentModelWithIdentifier:bodyComponentIdentifier].title = localContentProviderAssignedComponentTitle;
@@ -166,7 +170,7 @@
     
     XCTAssertNil(self.errorFromFailureDelegateMethod);
     XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.headerComponentModel.title, localContentProviderAssignedComponentTitle);
-    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, 1);
+    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels firstObject].title, localContentProviderAssignedComponentTitle);
 }
 
@@ -174,10 +178,12 @@
 {
     [self createLoaderWithRemoteContentProvider:YES localContentProvider:YES connectivityState:HUBConnectivityStateOffline];
     
-    __weak typeof(self) _self = self;
+    __weak __typeof(self) weakSelf = self;
     
     self.localContentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
-        id<HUBViewModelBuilder> const builder = [_self.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:_self.localContentProvider];
+        __typeof(self) strongSelf = weakSelf;
+        
+        id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
         builder.headerComponentModelBuilder.componentIdentifier = @"component";
     };
     
@@ -192,25 +198,29 @@
 {
     [self createLoaderWithRemoteContentProvider:YES localContentProvider:YES connectivityState:HUBConnectivityStateOnline];
     
-    __weak typeof(self) _self = self;
+    __weak __typeof(self) weakSelf = self;
     
-    self.remoteContentProvider.data = [NSJSONSerialization dataWithJSONObject:@{} options:0 error:nil];
+    self.remoteContentProvider.data = [NSJSONSerialization dataWithJSONObject:@{} options:(NSJSONWritingOptions)0 error:nil];
     self.localContentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
-        id<HUBViewModelBuilder> const builder = [_self.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:_self.localContentProvider];
+        __typeof(self) strongSelf = weakSelf;
+        
+        id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
         [builder builderForBodyComponentModelWithIdentifier:@"componentA"].title = @"Component title";
     };
     
     [self.loader loadViewModel];
     
     self.localContentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
-        id<HUBViewModelBuilder> const builder = [_self.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:_self.localContentProvider];
+        __typeof(self) strongSelf = weakSelf;
+        
+        id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
         [builder builderForBodyComponentModelWithIdentifier:@"componentB"].title = @"Component title";
     };
     
     [self.loader loadViewModel];
     
     XCTAssertNil(self.errorFromFailureDelegateMethod);
-    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, 1);
+    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels firstObject].identifier, @"componentB");
 }
 
@@ -236,7 +246,7 @@
 {
     self.connectivityStateResolver.state = connectivityState;
     
-    self.loader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:[NSURL URLWithString:@"spotify:hub:test"]
+    self.loader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:(NSURL *)[NSURL URLWithString:@"spotify:hub:test"]
                                                           featureIdentifier:@"feature"
                                                       remoteContentProvider:(useRemoteContentProvider ? self.remoteContentProvider : nil)
                                                        localContentProvider:(useLocalContentProvider ? self.localContentProvider : nil)

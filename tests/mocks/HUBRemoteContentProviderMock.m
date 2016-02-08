@@ -30,11 +30,15 @@ NS_ASSUME_NONNULL_BEGIN
 {
     self.called = YES;
     
+    id<HUBRemoteContentProviderDelegate> const delegate = self.delegate;
+    
     if (self.error == nil) {
         NSAssert(self.data != nil, @"No data or error set");
-        [self.delegate remoteContentProvider:self didLoadJSONData:self.data];
+        NSData * const data = self.data;
+        [delegate remoteContentProvider:self didLoadJSONData:data];
     } else {
-        [self.delegate remoteContentProvider:self didFailLoadingWithError:self.error];
+        NSError * const error = self.error;
+        [delegate remoteContentProvider:self didFailLoadingWithError:error];
     }
 }
 

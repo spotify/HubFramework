@@ -20,12 +20,15 @@
 
 - (void)loadContentOrReturnErrorForFallback:(BOOL)forFallback
 {
+    id<HUBLocalContentProviderDelegate> const delegate = self.delegate;
+    
     if (self.error == nil) {
         NSAssert(self.contentLoadingBlock != nil, @"No content loading block or error set");
         self.contentLoadingBlock(forFallback);
-        [self.delegate localContentProviderDidLoad:self];
+        [delegate localContentProviderDidLoad:self];
     } else {
-        [self.delegate localContentProvider:self didFailLoadingWithError:self.error];
+        NSError * const error = self.error;
+        [delegate localContentProvider:self didFailLoadingWithError:error];
     }
 }
 
