@@ -27,6 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver NS_DESIGNATED_INITIALIZER;
 
+#pragma mark - Unavailable initializers
+
+/// This class needs to be initialized with its designated initializer
+- (instancetype)init NS_UNAVAILABLE;
+
+/// This class needs to be initialized with its designated initializer
++ (instancetype)new NS_UNAVAILABLE;
+
 @end
 
 NS_ASSUME_NONNULL_END
