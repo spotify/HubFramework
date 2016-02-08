@@ -32,6 +32,7 @@
 		8AA97C1E1C60CE980078F19D /* HUBViewURIQualifierMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97C1D1C60CE980078F19D /* HUBViewURIQualifierMock.m */; };
 		8AD064561C64B6DB0086C081 /* HUBComponentModelJSONSchemaImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064551C64B6DB0086C081 /* HUBComponentModelJSONSchemaImplementation.m */; };
 		8AD064581C64B76B0086C081 /* HUBJSONSchemaRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064571C64B76B0086C081 /* HUBJSONSchemaRegistryTests.m */; };
+		8AD0645E1C64F45A0086C081 /* HUBConnectivityStateResolverMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD0645C1C64F4510086C081 /* HUBConnectivityStateResolverMock.m */; };
 		8ADD42921C21C81100D1A801 /* HUBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD42911C21C81100D1A801 /* HUBManager.m */; };
 		8ADD429E1C21CF6500D1A801 /* libHubFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A07549E1C21A79200AFAD38 /* libHubFramework.a */; };
 		8ADD42A71C21CFE800D1A801 /* HUBComponentRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD42A51C21CFE800D1A801 /* HUBComponentRegistryTests.m */; };
@@ -132,6 +133,9 @@
 		8AD064551C64B6DB0086C081 /* HUBComponentModelJSONSchemaImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentModelJSONSchemaImplementation.m; sourceTree = "<group>"; };
 		8AD064571C64B76B0086C081 /* HUBJSONSchemaRegistryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBJSONSchemaRegistryTests.m; sourceTree = "<group>"; };
 		8AD064591C64D2EA0086C081 /* HUBJSONCompatibleBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBJSONCompatibleBuilder.h; sourceTree = "<group>"; };
+		8AD0645A1C64DF7D0086C081 /* HUBConnectivityStateResolver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBConnectivityStateResolver.h; sourceTree = "<group>"; };
+		8AD0645B1C64F4510086C081 /* HUBConnectivityStateResolverMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBConnectivityStateResolverMock.h; sourceTree = "<group>"; };
+		8AD0645C1C64F4510086C081 /* HUBConnectivityStateResolverMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBConnectivityStateResolverMock.m; sourceTree = "<group>"; };
 		8ADD42901C21C7BC00D1A801 /* HUBManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBManager.h; sourceTree = "<group>"; };
 		8ADD42911C21C81100D1A801 /* HUBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBManager.m; sourceTree = "<group>"; };
 		8ADD42931C21C94800D1A801 /* HUBComponentRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentRegistry.h; sourceTree = "<group>"; };
@@ -197,6 +201,7 @@
 			children = (
 				8A880ACF1C21AE9000ADB737 /* HubFramework.h */,
 				8ADD42901C21C7BC00D1A801 /* HUBManager.h */,
+				8AD0645A1C64DF7D0086C081 /* HUBConnectivityStateResolver.h */,
 				8A786BA01C5A29E000B2AB9E /* JSON */,
 				8AA97C071C60B9490078F19D /* Feature */,
 				8A786B971C58E3B100B2AB9E /* Content */,
@@ -359,6 +364,8 @@
 				8AA97C181C60C5CD0078F19D /* HUBContentProviderFactoryMock.m */,
 				8AA97C1C1C60CE980078F19D /* HUBViewURIQualifierMock.h */,
 				8AA97C1D1C60CE980078F19D /* HUBViewURIQualifierMock.m */,
+				8AD0645B1C64F4510086C081 /* HUBConnectivityStateResolverMock.h */,
+				8AD0645C1C64F4510086C081 /* HUBConnectivityStateResolverMock.m */,
 			);
 			path = mocks;
 			sourceTree = "<group>";
@@ -508,6 +515,7 @@
 				8ADD43791C21DBE300D1A801 /* HUBComponentMock.m in Sources */,
 				8A58E0E31C5A77C700F41A5C /* HUBJSONPathTests.m in Sources */,
 				8ADD42B11C21D8D700D1A801 /* HUBComponentFallbackHandlerMock.m in Sources */,
+				8AD0645E1C64F45A0086C081 /* HUBConnectivityStateResolverMock.m in Sources */,
 				8A786B961C57E6F300B2AB9E /* HUBViewModelBuilderTests.m in Sources */,
 				8ADD42AA1C21D08100D1A801 /* HUBManagerTests.m in Sources */,
 				8A58E1471C5B79A900F41A5C /* HUBMutableJSONPathTests.m in Sources */,

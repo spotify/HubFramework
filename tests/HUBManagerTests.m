@@ -2,6 +2,7 @@
 
 #import "HUBManager.h"
 #import "HUBComponentFallbackHandlerMock.h"
+#import "HUBConnectivityStateResolverMock.h"
 
 @interface HUBManagerTests : XCTestCase
 
@@ -12,7 +13,10 @@
 - (void)testRegistries
 {
     id<HUBComponentFallbackHandler> const fallbackHandler = [HUBComponentFallbackHandlerMock new];
-    HUBManager * const manager = [[HUBManager alloc] initWithComponentFallbackHandler:fallbackHandler];
+    id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
+    
+    HUBManager * const manager = [[HUBManager alloc] initWithComponentFallbackHandler:fallbackHandler
+                                                            connectivityStateResolver:connectivityStateResolver];
     
     XCTAssertNotNil(manager.featureRegistry);
     XCTAssertNotNil(manager.componentRegistry);
