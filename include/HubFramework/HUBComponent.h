@@ -53,6 +53,20 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) id<HUBComponentDelegate> delegate;
 
 /**
+ *  The view that the component uses to render its content
+ *
+ *  This property should start out as `nil`, and when the Hub Framework will call `-loadView`
+ *  on the component, the view should be loaded and this property assigned. This pattern works
+ *  similar to the view loading mechanism of `UIViewController`.
+ *
+ *  The view will be resized by the Hub Framework, taking the size returned from the component's
+ *  `-preferredViewSizeForDisplayingModel:containedInViewWithSize:` method into account.
+ *
+ *  A component has a 1:1 relationship with its view.
+ */
+@property (nonatomic, strong, nullable) UIView *view;
+
+/**
  *  Create a new component of the same type as this one
  *
  *  You are not strictly required to copy this object in the implementation of this method,
@@ -63,20 +77,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)createNewComponent;
 
 /**
- *  Load the component's view and return it
+ *  Load the component's view
  *
- *  The Hub Framework will send this message to your component when a new instance of it
- *  is created, and it needs a view to associate with it. The view returned here will be
- *  retained by the framework, but it's recommended that you keep a reference to it as well
- *  since you will probably need to adapt the view's appearance as it gets reused for
- *  various models.
+ *  The Hub Framework will send this message to a component when a new instance of it is about
+ *  to be displayed. The component should at this point create its view, and assign it to its
+ *  `view` property. When this method returns, the `view` property of the component must not
+ *  be `nil`.
  *
- *  The view will be resized by the Hub Framework, taking the size returned from the component's
- *  `-preferredViewSizeForDisplayingModel:containedInViewWithSize:` method into account.
+ *  You don't have to set any particular frame for the view, since it will be resized and
+ *  repositioned by the Hub Framework.
  *
- *  A component has a 1:1 relationship with its view.
+ *  See the documentation for `view` for more information.
  */
-- (UIView *)loadView;
+- (void)loadView;
 
 /**
  *  Return the size that the component prefers that it view gets resized to when used for a certain model

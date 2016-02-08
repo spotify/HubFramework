@@ -3,15 +3,16 @@
 @implementation HUBComponentMock
 
 @synthesize delegate = _delegate;
+@synthesize view = _view;
 
 - (instancetype)createNewComponent
 {
     return [HUBComponentMock new];
 }
 
-- (UIView *)loadView
+- (void)loadView
 {
-    return [[UIView alloc] initWithFrame:CGRectZero];
+    self.view = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (CGSize)preferredViewSizeForDisplayingModel:(id<HUBComponentModel>)model containedInViewWithSize:(CGSize)containerViewSize
