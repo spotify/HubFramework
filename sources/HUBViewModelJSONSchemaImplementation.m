@@ -54,7 +54,7 @@
 
 #pragma mark - HUBViewModelJSONSchema
 
-- (id<HUBViewModelJSONSchema>)copy
+- (id)copy
 {
     return [[HUBViewModelJSONSchemaImplementation alloc] initWithIdentifierPath:self.identifierPath
                                                           featureIdentifierPath:self.featureIdentifierPath

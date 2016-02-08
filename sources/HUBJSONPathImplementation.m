@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
     return currentValues;
 }
 
-- (id<HUBMutableJSONPath>)mutableCopy
+- (id)mutableCopy
 {
     return [[HUBMutableJSONPathImplementation alloc] initWithParsingOperations:self.parsingOperations];
 }

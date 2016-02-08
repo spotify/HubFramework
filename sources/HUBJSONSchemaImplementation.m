@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [[HUBMutableJSONPathImplementation alloc] initWithParsingOperations:@[]];
 }
 
-- (id<HUBJSONSchema>)copy
+- (id)copy
 {
     return [[HUBJSONSchemaImplementation alloc] initWithViewModelSchema:[self.viewModelSchema copy]
                                                    componentModelSchema:[self.componentModelSchema copy]
