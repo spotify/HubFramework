@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    _featureIdentifier = featureIdentifier;
+    _featureIdentifier = [featureIdentifier copy];
     _rootViewURI = rootViewURI;
     _contentProviderFactory = contentProviderFactory;
     _customJSONSchemaIdentifier = customJSONSchemaIdentifier;
