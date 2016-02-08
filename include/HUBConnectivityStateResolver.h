@@ -15,7 +15,7 @@ typedef enum : NSUInteger {
  *
  *  You conform to this protocol in a custom object and supply it when setting up your application's
  *  `HUBManager`. The Hub Framework uses the information provided by its connectivity state resolver
- *  to determine whether remote contnet should be loaded or not at a given time.
+ *  to determine whether remote content should be loaded or not at a given time.
  */
 @protocol HUBConnectivityStateResolver <NSObject>
 
