@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) HUBComponentModelBuilderImplementation *headerComponentModelBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *bodyComponentModelBuilders;
+@property (nonatomic, strong, readonly) NSMutableArray<NSString *> *bodyComponentIdentifierOrder;
 
 @end
 
@@ -38,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
     _featureIdentifier = featureIdentifier;
     _headerComponentModelBuilderImplementation = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header" featureIdentifier:featureIdentifier];
     _bodyComponentModelBuilders = [NSMutableDictionary new];
+    _bodyComponentIdentifierOrder = [NSMutableArray new];
     
     return self;
 }
@@ -127,6 +129,10 @@ NS_ASSUME_NONNULL_BEGIN
         componentIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
     }
     
+    if (![self builderExistsForBodyComponentModelWithIdentifier:componentIdentifier]) {
+        [self.bodyComponentIdentifierOrder addObject:componentIdentifier];
+    }
+    
     HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForBodyComponentModelWithIdentifier:componentIdentifier];
     [builder addDataFromJSONDictionary:dictionary usingSchema:schema];
 }
@@ -143,8 +149,12 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSMutableArray * const bodyComponentModels = [NSMutableArray new];
     
-    for (HUBComponentModelBuilderImplementation * const builder in self.bodyComponentModelBuilders.allValues) {
-        [bodyComponentModels addObject:[builder build]];
+    for (NSString * const componentIdentifier in self.bodyComponentIdentifierOrder) {
+        HUBComponentModelBuilderImplementation * const builder = [self.bodyComponentModelBuilders objectForKey:componentIdentifier];
+        
+        if (builder != nil) {
+            [bodyComponentModels addObject:[builder build]];
+        }
     }
     
     return [[HUBViewModelImplementation alloc] initWithIdentifier:self.viewIdentifier
