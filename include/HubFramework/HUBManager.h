@@ -3,6 +3,7 @@
 @protocol HUBFeatureRegistry;
 @protocol HUBComponentRegistry;
 @protocol HUBJSONSchemaRegistry;
+@protocol HUBViewModelLoaderFactory;
 @protocol HUBComponentFallbackHandler;
 @protocol HUBConnectivityStateResolver;
 
@@ -24,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The JSON schema registry used by this Hub Manager. See the documentation for `HUBJSONSchemaRegistry` for more info.
 @property (nonatomic, strong, readonly) id<HUBJSONSchemaRegistry> JSONSchemaRegistry;
+
+/// The factory used to create view model loaders. See `HUBViewModelLoaderFactory` for more info.
+@property (nonatomic, strong, readonly) id<HUBViewModelLoaderFactory> viewModellLoaderFactory;
 
 /**
  *  Initialize an instance of this class with a component fallback handler

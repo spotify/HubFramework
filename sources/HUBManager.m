@@ -3,6 +3,7 @@
 #import "HUBFeatureRegistryImplementation.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBJSONSchemaRegistryImplementation.h"
+#import "HUBViewModelLoaderFactoryImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
     _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler];
     _JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
     _connectivityStateResolver = connectivityStateResolver;
+    _viewModellLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:_featureRegistry
+                                                                                     JSONSchemaRegistry:_JSONSchemaRegistry
+                                                                              connectivityStateResolver:_connectivityStateResolver];
     
     return self;
 }

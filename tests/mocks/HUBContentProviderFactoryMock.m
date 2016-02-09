@@ -4,14 +4,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBContentProviderFactoryMock
 
-- (nullable id<HUBLocalContentProvider>)createLocalContentProviderForViewURI:(NSURL *)viewURI
-{
-    return nil;
-}
-
 - (nullable id<HUBRemoteContentProvider>)createRemoteContentProviderForViewURI:(NSURL *)viewURI
 {
-    return nil;
+    return self.remoteContentProvider;
+}
+
+- (nullable id<HUBLocalContentProvider>)createLocalContentProviderForViewURI:(NSURL *)viewURI
+{
+    return self.localContentProvider;
 }
 
 @end
