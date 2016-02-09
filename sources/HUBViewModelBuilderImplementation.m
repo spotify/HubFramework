@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     _viewIdentifier = [NSUUID UUID].UUIDString;
-    _featureIdentifier = featureIdentifier;
+    _featureIdentifier = [featureIdentifier copy];
     _headerComponentModelBuilderImplementation = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header" featureIdentifier:featureIdentifier];
     _bodyComponentModelBuilders = [NSMutableDictionary new];
     _bodyComponentIdentifierOrder = [NSMutableArray new];

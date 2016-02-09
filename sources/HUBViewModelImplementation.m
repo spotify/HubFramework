@@ -26,13 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    _identifier = identifier;
-    _featureIdentifier = featureIdentifier;
-    _entityIdentifier = entityIdentifier;
-    _navigationBarTitle = navigationBarTitle;
+    _identifier = [identifier copy];
+    _featureIdentifier = [featureIdentifier copy];
+    _entityIdentifier = [entityIdentifier copy];
+    _navigationBarTitle = [navigationBarTitle copy];
     _headerComponentModel = headerComponentModel;
     _bodyComponentModels = bodyComponentModels;
-    _extensionURL = extensionURL;
+    _extensionURL = [extensionURL copy];
     _customData = customData;
     
     return self;
