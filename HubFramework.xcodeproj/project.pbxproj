@@ -80,8 +80,6 @@
 /* Begin PBXFileReference section */
 		8A07549E1C21A79200AFAD38 /* libHubFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libHubFramework.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A0754AC1C21A7C700AFAD38 /* HUBComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponent.h; sourceTree = "<group>"; };
-		8A397F381C625CD200D19230 /* HUBComponentModelJSONSchema.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentModelJSONSchema.h; sourceTree = "<group>"; };
-		8A397F3C1C625DCB00D19230 /* HUBJSONSchema.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBJSONSchema.h; sourceTree = "<group>"; };
 		8A58E0E21C5A77C700F41A5C /* HUBJSONPathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBJSONPathTests.m; sourceTree = "<group>"; };
 		8A58E1461C5B79A900F41A5C /* HUBMutableJSONPathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBMutableJSONPathTests.m; sourceTree = "<group>"; };
 		8A58E1481C5FA62E00F41A5C /* HUBComponentImageDataBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentImageDataBuilderTests.m; sourceTree = "<group>"; };
@@ -173,7 +171,6 @@
 		8ADD42B01C21D8D700D1A801 /* HUBComponentFallbackHandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentFallbackHandlerMock.m; sourceTree = "<group>"; };
 		8ADD43771C21DBE300D1A801 /* HUBComponentMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentMock.h; sourceTree = "<group>"; };
 		8ADD43781C21DBE300D1A801 /* HUBComponentMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentMock.m; sourceTree = "<group>"; };
-		8AE2789D1C62368F00DFAF99 /* HUBComponentImageDataJSONSchema.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentImageDataJSONSchema.h; sourceTree = "<group>"; };
 		8AE2789E1C6236E400DFAF99 /* HUBComponentImageDataJSONSchemaImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentImageDataJSONSchemaImplementation.h; sourceTree = "<group>"; };
 		8AE2789F1C6236E400DFAF99 /* HUBComponentImageDataJSONSchemaImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentImageDataJSONSchemaImplementation.m; sourceTree = "<group>"; };
 		8AF5B57D1C64B59E001FF228 /* HUBViewModelLoaderImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewModelLoaderImplementation.h; sourceTree = "<group>"; };
@@ -278,9 +275,6 @@
 				8A786BA41C5A2E2A00B2AB9E /* HUBJSONSchemaRegistry.h */,
 				8A786BAC1C5A345D00B2AB9E /* HUBJSONPath.h */,
 				8A786BAD1C5A34C000B2AB9E /* HUBMutableJSONPath.h */,
-				8A397F3C1C625DCB00D19230 /* HUBJSONSchema.h */,
-				8A397F381C625CD200D19230 /* HUBComponentModelJSONSchema.h */,
-				8AE2789D1C62368F00DFAF99 /* HUBComponentImageDataJSONSchema.h */,
 			);
 			name = JSON;
 			sourceTree = "<group>";
