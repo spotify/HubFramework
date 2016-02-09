@@ -10,24 +10,37 @@
 
 - (void)testCreateWithNamespaceAndName
 {
-    HUBComponentIdentifier *identifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+    HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
 
     XCTAssertEqualObjects(identifier.componentNamespace, @"namespace");
     XCTAssertEqualObjects(identifier.componentName, @"name");
 }
 
-- (void)testCreateWithValidString
+- (void)testCreateWithValidNamespacedString
 {
-    HUBComponentIdentifier *identifier = [[HUBComponentIdentifier alloc] initWithString:@"namespace:name"];
+    HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithString:@"namespace:name"];
 
     XCTAssertEqualObjects(identifier.componentNamespace, @"namespace");
     XCTAssertEqualObjects(identifier.componentName, @"name");
 }
 
-- (void)testCreateWithInvalidString
+- (void)testCreateWithValidNonNamespacedString
 {
-    HUBComponentIdentifier *identifier = [[HUBComponentIdentifier alloc] initWithString:@"namespace"];
+    HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithString:@"name"];
+    XCTAssertEqualObjects(identifier.componentName, @"name");
+}
 
+- (void)testCreateWithStringWithExcessStringComponents
+{
+    HUBComponentIdentifier *identifier = [[HUBComponentIdentifier alloc] initWithString:@"namespace:name:something"];
+    
+    XCTAssertEqualObjects(identifier.componentNamespace, @"namespace");
+    XCTAssertEqualObjects(identifier.componentName, @"name");
+}
+
+- (void)testCreateWithEmptyStringReturnsNil
+{
+    HUBComponentIdentifier *identifier = [[HUBComponentIdentifier alloc] initWithString:@""];
     XCTAssertNil(identifier);
 }
 

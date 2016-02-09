@@ -1,6 +1,7 @@
 #import "HUBComponentRegistryImplementation.h"
 
 #import "HUBComponent.h"
+#import "HUBComponentIdentifier.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentFallbackHandler.h"
 
@@ -46,7 +47,10 @@
 
 - (NSString *)componentIdentifierForModel:(id<HUBComponentModel>)model
 {
-    NSString * const modelComponentIdentifier = model.componentIdentifier;
+    // Temporary workaround to be able so sync work between developers
+    NSString * const modelComponentIdentifier = [NSString stringWithFormat:@"%@:%@",
+                                                 model.componentIdentifier.componentNamespace,
+                                                 model.componentIdentifier.componentName];
     
     if ([self.componentsByIdentifier objectForKey:modelComponentIdentifier] != nil) {
         return modelComponentIdentifier;

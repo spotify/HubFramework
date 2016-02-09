@@ -1,5 +1,6 @@
 #import "HUBComponentModelImplementation.h"
 
+#import "HUBComponentIdentifier.h"
 #import "HUBComponentImageDataImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -23,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize date = _date;
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
-               componentIdentifier:(nullable NSString *)componentIdentifier
+               componentIdentifier:(nullable HUBComponentIdentifier *)componentIdentifier
                  contentIdentifier:(nullable NSString *)contentIdentifier
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle

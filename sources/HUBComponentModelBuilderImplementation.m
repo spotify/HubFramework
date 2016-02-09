@@ -1,5 +1,6 @@
 #import "HUBComponentModelBuilderImplementation.h"
 
+#import "HUBComponentIdentifier.h"
 #import "HUBComponentModelImplementation.h"
 #import "HUBComponentImageDataBuilderImplementation.h"
 #import "HUBComponentImageDataImplementation.h"
@@ -86,7 +87,6 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentModelJSONSchema> componentModelSchema = schema.componentModelSchema;
     
-    self.componentIdentifier = [componentModelSchema.componentIdentifierPath stringFromJSONDictionary:dictionary];
     self.contentIdentifier = [componentModelSchema.contentIdentifierPath stringFromJSONDictionary:dictionary];
     self.title = [componentModelSchema.titlePath stringFromJSONDictionary:dictionary];
     self.subtitle = [componentModelSchema.subtitlePath stringFromJSONDictionary:dictionary];
@@ -96,6 +96,12 @@ NS_ASSUME_NONNULL_BEGIN
     self.customData = [componentModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
     self.loggingData = [componentModelSchema.loggingDataPath dictionaryFromJSONDictionary:dictionary];
     self.date = [componentModelSchema.datePath dateFromJSONDictionary:dictionary];
+    
+    NSString * const componentIdentifierString = [componentModelSchema.componentIdentifierPath stringFromJSONDictionary:dictionary];
+    
+    if (componentIdentifierString != nil) {
+        self.componentIdentifier = [[HUBComponentIdentifier alloc] initWithString:componentIdentifierString];
+    }
     
     NSDictionary * const mainImageDataDictionary = [componentModelSchema.mainImageDataDictionaryPath dictionaryFromJSONDictionary:dictionary];
     

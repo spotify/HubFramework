@@ -2,6 +2,7 @@
 
 #import "HUBComponentModelBuilderImplementation.h"
 #import "HUBComponentModelImplementation.h"
+#import "HUBComponentIdentifier.h"
 #import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentImageData.h"
 #import "HUBViewModel.h"
@@ -23,7 +24,7 @@
     
     XCTAssertEqualObjects(builder.modelIdentifier, modelIdentifier);
     
-    builder.componentIdentifier = @"component";
+    builder.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
     builder.contentIdentifier = @"content";
     builder.title = @"title";
     builder.subtitle = @"subtitle";
@@ -83,7 +84,7 @@
 
 - (void)testAddingJSONData
 {
-    NSString * const componentIdentifier = @"componentIdentifier";
+    NSString * const componentIdentifierString = @"componentIdentifier";
     NSString * const contentIdentifier = @"contentIdentifier";
     NSString * const title = @"A title";
     NSString * const subtitle = @"A subtitle";
@@ -99,7 +100,7 @@
     NSDictionary * const loggingData = @{@"logging": @"data"};
     
     NSDictionary * const dictionary = @{
-        @"component": componentIdentifier,
+        @"component": componentIdentifierString,
         @"contentId": contentIdentifier,
         @"title": title,
         @"subtitle": subtitle,
@@ -133,7 +134,7 @@
     [builder addDataFromJSONDictionary:dictionary usingSchema:[HUBJSONSchemaImplementation new]];
     HUBComponentModelImplementation * const model = [builder build];
     
-    XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
+    XCTAssertEqualObjects(model.componentIdentifier, [[HUBComponentIdentifier alloc] initWithString:componentIdentifierString]);
     XCTAssertEqualObjects(model.contentIdentifier, contentIdentifier);
     XCTAssertEqualObjects(model.title, title);
     XCTAssertEqualObjects(model.subtitle, subtitle);
