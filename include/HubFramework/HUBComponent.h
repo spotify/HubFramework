@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  A component has a 1:1 relationship with its view.
  */
-@property (nonatomic, strong, nullable) UIView *view;
+@property (nonatomic, strong, nullable) __kindof UIView *view;
 
 /**
  *  Create a new component of the same type as this one
