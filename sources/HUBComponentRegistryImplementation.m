@@ -25,6 +25,13 @@
     return self;
 }
 
+#pragma mark - API
+
+- (NSArray<NSString *> *)allComponentIdentifiers
+{
+    return self.componentsByIdentifier.allKeys;
+}
+
 - (id<HUBComponent>)componentForModel:(id<HUBComponentModel>)model
 {
     NSString * const componentIdentifier = [self componentIdentifierForModel:model];
