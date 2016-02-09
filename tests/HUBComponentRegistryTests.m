@@ -4,6 +4,7 @@
 #import "HUBComponentModelImplementation.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBComponentMock.h"
+#import "HUBComponentIdentifier.h"
 
 @interface HUBComponentRegistryTests : XCTestCase
 
@@ -38,10 +39,12 @@
     
     [self.registry registerComponents:components forNamespace:@"namespace"];
     
-    HUBComponentModelImplementation * const componentAModel = [self mockedComponentModelWithComponentIdentifier:@"namespace:A"];
+    HUBComponentIdentifier * const componentAIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"A"];
+    HUBComponentModelImplementation * const componentAModel = [self mockedComponentModelWithComponentIdentifier:componentAIdentifier];
     XCTAssertEqual([self.registry componentForModel:componentAModel], componentA);
     
-    HUBComponentModelImplementation * const componentBModel = [self mockedComponentModelWithComponentIdentifier:@"namespace:B"];
+    HUBComponentIdentifier * const componentBIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"B"];
+    HUBComponentModelImplementation * const componentBModel = [self mockedComponentModelWithComponentIdentifier:componentBIdentifier];
     XCTAssertEqual([self.registry componentForModel:componentBModel], componentB);
 }
 
@@ -66,7 +69,8 @@
     [self.registry registerComponents:@{self.fallbackHandler.fallbackComponentIdentifier: fallbackComponent}
                          forNamespace:self.fallbackHandler.fallbackComponentNamespace];
     
-    HUBComponentModelImplementation * const model = [self mockedComponentModelWithComponentIdentifier:@"not_registered"];
+    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithString:@"not_registered"];
+    HUBComponentModelImplementation * const model = [self mockedComponentModelWithComponentIdentifier:componentIdentifier];
     XCTAssertEqual([self.registry componentForModel:model], fallbackComponent);
 }
 
@@ -87,7 +91,7 @@
 
 #pragma mark - Utilities
 
-- (HUBComponentModelImplementation *)mockedComponentModelWithComponentIdentifier:(NSString *)componentIdentifier
+- (HUBComponentModelImplementation *)mockedComponentModelWithComponentIdentifier:(HUBComponentIdentifier *)componentIdentifier
 {
     NSString * const identifier = [NSUUID UUID].UUIDString;
     

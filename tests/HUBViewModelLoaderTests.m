@@ -5,6 +5,7 @@
 #import "HUBViewModel.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentModel.h"
+#import "HUBComponentIdentifier.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBRemoteContentProviderMock.h"
 #import "HUBLocalContentProviderMock.h"
@@ -161,7 +162,7 @@
         __typeof(self) strongSelf = weakSelf;
         
         id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
-        builder.headerComponentModelBuilder.componentIdentifier = @"component";
+        builder.headerComponentModelBuilder.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:nil name:@"component"];
         builder.headerComponentModelBuilder.title = localContentProviderAssignedComponentTitle;
         [builder builderForBodyComponentModelWithIdentifier:bodyComponentIdentifier].title = localContentProviderAssignedComponentTitle;
     };
@@ -184,7 +185,7 @@
         __typeof(self) strongSelf = weakSelf;
         
         id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
-        builder.headerComponentModelBuilder.componentIdentifier = @"component";
+        builder.headerComponentModelBuilder.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:nil name:@"component"];;
     };
     
     [self.loader loadViewModel];

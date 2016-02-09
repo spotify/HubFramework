@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+@class HUBComponentIdentifier;
 @protocol HUBComponentImageDataBuilder;
 @protocol HUBViewModelBuilder;
 
@@ -21,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *modelIdentifier;
 
 /// The (namespaced) identifier of the model's component. If nil, a fallback component will be used.
-@property (nonatomic, copy, nullable) NSString *componentIdentifier;
+@property (nonatomic, copy, nullable) HUBComponentIdentifier *componentIdentifier;
 
 /// Any identifier for the model's content, that can be used for content tracking
 @property (nonatomic, copy, nullable) NSString *contentIdentifier;

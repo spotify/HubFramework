@@ -1,15 +1,10 @@
 #import "HUBComponentIdentifier.h"
 
-
-@interface HUBComponentIdentifier ()
-@property (nonatomic, copy, readwrite) NSString *componentNamespace;
-@property (nonatomic, copy, readwrite) NSString *componentName;
-@end
-
+NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBComponentIdentifier
 
-- (instancetype)initWithNamespace:(NSString *)componentNamespace name:(NSString *)componentName
+- (instancetype)initWithNamespace:(nullable NSString *)componentNamespace name:(NSString *)componentName
 {
     if (!(self = [super init])) {
         return nil;
@@ -21,33 +16,44 @@
     return self;
 }
 
-- (instancetype)initWithString:(NSString *)identifierString
+- (nullable instancetype)initWithString:(NSString *)identifierString
 {
     NSArray<NSString *> * const splitModelIdentifier = [identifierString componentsSeparatedByString:@":"];
 
-    if (splitModelIdentifier.count != 2) {
+    if ([splitModelIdentifier firstObject].length == 0) {
         return nil;
+    }
+    
+    if (splitModelIdentifier.count < 2) {
+        return [self initWithNamespace:nil name:splitModelIdentifier[0]];
     }
 
     return [self initWithNamespace:splitModelIdentifier[0] name:splitModelIdentifier[1]];
 }
 
-
 #pragma mark - NSCopying
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)copyWithZone:(nullable NSZone *)zone
 {
     return [[HUBComponentIdentifier allocWithZone:zone] initWithNamespace:self.componentNamespace
                                                                      name:self.componentName];
 }
 
-
 #pragma mark - Equality and Hashing
 
 - (BOOL)isEqualToComponentIdentifier:(HUBComponentIdentifier *)componentIdentifier
 {
-    return [self.componentNamespace isEqualToString:componentIdentifier.componentNamespace] &&
-            [self.componentName isEqualToString:componentIdentifier.componentName];
+    if (componentIdentifier.componentNamespace != nil) {
+        NSString * const componentNamespace = componentIdentifier.componentNamespace;
+        
+        if (![self.componentNamespace isEqualToString:componentNamespace]) {
+            return NO;
+        }
+    } else if (self.componentNamespace != nil) {
+        return NO;
+    }
+    
+    return [self.componentName isEqualToString:componentIdentifier.componentName];
 }
 
 - (BOOL)isEqual:(id)other
@@ -55,7 +61,8 @@
     if (other == self) {
         return YES;
     }
-    if (!other || ![[other class] isEqual:[self class]]) {
+    
+    if (![[other class] isEqual:[self class]]) {
         return NO;
     }
 
@@ -68,3 +75,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

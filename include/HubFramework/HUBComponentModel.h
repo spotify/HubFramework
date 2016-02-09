@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+@class HUBComponentIdentifier;
 @protocol HUBComponentImageData;
 @protocol HUBViewModel;
 
@@ -35,12 +36,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The identifier of the component that this model should be rendered using
  *
- *  The component identifier should be fully namespaced and match a namespace:component
- *  combination of a component that has been registered with the Hub Framework.
- *
+ *  The component identifier's namespace should match the namespace of a registered `HUBComponentFactory`.
  *  If no component can be resolved for this identifier, or if the identifier is nil, a fallback one will be used.
  */
-@property (nonatomic, copy, nullable, readonly) NSString *componentIdentifier;
+@property (nonatomic, copy, nullable, readonly) HUBComponentIdentifier *componentIdentifier;
 
 /**
  *  Any identifier for the model's content
