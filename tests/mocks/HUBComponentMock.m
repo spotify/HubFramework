@@ -20,7 +20,12 @@
     return CGSizeZero;
 }
 
-- (void)prepareViewForReuseWithModel:(id<HUBComponentModel>)model
+- (void)prepareViewForReuse
+{
+    // No-op
+}
+
+- (void)configureViewWithModel:(id<HUBComponentModel>)model
 {
     // No-op
 }
