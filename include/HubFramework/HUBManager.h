@@ -4,6 +4,7 @@
 @protocol HUBComponentRegistry;
 @protocol HUBJSONSchemaRegistry;
 @protocol HUBViewModelLoaderFactory;
+@protocol HUBViewControllerFactory;
 @protocol HUBComponentFallbackHandler;
 @protocol HUBConnectivityStateResolver;
 
@@ -27,7 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBJSONSchemaRegistry> JSONSchemaRegistry;
 
 /// The factory used to create view model loaders. See `HUBViewModelLoaderFactory` for more info.
-@property (nonatomic, strong, readonly) id<HUBViewModelLoaderFactory> viewModellLoaderFactory;
+@property (nonatomic, strong, readonly) id<HUBViewModelLoaderFactory> viewModelLoaderFactory;
+
+/// The factory used to create view controllers. See `HUBViewControllerFactory` for more info.
+@property (nonatomic, strong, readonly) id<HUBViewControllerFactory> viewControllerFactory;
 
 /**
  *  Initialize an instance of this class with a component fallback handler
