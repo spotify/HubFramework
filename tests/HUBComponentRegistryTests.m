@@ -70,6 +70,21 @@
     XCTAssertEqual([self.registry componentForModel:model], fallbackComponent);
 }
 
+- (void)testAllComponentIdentifiers
+{
+    [self.registry registerComponents:@{@"componentA": [HUBComponentMock new]} forNamespace:@"namespaceA"];
+    [self.registry registerComponents:@{@"componentB": [HUBComponentMock new]} forNamespace:@"namespaceB"];
+    
+    NSArray * const expectedComponentIdentifiers = @[@"namespaceA:componentA", @"namespaceB:componentB"];
+    NSArray * const actualComponentIdentifiers = self.registry.allComponentIdentifiers;
+    
+    XCTAssertEqual(actualComponentIdentifiers.count, expectedComponentIdentifiers.count);
+    
+    for (NSString * const identifier in expectedComponentIdentifiers) {
+        XCTAssertTrue([actualComponentIdentifiers containsObject:identifier]);
+    }
+}
+
 #pragma mark - Utilities
 
 - (HUBComponentModelImplementation *)mockedComponentModelWithComponentIdentifier:(NSString *)componentIdentifier

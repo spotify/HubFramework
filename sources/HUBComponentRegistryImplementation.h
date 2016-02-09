@@ -9,6 +9,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Concrete implementation of the `HUBComponentRegistry` API
 @interface HUBComponentRegistryImplementation : NSObject <HUBComponentRegistry>
 
+/// The namespaced identifiers of all components this registry contains
+@property (nonatomic, strong, readonly) NSArray<NSString *> *allComponentIdentifiers;
+
 /**
  *  Initialize an instance of this class with a component fallback handler
  *
