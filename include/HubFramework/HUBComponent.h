@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponentDelegate <NSObject>
 
+#pragma mark - Tracking the Addition and Removal of Child Components
+
 /**
  *  Notify the Hub Framework that a component is about to display a child component at a given index
  *
@@ -43,6 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponent <NSObject>
 
+#pragma mark - Configuring the Component
+
 /**
  *  The component's delegate
  *
@@ -51,6 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  back from the component to the framework.
  */
 @property (nonatomic, weak, nullable) id<HUBComponentDelegate> delegate;
+
+#pragma mark - Managing the View
 
 /**
  *  The view that the component uses to render its content
@@ -100,6 +106,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)preferredViewSizeForDisplayingModel:(id<HUBComponentModel>)model
                       containedInViewWithSize:(CGSize)containerViewSize;
 
+#pragma mark - Reusing Views
+
 /**
  *  Prepare this component's view for reuse with a new model
  *
@@ -110,6 +118,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  with suitable placeholders used for any remote images that are about to be downloaded.
  */
 - (void)prepareViewForReuseWithModel:(id<HUBComponentModel>)model;
+
+#pragma mark - Managing Component Images
 
 /**
  *  Update this component's view with an image that was loaded for a model
