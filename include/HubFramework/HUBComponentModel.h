@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy, nullable, readonly) NSString *contentIdentifier;
 
-#pragma mark - Visual content
+#pragma mark - Standard visual content
 
 /**
  *  Any title that the component should render
@@ -103,6 +103,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable, readonly) id<HUBComponentImageData> backgroundImageData;
 
+#pragma mark - Custom content
+
 /**
  *  Dictionary containing image data objects that describe how to render any custom images for the component
  *
@@ -111,6 +113,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  For default images, see `mainImagedata` and `backgroundImageData`.
  */
 @property (nonatomic, strong, readonly) NSDictionary<NSString *, id<HUBComponentImageData>> *customImageData;
+
+/**
+ *  Any custom data that the component should use
+ *
+ *  If a component has some specific customizability options they can be specified here. This is also a good place for additional
+ *  metadata or properties that are not covered by his protocol, so that new data may be added without changing the framework itself.
+ */
+@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *customData;
 
 #pragma mark - Metadata
 
@@ -135,14 +145,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  this initial one.
  */
 @property (nonatomic, copy, nullable, readonly) id<HUBViewModel> targetInitialViewModel;
-
-/**
- *  Any custom data that the component should use
- *
- *  If a component has some specific customizability options they can be specified here. This is also a good place for additional
- *  metadata or properties that are not covered by his protocol, so that new data may be added without changing the framework itself.
- */
-@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *customData;
 
 /**
  *  Any data that should be logged alongside interactions or impressions for the component
