@@ -36,12 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  to the screen by the Hub Framework. Its responsibilities include model->view data binding, event
  *  handling and rendering.
  *
- *  You're free to setup your component object in whichever way you require, as long
- *  as you make sure any dependencies are carried over to new components returned from
- *  `-createNewComponent`.
+ *  You're free to setup your component object in whichever way you require, as long as you make sure
+ *  any dependencies are carried over to new components returned from `-createNewComponent`.
  *
- *  Ideally, components should hold as little state as possible, and instead react
- *  to any model changes through `-prepareViewForReuseWithModel:`.
+ *  Ideally, components should hold as little state as possible, and instead react to any model changes
+ *  through `-configureViewWithModel:`.
  */
 @protocol HUBComponent <NSObject>
 
@@ -109,7 +108,19 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Reusing Views
 
 /**
- *  Prepare this component's view for reuse with a new model
+ *  Prepare the component’s view for reuse
+ *
+ *  The Hub Framework will send this message to your component when it’s about to be reused for
+ *  displaying another model. This is the point in time where any state held in the components view
+ *  (such as highlighting) should be reset.
+ *
+ *  Once the view has been prepared for reuse, the Hub Framework will send your component the
+ *  `-configureViewForModel:` message, which should be used for data binding.
+ */
+- (void)prepareViewForReuse;
+
+/**
+ *  Configure the component’s view for displaying data from a model
  *
  *  @param model The new model that the view should reflect
  *
@@ -117,7 +128,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  this method returns the Hub Framework expects the component to be ready to be displayed
  *  with suitable placeholders used for any remote images that are about to be downloaded.
  */
-- (void)prepareViewForReuseWithModel:(id<HUBComponentModel>)model;
+- (void)configureViewWithModel:(id<HUBComponentModel>)model;
 
 #pragma mark - Managing Component Images
 
@@ -127,7 +138,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param image The image that was loaded
  *  @param model The model that the image was loded for
  *
- *  You can assume that this method will always be called after `-prepareViewForReuseWithModel`,
+ *  You can assume that this method will always be called after `-configureViewWithModel:`,
  *  and that the model will be the same as when that message was sent.
  */
 - (void)updateViewForLoadedImage:(UIImage *)image forModel:(id<HUBComponentModel>)model;
