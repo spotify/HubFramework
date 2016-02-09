@@ -18,6 +18,6 @@ objc_mode: true
 sdk: iphonesimulator
 
 framework_root: .
-umbrella_header: include/HubFramework.h
+umbrella_header: include/HubFramework/HubFramework.h
 source_directory: sources
 module: HubFramework
