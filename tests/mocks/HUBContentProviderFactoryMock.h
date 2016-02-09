@@ -5,6 +5,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Mocked content provider factory, for use in tests only
 @interface HUBContentProviderFactoryMock : NSObject <HUBContentProviderFactory>
 
+/// The remote content provider that this factory always returns
+@property (nonatomic, strong, nullable) id<HUBRemoteContentProvider> remoteContentProvider;
+
+/// The local content provider that this factory always reeturns
+@property (nonatomic, strong, nullable) id<HUBLocalContentProvider> localContentProvider;
+
 @end
 
 NS_ASSUME_NONNULL_END

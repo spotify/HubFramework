@@ -6,21 +6,33 @@
 
 @interface HUBManagerTests : XCTestCase
 
+@property (nonatomic, strong) HUBManager *manager;
+
 @end
 
 @implementation HUBManagerTests
 
-- (void)testRegistries
+- (void)setUp
 {
+    [super setUp];
+    
     id<HUBComponentFallbackHandler> const fallbackHandler = [HUBComponentFallbackHandlerMock new];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
-    HUBManager * const manager = [[HUBManager alloc] initWithComponentFallbackHandler:fallbackHandler
-                                                            connectivityStateResolver:connectivityStateResolver];
-    
-    XCTAssertNotNil(manager.featureRegistry);
-    XCTAssertNotNil(manager.componentRegistry);
-    XCTAssertNotNil(manager.JSONSchemaRegistry);
+    self.manager = [[HUBManager alloc] initWithComponentFallbackHandler:fallbackHandler
+                                              connectivityStateResolver:connectivityStateResolver];
+}
+
+- (void)testRegistriesCreated
+{
+    XCTAssertNotNil(self.manager.featureRegistry);
+    XCTAssertNotNil(self.manager.componentRegistry);
+    XCTAssertNotNil(self.manager.JSONSchemaRegistry);
+}
+
+- (void)testViewModelLoaderFactoryCreated
+{
+    XCTAssertNotNil(self.manager.viewModellLoaderFactory);
 }
 
 @end
