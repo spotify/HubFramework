@@ -13,12 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
-@property (nonatomic, strong, readonly) UICollectionView *collectionView;
+@property (nonatomic, strong, nullable) UICollectionView *collectionView;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 
 @end
 
 @implementation HUBViewController
+
+#pragma mark - Lifecycle
 
 - (instancetype)initWithViewModelLoader:(id<HUBViewModelLoader> )viewModelLoader
                       componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
@@ -27,25 +29,38 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    _viewModelLoader = viewModelLoader;
     _componentRegistry = componentRegistry;
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
-                                         collectionViewLayout:[UICollectionViewFlowLayout new]];
-    
+    _viewModelLoader = viewModelLoader;
     _viewModelLoader.delegate = self;
-    
-    for (NSString * const componentIdentifier in _componentRegistry.allComponentIdentifiers) {
-        [_collectionView registerClass:[HUBComponentCollectionViewCell class] forCellWithReuseIdentifier:componentIdentifier];
-    }
     
     return self;
 }
 
+- (void)dealloc
+{
+    _collectionView.delegate = nil;
+    _collectionView.dataSource = nil;
+}
+
 #pragma mark - UIViewController
+
+- (void)loadView
+{
+    self.view = [[UIView alloc] initWithFrame:CGRectZero];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                             collectionViewLayout:[UICollectionViewFlowLayout new]];
+
+    for (NSString * const componentIdentifier in _componentRegistry.allComponentIdentifiers) {
+        [self.collectionView registerClass:[HUBComponentCollectionViewCell class] forCellWithReuseIdentifier:componentIdentifier];
+    }
+
+    self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     [self.view addSubview:self.collectionView];
@@ -54,8 +69,36 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.collectionView.frame = self.view.bounds;
     [self.viewModelLoader loadViewModel];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+
+    if (!self.isViewLoaded) {
+        return;
+    }
+
+    if (self.view.window != nil) {
+        return;
+    }
+
+    self.view = nil;
+    self.collectionView = nil;
+    self.viewModel = nil;
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
