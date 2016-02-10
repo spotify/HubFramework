@@ -2,27 +2,26 @@
 
 #import "HUBComponent.h"
 #import "HUBComponentIdentifier.h"
+#import "HUBComponentFactory.h"
 #import "HUBComponentModel.h"
-#import "HUBComponentFallbackHandler.h"
 
 @interface HUBComponentRegistryImplementation ()
-
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id<HUBComponent>> *componentsByIdentifier;
-@property (nonatomic, strong, readonly) id<HUBComponentFallbackHandler> fallbackHandler;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id<HUBComponentFactory>> *componentFactories;
+@property (nonatomic, copy, readonly) NSString *fallbackNamespace;
 
 @end
 
 @implementation HUBComponentRegistryImplementation
 
-- (instancetype)initWithFallbackHandler:(id<HUBComponentFallbackHandler>)fallbackHandler
+- (instancetype)initWithFallbackNamespace:(NSString *)fallbackNamespace
 {
     if (!(self = [super init])) {
         return nil;
     }
-    
-    _componentsByIdentifier = [NSMutableDictionary new];
-    _fallbackHandler = fallbackHandler;
-    
+
+    _componentFactories = [NSMutableDictionary new];
+    _fallbackNamespace = [fallbackNamespace copy];
+
     return self;
 }
 
@@ -30,50 +29,77 @@
 
 - (NSArray<NSString *> *)allComponentIdentifiers
 {
-    return self.componentsByIdentifier.allKeys;
+    NSMutableArray * const componentIdentifiers = [NSMutableArray new];
+
+    [self.componentFactories enumerateKeysAndObjectsUsingBlock:^(NSString *componentNamespace, id<HUBComponentFactory> factory, BOOL *stop) {
+        for (NSString * const name in factory.allComponentNames) {
+            HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentNamespace
+                                                                                                     name:name];
+            [componentIdentifiers addObject:identifier];
+        }
+    }];
+
+    return [componentIdentifiers copy];
 }
 
 - (id<HUBComponent>)componentForModel:(id<HUBComponentModel>)model
 {
-    NSString * const componentIdentifier = [self componentIdentifierForModel:model];
-    id<HUBComponent> const component = [self.componentsByIdentifier objectForKey:componentIdentifier];
-    
-    NSAssert(component != nil,
-             @"Fatal Hub Framework error. Could not retrieve component for \"%@\". Check your fallback code.",
-             componentIdentifier);
-    
+    HUBComponentIdentifier * const identifier = [self componentIdentifierForModel:model];
+    NSString * const componentNamespace = identifier.componentNamespace;
+
+    id<HUBComponentFactory> const factory = self.componentFactories[componentNamespace];
+
+    id<HUBComponent> component = [factory componentForName:identifier.componentName];
+    NSAssert(component != nil, @"No component could be created for identifier (%@) - make sure that at least the default factory always returns a component in all cases.", identifier);
+
     return component;
 }
 
-- (NSString *)componentIdentifierForModel:(id<HUBComponentModel>)model
+- (HUBComponentIdentifier *)componentIdentifierForModel:(id<HUBComponentModel>)model
 {
-    // Temporary workaround to be able so sync work between developers
-    NSString * const modelComponentIdentifier = [NSString stringWithFormat:@"%@:%@",
-                                                 model.componentIdentifier.componentNamespace,
-                                                 model.componentIdentifier.componentName];
-    
-    if ([self.componentsByIdentifier objectForKey:modelComponentIdentifier] != nil) {
-        return modelComponentIdentifier;
+    HUBComponentIdentifier * modelComponentIdentifier = model.componentIdentifier;
+    if (!modelComponentIdentifier) {
+        return [self defaultComponentIdentifierForModel:model];
     }
-    
-    return [self.fallbackHandler fallbackComponentIdentifierForModel:model];
+
+    NSString * const componentNamespace = modelComponentIdentifier.componentNamespace;
+    NSString * const componentName = modelComponentIdentifier.componentName;
+
+    if (componentNamespace) {
+        id<HUBComponentFactory> const factory = self.componentFactories[componentNamespace];
+        if ([factory.allComponentNames containsObject:componentName]) {
+            return modelComponentIdentifier;
+        }
+        HUBComponentIdentifier *identifier = [factory fallbackComponentIdentifierForModel:model];
+        if (identifier) {
+            return [[HUBComponentIdentifier alloc] initWithNamespace:identifier.componentNamespace ?: componentNamespace
+                                                                name:identifier.componentName];
+        }
+    }
+
+    return [[HUBComponentIdentifier alloc] initWithNamespace:self.fallbackNamespace name:componentName];
+}
+
+- (HUBComponentIdentifier *)defaultComponentIdentifierForModel:(id<HUBComponentModel>)model
+{
+    id<HUBComponentFactory> const factory = self.componentFactories[self.fallbackNamespace];
+
+    HUBComponentIdentifier * const identifier = [factory fallbackComponentIdentifierForModel:model];
+    NSAssert(identifier, @"The fallback factory needs to return a valid fallback component identifier");
+
+    return [[HUBComponentIdentifier alloc] initWithNamespace:identifier.componentNamespace ?: self.fallbackNamespace
+                                                        name:identifier.componentName];
 }
 
 #pragma mark - HUBComponentRegistry
 
-- (void)registerComponents:(NSDictionary<NSString *,id<HUBComponent>> *)components forNamespace:(NSString *)componentNamespace
+- (void)registerComponentFactory:(id<HUBComponentFactory>)componentFactory forNamespace:(NSString *)componentNamespace
 {
-    for (NSString * const componentIdentifier in components.allKeys) {
-        id<HUBComponent> const component = [components objectForKey:componentIdentifier];
-        
-        NSString * const namespacedComponentIdentifier = [NSString stringWithFormat:@"%@:%@", componentNamespace, componentIdentifier];
-        
-        NSAssert([self.componentsByIdentifier objectForKey:namespacedComponentIdentifier] == nil,
-                 @"Attempted to register a component for an identifier that is already registered: %@",
-                 namespacedComponentIdentifier);
-        
-        [self.componentsByIdentifier setObject:component forKey:namespacedComponentIdentifier];
-    }
+    NSAssert(self.componentFactories[componentNamespace] == nil,
+             @"Attempted to register a component factory for a namespace that is already registered: %@",
+             componentNamespace);
+
+    self.componentFactories[componentNamespace] = componentFactory;
 }
 
 @end

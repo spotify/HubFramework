@@ -1,6 +1,6 @@
 #import "HUBComponentRegistry.h"
 
-@protocol HUBComponentFallbackHandler;
+@class HUBComponentIdentifier;
 @protocol HUBComponent;
 @protocol HUBComponentModel;
 
@@ -15,10 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Initialize an instance of this class with a component fallback handler
  *
- *  @param fallbackHandler An object responsible for handling the case of an unrecognized component
- *         identifier. This object will be retained.
+ *  @param fallbackNamespace A namespace that will be used if for identifiers without namespace or with a namespace
+ *         that doesn't match a registered factory.
  */
-- (instancetype)initWithFallbackHandler:(id<HUBComponentFallbackHandler>)fallbackHandler NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFallbackNamespace:(NSString *)fallbackNamespace NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Return the component to use for a certain model
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return Either the model's own `componentIdentifier`, or the identifier for a fallback
  *          component if the component that the model specifies does not exist in the registry.
  */
-- (NSString *)componentIdentifierForModel:(id<HUBComponentModel>)model;
+- (HUBComponentIdentifier *)componentIdentifierForModel:(id<HUBComponentModel>)model;
 
 #pragma mark - Unavailable initializers
 

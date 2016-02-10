@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The name of the component to use
 @property (nonatomic, copy, readonly) NSString *componentName;
 
+/// A string representation of the component identifier, `namespace:name` or `name`.
+@property (nonatomic, copy, readonly) NSString *identifierString;
+
 /**
  *  Initialize a component identifier
  *

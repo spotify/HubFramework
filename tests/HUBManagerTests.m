@@ -1,7 +1,6 @@
 #import <XCTest/XCTest.h>
 
 #import "HUBManager.h"
-#import "HUBComponentFallbackHandlerMock.h"
 #import "HUBConnectivityStateResolverMock.h"
 
 @interface HUBManagerTests : XCTestCase
@@ -15,12 +14,11 @@
 - (void)setUp
 {
     [super setUp];
-    
-    id<HUBComponentFallbackHandler> const fallbackHandler = [HUBComponentFallbackHandlerMock new];
+
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
-    
-    self.manager = [[HUBManager alloc] initWithComponentFallbackHandler:fallbackHandler
-                                              connectivityStateResolver:connectivityStateResolver];
+
+    self.manager = [[HUBManager alloc] initWithFallbackComponentNamespace:@"default"
+                                                connectivityStateResolver:connectivityStateResolver];
 }
 
 - (void)testRegistriesCreated

@@ -8,6 +8,14 @@
 
 @implementation HUBComponentIdentifierTests
 
+- (void)testCreateWithConvenienceMethod
+{
+    HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+
+    XCTAssertEqualObjects(identifier.componentNamespace, @"namespace");
+    XCTAssertEqualObjects(identifier.componentName, @"name");
+}
+
 - (void)testCreateWithNamespaceAndName
 {
     HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];

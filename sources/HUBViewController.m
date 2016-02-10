@@ -6,6 +6,8 @@
 #import "HUBComponent.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponentCollectionViewCell.h"
+#import "HUBComponentIdentifier.h"
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -56,8 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
                                              collectionViewLayout:[UICollectionViewFlowLayout new]];
 
-    for (NSString * const componentIdentifier in _componentRegistry.allComponentIdentifiers) {
-        [self.collectionView registerClass:[HUBComponentCollectionViewCell class] forCellWithReuseIdentifier:componentIdentifier];
+    for (HUBComponentIdentifier *componentIdentifier in self.componentRegistry.allComponentIdentifiers) {
+        [self.collectionView registerClass:[HUBComponentCollectionViewCell class] forCellWithReuseIdentifier:componentIdentifier.identifierString];
     }
 
     self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -129,9 +131,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id<HUBComponentModel> const componentModel = [self.viewModel.bodyComponentModels objectAtIndex:(NSUInteger)indexPath.item];
-    NSString * const componentIdentifier = [self.componentRegistry componentIdentifierForModel:componentModel];
+    HUBComponentIdentifier * const componentIdentifier = [self.componentRegistry componentIdentifierForModel:componentModel];
     
-    HUBComponentCollectionViewCell * const cell = [collectionView dequeueReusableCellWithReuseIdentifier:componentIdentifier forIndexPath:indexPath];
+    HUBComponentCollectionViewCell * const cell = [collectionView dequeueReusableCellWithReuseIdentifier:componentIdentifier.identifierString forIndexPath:indexPath];
     
     if (cell.component == nil) {
         cell.component = [self.componentRegistry componentForModel:componentModel];
