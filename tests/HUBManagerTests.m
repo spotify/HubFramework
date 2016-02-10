@@ -30,9 +30,10 @@
     XCTAssertNotNil(self.manager.JSONSchemaRegistry);
 }
 
-- (void)testViewModelLoaderFactoryCreated
+- (void)testFactoriesCreated
 {
-    XCTAssertNotNil(self.manager.viewModellLoaderFactory);
+    XCTAssertNotNil(self.manager.viewModelLoaderFactory);
+    XCTAssertNotNil(self.manager.viewControllerFactory);
 }
 
 @end
