@@ -82,6 +82,33 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (id<HUBComponentImageDataBuilder>)builderForCustomImageDataWithIdentifier:(NSString *)identifier;
 
+/**
+ *  Create a builder for a child component model and append it to the end of the list of children
+ *
+ *  @param modelIdentifier The model identifier of the new builder
+ *
+ *  In case you want to reuse child component model builders, or if you want to insert one at a specific index,
+ *  use `-builderForChildComponentModelAtIndex:reuseExisting:` instead.
+ */
+- (id<HUBComponentModelBuilder>)createBuilderForChildComponentModelWithIdentifier:(NSString *)modelIdentifier;
+
+/**
+ *  Get or create a builder for a child component model at a certain index
+ *
+ *  @param childIndex The index to retrieve a child component model builder for
+ *  @param reuseExisting Whether any existing builder at the supplied index should be reused and returned
+ *
+ *  @return Either an existing builder for the supplied index, if `reuseExisting == YES`, or a newly created
+ *  one. If an out-of-bounds index was supplied, a new one will always be created and put at the end, after
+ *  all current child component model builders. If `reuseExisting == NO`, a new builder will be inserted
+ *  at the specified index.
+ *
+ *  All child component model builders that get created this way will have an initial identifier that is derived
+ *  from appending `-child-<index>` to this component model builder’s `modelIdentifier`.
+ */
+- (id<HUBComponentModelBuilder>)builderForChildComponentModelAtIndex:(NSUInteger)childIndex
+                                                       reuseExisting:(BOOL)reuseExisting;
+
 @end
 
 NS_ASSUME_NONNULL_END

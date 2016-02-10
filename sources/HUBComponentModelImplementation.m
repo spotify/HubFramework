@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize customData = _customData;
 @synthesize loggingData = _loggingData;
 @synthesize date = _date;
+@synthesize childComponentModels = _childComponentModels;
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
                componentIdentifier:(nullable HUBComponentIdentifier *)componentIdentifier
@@ -38,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
                        loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
                               date:(nullable NSDate *)date
+              childComponentModels:(nullable NSArray<id<HUBComponentModel>> *)childComponentModels
 {
     NSParameterAssert(identifier != nil);
     
@@ -60,6 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
     _customData = customData;
     _loggingData = loggingData;
     _date = date;
+    _childComponentModels = childComponentModels;
     
     return self;
 }

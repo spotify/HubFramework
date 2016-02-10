@@ -82,6 +82,45 @@
     XCTAssertEqualObjects([builder build].targetInitialViewModel.featureIdentifier, featureIdentifier);
 }
 
+- (void)testCreatingChildComponentModelWithIdentifier
+{
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:@"feature"];
+    
+    NSString * const childModelIdentifier = @"childModel";
+    id<HUBComponentModelBuilder> const childBuilder = [builder createBuilderForChildComponentModelWithIdentifier:childModelIdentifier];
+    XCTAssertEqualObjects(childBuilder.modelIdentifier, childModelIdentifier);
+}
+
+- (void)testChildComponentModelBuilderReuse
+{
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:@"feature"];
+    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelAtIndex:0 reuseExisting:NO];
+    
+    XCTAssertEqual([builder builderForChildComponentModelAtIndex:0 reuseExisting:YES], childBuilder);
+    XCTAssertNotEqual([builder builderForChildComponentModelAtIndex:0 reuseExisting:NO], childBuilder);
+}
+
+- (void)testCreatingChildComponentModelAtOutOfBoundsIndexReturningNewInstance
+{
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:@"feature"];
+    
+    id<HUBComponentModelBuilder> const childBuilder1 = [builder builderForChildComponentModelAtIndex:0 reuseExisting:YES];
+    XCTAssertNotNil(childBuilder1);
+    
+    id<HUBComponentModelBuilder> const childBuilder2 = [builder builderForChildComponentModelAtIndex:1 reuseExisting:YES];
+    XCTAssertNotNil(childBuilder2);
+    
+    XCTAssertNotEqual(childBuilder1, childBuilder2);
+}
+
+- (void)testChildComponentModelFeatureIdentifierSameAsParent
+{
+    NSString * const featureIdentifier = @"feature";
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:featureIdentifier];
+    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelAtIndex:0 reuseExisting:NO];
+    XCTAssertEqualObjects(childBuilder.targetInitialViewModelBuilder.featureIdentifier, featureIdentifier);
+}
+
 - (void)testAddingJSONData
 {
     NSString * const componentIdentifierString = @"componentIdentifier";
@@ -98,6 +137,10 @@
     NSString * const targetTitle = @"Target title";
     NSDictionary * const customData = @{@"custom": @"data"};
     NSDictionary * const loggingData = @{@"logging": @"data"};
+    NSString * const child1ModelIdentifier = @"ChildComponent1";
+    NSString * const child1ComponentIdentifier = @"child:component1";
+    NSString * const child2ModelIdentifier = @"ChildComponent2";
+    NSString * const child2ComponentIdentifier = @"child:component2";
     
     NSDictionary * const dictionary = @{
         @"component": componentIdentifierString,
@@ -127,7 +170,17 @@
         },
         @"custom": customData,
         @"logging": loggingData,
-        @"date": @"2016-10-17"
+        @"date": @"2016-10-17",
+        @"children": @[
+            @{
+                @"id": child1ModelIdentifier,
+                @"component": child1ComponentIdentifier
+            },
+            @{
+                @"id": child2ModelIdentifier,
+                @"component": child2ComponentIdentifier
+            }
+        ]
     };
     
     HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:@"feature"];
@@ -153,6 +206,14 @@
     expectedDateComponents.month = 10;
     expectedDateComponents.day = 17;
     XCTAssertEqualObjects(model.date, [[NSCalendar currentCalendar] dateFromComponents:expectedDateComponents]);
+    
+    id<HUBComponentModel> const childModel1 = [model.childComponentModels objectAtIndex:0];
+    XCTAssertEqualObjects(childModel1.identifier, child1ModelIdentifier);
+    XCTAssertEqualObjects(childModel1.componentIdentifier, [[HUBComponentIdentifier alloc] initWithString:child1ComponentIdentifier]);
+    
+    id<HUBComponentModel> const childModel2 = [model.childComponentModels objectAtIndex:1];
+    XCTAssertEqualObjects(childModel2.identifier, child2ModelIdentifier);
+    XCTAssertEqualObjects(childModel2.componentIdentifier, [[HUBComponentIdentifier alloc] initWithString:child2ComponentIdentifier]);
 }
 
 @end
