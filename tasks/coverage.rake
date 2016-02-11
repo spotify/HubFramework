@@ -9,6 +9,7 @@ namespace :coverage do
         raise '`CODECOV_URL` not set in environment' unless ENV['CODECOV_URL']
         raise '`CODECOV_TOKEN` not set in environment' unless ENV['CODECOV_TOKEN']
         raise '`GIT_BRANCH` not set in environment' unless ENV['BUILD_VCS_NUMBER']
+        raise '`DERIVED_DATA_PATH` not set in environment' unless ENV['DERIVED_DATA_PATH']
 
         cmd = codecov_cmd(
             ENV['CODECOV_URL'],
