@@ -123,13 +123,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)addDataFromBodyComponentModelJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary usingSchema:(id<HUBJSONSchema>)schema
 {
-    NSString * componentIdentifier = [schema.componentModelSchema.identifierPath stringFromJSONDictionary:dictionary];
-    
-    if (componentIdentifier == nil) {
-        componentIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
-    }
-    
-    HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForBodyComponentModelWithIdentifier:componentIdentifier];
+    NSString * const identifier = [schema.componentModelSchema.identifierPath stringFromJSONDictionary:dictionary];
+    HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForBodyComponentModelWithIdentifier:identifier];
     [builder addDataFromJSONDictionary:dictionary usingSchema:schema];
 }
 
@@ -176,8 +171,8 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
                                                                                                                       featureIdentifier:self.featureIdentifier];
     
-    [self.bodyComponentModelBuilders setObject:newBuilder forKey:identifier];
-    [self.bodyComponentIdentifierOrder addObject:identifier];
+    [self.bodyComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
+    [self.bodyComponentIdentifierOrder addObject:newBuilder.modelIdentifier];
     
     return newBuilder;
 }

@@ -39,15 +39,13 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize loggingData = _loggingData;
 @synthesize date = _date;
 
-- (instancetype)initWithModelIdentifier:(NSString *)modelIdentifier featureIdentifier:(NSString *)featureIdentifier
+- (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier featureIdentifier:(NSString *)featureIdentifier
 {
-    NSParameterAssert(modelIdentifier != nil);
-    
     if (!(self = [super init])) {
         return nil;
     }
     
-    _modelIdentifier = [modelIdentifier copy];
+    _modelIdentifier = [modelIdentifier copy] ?: [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
     _featureIdentifier = [featureIdentifier copy];
     _mainImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
     _backgroundImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
@@ -149,14 +147,9 @@ NS_ASSUME_NONNULL_BEGIN
     NSArray * const childComponentModelDictionaries = [componentModelSchema.childComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
     
     for (NSDictionary * const childComponentModelDictionary in childComponentModelDictionaries) {
-        NSString *childModelIdentifier = [componentModelSchema.identifierPath stringFromJSONDictionary:childComponentModelDictionary];
-        
-        if (childModelIdentifier == nil) {
-            childModelIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
-        }
-        
-        HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForChildComponentModelWithIdentifier:childModelIdentifier];
-        [builder addDataFromJSONDictionary:childComponentModelDictionary usingSchema:schema];
+        NSString * const childModelIdentifier = [componentModelSchema.identifierPath stringFromJSONDictionary:childComponentModelDictionary];
+        HUBComponentModelBuilderImplementation * const childModelBuilder = [self getOrCreateBuilderForChildComponentModelWithIdentifier:childModelIdentifier];
+        [childModelBuilder addDataFromJSONDictionary:childComponentModelDictionary usingSchema:schema];
     }
 }
 
@@ -232,7 +225,7 @@ NS_ASSUME_NONNULL_BEGIN
     return (HUBViewModelBuilderImplementation *)self.targetInitialViewModelBuilderImplementation;
 }
 
-- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForChildComponentModelWithIdentifier:(NSString *)identifier
+- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForChildComponentModelWithIdentifier:(nullable NSString *)identifier
 {
     HUBComponentModelBuilderImplementation * const existingBuilder = [self.childComponentModelBuilders objectForKey:identifier];
     
@@ -243,8 +236,8 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
                                                                                                                       featureIdentifier:self.featureIdentifier];
     
-    [self.childComponentModelBuilders setObject:newBuilder forKey:identifier];
-    [self.childComponentIdentifierOrder addObject:identifier];
+    [self.childComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
+    [self.childComponentIdentifierOrder addObject:newBuilder.modelIdentifier];
     
     return newBuilder;
 }
