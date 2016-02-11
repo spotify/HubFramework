@@ -5,6 +5,8 @@ require 'tc_util'
 SIM_DEVICE_DEFAULT='iPhone 6s'
 SIM_OS_DEFAULT='9.2'
 
+DERIVED_DATA_PATH='build/DerivedData'
+
 # Task which builds and tests the
 namespace :ci do
 
@@ -51,7 +53,10 @@ namespace :ci do
     end
 
     desc 'Run the CI bound tasks (build, test, upload code coverage)'
-    task :run => [:clean_build_dir, :create_build_dir, :build_and_test, 'coverage:run']
+    task :run => [:clean_build_dir, :create_build_dir, :build_and_test] do
+        ENV['DERIVED_DATA_PATH'] = DERIVED_DATA_PATH
+        Rake::Task['coverage:run'].invoke
+    end
 
     def build_cmd(project, scheme, configuration, sim_device, sim_os, generate_coverage, commands)
         cmd = ['xcodebuild']
@@ -60,7 +65,7 @@ namespace :ci do
         cmd.push('-configuration', configuration)
         cmd.push('-scheme', scheme)
         cmd.push('-sdk', 'iphonesimulator')
-        cmd.push('-derivedDataPath', 'build/DerivedData')
+        cmd.push('-derivedDataPath', DERIVED_DATA_PATH)
         cmd.push('-destination', "platform=iOS Simulator,name=#{sim_device},OS=#{sim_os}")
         cmd.push('-enableCodeCoverage', 'YES') if generate_coverage
 

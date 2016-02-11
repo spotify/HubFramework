@@ -5,7 +5,7 @@ require 'shellwords'
 namespace :coverage do
 
     desc 'Report coverage to Codecov'
-    task :report_to_codecov do |t, args|
+    task :report_to_codecov do
         raise '`CODECOV_URL` not set in environment' unless ENV['CODECOV_URL']
         raise '`CODECOV_TOKEN` not set in environment' unless ENV['CODECOV_TOKEN']
         raise '`GIT_BRANCH` not set in environment' unless ENV['BUILD_VCS_NUMBER']
@@ -13,6 +13,7 @@ namespace :coverage do
         cmd = codecov_cmd(
             ENV['CODECOV_URL'],
             ENV['CODECOV_TOKEN'],
+            ENV['DERIVED_DATA_PATH'],
             ENV['BUILD_VCS_NUMBER'],
             ENV['GIT_BRANCH'],
             ENV['TEAMCITY_BUILD_ID']
@@ -36,7 +37,7 @@ namespace :coverage do
     desc 'Run all the coverage tasks'
     task :run => ['coverage:report_to_codecov', 'coverage:clean']
 
-    def codecov_cmd(codecov_url, codecov_token, vcs_number, branch, build_id)
+    def codecov_cmd(codecov_url, codecov_token, derived_data_dir, vcs_number, branch, build_id)
         cmd = ['./tasks/lib/upload-coverage-to-codecov.sh']
         cmd.push('-v')
         cmd.push('-u', codecov_url)
@@ -51,6 +52,7 @@ namespace :coverage do
         end
 
         cmd.push('-b', build_id) if build_id
+        cmd.push('-D', derived_data_dir) if derived_data_dir
 
         Shellwords.shelljoin(cmd)
     end
