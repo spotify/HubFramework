@@ -24,8 +24,10 @@ NS_ASSUME_NONNULL_BEGIN
     if (component.view == nil) {
         [component loadView];
     }
-    
-    [self.contentView addSubview:component.view];
+
+    UIView * const view = component.view;
+    NSAssert(view, @"The component is required to load a view in -loadView");
+    [self.contentView addSubview:view];
 }
 
 #pragma mark - UICollectionViewCell

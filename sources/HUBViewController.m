@@ -53,8 +53,9 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super viewDidLoad];
 
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
-                                             collectionViewLayout:[UICollectionViewFlowLayout new]];
+    UICollectionView * const collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                                                 collectionViewLayout:[UICollectionViewFlowLayout new]];
+    self.collectionView = collectionView;
 
     for (NSString * const componentIdentifier in _componentRegistry.allComponentIdentifiers) {
         [self.collectionView registerClass:[HUBComponentCollectionViewCell class] forCellWithReuseIdentifier:componentIdentifier];
@@ -63,7 +64,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    [self.view addSubview:self.collectionView];
+
+    [self.view addSubview:collectionView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
