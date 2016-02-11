@@ -12,10 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Initialize an instance of this class with a component model identifier
  *
- *  @param modelIdentifier The identifier of the model that this builder is for
+ *  @param modelIdentifier The identifier of the model to be built. If `nil`, an `NSUUID`-based identifier will be used.
  *  @param featureIdentifier The identifier of the feature that the component will be presented in
  */
-- (instancetype)initWithModelIdentifier:(NSString *)modelIdentifier
+- (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
                       featureIdentifier:(NSString *)featureIdentifier NS_DESIGNATED_INITIALIZER;
 
 /**
