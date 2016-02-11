@@ -125,7 +125,7 @@
     childBuilderB.preferredIndex = @0;
     
     HUBComponentModelImplementation * const model = [builder build];
-    XCTAssertEqual(model.childComponentModels.count, 2);
+    XCTAssertEqual(model.childComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifierB);
     XCTAssertEqualObjects(model.childComponentModels[1].identifier, childIdentifierA);
 }
@@ -140,7 +140,7 @@
     childBuilder.preferredIndex = @99;
     
     HUBComponentModelImplementation * const model = [builder build];
-    XCTAssertEqual(model.childComponentModels.count, 1);
+    XCTAssertEqual(model.childComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifier);
 }
 

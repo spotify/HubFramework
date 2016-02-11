@@ -74,7 +74,7 @@
     componentBuilderB.preferredIndex = @0;
     
     HUBViewModelImplementation * const model = [builder build];
-    XCTAssertEqual(model.bodyComponentModels.count, 2);
+    XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifierB);
     XCTAssertEqualObjects(model.bodyComponentModels[1].identifier, componentIdentifierA);
 }
@@ -88,7 +88,7 @@
     componentBuilder.preferredIndex = @99;
     
     HUBViewModelImplementation * const model = [builder build];
-    XCTAssertEqual(model.bodyComponentModels.count, 1);
+    XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifier);
 }
 
