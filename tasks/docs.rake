@@ -9,20 +9,20 @@ config_default = '.jazzy.yml'
 
 namespace :docs do
 
-	desc "Install dependencies"
-	task :deps do
-		system('bundle install') or abort('bundle install failed, make sure you have installed bundler (`[sudo] gem install bundler`)')
-	end
+    desc "Install dependencies"
+    task :deps do
+        system('bundle install') or abort('bundle install failed, make sure you have installed bundler (`[sudo] gem install bundler`)')
+    end
 
-	desc "Generate documentation"
-	task :generate, [:config] => [:deps] do |t, args|
-		args.with_defaults(:config => config_default)
-		execute_jazzy('--config', args[:config])
-	end
+    desc "Generate documentation"
+    task :generate, [:config] => [:deps] do |t, args|
+        args.with_defaults(:config => config_default)
+        execute_jazzy('--config', args[:config])
+    end
 
-	def execute_jazzy(*args)
-		system('bundle', 'exec', 'jazzy', *args)
-	end
+    def execute_jazzy(*args)
+        system('bundle', 'exec', 'jazzy', *args)
+    end
 
 end
 
