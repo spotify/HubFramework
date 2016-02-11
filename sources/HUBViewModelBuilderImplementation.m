@@ -138,37 +138,8 @@ NS_ASSUME_NONNULL_BEGIN
         headerComponentModel = nil;
     }
     
-    NSMutableArray * const bodyComponentModels = [NSMutableArray new];
-    NSMutableDictionary * const bodyComponentModelsByPreferredIndex = [NSMutableDictionary new];
-    
-    for (NSString * const componentIdentifier in self.bodyComponentIdentifierOrder) {
-        HUBComponentModelBuilderImplementation * const builder = [self.bodyComponentModelBuilders objectForKey:componentIdentifier];
-        
-        if (builder == nil) {
-            continue;
-        }
-        
-        HUBComponentModelImplementation * const componentModel = [builder build];
-        [bodyComponentModels addObject:componentModel];
-        
-        NSNumber * const preferredIndex = builder.preferredIndex;
-        
-        if (preferredIndex != nil) {
-            bodyComponentModelsByPreferredIndex[preferredIndex] = componentModel;
-        }
-    }
-    
-    for (NSNumber * const preferredIndex in bodyComponentModelsByPreferredIndex.allKeys) {
-        NSUInteger decodedPreferredIndex = [preferredIndex unsignedIntegerValue];
-        
-        if (decodedPreferredIndex >= bodyComponentModels.count) {
-            continue;
-        }
-        
-        HUBComponentModelImplementation * const componentModel = bodyComponentModelsByPreferredIndex[preferredIndex];
-        [bodyComponentModels removeObject:componentModel];
-        [bodyComponentModels insertObject:componentModel atIndex:decodedPreferredIndex];
-    }
+    NSArray * const bodyComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.bodyComponentModelBuilders
+                                                                                                    identifierOrder:self.bodyComponentIdentifierOrder];
     
     return [[HUBViewModelImplementation alloc] initWithIdentifier:self.viewIdentifier
                                                 featureIdentifier:self.featureIdentifier
