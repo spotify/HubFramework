@@ -19,7 +19,8 @@ namespace :coverage do
         )
 
         TCUtil.block('Report coverage to Codecov') do
-            puts "Executing \"#{cmd}\""
+            clean_cmd = cmd.gsub(ENV['CODECOV_TOKEN'], '<codecov-token>')
+            puts "Executing \"#{clean_cmd}\""
             system cmd or exit!(1)
         end
     end
