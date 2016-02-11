@@ -82,42 +82,32 @@
     XCTAssertEqualObjects([builder build].targetInitialViewModel.featureIdentifier, featureIdentifier);
 }
 
-- (void)testCreatingChildComponentModelWithIdentifier
+- (void)testCreatingChildComponentModel
 {
     HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:@"feature"];
     
     NSString * const childModelIdentifier = @"childModel";
-    id<HUBComponentModelBuilder> const childBuilder = [builder createBuilderForChildComponentModelWithIdentifier:childModelIdentifier];
+    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
+    
     XCTAssertEqualObjects(childBuilder.modelIdentifier, childModelIdentifier);
+    XCTAssertTrue([builder builderForChildComponentModelWithIdentifier:childModelIdentifier]);
 }
 
 - (void)testChildComponentModelBuilderReuse
 {
     HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:@"feature"];
-    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelAtIndex:0 reuseExisting:NO];
     
-    XCTAssertEqual([builder builderForChildComponentModelAtIndex:0 reuseExisting:YES], childBuilder);
-    XCTAssertNotEqual([builder builderForChildComponentModelAtIndex:0 reuseExisting:NO], childBuilder);
-}
-
-- (void)testCreatingChildComponentModelAtOutOfBoundsIndexReturningNewInstance
-{
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:@"feature"];
+    NSString * const childModelIdentifier = @"childModel";
+    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
     
-    id<HUBComponentModelBuilder> const childBuilder1 = [builder builderForChildComponentModelAtIndex:0 reuseExisting:YES];
-    XCTAssertNotNil(childBuilder1);
-    
-    id<HUBComponentModelBuilder> const childBuilder2 = [builder builderForChildComponentModelAtIndex:1 reuseExisting:YES];
-    XCTAssertNotNil(childBuilder2);
-    
-    XCTAssertNotEqual(childBuilder1, childBuilder2);
+    XCTAssertEqual([builder builderForChildComponentModelWithIdentifier:childModelIdentifier], childBuilder);
 }
 
 - (void)testChildComponentModelFeatureIdentifierSameAsParent
 {
     NSString * const featureIdentifier = @"feature";
     HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:featureIdentifier];
-    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelAtIndex:0 reuseExisting:NO];
+    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:@"identifier"];
     XCTAssertEqualObjects(childBuilder.targetInitialViewModelBuilder.featureIdentifier, featureIdentifier);
 }
 

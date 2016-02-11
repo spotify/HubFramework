@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponentModelBuilder <NSObject>
 
+#pragma mark - Identifiers
+
 /// The identifier of the model that this builder is for
 @property (nonatomic, copy, readonly) NSString *modelIdentifier;
 
@@ -27,8 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Any identifier for the model's content, that can be used for content tracking
 @property (nonatomic, copy, nullable) NSString *contentIdentifier;
 
+#pragma mark - Moving the component to a preferred index
+
 /// The index that the component would prefer to be placed at. Can be used to move components locally.
 @property (nonatomic, copy, nullable) NSNumber *preferredIndex;
+
+#pragma mark - Standard visual content
 
 /// Any title that the component should render
 @property (nonatomic, copy, nullable) NSString *title;
@@ -48,20 +54,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// A builder that can be used to construct data that describes how to render the component's background image
 @property (nonatomic, strong, readonly) id<HUBComponentImageDataBuilder> backgroundImageDataBuilder;
 
+#pragma mark - Metadata
+
 /// Any URL that is the target of a user interaction with the component
 @property (nonatomic, copy, nullable) NSURL *targetURL;
 
 /// A builder that can be used to construct a pre-computed view model for a view that is the target of `targetURL`
 @property (nonatomic, strong, readonly) id<HUBViewModelBuilder> targetInitialViewModelBuilder;
 
-/// Any custom data that the component should use
-@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
-
 /// Any data that should be logged alongside interactions or impressions for the component
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *loggingData;
 
 /// Any date that is associated with the component
 @property (nonatomic, strong, nullable) NSDate *date;
+
+#pragma mark - Custom content
+
+/// Any custom data that the component should use
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
+
+#pragma mark - Custom image data builders
 
 /**
  *  Return whether this builder contains a builder for custom image data for a certain identifier
@@ -82,32 +94,26 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (id<HUBComponentImageDataBuilder>)builderForCustomImageDataWithIdentifier:(NSString *)identifier;
 
-/**
- *  Create a builder for a child component model and append it to the end of the list of children
- *
- *  @param modelIdentifier The model identifier of the new builder
- *
- *  In case you want to reuse child component model builders, or if you want to insert one at a specific index,
- *  use `-builderForChildComponentModelAtIndex:reuseExisting:` instead.
- */
-- (id<HUBComponentModelBuilder>)createBuilderForChildComponentModelWithIdentifier:(NSString *)modelIdentifier;
+#pragma mark - Child component model builders
 
 /**
- *  Get or create a builder for a child component model at a certain index
+ *  Return whether this builder contains a builder for a child component model builder with a certain identifier
  *
- *  @param childIndex The index to retrieve a child component model builder for
- *  @param reuseExisting Whether any existing builder at the supplied index should be reused and returned
- *
- *  @return Either an existing builder for the supplied index, if `reuseExisting == YES`, or a newly created
- *  one. If an out-of-bounds index was supplied, a new one will always be created and put at the end, after
- *  all current child component model builders. If `reuseExisting == NO`, a new builder will be inserted
- *  at the specified index.
- *
- *  All child component model builders that get created this way will have an initial identifier that is derived
- *  from appending `-child-<index>` to this component model builder’s `modelIdentifier`.
+ *  @param identifier The identifier to look for
  */
-- (id<HUBComponentModelBuilder>)builderForChildComponentModelAtIndex:(NSUInteger)childIndex
-                                                       reuseExisting:(BOOL)reuseExisting;
+- (BOOL)builderExistsForChildComponentModelWithIdentifier:(NSString *)identifier;
+
+/**
+ *  Get or create a builder for a child component model with a certain identifier
+ *
+ *  @param identifier The identifier that the component model should have
+ *
+ *  @return If a builder already exists for the supplied identifier, then it's returned. Otherwise a new builder is
+ *  created, which can be used to build a child component model. Since this method lazily creates a builder in case
+ *  one doesn't already exist, use the `-builderExistsForChildComponentModelWithIdentifier:` API instead if you simply
+ *  wish to check for the existance of a builder.
+ */
+- (id<HUBComponentModelBuilder>)builderForChildComponentModelWithIdentifier:(NSString *)identifier;
 
 @end
 

@@ -19,7 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *backgroundImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentImageDataBuilderImplementation *> *customImageDataBuilders;
 @property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *targetInitialViewModelBuilderImplementation;
-@property (nonatomic, strong, readonly) NSMutableArray<HUBComponentModelBuilderImplementation *> *childComponentModelBuilders;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *childComponentModelBuilders;
+@property (nonatomic, strong, readonly) NSMutableArray<NSString *> *childComponentIdentifierOrder;
 
 @end
 
@@ -51,7 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
     _mainImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
     _backgroundImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
     _customImageDataBuilders = [NSMutableDictionary new];
-    _childComponentModelBuilders = [NSMutableArray new];
+    _childComponentModelBuilders = [NSMutableDictionary new];
+    _childComponentIdentifierOrder = [NSMutableArray new];
     
     return self;
 }
@@ -83,22 +85,14 @@ NS_ASSUME_NONNULL_BEGIN
     return [self getOrCreateBuilderForCustomImageDataWithIdentifier:identifier];
 }
 
-- (id<HUBComponentModelBuilder>)createBuilderForChildComponentModelWithIdentifier:(NSString *)modelIdentifier
+- (BOOL)builderExistsForChildComponentModelWithIdentifier:(NSString *)identifier
 {
-    return [self createBuilderForChildComponentModelWithIdentifier:modelIdentifier atIndex:self.childComponentModelBuilders.count];
+    return [self.childComponentModelBuilders objectForKey:identifier] != nil;
 }
 
-- (id<HUBComponentModelBuilder>)builderForChildComponentModelAtIndex:(NSUInteger)childIndex reuseExisting:(BOOL)reuseExisting
+- (id<HUBComponentModelBuilder>)builderForChildComponentModelWithIdentifier:(NSString *)modelIdentifier
 {
-    if (childIndex >= self.childComponentModelBuilders.count) {
-        return [self createBuilderForChildComponentModelWithIdentifier:nil atIndex:self.childComponentModelBuilders.count];
-    }
-    
-    if (!reuseExisting) {
-        return [self createBuilderForChildComponentModelWithIdentifier:nil atIndex:childIndex];
-    }
-    
-    return [self.childComponentModelBuilders objectAtIndex:childIndex];
+    return [self getOrCreateBuilderForChildComponentModelWithIdentifier:modelIdentifier];
 }
 
 #pragma mark - HUBJSONCompatibleBuilder
@@ -155,10 +149,13 @@ NS_ASSUME_NONNULL_BEGIN
     NSArray * const childComponentModelDictionaries = [componentModelSchema.childComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
     
     for (NSDictionary * const childComponentModelDictionary in childComponentModelDictionaries) {
-        NSString * const modelIdentifier = [componentModelSchema.identifierPath stringFromJSONDictionary:childComponentModelDictionary];
-        HUBComponentModelBuilderImplementation * const builder = [self createBuilderForChildComponentModelWithIdentifier:modelIdentifier
-                                                                                                                 atIndex:self.childComponentModelBuilders.count];
+        NSString *childModelIdentifier = [componentModelSchema.identifierPath stringFromJSONDictionary:childComponentModelDictionary];
         
+        if (childModelIdentifier == nil) {
+            childModelIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
+        }
+        
+        HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForChildComponentModelWithIdentifier:childModelIdentifier];
         [builder addDataFromJSONDictionary:childComponentModelDictionary usingSchema:schema];
     }
 }
@@ -184,8 +181,12 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSMutableArray * const childComponentModels = [NSMutableArray new];
     
-    for (HUBComponentModelBuilderImplementation * const builder in self.childComponentModelBuilders) {
-        [childComponentModels addObject:[builder build]];
+    for (NSString * const componentIdentifier in self.childComponentIdentifierOrder) {
+        HUBComponentModelBuilderImplementation * const builder = [self.childComponentModelBuilders objectForKey:componentIdentifier];
+        
+        if (builder != nil) {
+            [childComponentModels addObject:[builder build]];
+        }
     }
     
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
@@ -231,18 +232,21 @@ NS_ASSUME_NONNULL_BEGIN
     return (HUBViewModelBuilderImplementation *)self.targetInitialViewModelBuilderImplementation;
 }
 
-- (HUBComponentModelBuilderImplementation *)createBuilderForChildComponentModelWithIdentifier:(nullable NSString *)modelIdentifier atIndex:(NSUInteger)childIndex
+- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForChildComponentModelWithIdentifier:(NSString *)identifier
 {
-    if (modelIdentifier == nil) {
-        modelIdentifier = [self.modelIdentifier stringByAppendingFormat:@"-child-%lu", (unsigned long)childIndex];
+    HUBComponentModelBuilderImplementation * const existingBuilder = [self.childComponentModelBuilders objectForKey:identifier];
+    
+    if (existingBuilder != nil) {
+        return existingBuilder;
     }
     
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:modelIdentifier
-                                                                                                                   featureIdentifier:self.featureIdentifier];
+    HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
+                                                                                                                      featureIdentifier:self.featureIdentifier];
     
-    [self.childComponentModelBuilders insertObject:builder atIndex:childIndex];
+    [self.childComponentModelBuilders setObject:newBuilder forKey:identifier];
+    [self.childComponentIdentifierOrder addObject:identifier];
     
-    return builder;
+    return newBuilder;
 }
 
 @end
