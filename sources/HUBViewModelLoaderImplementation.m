@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
+@property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
 @property (nonatomic, strong, readonly, nullable) id<HUBRemoteContentProvider> remoteContentProvider;
 @property (nonatomic, strong, readonly, nullable) id<HUBLocalContentProvider> localContentProvider;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
@@ -29,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
+      defaultComponentNamespace:(NSString *)defaultComponentNamespace
           remoteContentProvider:(nullable id<HUBRemoteContentProvider>)remoteContentProvider
            localContentProvider:(nullable id<HUBLocalContentProvider>)localContentProvider
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
@@ -36,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(featureIdentifier != nil);
+    NSParameterAssert(defaultComponentNamespace != nil);
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(connectivityStateResolver != nil);
     
@@ -45,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     _viewURI = [viewURI copy];
     _featureIdentifier = [featureIdentifier copy];
+    _defaultComponentNamespace = [defaultComponentNamespace copy];
     _remoteContentProvider = remoteContentProvider;
     _localContentProvider = localContentProvider;
     _JSONSchema = JSONSchema;
@@ -60,7 +64,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadViewModel
 {
-    self.builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier];
+    self.builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
+                                                              defaultComponentNamespace:self.defaultComponentNamespace];
     
     switch ([self.connectivityStateResolver resolveConnectivityState]) {
         case HUBConnectivityStateOnline: {
@@ -113,7 +118,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBViewModelBuilder>)provideViewModelBuilderForLocalContentProvider:(id<HUBLocalContentProvider>)contentProvider
 {
     if (self.builder == nil) {
-        self.builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier];
+        self.builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
+                                                                  defaultComponentNamespace:self.defaultComponentNamespace];
     }
     
     return (id<HUBViewModelBuilder>)self.builder;

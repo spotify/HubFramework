@@ -69,7 +69,7 @@ static NSString * const DefaultNamespace = @"default";
 
 - (void)testFallbackComponentWithNoNamespace
 {
-    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:nil
+    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace"
                                                                                                       name:@"componentA"];
     HUBComponentModelImplementation * const componentModel = [self mockedComponentModelWithComponentIdentifier:componentIdentifier];
 
@@ -132,26 +132,16 @@ static NSString * const DefaultNamespace = @"default";
     XCTAssertThrows([self.registry componentForModel:componentModel]);
 }
 
-- (void)testModelWithNoComponentIdentifierGetsADefaultComponent
-{
-    self.twoComponentFactory.defaultComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:nil
-                                                                                                       name:@"A"];
-    [self.registry registerComponentFactory:self.twoComponentFactory forNamespace:DefaultNamespace];
-    HUBComponentModelImplementation * const componentModel = [self mockedComponentModelWithComponentIdentifier:nil];
-
-    XCTAssertEqual([self.registry componentForModel:componentModel], self.componentA);
-}
-
 - (void)testCanFallbackToAnotherFactoryNamespace
 {
-    HUBComponentIdentifier * const alias = [[HUBComponentIdentifier alloc] initWithNamespace:@"anotherNameSpace"
+    HUBComponentIdentifier * const alias = [[HUBComponentIdentifier alloc] initWithNamespace:@"anotherNamespace"
                                                                                         name:@"fallbackName"];
     [self.twoComponentFactory addAlias:alias forName:@"unhandled"];
     [self.registry registerComponentFactory:self.twoComponentFactory forNamespace:@"namespace"];
 
     id<HUBComponent> const fallbackComponent = [HUBComponentMock new];
     NSDictionary * const components = @{@"fallbackName": fallbackComponent};
-    HUBComponentFactoryMock *fallbackFactory = [[HUBComponentFactoryMock alloc] initWithComponents:components];
+    HUBComponentFactoryMock * const fallbackFactory = [[HUBComponentFactoryMock alloc] initWithComponents:components];
 
     [self.registry registerComponentFactory:fallbackFactory forNamespace:@"anotherNameSpace"];
 
@@ -165,7 +155,7 @@ static NSString * const DefaultNamespace = @"default";
 
 - (void)testCanFallbackToAnotherNameInSameFactory
 {
-    HUBComponentIdentifier * const alias = [[HUBComponentIdentifier alloc] initWithNamespace:nil
+    HUBComponentIdentifier * const alias = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace"
                                                                                         name:@"A"];
     [self.twoComponentFactory addAlias:alias forName:@"nonexisting"];
     [self.registry registerComponentFactory:self.twoComponentFactory forNamespace:@"testNamespace"];

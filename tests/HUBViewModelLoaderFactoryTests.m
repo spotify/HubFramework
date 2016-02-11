@@ -11,6 +11,7 @@
 @interface HUBViewModelLoaderFactoryTests : XCTestCase
 
 @property (nonatomic, strong) HUBFeatureRegistryImplementation *featureRegistry;
+@property (nonatomic, copy) NSString *defaultComponentNamespace;
 @property (nonatomic, strong) HUBViewModelLoaderFactoryImplementation *viewModelLoaderFactory;
 
 @end
@@ -22,12 +23,14 @@
     [super setUp];
     
     self.featureRegistry = [HUBFeatureRegistryImplementation new];
+    self.defaultComponentNamespace = @"default";
     
     HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
     self.viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:self.featureRegistry
                                                                                         JSONSchemaRegistry:JSONSchemaRegistry
+                                                                                 defaultComponentNamespace:self.defaultComponentNamespace
                                                                                  connectivityStateResolver:connectivityStateResolver];
 }
 

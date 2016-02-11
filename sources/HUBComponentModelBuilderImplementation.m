@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBComponentModelBuilderImplementation ()
 
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
+@property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *mainImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *backgroundImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentImageDataBuilderImplementation *> *customImageDataBuilders;
@@ -27,7 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentModelBuilderImplementation
 
 @synthesize modelIdentifier = _modelIdentifier;
-@synthesize componentIdentifier = _componentIdentifier;
+@synthesize componentNamespace = _componentNamespace;
+@synthesize componentName = _componentName;
 @synthesize contentIdentifier = _contentIdentifier;
 @synthesize preferredIndex = _preferredIndex;
 @synthesize title = _title;
@@ -55,6 +57,11 @@ NS_ASSUME_NONNULL_BEGIN
         }
         
         HUBComponentModelImplementation * const model = [builder build];
+        
+        if (model == nil) {
+            continue;
+        }
+        
         [models addObject:model];
         
         NSNumber * const preferredIndex = builder.preferredIndex;
@@ -81,8 +88,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initializer
 
-- (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier featureIdentifier:(NSString *)featureIdentifier
+- (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
+                      featureIdentifier:(NSString *)featureIdentifier
+              defaultComponentNamespace:(NSString *)defaultComponentNamespace
 {
+    NSParameterAssert(featureIdentifier != nil);
+    NSParameterAssert(defaultComponentNamespace != nil);
+    
     if (!(self = [super init])) {
         return nil;
     }
@@ -92,6 +104,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     _modelIdentifier = (NSString *)modelIdentifier;
+    _componentNamespace = [defaultComponentNamespace copy];
+    _defaultComponentNamespace = [defaultComponentNamespace copy];
     _featureIdentifier = [featureIdentifier copy];
     _mainImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
     _backgroundImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
@@ -158,7 +172,14 @@ NS_ASSUME_NONNULL_BEGIN
     NSString * const componentIdentifierString = [componentModelSchema.componentIdentifierPath stringFromJSONDictionary:dictionary];
     
     if (componentIdentifierString != nil) {
-        self.componentIdentifier = [[HUBComponentIdentifier alloc] initWithString:componentIdentifierString];
+        NSArray * const componentIdentifierParts = [componentIdentifierString componentsSeparatedByString:@":"];
+        
+        if (componentIdentifierParts.count > 1) {
+            self.componentNamespace = componentIdentifierParts[0];
+            self.componentName = componentIdentifierParts[1];
+        } else if (componentIdentifierParts.count == 1) {
+            self.componentName = componentIdentifierParts[0];
+        }
     }
     
     NSDictionary * const mainImageDataDictionary = [componentModelSchema.mainImageDataDictionaryPath dictionaryFromJSONDictionary:dictionary];
@@ -201,8 +222,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (HUBComponentModelImplementation *)build
+- (nullable HUBComponentModelImplementation *)build
 {
+    NSString * const componentName = self.componentName;
+    
+    if (componentName == nil) {
+        return nil;
+    }
+    
+    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:self.componentNamespace
+                                                                                                      name:componentName];
+    
     id<HUBComponentImageData> const mainImageData = [self.mainImageDataBuilderImplementation build];
     id<HUBComponentImageData> const backgroundImageData = [self.backgroundImageDataBuilderImplementation build];
     
@@ -222,7 +252,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                      identifierOrder:self.childComponentIdentifierOrder];
     
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
-                                                   componentIdentifier:self.componentIdentifier
+                                                   componentIdentifier:componentIdentifier
                                                      contentIdentifier:self.contentIdentifier
                                                                  title:self.title
                                                               subtitle:self.subtitle
@@ -258,7 +288,8 @@ NS_ASSUME_NONNULL_BEGIN
 {
     // Lazily computed to avoid infinite recursion
     if (self.targetInitialViewModelBuilderImplementation == nil) {
-        self.targetInitialViewModelBuilderImplementation = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier];
+        self.targetInitialViewModelBuilderImplementation = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
+                                                                                                      defaultComponentNamespace:self.defaultComponentNamespace];
     }
     
     return (HUBViewModelBuilderImplementation *)self.targetInitialViewModelBuilderImplementation;
@@ -276,7 +307,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
-                                                                                                                      featureIdentifier:self.featureIdentifier];
+                                                                                                                      featureIdentifier:self.featureIdentifier
+                                                                                                              defaultComponentNamespace:self.defaultComponentNamespace];
     
     [self.childComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
     [self.childComponentIdentifierOrder addObject:newBuilder.modelIdentifier];

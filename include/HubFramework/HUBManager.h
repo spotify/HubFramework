@@ -6,6 +6,7 @@
 @protocol HUBViewModelLoaderFactory;
 @protocol HUBViewControllerFactory;
 @protocol HUBConnectivityStateResolver;
+@class HUBComponentIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,13 +36,19 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Initialize an instance of this class with a component fallback handler
  *
- *  @param fallbackComponentNamespace The namespace used for component identifiers without a namespace or with
- *         an unknown namespace.
  *  @param connectivityStateResolver An object responsible for determining the current connectivity state of
  *         the application. This object will be retained.
+ *  @param defaultComponentNamespace The component namespace that all component models created using this instance of the
+ *         Hub Framework will initially have. This namespace can be overriden by any content provider, using either JSON
+ *         data or by using a `HUBComponentModelBuilder` directly. A `HUBComponentFactory` must be registered for this
+ *         namespace before any view controllers are created through the Hub Framework.
+ *  @param fallbackComponentName The component name to use in case a content provider supplied an unknown component name.
+ *         This name will be resolved using the `HUBComponentFactory` for `defaultComponentNamespace` as a last line of
+ *         defense and must always result in a component being created.
  */
-- (instancetype)initWithFallbackComponentNamespace:(NSString *)fallbackComponentNamespace
-                         connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+                        defaultComponentNamespace:(NSString *)defaultComponentNamespace
+                            fallbackComponentName:(NSString *)fallbackComponentName NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 

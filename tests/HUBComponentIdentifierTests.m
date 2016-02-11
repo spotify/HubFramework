@@ -2,54 +2,17 @@
 
 #import "HUBComponentIdentifier.h"
 
-
 @interface HUBComponentIdentifierTests : XCTestCase
 @end
 
 @implementation HUBComponentIdentifierTests
 
-- (void)testCreateWithConvenienceMethod
+- (void)testPropertyAssignment
 {
     HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
 
     XCTAssertEqualObjects(identifier.componentNamespace, @"namespace");
     XCTAssertEqualObjects(identifier.componentName, @"name");
-}
-
-- (void)testCreateWithNamespaceAndName
-{
-    HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
-
-    XCTAssertEqualObjects(identifier.componentNamespace, @"namespace");
-    XCTAssertEqualObjects(identifier.componentName, @"name");
-}
-
-- (void)testCreateWithValidNamespacedString
-{
-    HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithString:@"namespace:name"];
-
-    XCTAssertEqualObjects(identifier.componentNamespace, @"namespace");
-    XCTAssertEqualObjects(identifier.componentName, @"name");
-}
-
-- (void)testCreateWithValidNonNamespacedString
-{
-    HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithString:@"name"];
-    XCTAssertEqualObjects(identifier.componentName, @"name");
-}
-
-- (void)testCreateWithStringWithExcessStringComponents
-{
-    HUBComponentIdentifier *identifier = [[HUBComponentIdentifier alloc] initWithString:@"namespace:name:something"];
-    
-    XCTAssertEqualObjects(identifier.componentNamespace, @"namespace");
-    XCTAssertEqualObjects(identifier.componentName, @"name");
-}
-
-- (void)testCreateWithEmptyStringReturnsNil
-{
-    HUBComponentIdentifier *identifier = [[HUBComponentIdentifier alloc] initWithString:@""];
-    XCTAssertNil(identifier);
 }
 
 - (void)testComparingTwoEqualIdentifiers

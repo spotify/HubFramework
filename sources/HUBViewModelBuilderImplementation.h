@@ -1,6 +1,7 @@
 #import "HUBViewModelBuilder.h"
 #import "HUBJSONCompatibleBuilder.h"
 
+@class HUBComponentIdentifier;
 @class HUBViewModelImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -12,8 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with a feature identifier
  *
  *  @param featureIdentifier The identifier of the feature that this builder is for
+ *  @param defaultComponentNamespace The default component namespace that all component builders created
+ *         by this builder will have.
  */
-- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
+                defaultComponentNamespace:(NSString *)defaultComponentNamespace NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Add data from a JSON array to this builder

@@ -113,7 +113,7 @@
         contentLoadingBlockCalled = YES;
         contentLoadingBlockCalledToLoadFallbackContent = loadFallbackContent;
         id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
-        [builder builderForBodyComponentModelWithIdentifier:@"component"];
+        [builder builderForBodyComponentModelWithIdentifier:@"component"].componentName = @"component";
     };
     
     [self.loader loadViewModel];
@@ -162,9 +162,12 @@
         __typeof(self) strongSelf = weakSelf;
         
         id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
-        builder.headerComponentModelBuilder.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:nil name:@"component"];
+        builder.headerComponentModelBuilder.componentName = @"header";
         builder.headerComponentModelBuilder.title = localContentProviderAssignedComponentTitle;
-        [builder builderForBodyComponentModelWithIdentifier:bodyComponentIdentifier].title = localContentProviderAssignedComponentTitle;
+        
+        id<HUBComponentModelBuilder> const componentBuilder = [builder builderForBodyComponentModelWithIdentifier:bodyComponentIdentifier];
+        componentBuilder.componentName = @"component";
+        componentBuilder.title = localContentProviderAssignedComponentTitle;
     };
     
     [self.loader loadViewModel];
@@ -185,7 +188,7 @@
         __typeof(self) strongSelf = weakSelf;
         
         id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
-        builder.headerComponentModelBuilder.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:nil name:@"component"];;
+        builder.headerComponentModelBuilder.componentName = @"header";
     };
     
     [self.loader loadViewModel];
@@ -206,7 +209,7 @@
         __typeof(self) strongSelf = weakSelf;
         
         id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
-        [builder builderForBodyComponentModelWithIdentifier:@"componentA"].title = @"Component title";
+        [builder builderForBodyComponentModelWithIdentifier:@"componentA"].componentName = @"componentA";
     };
     
     [self.loader loadViewModel];
@@ -215,7 +218,7 @@
         __typeof(self) strongSelf = weakSelf;
         
         id<HUBViewModelBuilder> const builder = [strongSelf.localContentProvider.delegate provideViewModelBuilderForLocalContentProvider:strongSelf.localContentProvider];
-        [builder builderForBodyComponentModelWithIdentifier:@"componentB"].title = @"Component title";
+        [builder builderForBodyComponentModelWithIdentifier:@"componentB"].componentName = @"componentB";
     };
     
     [self.loader loadViewModel];
@@ -249,6 +252,7 @@
     
     self.loader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:(NSURL *)[NSURL URLWithString:@"spotify:hub:test"]
                                                           featureIdentifier:@"feature"
+                                                  defaultComponentNamespace:@"default"
                                                       remoteContentProvider:(useRemoteContentProvider ? self.remoteContentProvider : nil)
                                                        localContentProvider:(useLocalContentProvider ? self.localContentProvider : nil)
                                                                  JSONSchema:[HUBJSONSchemaImplementation new]

@@ -4,12 +4,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBComponentIdentifier
 
-+ (instancetype)identifierWithNamespace:(nullable NSString *)componentNamespace name:(NSString *)componentName
-{
-    return [[self alloc] initWithNamespace:componentNamespace name:componentName];
-}
-
-- (instancetype)initWithNamespace:(nullable NSString *)componentNamespace name:(NSString *)componentName
+- (instancetype)initWithNamespace:(NSString *)componentNamespace name:(NSString *)componentName
 {
     if (!(self = [super init])) {
         return nil;
@@ -21,21 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (nullable instancetype)initWithString:(NSString *)identifierString
-{
-    NSArray<NSString *> * const splitModelIdentifier = [identifierString componentsSeparatedByString:@":"];
-
-    if ([splitModelIdentifier firstObject].length == 0) {
-        return nil;
-    }
-    
-    if (splitModelIdentifier.count < 2) {
-        return [self initWithNamespace:nil name:splitModelIdentifier[0]];
-    }
-
-    return [self initWithNamespace:splitModelIdentifier[0] name:splitModelIdentifier[1]];
-}
-
 - (NSString *)identifierString
 {
     if (self.componentNamespace) {
@@ -44,7 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
 
     return self.componentName;
 }
-
 
 #pragma mark - NSCopying
 
