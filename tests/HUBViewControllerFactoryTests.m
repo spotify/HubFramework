@@ -4,7 +4,6 @@
 #import "HUBManager.h"
 #import "HUBFeatureRegistry.h"
 #import "HUBFeatureConfiguration.h"
-#import "HUBComponentFallbackHandlerMock.h"
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBContentProviderFactoryMock.h"
 #import "HUBRemoteContentProviderMock.h"
@@ -23,11 +22,10 @@
 {
     [super setUp];
     
-    id<HUBComponentFallbackHandler> const fallbackHandler = [HUBComponentFallbackHandlerMock new];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
-    self.manager = [[HUBManager alloc] initWithComponentFallbackHandler:fallbackHandler
-                                              connectivityStateResolver:connectivityStateResolver];
+    self.manager = [[HUBManager alloc] initWithFallbackComponentNamespace:@"fallback"
+                                                connectivityStateResolver:connectivityStateResolver];
 }
 
 #pragma mark - Tests

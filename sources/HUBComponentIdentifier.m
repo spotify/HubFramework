@@ -4,6 +4,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBComponentIdentifier
 
++ (instancetype)identifierWithNamespace:(nullable NSString *)componentNamespace name:(NSString *)componentName
+{
+    return [[self alloc] initWithNamespace:componentNamespace name:componentName];
+}
+
 - (instancetype)initWithNamespace:(nullable NSString *)componentNamespace name:(NSString *)componentName
 {
     if (!(self = [super init])) {
@@ -30,6 +35,16 @@ NS_ASSUME_NONNULL_BEGIN
 
     return [self initWithNamespace:splitModelIdentifier[0] name:splitModelIdentifier[1]];
 }
+
+- (NSString *)identifierString
+{
+    if (self.componentNamespace) {
+        return [NSString stringWithFormat:@"%@:%@", self.componentNamespace, self.componentName];
+    }
+
+    return self.componentName;
+}
+
 
 #pragma mark - NSCopying
 
@@ -72,6 +87,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSUInteger)hash
 {
     return [self.componentNamespace hash] ^ [self.componentName hash];
+}
+
+- (NSString *)description
+{
+    return self.identifierString;
 }
 
 @end

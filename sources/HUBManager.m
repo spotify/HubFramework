@@ -16,15 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBManager
 
-- (instancetype)initWithComponentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+- (instancetype)initWithFallbackComponentNamespace:(NSString *)fallbackComponentNamespace
+                         connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
 {
     if (!(self = [super init])) {
         return nil;
     }
     
     _featureRegistry = [HUBFeatureRegistryImplementation new];
-    _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler];
+    _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackNamespace:fallbackComponentNamespace];
     _JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
     _connectivityStateResolver = connectivityStateResolver;
     
