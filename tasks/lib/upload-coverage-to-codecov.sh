@@ -103,7 +103,7 @@ urlencode() {
 
 swiftcov() {
   _dir=$(dirname "$1")
-  for _type in app framework xctest
+  for _type in a app framework xctest
   do
     find "$_dir" -name "*.$_type" | while read f
     do
