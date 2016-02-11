@@ -514,6 +514,7 @@ else
                     -not -name '*.html' \
                     -not -name '*.js' \
                     -not -name '*.cpp' \
+                    -not -name '*.rake' \
                     -not -name 'coverage.jade' \
                     -not -name 'include.lst' \
                     -not -name 'inputFiles.lst' \
