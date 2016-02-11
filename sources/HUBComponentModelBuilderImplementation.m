@@ -227,10 +227,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForChildComponentModelWithIdentifier:(nullable NSString *)identifier
 {
-    HUBComponentModelBuilderImplementation * const existingBuilder = [self.childComponentModelBuilders objectForKey:identifier];
-    
-    if (existingBuilder != nil) {
-        return existingBuilder;
+    if (identifier != nil) {
+        HUBComponentModelBuilderImplementation * const existingBuilder = [self.childComponentModelBuilders objectForKey:identifier];
+        
+        if (existingBuilder != nil) {
+            return existingBuilder;
+        }
     }
     
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
