@@ -89,6 +89,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// The path to follow to extract a date. Maps to `date`.
 @property (nonatomic, strong) id<HUBJSONDatePath> datePath;
 
+/**
+ *  The path to follow to extract dictionaries to create child component models from. Maps to `childComponentModels`.
+ *
+ *  The dictionaries extracted by following this path will then be parsed recursively by this schema.
+ */
+@property (nonatomic, strong) id<HUBJSONDictionaryPath> childComponentModelDictionariesPath;
+
 /// Create a copy of this schema, with the same paths
 - (id<HUBComponentModelJSONSchema>)copy;
 

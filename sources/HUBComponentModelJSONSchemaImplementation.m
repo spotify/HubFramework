@@ -19,6 +19,7 @@
 @synthesize customDataPath = _customDataPath;
 @synthesize loggingDataPath = _loggingDataPath;
 @synthesize datePath = _datePath;
+@synthesize childComponentModelDictionariesPath = _childComponentModelDictionariesPath;
 
 - (instancetype)init
 {
@@ -39,7 +40,8 @@
    targetInitialViewModelDictionaryPath:[[targetDictionaryPath goTo:@"view"] dictionaryPath]
                          customDataPath:[[[HUBMutableJSONPathImplementation path] goTo:@"custom"] dictionaryPath]
                         loggingDataPath:[[[HUBMutableJSONPathImplementation path] goTo:@"logging"] dictionaryPath]
-                               datePath:[[[HUBMutableJSONPathImplementation path] goTo:@"date"] datePath]];
+                               datePath:[[[HUBMutableJSONPathImplementation path] goTo:@"date"] datePath]
+    childComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:@"children"] forEach] dictionaryPath]];
 }
 
 - (instancetype)initWithIdentifierPath:(id<HUBJSONStringPath>)identifierPath
@@ -57,6 +59,7 @@
                         customDataPath:(id<HUBJSONDictionaryPath>)customDataPath
                        loggingDataPath:(id<HUBJSONDictionaryPath>)loggingDataPath
                               datePath:(id<HUBJSONDatePath>)datePath
+   childComponentModelDictionariesPath:(id<HUBJSONDictionaryPath>)childComponentModelDictionariesPath
 {
     if (!(self = [super init])) {
         return nil;
@@ -77,6 +80,7 @@
     _customDataPath = customDataPath;
     _loggingDataPath = loggingDataPath;
     _datePath = datePath;
+    _childComponentModelDictionariesPath = childComponentModelDictionariesPath;
     
     return self;
 }

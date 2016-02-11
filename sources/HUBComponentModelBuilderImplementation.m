@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *backgroundImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentImageDataBuilderImplementation *> *customImageDataBuilders;
 @property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *targetInitialViewModelBuilderImplementation;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *childComponentModelBuilders;
+@property (nonatomic, strong, readonly) NSMutableArray<NSString *> *childComponentIdentifierOrder;
 
 @end
 
@@ -50,6 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
     _mainImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
     _backgroundImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
     _customImageDataBuilders = [NSMutableDictionary new];
+    _childComponentModelBuilders = [NSMutableDictionary new];
+    _childComponentIdentifierOrder = [NSMutableArray new];
     
     return self;
 }
@@ -79,6 +83,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBComponentImageDataBuilder>)builderForCustomImageDataWithIdentifier:(NSString *)identifier
 {
     return [self getOrCreateBuilderForCustomImageDataWithIdentifier:identifier];
+}
+
+- (BOOL)builderExistsForChildComponentModelWithIdentifier:(NSString *)identifier
+{
+    return [self.childComponentModelBuilders objectForKey:identifier] != nil;
+}
+
+- (id<HUBComponentModelBuilder>)builderForChildComponentModelWithIdentifier:(NSString *)modelIdentifier
+{
+    return [self getOrCreateBuilderForChildComponentModelWithIdentifier:modelIdentifier];
 }
 
 #pragma mark - HUBJSONCompatibleBuilder
@@ -131,6 +145,19 @@ NS_ASSUME_NONNULL_BEGIN
     if (targetInitialViewModelDictionary != nil) {
         [[self getOrCreateBuilderForTargetInitialViewModel] addDataFromJSONDictionary:targetInitialViewModelDictionary usingSchema:schema];
     }
+    
+    NSArray * const childComponentModelDictionaries = [componentModelSchema.childComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
+    
+    for (NSDictionary * const childComponentModelDictionary in childComponentModelDictionaries) {
+        NSString *childModelIdentifier = [componentModelSchema.identifierPath stringFromJSONDictionary:childComponentModelDictionary];
+        
+        if (childModelIdentifier == nil) {
+            childModelIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
+        }
+        
+        HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForChildComponentModelWithIdentifier:childModelIdentifier];
+        [builder addDataFromJSONDictionary:childComponentModelDictionary usingSchema:schema];
+    }
 }
 
 #pragma mark - API
@@ -152,6 +179,16 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBViewModel> const targetInitialViewModel = [self.targetInitialViewModelBuilderImplementation build];
     
+    NSMutableArray * const childComponentModels = [NSMutableArray new];
+    
+    for (NSString * const componentIdentifier in self.childComponentIdentifierOrder) {
+        HUBComponentModelBuilderImplementation * const builder = [self.childComponentModelBuilders objectForKey:componentIdentifier];
+        
+        if (builder != nil) {
+            [childComponentModels addObject:[builder build]];
+        }
+    }
+    
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
                                                    componentIdentifier:self.componentIdentifier
                                                      contentIdentifier:self.contentIdentifier
@@ -166,7 +203,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                 targetInitialViewModel:targetInitialViewModel
                                                             customData:self.customData
                                                            loggingData:self.loggingData
-                                                                  date:self.date];
+                                                                  date:self.date
+                                                  childComponentModels:childComponentModels];
 }
 
 #pragma mark - Private utilities
@@ -192,6 +230,23 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return (HUBViewModelBuilderImplementation *)self.targetInitialViewModelBuilderImplementation;
+}
+
+- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForChildComponentModelWithIdentifier:(NSString *)identifier
+{
+    HUBComponentModelBuilderImplementation * const existingBuilder = [self.childComponentModelBuilders objectForKey:identifier];
+    
+    if (existingBuilder != nil) {
+        return existingBuilder;
+    }
+    
+    HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
+                                                                                                                      featureIdentifier:self.featureIdentifier];
+    
+    [self.childComponentModelBuilders setObject:newBuilder forKey:identifier];
+    [self.childComponentIdentifierOrder addObject:identifier];
+    
+    return newBuilder;
 }
 
 @end

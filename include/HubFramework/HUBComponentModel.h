@@ -2,6 +2,7 @@
 
 @class HUBComponentIdentifier;
 @protocol HUBComponentImageData;
+@protocol HUBComponentModel;
 @protocol HUBViewModel;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -160,6 +161,17 @@ NS_ASSUME_NONNULL_BEGIN
  *  to take decisions based it.
  */
 @property (nonatomic, strong, nullable, readonly) NSDate *date;
+
+#pragma mark - Child models
+
+/**
+ *  Any component models that are children of this model
+ *
+ *  The Hub Framework supports nested components, but it’s up to each `HUBComponent` implementation to decide what to do
+ *  with them. For example, when creating a carousel-like component, the children of that component might be the items that
+ *  the carousel contains.
+ */
+@property (nonatomic, strong, nullable, readonly) NSArray<id<HUBComponentModel>> *childComponentModels;
 
 @end
 

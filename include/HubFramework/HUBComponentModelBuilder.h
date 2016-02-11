@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponentModelBuilder <NSObject>
 
+#pragma mark - Identifiers
+
 /// The identifier of the model that this builder is for
 @property (nonatomic, copy, readonly) NSString *modelIdentifier;
 
@@ -27,8 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Any identifier for the model's content, that can be used for content tracking
 @property (nonatomic, copy, nullable) NSString *contentIdentifier;
 
+#pragma mark - Moving the component to a preferred index
+
 /// The index that the component would prefer to be placed at. Can be used to move components locally.
 @property (nonatomic, copy, nullable) NSNumber *preferredIndex;
+
+#pragma mark - Standard visual content
 
 /// Any title that the component should render
 @property (nonatomic, copy, nullable) NSString *title;
@@ -48,20 +54,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// A builder that can be used to construct data that describes how to render the component's background image
 @property (nonatomic, strong, readonly) id<HUBComponentImageDataBuilder> backgroundImageDataBuilder;
 
+#pragma mark - Metadata
+
 /// Any URL that is the target of a user interaction with the component
 @property (nonatomic, copy, nullable) NSURL *targetURL;
 
 /// A builder that can be used to construct a pre-computed view model for a view that is the target of `targetURL`
 @property (nonatomic, strong, readonly) id<HUBViewModelBuilder> targetInitialViewModelBuilder;
 
-/// Any custom data that the component should use
-@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
-
 /// Any data that should be logged alongside interactions or impressions for the component
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *loggingData;
 
 /// Any date that is associated with the component
 @property (nonatomic, strong, nullable) NSDate *date;
+
+#pragma mark - Custom content
+
+/// Any custom data that the component should use
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
+
+#pragma mark - Custom image data builders
 
 /**
  *  Return whether this builder contains a builder for custom image data for a certain identifier
@@ -81,6 +93,27 @@ NS_ASSUME_NONNULL_BEGIN
  *  check for the existance of a builder. See `HUBComponentImageDataBuilder` for more information.
  */
 - (id<HUBComponentImageDataBuilder>)builderForCustomImageDataWithIdentifier:(NSString *)identifier;
+
+#pragma mark - Child component model builders
+
+/**
+ *  Return whether this builder contains a builder for a child component model builder with a certain identifier
+ *
+ *  @param identifier The identifier to look for
+ */
+- (BOOL)builderExistsForChildComponentModelWithIdentifier:(NSString *)identifier;
+
+/**
+ *  Get or create a builder for a child component model with a certain identifier
+ *
+ *  @param identifier The identifier that the component model should have
+ *
+ *  @return If a builder already exists for the supplied identifier, then it's returned. Otherwise a new builder is
+ *  created, which can be used to build a child component model. Since this method lazily creates a builder in case
+ *  one doesn't already exist, use the `-builderExistsForChildComponentModelWithIdentifier:` API instead if you simply
+ *  wish to check for the existance of a builder.
+ */
+- (id<HUBComponentModelBuilder>)builderForChildComponentModelWithIdentifier:(NSString *)identifier;
 
 @end
 
