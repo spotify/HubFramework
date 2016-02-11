@@ -87,7 +87,11 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    _modelIdentifier = [modelIdentifier copy] ?: [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
+    if (modelIdentifier == nil) {
+        modelIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
+    }
+    
+    _modelIdentifier = (NSString *)modelIdentifier;
     _featureIdentifier = [featureIdentifier copy];
     _mainImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
     _backgroundImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
@@ -263,7 +267,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForChildComponentModelWithIdentifier:(nullable NSString *)identifier
 {
     if (identifier != nil) {
-        HUBComponentModelBuilderImplementation * const existingBuilder = [self.childComponentModelBuilders objectForKey:identifier];
+        NSString * const existingBuilderIdentifier = identifier;
+        HUBComponentModelBuilderImplementation * const existingBuilder = [self.childComponentModelBuilders objectForKey:existingBuilderIdentifier];
         
         if (existingBuilder != nil) {
             return existingBuilder;
