@@ -40,6 +40,7 @@ namespace :coverage do
     def codecov_cmd(codecov_url, codecov_token, derived_data_dir, vcs_number, branch, build_id)
         cmd = ['./tasks/lib/upload-coverage-to-codecov.sh']
         cmd.push('-v')
+        cmd.push('-g', 'tasks/*')
         cmd.push('-u', codecov_url)
         cmd.push('-t', codecov_token)
         cmd.push('-C', vcs_number)
