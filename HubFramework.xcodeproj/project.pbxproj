@@ -192,6 +192,7 @@
 		9996E9691C6A42E000231D22 /* HUBComponentFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactory.h; sourceTree = "<group>"; };
 		DD13758E1C68C76000AD3499 /* project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
 		DD13758F1C68C76000AD3499 /* spotify_os.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = spotify_os.xcconfig; sourceTree = "<group>"; };
+		DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBUtilities.h; sourceTree = "<group>"; };
 		DDBCF36B1C68DD2300693038 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -258,6 +259,7 @@
 		8A0754AB1C21A7B600AFAD38 /* sources */ = {
 			isa = PBXGroup;
 			children = (
+				DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */,
 				8ADD42911C21C81100D1A801 /* HUBManager.m */,
 				8A786BA51C5A2E7B00B2AB9E /* JSON */,
 				8AA97C0A1C60BA3D0078F19D /* Feature */,
