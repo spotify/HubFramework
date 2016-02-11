@@ -156,7 +156,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForBodyComponentModelWithIdentifier:(nullable NSString *)identifier
 {
     if (identifier != nil) {
-        HUBComponentModelBuilderImplementation * const existingBuilder = [self.bodyComponentModelBuilders objectForKey:identifier];
+        NSString * const existingBuilderIdentifier = identifier;
+        HUBComponentModelBuilderImplementation * const existingBuilder = [self.bodyComponentModelBuilders objectForKey:existingBuilderIdentifier];
         
         if (existingBuilder != nil) {
             return existingBuilder;
