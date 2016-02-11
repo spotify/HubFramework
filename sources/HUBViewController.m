@@ -7,6 +7,7 @@
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBComponentIdentifier.h"
+#import "HUBUtilities.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -84,7 +85,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
+    HUB_IGNORE_PARTIAL_AVAILABILTY_BEGIN
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    HUB_IGNORE_PARTIAL_AVAILABILTY_END
+
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
