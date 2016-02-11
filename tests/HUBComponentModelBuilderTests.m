@@ -111,6 +111,39 @@
     XCTAssertEqualObjects(childBuilder.targetInitialViewModelBuilder.featureIdentifier, featureIdentifier);
 }
 
+- (void)testChildComponentModelPreferredIndexRespected
+{
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:@"feature"];
+    
+    NSString * const childIdentifierA = @"componentA";
+    id<HUBComponentModelBuilder> const childBuilderA = [builder builderForChildComponentModelWithIdentifier:childIdentifierA];
+    childBuilderA.preferredIndex = @1;
+    
+    NSString * const childIdentifierB = @"componentB";
+    id<HUBComponentModelBuilder> const childBuilderB = [builder builderForChildComponentModelWithIdentifier:childIdentifierB];
+    childBuilderB.preferredIndex = @0;
+    
+    HUBComponentModelImplementation * const model = [builder build];
+    XCTAssertEqual(model.childComponentModels.count, 2);
+    XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifierB);
+    XCTAssertEqualObjects(model.childComponentModels[1].identifier, childIdentifierA);
+}
+
+- (void)testChildComponentModelOutOfBoundsPreferredIndexHandled
+{
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:@"feature"];
+    
+    NSString * const childIdentifier = @"child";
+    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:childIdentifier];
+    childBuilder.preferredIndex = @99;
+    
+    HUBComponentModelImplementation * const model = [builder build];
+    XCTAssertEqual(model.childComponentModels.count, 1);
+    XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifier);
+}
+
 - (void)testAddingJSONData
 {
     NSString * const componentIdentifierString = @"componentIdentifier";

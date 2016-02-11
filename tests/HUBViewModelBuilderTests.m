@@ -61,6 +61,37 @@
     XCTAssertEqual(componentBuilder,  [builder builderForBodyComponentModelWithIdentifier:componentModelIdentifier]);
 }
 
+- (void)testBodyComponentPreferredIndexRespected
+{
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    
+    NSString * const componentIdentifierA = @"componentA";
+    id<HUBComponentModelBuilder> const componentBuilderA = [builder builderForBodyComponentModelWithIdentifier:componentIdentifierA];
+    componentBuilderA.preferredIndex = @1;
+    
+    NSString * const componentIdentifierB = @"componentB";
+    id<HUBComponentModelBuilder> const componentBuilderB = [builder builderForBodyComponentModelWithIdentifier:componentIdentifierB];
+    componentBuilderB.preferredIndex = @0;
+    
+    HUBViewModelImplementation * const model = [builder build];
+    XCTAssertEqual(model.bodyComponentModels.count, 2);
+    XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifierB);
+    XCTAssertEqualObjects(model.bodyComponentModels[1].identifier, componentIdentifierA);
+}
+
+- (void)testBodyComponentOutOfBoundsPreferredIndexHandled
+{
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    
+    NSString * const componentIdentifier = @"component";
+    id<HUBComponentModelBuilder> const componentBuilder = [builder builderForBodyComponentModelWithIdentifier:componentIdentifier];
+    componentBuilder.preferredIndex = @99;
+    
+    HUBViewModelImplementation * const model = [builder build];
+    XCTAssertEqual(model.bodyComponentModels.count, 1);
+    XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifier);
+}
+
 - (void)testFeatureIdentifierMatchingComponentTargetInitialViewModelFeatureIdentifier
 {
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];

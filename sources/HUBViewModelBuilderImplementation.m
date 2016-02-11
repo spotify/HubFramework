@@ -138,15 +138,8 @@ NS_ASSUME_NONNULL_BEGIN
         headerComponentModel = nil;
     }
     
-    NSMutableArray * const bodyComponentModels = [NSMutableArray new];
-    
-    for (NSString * const componentIdentifier in self.bodyComponentIdentifierOrder) {
-        HUBComponentModelBuilderImplementation * const builder = [self.bodyComponentModelBuilders objectForKey:componentIdentifier];
-        
-        if (builder != nil) {
-            [bodyComponentModels addObject:[builder build]];
-        }
-    }
+    NSArray * const bodyComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.bodyComponentModelBuilders
+                                                                                                    identifierOrder:self.bodyComponentIdentifierOrder];
     
     return [[HUBViewModelImplementation alloc] initWithIdentifier:self.viewIdentifier
                                                 featureIdentifier:self.featureIdentifier
@@ -160,12 +153,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Private utilities
 
-- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier
+- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForBodyComponentModelWithIdentifier:(nullable NSString *)identifier
 {
-    HUBComponentModelBuilderImplementation * const existingBuilder = [self.bodyComponentModelBuilders objectForKey:identifier];
-    
-    if (existingBuilder != nil) {
-        return existingBuilder;
+    if (identifier != nil) {
+        HUBComponentModelBuilderImplementation * const existingBuilder = [self.bodyComponentModelBuilders objectForKey:identifier];
+        
+        if (existingBuilder != nil) {
+            return existingBuilder;
+        }
     }
     
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier

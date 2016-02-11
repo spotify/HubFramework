@@ -39,6 +39,48 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize loggingData = _loggingData;
 @synthesize date = _date;
 
+#pragma mark - Class methods
+
++ (NSArray<HUBComponentModelImplementation *> *)buildComponentModelsUsingBuilders:(NSDictionary<NSString *,HUBComponentModelBuilderImplementation *> *)builders
+                                                                  identifierOrder:(NSArray<NSString *> *)identifierOrder
+{
+    NSMutableArray * const models = [NSMutableArray new];
+    NSMutableDictionary * const modelsByPreferredIndex = [NSMutableDictionary new];
+    
+    for (NSString * const identifier in identifierOrder) {
+        HUBComponentModelBuilderImplementation * const builder = builders[identifier];
+        
+        if (builder == nil) {
+            continue;
+        }
+        
+        HUBComponentModelImplementation * const model = [builder build];
+        [models addObject:model];
+        
+        NSNumber * const preferredIndex = builder.preferredIndex;
+        
+        if (preferredIndex != nil) {
+            modelsByPreferredIndex[preferredIndex] = model;
+        }
+    }
+    
+    for (NSNumber * const preferredIndex in modelsByPreferredIndex.allKeys) {
+        NSUInteger decodedPreferredIndex = preferredIndex.unsignedIntegerValue;
+        
+        if (decodedPreferredIndex >= models.count) {
+            continue;
+        }
+        
+        HUBComponentModelImplementation * const model = modelsByPreferredIndex[preferredIndex];
+        [models removeObject:model];
+        [models insertObject:model atIndex:decodedPreferredIndex];
+    }
+    
+    return models;
+}
+
+#pragma mark - Initializer
+
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier featureIdentifier:(NSString *)featureIdentifier
 {
     if (!(self = [super init])) {
@@ -172,15 +214,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBViewModel> const targetInitialViewModel = [self.targetInitialViewModelBuilderImplementation build];
     
-    NSMutableArray * const childComponentModels = [NSMutableArray new];
-    
-    for (NSString * const componentIdentifier in self.childComponentIdentifierOrder) {
-        HUBComponentModelBuilderImplementation * const builder = [self.childComponentModelBuilders objectForKey:componentIdentifier];
-        
-        if (builder != nil) {
-            [childComponentModels addObject:[builder build]];
-        }
-    }
+    NSArray * const childComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.childComponentModelBuilders
+                                                                                                     identifierOrder:self.childComponentIdentifierOrder];
     
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
                                                    componentIdentifier:self.componentIdentifier
@@ -227,10 +262,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForChildComponentModelWithIdentifier:(nullable NSString *)identifier
 {
-    HUBComponentModelBuilderImplementation * const existingBuilder = [self.childComponentModelBuilders objectForKey:identifier];
-    
-    if (existingBuilder != nil) {
-        return existingBuilder;
+    if (identifier != nil) {
+        HUBComponentModelBuilderImplementation * const existingBuilder = [self.childComponentModelBuilders objectForKey:identifier];
+        
+        if (existingBuilder != nil) {
+            return existingBuilder;
+        }
     }
     
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier

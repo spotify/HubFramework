@@ -10,6 +10,18 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBComponentModelBuilderImplementation : NSObject <HUBComponentModelBuilder, HUBJSONCompatibleBuilder>
 
 /**
+ *  Build an array of component models from a collection of builders
+ *
+ *  @param builders The builders to use to build component models. The keys should be model identifiers.
+ *  @param identifierOrder An ordered array of identifiers of the models to build. This will determine the build order.
+ *
+ *  The `preferredIndex` property of each builder will also be taken into account, so the supplied `identifierOrder` is
+ *  only used as a default order for the returned array of component models.
+ */
++ (NSArray<HUBComponentModelImplementation *> *)buildComponentModelsUsingBuilders:(NSDictionary<NSString *, HUBComponentModelBuilderImplementation *> *)builders
+                                                                  identifierOrder:(NSArray<NSString *> *)identifierOrder;
+
+/**
  *  Initialize an instance of this class with a component model identifier
  *
  *  @param modelIdentifier The identifier of the model to be built. If `nil`, an `NSUUID`-based identifier will be used.
