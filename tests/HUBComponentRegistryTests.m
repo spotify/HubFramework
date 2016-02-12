@@ -80,6 +80,23 @@ static NSString * const DefaultNamespace = @"default";
     XCTAssertEqual([self.registry createComponentForIdentifier:unknownNameIdentifier], fallbackComponent);
 }
 
+- (void)testFallbackComponentFromAnotherFactory
+{
+    HUBComponentMock * const fallbackComponent = [HUBComponentMock new];
+    NSDictionary * const fallbackFactoryComponents = @{self.fallbackComponentIdentifier.componentName: fallbackComponent};
+    HUBComponentFactoryMock * const fallbackFactory = [[HUBComponentFactoryMock alloc] initWithComponents:fallbackFactoryComponents];
+    [self.registry registerComponentFactory:fallbackFactory forNamespace:self.fallbackComponentIdentifier.componentNamespace];
+    
+    HUBComponentFactoryMock * const emptyFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    NSString * const emptyFactoryNamespace = @"empty";
+    [self.registry registerComponentFactory:emptyFactory forNamespace:emptyFactoryNamespace];
+    
+    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:emptyFactoryNamespace
+                                                                                                      name:@"unknown"];
+    
+    XCTAssertEqual([self.registry createComponentForIdentifier:componentIdentifier], fallbackComponent);
+}
+
 - (void)testFallbackComponentCreationFailureThrows
 {
     HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
