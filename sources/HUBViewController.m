@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
+@property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 
 @end
@@ -35,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
     _componentRegistry = componentRegistry;
     _viewModelLoader = viewModelLoader;
     _viewModelLoader.delegate = self;
+    _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     
     return self;
 }
@@ -58,12 +60,8 @@ NS_ASSUME_NONNULL_BEGIN
 
     UICollectionView * const collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
                                                                  collectionViewLayout:[UICollectionViewFlowLayout new]];
+    
     self.collectionView = collectionView;
-
-    for (HUBComponentIdentifier *componentIdentifier in self.componentRegistry.allComponentIdentifiers) {
-        [self.collectionView registerClass:[HUBComponentCollectionViewCell class] forCellWithReuseIdentifier:componentIdentifier.identifierString];
-    }
-
     self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
@@ -137,12 +135,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id<HUBComponentModel> const componentModel = [self.viewModel.bodyComponentModels objectAtIndex:(NSUInteger)indexPath.item];
-    HUBComponentIdentifier * const componentIdentifier = [self.componentRegistry componentIdentifierForModel:componentModel];
+    NSString * const cellReuseIdentifier = componentModel.componentIdentifier.identifierString;
     
-    HUBComponentCollectionViewCell * const cell = [collectionView dequeueReusableCellWithReuseIdentifier:componentIdentifier.identifierString forIndexPath:indexPath];
+    if (![self.registeredCollectionViewCellReuseIdentifiers containsObject:cellReuseIdentifier]) {
+        [collectionView registerClass:[HUBComponentCollectionViewCell class] forCellWithReuseIdentifier:cellReuseIdentifier];
+    }
+    
+    HUBComponentCollectionViewCell * const cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier
+                                                                                            forIndexPath:indexPath];
     
     if (cell.component == nil) {
-        cell.component = [self.componentRegistry componentForModel:componentModel];
+        cell.component = [self.componentRegistry createComponentForIdentifier:componentModel.componentIdentifier];
     }
     
     [cell.component configureViewWithModel:componentModel];
@@ -155,7 +158,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id<HUBComponentModel> const componentModel = [self.viewModel.bodyComponentModels objectAtIndex:(NSUInteger)indexPath.item];
-    id<HUBComponent> const component = [self.componentRegistry componentForModel:componentModel];
+    id<HUBComponent> const component = nil;
     return [component preferredViewSizeForDisplayingModel:componentModel containedInViewWithSize:self.collectionView.frame.size];
 }
 

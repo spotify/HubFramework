@@ -29,8 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
+    HUBComponentIdentifier * const fallbackComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:defaultComponentNamespace
+                                                                                                              name:fallbackComponentName];
+    
     _featureRegistry = [HUBFeatureRegistryImplementation new];
-    _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackNamespace:defaultComponentNamespace];
+    _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:fallbackComponentIdentifier];
     _JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
     _connectivityStateResolver = connectivityStateResolver;
     
