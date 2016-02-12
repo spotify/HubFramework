@@ -2,13 +2,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Component factory mock
+/// Mocked component factory, for use in tests only
 @interface HUBComponentFactoryMock : NSObject <HUBComponentFactory>
-@property (nonatomic, copy) NSDictionary *components;
-@property (nonatomic, strong) HUBComponentIdentifier *defaultComponentIdentifier;
 
-- (instancetype)initWithComponents:(NSDictionary *)components;
-- (void)addAlias:(HUBComponentIdentifier *)alias forName:(NSString *)name;
+/// Initialize an instance of this class with a name:component dictionary of components to create
+- (instancetype)initWithComponents:(NSDictionary<NSString *, id<HUBComponent>> *)components NS_DESIGNATED_INITIALIZER;
+
+#pragma mark - Unavailable initializers
+
+/// This class needs to be initialized with its designated initializer
+- (instancetype)init NS_UNAVAILABLE;
+
+/// This class needs to be initialized with its designated initializer
++ (instancetype)new NS_UNAVAILABLE;
 
 @end
 

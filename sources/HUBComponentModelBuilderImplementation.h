@@ -26,14 +26,18 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param modelIdentifier The identifier of the model to be built. If `nil`, an `NSUUID`-based identifier will be used.
  *  @param featureIdentifier The identifier of the feature that the component will be presented in
+ *  @param defaultComponentNamespace The default component namespace that the builder should have
  */
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
-                      featureIdentifier:(NSString *)featureIdentifier NS_DESIGNATED_INITIALIZER;
+                      featureIdentifier:(NSString *)featureIdentifier
+              defaultComponentNamespace:(NSString *)defaultComponentNamespace NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Build an instance of `HUBComponentModelImplementation` from the data contained in this builder
+ *
+ *  This method returns `nil` if the builder does not contain a `componentName`.
  */
-- (HUBComponentModelImplementation *)build;
+- (nullable HUBComponentModelImplementation *)build;
 
 #pragma mark - Unavailable initializers
 

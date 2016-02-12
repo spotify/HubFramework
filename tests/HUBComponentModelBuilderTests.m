@@ -19,12 +19,16 @@
 {
     NSString * const modelIdentifier = @"model";
     NSString * const featureIdentifier = @"feature";
+    NSString * const componentNamespace = @"namespace";
+    NSString * const componentName = @"component";
     
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:modelIdentifier featureIdentifier:featureIdentifier];
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:modelIdentifier
+                                                                                                                   featureIdentifier:featureIdentifier
+                                                                                                           defaultComponentNamespace:componentNamespace];
     
     XCTAssertEqualObjects(builder.modelIdentifier, modelIdentifier);
     
-    builder.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+    builder.componentName = componentName;
     builder.contentIdentifier = @"content";
     builder.title = @"title";
     builder.subtitle = @"subtitle";
@@ -38,8 +42,10 @@
     builder.date = [NSDate date];
     
     HUBComponentModelImplementation * const model = [builder build];
+    HUBComponentIdentifier * const expectedComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentNamespace
+                                                                                                              name:componentName];
     
-    XCTAssertEqualObjects(model.componentIdentifier, builder.componentIdentifier);
+    XCTAssertEqualObjects(model.componentIdentifier, expectedComponentIdentifier);
     XCTAssertEqualObjects(model.contentIdentifier, builder.contentIdentifier);
     XCTAssertEqualObjects(model.title, builder.title);
     XCTAssertEqualObjects(model.subtitle, builder.subtitle);
@@ -53,9 +59,37 @@
     XCTAssertEqualObjects(model.date, builder.date);
 }
 
+- (void)testOverridingDefaultComponentNamespace
+{
+    NSString * const namespaceOverride = @"namespace-override";
+    
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:@"feature"
+                                                                                                           defaultComponentNamespace:@"namespace"];
+    
+    builder.componentNamespace = namespaceOverride;
+    builder.componentName = @"component";
+    
+    XCTAssertEqualObjects([builder build].componentIdentifier.componentNamespace, namespaceOverride);
+}
+
+- (void)testMissingComponentNameProducingNilInstance
+{
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:@"feature"
+                                                                                                           defaultComponentNamespace:@"namespace"];
+    
+    XCTAssertNil([builder build]);
+}
+
 - (void)testCustomImageDataBuilder
 {
-    HUBComponentModelBuilderImplementation * const componentModelBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"id" featureIdentifier:@"feature"];
+    HUBComponentModelBuilderImplementation * const componentModelBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"id"
+                                                                                                                                 featureIdentifier:@"feature"
+                                                                                                                         defaultComponentNamespace:@"namespace"];
+    
+    componentModelBuilder.componentName = @"component";
+    
     NSString * const customImageIdentifier = @"customImage";
     
     XCTAssertFalse([componentModelBuilder builderExistsForCustomImageDataWithIdentifier:customImageIdentifier]);
@@ -75,7 +109,12 @@
 - (void)testTargetInitialViewModelBuilderLazyInit
 {
     NSString * const featureIdentifier = @"feature";
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:featureIdentifier];
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:featureIdentifier
+                                                                                                           defaultComponentNamespace:@"namespace"];
+    
+    builder.componentName = @"component";
+    
     XCTAssertNil([builder build].targetInitialViewModel);
     
     builder.targetInitialViewModelBuilder.navigationBarTitle = @"hello";
@@ -84,7 +123,9 @@
 
 - (void)testCreatingChildComponentModel
 {
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:@"feature"];
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:@"feature"
+                                                                                                           defaultComponentNamespace:@"namespace"];
     
     NSString * const childModelIdentifier = @"childModel";
     id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
@@ -95,7 +136,9 @@
 
 - (void)testChildComponentModelBuilderReuse
 {
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:@"feature"];
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:@"feature"
+                                                                                                           defaultComponentNamespace:@"namespace"];
     
     NSString * const childModelIdentifier = @"childModel";
     id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
@@ -106,7 +149,10 @@
 - (void)testChildComponentModelFeatureIdentifierSameAsParent
 {
     NSString * const featureIdentifier = @"feature";
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:featureIdentifier];
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:featureIdentifier
+                                                                                                           defaultComponentNamespace:@"namespace"];
+    
     id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:@"identifier"];
     XCTAssertEqualObjects(childBuilder.targetInitialViewModelBuilder.featureIdentifier, featureIdentifier);
 }
@@ -114,15 +160,20 @@
 - (void)testChildComponentModelPreferredIndexRespected
 {
     HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"];
+                                                                                                                   featureIdentifier:@"feature"
+                                                                                                           defaultComponentNamespace:@"namespace"];
+    
+    builder.componentName = @"component";
     
     NSString * const childIdentifierA = @"componentA";
     id<HUBComponentModelBuilder> const childBuilderA = [builder builderForChildComponentModelWithIdentifier:childIdentifierA];
     childBuilderA.preferredIndex = @1;
+    childBuilderA.componentName = @"component";
     
     NSString * const childIdentifierB = @"componentB";
     id<HUBComponentModelBuilder> const childBuilderB = [builder builderForChildComponentModelWithIdentifier:childIdentifierB];
     childBuilderB.preferredIndex = @0;
+    childBuilderB.componentName = @"component";
     
     HUBComponentModelImplementation * const model = [builder build];
     XCTAssertEqual(model.childComponentModels.count, (NSUInteger)2);
@@ -133,10 +184,14 @@
 - (void)testChildComponentModelOutOfBoundsPreferredIndexHandled
 {
     HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"];
+                                                                                                                   featureIdentifier:@"feature"
+                                                                                                           defaultComponentNamespace:@"namespace"];
+    
+    builder.componentName = @"component";
     
     NSString * const childIdentifier = @"child";
     id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:childIdentifier];
+    childBuilder.componentName = @"component";
     childBuilder.preferredIndex = @99;
     
     HUBComponentModelImplementation * const model = [builder build];
@@ -146,7 +201,7 @@
 
 - (void)testAddingJSONData
 {
-    NSString * const componentIdentifierString = @"componentIdentifier";
+    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"component"];
     NSString * const contentIdentifier = @"contentIdentifier";
     NSString * const title = @"A title";
     NSString * const subtitle = @"A subtitle";
@@ -161,12 +216,12 @@
     NSDictionary * const customData = @{@"custom": @"data"};
     NSDictionary * const loggingData = @{@"logging": @"data"};
     NSString * const child1ModelIdentifier = @"ChildComponent1";
-    NSString * const child1ComponentIdentifier = @"child:component1";
+    HUBComponentIdentifier * const child1ComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"child" name:@"component1"];
     NSString * const child2ModelIdentifier = @"ChildComponent2";
-    NSString * const child2ComponentIdentifier = @"child:component2";
+    HUBComponentIdentifier * const child2ComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"child" name:@"component2"];
     
     NSDictionary * const dictionary = @{
-        @"component": componentIdentifierString,
+        @"component": componentIdentifier.identifierString,
         @"contentId": contentIdentifier,
         @"title": title,
         @"subtitle": subtitle,
@@ -197,20 +252,23 @@
         @"children": @[
             @{
                 @"id": child1ModelIdentifier,
-                @"component": child1ComponentIdentifier
+                @"component": child1ComponentIdentifier.identifierString
             },
             @{
                 @"id": child2ModelIdentifier,
-                @"component": child2ComponentIdentifier
+                @"component": child2ComponentIdentifier.identifierString
             }
         ]
     };
     
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model" featureIdentifier:@"feature"];
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:@"feature"
+                                                                                                           defaultComponentNamespace:@"namespace"];
+    
     [builder addDataFromJSONDictionary:dictionary usingSchema:[HUBJSONSchemaImplementation new]];
     HUBComponentModelImplementation * const model = [builder build];
     
-    XCTAssertEqualObjects(model.componentIdentifier, [[HUBComponentIdentifier alloc] initWithString:componentIdentifierString]);
+    XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
     XCTAssertEqualObjects(model.contentIdentifier, contentIdentifier);
     XCTAssertEqualObjects(model.title, title);
     XCTAssertEqualObjects(model.subtitle, subtitle);
@@ -232,11 +290,11 @@
     
     id<HUBComponentModel> const childModel1 = [model.childComponentModels objectAtIndex:0];
     XCTAssertEqualObjects(childModel1.identifier, child1ModelIdentifier);
-    XCTAssertEqualObjects(childModel1.componentIdentifier, [[HUBComponentIdentifier alloc] initWithString:child1ComponentIdentifier]);
+    XCTAssertEqualObjects(childModel1.componentIdentifier, child1ComponentIdentifier);
     
     id<HUBComponentModel> const childModel2 = [model.childComponentModels objectAtIndex:1];
     XCTAssertEqualObjects(childModel2.identifier, child2ModelIdentifier);
-    XCTAssertEqualObjects(childModel2.componentIdentifier, [[HUBComponentIdentifier alloc] initWithString:child2ComponentIdentifier]);
+    XCTAssertEqualObjects(childModel2.componentIdentifier, child2ComponentIdentifier);
 }
 
 @end

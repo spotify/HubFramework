@@ -17,7 +17,8 @@
 {
     NSString * const featureIdentifier = @"feature";
     
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:featureIdentifier];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:featureIdentifier
+                                                                                                   defaultComponentNamespace:@"default"];
     
     XCTAssertNotNil(builder.viewIdentifier);
     XCTAssertEqualObjects(builder.featureIdentifier, featureIdentifier);
@@ -41,37 +42,47 @@
 
 - (void)testHeaderComponentBuilder
 {
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    NSString * const defaultComponentNamespace = @"default";
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
+                                                                                                   defaultComponentNamespace:defaultComponentNamespace];
+    
     XCTAssertEqualObjects(builder.headerComponentModelBuilder.modelIdentifier, @"header");
-    XCTAssertNil(builder.headerComponentModelBuilder.componentIdentifier);
+    XCTAssertEqualObjects(builder.headerComponentModelBuilder.componentNamespace, defaultComponentNamespace);
+    XCTAssertNil(builder.headerComponentModelBuilder.componentName);
 }
 
 - (void)testBodyComponentBuilders
 {
+    NSString * const defaultComponentNamespace = @"default";
     NSString * const componentModelIdentifier = @"identifier";
     
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
+                                                                                                   defaultComponentNamespace:defaultComponentNamespace];
     
     XCTAssertFalse([builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
     
     id<HUBComponentModelBuilder> const componentBuilder = [builder builderForBodyComponentModelWithIdentifier:componentModelIdentifier];
     
     XCTAssertNotNil(componentBuilder);
+    XCTAssertEqualObjects(componentBuilder.componentNamespace, defaultComponentNamespace);
     XCTAssertTrue([builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
     XCTAssertEqual(componentBuilder,  [builder builderForBodyComponentModelWithIdentifier:componentModelIdentifier]);
 }
 
 - (void)testBodyComponentPreferredIndexRespected
 {
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
+                                                                                                   defaultComponentNamespace:@"default"];
     
     NSString * const componentIdentifierA = @"componentA";
     id<HUBComponentModelBuilder> const componentBuilderA = [builder builderForBodyComponentModelWithIdentifier:componentIdentifierA];
     componentBuilderA.preferredIndex = @1;
+    componentBuilderA.componentName = @"component";
     
     NSString * const componentIdentifierB = @"componentB";
     id<HUBComponentModelBuilder> const componentBuilderB = [builder builderForBodyComponentModelWithIdentifier:componentIdentifierB];
     componentBuilderB.preferredIndex = @0;
+    componentBuilderB.componentName = @"component";
     
     HUBViewModelImplementation * const model = [builder build];
     XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)2);
@@ -81,11 +92,13 @@
 
 - (void)testBodyComponentOutOfBoundsPreferredIndexHandled
 {
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
+                                                                                                   defaultComponentNamespace:@"default"];
     
     NSString * const componentIdentifier = @"component";
     id<HUBComponentModelBuilder> const componentBuilder = [builder builderForBodyComponentModelWithIdentifier:componentIdentifier];
     componentBuilder.preferredIndex = @99;
+    componentBuilder.componentName = @"component";
     
     HUBViewModelImplementation * const model = [builder build];
     XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)1);
@@ -94,7 +107,9 @@
 
 - (void)testFeatureIdentifierMatchingComponentTargetInitialViewModelFeatureIdentifier
 {
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
+                                                                                                   defaultComponentNamespace:@"default"];
+    
     XCTAssertEqualObjects(builder.headerComponentModelBuilder.targetInitialViewModelBuilder.featureIdentifier, builder.featureIdentifier);
 }
 
@@ -104,8 +119,8 @@
     NSString * const featureIdentifier = @"feature";
     NSString * const entityIdentifier = @"entity";
     NSString * const navigationBarTitle = @"nav bar title";
-    NSString * const headerComponentIdentifierString = @"headerComponent";
-    NSString * const bodyComponentIdentifierString = @"bodyComponent";
+    HUBComponentIdentifier * const headerComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"header" name:@"component"];
+    HUBComponentIdentifier * const bodyComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"body" name:@"component"];
     NSURL * const extensionURL = [NSURL URLWithString:@"https://spotify.com/extension"];
     NSDictionary * const customData = @{@"custom": @"data"};
     
@@ -115,18 +130,20 @@
         @"entity": entityIdentifier,
         @"title": navigationBarTitle,
         @"header": @{
-            @"component": headerComponentIdentifierString
+            @"component": headerComponentIdentifier.identifierString
         },
         @"body": @[
             @{
-                @"component": bodyComponentIdentifierString
+                @"component": bodyComponentIdentifier.identifierString
             }
         ],
         @"extension": extensionURL.absoluteString,
         @"custom": customData
     };
     
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"temp"];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"temp"
+                                                                                                   defaultComponentNamespace:@"namespace"];
+    
     [builder addDataFromJSONDictionary:dictionary usingSchema:[HUBJSONSchemaImplementation new]];
     HUBViewModelImplementation * const model = [builder build];
     
@@ -134,55 +151,61 @@
     XCTAssertEqualObjects(model.featureIdentifier, featureIdentifier);
     XCTAssertEqualObjects(model.entityIdentifier, entityIdentifier);
     XCTAssertEqualObjects(model.navigationBarTitle, navigationBarTitle);
-    XCTAssertEqualObjects(model.headerComponentModel.componentIdentifier,
-                          [[HUBComponentIdentifier alloc] initWithString:headerComponentIdentifierString]);
-    XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier,
-                          [[HUBComponentIdentifier alloc] initWithString:bodyComponentIdentifierString]);
+    XCTAssertEqualObjects(model.headerComponentModel.componentIdentifier, headerComponentIdentifier);
+    XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, bodyComponentIdentifier);
     XCTAssertEqualObjects(model.extensionURL, extensionURL);
     XCTAssertEqualObjects(model.customData, customData);
 }
 
 - (void)testAddingComponentModelArrayJSONData
 {
-    NSString * const firstComponentIdentifierString = @"component1";
-    NSString * const lastComponentIdentifierString = @"component2";
+    HUBComponentIdentifier * const firstComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"component1"];
+    HUBComponentIdentifier * const lastComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"component2"];
     
     NSArray * const array = @[
         @{
-            @"component": firstComponentIdentifierString
+            @"component": firstComponentIdentifier.identifierString
         },
         @{
-            @"component": lastComponentIdentifierString
+            @"component": lastComponentIdentifier.identifierString
         }
     ];
     
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"temp"];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"temp"
+                                                                                                   defaultComponentNamespace:@"default"];
+    
     [builder addDataFromJSONArray:array usingSchema:[HUBJSONSchemaImplementation new]];
     HUBViewModelImplementation * const model = [builder build];
     
-    XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier,
-                          [[HUBComponentIdentifier alloc] initWithString:firstComponentIdentifierString]);
-    XCTAssertEqualObjects([model.bodyComponentModels lastObject].componentIdentifier,
-                          [[HUBComponentIdentifier alloc] initWithString:lastComponentIdentifierString]);
+    XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, firstComponentIdentifier);
+    XCTAssertEqualObjects([model.bodyComponentModels lastObject].componentIdentifier, lastComponentIdentifier);
 }
 
 - (void)testIsEmpty
 {
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
+                                                                                                   defaultComponentNamespace:@"default"];
+    
     XCTAssertTrue(builder.isEmpty);
 }
 
-- (void)testNotEmptyAfterAddingHeaderComponentIdentifier
+- (void)testNotEmptyAfterAddingHeaderComponentName
 {
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
-    builder.headerComponentModelBuilder.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:nil name:@"component"];;
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
+                                                                                                   defaultComponentNamespace:@"default"];
+    
+    builder.headerComponentModelBuilder.componentName = @"header";
+    
     XCTAssertFalse(builder.isEmpty);
 }
 
 - (void)testNotEmptyAfterAddingBodyComponentModel
 {
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
+                                                                                                   defaultComponentNamespace:@"default"];
+    
     [builder builderForBodyComponentModelWithIdentifier:@"id"];
+    
     XCTAssertFalse(builder.isEmpty);
 }
 

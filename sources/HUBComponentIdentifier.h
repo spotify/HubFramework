@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBComponentIdentifier : NSObject <NSCopying>
 
 /// The namespace of the component to use, or `nil` if the Hub Framework should infer a namespace
-@property (nonatomic, copy, readonly, nullable) NSString *componentNamespace;
+@property (nonatomic, copy, readonly) NSString *componentNamespace;
 
 /// The name of the component to use
 @property (nonatomic, copy, readonly) NSString *componentName;
@@ -25,16 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentNamespace The namespace part of the identifier (or nil if an inferred namespace should be used)
  *  @param componentName The name part of the identifier
  */
-- (instancetype)initWithNamespace:(nullable NSString *)componentNamespace name:(NSString *)componentName NS_DESIGNATED_INITIALIZER;
-
-/**
- *  Initialize a component identifier from an identifier string.
- *
- *  @param identifierString The identifier
- *
- *  The identifier should be of the form `namespace:name`, or `name` (if a namespace should be inferred)
- */
-- (nullable instancetype)initWithString:(NSString *)identifierString;
+- (instancetype)initWithNamespace:(NSString *)componentNamespace
+                             name:(NSString *)componentName NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Compare if another component identifier is the same.

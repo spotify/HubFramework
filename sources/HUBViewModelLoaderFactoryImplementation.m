@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) HUBFeatureRegistryImplementation *featureRegistry;
 @property (nonatomic, strong, readonly) HUBJSONSchemaRegistryImplementation *JSONSchemaRegistry;
+@property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 
 @end
@@ -20,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFeatureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                      JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
+              defaultComponentNamespace:(NSString *)defaultComponentNamespace
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
 {
     if (!(self = [super init])) {
@@ -28,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     _featureRegistry = featureRegistry;
     _JSONSchemaRegistry = JSONSchemaRegistry;
+    _defaultComponentNamespace = [defaultComponentNamespace copy];
     _connectivityStateResolver = connectivityStateResolver;
     
     return self;
@@ -58,6 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     return [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
                                                    featureIdentifier:featureRegistration.featureIdentifier
+                                           defaultComponentNamespace:self.defaultComponentNamespace
                                                remoteContentProvider:remoteContentProvider
                                                 localContentProvider:localContentProvider
                                                           JSONSchema:JSONSchema

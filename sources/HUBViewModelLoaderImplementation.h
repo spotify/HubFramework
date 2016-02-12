@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewURI The URI of the view that this loader will load view models for
  *  @param featureIdentifier The identifier of the feature that this loader will belong to
+ *  @param defaultComponentNamespace The default namespace that components in loaded view models should have
  *  @param remoteContentProvider Any remote content provider that the loader should use
  *  @param localContentProvider Any local content provider that the loader should use
  *  @param JSONSchema The JSON schema that the loader should use for parsing
@@ -22,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
+      defaultComponentNamespace:(NSString *)defaultComponentNamespace
           remoteContentProvider:(nullable id<HUBRemoteContentProvider>)remoteContentProvider
            localContentProvider:(nullable id<HUBLocalContentProvider>)localContentProvider
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema

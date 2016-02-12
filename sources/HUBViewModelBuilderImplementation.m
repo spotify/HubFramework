@@ -3,6 +3,7 @@
 #import "HUBViewModelImplementation.h"
 #import "HUBComponentModelBuilderImplementation.h"
 #import "HUBComponentModelImplementation.h"
+#import "HUBComponentIdentifier.h"
 #import "HUBJSONSchema.h"
 #import "HUBViewModelJSONSchema.h"
 #import "HUBComponentModelJSONSchema.h"
@@ -12,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewModelBuilderImplementation ()
 
+@property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
 @property (nonatomic, strong, readonly) HUBComponentModelBuilderImplementation *headerComponentModelBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *bodyComponentModelBuilders;
 @property (nonatomic, strong, readonly) NSMutableArray<NSString *> *bodyComponentIdentifierOrder;
@@ -27,17 +29,22 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
 
-- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
+- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier defaultComponentNamespace:(NSString *)defaultComponentNamespace
 {
     NSParameterAssert(featureIdentifier != nil);
+    NSParameterAssert(defaultComponentNamespace);
     
     if (!(self = [super init])) {
         return nil;
     }
     
+    _defaultComponentNamespace = [defaultComponentNamespace copy];
     _viewIdentifier = [NSUUID UUID].UUIDString;
     _featureIdentifier = [featureIdentifier copy];
-    _headerComponentModelBuilderImplementation = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header" featureIdentifier:featureIdentifier];
+    _headerComponentModelBuilderImplementation = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header"
+                                                                                                       featureIdentifier:featureIdentifier
+                                                                                               defaultComponentNamespace:defaultComponentNamespace];
+    
     _bodyComponentModelBuilders = [NSMutableDictionary new];
     _bodyComponentIdentifierOrder = [NSMutableArray new];
     
@@ -165,7 +172,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
-                                                                                                                      featureIdentifier:self.featureIdentifier];
+                                                                                                                      featureIdentifier:self.featureIdentifier
+                                                                                                              defaultComponentNamespace:self.defaultComponentNamespace];
     
     [self.bodyComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
     [self.bodyComponentIdentifierOrder addObject:newBuilder.modelIdentifier];
@@ -175,7 +183,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)headerComponentModelBuilderIsConsideredEmpty
 {
-    return self.headerComponentModelBuilder.componentIdentifier == nil;
+    return self.headerComponentModelBuilder.componentName == nil;
 }
 
 @end

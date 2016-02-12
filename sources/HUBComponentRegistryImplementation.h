@@ -9,35 +9,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// Concrete implementation of the `HUBComponentRegistry` API
 @interface HUBComponentRegistryImplementation : NSObject <HUBComponentRegistry>
 
-/// The namespaced identifiers of all components this registry contains
-@property (nonatomic, strong, readonly) NSArray<NSString *> *allComponentIdentifiers;
-
 /**
  *  Initialize an instance of this class with a component fallback handler
  *
- *  @param fallbackNamespace A namespace that will be used if for identifiers without namespace or with a namespace
- *         that doesn't match a registered factory.
+ *  @param fallbackComponentIdentifier An identifier of a component to use in case one couldn't be resolved
+ *         for a certain identifier. This component identifier must be resolvable using one of the registered
+ *         factories, once data loading starts, otherwise an assert is triggered.
  */
-- (instancetype)initWithFallbackNamespace:(NSString *)fallbackNamespace NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFallbackComponentIdentifier:(HUBComponentIdentifier *)fallbackComponentIdentifier NS_DESIGNATED_INITIALIZER;
 
 /**
- *  Return the component to use for a certain model
+ *  Return a newly created component matching a given an identifier
  *
- *  @param model The component model to retrieve the component for
+ *  @param identifier The identifier of a component to create
  *
- *  @return A newly created component that is ready to use
+ *  @return A newly created component that is ready to use. In case the supplied identifier didn’t result in
+ *          a component (because a factory matching it’s `componentNamespace` couldn’t be found, or that factory
+ *          returned `nil`), the registry will create a component based on its `fallbackComponentIdentifier`.
+ *          If this operation also failed, an assert is triggered which should be considered an API user error.
  */
-- (id<HUBComponent>)componentForModel:(id<HUBComponentModel>)model;
-
-/**
- *  Return the component identifier to use for a certain model
- *
- *  @param model The component model to determine the component identifier for
- *
- *  @return Either the model's own `componentIdentifier`, or the identifier for a fallback
- *          component if the component that the model specifies does not exist in the registry.
- */
-- (HUBComponentIdentifier *)componentIdentifierForModel:(id<HUBComponentModel>)model;
+- (id<HUBComponent>)createComponentForIdentifier:(HUBComponentIdentifier *)identifier;
 
 #pragma mark - Unavailable initializers
 

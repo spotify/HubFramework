@@ -23,8 +23,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// The identifier of the model that this builder is for
 @property (nonatomic, copy, readonly) NSString *modelIdentifier;
 
-/// The (namespaced) identifier of the model's component. If nil, a fallback component will be used.
-@property (nonatomic, copy, nullable) HUBComponentIdentifier *componentIdentifier;
+/**
+ *  The namespace of the component that the model should be rendered using
+ *
+ *  The default value of this property is the namespace passed as `defaultComponentNamespace` when setting up
+ *  `HUBManager`. If overriden, it must match the namespace of a registered `HUBComponentFactory`. If set to an
+ *  unknown namespace, the Hub Framework will fall back to the default component namespace again.
+ */
+@property (nonatomic, copy) NSString *componentNamespace;
+
+/**
+ *  The name of the component that the model should be rendered using
+ *
+ *  In order for a component model to be successfully built using this builder, this property must be set to
+ *  non-`nil`. If the `HUBComponentFactory` corresponding to `componentNamespace` couldn't resolve a component
+ *  for this name, the name passed as `fallbackComponentName` when setting up `HUBManager` will be used.
+ */
+@property (nonatomic, copy, nullable) NSString *componentName;
 
 /// Any identifier for the model's content, that can be used for content tracking
 @property (nonatomic, copy, nullable) NSString *contentIdentifier;
@@ -109,8 +124,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param identifier The identifier that the component model should have
  *
  *  @return If a builder already exists for the supplied identifier, then it's returned. Otherwise a new builder is
- *  created, which can be used to build a child component model. Since this method lazily creates a builder in case
- *  one doesn't already exist, use the `-builderExistsForChildComponentModelWithIdentifier:` API instead if you simply
+ *  created, which can be used to build a child component model. If a new builder is created, it will have the same
+ *  `componentNamespace` and `componentName` as its parent. Since this method lazily creates a builder in case one
+ *  doesn't already exist, use the `-builderExistsForChildComponentModelWithIdentifier:` API instead if you simply
  *  wish to check for the existance of a builder.
  */
 - (id<HUBComponentModelBuilder>)builderForChildComponentModelWithIdentifier:(NSString *)identifier;

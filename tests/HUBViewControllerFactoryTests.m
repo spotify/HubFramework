@@ -24,8 +24,9 @@
     
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
-    self.manager = [[HUBManager alloc] initWithFallbackComponentNamespace:@"fallback"
-                                                connectivityStateResolver:connectivityStateResolver];
+    self.manager = [[HUBManager alloc] initWithConnectivityStateResolver:connectivityStateResolver
+                                               defaultComponentNamespace:@"default"
+                                                   fallbackComponentName:@"fallback"];
 }
 
 #pragma mark - Tests
