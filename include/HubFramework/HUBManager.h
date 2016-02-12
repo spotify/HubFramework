@@ -41,7 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param defaultComponentNamespace The component namespace that all component models created using this instance of the
  *         Hub Framework will initially have. This namespace can be overriden by any content provider, using either JSON
  *         data or by using a `HUBComponentModelBuilder` directly. A `HUBComponentFactory` must be registered for this
- *         namespace before any view controllers are created through the Hub Framework.
+ *         namespace before any view controllers are created through the Hub Framework. This namespace will also be used
+ *         as a fallback, in case an assigned namespace couldn't be resolved.
  *  @param fallbackComponentName The component name to use in case a content provider supplied an unknown component name.
  *         This name will be resolved using the `HUBComponentFactory` for `defaultComponentNamespace` as a last line of
  *         defense and must always result in a component being created.
