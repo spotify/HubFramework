@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
+@property (nonatomic, strong, readonly) NSMutableDictionary<HUBComponentIdentifier *, id<HUBComponent>> *componentsForSizeCalculations;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
@@ -33,10 +34,12 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    _componentRegistry = componentRegistry;
     _viewModelLoader = viewModelLoader;
-    _viewModelLoader.delegate = self;
+    _componentRegistry = componentRegistry;
+    _componentsForSizeCalculations = [NSMutableDictionary new];
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
+    
+    _viewModelLoader.delegate = self;
     
     return self;
 }
@@ -158,8 +161,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id<HUBComponentModel> const componentModel = [self.viewModel.bodyComponentModels objectAtIndex:(NSUInteger)indexPath.item];
-    id<HUBComponent> const component = nil;
-    return [component preferredViewSizeForDisplayingModel:componentModel containedInViewWithSize:self.collectionView.frame.size];
+    HUBComponentIdentifier * const componentIdentifier = componentModel.componentIdentifier;
+    
+    id<HUBComponent> sizeComponent = self.componentsForSizeCalculations[componentIdentifier];
+    
+    if (sizeComponent == nil) {
+        sizeComponent = [self.componentRegistry createComponentForIdentifier:componentIdentifier];
+        self.componentsForSizeCalculations[componentIdentifier] = sizeComponent;
+    }
+    
+    return [sizeComponent preferredViewSizeForDisplayingModel:componentModel containedInViewWithSize:self.collectionView.frame.size];
 }
 
 @end
