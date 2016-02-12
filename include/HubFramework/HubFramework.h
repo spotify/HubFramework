@@ -32,7 +32,6 @@
 // Components
 #import "HUBComponent.h"
 #import "HUBComponentFactory.h"
-#import "HUBComponentIdentifier.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentImageData.h"
