@@ -72,16 +72,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) __kindof UIView *view;
 
 /**
- *  Create a new component of the same type as this one
- *
- *  You are not strictly required to copy this object in the implementation of this method,
- *  but it's one possible implementation. You should make sure the returned component is
- *  ready to use, with any dependencies it needs carried over from the previous component
- *  that created it.
- */
-- (instancetype)createNewComponent;
-
-/**
  *  Load the component's view
  *
  *  The Hub Framework will send this message to a component when a new instance of it is about
