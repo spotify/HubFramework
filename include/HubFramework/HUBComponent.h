@@ -36,8 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  to the screen by the Hub Framework. Its responsibilities include model->view data binding, event
  *  handling and rendering.
  *
- *  You're free to setup your component object in whichever way you require, as long as you make sure
- *  any dependencies are carried over to new components returned from `-createNewComponent`.
+ *  You are free to implement your component in whatever way you desire, and register it for use with
+ *  the Hub Framework using a `HUBComponentFactory` implementation registered with `HUBComponentRegistry`.
  *
  *  Ideally, components should hold as little state as possible, and instead react to any model changes
  *  through `-configureViewWithModel:`.
@@ -70,16 +70,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  A component has a 1:1 relationship with its view.
  */
 @property (nonatomic, strong, nullable) __kindof UIView *view;
-
-/**
- *  Create a new component of the same type as this one
- *
- *  You are not strictly required to copy this object in the implementation of this method,
- *  but it's one possible implementation. You should make sure the returned component is
- *  ready to use, with any dependencies it needs carried over from the previous component
- *  that created it.
- */
-- (instancetype)createNewComponent;
 
 /**
  *  Load the component's view
