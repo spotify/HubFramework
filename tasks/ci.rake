@@ -55,7 +55,8 @@ namespace :ci do
     desc 'Run the CI bound tasks (build, test, upload code coverage)'
     task :run => [:clean_build_dir, :create_build_dir, :build_and_test] do
         ENV['DERIVED_DATA_PATH'] = DERIVED_DATA_PATH
-        Rake::Task['coverage:run'].invoke
+        # Commented out until we can get the coverage uploaded to Codecov properly.
+        #Rake::Task['coverage:run'].invoke
     end
 
     def build_cmd(project, scheme, configuration, sim_device, sim_os, generate_coverage, commands)
