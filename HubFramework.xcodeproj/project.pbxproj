@@ -356,7 +356,6 @@
 		8AA29C891C4FAD4200E972B7 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				8AF21C9D1C6D044700960A06 /* HUBComponentIdentifier.h */,
 				8ACB2A791C6A2F7C000741D7 /* HUBComponentIdentifier.m */,
 				8AA29C831C4FAA9200E972B7 /* HUBComponentModelImplementation.h */,
 				8AA29C841C4FAA9200E972B7 /* HUBComponentModelImplementation.m */,
@@ -423,6 +422,7 @@
 			children = (
 				8A0754AC1C21A7C700AFAD38 /* HUBComponent.h */,
 				9996E9691C6A42E000231D22 /* HUBComponentFactory.h */,
+				8AF21C9D1C6D044700960A06 /* HUBComponentIdentifier.h */,
 				8ADD42AD1C21D65600D1A801 /* HUBComponentModel.h */,
 				8AA29C801C4FA7B600E972B7 /* HUBComponentModelBuilder.h */,
 				8AA29C7F1C4FA5FE00E972B7 /* HUBComponentImageData.h */,
