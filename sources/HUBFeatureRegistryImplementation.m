@@ -8,7 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBFeatureRegistryImplementation ()
 
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, HUBFeatureRegistration *> *registrations;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, HUBFeatureRegistration *> *registrationsByRootViewURI;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBFeatureRegistration *> *registrationsByIdentifier;
 
 @end
 
@@ -20,7 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    _registrations = [NSMutableDictionary new];
+    _registrationsByRootViewURI = [NSMutableDictionary new];
+    _registrationsByIdentifier = [NSMutableDictionary new];
     
     return self;
 }
@@ -29,13 +31,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable HUBFeatureRegistration *)featureRegistrationForViewURI:(NSURL *)viewURI
 {
-    HUBFeatureRegistration * const exactMatch = [self.registrations objectForKey:viewURI];
+    HUBFeatureRegistration * const exactMatch = [self.registrationsByRootViewURI objectForKey:viewURI];
     
     if (exactMatch != nil && [self qualifyViewURI:viewURI forFeatureWithRegistration:exactMatch]) {
         return exactMatch;
     }
     
-    for (HUBFeatureRegistration * const registration in self.registrations.allValues) {
+    for (HUBFeatureRegistration * const registration in self.registrationsByRootViewURI.allValues) {
         if (![viewURI.absoluteString hasPrefix:registration.rootViewURI.absoluteString]) {
             continue;
         }
@@ -61,9 +63,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)registerFeatureWithConfiguration:(id<HUBFeatureConfiguration>)configuration
 {
-    NSAssert([self.registrations objectForKey:configuration.rootViewURI] == nil,
+    NSAssert(self.registrationsByRootViewURI[configuration.rootViewURI] == nil,
              @"Attempted to register a Hub Framework feature for a root view URI that is already registered: %@",
              configuration.rootViewURI);
+    
+    NSAssert(self.registrationsByIdentifier[configuration.featureIdentifier] == nil,
+             @"Attempted to register a Hub Framework feature for an identifier that is already registered: %@",
+             configuration.featureIdentifier);
     
     HUBFeatureRegistration * const registration = [[HUBFeatureRegistration alloc] initWithFeatureIdentifier:configuration.featureIdentifier
                                                                                                 rootViewURI:configuration.rootViewURI
@@ -71,7 +77,20 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                  customJSONSchemaIdentifier:configuration.customJSONSchemaIdentifier
                                                                                            viewURIQualifier:configuration.viewURIQualifier];
     
-    [self.registrations setObject:registration forKey:registration.rootViewURI];
+    self.registrationsByRootViewURI[registration.rootViewURI] = registration;
+    self.registrationsByIdentifier[registration.featureIdentifier] = registration;
+}
+
+- (void)unregisterFeatureWithIdentifier:(NSString *)featureIdentifier
+{
+    HUBFeatureRegistration * const registration = self.registrationsByIdentifier[featureIdentifier];
+    
+    if (registration == nil) {
+        return;
+    }
+    
+    self.registrationsByIdentifier[featureIdentifier] = nil;
+    self.registrationsByRootViewURI[registration.rootViewURI] = nil;
 }
 
 #pragma mark - Private utilities

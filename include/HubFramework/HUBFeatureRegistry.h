@@ -24,8 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Create a new feature configuration object that can be used to setup a feature for use with the Hub Framework
  *
- *  @param featureIdentifier The identifier of the feature
- *  @param rootViewURI The root view URI of the feature
+ *  @param featureIdentifier The identifier of the feature (must be unique across the app)
+ *  @param rootViewURI The root view URI of the feature (must be unique across the app)
  *  @param contentProviderFactory The content provider factory that the feature should use
  *
  *  Once you've setup the returned configuration object according to your feature's requirements, pass it back to the registry
@@ -47,6 +47,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  already registered is considered a severe error and will trigger an assert.
  */
 - (void)registerFeatureWithConfiguration:(id<HUBFeatureConfiguration>)configuration;
+
+/**
+ *  Unregister a feature from the Hub Framework
+ *
+ *  @param featureIdentifier The identifier of the feature to unregister
+ *
+ *  After this method has been called, The Hub Framework will remove all information stored for the given identifier, and
+ *  open it up to be registered again for another feature. If the given identifier does not exist, this method does nothing.
+ */
+- (void)unregisterFeatureWithIdentifier:(NSString *)featureIdentifier;
 
 @end
 
