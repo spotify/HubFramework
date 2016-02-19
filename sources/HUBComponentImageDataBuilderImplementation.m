@@ -45,15 +45,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (nullable HUBComponentImageDataImplementation *)build
+- (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier
 {
     if (self.URL == nil && self.iconIdentifier == nil) {
         return nil;
     }
     
-    return [[HUBComponentImageDataImplementation alloc] initWithStyle:self.style
-                                                                  URL:self.URL
-                                                       iconIdentifier:self.iconIdentifier];
+    return [[HUBComponentImageDataImplementation alloc] initWithIdentifier:identifier
+                                                                     style:self.style
+                                                                       URL:self.URL
+                                                            iconIdentifier:self.iconIdentifier];
 }
 
 NS_ASSUME_NONNULL_END

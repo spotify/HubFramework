@@ -21,6 +21,13 @@ typedef enum : NSUInteger {
 @protocol HUBComponentImageData <NSObject>
 
 /**
+ *  Any identifier for the image
+ *
+ *  This will always be `nil` for default images (main and background)
+ */
+@property (nonatomic, copy, readonly, nullable) NSString *identifier;
+
+/**
  *  The style that the image should be rendered in
  *
  *  If HUBComponentImageStyleNone, that indicates to a component that no image should actually be rendered. This might

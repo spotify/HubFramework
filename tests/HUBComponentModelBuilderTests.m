@@ -102,8 +102,9 @@
     [componentModelBuilder builderForCustomImageDataWithIdentifier:emptyCustomImageBuilderIdentifier];
     
     HUBComponentModelImplementation * const componentModel = [componentModelBuilder build];
-    XCTAssertEqualObjects([componentModel.customImageData objectForKey:customImageIdentifier].iconIdentifier, imageDataBuilder.iconIdentifier);
-    XCTAssertNil([componentModel.customImageData objectForKey:emptyCustomImageBuilderIdentifier]);
+    XCTAssertEqualObjects(componentModel.customImageData[customImageIdentifier].identifier, customImageIdentifier);
+    XCTAssertEqualObjects(componentModel.customImageData[customImageIdentifier].iconIdentifier, imageDataBuilder.iconIdentifier);
+    XCTAssertNil(componentModel.customImageData[emptyCustomImageBuilderIdentifier]);
 }
 
 - (void)testTargetInitialViewModelBuilderLazyInit
