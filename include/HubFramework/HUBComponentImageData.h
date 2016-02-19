@@ -12,6 +12,16 @@ typedef enum : NSUInteger {
     HUBComponentImageStyleCircular
 } HUBComponentImageStyle;
 
+/// Enum describing various types of component images
+typedef enum : NSUInteger {
+    /// The main image of a component. See `HUBComponentModel.mainImageData` for more information.
+    HUBComponentImageTypeMain,
+    /// The background image of a component. See `HUBComponentModel.backgroundImageData` for more information.
+    HUBComponentImageTypeBackground,
+    /// A custom image for a component. See `HUBComponentModel.customImageData` for more information.
+    HUBComponentImageTypeCustom
+} HUBComponentImageType;
+
 /**
  *  Protocol defining the public API of an object that describes image data for a Component in the Hub Framework
  *
@@ -27,6 +37,14 @@ typedef enum : NSUInteger {
  *  same identifier as its key in the `customImageData` dictionary of its `HUBComponentModel`.
  */
 @property (nonatomic, copy, readonly, nullable) NSString *identifier;
+
+/**
+ *  The type of the image
+ *
+ *  If the type is `HUBComponentImageTypeCustom`, the `identifier` property will contain the custom identifier of the
+ *  image. See `HUBComponentImageType` for more information.
+ */
+@property (nonatomic, readonly) HUBComponentImageType type;
 
 /**
  *  The style that the image should be rendered in
