@@ -120,6 +120,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)configureViewWithModel:(id<HUBComponentModel>)model;
 
+@optional
+
 #pragma mark - Managing Component Images
 
 /**
