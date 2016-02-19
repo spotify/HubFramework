@@ -21,9 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The identifier of the feature
  *
- *  A feature's identifier is mainly used for logging (and can be overriden in the view model building phase through either JSON or
- *  the `HUBLocalContentProvider` API, for any view that belongs to the feature). It's recommended that each feature identifier is
- *  unique, but this is not a strict requirement.
+ *  A feature's identifier is mainly used for identifying the feature within the Hub Framework, but also acts as the default value for
+ *  logging (it can be overriden in the view model building phase through either JSON or the `HUBLocalContentProvider` API, for any view
+ *  that belongs to the feature).
+ *
+ *  The idenetifier must be unique to a feature.
  */
 @property (nonatomic, copy) NSString *featureIdentifier;
 

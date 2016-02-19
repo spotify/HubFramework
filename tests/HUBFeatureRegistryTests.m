@@ -44,12 +44,37 @@
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     id<HUBContentProviderFactory> const contentProviderFactory = [HUBContentProviderFactoryMock new];
     
-    id<HUBFeatureConfiguration> const configuration = [self.registry createConfigurationForFeatureWithIdentifier:@"feature"
-                                                                                                     rootViewURI:rootViewURI
-                                                                                          contentProviderFactory:contentProviderFactory];
+    id<HUBFeatureConfiguration> const configurationA = [self.registry createConfigurationForFeatureWithIdentifier:@"featureA"
+                                                                                                      rootViewURI:rootViewURI
+                                                                                           contentProviderFactory:contentProviderFactory];
     
-    [self.registry registerFeatureWithConfiguration:configuration];
-    XCTAssertThrows([self.registry registerFeatureWithConfiguration:configuration]);
+    id<HUBFeatureConfiguration> const configurationB = [self.registry createConfigurationForFeatureWithIdentifier:@"featureB"
+                                                                                                      rootViewURI:rootViewURI
+                                                                                           contentProviderFactory:contentProviderFactory];
+    
+    [self.registry registerFeatureWithConfiguration:configurationA];
+    XCTAssertThrows([self.registry registerFeatureWithConfiguration:configurationB]);
+}
+
+- (void)testConflictingIdentifiersTriggerAssert
+{
+    NSString * const identifier = @"identifier";
+    
+    NSURL * const rootViewURIA = [NSURL URLWithString:@"spotify:hub:framework:a"];
+    NSURL * const rootViewURIB = [NSURL URLWithString:@"spotify:hub:framework:b"];
+    
+    id<HUBContentProviderFactory> const contentProviderFactory = [HUBContentProviderFactoryMock new];
+    
+    id<HUBFeatureConfiguration> const configurationA = [self.registry createConfigurationForFeatureWithIdentifier:identifier
+                                                                                                      rootViewURI:rootViewURIA
+                                                                                           contentProviderFactory:contentProviderFactory];
+    
+    id<HUBFeatureConfiguration> const configurationB = [self.registry createConfigurationForFeatureWithIdentifier:identifier
+                                                                                                      rootViewURI:rootViewURIB
+                                                                                           contentProviderFactory:contentProviderFactory];
+    
+    [self.registry registerFeatureWithConfiguration:configurationA];
+    XCTAssertThrows([self.registry registerFeatureWithConfiguration:configurationB]);
 }
 
 - (void)testRegistrationAndConfigurationMatch
@@ -121,6 +146,21 @@
     
     XCTAssertEqualObjects([self.registry featureRegistrationForViewURI:rootViewURI].rootViewURI, configuration.rootViewURI);
     XCTAssertNil([self.registry featureRegistrationForViewURI:subviewURI]);
+}
+
+- (void)testUnregisteringFeature
+{
+    NSString * const identifier = @"Awesome feature";
+    NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    id<HUBContentProviderFactory> const contentProviderFactory = [HUBContentProviderFactoryMock new];
+    
+    id<HUBFeatureConfiguration> const configuration = [self.registry createConfigurationForFeatureWithIdentifier:identifier
+                                                                                                     rootViewURI:rootViewURI
+                                                                                          contentProviderFactory:contentProviderFactory];
+    
+    [self.registry registerFeatureWithConfiguration:configuration];
+    [self.registry unregisterFeatureWithIdentifier:identifier];
+    [self.registry registerFeatureWithConfiguration:configuration];
 }
 
 @end
