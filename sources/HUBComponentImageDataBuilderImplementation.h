@@ -13,10 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  Build an instance of `HUBComponentImageDataImplementation` from the data contained in this builder
  *
  *  @param identifier Any identifier that the produced image data should have
+ *  @param type The type of the image. See `HUBComponentImageType` for more information.
  *
  *  If the builder has neither an `URL` or `iconIdentifier` associated with it, nil will be returned.
  */
-- (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier;
+- (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier
+                                                                 type:(HUBComponentImageType)type;
 
 @end
 
