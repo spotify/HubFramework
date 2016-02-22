@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable HUBFeatureRegistration *)featureRegistrationForViewURI:(NSURL *)viewURI
 {
-    HUBFeatureRegistration * const exactMatch = [self.registrationsByRootViewURI objectForKey:viewURI];
+    HUBFeatureRegistration * const exactMatch = self.registrationsByRootViewURI[viewURI];
     
     if (exactMatch != nil && [self qualifyViewURI:viewURI forFeatureWithRegistration:exactMatch]) {
         return exactMatch;
