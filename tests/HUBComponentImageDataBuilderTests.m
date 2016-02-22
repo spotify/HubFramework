@@ -29,8 +29,11 @@
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
     self.builder.iconIdentifier = @"icon";
     
-    HUBComponentImageDataImplementation * const imageData = [self.builder build];
+    NSString * const identifier = @"identifier";
     
+    HUBComponentImageDataImplementation * const imageData = [self.builder buildWithIdentifier:identifier];
+    
+    XCTAssertEqual(imageData.identifier, identifier);
     XCTAssertEqual(imageData.style, self.builder.style);
     XCTAssertEqualObjects(imageData.URL, self.builder.URL);
     XCTAssertEqualObjects(imageData.iconIdentifier, self.builder.iconIdentifier);
@@ -38,19 +41,19 @@
 
 - (void)testNilURLAndIconIdentifierProducingNil
 {
-    XCTAssertNil([self.builder build]);
+    XCTAssertNil([self.builder buildWithIdentifier:nil]);
 }
 
 - (void)testOnlyURLNotProducingNil
 {
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
-    XCTAssertNotNil([self.builder build]);
+    XCTAssertNotNil([self.builder buildWithIdentifier:nil]);
 }
 
 - (void)testOnlyIconIdentifierNotProducingNil
 {
     self.builder.iconIdentifier = @"icon";
-    XCTAssertNotNil([self.builder build]);
+    XCTAssertNotNil([self.builder buildWithIdentifier:nil]);
 }
 
 - (void)testAddingJSONData
