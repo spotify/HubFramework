@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString * const styleString = [imageDataSchema.styleStringPath stringFromJSONDictionary:dictionary];
     
     if (styleString != nil) {
-        NSNumber * const styleNumber = [imageDataSchema.styleStringMap objectForKey:styleString];
+        NSNumber * const styleNumber = imageDataSchema.styleStringMap[styleString];
         
         if (styleNumber != nil) {
             NSUInteger const potentialImageStyle = styleNumber.unsignedIntegerValue;

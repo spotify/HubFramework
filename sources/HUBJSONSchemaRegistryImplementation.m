@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id<HUBJSONSchema>)customSchemaForIdentifier:(NSString *)identifier
 {
-    return [self.customSchemasByIdentifier objectForKey:identifier];
+    return self.customSchemasByIdentifier[identifier];
 }
 
 #pragma mark - HUBJSONSchemaRegistry
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)registerCustomSchema:(id<HUBJSONSchema>)schema forIdentifier:(NSString *)identifier
 {
-    NSAssert([self.customSchemasByIdentifier objectForKey:identifier] == nil,
+    NSAssert(self.customSchemasByIdentifier[identifier] == nil,
              @"Attempted to register a JSON schema for an identifier that is already registered: %@",
              identifier);
     

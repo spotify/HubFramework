@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
             return nil;
         }
         
-        NSObject * const output = [(NSDictionary *)input objectForKey:key];
+        NSObject * const output = ((NSDictionary *)input)[key];
         
         if (output == nil) {
             return nil;

@@ -277,7 +277,7 @@
     XCTAssertEqualObjects(model.descriptionText, descriptionText);
     XCTAssertEqualObjects(model.mainImageData.iconIdentifier, mainImageIconIdentifier);
     XCTAssertEqualObjects(model.backgroundImageData.iconIdentifier, backgroundImageIconIdentifier);
-    XCTAssertEqualObjects([model.customImageData objectForKey:customImageIdentifier].iconIdentifier, customImageIconIdentifier);
+    XCTAssertEqualObjects(model.customImageData[customImageIdentifier].iconIdentifier, customImageIconIdentifier);
     XCTAssertEqualObjects(model.targetURL, targetURL);
     XCTAssertEqualObjects(model.targetInitialViewModel.navigationBarTitle, targetTitle);
     XCTAssertEqualObjects(model.customData, customData);
@@ -289,11 +289,11 @@
     expectedDateComponents.day = 17;
     XCTAssertEqualObjects(model.date, [[NSCalendar currentCalendar] dateFromComponents:expectedDateComponents]);
     
-    id<HUBComponentModel> const childModel1 = [model.childComponentModels objectAtIndex:0];
+    id<HUBComponentModel> const childModel1 = model.childComponentModels[0];
     XCTAssertEqualObjects(childModel1.identifier, child1ModelIdentifier);
     XCTAssertEqualObjects(childModel1.componentIdentifier, child1ComponentIdentifier);
     
-    id<HUBComponentModel> const childModel2 = [model.childComponentModels objectAtIndex:1];
+    id<HUBComponentModel> const childModel2 = model.childComponentModels[1];
     XCTAssertEqualObjects(childModel2.identifier, child2ModelIdentifier);
     XCTAssertEqualObjects(childModel2.componentIdentifier, child2ComponentIdentifier);
 }

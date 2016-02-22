@@ -137,7 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<HUBComponentModel> const componentModel = [self.viewModel.bodyComponentModels objectAtIndex:(NSUInteger)indexPath.item];
+    id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
     NSString * const cellReuseIdentifier = componentModel.componentIdentifier.identifierString;
     
     if (![self.registeredCollectionViewCellReuseIdentifiers containsObject:cellReuseIdentifier]) {
@@ -160,7 +160,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<HUBComponentModel> const componentModel = [self.viewModel.bodyComponentModels objectAtIndex:(NSUInteger)indexPath.item];
+    id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
     HUBComponentIdentifier * const componentIdentifier = componentModel.componentIdentifier;
     
     id<HUBComponent> sizeComponent = self.componentsForSizeCalculations[componentIdentifier];

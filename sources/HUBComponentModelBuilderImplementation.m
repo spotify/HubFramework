@@ -135,7 +135,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)builderExistsForCustomImageDataWithIdentifier:(NSString *)identifier
 {
-    return [self.customImageDataBuilders objectForKey:identifier] != nil;
+    return self.customImageDataBuilders[identifier] != nil;
 }
 
 - (id<HUBComponentImageDataBuilder>)builderForCustomImageDataWithIdentifier:(NSString *)identifier
@@ -145,7 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)builderExistsForChildComponentModelWithIdentifier:(NSString *)identifier
 {
-    return [self.childComponentModelBuilders objectForKey:identifier] != nil;
+    return self.childComponentModelBuilders[identifier] != nil;
 }
 
 - (id<HUBComponentModelBuilder>)builderForChildComponentModelWithIdentifier:(NSString *)modelIdentifier
@@ -197,7 +197,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary * const customImageDataDictionary = [componentModelSchema.customImageDataDictionaryPath dictionaryFromJSONDictionary:dictionary];
     
     for (NSString * const imageIdentifier in customImageDataDictionary.allKeys) {
-        NSDictionary * const imageDataDictionary = [customImageDataDictionary objectForKey:imageIdentifier];
+        NSDictionary * const imageDataDictionary = customImageDataDictionary[imageIdentifier];
         
         if ([imageDataDictionary isKindOfClass:[NSDictionary class]]) {
             HUBComponentImageDataBuilderImplementation * const builder = [self getOrCreateBuilderForCustomImageDataWithIdentifier:imageIdentifier];
@@ -274,7 +274,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HUBComponentImageDataBuilderImplementation *)getOrCreateBuilderForCustomImageDataWithIdentifier:(NSString *)identifier
 {
-    HUBComponentImageDataBuilderImplementation * const existingBuilder = [self.customImageDataBuilders objectForKey:identifier];
+    HUBComponentImageDataBuilderImplementation * const existingBuilder = self.customImageDataBuilders[identifier];
     
     if (existingBuilder != nil) {
         return existingBuilder;
@@ -300,7 +300,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     if (identifier != nil) {
         NSString * const existingBuilderIdentifier = identifier;
-        HUBComponentModelBuilderImplementation * const existingBuilder = [self.childComponentModelBuilders objectForKey:existingBuilderIdentifier];
+        HUBComponentModelBuilderImplementation * const existingBuilder = self.childComponentModelBuilders[existingBuilderIdentifier];
         
         if (existingBuilder != nil) {
             return existingBuilder;
