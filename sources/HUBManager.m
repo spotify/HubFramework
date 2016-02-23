@@ -18,10 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBManager
 
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+                               imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                         defaultComponentNamespace:(NSString *)defaultComponentNamespace
                             fallbackComponentName:(NSString *)fallbackComponentName
 {
     NSParameterAssert(connectivityStateResolver != nil);
+    NSParameterAssert(imageLoaderFactory != nil);
     NSParameterAssert(defaultComponentNamespace != nil);
     NSParameterAssert(fallbackComponentName != nil);
     
@@ -43,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                              connectivityStateResolver:_connectivityStateResolver];
     
     _viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:_viewModelLoaderFactory
+                                                                                         imageLoaderFactory:imageLoaderFactory
                                                                                           componentRegistry:self.componentRegistry];
     
     return self;

@@ -6,6 +6,7 @@
 @protocol HUBViewModelLoaderFactory;
 @protocol HUBViewControllerFactory;
 @protocol HUBConnectivityStateResolver;
+@protocol HUBImageLoaderFactory;
 @class HUBComponentIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -38,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param connectivityStateResolver An object responsible for determining the current connectivity state of
  *         the application. This object will be retained.
+ *  @param imageLoaderFactory A factory that creates image loaders that are used to load images for components
  *  @param defaultComponentNamespace The component namespace that all component models created using this instance of the
  *         Hub Framework will initially have. This namespace can be overriden by any content provider, using either JSON
  *         data or by using a `HUBComponentModelBuilder` directly. A `HUBComponentFactory` must be registered for this
@@ -48,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
  *         defense and must always result in a component being created.
  */
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+                               imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                         defaultComponentNamespace:(NSString *)defaultComponentNamespace
                             fallbackComponentName:(NSString *)fallbackComponentName NS_DESIGNATED_INITIALIZER;
 
