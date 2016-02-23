@@ -82,6 +82,21 @@
     XCTAssertNil([builder build]);
 }
 
+- (void)testDefaultImageTypes
+{
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:@"feature"
+                                                                                                           defaultComponentNamespace:@"namespace"];
+    
+    builder.componentName = @"component";
+    builder.mainImageDataBuilder.iconIdentifier = @"icon";
+    builder.backgroundImageDataBuilder.iconIdentifier = @"icon";
+    HUBComponentModelImplementation * const model = [builder build];
+    
+    XCTAssertEqual(model.mainImageData.type, HUBComponentImageTypeMain);
+    XCTAssertEqual(model.backgroundImageData.type, HUBComponentImageTypeBackground);
+}
+
 - (void)testCustomImageDataBuilder
 {
     HUBComponentModelBuilderImplementation * const componentModelBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"id"

@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its possible values
  *
  *  @param identifier Any identifier for the image (only non-`nil` for custom images)
+ *  @param type The type of the image. See `HUBComponentImageType` for more information.
  *  @param style The style the image should be rendered in
  *  @param URL Any HTTP URL of a remote image that should be downloaded and then rendered
  *  @param iconIdentifier Any identifier of an icon that should be used with the image
@@ -17,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  documentation in `HUBComponentImageData`.
  */
 - (instancetype)initWithIdentifier:(nullable NSString *)identifier
+                              type:(HUBComponentImageType)type
                              style:(HUBComponentImageStyle)style
                                URL:(nullable NSURL *)URL
                     iconIdentifier:(nullable NSString *)iconIdentifier NS_DESIGNATED_INITIALIZER;
