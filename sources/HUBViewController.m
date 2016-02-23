@@ -246,7 +246,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    if (![component respondsToSelector:@selector(updateViewForLoadedImage:fromData:model:containerViewSize:)]) {
+    if (![component respondsToSelector:@selector(updateViewForLoadedImage:fromData:model:)]) {
         return;
     }
     
