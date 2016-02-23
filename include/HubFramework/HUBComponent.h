@@ -91,10 +91,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  Return the size that the component prefers that it view gets resized to when used for a certain model
  *
  *  @param model The model that the view should reflect
- *  @param containerViewSize The container in which the view will be displayed
+ *  @param containerViewSize The size of the container in which the view will be displayed
  */
 - (CGSize)preferredViewSizeForDisplayingModel:(id<HUBComponentModel>)model
-                      containedInViewWithSize:(CGSize)containerViewSize;
+                            containerViewSize:(CGSize)containerViewSize;
 
 #pragma mark - Reusing Views
 
