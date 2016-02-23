@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Initialize an instance of this class with its required values
  *
- *  @param compoentIndex The index of the component that this object is for
+ *  @param componentIndex The index of the component that this object is for
  *  @param imageIdentifier The identifier of the image that this object is for
  *  @param imageType The type of the image that this object is for
  */
