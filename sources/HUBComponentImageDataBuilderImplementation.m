@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
         NSNumber * const styleNumber = imageDataSchema.styleStringMap[styleString];
         
         if (styleNumber != nil) {
-            NSUInteger const potentialImageStyle = styleNumber.unsignedIntegerValue;
+            NSInteger const potentialImageStyle = styleNumber.integerValue;
             
             switch (potentialImageStyle) {
                 case HUBComponentImageStyleNone:
