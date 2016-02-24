@@ -2,6 +2,7 @@
 
 @protocol HUBViewModelLoader;
 @protocol HUBImageLoader;
+@class HUBCollectionViewFactory;
 @class HUBComponentRegistryImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -9,18 +10,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// View controller that manages a Hub Framework-powered User Interface with a collection view of components
 @interface HUBViewController : UIViewController
 
-/// The collection view that this view controller uses to render its contents
-@property (nonatomic, strong, readonly, nullable) UICollectionView *collectionView;
-
 /**
  *  Initialize an instance of this class with its required dependencies
  *
  *  @param viewModelLoader The object to use to load view models for the view controller
  *  @param imageLoader The object to use to load images for components
+ *  @param collectionViewFactory The factory to use to create collection views
  *  @param componentRegistry The registry to use to retrieve components to render
  */
 - (instancetype)initWithViewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
                             imageLoader:(id<HUBImageLoader>)imageLoader
+                  collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
                       componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers

@@ -1,4 +1,11 @@
 #import "HUBComponentMock.h"
+#import "HUBComponentImageData.h"
+
+@interface HUBComponentMock ()
+
+@property (nonatomic, strong, readwrite, nullable) id<HUBComponentImageData> mainImageData;
+
+@end
 
 @implementation HUBComponentMock
 
@@ -37,7 +44,14 @@
 
 - (void)updateViewForLoadedImage:(UIImage *)image fromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model
 {
-    // No-op
+    switch (imageData.type) {
+        case HUBComponentImageTypeMain:
+            self.mainImageData = imageData;
+            break;
+        case HUBComponentImageTypeBackground:
+        case HUBComponentImageTypeCustom:
+            break;
+    }
 }
 
 @end

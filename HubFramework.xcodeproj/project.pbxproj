@@ -13,6 +13,9 @@
 		8A58E0E31C5A77C700F41A5C /* HUBJSONPathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A58E0E21C5A77C700F41A5C /* HUBJSONPathTests.m */; };
 		8A58E1471C5B79A900F41A5C /* HUBMutableJSONPathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A58E1461C5B79A900F41A5C /* HUBMutableJSONPathTests.m */; };
 		8A58E1491C5FA62E00F41A5C /* HUBComponentImageDataBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A58E1481C5FA62E00F41A5C /* HUBComponentImageDataBuilderTests.m */; };
+		8A69DBAA1C7DF8C000F5EFC6 /* HUBCollectionViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A69DBA91C7DF8C000F5EFC6 /* HUBCollectionViewFactory.m */; };
+		8A69DBAD1C7DF9D300F5EFC6 /* HUBCollectionViewFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A69DBAC1C7DF9D300F5EFC6 /* HUBCollectionViewFactoryMock.m */; };
+		8A69DBB01C7DFA1A00F5EFC6 /* HUBCollectionViewMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A69DBAF1C7DFA1A00F5EFC6 /* HUBCollectionViewMock.m */; };
 		8A786B941C57D62100B2AB9E /* HUBViewModelBuilderImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786B931C57D62100B2AB9E /* HUBViewModelBuilderImplementation.m */; };
 		8A786B961C57E6F300B2AB9E /* HUBViewModelBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786B951C57E6F300B2AB9E /* HUBViewModelBuilderTests.m */; };
 		8A786BA81C5A2E8F00B2AB9E /* HUBJSONSchemaRegistryImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BA71C5A2E8F00B2AB9E /* HUBJSONSchemaRegistryImplementation.m */; };
@@ -123,6 +126,12 @@
 		8A58E0E21C5A77C700F41A5C /* HUBJSONPathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBJSONPathTests.m; sourceTree = "<group>"; };
 		8A58E1461C5B79A900F41A5C /* HUBMutableJSONPathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBMutableJSONPathTests.m; sourceTree = "<group>"; };
 		8A58E1481C5FA62E00F41A5C /* HUBComponentImageDataBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentImageDataBuilderTests.m; sourceTree = "<group>"; };
+		8A69DBA81C7DF8C000F5EFC6 /* HUBCollectionViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBCollectionViewFactory.h; sourceTree = "<group>"; };
+		8A69DBA91C7DF8C000F5EFC6 /* HUBCollectionViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewFactory.m; sourceTree = "<group>"; };
+		8A69DBAB1C7DF9D300F5EFC6 /* HUBCollectionViewFactoryMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBCollectionViewFactoryMock.h; sourceTree = "<group>"; };
+		8A69DBAC1C7DF9D300F5EFC6 /* HUBCollectionViewFactoryMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewFactoryMock.m; sourceTree = "<group>"; };
+		8A69DBAE1C7DFA1A00F5EFC6 /* HUBCollectionViewMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBCollectionViewMock.h; sourceTree = "<group>"; };
+		8A69DBAF1C7DFA1A00F5EFC6 /* HUBCollectionViewMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewMock.m; sourceTree = "<group>"; };
 		8A786B911C57D53600B2AB9E /* HUBViewModelBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBViewModelBuilder.h; sourceTree = "<group>"; };
 		8A786B921C57D62100B2AB9E /* HUBViewModelBuilderImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewModelBuilderImplementation.h; sourceTree = "<group>"; };
 		8A786B931C57D62100B2AB9E /* HUBViewModelBuilderImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBViewModelBuilderImplementation.m; sourceTree = "<group>"; };
@@ -487,6 +496,10 @@
 				8A89EFE41C7C728100A27EE9 /* HUBImageLoaderMock.m */,
 				8A89EFE61C7C866500A27EE9 /* HUBImageLoaderFactoryMock.h */,
 				8A89EFE71C7C866500A27EE9 /* HUBImageLoaderFactoryMock.m */,
+				8A69DBAB1C7DF9D300F5EFC6 /* HUBCollectionViewFactoryMock.h */,
+				8A69DBAC1C7DF9D300F5EFC6 /* HUBCollectionViewFactoryMock.m */,
+				8A69DBAE1C7DFA1A00F5EFC6 /* HUBCollectionViewMock.h */,
+				8A69DBAF1C7DFA1A00F5EFC6 /* HUBCollectionViewMock.m */,
 			);
 			path = mocks;
 			sourceTree = "<group>";
@@ -519,6 +532,8 @@
 				8AD064681C68DEA10086C081 /* HUBViewController.m */,
 				8AD0646E1C68EDA20086C081 /* HUBViewControllerFactoryImplementation.h */,
 				8AD0646F1C68EDA20086C081 /* HUBViewControllerFactoryImplementation.m */,
+				8A69DBA81C7DF8C000F5EFC6 /* HUBCollectionViewFactory.h */,
+				8A69DBA91C7DF8C000F5EFC6 /* HUBCollectionViewFactory.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -634,6 +649,7 @@
 				8A786BA81C5A2E8F00B2AB9E /* HUBJSONSchemaRegistryImplementation.m in Sources */,
 				8AA97C0D1C60BA4E0078F19D /* HUBFeatureRegistryImplementation.m in Sources */,
 				8A786B941C57D62100B2AB9E /* HUBViewModelBuilderImplementation.m in Sources */,
+				8A69DBAA1C7DF8C000F5EFC6 /* HUBCollectionViewFactory.m in Sources */,
 				8A49BAF81C777FB1005F7453 /* HUBComponentImageLoadingContext.m in Sources */,
 				8AA29C8F1C4FAFC100E972B7 /* HUBComponentImageDataBuilderImplementation.m in Sources */,
 				8AE278A01C6236E400DFAF99 /* HUBComponentImageDataJSONSchemaImplementation.m in Sources */,
@@ -645,7 +661,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A69DBB01C7DFA1A00F5EFC6 /* HUBCollectionViewMock.m in Sources */,
 				DDA41C951C6D08F50056E511 /* HUBJSONPathImplementation.m in Sources */,
+				8A69DBAD1C7DF9D300F5EFC6 /* HUBCollectionViewFactoryMock.m in Sources */,
 				DDA41C9E1C6D09210056E511 /* HUBViewModelBuilderImplementation.m in Sources */,
 				8A89EFE91C7C866D00A27EE9 /* HUBImageLoaderMock.m in Sources */,
 				8AD064791C69FFD00086C081 /* HUBViewModelLoaderFactoryTests.m in Sources */,
