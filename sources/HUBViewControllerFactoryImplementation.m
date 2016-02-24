@@ -5,6 +5,7 @@
 #import "HUBImageLoaderFactory.h"
 #import "HUBFeatureRegistration.h"
 #import "HUBViewController.h"
+#import "HUBCollectionViewFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -48,8 +49,12 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
+    HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
     
-    return [[HUBViewController alloc] initWithViewModelLoader:viewModelLoader imageLoader:imageLoader componentRegistry:self.componentRegistry];
+    return [[HUBViewController alloc] initWithViewModelLoader:viewModelLoader
+                                                  imageLoader:imageLoader
+                                        collectionViewFactory:collectionViewFactory
+                                            componentRegistry:self.componentRegistry];
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "HUBUtilities.h"
 #import "HUBImageLoader.h"
 #import "HUBComponentImageLoadingContext.h"
+#import "HUBCollectionViewFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,9 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
 @property (nonatomic, strong, readonly) id<HUBImageLoader> imageLoader;
+@property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBComponentIdentifier *, id<HUBComponent>> *componentsForSizeCalculations;
-@property (nonatomic, strong, readwrite, nullable) UICollectionView *collectionView;
+@property (nonatomic, strong, nullable) UICollectionView *collectionView;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, HUBComponentImageLoadingContext *> *componentImageLoadingContexts;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
@@ -33,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithViewModelLoader:(id<HUBViewModelLoader> )viewModelLoader
                             imageLoader:(id<HUBImageLoader>)imageLoader
+                  collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
                       componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
 {
     if (!(self = [super initWithNibName:nil bundle:nil])) {
@@ -41,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     _viewModelLoader = viewModelLoader;
     _imageLoader = imageLoader;
+    _collectionViewFactory = collectionViewFactory;
     _componentRegistry = componentRegistry;
     _componentsForSizeCalculations = [NSMutableDictionary new];
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
@@ -68,10 +72,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    UICollectionView * const collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
-                                                                 collectionViewLayout:[UICollectionViewFlowLayout new]];
     
+    UICollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
     self.collectionView = collectionView;
     self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.collectionView.dataSource = self;
