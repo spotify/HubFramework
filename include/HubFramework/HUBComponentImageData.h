@@ -3,14 +3,24 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Enum describing various styles that an image can be rendered in
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSInteger, HUBComponentImageStyle) {
     /// No image should be rendered
     HUBComponentImageStyleNone,
     /// The image should be rendered in a rectangular shape
     HUBComponentImageStyleRectangular,
     /// The image should be rendered in a circular shape
     HUBComponentImageStyleCircular
-} HUBComponentImageStyle;
+};
+
+/// Enum describing various types of component images
+typedef NS_ENUM(NSInteger, HUBComponentImageType) {
+    /// The main image of a component. See `HUBComponentModel.mainImageData` for more information.
+    HUBComponentImageTypeMain,
+    /// The background image of a component. See `HUBComponentModel.backgroundImageData` for more information.
+    HUBComponentImageTypeBackground,
+    /// A custom image for a component. See `HUBComponentModel.customImageData` for more information.
+    HUBComponentImageTypeCustom
+};
 
 /// Enum describing various types of component images
 typedef enum : NSUInteger {

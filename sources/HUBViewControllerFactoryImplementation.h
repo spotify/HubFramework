@@ -1,6 +1,7 @@
 #import "HUBViewControllerFactory.h"
 
 @class HUBViewModelLoaderFactoryImplementation;
+@protocol HUBImageLoaderFactory;
 @class HUBComponentRegistryImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -12,9 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its required dependencies
  *
  *  @param viewModelLoaderFactory The factory to use to create view model loaders
+ *  @param imageLoaderFactory The factory to use to create image loaders
  *  @param componentRegistry The component registry to use in the view controllers that this factory creates
  */
 - (instancetype)initWithViewModelLoaderFactory:(HUBViewModelLoaderFactoryImplementation *)viewModelLoaderFactory
+                            imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers

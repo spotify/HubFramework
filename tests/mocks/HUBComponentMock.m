@@ -15,14 +15,14 @@
     self.view = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
-- (CGSize)preferredViewSizeForDisplayingModel:(id<HUBComponentModel>)model containedInViewWithSize:(CGSize)containerViewSize
-{
-    return CGSizeZero;
-}
-
 - (void)prepareViewForReuse
 {
     // No-op
+}
+
+- (CGSize)preferredViewSizeForDisplayingModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
+{
+    return CGSizeZero;
 }
 
 - (void)configureViewWithModel:(id<HUBComponentModel>)model
@@ -30,7 +30,12 @@
     // No-op
 }
 
-- (void)updateViewForLoadedImage:(UIImage *)image forModel:(id<HUBComponentModel>)model
+- (CGSize)preferredSizeForImageFromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
+{
+    return CGSizeMake(100, 100);
+}
+
+- (void)updateViewForLoadedImage:(UIImage *)image fromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model
 {
     // No-op
 }
