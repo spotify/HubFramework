@@ -163,11 +163,13 @@
     [self.viewController viewDidLoad];
     [self.viewController viewWillAppear:YES];
     
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+    
     NSIndexPath * const indexPathA = [NSIndexPath indexPathForItem:0 inSection:0];
     NSIndexPath * const indexPathB = [NSIndexPath indexPathForItem:1 inSection:0];
     
-    self.collectionView.cells[indexPathA] = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
-    self.collectionView.cells[indexPathB] = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
+    self.collectionView.cells[indexPathA] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
+    self.collectionView.cells[indexPathB] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
     
     [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
     
