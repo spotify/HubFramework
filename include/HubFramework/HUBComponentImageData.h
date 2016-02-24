@@ -22,16 +22,6 @@ typedef NS_ENUM(NSInteger, HUBComponentImageType) {
     HUBComponentImageTypeCustom
 };
 
-/// Enum describing various types of component images
-typedef enum : NSUInteger {
-    /// The main image of a component. See `HUBComponentModel.mainImageData` for more information.
-    HUBComponentImageTypeMain,
-    /// The background image of a component. See `HUBComponentModel.backgroundImageData` for more information.
-    HUBComponentImageTypeBackground,
-    /// A custom image for a component. See `HUBComponentModel.customImageData` for more information.
-    HUBComponentImageTypeCustom
-} HUBComponentImageType;
-
 /**
  *  Protocol defining the public API of an object that describes image data for a Component in the Hub Framework
  *
