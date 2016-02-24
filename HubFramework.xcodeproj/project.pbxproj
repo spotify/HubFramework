@@ -752,7 +752,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -763,7 +762,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -773,7 +771,6 @@
 		8ADD42A21C21CF6500D1A801 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_OPTIMIZATION_LEVEL = 0;
 				HUB_NON_ERROR_WARNINGS_0720 = "";
 				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
@@ -790,7 +787,6 @@
 		8ADD42A31C21CF6500D1A801 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_OPTIMIZATION_LEVEL = 0;
 				HUB_NON_ERROR_WARNINGS_0720 = "";
 				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
