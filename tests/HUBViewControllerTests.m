@@ -121,4 +121,58 @@
     [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
 }
 
+- (void)testImageLoadingForMultipleComponentsSharingTheSameImageURL
+{
+    NSURL * const imageURL = [NSURL URLWithString:@"https://image.url"];
+    
+    NSString * const componentNamespace = @"sameImage";
+    NSString * const componentNameA = @"componentA";
+    NSString * const componentNameB = @"componentB";
+    HUBComponentMock * const componentA = [HUBComponentMock new];
+    HUBComponentMock * const componentB = [HUBComponentMock new];
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        componentNameA: componentA,
+        componentNameB: componentB
+    }];
+    
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        
+        id<HUBComponentModelBuilder> const componentModelBuilderA = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"componentA"];
+        componentModelBuilderA.componentNamespace = componentNamespace;
+        componentModelBuilderA.componentName = componentNameA;
+        componentModelBuilderA.mainImageDataBuilder.URL = imageURL;
+        
+        id<HUBComponentModelBuilder> const componentModelBuilderB = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"componentB"];
+        componentModelBuilderB.componentNamespace = componentNamespace;
+        componentModelBuilderB.componentName = componentNameB;
+        componentModelBuilderB.mainImageDataBuilder.URL = imageURL;
+        
+        [delegate localContentProviderDidLoad:strongSelf.contentProvider];
+    };
+    
+    [self.viewController loadView];
+    [self.viewController viewDidLoad];
+    [self.viewController viewWillAppear:YES];
+    
+    NSIndexPath * const indexPathA = [NSIndexPath indexPathForItem:0 inSection:0];
+    NSIndexPath * const indexPathB = [NSIndexPath indexPathForItem:1 inSection:0];
+    
+    self.collectionView.cells[indexPathA] = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
+    self.collectionView.cells[indexPathB] = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
+    
+    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
+    
+    XCTAssertEqualObjects(componentA.mainImageData.URL, imageURL);
+    XCTAssertEqualObjects(componentB.mainImageData.URL, imageURL);
+}
+
 @end

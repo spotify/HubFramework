@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBComponentIdentifier *, id<HUBComponent>> *componentsForSizeCalculations;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, HUBComponentImageLoadingContext *> *componentImageLoadingContexts;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 
 @end
@@ -137,50 +137,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL
 {
-    HUBComponentImageLoadingContext * const context = self.componentImageLoadingContexts[imageURL];
-    id<HUBViewModel> const viewModel = self.viewModel;
+    NSArray * const contexts = self.componentImageLoadingContexts[imageURL];
     
-    if (context == nil || viewModel == nil) {
-        return;
+    for (HUBComponentImageLoadingContext * const context in contexts) {
+        [self handleLoadedComponentImage:image forURL:imageURL context:context];
     }
-    
-    if (context.componentIndex >= viewModel.bodyComponentModels.count) {
-        return;
-    }
-    
-    NSIndexPath * const cellIndexPath = [NSIndexPath indexPathForItem:(NSInteger)context.componentIndex inSection:0];
-    HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:cellIndexPath];
-    
-    if (cell == nil) {
-        return;
-    }
-    
-    id<HUBComponentModel> const componentModel = viewModel.bodyComponentModels[context.componentIndex];
-    id<HUBComponentImageData> imageData = nil;
-    
-    switch (context.imageType) {
-        case HUBComponentImageTypeMain:
-            imageData = componentModel.mainImageData;
-            break;
-        case HUBComponentImageTypeBackground:
-            imageData = componentModel.backgroundImageData;
-            break;
-        case HUBComponentImageTypeCustom: {
-            NSString * const imageIdentifier = context.imageIdentifier;
-            
-            if (imageIdentifier != nil) {
-                imageData = componentModel.customImageData[imageIdentifier];
-            }
-            
-            break;
-        }
-    }
-    
-    if (imageData.URL != imageURL) {
-        return;
-    }
-    
-    [cell.component updateViewForLoadedImage:image fromData:imageData model:componentModel];
 }
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didFailLoadingImageForURL:(NSURL *)imageURL error:(NSError *)error
@@ -289,8 +250,63 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                       imageIdentifier:imageData.identifier
                                                                                                             imageType:imageData.type];
     
-    self.componentImageLoadingContexts[imageURL] = context;
+    NSMutableArray *contextsForURL = self.componentImageLoadingContexts[imageURL];
+    
+    if (contextsForURL == nil) {
+        contextsForURL = [NSMutableArray new];
+        self.componentImageLoadingContexts[imageURL] = contextsForURL;
+    }
+    
+    [contextsForURL addObject:context];
+    
     [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
+}
+
+- (void)handleLoadedComponentImage:(UIImage *)image forURL:(NSURL *)imageURL context:(HUBComponentImageLoadingContext *)context
+{
+    id<HUBViewModel> const viewModel = self.viewModel;
+    
+    if (context == nil || viewModel == nil) {
+        return;
+    }
+    
+    if (context.componentIndex >= viewModel.bodyComponentModels.count) {
+        return;
+    }
+    
+    id<HUBComponentModel> const componentModel = viewModel.bodyComponentModels[context.componentIndex];
+    NSIndexPath * const cellIndexPath = [NSIndexPath indexPathForItem:(NSInteger)context.componentIndex inSection:0];
+    HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:cellIndexPath];
+    
+    if (cell == nil) {
+        return;
+    }
+    
+    id<HUBComponentImageData> imageData = nil;
+    
+    switch (context.imageType) {
+        case HUBComponentImageTypeMain:
+            imageData = componentModel.mainImageData;
+            break;
+        case HUBComponentImageTypeBackground:
+            imageData = componentModel.backgroundImageData;
+            break;
+        case HUBComponentImageTypeCustom: {
+            NSString * const imageIdentifier = context.imageIdentifier;
+            
+            if (imageIdentifier != nil) {
+                imageData = componentModel.customImageData[imageIdentifier];
+            }
+            
+            break;
+        }
+    }
+    
+    if (imageData.URL != imageURL) {
+        return;
+    }
+    
+    [cell.component updateViewForLoadedImage:image fromData:imageData model:componentModel];
 }
 
 @end
