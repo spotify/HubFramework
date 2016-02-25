@@ -6,6 +6,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#pragma mark - HUBComponentDelegate
+
 /**
  *  Delegate protocol used to communicate back to the Hub Framework from a component implementation
  *
@@ -29,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)hubComponent:(id<HUBComponent>)component willDisplayChildAtIndex:(NSUInteger)childIndex;
 
 @end
+
+#pragma mark - HUBComponent
 
 /**
  *  Protocol implemented by objects that manage a Hub Framework component
@@ -146,6 +150,28 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateViewForLoadedImage:(UIImage *)image
                         fromData:(id<HUBComponentImageData>)imageData
                            model:(id<HUBComponentModel>)model;
+
+@end
+
+#pragma mark - HUBComponentContentOffsetObserver
+
+/**
+ *  Extended Hub component protocol that adds the ability to observe content offset changes
+ *
+ *  Use this protocol if your component needs to react to content offset changes in the view that it
+ *  is being displayed in. See `HUBComponent` for more info.
+ */
+@protocol HUBComponentContentOffsetObserver <HUBComponent>
+
+/**
+ *  Update the component’s view in reaction to that the content offset of the container view changed
+ *
+ *  @param contentOffset The new content offset of the container view
+ *
+ *  The Hub Framework will send this message every time that the content offset changed in the main
+ *  container view. This is equivalent to `UIScrollView scrollViewDidScroll:`.
+ */
+- (void)updateViewForChangedContentOffset:(CGPoint)contentOffset;
 
 @end
 
