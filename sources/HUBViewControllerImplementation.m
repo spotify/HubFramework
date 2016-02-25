@@ -258,6 +258,8 @@ NS_ASSUME_NONNULL_BEGIN
         self.headerComponentIdentifier = headerComponentModel.componentIdentifier;
         self.headerComponent = [self.componentRegistry createComponentForIdentifier:headerComponentModel.componentIdentifier];
         [self.headerComponent loadView];
+    } else {
+        [self.headerComponent prepareViewForReuse];
     }
     
     id<HUBComponent> const headerComponent = self.headerComponent;
