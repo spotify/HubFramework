@@ -16,7 +16,7 @@
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
 
-@interface HUBViewControllerTests : XCTestCase
+@interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
 @property (nonatomic, strong) HUBLocalContentProviderMock *contentProvider;
 @property (nonatomic, strong) HUBComponentIdentifier *componentIdentifier;
@@ -26,10 +26,13 @@
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
 @property (nonatomic, strong) HUBViewControllerImplementation *viewController;
+@property (nonatomic) NSInteger numberOfHeaderComponentVisibilityChangeDelegateCalls;
 
 @end
 
 @implementation HUBViewControllerTests
+
+#pragma mark - XCTestCase
 
 - (void)setUp
 {
@@ -65,7 +68,13 @@
                                                                                imageLoader:self.imageLoader
                                                                      collectionViewFactory:collectionViewFactory
                                                                          componentRegistry:self.componentRegistry];
+    
+    self.viewController.delegate = self;
+    
+    self.numberOfHeaderComponentVisibilityChangeDelegateCalls = 0;
 }
+
+#pragma mark - Tests
 
 - (void)testContentLoadedOnViewWillAppear
 {
@@ -80,7 +89,36 @@
     XCTAssertTrue(contentLoaded);
 }
 
-- (void)testImageLoading
+- (void)testHeaderComponentImageLoading
+{
+    NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
+    NSURL * const backgroundImageURL = [NSURL URLWithString:@"https://image.background"];
+    NSURL * const customImageURL = [NSURL URLWithString:@"https://image.custom"];
+    NSString * const customImageIdentifier = @"custom";
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        viewModelBuilder.headerComponentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
+        viewModelBuilder.headerComponentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
+        [viewModelBuilder.headerComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
+    };
+    
+    [self.viewController loadView];
+    [self.viewController viewDidLoad];
+    [self.viewController viewWillAppear:YES];
+    
+    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
+    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
+    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
+}
+
+- (void)testBodyComponentImageLoading
 {
     NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
     NSURL * const backgroundImageURL = [NSURL URLWithString:@"https://image.background"];
@@ -99,8 +137,6 @@
         componentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
         componentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
         [componentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
-        
-        [delegate localContentProviderDidLoad:strongSelf.contentProvider];
     };
     
     [self.viewController loadView];
@@ -155,8 +191,6 @@
         componentModelBuilderB.componentNamespace = componentNamespace;
         componentModelBuilderB.componentName = componentNameB;
         componentModelBuilderB.mainImageDataBuilder.URL = imageURL;
-        
-        [delegate localContentProviderDidLoad:strongSelf.contentProvider];
     };
     
     [self.viewController loadView];
@@ -175,6 +209,64 @@
     
     XCTAssertEqualObjects(componentA.mainImageData.URL, imageURL);
     XCTAssertEqualObjects(componentB.mainImageData.URL, imageURL);
+}
+
+- (void)testDelegateNotifiedWhenHeaderComponentVisibilityChanged
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+    };
+    
+    [self.viewController loadView];
+    [self.viewController viewDidLoad];
+    [self.viewController viewWillAppear:YES];
+    
+    XCTAssertEqual(self.numberOfHeaderComponentVisibilityChangeDelegateCalls, 1);
+    XCTAssertTrue(self.viewController.isDisplayingHeaderComponent);
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {};
+    
+    [self.viewController viewWillAppear:YES];
+    
+    XCTAssertEqual(self.numberOfHeaderComponentVisibilityChangeDelegateCalls, 2);
+    XCTAssertFalse(self.viewController.isDisplayingHeaderComponent);
+}
+
+- (void)testHeaderComponentReuse
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+    };
+    
+    [self.viewController loadView];
+    [self.viewController viewDidLoad];
+    [self.viewController viewWillAppear:YES];
+    
+    XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)0);
+    
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewWillAppear:YES];
+    
+    XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
+}
+
+#pragma mark - HUBViewControllerDelegate
+
+- (void)viewControllerHeaderComponentVisbilityDidChange:(UIViewController<HUBViewController> *)viewController
+{
+    self.numberOfHeaderComponentVisibilityChangeDelegateCalls++;
 }
 
 @end

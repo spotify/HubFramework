@@ -4,6 +4,7 @@
 @interface HUBComponentMock ()
 
 @property (nonatomic, strong, readwrite, nullable) id<HUBComponentImageData> mainImageData;
+@property (nonatomic, readwrite) NSUInteger numberOfReuses;
 
 @end
 
@@ -24,7 +25,7 @@
 
 - (void)prepareViewForReuse
 {
-    // No-op
+    self.numberOfReuses++;
 }
 
 - (CGSize)preferredViewSizeForDisplayingModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
