@@ -1,5 +1,7 @@
 #import <UIKIt/UIKit.h>
 
+@protocol HUBViewController;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -23,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  could not be created for the supplied viewURI (because a feature registration could not be resolved
  *  for it), this method returns `nil`.
  */
-- (nullable UIViewController *)createViewControllerForViewURI:(NSURL *)viewURI;
+- (nullable UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI;
 
 @end
 

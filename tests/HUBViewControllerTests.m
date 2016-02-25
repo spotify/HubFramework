@@ -1,6 +1,6 @@
 #import <XCTest/XCTest.h>
 
-#import "HUBViewController.h"
+#import "HUBViewControllerImplementation.h"
 #import "HUBViewModelLoaderImplementation.h"
 #import "HUBLocalContentProviderMock.h"
 #import "HUBComponentRegistryImplementation.h"
@@ -25,7 +25,7 @@
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
-@property (nonatomic, strong) HUBViewController *viewController;
+@property (nonatomic, strong) HUBViewControllerImplementation *viewController;
 
 @end
 
@@ -61,10 +61,10 @@
     
     self.imageLoader = [HUBImageLoaderMock new];
     
-    self.viewController = [[HUBViewController alloc] initWithViewModelLoader:self.viewModelLoader
-                                                                 imageLoader:self.imageLoader
-                                                       collectionViewFactory:collectionViewFactory
-                                                           componentRegistry:self.componentRegistry];
+    self.viewController = [[HUBViewControllerImplementation alloc] initWithViewModelLoader:self.viewModelLoader
+                                                                               imageLoader:self.imageLoader
+                                                                     collectionViewFactory:collectionViewFactory
+                                                                         componentRegistry:self.componentRegistry];
 }
 
 - (void)testContentLoadedOnViewWillAppear

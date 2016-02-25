@@ -1,4 +1,4 @@
-#import "HUBViewController.h"
+#import "HUBViewControllerImplementation.h"
 
 #import "HUBViewModelLoader.h"
 #import "HUBViewModel.h"
@@ -15,7 +15,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewController () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface HUBViewControllerImplementation () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
 @property (nonatomic, strong, readonly) id<HUBImageLoader> imageLoader;
@@ -26,10 +26,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
+@property (nonatomic, copy, nullable) HUBComponentIdentifier *headerComponentIdentifier;
+@property (nonatomic, strong, nullable) id<HUBComponent> headerComponent;
+@property (nonatomic, strong) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponents;
 
 @end
 
-@implementation HUBViewController
+@implementation HUBViewControllerImplementation
+
+@synthesize delegate = _delegate;
 
 #pragma mark - Lifecycle
 
@@ -49,6 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
     _componentsForSizeCalculations = [NSMutableDictionary new];
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     _componentImageLoadingContexts = [NSMutableDictionary new];
+    _contentOffsetObservingComponents = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     
     _viewModelLoader.delegate = self;
     _imageLoader.delegate = self;
@@ -120,11 +126,19 @@ NS_ASSUME_NONNULL_BEGIN
     self.viewModel = nil;
 }
 
+#pragma mark - HUBViewController
+
+- (BOOL)isDisplayingHeaderComponent
+{
+    return self.headerComponent != nil;
+}
+
 #pragma mark - HUBViewModelLoaderDelegate
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel
 {
     self.viewModel = viewModel;
+    [self configureHeaderComponent];
     [self.collectionView reloadData];
 }
 
@@ -179,7 +193,11 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBComponent> const component = cell.component;
     [component configureViewWithModel:componentModel];
-    [self loadImagesForComponent:component atIndex:(NSUInteger)indexPath.item model:componentModel];
+    [self loadImagesForComponent:component atIndex:(NSUInteger)indexPath.item type:HUBComponentTypeBody model:componentModel];
+    
+    if ([component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
+        [self.contentOffsetObservingComponents addObject:(id<HUBComponentContentOffsetObserver>)component];
+    }
     
     return cell;
 }
@@ -201,9 +219,85 @@ NS_ASSUME_NONNULL_BEGIN
     return [sizeComponent preferredViewSizeForDisplayingModel:componentModel containerViewSize:self.collectionView.frame.size];
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    for (id<HUBComponentContentOffsetObserver> const component in self.contentOffsetObservingComponents) {
+        [component updateViewForChangedContentOffset:scrollView.contentOffset];
+    }
+}
+
 #pragma mark - Private utilities
 
-- (void)loadImagesForComponent:(id<HUBComponent>)component atIndex:(NSUInteger)componentIndex model:(id<HUBComponentModel>)model
+- (void)configureHeaderComponent
+{
+    id<HUBComponentModel> const headerComponentModel = self.viewModel.headerComponentModel;
+    id<HUBViewControllerDelegate> const delegate = self.delegate;
+    
+    if (headerComponentModel == nil) {
+        if (self.headerComponentIdentifier != nil) {
+            [self removeHeaderComponent];
+            [delegate viewControllerHeaderComponentVisbilityDidChange:self];
+        }
+        
+        return;
+    }
+    
+    BOOL shouldReuseCurrentComponent = NO;
+    
+    if (self.headerComponentIdentifier != nil) {
+        if (![self.headerComponentIdentifier isEqual:headerComponentModel.componentIdentifier]) {
+            [self removeHeaderComponent];
+        } else {
+            shouldReuseCurrentComponent = YES;
+        }
+    }
+    
+    if (!shouldReuseCurrentComponent) {
+        self.headerComponentIdentifier = headerComponentModel.componentIdentifier;
+        self.headerComponent = [self.componentRegistry createComponentForIdentifier:headerComponentModel.componentIdentifier];
+        [self.headerComponent loadView];
+    }
+    
+    id<HUBComponent> const headerComponent = self.headerComponent;
+    
+    CGSize const headerSize = [headerComponent preferredViewSizeForDisplayingModel:headerComponentModel containerViewSize:self.view.frame.size];
+    UIView * const headerView = self.headerComponent.view;
+    headerView.frame = CGRectMake(0, 0, headerSize.width, headerSize.height);
+    
+    [headerComponent configureViewWithModel:headerComponentModel];
+    [self loadImagesForComponent:headerComponent atIndex:0 type:HUBComponentTypeHeader model:headerComponentModel];
+    
+    if (!shouldReuseCurrentComponent) {
+        [self.view addSubview:headerView];
+        [delegate viewControllerHeaderComponentVisbilityDidChange:self];
+    }
+    
+    if ([headerComponent conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
+        [self.contentOffsetObservingComponents addObject:(id<HUBComponentContentOffsetObserver>)headerComponent];
+    }
+    
+    UIEdgeInsets collectionViewContentInset = self.collectionView.contentInset;
+    collectionViewContentInset.top = headerSize.height;
+    self.collectionView.contentInset = collectionViewContentInset;
+    
+    UIEdgeInsets collectionViewScrollIndicatorInsets = self.collectionView.scrollIndicatorInsets;
+    collectionViewScrollIndicatorInsets.top = headerSize.height;
+    self.collectionView.scrollIndicatorInsets = collectionViewScrollIndicatorInsets;
+}
+
+- (void)removeHeaderComponent
+{
+    [self.headerComponent.view removeFromSuperview];
+    self.headerComponent = nil;
+    self.headerComponentIdentifier = nil;
+}
+
+- (void)loadImagesForComponent:(id<HUBComponent>)component
+                       atIndex:(NSUInteger)componentIndex
+                          type:(HUBComponentType)componentType
+                         model:(id<HUBComponentModel>)model
 {
     if (![component respondsToSelector:@selector(preferredSizeForImageFromData:model:containerViewSize:)]) {
         return;
@@ -216,21 +310,25 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBComponentImageData> const mainImageData = model.mainImageData;
     
     if (mainImageData != nil) {
-        [self loadImageFromData:mainImageData forComponent:component index:componentIndex model:model];
+        [self loadImageFromData:mainImageData forComponent:component index:componentIndex type:componentType model:model];
     }
     
     id<HUBComponentImageData> const backgroundImageData = model.backgroundImageData;
     
     if (backgroundImageData != nil) {
-        [self loadImageFromData:backgroundImageData forComponent:component index:componentIndex model:model];
+        [self loadImageFromData:backgroundImageData forComponent:component index:componentIndex type:componentType model:model];
     }
     
     for (id<HUBComponentImageData> const customImageData in model.customImageData.allValues) {
-        [self loadImageFromData:customImageData forComponent:component index:componentIndex model:model];
+        [self loadImageFromData:customImageData forComponent:component index:componentIndex type:componentType model:model];
     }
 }
 
-- (void)loadImageFromData:(id<HUBComponentImageData>)imageData forComponent:(id<HUBComponent>)component index:(NSUInteger)componentIndex model:(id<HUBComponentModel>)model
+- (void)loadImageFromData:(id<HUBComponentImageData>)imageData
+             forComponent:(id<HUBComponent>)component
+                    index:(NSUInteger)componentIndex
+                     type:(HUBComponentType)componentType
+                    model:(id<HUBComponentModel>)model
 {
     NSURL * const imageURL = imageData.URL;
     
@@ -247,6 +345,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     HUBComponentImageLoadingContext * const context = [[HUBComponentImageLoadingContext alloc] initWithComponentIndex:componentIndex
+                                                                                                        componentType:componentType
                                                                                                       imageIdentifier:imageData.identifier
                                                                                                             imageType:imageData.type];
     
@@ -270,15 +369,10 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    if (context.componentIndex >= viewModel.bodyComponentModels.count) {
-        return;
-    }
+    id<HUBComponentModel> const componentModel = [self componentModelAtIndex:context.componentIndex ofType:context.componentType];
+    id<HUBComponent> const component = [self componentAtIndex:context.componentIndex ofType:context.componentType];
     
-    id<HUBComponentModel> const componentModel = viewModel.bodyComponentModels[context.componentIndex];
-    NSIndexPath * const cellIndexPath = [NSIndexPath indexPathForItem:(NSInteger)context.componentIndex inSection:0];
-    HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:cellIndexPath];
-    
-    if (cell == nil) {
+    if (componentModel == nil || component == nil) {
         return;
     }
     
@@ -302,11 +396,40 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
-    if (imageData.URL != imageURL) {
+    if (![imageData.URL isEqual:imageURL]) {
         return;
     }
     
-    [cell.component updateViewForLoadedImage:image fromData:imageData model:componentModel];
+    [component updateViewForLoadedImage:image fromData:imageData model:componentModel];
+}
+
+- (nullable id<HUBComponentModel>)componentModelAtIndex:(NSUInteger)componentIndex ofType:(HUBComponentType)componentType
+{
+    switch (componentType) {
+        case HUBComponentTypeHeader:
+            return self.viewModel.headerComponentModel;
+        case HUBComponentTypeBody: {
+            if (componentIndex >= self.viewModel.bodyComponentModels.count) {
+                return nil;
+            }
+            
+            return self.viewModel.bodyComponentModels[componentIndex];
+        }
+    }
+}
+
+- (nullable id<HUBComponent>)componentAtIndex:(NSUInteger)componentIndex ofType:(HUBComponentType)componentType
+{
+    switch (componentType) {
+        case HUBComponentTypeHeader: {
+            return self.headerComponent;
+        }
+        case HUBComponentTypeBody: {
+            NSIndexPath * const cellIndexPath = [NSIndexPath indexPathForItem:(NSInteger)componentIndex inSection:0];
+            HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:cellIndexPath];
+            return cell.component;
+        }
+    }
 }
 
 @end

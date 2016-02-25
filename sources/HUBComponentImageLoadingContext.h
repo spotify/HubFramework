@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
+
 #import "HUBComponentImageData.h"
+#import "HUBComponentType.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -8,6 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The index of the component that this object is for
 @property (nonatomic, readonly) NSUInteger componentIndex;
+
+/// The type of the component that this object is for
+@property (nonatomic, readonly) HUBComponentType componentType;
 
 /// The identifier of the image that this object is for
 @property (nonatomic, copy, readonly, nullable) NSString *imageIdentifier;
@@ -19,10 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its required values
  *
  *  @param componentIndex The index of the component that this object is for
+ *  @param componentType The type of the component that this object is for
  *  @param imageIdentifier The identifier of the image that this object is for
  *  @param imageType The type of the image that this object is for
  */
 - (instancetype)initWithComponentIndex:(NSUInteger)componentIndex
+                         componentType:(HUBComponentType)componentType
                        imageIdentifier:(nullable NSString *)imageIdentifier
                              imageType:(HUBComponentImageType)imageType NS_DESIGNATED_INITIALIZER;
 

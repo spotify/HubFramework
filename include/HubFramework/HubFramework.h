@@ -28,6 +28,7 @@
 #import "HUBViewModelBuilder.h"
 #import "HUBViewURIQualifier.h"
 #import "HUBViewControllerFactory.h"
+#import "HUBViewController.h"
 
 // Components
 #import "HUBComponent.h"

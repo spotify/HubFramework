@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+#import "HUBViewController.h"
+
 @protocol HUBViewModelLoader;
 @protocol HUBImageLoader;
 @class HUBCollectionViewFactory;
@@ -8,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// View controller that manages a Hub Framework-powered User Interface with a collection view of components
-@interface HUBViewController : UIViewController
+@interface HUBViewControllerImplementation : UIViewController <HUBViewController>
 
 /**
  *  Initialize an instance of this class with its required dependencies
