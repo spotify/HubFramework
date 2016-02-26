@@ -4,7 +4,7 @@
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBImageLoaderFactory.h"
 #import "HUBFeatureRegistration.h"
-#import "HUBViewController.h"
+#import "HUBViewControllerImplementation.h"
 #import "HUBCollectionViewFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewControllerFactory
 
-- (nullable UIViewController *)createViewControllerForViewURI:(NSURL *)viewURI
+- (nullable UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI
 {
     id<HUBViewModelLoader> const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI];
     
@@ -51,10 +51,10 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
     
-    return [[HUBViewController alloc] initWithViewModelLoader:viewModelLoader
-                                                  imageLoader:imageLoader
-                                        collectionViewFactory:collectionViewFactory
-                                            componentRegistry:self.componentRegistry];
+    return [[HUBViewControllerImplementation alloc] initWithViewModelLoader:viewModelLoader
+                                                                imageLoader:imageLoader
+                                                      collectionViewFactory:collectionViewFactory
+                                                          componentRegistry:self.componentRegistry];
 }
 
 @end
