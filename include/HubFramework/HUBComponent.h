@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  is about to appear on the screen, to enable the Hub Framework to load images and perform other
  *  setup work for it.
  */
-- (void)hubComponent:(id<HUBComponent>)component willDisplayChildAtIndex:(NSUInteger)childIndex;
+- (void)component:(id<HUBComponent>)component willDisplayChildAtIndex:(NSUInteger)childIndex;
 
 @end
 
