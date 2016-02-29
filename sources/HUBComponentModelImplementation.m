@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize identifier = _identifier;
 @synthesize componentIdentifier = _componentIdentifier;
 @synthesize contentIdentifier = _contentIdentifier;
+@synthesize index = _index;
 @synthesize title = _title;
 @synthesize subtitle = _subtitle;
 @synthesize accessoryTitle = _accessoryTitle;
@@ -27,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithIdentifier:(NSString *)identifier
                componentIdentifier:(HUBComponentIdentifier *)componentIdentifier
                  contentIdentifier:(nullable NSString *)contentIdentifier
+                             index:(NSUInteger)index
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle
                     accessoryTitle:(nullable NSString *)accessoryTitle
@@ -50,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
     _identifier = [identifier copy];
     _componentIdentifier = [componentIdentifier copy];
     _contentIdentifier = [contentIdentifier copy];
+    _index = index;
     _title = [title copy];
     _subtitle = [subtitle copy];
     _accessoryTitle = [accessoryTitle copy];

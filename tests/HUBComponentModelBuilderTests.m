@@ -41,12 +41,14 @@
     builder.loggingData = @{@"logging": @"data"};
     builder.date = [NSDate date];
     
-    HUBComponentModelImplementation * const model = [builder build];
+    NSUInteger const modelIndex = 5;
+    HUBComponentModelImplementation * const model = [builder buildForIndex:modelIndex];
     HUBComponentIdentifier * const expectedComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentNamespace
                                                                                                               name:componentName];
     
     XCTAssertEqualObjects(model.componentIdentifier, expectedComponentIdentifier);
     XCTAssertEqualObjects(model.contentIdentifier, builder.contentIdentifier);
+    XCTAssertEqual(model.index, modelIndex);
     XCTAssertEqualObjects(model.title, builder.title);
     XCTAssertEqualObjects(model.subtitle, builder.subtitle);
     XCTAssertEqualObjects(model.accessoryTitle, builder.accessoryTitle);
@@ -70,7 +72,7 @@
     builder.componentNamespace = namespaceOverride;
     builder.componentName = @"component";
     
-    XCTAssertEqualObjects([builder build].componentIdentifier.componentNamespace, namespaceOverride);
+    XCTAssertEqualObjects([builder buildForIndex:0].componentIdentifier.componentNamespace, namespaceOverride);
 }
 
 - (void)testMissingComponentNameProducingNilInstance
@@ -79,7 +81,7 @@
                                                                                                                    featureIdentifier:@"feature"
                                                                                                            defaultComponentNamespace:@"namespace"];
     
-    XCTAssertNil([builder build]);
+    XCTAssertNil([builder buildForIndex:0]);
 }
 
 - (void)testDefaultImageTypes
@@ -91,7 +93,7 @@
     builder.componentName = @"component";
     builder.mainImageDataBuilder.iconIdentifier = @"icon";
     builder.backgroundImageDataBuilder.iconIdentifier = @"icon";
-    HUBComponentModelImplementation * const model = [builder build];
+    HUBComponentModelImplementation * const model = [builder buildForIndex:0];
     
     XCTAssertEqual(model.mainImageData.type, HUBComponentImageTypeMain);
     XCTAssertEqual(model.backgroundImageData.type, HUBComponentImageTypeBackground);
@@ -116,7 +118,7 @@
     NSString * const emptyCustomImageBuilderIdentifier = @"empty";
     [componentModelBuilder builderForCustomImageDataWithIdentifier:emptyCustomImageBuilderIdentifier];
     
-    HUBComponentModelImplementation * const componentModel = [componentModelBuilder build];
+    HUBComponentModelImplementation * const componentModel = [componentModelBuilder buildForIndex:0];
     id<HUBComponentImageData> const customImageData = componentModel.customImageData[customImageIdentifier];
     
     XCTAssertEqualObjects(customImageData.identifier, customImageIdentifier);
@@ -135,10 +137,10 @@
     
     builder.componentName = @"component";
     
-    XCTAssertNil([builder build].targetInitialViewModel);
+    XCTAssertNil([builder buildForIndex:0].targetInitialViewModel);
     
     builder.targetInitialViewModelBuilder.navigationBarTitle = @"hello";
-    XCTAssertEqualObjects([builder build].targetInitialViewModel.featureIdentifier, featureIdentifier);
+    XCTAssertEqualObjects([builder buildForIndex:0].targetInitialViewModel.featureIdentifier, featureIdentifier);
 }
 
 - (void)testCreatingChildComponentModel
@@ -195,10 +197,12 @@
     childBuilderB.preferredIndex = @0;
     childBuilderB.componentName = @"component";
     
-    HUBComponentModelImplementation * const model = [builder build];
+    HUBComponentModelImplementation * const model = [builder buildForIndex:0];
     XCTAssertEqual(model.childComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifierB);
+    XCTAssertEqual(model.childComponentModels[0].index, (NSUInteger)0);
     XCTAssertEqualObjects(model.childComponentModels[1].identifier, childIdentifierA);
+    XCTAssertEqual(model.childComponentModels[1].index, (NSUInteger)1);
 }
 
 - (void)testChildComponentModelOutOfBoundsPreferredIndexHandled
@@ -214,9 +218,10 @@
     childBuilder.componentName = @"component";
     childBuilder.preferredIndex = @99;
     
-    HUBComponentModelImplementation * const model = [builder build];
+    HUBComponentModelImplementation * const model = [builder buildForIndex:0];
     XCTAssertEqual(model.childComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifier);
+    XCTAssertEqual(model.childComponentModels[0].index, (NSUInteger)0);
 }
 
 - (void)testAddingJSONData
@@ -286,7 +291,7 @@
                                                                                                            defaultComponentNamespace:@"namespace"];
     
     [builder addDataFromJSONDictionary:dictionary usingSchema:[HUBJSONSchemaImplementation new]];
-    HUBComponentModelImplementation * const model = [builder build];
+    HUBComponentModelImplementation * const model = [builder buildForIndex:0];
     
     XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
     XCTAssertEqualObjects(model.contentIdentifier, contentIdentifier);

@@ -140,7 +140,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentModelImplementation *headerComponentModel;
     
     if (![self headerComponentModelBuilderIsConsideredEmpty]) {
-        headerComponentModel = [self.headerComponentModelBuilderImplementation build];
+        headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0];
     } else {
         headerComponentModel = nil;
     }

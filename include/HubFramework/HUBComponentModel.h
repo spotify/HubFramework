@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponentModel <NSObject>
 
-#pragma mark - Identifiers
+#pragma mark - Identifiers & index
 
 /**
  *  The identifier of this model
@@ -50,6 +50,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  client side.
  */
 @property (nonatomic, copy, nullable, readonly) NSString *contentIdentifier;
+
+/**
+ *  The index of the model, either within its parent or within the root list
+ *
+ *  Components that use nested models can use this property to determine which child to map a certain model to
+ */
+@property (nonatomic, readonly) NSUInteger index;
 
 #pragma mark - Standard visual content
 

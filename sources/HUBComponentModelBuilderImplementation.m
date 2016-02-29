@@ -46,8 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSArray<HUBComponentModelImplementation *> *)buildComponentModelsUsingBuilders:(NSDictionary<NSString *,HUBComponentModelBuilderImplementation *> *)builders
                                                                   identifierOrder:(NSArray<NSString *> *)identifierOrder
 {
-    NSMutableArray * const models = [NSMutableArray new];
-    NSMutableDictionary * const modelsByPreferredIndex = [NSMutableDictionary new];
+    NSMutableOrderedSet<HUBComponentModelBuilderImplementation *> * const sortedBuilders = [NSMutableOrderedSet new];
+    NSMutableDictionary<NSNumber *, HUBComponentModelBuilderImplementation *> * const buildersByPreferredIndex = [NSMutableDictionary new];
     
     for (NSString * const identifier in identifierOrder) {
         HUBComponentModelBuilderImplementation * const builder = builders[identifier];
@@ -56,31 +56,38 @@ NS_ASSUME_NONNULL_BEGIN
             continue;
         }
         
-        HUBComponentModelImplementation * const model = [builder build];
-        
-        if (model == nil) {
-            continue;
-        }
-        
-        [models addObject:model];
-        
         NSNumber * const preferredIndex = builder.preferredIndex;
         
         if (preferredIndex != nil) {
-            modelsByPreferredIndex[preferredIndex] = model;
+            buildersByPreferredIndex[preferredIndex] = builder;
+        }
+        
+        [sortedBuilders addObject:builder];
+    }
+    
+    for (NSNumber * const preferredIndex in buildersByPreferredIndex.allKeys) {
+        HUBComponentModelBuilderImplementation * const builder = buildersByPreferredIndex[preferredIndex];
+        NSUInteger decodedPreferredIndex = preferredIndex.unsignedIntegerValue;
+        
+        [sortedBuilders removeObject:builder];
+        
+        if (decodedPreferredIndex >= sortedBuilders.count) {
+            [sortedBuilders addObject:builder];
+        } else {
+            [sortedBuilders insertObject:builder atIndex:decodedPreferredIndex];
         }
     }
     
-    for (NSNumber * const preferredIndex in modelsByPreferredIndex.allKeys) {
-        NSUInteger decodedPreferredIndex = preferredIndex.unsignedIntegerValue;
+    NSMutableArray<id<HUBComponentModel>> * const models = [NSMutableArray new];
+    NSUInteger modelIndex = 0;
+    
+    for (HUBComponentModelBuilderImplementation * const builder in sortedBuilders) {
+        id<HUBComponentModel> const model = [builder buildForIndex:modelIndex];
         
-        if (decodedPreferredIndex >= models.count) {
-            continue;
+        if (model != nil) {
+            [models addObject:model];
+            modelIndex++;
         }
-        
-        HUBComponentModelImplementation * const model = modelsByPreferredIndex[preferredIndex];
-        [models removeObject:model];
-        [models insertObject:model atIndex:decodedPreferredIndex];
     }
     
     return models;
@@ -222,7 +229,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (nullable HUBComponentModelImplementation *)build
+- (nullable HUBComponentModelImplementation *)buildForIndex:(NSUInteger)index
 {
     NSString * const componentName = self.componentName;
     
@@ -258,6 +265,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
                                                    componentIdentifier:componentIdentifier
                                                      contentIdentifier:self.contentIdentifier
+                                                                 index:index
                                                                  title:self.title
                                                               subtitle:self.subtitle
                                                         accessoryTitle:self.accessoryTitle
