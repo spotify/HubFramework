@@ -35,9 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Build an instance of `HUBComponentModelImplementation` from the data contained in this builder
  *
+ *  @param index The index that the produced model will have, either within its parent or within the root list
+ *
  *  This method returns `nil` if the builder does not contain a `componentName`.
  */
-- (nullable HUBComponentModelImplementation *)build;
+- (nullable HUBComponentModelImplementation *)buildForIndex:(NSUInteger)index;
 
 #pragma mark - Unavailable initializers
 

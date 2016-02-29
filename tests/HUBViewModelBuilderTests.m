@@ -87,7 +87,9 @@
     HUBViewModelImplementation * const model = [builder build];
     XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifierB);
+    XCTAssertEqual(model.bodyComponentModels[0].index, (NSUInteger)0);
     XCTAssertEqualObjects(model.bodyComponentModels[1].identifier, componentIdentifierA);
+    XCTAssertEqual(model.bodyComponentModels[1].index, (NSUInteger)1);
 }
 
 - (void)testBodyComponentOutOfBoundsPreferredIndexHandled
@@ -103,6 +105,7 @@
     HUBViewModelImplementation * const model = [builder build];
     XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifier);
+    XCTAssertEqual(model.bodyComponentModels[0].index, (NSUInteger)0);
 }
 
 - (void)testFeatureIdentifierMatchingComponentTargetInitialViewModelFeatureIdentifier
