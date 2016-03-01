@@ -342,11 +342,11 @@ NS_ASSUME_NONNULL_BEGIN
              wrapperIdentifier:(NSUUID *)wrapperIdentifier
                     childIndex:(nullable NSNumber *)childIndex
 {
-    if (![component conformsToProtocol:@protocol(HUBComponentImageHandler)]) {
+    if (![component conformsToProtocol:@protocol(HUBComponentImageHandling)]) {
         return;
     }
     
-    id<HUBComponentImageHandler> const imageHandlingComponent = (id<HUBComponentImageHandler>)component;
+    id<HUBComponentImageHandling> const imageHandlingComponent = (id<HUBComponentImageHandling>)component;
     id<HUBComponentImageData> const mainImageData = model.mainImageData;
     id<HUBComponentImageData> const backgroundImageData = model.backgroundImageData;
     
@@ -376,7 +376,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)loadImageFromData:(id<HUBComponentImageData>)imageData
-                component:(id<HUBComponentImageHandler>)component
+                component:(id<HUBComponentImageHandling>)component
                     model:(id<HUBComponentModel>)model
         wrapperIdentifier:(NSUUID *)wrapperIdentifier
                childIndex:(nullable NSNumber *)childIndex
@@ -422,11 +422,11 @@ NS_ASSUME_NONNULL_BEGIN
     
     HUBComponentWrapper * const componentWrapper = self.componentWrappersByIdentifier[context.wrapperIdentifier];
     
-    if (![componentWrapper.component conformsToProtocol:@protocol(HUBComponentImageHandler)]) {
+    if (![componentWrapper.component conformsToProtocol:@protocol(HUBComponentImageHandling)]) {
         return;
     }
     
-    id<HUBComponentImageHandler> const component = (id<HUBComponentImageHandler>)componentWrapper.component;
+    id<HUBComponentImageHandling> const component = (id<HUBComponentImageHandling>)componentWrapper.component;
     id<HUBComponentModel> componentModel = componentWrapper.currentModel;
     
     NSNumber * const childIndex = context.childIndex;

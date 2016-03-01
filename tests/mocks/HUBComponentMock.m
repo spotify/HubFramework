@@ -46,7 +46,7 @@
     // No-op
 }
 
-#pragma mark - HUBComponentImageHandler
+#pragma mark - HUBComponentImageHandling
 
 - (CGSize)preferredSizeForImageFromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
@@ -69,7 +69,7 @@
 
 - (BOOL)conformsToProtocol:(Protocol *)protocol
 {
-    if (protocol == @protocol(HUBComponentImageHandler)) {
+    if (protocol == @protocol(HUBComponentImageHandling)) {
         return self.canHandleImages;
     }
     
