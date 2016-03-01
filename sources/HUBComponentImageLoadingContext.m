@@ -4,19 +4,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBComponentImageLoadingContext
 
-- (instancetype)initWithComponentIndex:(NSUInteger)componentIndex
-                         componentType:(HUBComponentType)componentType
-                       imageIdentifier:(nullable NSString *)imageIdentifier
-                             imageType:(HUBComponentImageType)imageType
+- (instancetype)initWithImageType:(HUBComponentImageType)imageType
+                  imageIdentifier:(nullable NSString *)imageIdentifier
+                wrapperIdentifier:(NSUUID *)wrapperIdentifier
+                       childIndex:(nullable NSNumber *)childIndex
 {
     if (!(self = [super init])) {
         return nil;
     }
     
-    _componentIndex = componentIndex;
-    _componentType = componentType;
-    _imageIdentifier = imageIdentifier;
     _imageType = imageType;
+    _imageIdentifier = [imageIdentifier copy];
+    _wrapperIdentifier = [wrapperIdentifier copy];
+    _childIndex = [childIndex copy];
     
     return self;
 }

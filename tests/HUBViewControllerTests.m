@@ -211,6 +211,58 @@
     XCTAssertEqualObjects(componentB.mainImageData.URL, imageURL);
 }
 
+- (void)testImageLoadingForChildComponent
+{
+    NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
+    NSURL * const backgroundImageURL = [NSURL URLWithString:@"https://image.background"];
+    NSURL * const customImageURL = [NSURL URLWithString:@"https://image.custom"];
+    NSString * const customImageIdentifier = @"custom";
+    
+    NSString * const componentNamespace = @"childComponentImageLoading";
+    NSString * const componentName = @"component";
+    NSString * const childComponentName = @"componentB";
+    HUBComponentMock * const component = [HUBComponentMock new];
+    HUBComponentMock * const childComponent = [HUBComponentMock new];
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        componentName: component,
+        childComponentName: childComponent
+    }];
+    
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.componentNamespace = componentNamespace;
+        componentModelBuilder.componentName = componentName;
+        
+        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"];
+        childComponentModelBuilder.componentNamespace = componentNamespace;
+        childComponentModelBuilder.componentName = childComponentName;
+        childComponentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
+        childComponentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
+        [childComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
+    };
+    
+    [self.viewController loadView];
+    [self.viewController viewDidLoad];
+    [self.viewController viewWillAppear:YES];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    [component.delegate component:component willDisplayChildAtIndex:0];
+    
+    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
+    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
+    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
+}
+
 - (void)testDelegateNotifiedWhenHeaderComponentVisibilityChanged
 {
     __weak __typeof(self) weakSelf = self;

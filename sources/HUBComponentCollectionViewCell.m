@@ -1,5 +1,6 @@
 #import "HUBComponentCollectionViewCell.h"
 
+#import "HUBComponentWrapper.h"
 #import "HUBComponent.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -8,25 +9,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Property overrides
 
-- (void)setComponent:(nullable id<HUBComponent>)component
+- (void)setComponentWrapper:(nullable HUBComponentWrapper *)componentWrapper
 {
-    if (component == _component) {
+    if (_componentWrapper == componentWrapper) {
         return;
     }
     
-    [_component.view removeFromSuperview];
-    _component = component;
+    [_componentWrapper.component.view removeFromSuperview];
+    _componentWrapper = componentWrapper;
     
-    if (component == nil) {
+    if (componentWrapper == nil) {
         return;
     }
     
-    if (component.view == nil) {
-        [component loadView];
+    if (componentWrapper.component.view == nil) {
+        [componentWrapper.component loadView];
     }
-
-    UIView * const view = component.view;
-    NSAssert(view, @"The component is required to load a view in -loadView");
+    
+    UIView * const view = componentWrapper.component.view;
+    NSAssert(view, @"All components are required to load a view in -loadView");
     [self.contentView addSubview:view];
 }
 
@@ -34,14 +35,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)prepareForReuse
 {
-    [self.component prepareViewForReuse];
+    [self.componentWrapper.component prepareViewForReuse];
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.component.view.bounds = self.contentView.bounds;
-    self.component.view.center = self.contentView.center;
+    
+    UIView * const componentView = self.componentWrapper.component.view;
+    componentView.bounds = self.contentView.bounds;
+    componentView.center = self.contentView.center;
 }
 
 @end
