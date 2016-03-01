@@ -1,19 +1,19 @@
 #import <UIKit/UIKit.h>
 
-@protocol HUBComponent;
+@class HUBComponentWrapper;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Collection view cell that wraps a `HUBComponent` and its view
+/// Collection view cell that performs the rendering of a `HUBComponent` and its view
 @interface HUBComponentCollectionViewCell : UICollectionViewCell
 
 /**
- *  The component that the collection view cell is currently wrapping
+ *  The wrapper of the current component that the cell is for
  *
- *  Setting this property removes any previously wrapped component’s view from this cell. The new component’s
+ *  Setting this property removes any previous component’s view from this cell. The new component’s
  *  view will then be loaded (if needed) and added to the cell's content view.
  */
-@property (nonatomic, strong, nullable) id<HUBComponent> component;
+@property (nonatomic, strong, nullable) HUBComponentWrapper *componentWrapper;
 
 @end
 
