@@ -26,9 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
-@property (nonatomic, strong) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponents;
+@property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponents;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *headerComponentWrapper;
-@property (nonatomic, strong) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 
 @end
