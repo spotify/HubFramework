@@ -127,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#pragma mark - HUBComponentImageHandling
+#pragma mark - HUBComponentWithImageHandling
 
 /**
  *  Extended Hub component protocol that adds the ability to handle images
@@ -135,7 +135,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Use this protocol if your component will display images, either for itself or for any
  *  child components that it could potentially be managing. See `HUBComponent` for more info.
  */
-@protocol HUBComponentImageHandling <HUBComponent>
+@protocol HUBComponentWithImageHandling <HUBComponent>
 
 /**
  *  Return the size that the component prefers that a certain image gets once loaded

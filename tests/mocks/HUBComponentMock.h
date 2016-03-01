@@ -5,7 +5,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Mocked component, for use in tests only
-@interface HUBComponentMock : NSObject <HUBComponentImageHandling>
+@interface HUBComponentMock : NSObject <HUBComponentWithImageHandling>
 
 /// The main image the component is currently displaying
 @property (nonatomic, strong, readonly, nullable) id<HUBComponentImageData> mainImageData;
