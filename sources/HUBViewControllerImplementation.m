@@ -342,33 +342,41 @@ NS_ASSUME_NONNULL_BEGIN
              wrapperIdentifier:(NSUUID *)wrapperIdentifier
                     childIndex:(nullable NSNumber *)childIndex
 {
-    if (![component respondsToSelector:@selector(preferredSizeForImageFromData:model:containerViewSize:)]) {
+    if (![component conformsToProtocol:@protocol(HUBComponentImageHandler)]) {
         return;
     }
     
-    if (![component respondsToSelector:@selector(updateViewForLoadedImage:fromData:model:)]) {
-        return;
-    }
-    
+    id<HUBComponentImageHandler> const imageHandlingComponent = (id<HUBComponentImageHandler>)component;
     id<HUBComponentImageData> const mainImageData = model.mainImageData;
-    
-    if (mainImageData != nil) {
-        [self loadImageFromData:mainImageData component:component model:model wrapperIdentifier:wrapperIdentifier childIndex:childIndex];
-    }
-    
     id<HUBComponentImageData> const backgroundImageData = model.backgroundImageData;
     
+    if (mainImageData != nil) {
+        [self loadImageFromData:mainImageData
+                      component:imageHandlingComponent
+                          model:model
+              wrapperIdentifier:wrapperIdentifier
+                     childIndex:childIndex];
+    }
+    
     if (backgroundImageData != nil) {
-        [self loadImageFromData:backgroundImageData component:component model:model wrapperIdentifier:wrapperIdentifier childIndex:childIndex];
+        [self loadImageFromData:backgroundImageData
+                      component:imageHandlingComponent
+                          model:model
+              wrapperIdentifier:wrapperIdentifier
+                     childIndex:childIndex];
     }
     
     for (id<HUBComponentImageData> const customImageData in model.customImageData.allValues) {
-        [self loadImageFromData:customImageData component:component model:model wrapperIdentifier:wrapperIdentifier childIndex:childIndex];
+        [self loadImageFromData:customImageData
+                      component:imageHandlingComponent
+                          model:model
+              wrapperIdentifier:wrapperIdentifier
+                     childIndex:childIndex];
     }
 }
 
 - (void)loadImageFromData:(id<HUBComponentImageData>)imageData
-                component:(id<HUBComponent>)component
+                component:(id<HUBComponentImageHandler>)component
                     model:(id<HUBComponentModel>)model
         wrapperIdentifier:(NSUUID *)wrapperIdentifier
                childIndex:(nullable NSNumber *)childIndex
@@ -413,6 +421,12 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     HUBComponentWrapper * const componentWrapper = self.componentWrappersByIdentifier[context.wrapperIdentifier];
+    
+    if (![componentWrapper.component conformsToProtocol:@protocol(HUBComponentImageHandler)]) {
+        return;
+    }
+    
+    id<HUBComponentImageHandler> const component = (id<HUBComponentImageHandler>)componentWrapper.component;
     id<HUBComponentModel> componentModel = componentWrapper.currentModel;
     
     NSNumber * const childIndex = context.childIndex;
@@ -455,7 +469,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    [componentWrapper.component updateViewForLoadedImage:image fromData:imageData model:componentModel];
+    [component updateViewForLoadedImage:image fromData:imageData model:componentModel];
 }
 
 @end

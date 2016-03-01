@@ -13,10 +13,18 @@
 @synthesize delegate = _delegate;
 @synthesize view = _view;
 
-- (instancetype)createNewComponent
+- (instancetype)init
 {
-    return [HUBComponentMock new];
+    if (!(self = [super init])) {
+        return nil;
+    }
+    
+    _canHandleImages = YES;
+    
+    return self;
 }
+
+#pragma mark - HUBComponent
 
 - (void)loadView
 {
@@ -38,6 +46,8 @@
     // No-op
 }
 
+#pragma mark - HUBComponentImageHandler
+
 - (CGSize)preferredSizeForImageFromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
     return CGSizeMake(100, 100);
@@ -53,6 +63,17 @@
         case HUBComponentImageTypeCustom:
             break;
     }
+}
+
+#pragma mark - Mocking tools
+
+- (BOOL)conformsToProtocol:(Protocol *)protocol
+{
+    if (protocol == @protocol(HUBComponentImageHandler)) {
+        return self.canHandleImages;
+    }
+    
+    return [super conformsToProtocol:protocol];
 }
 
 @end

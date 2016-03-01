@@ -263,6 +263,33 @@
     XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
 }
 
+- (void)testNoImagesLoadedIfComponentDoesNotHandleImages
+{
+    self.component.canHandleImages = NO;
+    
+    NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        componentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
+    };
+    
+    [self.viewController loadView];
+    [self.viewController viewDidLoad];
+    [self.viewController viewWillAppear:YES];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
+    XCTAssertFalse([self.imageLoader hasLoadedImageForURL:mainImageURL]);
+}
+
 - (void)testDelegateNotifiedWhenHeaderComponentVisibilityChanged
 {
     __weak __typeof(self) weakSelf = self;

@@ -125,9 +125,17 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)configureViewWithModel:(id<HUBComponentModel>)model;
 
-@optional
+@end
 
-#pragma mark - Handling images
+#pragma mark - HUBComponentImageHandler
+
+/**
+ *  Extended Hub component protocol that adds the ability to handle images
+ *
+ *  Use this protocol if your component will display images, either for itself or for any
+ *  child components that it could potentially be managing. See `HUBComponent` for more info.
+ */
+@protocol HUBComponentImageHandler <HUBComponent>
 
 /**
  *  Return the size that the component prefers that a certain image gets once loaded
