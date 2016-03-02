@@ -19,6 +19,7 @@
         return nil;
     }
     
+    _layoutTraits = [NSMutableSet new];
     _canHandleImages = YES;
     
     return self;
@@ -38,7 +39,7 @@
 
 - (CGSize)preferredViewSizeForDisplayingModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
-    return CGSizeZero;
+    return self.preferredViewSize;
 }
 
 - (void)configureViewWithModel:(id<HUBComponentModel>)model

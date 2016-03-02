@@ -7,6 +7,7 @@
 @protocol HUBViewControllerFactory;
 @protocol HUBConnectivityStateResolver;
 @protocol HUBImageLoaderFactory;
+@protocol HUBComponentLayoutManager;
 @class HUBComponentIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -48,11 +49,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param fallbackComponentName The component name to use in case a content provider supplied an unknown component name.
  *         This name will be resolved using the `HUBComponentFactory` for `defaultComponentNamespace` as a last line of
  *         defense and must always result in a component being created.
+ *  @param componentLayoutManager The object to use to manage layout for components. This object will be retained.
  */
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                         defaultComponentNamespace:(NSString *)defaultComponentNamespace
-                            fallbackComponentName:(NSString *)fallbackComponentName NS_DESIGNATED_INITIALIZER;
+                            fallbackComponentName:(NSString *)fallbackComponentName
+                           componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 

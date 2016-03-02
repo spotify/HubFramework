@@ -21,11 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                         defaultComponentNamespace:(NSString *)defaultComponentNamespace
                             fallbackComponentName:(NSString *)fallbackComponentName
+                           componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
 {
     NSParameterAssert(connectivityStateResolver != nil);
     NSParameterAssert(imageLoaderFactory != nil);
     NSParameterAssert(defaultComponentNamespace != nil);
     NSParameterAssert(fallbackComponentName != nil);
+    NSParameterAssert(componentLayoutManager != nil);
     
     if (!(self = [super init])) {
         return nil;
@@ -46,7 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     _viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:_viewModelLoaderFactory
                                                                                          imageLoaderFactory:imageLoaderFactory
-                                                                                          componentRegistry:self.componentRegistry];
+                                                                                          componentRegistry:self.componentRegistry
+                                                                                     componentLayoutManager:componentLayoutManager];
     
     return self;
 }

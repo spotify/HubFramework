@@ -4,6 +4,7 @@
 
 @protocol HUBViewModelLoader;
 @protocol HUBImageLoader;
+@protocol HUBComponentLayoutManager;
 @class HUBCollectionViewFactory;
 @class HUBComponentRegistryImplementation;
 
@@ -19,11 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param imageLoader The object to use to load images for components
  *  @param collectionViewFactory The factory to use to create collection views
  *  @param componentRegistry The registry to use to retrieve components to render
+ *  @param componentLayoutManager The object that manages layout for components in the view controller
  */
 - (instancetype)initWithViewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
                             imageLoader:(id<HUBImageLoader>)imageLoader
                   collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
-                      componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry NS_DESIGNATED_INITIALIZER;
+                      componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+                 componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 

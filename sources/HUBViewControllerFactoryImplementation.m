@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBViewModelLoaderFactoryImplementation *viewModelLoaderFactory;
 @property (nonatomic, strong, readonly) id<HUBImageLoaderFactory> imageLoaderFactory;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
+@property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 
 @end
 
@@ -22,10 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewModelLoaderFactory:(HUBViewModelLoaderFactoryImplementation *)viewModelLoaderFactory
                             imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+                        componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
 {
     NSParameterAssert(viewModelLoaderFactory != nil);
     NSParameterAssert(imageLoaderFactory != nil);
     NSParameterAssert(componentRegistry != nil);
+    NSParameterAssert(componentLayoutManager != nil);
     
     if (!(self = [super init])) {
         return nil;
@@ -34,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
     _viewModelLoaderFactory = viewModelLoaderFactory;
     _imageLoaderFactory = imageLoaderFactory;
     _componentRegistry = componentRegistry;
+    _componentLayoutManager = componentLayoutManager;
     
     return self;
 }
@@ -54,7 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
     return [[HUBViewControllerImplementation alloc] initWithViewModelLoader:viewModelLoader
                                                                 imageLoader:imageLoader
                                                       collectionViewFactory:collectionViewFactory
-                                                          componentRegistry:self.componentRegistry];
+                                                          componentRegistry:self.componentRegistry
+                                                     componentLayoutManager:self.componentLayoutManager];
 }
 
 @end
