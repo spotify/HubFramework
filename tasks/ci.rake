@@ -49,38 +49,40 @@ namespace :ci do
         end
     end
 
-    desc 'Calculate code coverage from derived data folder'
+    desc 'Calculate code coverage from the derived data folder.'
     task :coverage do
-        # Calculate coverage
-        pd = Profdata.from_derived_data(DERIVED_DATA_PATH)
+        TCUtil.block('Code Coverage') do
+            # Calculate coverage
+            pd = Profdata.from_derived_data(DERIVED_DATA_PATH)
 
-        # Report to TeamCity
-        total, covered = pd.stats
-        tc_stat('CodeCoverageAbsLCovered', covered)
-        tc_stat('CodeCoverageAbsLCovered', total)
-        tc_stat('CodeCoverageAbsLPerMille', (covered.to_f / total) * 1000)
+            # Report to TeamCity
+            total, covered = pd.stats
+            TCUtil.stat('CodeCoverageAbsLCovered', covered)
+            TCUtil.stat('CodeCoverageAbsLCovered', total)
+            TCUtil.stat('CodeCoverageAbsLPerMille', (covered.to_f / total) * 1000)
 
-        # Report to codecov
-        if ENV['CODECOV_TOKEN'] && ENV['CODECOV_URL']
-            # Create JSON file
-            pd.write_codecov_file('build/codecov.json')
-            state = TCUtil.state
+            # Report to codecov
+            if ENV['CODECOV_TOKEN'] && ENV['CODECOV_URL']
+                # Create JSON file
+                pd.write_codecov_file('build/codecov.json')
+                info = TCUtil.info
 
-            # Skip CodeCov adjustments since we do them ourself
-            command = ['./scripts/codecov.sh', '-v', '-X', 'fix']
-            {
-                '-u' => ENV['CODECOV_URL'],
-                '-t' => ENV['CODECOV_TOKEN'],
-                '-f' => 'build/codecov.json',
-                '-C' => state[:commit],
-                '-B' => state[:branch],
-                '-P' => state[:pr],
-                '-b' => state[:build_id]
-            }.each{|k,v| command.push(k.to_s, v) if v }
+                # Skip CodeCov adjustments since we do them ourself
+                command = ['./scripts/codecov.sh', '-v', '-X', 'fix']
+                {
+                    '-u' => ENV['CODECOV_URL'],
+                    '-t' => ENV['CODECOV_TOKEN'],
+                    '-f' => 'build/codecov.json',
+                    '-C' => info[:commit],
+                    '-B' => info[:branch],
+                    '-P' => info[:pr],
+                    '-b' => info[:build_id]
+                }.each{|k,v| command.push(k.to_s, v) if v }
 
-            # Run command
-            env = { 'GIT_BRANCH' => state[:branch], 'GIT_COMMIT' => state[:commit] }
-            system(env, *command) or abort("CodeCov POST Failed!: #{$?}")
+                # Run command
+                env = { 'GIT_BRANCH' => info[:branch], 'GIT_COMMIT' => info[:commit] }
+                system(env, *command) or abort("CodeCov POST Failed!: #{$?}")
+            end
         end
     end
 

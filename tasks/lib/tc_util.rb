@@ -17,7 +17,11 @@ module TCUtil
     end
   end
 
-  def TCUtil.state
+  def TCUtil.stat(key, value)
+    message "buildStatisticValue key='#{key}' value='#{value}'"
+  end
+
+  def TCUtil.info
     branch = ENV['GIT_BRANCH'] || ENV['PROJECT_BRANCH'] || `git rev-parse --abbrev-ref HEAD`.strip
     branch = branch.gsub(/^refs\/heads\//, '')
 
