@@ -1,8 +1,9 @@
+
 #!/bin/bash
 
 set -e
 
-VERSION="tbd"
+VERSION="4fae7b4"
 
 url="https://codecov.io"
 verbose="0"
@@ -19,9 +20,7 @@ commit_o=""
 branch_o=""
 slug_o=""
 dump="0"
-branch=""
-commit=""
-derivedDataPath="~/Library/Developer/Xcode/DerivedData"
+derivedDataPath=""
 files=""
 cacert="$CODECOV_CA_BUNDLE"
 gcov_ignore=""
@@ -71,8 +70,7 @@ Upload reports to Codecov
     -d           Dont upload and dump to stdin
 
     -- xcode --
-    -D           Custom derivedDataPath for Coverage.profdata and gcov processing
-                 Default '~/Library/Developer/Xcode/DerivedData'
+    -D           Custom derivedDataPath for Coverage.profdata compiling
 
     -- gcov --
     -g GLOB      Paths to ignore during gcov gathering
@@ -103,7 +101,8 @@ urlencode() {
 
 swiftcov() {
   _dir=$(dirname "$1")
-  for _type in a app framework xctest
+  say "    Found Coverage.profdata in $_dir"
+  for _type in app framework xctest
   do
     find "$_dir" -name "*.$_type" | while read f
     do
@@ -111,21 +110,15 @@ swiftcov() {
       _proj=${_proj%."$_type"}
       if [ "${_proj%%_*}" != "Pods" ];
       then
-        say "    $g+$x Building reports for $_proj $_type"
-
-        _proj_name=$(echo "$_proj" | sed -e 's/[[:space:]]//g')
-        while IFS='' read -r line;
-        do
-          if [ -z "$line" ]; then : # [skip] empty line
-          elif [[ "$line" == ' '*'|'* ]]; then : # [skip] irrelvent data
-          elif [[ "$line" == ' '*'-'* ]]; then : # [skip] irrelvent data
-          elif [[ "$line" == '/'* ]]; then # file name
-            echo "$line"
-          else # coverage data: remove source from file
-            echo ${line%|*}
-          fi
-        done <<< $(xcrun llvm-cov show -instr-profile "$1" "$f/$_proj" || echo "") >> "$_proj_name.$_type.coverage.txt"
-
+        say "    Building reports via (xcrun llvm-cov show -instr-profile $1 $f/$_proj > $_proj.$_type.coverage.txt)"
+        res=$(xcrun llvm-cov show -instr-profile "$1" "$f/$_proj" || echo "")
+        if [ "$res" != "" ];
+        then
+          _proj=$(echo "$_proj" | sed -e 's/[[:space:]]//g')
+          echo "$res" > "$_proj.$_type.coverage.txt"
+        else
+          say "    No coverage data created for $1"
+        fi
       fi
     done
   done
@@ -178,8 +171,7 @@ then
         then
           files="$OPTARG"
         else
-          files="$files
-$OPTARG"
+          files="$files $OPTARG"
         fi
         ;;
       "p")
@@ -332,7 +324,7 @@ then
   # https://buildkite.com/docs/guides/environment-variables
   service="buildkite"
   branch="$BUILDKITE_BRANCH"
-  build="$BUILDKITE_BUILD_NUMBER.$BUILDKITE_JOB_ID"
+  build="$BUILDKITE_BUILD_NUMBER"
   build_url=$(urlencode "$BUILDKITE_BUILD_URL")
   slug="$BUILDKITE_PROJECT_SLUG"
   commit="$BUILDKITE_COMMIT"
@@ -404,33 +396,32 @@ then
 elif [ "$CI_SERVER_NAME" = "GitLab CI" ];
 then
   say "$e==>$x GitLab CI detected."
-  # http://doc.gitlab.com/ce/ci/variables/README.html
+  # http://doc.gitlab.com/ci/examples/README.html#environmental-variables
+  # https://gitlab.com/gitlab-org/gitlab-ci-runner/blob/master/lib/build.rb#L96
   service="gitlab"
   branch="$CI_BUILD_REF_NAME"
   build="$CI_BUILD_ID"
-  slug=$(echo "$CI_BUILD_REPO" | cut -d'/' -f4-5 | sed -e 's/\.git//')
+  slug=$(echo "$CI_BUILD_REPO" | cut -d'/' -f4-5 | sed -e 's/.git//')
   commit="$CI_BUILD_REF"
 
-fi
+else
+  # find branch, commit, repo from git command
+  say "$e==>$x No CI detected, using git/mercurial for branch and commit sha."
+  if [ "$GIT_BRANCH" != "" ];
+  then
+    branch="$GIT_BRANCH"
+  else
+    branch=$(git rev-parse --abbrev-ref HEAD || hg branch)
+    if [ "$branch" = "HEAD" ]; then branch=""; fi
+  fi
 
-# find branch, commit, repo from git command
-if [ "$GIT_BRANCH" != "" ];
-then
-  branch="$GIT_BRANCH"
+  if [ "$GIT_COMMIT" != "" ];
+  then
+    commit="$GIT_COMMIT"
+  else
+    commit=$(git rev-parse HEAD || hg id -i --debug | tr -d '+')
+  fi
 
-elif [ "$branch" = "" ];
-then
-  branch=$(git rev-parse --abbrev-ref HEAD || hg branch)
-  if [ "$branch" = "HEAD" ]; then branch=""; fi
-fi
-
-if [ "$GIT_COMMIT" != "" ];
-then
-  commit="$GIT_COMMIT"
-
-elif [ "$commit" = "" ];
-then
-  commit=$(git rev-parse HEAD || hg id -i --debug | tr -d '+')
 fi
 
 query="branch=$([ "$branch_o" = "" ] && echo "$branch" || echo "$branch_o")\
@@ -461,27 +452,41 @@ then
 
 else
 
-  if [ -d "$derivedDataPath" ];
-  then
-    # xcode via profdata
-    while IFS='' read -r profdata;
-    do
-      swiftcov "$profdata"
-    done <<< "$(find "$derivedDataPath" -name '*.profdata')"
-  fi
-
   if [ "$ft_gcov" = "1" ];
   then
-    # search for osx coverage data
-    if [ -d "$derivedDataPath" ];
+    say "$e==>$x Trying gcov (disable via -X gcov)"
+
+    # osx gcov
+    if [ -d ~/Library/Developer/Xcode/DerivedData ];
     then
-      find "$derivedDataPath" -name '*.gcda' -exec gcov -pbcu {} +
+      say "  Found gcda in ~/Library/Developer/Xcode/DerivedData"
+      find ~/Library/Developer/Xcode/DerivedData -name '*.gcda' -exec gcov -pbcu -o $(find ~/Library/Developer/Xcode/DerivedData -type f -name '*.gcno' -exec dirname {} \;) {} +
+
+      profdata=$(find ~/Library/Developer/Xcode/DerivedData -name 'Coverage.profdata' | head -1)
+      if [ -f "$profdata" ];
+      then
+        swiftcov "$profdata"
+      else
+        say "  Swift: no coverage data found. Learn more at: https://github.com/codecov/example-swift"
+      fi
     fi
 
-    say "$e==>$x Trying gcov (disable via -X gcov)"
-    # all other gcov
+    if [ "$derivedDataPath" != "" ];
+    then
+      profdata=$(find "$derivedDataPath" -name 'Coverage.profdata' | head -1)
+      if [ -f "$profdata" ];
+      then
+        swiftcov "$profdata"
+      else
+        say "  Swift: no coverage data found in $derivedDataPath. Learn more at: ${b}https://github.com/codecov/example-swift${x}"
+      fi
+    fi
+
     say "  ${e}->${x} Running gcov"
-    bash -c "find $proj_root -type f -name '*.gcno' $gcov_ignore -exec $gcov_exe -pb $gcovargs {} +" || true
+
+    # all other gcov
+    bash -c "find $proj_root -type f -name '*.gcno' $gcov_ignore -exec gcov -pbcu -o $(find $proj_root -type f -name '*.gcno' -exec dirname {} \;) {} +" || true
+
   else
     say "${r}**>${x} gcov disable"
   fi
@@ -514,7 +519,6 @@ else
                     -not -name '*.html' \
                     -not -name '*.js' \
                     -not -name '*.cpp' \
-                    -not -name '*.rake' \
                     -not -name 'coverage.jade' \
                     -not -name 'include.lst' \
                     -not -name 'inputFiles.lst' \
@@ -625,7 +629,7 @@ fi
 
 # Append Reports
 say "$e==>$x Reading reports"
-while IFS='' read -r file;
+for file in $files
 do
   # escape file paths
   file=$(echo "$file" | sed -e 's/ /\\ /')
@@ -642,26 +646,21 @@ $report
   else
     say "  $r->$x File not found at $file"
   fi
-done <<< "$(echo -e "$files")"
+done
 
 if [ "$ft_fix" = "1" ];
 then
-  if [ "$(find "$git_root" -name '*.go' -or -name '*.php' -or -name '*.kt' -or -name '*.swift' -or -name '*.m')" != "" ];
+  if [ "$(find "$git_root" -name '*.go' -or -name '*.php' -or -name '*.kt' -or -name '*.m')" != "" ];
   then
     say "$e==>$x Appending adjustments (http://bit.ly/1O4eBpt)"
     adjustments="# path=fixes
-$(find "$git_root" -type f -name '*.cpp' -exec grep -nIH '^}' {} \;)
-$(find "$git_root" -type f -name '*.kt' -exec wc -l {} \; | while read l; do echo "EOF: $l"; done)
 $(find "$git_root" -type f -name '*.kt' -exec grep -nIH '^/\*' {} \;)
 $(find "$git_root" -type f -name '*.go' -exec grep -nIH '^[[:space:]]*$' {} \;)
 $(find "$git_root" -type f -name '*.go' -exec grep -nIH '^[[:space:]]*//.*' {} \;)
 $(find "$git_root" -type f -name '*.go' -exec grep -nIH '^[[:space:]]*/\*' {} \;)
 $(find "$git_root" -type f -name '*.go' -exec grep -nIH '^[[:space:]]*\*/' {} \;)
-$(find "$git_root" -type f -name '*.go'    -exec grep -nIH '^[[:space:]]*}$' {} \;)
-$(find "$git_root" -type f -name '*.m'     -exec grep -nIH '^[[:space:]]*}$' {} \;)
-$(find "$git_root" -type f -name '*.swift' -exec grep -nIH '^[[:space:]]*}$' {} \;)
-$(find "$git_root" -type f -name '*.php'   -exec grep -nIH '^[[:space:]]*}$' {} \;)
-$(find "$git_root" -type f -name '*.php'   -exec grep -nIH '^[[:space:]]*{' {} \;)"
+$(find "$git_root" -type f -name '*.go' -or -name '*.php' -or -name '*.m'  -exec grep -nIH '^[[:space:]]*}' {} \;)
+$(find "$git_root" -type f -name '*.php' -exec grep -nIH '^[[:space:]]*{' {} \;)"
     say "  ${e}-->${x} Found $(echo "$adjustments" | grep -c '^.') adjustments"
     upload="$upload
 $adjustments
@@ -698,7 +697,7 @@ else
       say "    Uploading to S3"
       s3=$(echo "$upload" | \
            curl -isX PUT --data-binary @- \
-                -H 'Content-Type: text/plain' -H 'x-amz-acl: public-read' \
+                -H 'Content-Type: plain/text' -H 'x-amz-acl: public-read' \
                 "$(echo "$res" | sed -n 2p)")
       status=$(echo "$s3" | grep 'HTTP/1.1 ' | tail -1 | cut -d' ' -f2)
       if [ "${status:0:1}" = "2" ];
