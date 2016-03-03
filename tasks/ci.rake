@@ -1,3 +1,4 @@
+require 'profdata'
 require 'set'
 require 'shellwords'
 require 'tc_util'
@@ -10,14 +11,10 @@ DERIVED_DATA_PATH='build/DerivedData'
 # Task which builds and tests the
 namespace :ci do
 
-    desc 'Clean the build directory'
-    task :clean_build_dir do
-        system('rm', '-rf', 'build') or exit!(1)
-    end
-
-    desc 'Create the build directory'
-    task :create_build_dir => ['ci:clean_build_dir'] do
-        system('mkdir', '-p', 'build') or exit!(1)
+    desc 'Prepare the build directory for a new build'
+    task :prepare_build_dir do
+        system('rm', '-rf', 'build')
+        system('mkdir', '-p', 'build')
     end
 
     desc 'Builds and runs all the tests'
@@ -52,12 +49,46 @@ namespace :ci do
         end
     end
 
-    desc 'Run the CI bound tasks (build, test, upload code coverage)'
-    task :run => [:clean_build_dir, :create_build_dir, :build_and_test] do
-        ENV['DERIVED_DATA_PATH'] = DERIVED_DATA_PATH
-        # Commented out until we can get the coverage uploaded to Codecov properly.
-        #Rake::Task['coverage:run'].invoke
+    desc 'Calculate code coverage from the derived data folder.'
+    task :coverage do
+        TCUtil.block('Code Coverage') do
+            # Calculate coverage
+            pd = Profdata.from_derived_data(DERIVED_DATA_PATH)
+            pd.reject_paths! { |path| path =~ /^tests\// }
+
+            # Report to TeamCity
+            total, covered = pd.stats
+            TCUtil.stat('CodeCoverageAbsLCovered', covered)
+            TCUtil.stat('CodeCoverageAbsLCovered', total)
+            TCUtil.stat('CodeCoverageAbsLPerMille', (covered.to_f / total) * 1000)
+
+            # Report to codecov
+            if ENV['CODECOV_TOKEN'] && ENV['CODECOV_URL']
+                # Create JSON file
+                pd.write_codecov_file('build/codecov.json')
+                info = TCUtil.info
+
+                # Skip CodeCov adjustments since we do them ourself
+                command = ['./scripts/codecov.sh', '-v', '-X', 'fix']
+                {
+                    '-u' => ENV['CODECOV_URL'],
+                    '-t' => ENV['CODECOV_TOKEN'],
+                    '-f' => 'build/codecov.json',
+                    '-C' => info[:commit],
+                    '-B' => info[:branch],
+                    '-P' => info[:pr],
+                    '-b' => info[:build_id]
+                }.each{|k,v| command.push(k.to_s, v) if v }
+
+                # Run command
+                env = { 'GIT_BRANCH' => info[:branch], 'GIT_COMMIT' => info[:commit] }
+                system(env, *command) or abort("CodeCov POST Failed!: #{$?}")
+            end
+        end
     end
+
+    desc 'Run the CI bound tasks (build, test, upload code coverage)'
+    task :run => [:prepare_build_dir, :build_and_test, :coverage]
 
     def build_cmd(project, scheme, configuration, sim_device, sim_os, generate_coverage, commands)
         cmd = ['xcodebuild']
