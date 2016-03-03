@@ -54,6 +54,7 @@ namespace :ci do
         TCUtil.block('Code Coverage') do
             # Calculate coverage
             pd = Profdata.from_derived_data(DERIVED_DATA_PATH)
+            pd.reject_paths! { |path| path =~ /^tests\// }
 
             # Report to TeamCity
             total, covered = pd.stats
