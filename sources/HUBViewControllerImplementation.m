@@ -272,9 +272,12 @@ NS_ASSUME_NONNULL_BEGIN
             [delegate viewControllerHeaderComponentVisbilityDidChange:self];
         }
         
+        CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
         CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+        CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
         CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
-        [self adjustCollectionViewContentInsetWithTopValue:statusBarHeight + navigationBarHeight];
+        
+        [self adjustCollectionViewContentInsetWithTopValue:MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight)];
         
         return;
     }
