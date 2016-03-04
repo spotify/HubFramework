@@ -272,6 +272,13 @@ NS_ASSUME_NONNULL_BEGIN
             [delegate viewControllerHeaderComponentVisbilityDidChange:self];
         }
         
+        CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
+        CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+        CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
+        CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
+        
+        [self adjustCollectionViewContentInsetWithTopValue:MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight)];
+        
         return;
     }
     
@@ -322,19 +329,24 @@ NS_ASSUME_NONNULL_BEGIN
         [self.contentOffsetObservingComponents addObject:(id<HUBComponentContentOffsetObserver>)headerComponentWrapper.component];
     }
     
-    UIEdgeInsets collectionViewContentInset = self.collectionView.contentInset;
-    collectionViewContentInset.top = headerSize.height;
-    self.collectionView.contentInset = collectionViewContentInset;
-    
-    UIEdgeInsets collectionViewScrollIndicatorInsets = self.collectionView.scrollIndicatorInsets;
-    collectionViewScrollIndicatorInsets.top = headerSize.height;
-    self.collectionView.scrollIndicatorInsets = collectionViewScrollIndicatorInsets;
+    [self adjustCollectionViewContentInsetWithTopValue:headerSize.height];
 }
 
 - (void)removeHeaderComponent
 {
     [self.headerComponentWrapper.component.view removeFromSuperview];
     self.headerComponentWrapper = nil;
+}
+
+- (void)adjustCollectionViewContentInsetWithTopValue:(CGFloat)topContentInset
+{
+    UIEdgeInsets collectionViewContentInset = self.collectionView.contentInset;
+    collectionViewContentInset.top = topContentInset;
+    self.collectionView.contentInset = collectionViewContentInset;
+    
+    UIEdgeInsets collectionViewScrollIndicatorInsets = self.collectionView.scrollIndicatorInsets;
+    collectionViewScrollIndicatorInsets.top = topContentInset;
+    self.collectionView.scrollIndicatorInsets = collectionViewScrollIndicatorInsets;
 }
 
 - (void)loadImagesForComponent:(id<HUBComponent>)component
