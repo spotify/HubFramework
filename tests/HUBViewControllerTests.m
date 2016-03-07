@@ -113,9 +113,7 @@
         [viewModelBuilder.headerComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
     };
     
-    [self.viewController loadView];
-    [self.viewController viewDidLoad];
-    [self.viewController viewWillAppear:YES];
+    [self simulateViewControllerLayoutCycle];
     
     XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
     XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
@@ -143,9 +141,7 @@
         [componentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
     };
     
-    [self.viewController loadView];
-    [self.viewController viewDidLoad];
-    [self.viewController viewWillAppear:YES];
+    [self simulateViewControllerLayoutCycle];
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
@@ -197,9 +193,7 @@
         componentModelBuilderB.mainImageDataBuilder.URL = imageURL;
     };
     
-    [self.viewController loadView];
-    [self.viewController viewDidLoad];
-    [self.viewController viewWillAppear:YES];
+    [self simulateViewControllerLayoutCycle];
     
     id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
     
@@ -254,9 +248,7 @@
         [childComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
     };
     
-    [self.viewController loadView];
-    [self.viewController viewDidLoad];
-    [self.viewController viewWillAppear:YES];
+    [self simulateViewControllerLayoutCycle];
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
@@ -284,9 +276,7 @@
         componentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
     };
     
-    [self.viewController loadView];
-    [self.viewController viewDidLoad];
-    [self.viewController viewWillAppear:YES];
+    [self simulateViewControllerLayoutCycle];
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
@@ -306,9 +296,7 @@
         viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
     };
     
-    [self.viewController loadView];
-    [self.viewController viewDidLoad];
-    [self.viewController viewWillAppear:YES];
+    [self simulateViewControllerLayoutCycle];
     
     XCTAssertEqual(self.numberOfHeaderComponentVisibilityChangeDelegateCalls, 1);
     XCTAssertTrue(self.viewController.isDisplayingHeaderComponent);
@@ -316,6 +304,7 @@
     self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {};
     
     [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
     
     XCTAssertEqual(self.numberOfHeaderComponentVisibilityChangeDelegateCalls, 2);
     XCTAssertFalse(self.viewController.isDisplayingHeaderComponent);
@@ -333,14 +322,14 @@
         viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
     };
     
-    [self.viewController loadView];
-    [self.viewController viewDidLoad];
-    [self.viewController viewWillAppear:YES];
+    [self simulateViewControllerLayoutCycle];
     
     XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)0);
     
     [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
     [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
     
     XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
 }
@@ -350,6 +339,17 @@
 - (void)viewControllerHeaderComponentVisbilityDidChange:(UIViewController<HUBViewController> *)viewController
 {
     self.numberOfHeaderComponentVisibilityChangeDelegateCalls++;
+}
+
+#pragma mark - Utilities
+
+- (void)simulateViewControllerLayoutCycle
+{
+    [self.viewController loadView];
+    [self.viewController viewDidLoad];
+    [self.viewController viewWillAppear:YES];
+    self.viewController.view.frame = CGRectMake(0, 0, 320, 400);
+    [self.viewController viewDidLayoutSubviews];
 }
 
 @end
