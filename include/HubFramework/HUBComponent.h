@@ -1,5 +1,7 @@
 #import <UIKit/UIKIt.h>
 
+#import "HUBComponentLayoutTraits.h"
+
 @protocol HUBComponent;
 @protocol HUBComponentModel;
 @protocol HUBComponentImageData;
@@ -59,6 +61,20 @@ NS_ASSUME_NONNULL_BEGIN
  *  back from the component to the framework.
  */
 @property (nonatomic, weak, nullable) id<HUBComponentDelegate> delegate;
+
+/**
+ *  The set of layout traits that should be used to compute a layout for the component
+ *
+ *  The Hub Framework will use these layout traits together with its current `HUBComponentLayoutManager`
+ *  to compute the margins that an instance of this component will have to other components within the
+ *  same view, or to the content edge of that view.
+ *
+ *  Please note that the layout traits this property contains may be used for another instance of the same
+ *  class, so they need to be consistent across instances of the same component class.
+ *
+ *  For more information, see `HUBComponentLayoutTrait`.
+ */
+@property (nonatomic, strong, readonly) NSSet<HUBComponentLayoutTrait *> *layoutTraits;
 
 #pragma mark - Managing the View
 

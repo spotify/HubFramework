@@ -15,6 +15,7 @@
 #import "HUBComponentMock.h"
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
+#import "HUBComponentLayoutManagerMock.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -64,10 +65,13 @@
     
     self.imageLoader = [HUBImageLoaderMock new];
     
+    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    
     self.viewController = [[HUBViewControllerImplementation alloc] initWithViewModelLoader:self.viewModelLoader
                                                                                imageLoader:self.imageLoader
                                                                      collectionViewFactory:collectionViewFactory
-                                                                         componentRegistry:self.componentRegistry];
+                                                                         componentRegistry:self.componentRegistry
+                                                                    componentLayoutManager:componentLayoutManager];
     
     self.viewController.delegate = self;
     

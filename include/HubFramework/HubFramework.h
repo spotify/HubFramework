@@ -39,3 +39,5 @@
 #import "HUBComponentImageData.h"
 #import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentRegistry.h"
+#import "HUBComponentLayoutManager.h"
+#import "HUBComponentLayoutTraits.h"

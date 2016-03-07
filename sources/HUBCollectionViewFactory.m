@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (UICollectionView *)createCollectionView
 {
     return [[UICollectionView alloc] initWithFrame:CGRectZero
-                              collectionViewLayout:[UICollectionViewFlowLayout new]];
+                              collectionViewLayout:[UICollectionViewLayout new]];
 }
 
 @end

@@ -13,16 +13,17 @@
 #import "HUBImageLoader.h"
 #import "HUBComponentImageLoadingContext.h"
 #import "HUBCollectionViewFactory.h"
+#import "HUBCollectionViewLayout.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewControllerImplementation () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, HUBComponentWrapperDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface HUBViewControllerImplementation () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, HUBComponentWrapperDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
 @property (nonatomic, strong, readonly) id<HUBImageLoader> imageLoader;
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
-@property (nonatomic, strong, readonly) NSMutableDictionary<HUBComponentIdentifier *, id<HUBComponent>> *componentsForSizeCalculations;
+@property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
@@ -43,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
                             imageLoader:(id<HUBImageLoader>)imageLoader
                   collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
                       componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+                 componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
 {
     if (!(self = [super initWithNibName:nil bundle:nil])) {
         return nil;
@@ -52,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
     _imageLoader = imageLoader;
     _collectionViewFactory = collectionViewFactory;
     _componentRegistry = componentRegistry;
-    _componentsForSizeCalculations = [NSMutableDictionary new];
+    _componentLayoutManager = componentLayoutManager;
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     _componentImageLoadingContexts = [NSMutableDictionary new];
     _contentOffsetObservingComponents = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
@@ -141,6 +143,13 @@ NS_ASSUME_NONNULL_BEGIN
 {
     self.viewModel = viewModel;
     [self configureHeaderComponent];
+    
+    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
+                                                                              componentRegistry:self.componentRegistry
+                                                                         componentLayoutManager:self.componentLayoutManager];
+    
+    [layout computeForCollectionViewSize:self.collectionView.frame.size];
+    self.collectionView.collectionViewLayout = layout;
     [self.collectionView reloadData];
 }
 
@@ -231,23 +240,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return cell;
-}
-
-#pragma mark - UICollectionViewDelegateFlowLayout
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
-    HUBComponentIdentifier * const componentIdentifier = componentModel.componentIdentifier;
-    
-    id<HUBComponent> sizeComponent = self.componentsForSizeCalculations[componentIdentifier];
-    
-    if (sizeComponent == nil) {
-        sizeComponent = [self.componentRegistry createComponentForIdentifier:componentIdentifier];
-        self.componentsForSizeCalculations[componentIdentifier] = sizeComponent;
-    }
-    
-    return [sizeComponent preferredViewSizeForDisplayingModel:componentModel containerViewSize:self.collectionView.frame.size];
 }
 
 #pragma mark - UIScrollViewDelegate
