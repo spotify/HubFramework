@@ -14,6 +14,7 @@
 #import "HUBComponentImageLoadingContext.h"
 #import "HUBCollectionViewFactory.h"
 #import "HUBCollectionViewLayout.h"
+#import "HUBInitialViewModelRegistry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
+@property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
@@ -46,6 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
                   collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
                       componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                  componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                       initialViewModel:(nullable id<HUBViewModel>)initialViewModel
+               initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
+
 {
     if (!(self = [super initWithNibName:nil bundle:nil])) {
         return nil;
@@ -56,6 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
     _collectionViewFactory = collectionViewFactory;
     _componentRegistry = componentRegistry;
     _componentLayoutManager = componentLayoutManager;
+    _initialViewModelRegistry = initialViewModelRegistry;
+    _viewModel = initialViewModel;
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     _componentImageLoadingContexts = [NSMutableDictionary new];
     _contentOffsetObservingComponents = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
@@ -264,6 +271,27 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return cell;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
+    
+    NSURL * const targetURL = componentModel.targetURL;
+    id<HUBViewModel> const targetInitialViewModel = componentModel.targetInitialViewModel;
+    
+    if (targetURL == nil) {
+        return;
+    }
+    
+    if (targetInitialViewModel != nil) {
+        [self.initialViewModelRegistry registerInitialViewModel:targetInitialViewModel forViewURI:targetURL];
+    }
+    
+    [[UIApplication sharedApplication] openURL:targetURL];
+    [collectionView deselectItemAtIndexPath:indexPath animated:NO];
 }
 
 #pragma mark - UIScrollViewDelegate

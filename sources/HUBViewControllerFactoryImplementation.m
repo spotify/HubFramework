@@ -6,6 +6,7 @@
 #import "HUBFeatureRegistration.h"
 #import "HUBViewControllerImplementation.h"
 #import "HUBCollectionViewFactory.h"
+#import "HUBInitialViewModelRegistry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBImageLoaderFactory> imageLoaderFactory;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
+@property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 
 @end
 
@@ -37,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
         _imageLoaderFactory = imageLoaderFactory;
         _componentRegistry = componentRegistry;
         _componentLayoutManager = componentLayoutManager;
+        _initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     }
     
     return self;
@@ -54,12 +57,15 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
+    id<HUBViewModel> const initialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:viewURI];
     
     return [[HUBViewControllerImplementation alloc] initWithViewModelLoader:viewModelLoader
                                                                 imageLoader:imageLoader
                                                       collectionViewFactory:collectionViewFactory
                                                           componentRegistry:self.componentRegistry
-                                                     componentLayoutManager:self.componentLayoutManager];
+                                                     componentLayoutManager:self.componentLayoutManager
+                                                           initialViewModel:initialViewModel
+                                                   initialViewModelRegistry:self.initialViewModelRegistry];
 }
 
 @end
