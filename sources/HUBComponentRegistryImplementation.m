@@ -18,13 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFallbackComponentIdentifier:(HUBComponentIdentifier *)fallbackComponentIdentifier
 {
-    if (!(self = [super init])) {
-        return nil;
+    self = [super init];
+    
+    if (self) {
+        _fallbackComponentIdentifier = [fallbackComponentIdentifier copy];
+        _componentFactories = [NSMutableDictionary new];
     }
-
-    _fallbackComponentIdentifier = [fallbackComponentIdentifier copy];
-    _componentFactories = [NSMutableDictionary new];
-
+    
     return self;
 }
 

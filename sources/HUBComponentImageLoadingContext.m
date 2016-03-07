@@ -9,14 +9,14 @@ NS_ASSUME_NONNULL_BEGIN
                 wrapperIdentifier:(NSUUID *)wrapperIdentifier
                        childIndex:(nullable NSNumber *)childIndex
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _imageType = imageType;
-    _imageIdentifier = [imageIdentifier copy];
-    _wrapperIdentifier = [wrapperIdentifier copy];
-    _childIndex = [childIndex copy];
+    if (self) {
+        _imageType = imageType;
+        _imageIdentifier = [imageIdentifier copy];
+        _wrapperIdentifier = [wrapperIdentifier copy];
+        _childIndex = [childIndex copy];
+    }
     
     return self;
 }

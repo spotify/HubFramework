@@ -12,11 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithDisqualifiedViewURIs:(NSArray<NSURL *> *)disqualifiedViewURIs
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _disqualifiedViewURIs = [NSSet setWithArray:disqualifiedViewURIs];
+    if (self) {
+        _disqualifiedViewURIs = [NSSet setWithArray:disqualifiedViewURIs];
+    }
     
     return self;
 }

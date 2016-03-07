@@ -12,11 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _collectionView = collectionView;
+    if (self) {
+        _collectionView = collectionView;
+    }
     
     return self;
 }

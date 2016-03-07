@@ -29,14 +29,14 @@
                                 URLPath:(id<HUBJSONURLPath>)URLPath
                      iconIdentifierPath:(id<HUBJSONStringPath>)iconIdentifierPath
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _styleStringPath = styleStringPath;
-    _styleStringMap = styleStringMap;
-    _URLPath = URLPath;
-    _iconIdentifierPath = iconIdentifierPath;
+    if (self) {
+        _styleStringPath = styleStringPath;
+        _styleStringMap = styleStringMap;
+        _URLPath = URLPath;
+        _iconIdentifierPath = iconIdentifierPath;
+    }
     
     return self;
 }

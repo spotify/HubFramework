@@ -14,11 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _loadedImageURLs = [NSMutableSet new];
+    if (self) {
+        _loadedImageURLs = [NSMutableSet new];
+    }
     
     return self;
 }

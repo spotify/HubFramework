@@ -17,12 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _registrationsByRootViewURI = [NSMutableDictionary new];
-    _registrationsByIdentifier = [NSMutableDictionary new];
+    if (self) {
+        _registrationsByRootViewURI = [NSMutableDictionary new];
+        _registrationsByIdentifier = [NSMutableDictionary new];
+    }
     
     return self;
 }

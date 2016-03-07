@@ -102,23 +102,23 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(defaultComponentNamespace != nil);
     
-    if (!(self = [super init])) {
-        return nil;
-    }
-    
     if (modelIdentifier == nil) {
         modelIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
     }
     
-    _modelIdentifier = (NSString *)modelIdentifier;
-    _componentNamespace = [defaultComponentNamespace copy];
-    _defaultComponentNamespace = [defaultComponentNamespace copy];
-    _featureIdentifier = [featureIdentifier copy];
-    _mainImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
-    _backgroundImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
-    _customImageDataBuilders = [NSMutableDictionary new];
-    _childComponentModelBuilders = [NSMutableDictionary new];
-    _childComponentIdentifierOrder = [NSMutableArray new];
+    self = [super init];
+    
+    if (self) {
+        _modelIdentifier = (NSString *)modelIdentifier;
+        _componentNamespace = [defaultComponentNamespace copy];
+        _defaultComponentNamespace = [defaultComponentNamespace copy];
+        _featureIdentifier = [featureIdentifier copy];
+        _mainImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
+        _backgroundImageDataBuilderImplementation = [HUBComponentImageDataBuilderImplementation new];
+        _customImageDataBuilders = [NSMutableDictionary new];
+        _childComponentModelBuilders = [NSMutableDictionary new];
+        _childComponentIdentifierOrder = [NSMutableArray new];
+    }
     
     return self;
 }

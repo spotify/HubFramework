@@ -12,12 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithComponents:(NSDictionary<NSString *, id<HUBComponent>> *)components
 {
-    if (!(self = [super init])) {
-        return nil;
+    self = [super init];
+    
+    if (self) {
+        _components = [components copy];
     }
-
-    _components = [components copy];
-
+    
     return self;
 }
 

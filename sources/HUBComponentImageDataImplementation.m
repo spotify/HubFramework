@@ -16,15 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
                                URL:(nullable NSURL *)URL
                     iconIdentifier:(nullable NSString *)iconIdentifier
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _identifier = [identifier copy];
-    _type = type;
-    _style = style;
-    _URL = [URL copy];
-    _iconIdentifier = [iconIdentifier copy];
+    if (self) {
+        _identifier = [identifier copy];
+        _type = type;
+        _style = style;
+        _URL = [URL copy];
+        _iconIdentifier = [iconIdentifier copy];
+    }
     
     return self;
 }

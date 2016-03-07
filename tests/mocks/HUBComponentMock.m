@@ -15,12 +15,12 @@
 
 - (instancetype)init
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _layoutTraits = [NSMutableSet new];
-    _canHandleImages = YES;
+    if (self) {
+        _layoutTraits = [NSMutableSet new];
+        _canHandleImages = YES;
+    }
     
     return self;
 }

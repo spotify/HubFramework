@@ -6,13 +6,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithNamespace:(NSString *)componentNamespace name:(NSString *)componentName
 {
-    if (!(self = [super init])) {
-        return nil;
+    self = [super init];
+    
+    if (self) {
+        _componentNamespace = [componentNamespace copy];
+        _componentName = [componentName copy];
     }
-
-    _componentNamespace = [componentNamespace copy];
-    _componentName = [componentName copy];
-
+    
     return self;
 }
 

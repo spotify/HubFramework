@@ -61,26 +61,26 @@
                               datePath:(id<HUBJSONDatePath>)datePath
    childComponentModelDictionariesPath:(id<HUBJSONDictionaryPath>)childComponentModelDictionariesPath
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _identifierPath = identifierPath;
-    _componentIdentifierPath = componentIdentiferPath;
-    _contentIdentifierPath = contentIdentifierPath;
-    _titlePath = titlePath;
-    _subtitlePath = subtitlePath;
-    _accessoryTitlePath = accessoryTitlePath;
-    _descriptionTextPath = descriptionTextPath;
-    _mainImageDataDictionaryPath = mainImageDataDictionaryPath;
-    _backgroundImageDataDictionaryPath = backgroundImageDataDictionaryPath;
-    _customImageDataDictionaryPath = customImageDataDictionaryPath;
-    _targetURLPath = targetURLPath;
-    _targetInitialViewModelDictionaryPath = targetInitialViewModelDictionaryPath;
-    _customDataPath = customDataPath;
-    _loggingDataPath = loggingDataPath;
-    _datePath = datePath;
-    _childComponentModelDictionariesPath = childComponentModelDictionariesPath;
+    if (self) {
+        _identifierPath = identifierPath;
+        _componentIdentifierPath = componentIdentiferPath;
+        _contentIdentifierPath = contentIdentifierPath;
+        _titlePath = titlePath;
+        _subtitlePath = subtitlePath;
+        _accessoryTitlePath = accessoryTitlePath;
+        _descriptionTextPath = descriptionTextPath;
+        _mainImageDataDictionaryPath = mainImageDataDictionaryPath;
+        _backgroundImageDataDictionaryPath = backgroundImageDataDictionaryPath;
+        _customImageDataDictionaryPath = customImageDataDictionaryPath;
+        _targetURLPath = targetURLPath;
+        _targetInitialViewModelDictionaryPath = targetInitialViewModelDictionaryPath;
+        _customDataPath = customDataPath;
+        _loggingDataPath = loggingDataPath;
+        _datePath = datePath;
+        _childComponentModelDictionariesPath = childComponentModelDictionariesPath;
+    }
     
     return self;
 }

@@ -15,11 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithParsingOperations:(NSArray<HUBJSONParsingOperation *> *)parsingOperations
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _parsingOperations = parsingOperations;
+    if (self) {
+        _parsingOperations = parsingOperations;
+    }
     
     return self;
 }

@@ -45,27 +45,27 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSParameterAssert(identifier != nil);
     
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _identifier = [identifier copy];
-    _componentIdentifier = [componentIdentifier copy];
-    _contentIdentifier = [contentIdentifier copy];
-    _index = index;
-    _title = [title copy];
-    _subtitle = [subtitle copy];
-    _accessoryTitle = [accessoryTitle copy];
-    _descriptionText = [descriptionText copy];
-    _mainImageData = mainImageData;
-    _backgroundImageData = backgroundImageData;
-    _customImageData = customImageData;
-    _targetURL = [targetURL copy];
-    _targetInitialViewModel = targetInitialViewModel;
-    _customData = customData;
-    _loggingData = loggingData;
-    _date = date;
-    _childComponentModels = childComponentModels;
+    if (self) {
+        _identifier = [identifier copy];
+        _componentIdentifier = [componentIdentifier copy];
+        _contentIdentifier = [contentIdentifier copy];
+        _index = index;
+        _title = [title copy];
+        _subtitle = [subtitle copy];
+        _accessoryTitle = [accessoryTitle copy];
+        _descriptionText = [descriptionText copy];
+        _mainImageData = mainImageData;
+        _backgroundImageData = backgroundImageData;
+        _customImageData = customImageData;
+        _targetURL = [targetURL copy];
+        _targetInitialViewModel = targetInitialViewModel;
+        _customData = customData;
+        _loggingData = loggingData;
+        _date = date;
+        _childComponentModels = childComponentModels;
+    }
     
     return self;
 }
