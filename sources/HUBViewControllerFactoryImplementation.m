@@ -30,14 +30,14 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(componentRegistry != nil);
     NSParameterAssert(componentLayoutManager != nil);
     
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _viewModelLoaderFactory = viewModelLoaderFactory;
-    _imageLoaderFactory = imageLoaderFactory;
-    _componentRegistry = componentRegistry;
-    _componentLayoutManager = componentLayoutManager;
+    if (self) {
+        _viewModelLoaderFactory = viewModelLoaderFactory;
+        _imageLoaderFactory = imageLoaderFactory;
+        _componentRegistry = componentRegistry;
+        _componentLayoutManager = componentLayoutManager;
+    }
     
     return self;
 }

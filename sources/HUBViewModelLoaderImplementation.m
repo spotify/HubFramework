@@ -42,20 +42,20 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(connectivityStateResolver != nil);
     
-    if (!(self = [super init])) {
-        return nil;
+    self = [super init];
+    
+    if (self) {
+        _viewURI = [viewURI copy];
+        _featureIdentifier = [featureIdentifier copy];
+        _defaultComponentNamespace = [defaultComponentNamespace copy];
+        _remoteContentProvider = remoteContentProvider;
+        _localContentProvider = localContentProvider;
+        _JSONSchema = JSONSchema;
+        _connectivityStateResolver = connectivityStateResolver;
+        
+        _remoteContentProvider.delegate = self;
+        _localContentProvider.delegate = self;
     }
-    
-    _viewURI = [viewURI copy];
-    _featureIdentifier = [featureIdentifier copy];
-    _defaultComponentNamespace = [defaultComponentNamespace copy];
-    _remoteContentProvider = remoteContentProvider;
-    _localContentProvider = localContentProvider;
-    _JSONSchema = JSONSchema;
-    _connectivityStateResolver = connectivityStateResolver;
-    
-    _remoteContentProvider.delegate = self;
-    _localContentProvider.delegate = self;
     
     return self;
 }

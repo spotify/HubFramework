@@ -36,18 +36,18 @@
                       extensionURLPath:(id<HUBJSONURLPath>)extensionURLPath
                         customDataPath:(id<HUBJSONDictionaryPath>)customDataPath
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _identifierPath = identifierPath;
-    _featureIdentifierPath = featureIdentifierPath;
-    _entityIdentifierPath = entityIdentifierPath;
-    _navigationBarTitlePath = navigationBarTitlePath;
-    _headerComponentModelDictionaryPath = headerComponentModelDictionaryPath;
-    _bodyComponentModelDictionariesPath = bodyComponentModelDictionariesPath;
-    _extensionURLPath = extensionURLPath;
-    _customDataPath = customDataPath;
+    if (self) {
+        _identifierPath = identifierPath;
+        _featureIdentifierPath = featureIdentifierPath;
+        _entityIdentifierPath = entityIdentifierPath;
+        _navigationBarTitlePath = navigationBarTitlePath;
+        _headerComponentModelDictionaryPath = headerComponentModelDictionaryPath;
+        _bodyComponentModelDictionariesPath = bodyComponentModelDictionariesPath;
+        _extensionURLPath = extensionURLPath;
+        _customDataPath = customDataPath;
+    }
     
     return self;
 }

@@ -26,13 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
                    componentModelSchema:(id<HUBComponentModelJSONSchema>)componentModelSchema
                componentImageDataSchema:(id<HUBComponentImageDataJSONSchema>)componentImageDataSchema
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _viewModelSchema = viewModelSchema;
-    _componentModelSchema = componentModelSchema;
-    _componentImageDataSchema = componentImageDataSchema;
+    if (self) {
+        _viewModelSchema = viewModelSchema;
+        _componentModelSchema = componentModelSchema;
+        _componentImageDataSchema = componentImageDataSchema;
+    }
     
     return self;
 }

@@ -14,14 +14,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithComponent:(id<HUBComponent>)component componentIdentifier:(HUBComponentIdentifier *)componentIdentifier
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _identifier = [NSUUID UUID];
-    _component = component;
-    _component.delegate = self;
-    _componentIdentifier = [componentIdentifier copy];
+    if (self) {
+        _identifier = [NSUUID UUID];
+        _component = component;
+        _component.delegate = self;
+        _componentIdentifier = [componentIdentifier copy];
+    }
     
     return self;
 }

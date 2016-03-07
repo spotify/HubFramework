@@ -14,11 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSParameterAssert(block != nil);
     
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _block = [block copy];
+    if (self) {
+        _block = [block copy];
+    }
     
     return self;
 }

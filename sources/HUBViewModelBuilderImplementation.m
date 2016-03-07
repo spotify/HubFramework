@@ -34,19 +34,19 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(defaultComponentNamespace);
     
-    if (!(self = [super init])) {
-        return nil;
+    self = [super init];
+    
+    if (self) {
+        _defaultComponentNamespace = [defaultComponentNamespace copy];
+        _viewIdentifier = [NSUUID UUID].UUIDString;
+        _featureIdentifier = [featureIdentifier copy];
+        _headerComponentModelBuilderImplementation = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header"
+                                                                                                           featureIdentifier:featureIdentifier
+                                                                                                   defaultComponentNamespace:defaultComponentNamespace];
+        
+        _bodyComponentModelBuilders = [NSMutableDictionary new];
+        _bodyComponentIdentifierOrder = [NSMutableArray new];
     }
-    
-    _defaultComponentNamespace = [defaultComponentNamespace copy];
-    _viewIdentifier = [NSUUID UUID].UUIDString;
-    _featureIdentifier = [featureIdentifier copy];
-    _headerComponentModelBuilderImplementation = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header"
-                                                                                                       featureIdentifier:featureIdentifier
-                                                                                               defaultComponentNamespace:defaultComponentNamespace];
-    
-    _bodyComponentModelBuilders = [NSMutableDictionary new];
-    _bodyComponentIdentifierOrder = [NSMutableArray new];
     
     return self;
 }

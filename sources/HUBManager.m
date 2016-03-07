@@ -29,27 +29,27 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(fallbackComponentName != nil);
     NSParameterAssert(componentLayoutManager != nil);
     
-    if (!(self = [super init])) {
-        return nil;
+    self = [super init];
+    
+    if (self) {
+        HUBComponentIdentifier * const fallbackComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:defaultComponentNamespace
+                                                                                                                  name:fallbackComponentName];
+        
+        _featureRegistry = [HUBFeatureRegistryImplementation new];
+        _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:fallbackComponentIdentifier];
+        _JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
+        _connectivityStateResolver = connectivityStateResolver;
+        
+        _viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:_featureRegistry
+                                                                                        JSONSchemaRegistry:_JSONSchemaRegistry
+                                                                                 defaultComponentNamespace:defaultComponentNamespace
+                                                                                 connectivityStateResolver:_connectivityStateResolver];
+        
+        _viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:_viewModelLoaderFactory
+                                                                                             imageLoaderFactory:imageLoaderFactory
+                                                                                              componentRegistry:self.componentRegistry
+                                                                                         componentLayoutManager:componentLayoutManager];
     }
-    
-    HUBComponentIdentifier * const fallbackComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:defaultComponentNamespace
-                                                                                                              name:fallbackComponentName];
-    
-    _featureRegistry = [HUBFeatureRegistryImplementation new];
-    _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:fallbackComponentIdentifier];
-    _JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
-    _connectivityStateResolver = connectivityStateResolver;
-    
-    _viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:_featureRegistry
-                                                                                    JSONSchemaRegistry:_JSONSchemaRegistry
-                                                                             defaultComponentNamespace:defaultComponentNamespace
-                                                                             connectivityStateResolver:_connectivityStateResolver];
-    
-    _viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:_viewModelLoaderFactory
-                                                                                         imageLoaderFactory:imageLoaderFactory
-                                                                                          componentRegistry:self.componentRegistry
-                                                                                     componentLayoutManager:componentLayoutManager];
     
     return self;
 }

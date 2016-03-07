@@ -14,12 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _defaultSchema = [HUBJSONSchemaImplementation new];
-    _customSchemasByIdentifier = [NSMutableDictionary new];
+    if (self) {
+        _defaultSchema = [HUBJSONSchemaImplementation new];
+        _customSchemasByIdentifier = [NSMutableDictionary new];
+    }
     
     return self;
 }

@@ -18,13 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(rootViewURI != nil);
     NSParameterAssert(contentProviderFactory != nil);
     
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _featureIdentifier = [featureIdentifier copy];
-    _rootViewURI = [rootViewURI copy];
-    _contentProviderFactory = contentProviderFactory;
+    if (self) {
+        _featureIdentifier = [featureIdentifier copy];
+        _rootViewURI = [rootViewURI copy];
+        _contentProviderFactory = contentProviderFactory;
+    }
     
     return self;
 }

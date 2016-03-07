@@ -24,14 +24,14 @@ NS_ASSUME_NONNULL_BEGIN
               defaultComponentNamespace:(NSString *)defaultComponentNamespace
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _featureRegistry = featureRegistry;
-    _JSONSchemaRegistry = JSONSchemaRegistry;
-    _defaultComponentNamespace = [defaultComponentNamespace copy];
-    _connectivityStateResolver = connectivityStateResolver;
+    if (self) {
+        _featureRegistry = featureRegistry;
+        _JSONSchemaRegistry = JSONSchemaRegistry;
+        _defaultComponentNamespace = [defaultComponentNamespace copy];
+        _connectivityStateResolver = connectivityStateResolver;
+    }
     
     return self;
 }

@@ -22,18 +22,18 @@ NS_ASSUME_NONNULL_BEGIN
                       extensionURL:(nullable NSURL *)extensionURL
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
 {
-    if (!(self = [super init])) {
-        return nil;
-    }
+    self = [super init];
     
-    _identifier = [identifier copy];
-    _featureIdentifier = [featureIdentifier copy];
-    _entityIdentifier = [entityIdentifier copy];
-    _navigationBarTitle = [navigationBarTitle copy];
-    _headerComponentModel = headerComponentModel;
-    _bodyComponentModels = bodyComponentModels;
-    _extensionURL = [extensionURL copy];
-    _customData = customData;
+    if (self) {
+        _identifier = [identifier copy];
+        _featureIdentifier = [featureIdentifier copy];
+        _entityIdentifier = [entityIdentifier copy];
+        _navigationBarTitle = [navigationBarTitle copy];
+        _headerComponentModel = headerComponentModel;
+        _bodyComponentModels = bodyComponentModels;
+        _extensionURL = [extensionURL copy];
+        _customData = customData;
+    }
     
     return self;
 }
