@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) HUBComponentWrapper *headerComponentWrapper;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
+@property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
 
 @end
 
@@ -85,7 +86,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     UICollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
     self.collectionView = collectionView;
-    self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
 
@@ -96,6 +96,37 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super viewWillAppear:animated];
     [self.viewModelLoader loadViewModel];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    id<HUBViewModel> const viewModel = self.viewModel;
+    
+    if (viewModel == nil) {
+        return;
+    }
+    
+    if (!self.viewModelHasChangedSinceLastLayoutUpdate) {
+        if (CGRectEqualToRect(self.collectionView.frame, self.view.bounds)) {
+            return;
+        }
+    }
+    
+    self.collectionView.frame = self.view.bounds;
+    
+    [self configureHeaderComponent];
+    
+    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
+                                                                              componentRegistry:self.componentRegistry
+                                                                         componentLayoutManager:self.componentLayoutManager];
+    
+    [layout computeForCollectionViewSize:self.collectionView.frame.size];
+    self.collectionView.collectionViewLayout = layout;
+    [self.collectionView reloadData];
+    
+    self.viewModelHasChangedSinceLastLayoutUpdate = NO;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -142,15 +173,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel
 {
     self.viewModel = viewModel;
-    [self configureHeaderComponent];
-    
-    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
-                                                                              componentRegistry:self.componentRegistry
-                                                                         componentLayoutManager:self.componentLayoutManager];
-    
-    [layout computeForCollectionViewSize:self.collectionView.frame.size];
-    self.collectionView.collectionViewLayout = layout;
-    [self.collectionView reloadData];
+    self.viewModelHasChangedSinceLastLayoutUpdate = YES;
+    [self.view setNeedsLayout];
 }
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didFailLoadingWithError:(NSError *)error
