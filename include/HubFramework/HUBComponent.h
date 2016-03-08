@@ -2,50 +2,9 @@
 
 #import "HUBComponentLayoutTraits.h"
 
-@protocol HUBComponent;
 @protocol HUBComponentModel;
-@protocol HUBComponentImageData;
 
 NS_ASSUME_NONNULL_BEGIN
-
-#pragma mark - HUBComponentDelegate
-
-/**
- *  Delegate protocol used to communicate back to the Hub Framework from a component implementation
- *
- *  You don't implement this protocol yourself. Instead, you @synthesize your component's `delegate`
- *  property, and may choose to send any of these methods to it to notify it of events.
- */
-@protocol HUBComponentDelegate <NSObject>
-
-#pragma mark - Tracking the Addition and Removal of Child Components
-
-/**
- *  Notify the Hub Framework that a component is about to display a child component at a given index
- *
- *  @param component The parent component
- *  @param childIndex The index of the child component that is about to be displayed
- *
- *  If your component has nested child components, you should call this method every time a child
- *  is about to appear on the screen, to enable the Hub Framework to load images and perform other
- *  setup work for it.
- */
-- (void)component:(id<HUBComponent>)component willDisplayChildAtIndex:(NSUInteger)childIndex;
-
-/**
- *  Notify the Hub Framework that a component's child component has been selected
- *
- *  @param component The parent component
- *  @param childIndex The index of the child component that was selected
- *
- *  If your component has nested child components, you should call this method every time a child
- *  component was selected by the user, to enable the Hub Framework to handle the selection.
- */
-- (void)component:(id<HUBComponent>)component childSelectedAtIndex:(NSUInteger)childIndex;
-
-@end
-
-#pragma mark - HUBComponent
 
 /**
  *  Protocol implemented by objects that manage a Hub Framework component
@@ -59,19 +18,19 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Ideally, components should hold as little state as possible, and instead react to any model changes
  *  through `-configureViewWithModel:`.
+ *
+ *  This is the base protocol that all components must conform to. For extensions that adds additional
+ *  functionality see:
+ *
+ *  `HUBComponentWithChildren`: For components that can contain nested child components
+ *
+ *  `HUBComponentWithImageHandling`: For handling downloaded images.
+ *
+ *  `HUBComponentContentOffsetObserver`: For components that react to the view's content offset.
  */
 @protocol HUBComponent <NSObject>
 
-#pragma mark - Configuring the Component
-
-/**
- *  The component's delegate
- *
- *  Don't assign any custom objects to this property. Instead, just @sythensize it, so that the
- *  Hub Framework can assign an internal object to this property, to enable you to send events
- *  back from the component to the framework.
- */
-@property (nonatomic, weak, nullable) id<HUBComponentDelegate> delegate;
+#pragma mark - Configuring the Component's layout
 
 /**
  *  The set of layout traits that should be used to compute a layout for the component
@@ -151,62 +110,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  with suitable placeholders used for any remote images that are about to be downloaded.
  */
 - (void)configureViewWithModel:(id<HUBComponentModel>)model;
-
-@end
-
-#pragma mark - HUBComponentWithImageHandling
-
-/**
- *  Extended Hub component protocol that adds the ability to handle images
- *
- *  Use this protocol if your component will display images, either for itself or for any
- *  child components that it could potentially be managing. See `HUBComponent` for more info.
- */
-@protocol HUBComponentWithImageHandling <HUBComponent>
-
-/**
- *  Return the size that the component prefers that a certain image gets once loaded
- *
- *  @param imageData The data that will be used to load the image
- *  @param model The current model for the component
- *  @param containerViewSize The size of the container in which the view will be displayed
- */
-- (CGSize)preferredSizeForImageFromData:(id<HUBComponentImageData>)imageData
-                                  model:(id<HUBComponentModel>)model
-                      containerViewSize:(CGSize)containerViewSize;
-
-/**
- *  Update the view to display an image that was loaded
- *
- *  @param image The image that was loaded
- *  @param imageData The data that was used to load the image
- *  @param model The current model for the component
- */
-- (void)updateViewForLoadedImage:(UIImage *)image
-                        fromData:(id<HUBComponentImageData>)imageData
-                           model:(id<HUBComponentModel>)model;
-
-@end
-
-#pragma mark - HUBComponentContentOffsetObserver
-
-/**
- *  Extended Hub component protocol that adds the ability to observe content offset changes
- *
- *  Use this protocol if your component needs to react to content offset changes in the view that it
- *  is being displayed in. See `HUBComponent` for more info.
- */
-@protocol HUBComponentContentOffsetObserver <HUBComponent>
-
-/**
- *  Update the component’s view in reaction to that the content offset of the container view changed
- *
- *  @param contentOffset The new content offset of the container view
- *
- *  The Hub Framework will send this message every time that the content offset changed in the main
- *  container view. This is equivalent to `UIScrollView scrollViewDidScroll:`.
- */
-- (void)updateViewForChangedContentOffset:(CGPoint)contentOffset;
 
 @end
 

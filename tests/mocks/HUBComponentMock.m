@@ -10,8 +10,8 @@
 
 @implementation HUBComponentMock
 
-@synthesize delegate = _delegate;
 @synthesize view = _view;
+@synthesize childEventHandler = _childEventHandler;
 
 - (instancetype)init
 {
