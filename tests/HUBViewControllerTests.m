@@ -161,7 +161,7 @@
 - (void)testMissingImageLoadingContextHandled
 {
     NSURL * const imageURL = [NSURL URLWithString:@"http://image.com"];
-    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
+    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
 }
 
 - (void)testImageLoadingForMultipleComponentsSharingTheSameImageURL
@@ -210,7 +210,7 @@
     self.collectionView.cells[indexPathA] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
     self.collectionView.cells[indexPathB] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
     
-    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
+    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
     
     XCTAssertEqualObjects(componentA.mainImageData.URL, imageURL);
     XCTAssertEqualObjects(componentB.mainImageData.URL, imageURL);
