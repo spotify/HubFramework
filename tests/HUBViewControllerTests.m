@@ -434,10 +434,15 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    [component.delegate component:component childSelectedAtIndex:0];
+    id<HUBComponentDelegate> const componentDelegate = component.delegate;
+    
+    [componentDelegate component:component childSelectedAtIndex:0];
     
     id<HUBViewModel> const childComponentTargetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:childComponentTargetURL];
     XCTAssertEqualObjects(childComponentTargetInitialViewModel.identifier, childComponentInitialViewModelIdentifier);
+    
+    // Make sure bounds-checking is performed for child component index
+    [componentDelegate component:component willDisplayChildAtIndex:99];
 }
 
 #pragma mark - HUBViewControllerDelegate
