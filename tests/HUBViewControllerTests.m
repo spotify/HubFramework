@@ -368,6 +368,32 @@
     XCTAssertEqualObjects(targetInitialViewModel.identifier, initialViewModelIdentifier);
 }
 
+- (void)testComponentDeselectedOnViewWillDisappear
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionCenteredVertically];
+    
+    XCTAssertEqualObjects(self.collectionView.selectedIndexPaths, [NSSet setWithObject:indexPath]);
+    
+    [self.viewController viewWillDisappear:NO];
+    
+    XCTAssertEqual(self.collectionView.selectedIndexPaths.count, (NSUInteger)0);
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewControllerHeaderComponentVisbilityDidChange:(UIViewController<HUBViewController> *)viewController
