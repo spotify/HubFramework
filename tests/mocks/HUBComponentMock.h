@@ -1,11 +1,12 @@
-#import "HUBComponent.h"
+#import "HUBComponentWithChildren.h"
+#import "HUBComponentWithImageHandling.h"
 
 @protocol HUBComponentImageData;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Mocked component, for use in tests only
-@interface HUBComponentMock : NSObject <HUBComponentWithImageHandling>
+@interface HUBComponentMock : NSObject <HUBComponentWithChildren, HUBComponentWithImageHandling>
 
 /// The layout traits the component should act like it's having
 @property (nonatomic, strong) NSMutableSet<HUBComponentLayoutTrait *> *layoutTraits;

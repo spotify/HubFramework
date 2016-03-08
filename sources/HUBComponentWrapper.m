@@ -1,12 +1,12 @@
 #import "HUBComponentWrapper.h"
 
-#import "HUBComponent.h"
+#import "HUBComponentWithChildren.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBComponentWrapper () <HUBComponentDelegate>
+@interface HUBComponentWrapper () <HUBComponentChildEventHandler>
 
 @end
 
@@ -19,8 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
     if (self) {
         _identifier = [NSUUID UUID];
         _component = component;
-        _component.delegate = self;
         _componentIdentifier = [componentIdentifier copy];
+        
+        if ([_component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
+            ((id<HUBComponentWithChildren>)_component).childEventHandler = self;
+        }
     }
     
     return self;
@@ -28,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentDelegate
 
-- (void)component:(id<HUBComponent>)component willDisplayChildAtIndex:(NSUInteger)childIndex
+- (void)component:(id<HUBComponentWithChildren>)component willDisplayChildAtIndex:(NSUInteger)childIndex
 {
     if (self.component != component) {
         return;
@@ -37,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate componentWrapper:self componentWillDisplayChildAtIndex:childIndex];
 }
 
-- (void)component:(id<HUBComponent>)component childSelectedAtIndex:(NSUInteger)childIndex
+- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex
 {
     if (self.component != component) {
         return;
