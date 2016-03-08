@@ -47,6 +47,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewControllerFactory
 
+- (BOOL)canCreateViewControllerForViewURI:(NSURL *)viewURI
+{
+    return [self.viewModelLoaderFactory canCreateViewModelLoaderForViewURI:viewURI];
+}
+
 - (nullable UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI
 {
     id<HUBViewModelLoader> const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI];

@@ -47,12 +47,14 @@
     
     [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
     
+    XCTAssertTrue([self.viewModelLoaderFactory canCreateViewModelLoaderForViewURI:viewURI]);
     XCTAssertNotNil([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
 }
 
 - (void)testCreatingViewModelLoaderForInvalidViewURIReturnsNil
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:unrecognized"];
+    XCTAssertFalse([self.viewModelLoaderFactory canCreateViewModelLoaderForViewURI:viewURI]);
     XCTAssertNil([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
 }
 

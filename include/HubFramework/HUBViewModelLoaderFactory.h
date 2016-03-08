@@ -15,6 +15,15 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HUBViewModelLoaderFactory <NSObject>
 
 /**
+ *  Return whether the factory is able to create a view model loader for a given view URI
+ *
+ *  @param viewURI The view URI to check if a view model loader can be created for
+ *
+ *  You can use this API to validate view URIs before starting to create a view model loader for them.
+ */
+- (BOOL)canCreateViewModelLoaderForViewURI:(NSURL *)viewURI;
+
+/**
  *  Create a view model loader that matches a certain view URI
  *
  *  @param viewURI The view URI to return a view model loader for

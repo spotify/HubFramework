@@ -16,6 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HUBViewControllerFactory <NSObject>
 
 /**
+ *  Return whether the factory is able to create a view controller for a given view URI
+ *
+ *  @param viewURI The view URI to check if a view controller can be created for
+ *
+ *  You can use this API to validate view URIs before starting to create a view controller for them.
+ */
+- (BOOL)canCreateViewControllerForViewURI:(NSURL *)viewURI;
+
+/**
  *  Create a view controller for a certain view URI
  *
  *  @param viewURI The view URI to create a view controller for
