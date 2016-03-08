@@ -201,12 +201,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBImageLoaderDelegate
 
-- (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL
+- (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache
 {
     NSArray * const contexts = self.componentImageLoadingContexts[imageURL];
     
     for (HUBComponentImageLoadingContext * const context in contexts) {
-        [self handleLoadedComponentImage:image forURL:imageURL context:context];
+        [self handleLoadedComponentImage:image forURL:imageURL fromCache:loadedFromCache context:context];
     }
 }
 
@@ -477,7 +477,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
 }
 
-- (void)handleLoadedComponentImage:(UIImage *)image forURL:(NSURL *)imageURL context:(HUBComponentImageLoadingContext *)context
+- (void)handleLoadedComponentImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache context:(HUBComponentImageLoadingContext *)context
 {
     id<HUBViewModel> const viewModel = self.viewModel;
     
@@ -534,7 +534,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    [component updateViewForLoadedImage:image fromData:imageData model:componentModel];
+    [component updateViewForLoadedImage:image fromData:imageData model:componentModel animated:!loadedFromCache];
 }
 
 - (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel

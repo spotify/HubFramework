@@ -29,10 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param image The image that was loaded
  *  @param imageData The data that was used to load the image
  *  @param model The current model for the component
+ *  @param animated Whether the update should be applied with an animation
  */
 - (void)updateViewForLoadedImage:(UIImage *)image
                         fromData:(id<HUBComponentImageData>)imageData
-                           model:(id<HUBComponentModel>)model;
+                           model:(id<HUBComponentModel>)model
+                        animated:(BOOL)animated;
 
 @end
 

@@ -54,7 +54,7 @@
     return CGSizeMake(100, 100);
 }
 
-- (void)updateViewForLoadedImage:(UIImage *)image fromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model
+- (void)updateViewForLoadedImage:(UIImage *)image fromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model animated:(BOOL)animated
 {
     switch (imageData.type) {
         case HUBComponentImageTypeMain:
