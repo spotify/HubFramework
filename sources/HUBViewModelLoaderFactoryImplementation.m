@@ -38,6 +38,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewModelLoaderFactory
 
+- (BOOL)canCreateViewModelLoaderForViewURI:(NSURL *)viewURI
+{
+    return [self.featureRegistry featureRegistrationForViewURI:viewURI] != nil;
+}
+
 - (nullable id<HUBViewModelLoader>)createViewModelLoaderForViewURI:(NSURL *)viewURI
 {
     HUBFeatureRegistration * const featureRegistration = [self.featureRegistry featureRegistrationForViewURI:viewURI];

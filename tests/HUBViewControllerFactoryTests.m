@@ -50,12 +50,14 @@
     
     [self.manager.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
     
+    XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
     XCTAssertNotNil([self.manager.viewControllerFactory createViewControllerForViewURI:viewURI]);
 }
 
 - (void)testCreatingViewControllerForInvalidViewURIReturnsNil
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:unknown"];
+    XCTAssertFalse([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
     XCTAssertNil([self.manager.viewControllerFactory createViewControllerForViewURI:viewURI]);
 }
 
