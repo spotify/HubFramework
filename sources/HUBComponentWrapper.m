@@ -37,6 +37,15 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate componentWrapper:self componentWillDisplayChildAtIndex:childIndex];
 }
 
+- (void)component:(id<HUBComponent>)component childSelectedAtIndex:(NSUInteger)childIndex
+{
+    if (self.component != component) {
+        return;
+    }
+    
+    [self.delegate componentWrapper:self childComponentSelectedAtIndex:childIndex];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

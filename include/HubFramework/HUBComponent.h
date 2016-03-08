@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Notify the Hub Framework that a component is about to display a child component at a given index
  *
- *  @param component The component in question
+ *  @param component The parent component
  *  @param childIndex The index of the child component that is about to be displayed
  *
  *  If your component has nested child components, you should call this method every time a child
@@ -31,6 +31,17 @@ NS_ASSUME_NONNULL_BEGIN
  *  setup work for it.
  */
 - (void)component:(id<HUBComponent>)component willDisplayChildAtIndex:(NSUInteger)childIndex;
+
+/**
+ *  Notify the Hub Framework that a component's child component has been selected
+ *
+ *  @param component The parent component
+ *  @param childIndex The index of the child component that was selected
+ *
+ *  If your component has nested child components, you should call this method every time a child
+ *  component was selected by the user, to enable the Hub Framework to handle the selection.
+ */
+- (void)component:(id<HUBComponent>)component childSelectedAtIndex:(NSUInteger)childIndex;
 
 @end
 

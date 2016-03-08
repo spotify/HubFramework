@@ -394,6 +394,57 @@
     XCTAssertEqual(self.collectionView.selectedIndexPaths.count, (NSUInteger)0);
 }
 
+- (void)testSelectionForChildComponent
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    NSString * const componentNamespace = @"childComponentSelection";
+    NSString * const componentName = @"component";
+    NSString * const childComponentName = @"componentB";
+    NSURL * const childComponentTargetURL = [NSURL URLWithString:@"spotify:hub:child-component"];
+    NSString * const childComponentInitialViewModelIdentifier = @"viewModel";
+    HUBComponentMock * const component = [HUBComponentMock new];
+    HUBComponentMock * const childComponent = [HUBComponentMock new];
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        componentName: component,
+        childComponentName: childComponent
+    }];
+    
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.componentNamespace = componentNamespace;
+        componentModelBuilder.componentName = componentName;
+        
+        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"];
+        childComponentModelBuilder.componentNamespace = componentNamespace;
+        childComponentModelBuilder.componentName = childComponentName;
+        childComponentModelBuilder.targetURL = childComponentTargetURL;
+        childComponentModelBuilder.targetInitialViewModelBuilder.viewIdentifier = childComponentInitialViewModelIdentifier;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
+    id<HUBComponentDelegate> const componentDelegate = component.delegate;
+    
+    [componentDelegate component:component childSelectedAtIndex:0];
+    
+    id<HUBViewModel> const childComponentTargetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:childComponentTargetURL];
+    XCTAssertEqualObjects(childComponentTargetInitialViewModel.identifier, childComponentInitialViewModelIdentifier);
+    
+    // Make sure bounds-checking is performed for child component index
+    [componentDelegate component:component willDisplayChildAtIndex:99];
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewControllerHeaderComponentVisbilityDidChange:(UIViewController<HUBViewController> *)viewController

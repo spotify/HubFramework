@@ -232,6 +232,18 @@ NS_ASSUME_NONNULL_BEGIN
                       childIndex:@(childIndex)];
 }
 
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponentSelectedAtIndex:(NSUInteger)childIndex
+{
+    id<HUBComponentModel> const componentModel = componentWrapper.currentModel;
+    
+    if (childIndex >= componentModel.childComponentModels.count) {
+        return;
+    }
+    
+    id<HUBComponentModel> const childComponentModel = componentModel.childComponentModels[childIndex];
+    [self handleSelectionForComponentWithModel:childComponentModel];
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -287,19 +299,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
-    
-    NSURL * const targetURL = componentModel.targetURL;
-    id<HUBViewModel> const targetInitialViewModel = componentModel.targetInitialViewModel;
-    
-    if (targetURL == nil) {
-        return;
-    }
-    
-    if (targetInitialViewModel != nil) {
-        [self.initialViewModelRegistry registerInitialViewModel:targetInitialViewModel forViewURI:targetURL];
-    }
-    
-    [[UIApplication sharedApplication] openURL:targetURL];
+    [self handleSelectionForComponentWithModel:componentModel];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -534,6 +534,22 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     [component updateViewForLoadedImage:image fromData:imageData model:componentModel];
+}
+
+- (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel
+{
+    NSURL * const targetURL = componentModel.targetURL;
+    id<HUBViewModel> const targetInitialViewModel = componentModel.targetInitialViewModel;
+    
+    if (targetURL == nil) {
+        return;
+    }
+    
+    if (targetInitialViewModel != nil) {
+        [self.initialViewModelRegistry registerInitialViewModel:targetInitialViewModel forViewURI:targetURL];
+    }
+    
+    [[UIApplication sharedApplication] openURL:targetURL];
 }
 
 @end
