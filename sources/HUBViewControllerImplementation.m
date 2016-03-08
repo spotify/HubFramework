@@ -105,6 +105,15 @@ NS_ASSUME_NONNULL_BEGIN
     [self.viewModelLoader loadViewModel];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    for (NSIndexPath *indexPath in self.collectionView.indexPathsForSelectedItems) {
+        [self.collectionView deselectItemAtIndexPath:indexPath animated:animated];
+    }
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
@@ -291,7 +300,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     [[UIApplication sharedApplication] openURL:targetURL];
-    [collectionView deselectItemAtIndexPath:indexPath animated:NO];
 }
 
 #pragma mark - UIScrollViewDelegate
