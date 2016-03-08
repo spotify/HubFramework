@@ -13,9 +13,18 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Notify the delegate that the wrapped component is about to display a child component at a given index
  *
+ *  @param componentWrapper The wrapper of the component in which the event occured
  *  @param childIndex The index of the child component that is about to be displayed
  */
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper componentWillDisplayChildAtIndex:(NSUInteger)childIndex;
+
+/**
+ *  Notify the delegate that a child component in the wrapped component was selected
+ *
+ *  @param componentWrapper The wrapper of the component in which the event occured
+ *  @param childIndex The index of the child component that was selected
+ */
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponentSelectedAtIndex:(NSUInteger)childIndex;
 
 @end
 
