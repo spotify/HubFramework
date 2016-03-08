@@ -28,6 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
     
     UIView * const view = componentWrapper.component.view;
     NSAssert(view, @"All components are required to load a view in -loadView");
+    
+    if ([view isKindOfClass:[UICollectionViewCell class]]) {
+        view.userInteractionEnabled = NO;
+    }
+    
     [self.contentView addSubview:view];
 }
 

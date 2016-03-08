@@ -16,6 +16,8 @@
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
 #import "HUBComponentLayoutManagerMock.h"
+#import "HUBInitialViewModelRegistry.h"
+#import "HUBViewModel.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -26,6 +28,7 @@
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
+@property (nonatomic, strong) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong) HUBViewControllerImplementation *viewController;
 @property (nonatomic) NSInteger numberOfHeaderComponentVisibilityChangeDelegateCalls;
 
@@ -67,11 +70,15 @@
     
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     
+    self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
+    
     self.viewController = [[HUBViewControllerImplementation alloc] initWithViewModelLoader:self.viewModelLoader
                                                                                imageLoader:self.imageLoader
                                                                      collectionViewFactory:collectionViewFactory
                                                                          componentRegistry:self.componentRegistry
-                                                                    componentLayoutManager:componentLayoutManager];
+                                                                    componentLayoutManager:componentLayoutManager
+                                                                          initialViewModel:nil
+                                                                  initialViewModelRegistry:self.initialViewModelRegistry];
     
     self.viewController.delegate = self;
     
@@ -332,6 +339,59 @@
     [self.viewController viewDidLayoutSubviews];
     
     XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
+}
+
+- (void)testInitialViewModelForTargetViewControllerRegistered
+{
+    NSString * const initialViewModelIdentifier = @"initialViewModel";
+    NSURL * const targetViewURI = [NSURL URLWithString:@"spotify:hub:target"];
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"id"];
+        componentModelBuilder.componentName = @"component";
+        componentModelBuilder.targetURL = targetViewURI;
+        componentModelBuilder.targetInitialViewModelBuilder.viewIdentifier = initialViewModelIdentifier;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.delegate collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+    
+    id<HUBViewModel> const targetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:targetViewURI];
+    XCTAssertEqualObjects(targetInitialViewModel.identifier, initialViewModelIdentifier);
+}
+
+- (void)testComponentDeselectedOnViewWillDisappear
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionCenteredVertically];
+    
+    XCTAssertEqualObjects(self.collectionView.selectedIndexPaths, [NSSet setWithObject:indexPath]);
+    
+    [self.viewController viewWillDisappear:NO];
+    
+    XCTAssertEqual(self.collectionView.selectedIndexPaths.count, (NSUInteger)0);
 }
 
 #pragma mark - HUBViewControllerDelegate
