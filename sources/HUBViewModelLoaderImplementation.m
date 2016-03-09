@@ -39,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(defaultComponentNamespace != nil);
+    NSParameterAssert(remoteContentProvider != nil || localContentProvider != nil);
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(connectivityStateResolver != nil);
     

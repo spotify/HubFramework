@@ -22,7 +22,8 @@
 {
     [super setUp];
     
-    self.featureRegistry = [HUBFeatureRegistryImplementation new];
+    id<HUBDefaultRemoteContentProviderFactory> const defaultRemoteContentProviderFactory = [HUBContentProviderFactoryMock new];
+    self.featureRegistry = [[HUBFeatureRegistryImplementation alloc] initWithDefaultRemoteContentProviderFactory:defaultRemoteContentProviderFactory];
     self.defaultComponentNamespace = @"default";
     
     HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
@@ -43,7 +44,8 @@
     
     id<HUBFeatureConfiguration> const featureConfiguration = [self.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
                                                                                                                    rootViewURI:viewURI
-                                                                                                        contentProviderFactory:contentProviderFactory];
+                                                                                                  remoteContentProviderFactory:contentProviderFactory
+                                                                                                   localContentProviderFactory:nil];
     
     [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
     
@@ -65,7 +67,8 @@
     HUBContentProviderFactoryMock * const contentProviderFactory = [HUBContentProviderFactoryMock new];
     id<HUBFeatureConfiguration> const featureConfiguration = [self.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
                                                                                                                    rootViewURI:viewURI
-                                                                                                        contentProviderFactory:contentProviderFactory];
+                                                                                                  remoteContentProviderFactory:contentProviderFactory
+                                                                                                   localContentProviderFactory:contentProviderFactory];
     
     [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
     

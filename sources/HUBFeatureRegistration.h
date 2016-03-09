@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
-@protocol HUBContentProviderFactory;
+@protocol HUBRemoteContentProviderFactory;
+@protocol HUBLocalContentProviderFactory;
 @protocol HUBViewURIQualifier;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -14,8 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// The root view URI of the feature
 @property (nonatomic, copy, readonly) NSURL *rootViewURI;
 
-/// The content provider factory that the feature is using
-@property (nonatomic, strong, readonly) id<HUBContentProviderFactory> contentProviderFactory;
+/// Any remote content provider factory that the feature is using
+@property (nonatomic, strong, nullable, readonly) id<HUBRemoteContentProviderFactory> remoteContentProviderFactory;
+
+/// Any local content provider factory that the feature is using
+@property (nonatomic, strong, nullable, readonly) id<HUBLocalContentProviderFactory> localContentProviderFactory;
 
 /// The identifier of any custom JSON schema that the feature is using
 @property (nonatomic, copy, nullable, readonly) NSString *customJSONSchemaIdentifier;
@@ -28,13 +32,15 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param featureIdentifier The identifier of the feature
  *  @param rootViewURI The root view URI of the feature
- *  @param contentProviderFactory The content provider factory that the feature will use
+ *  @param remoteContentProviderFactory The remote content provider factory that the feature will use
+ *  @param localContentProviderFactory The local content provider factory that the feature will use
  *  @param customJSONSchemaIdentifier The identifier of any custom JSON schema the feature will use
  *  @param viewURIQualifier Any view URI qualifier that the feature will use
  */
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                               rootViewURI:(NSURL *)rootViewURI
-                   contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory
+             remoteContentProviderFactory:(nullable id<HUBRemoteContentProviderFactory>)remoteContentProviderFactory
+              localContentProviderFactory:(nullable id<HUBLocalContentProviderFactory>)localContentProviderFactory
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
                          viewURIQualifier:(nullable id<HUBViewURIQualifier>)viewURIQualifier NS_DESIGNATED_INITIALIZER;
 

@@ -10,11 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param featureIdentifier The feature identifier that the configuration object should have
  *  @param rootViewURI The root view URI that the configuration object should have
- *  @param contentProviderFactory The content provider factory that should be associated with the configuration object
  */
-- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
-                              rootViewURI:(NSURL *)rootViewURI
-                   contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier rootViewURI:(NSURL *)rootViewURI NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 

@@ -1,7 +1,9 @@
 #import <Foundation/Foundation.h>
 
 @protocol HUBFeatureConfiguration;
-@protocol HUBContentProviderFactory;
+@protocol HUBRemoteContentURLResolver;
+@protocol HUBRemoteContentProviderFactory;
+@protocol HUBLocalContentProviderFactory;
 @protocol HUBFeatureRegistration;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,25 +19,51 @@ NS_ASSUME_NONNULL_BEGIN
  *  according to your feature's requirements, and then finally passing it back to `-registerFeatureWithConfiguration:` to
  *  complete the registration process.
  *
- '  See `HUBFeatureConfiguration` for more information on how to configure a feature for use with the Hub Framework.
+ *  See `HUBFeatureConfiguration` for more information on how to configure a feature for use with the Hub Framework.
  */
 @protocol HUBFeatureRegistry <NSObject>
 
 /**
- *  Create a new feature configuration object that can be used to setup a feature for use with the Hub Framework
+ *  Create a remote content URL resolver-based feature configuration object that is used to setup a feature with the Hub Framework
  *
  *  @param featureIdentifier The identifier of the feature (must be unique across the app)
  *  @param rootViewURI The root view URI of the feature (must be unique across the app)
- *  @param contentProviderFactory The content provider factory that the feature should use
+ *  @param remoteContentURLResolver The remote content URL resolver that the feature should use
+ *
+ *  Use this way to create a configuration object in case you want to use the `HUBRemoteContentURLResolver` API to load your feature's
+ *  content. If you want to customize the way content is loaded for your feature, use the content provider factory-based configuration
+ *  factory method instead.
  *
  *  Once you've setup the returned configuration object according to your feature's requirements, pass it back to the registry
  *  using `-registerFeatureWithConfiguration:` to complete the registration process.
  *
- *  See `HUBFeatureConfiguration` and `HUBContentProviderFactory` for more information.
+ *  See `HUBFeatureConfiguration` and `HUBRemoteContentURLResolver` for more information.
  */
 - (id<HUBFeatureConfiguration>)createConfigurationForFeatureWithIdentifier:(NSString *)featureIdentifier
                                                                rootViewURI:(NSURL *)rootViewURI
-                                                    contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory;
+                                                  remoteContentURLResolver:(id<HUBRemoteContentURLResolver>)remoteContentURLResolver;
+
+/**
+ *  Create a content provider-based feature configuration object that is used to setup a feature with the Hub Framework
+ *
+ *  @param featureIdentifier The identifier of the feature (must be unique across the app)
+ *  @param rootViewURI The root view URI of the feature (must be unique across the app)
+ *  @param remoteContentProviderFactory Any factory that creates remote content providers for the feature
+ *  @param localContentProviderFactory Any factory that creates local content providers for the feature
+ *
+ *  Use this way to create a configuration object in case you intend to implement a custom remote and/or local content provider.
+ *  If your feature should use the `HUBRemoteContentURLResolver` API instead, use the other configuration factory method.
+ *
+ *  Once you've setup the returned configuration object according to your feature's requirements, pass it back to the registry
+ *  using `-registerFeatureWithConfiguration:` to complete the registration process.
+ *
+ *  See `HUBFeatureConfiguration`, `HUBRemoteContentProviderFactory` and `HUBLocalContentProviderFactory` for more information.
+ */
+- (id<HUBFeatureConfiguration>)createConfigurationForFeatureWithIdentifier:(NSString *)featureIdentifier
+                                                               rootViewURI:(NSURL *)rootViewURI
+                                              remoteContentProviderFactory:(nullable id<HUBRemoteContentProviderFactory>)remoteContentProviderFactory
+                                               localContentProviderFactory:(nullable id<HUBLocalContentProviderFactory>)localContentProviderFactory;
+
 
 /**
  *  Register a feature with the Hub Framework using a configuration object

@@ -6,20 +6,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                               rootViewURI:(NSURL *)rootViewURI
-                   contentProviderFactory:(id<HUBContentProviderFactory>)contentProviderFactory
+             remoteContentProviderFactory:(nullable id<HUBRemoteContentProviderFactory>)remoteContentProviderFactory
+              localContentProviderFactory:(nullable id<HUBLocalContentProviderFactory>)localContentProviderFactory
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
                          viewURIQualifier:(nullable id<HUBViewURIQualifier>)viewURIQualifier
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(rootViewURI != nil);
-    NSParameterAssert(contentProviderFactory != nil);
+    NSParameterAssert(remoteContentProviderFactory != nil || localContentProviderFactory != nil);
     
     self = [super init];
     
     if (self) {
         _featureIdentifier = [featureIdentifier copy];
         _rootViewURI = [rootViewURI copy];
-        _contentProviderFactory = contentProviderFactory;
+        _remoteContentProviderFactory = remoteContentProviderFactory;
+        _localContentProviderFactory = localContentProviderFactory;
         _customJSONSchemaIdentifier = [customJSONSchemaIdentifier copy];
         _viewURIQualifier = viewURIQualifier;
     }
