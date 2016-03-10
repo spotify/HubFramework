@@ -9,7 +9,7 @@
 	<key>SortOrder</key>
 	<string>-3</string>
 	<key>DefaultCompletionName</key>
-	<string>HubRemoteContentProvider</string>
+	<string>HubRemoteContentProviderFactory</string>
 	<key>Platforms</key>
 	<array>
 		<string>com.apple.platform.iphoneos</string>
