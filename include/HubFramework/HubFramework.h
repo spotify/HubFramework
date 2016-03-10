@@ -17,8 +17,11 @@
 #import "HUBFeatureRegistry.h"
 
 // Content
-#import "HUBContentProviderFactory.h"
+#import "HUBDefaultRemoteContentProviderFactory.h"
+#import "HUBRemoteContentProviderFactory.h"
 #import "HUBRemoteContentProvider.h"
+#import "HUBRemoteContentURLResolver.h"
+#import "HUBLocalContentProviderFactory.h"
 #import "HUBLocalContentProvider.h"
 
 // View
