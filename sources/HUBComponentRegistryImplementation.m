@@ -53,6 +53,11 @@ NS_ASSUME_NONNULL_BEGIN
     self.componentFactories[componentNamespace] = componentFactory;
 }
 
+- (void)unregisterComponentFactoryForNamespace:(NSString *)componentNamespace
+{
+    self.componentFactories[componentNamespace] = nil;
+}
+
 #pragma mark - Priate utilities
 
 - (id<HUBComponent>)createFallbackComponent
