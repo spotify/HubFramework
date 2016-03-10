@@ -63,8 +63,7 @@ static NSString * const DefaultNamespace = @"default";
     [self.registry registerComponentFactory:factory forNamespace:namespace];
     [self.registry unregisterComponentFactoryForNamespace:namespace];
     
-    // The namespace should now be free to register again, so this shouldn't throw
-    [self.registry registerComponentFactory:factory forNamespace:namespace];
+    XCTAssertNoThrow([self.registry registerComponentFactory:factory forNamespace:namespace]);
 }
 
 - (void)testFallbackComponentCreatedForUnknownNamespace
