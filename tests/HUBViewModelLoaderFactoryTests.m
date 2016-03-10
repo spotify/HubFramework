@@ -7,9 +7,12 @@
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBContentProviderFactoryMock.h"
 #import "HUBRemoteContentProviderMock.h"
+#import "HUBRemoteContentURLResolverMock.h"
+#import "HUBViewModelLoader.h"
 
 @interface HUBViewModelLoaderFactoryTests : XCTestCase
 
+@property (nonatomic, strong) HUBContentProviderFactoryMock *defaultRemoteContentProviderFactory;
 @property (nonatomic, strong) HUBFeatureRegistryImplementation *featureRegistry;
 @property (nonatomic, copy) NSString *defaultComponentNamespace;
 @property (nonatomic, strong) HUBViewModelLoaderFactoryImplementation *viewModelLoaderFactory;
@@ -22,8 +25,8 @@
 {
     [super setUp];
     
-    id<HUBDefaultRemoteContentProviderFactory> const defaultRemoteContentProviderFactory = [HUBContentProviderFactoryMock new];
-    self.featureRegistry = [[HUBFeatureRegistryImplementation alloc] initWithDefaultRemoteContentProviderFactory:defaultRemoteContentProviderFactory];
+    self.defaultRemoteContentProviderFactory = [HUBContentProviderFactoryMock new];
+    self.featureRegistry = [[HUBFeatureRegistryImplementation alloc] initWithDefaultRemoteContentProviderFactory:self.defaultRemoteContentProviderFactory];
     self.defaultComponentNamespace = @"default";
     
     HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
@@ -73,6 +76,26 @@
     [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
     
     XCTAssertThrows([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
+}
+
+- (void)testDefaultRemoteContentProviderUsedIfFeatureUsesURLResolver
+{
+    HUBRemoteContentProviderMock * const defaultRemoteContentProvider = [HUBRemoteContentProviderMock new];
+    defaultRemoteContentProvider.data = [NSData new];
+    self.defaultRemoteContentProviderFactory.remoteContentProvider = defaultRemoteContentProvider;
+    
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBRemoteContentURLResolverMock * const URLResolver = [HUBRemoteContentURLResolverMock new];
+    
+    id<HUBFeatureConfiguration> const featureConfiguration = [self.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
+                                                                                                                   rootViewURI:viewURI
+                                                                                                      remoteContentURLResolver:URLResolver];
+    
+    [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
+    
+    id<HUBViewModelLoader> const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI];
+    [viewModelLoader loadViewModel];
+    XCTAssertTrue(defaultRemoteContentProvider.called);
 }
 
 @end
