@@ -18,15 +18,15 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBManager
 
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+                                dataLoaderFactory:(id<HUBDataLoaderFactory>)dataLoaderFactory
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
-              defaultRemoteContentProviderFactory:(id<HUBDefaultRemoteContentProviderFactory>)defaultRemoteContentProviderFactory
                         defaultComponentNamespace:(NSString *)defaultComponentNamespace
                             fallbackComponentName:(NSString *)fallbackComponentName
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
 {
     NSParameterAssert(connectivityStateResolver != nil);
+    NSParameterAssert(dataLoaderFactory != nil);
     NSParameterAssert(imageLoaderFactory != nil);
-    NSParameterAssert(defaultRemoteContentProviderFactory != nil);
     NSParameterAssert(defaultComponentNamespace != nil);
     NSParameterAssert(fallbackComponentName != nil);
     NSParameterAssert(componentLayoutManager != nil);
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
         HUBComponentIdentifier * const fallbackComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:defaultComponentNamespace
                                                                                                                   name:fallbackComponentName];
         
-        _featureRegistry = [[HUBFeatureRegistryImplementation alloc] initWithDefaultRemoteContentProviderFactory:defaultRemoteContentProviderFactory];
+        _featureRegistry = [[HUBFeatureRegistryImplementation alloc] initWithDataLoaderFactory:dataLoaderFactory];
         _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:fallbackComponentIdentifier];
         _JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
         _connectivityStateResolver = connectivityStateResolver;

@@ -7,6 +7,7 @@
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBContentProviderFactoryMock.h"
 #import "HUBRemoteContentProviderMock.h"
+#import "HUBDataLoaderFactoryMock.h"
 #import "HUBImageLoaderFactoryMock.h"
 #import "HUBComponentLayoutManagerMock.h"
 
@@ -26,12 +27,12 @@
     
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     id<HUBImageLoaderFactory> const imageLoaderFactory = [HUBImageLoaderFactoryMock new];
-    id<HUBDefaultRemoteContentProviderFactory> const defaultRemoteContentProviderFactory = [HUBContentProviderFactoryMock new];
+    id<HUBDataLoaderFactory> const dataLoaderFactory = [HUBDataLoaderFactoryMock new];
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     
     self.manager = [[HUBManager alloc] initWithConnectivityStateResolver:connectivityStateResolver
+                                                       dataLoaderFactory:dataLoaderFactory
                                                       imageLoaderFactory:imageLoaderFactory
-                                     defaultRemoteContentProviderFactory:defaultRemoteContentProviderFactory
                                                defaultComponentNamespace:@"default"
                                                    fallbackComponentName:@"fallback"
                                                   componentLayoutManager:componentLayoutManager];

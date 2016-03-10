@@ -6,8 +6,8 @@
 @protocol HUBViewModelLoaderFactory;
 @protocol HUBViewControllerFactory;
 @protocol HUBConnectivityStateResolver;
+@protocol HUBDataLoaderFactory;
 @protocol HUBImageLoaderFactory;
-@protocol HUBDefaultRemoteContentProviderFactory;
 @protocol HUBComponentLayoutManager;
 @class HUBComponentIdentifier;
 
@@ -41,9 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param connectivityStateResolver An object responsible for determining the current connectivity state of
  *         the application. This object will be retained.
+ *  @param dataLoaderFactory A factory that create data loaders that are used to load binary data over the network
  *  @param imageLoaderFactory A factory that creates image loaders that are used to load images for components
- *  @param defaultRemoteContentProviderFactory The default remote content provider to use for features that are using a
- *         `HUBRemoteContentURLResolver`, instead of implementing a custom remote content provider.
  *  @param defaultComponentNamespace The component namespace that all component models created using this instance of the
  *         Hub Framework will initially have. This namespace can be overriden by any content provider, using either JSON
  *         data or by using a `HUBComponentModelBuilder` directly. A `HUBComponentFactory` must be registered for this
@@ -55,8 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentLayoutManager The object to use to manage layout for components. This object will be retained.
  */
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+                                dataLoaderFactory:(id<HUBDataLoaderFactory>)dataLoaderFactory
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
-              defaultRemoteContentProviderFactory:(id<HUBDefaultRemoteContentProviderFactory>)defaultRemoteContentProviderFactory
                         defaultComponentNamespace:(NSString *)defaultComponentNamespace
                             fallbackComponentName:(NSString *)fallbackComponentName
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager NS_DESIGNATED_INITIALIZER;

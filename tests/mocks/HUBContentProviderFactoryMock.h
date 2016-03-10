@@ -1,11 +1,10 @@
-#import "HUBDefaultRemoteContentProviderFactory.h"
 #import "HUBRemoteContentProviderFactory.h"
 #import "HUBLocalContentProviderFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Mocked content provider factory, for use in tests only
-@interface HUBContentProviderFactoryMock : NSObject <HUBDefaultRemoteContentProviderFactory, HUBRemoteContentProviderFactory, HUBLocalContentProviderFactory>
+@interface HUBContentProviderFactoryMock : NSObject <HUBRemoteContentProviderFactory, HUBLocalContentProviderFactory>
 
 /// The remote content provider that this factory always returns
 @property (nonatomic, strong, nullable) id<HUBRemoteContentProvider> remoteContentProvider;

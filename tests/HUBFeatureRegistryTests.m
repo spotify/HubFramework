@@ -6,6 +6,7 @@
 #import "HUBContentProviderFactoryMock.h"
 #import "HUBRemoteContentURLResolverMock.h"
 #import "HUBViewURIQualifierMock.h"
+#import "HUBDataLoaderFactoryMock.h"
 
 @interface HUBFeatureRegistryTests : XCTestCase
 
@@ -21,8 +22,8 @@
 {
     [super setUp];
     
-    id<HUBDefaultRemoteContentProviderFactory> const defaultRemoteContentProviderFactory = [HUBContentProviderFactoryMock new];
-    self.registry = [[HUBFeatureRegistryImplementation alloc] initWithDefaultRemoteContentProviderFactory:defaultRemoteContentProviderFactory];
+    id<HUBDataLoaderFactory> const dataLoaderFactory = [HUBDataLoaderFactoryMock new];
+    self.registry = [[HUBFeatureRegistryImplementation alloc] initWithDataLoaderFactory:dataLoaderFactory];
 }
 
 #pragma mark - Tests

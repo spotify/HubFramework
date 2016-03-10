@@ -1,6 +1,6 @@
 #import "HUBFeatureRegistry.h"
 
-@protocol HUBDefaultRemoteContentProviderFactory;
+@protocol HUBDataLoaderFactory;
 @class HUBFeatureRegistration;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -9,12 +9,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBFeatureRegistryImplementation : NSObject <HUBFeatureRegistry>
 
 /**
- *  Initialize an instance with a default remote content provider factory
+ *  Initialize an instance with a data loader factory
  *
- *  @param defaultRemoteContentProviderFactory The default remote content provider factory to use for features using the
- *         `HUBRemoteContentURLResolver` API.
+ *  @param dataLoaderFactory The factory to use to create data loaders for features
+ *         using `HUBRemoteContentURLResolver`.
  */
-- (instancetype)initWithDefaultRemoteContentProviderFactory:(id<HUBDefaultRemoteContentProviderFactory>)defaultRemoteContentProviderFactory NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDataLoaderFactory:(id<HUBDataLoaderFactory>)dataLoaderFactory NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Return the feature registration associated with a certain view URI

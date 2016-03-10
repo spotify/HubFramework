@@ -3,13 +3,13 @@
 #import "HUBFeatureConfigurationImplementation.h"
 #import "HUBFeatureRegistration.h"
 #import "HUBViewURIQualifier.h"
-#import "HUBDefaultRemoteContentProviderFactoryWrapper.h"
+#import "HUBRemoteContentURLResolverContentProviderFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBFeatureRegistryImplementation ()
 
-@property (nonatomic, strong, readonly) id<HUBDefaultRemoteContentProviderFactory> defaultRemoteContentProviderFactory;
+@property (nonatomic, strong, readonly) id<HUBDataLoaderFactory> dataLoaderFactory;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, HUBFeatureRegistration *> *registrationsByRootViewURI;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBFeatureRegistration *> *registrationsByIdentifier;
 
@@ -17,14 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBFeatureRegistryImplementation
 
-- (instancetype)initWithDefaultRemoteContentProviderFactory:(id<HUBDefaultRemoteContentProviderFactory>)defaultRemoteContentProviderFactory
+- (instancetype)initWithDataLoaderFactory:(id<HUBDataLoaderFactory>)dataLoaderFactory
 {
-    NSParameterAssert(defaultRemoteContentProviderFactory != nil);
+    NSParameterAssert(dataLoaderFactory != nil);
     
     self = [super init];
     
     if (self) {
-        _defaultRemoteContentProviderFactory = defaultRemoteContentProviderFactory;
+        _dataLoaderFactory = dataLoaderFactory;
         _registrationsByRootViewURI = [NSMutableDictionary new];
         _registrationsByIdentifier = [NSMutableDictionary new];
     }
@@ -99,9 +99,9 @@ NS_ASSUME_NONNULL_BEGIN
                  @"Attempted to register a Hub Framework feature with both a remote content factory & URL resolver. Feature identifier: %@",
                  configuration.featureIdentifier);
         
-        remoteContentProviderFactory = [[HUBDefaultRemoteContentProviderFactoryWrapper alloc] initWithDefaultRemoteContentProviderFactory:self.defaultRemoteContentProviderFactory
-                                                                                                                              URLResolver:remoteContentURLResolver
-                                                                                                                        featureIdentifier:configuration.featureIdentifier];
+        remoteContentProviderFactory = [[HUBRemoteContentURLResolverContentProviderFactory alloc] initWithURLResolver:remoteContentURLResolver
+                                                                                                    featureIdentifier:configuration.featureIdentifier
+                                                                                                    dataLoaderFactory:self.dataLoaderFactory];
     }
     
     NSAssert(remoteContentProviderFactory != nil || configuration.localContentProviderFactory != nil,
