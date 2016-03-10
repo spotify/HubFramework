@@ -25,6 +25,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerComponentFactory:(id<HUBComponentFactory>)componentFactory
                     forNamespace:(NSString *)componentNamespace;
 
+/**
+ *  Unregister a component factory from the Hub Framework
+ *
+ *  @param componentNamespace The namespace of the factory to unregister
+ *
+ *  After this method has been called, the Hub Framework will remove any factory found for the given namespace,
+ *  opening it up to be registered again with another factory. If the given identifier does not exist, this
+ *  method does nothing.
+ */
+- (void)unregisterComponentFactoryForNamespace:(NSString *)componentNamespace;
+
 @end
 
 NS_ASSUME_NONNULL_END

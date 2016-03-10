@@ -54,6 +54,18 @@ static NSString * const DefaultNamespace = @"default";
     [self.registry registerComponentFactory:factory forNamespace:@"other_namespace"];
 }
 
+- (void)testUnregisteringComponentFactory
+{
+    NSString * const namespace = @"namespace";
+    
+    HUBComponentFactoryMock * const factory = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    
+    [self.registry registerComponentFactory:factory forNamespace:namespace];
+    [self.registry unregisterComponentFactoryForNamespace:namespace];
+    
+    XCTAssertNoThrow([self.registry registerComponentFactory:factory forNamespace:namespace]);
+}
+
 - (void)testFallbackComponentCreatedForUnknownNamespace
 {
     HUBComponentMock * const fallbackComponent = [HUBComponentMock new];
