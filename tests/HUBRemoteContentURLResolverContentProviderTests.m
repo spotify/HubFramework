@@ -49,7 +49,8 @@
     [self.contentProvider loadContentForViewWithURI:viewURI];
     
     NSData * const loadedData = [@"content data" dataUsingEncoding:NSUTF8StringEncoding];
-    [self.dataLoader.delegate dataLoader:self.dataLoader didLoadData:loadedData forURL:self.URLResolver.contentURL];
+    NSURL * const contentURL = self.URLResolver.contentURL;
+    [self.dataLoader.delegate dataLoader:self.dataLoader didLoadData:loadedData forURL:contentURL];
     
     XCTAssertEqualObjects(self.loadedData, loadedData);
 }
@@ -60,7 +61,8 @@
     [self.contentProvider loadContentForViewWithURI:viewURI];
     
     NSError * const error = [NSError errorWithDomain:@"hubFramework" code:23 userInfo:nil];
-    [self.dataLoader.delegate dataLoader:self.dataLoader didFailLoadingDataForURL:self.URLResolver.contentURL error:error];
+    NSURL * const contentURL = self.URLResolver.contentURL;
+    [self.dataLoader.delegate dataLoader:self.dataLoader didFailLoadingDataForURL:contentURL error:error];
     
     XCTAssertEqualObjects(self.encounteredError, error);
 }
