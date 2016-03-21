@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 
-@protocol HUBContentProviderFactory;
+@protocol HUBRemoteContentURLResolver;
+@protocol HUBRemoteContentProviderFactory;
+@protocol HUBLocalContentProviderFactory;
 @protocol HUBViewURIQualifier;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -25,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  logging (it can be overriden in the view model building phase through either JSON or the `HUBLocalContentProvider` API, for any view
  *  that belongs to the feature).
  *
- *  The idenetifier must be unique to a feature.
+ *  The identifier must be unique to a feature.
  */
 @property (nonatomic, copy) NSString *featureIdentifier;
 
@@ -40,15 +42,41 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSURL *rootViewURI;
 
 /**
- *  The content provider factory that the feature should use
+ *  Any remote content URL resolver that the feature should use
  *
- *  You can either use a custom object conforming to this protocol, in case you want to implement custom content loading logic.
- *  Another option is to pass a `HUBRemoteContentURLResolver` object when creating a configuration object, to utilize a default
- *  implementation of this property.
+ *  If you don't wish to implement your own remote content provider (& factory), you can assign an object conforming to
+ *  `HUBRemoteContentURLResolver` to this property. If this is done, the Hub Framework will create a default remote content
+ *  provider for your feature (using `HUBDefaultRemoteContentProviderFactory`).
  *
- *  See `HUBContentProviderFactory` for more information.
+ *  Assigning both this property and `remoteContentProviderFactory` is considered a programmer error and will trigger an assert.
+ *
+ *  See `HUBRemoteContentURLResolver` for more information.
  */
-@property (nonatomic, strong) id<HUBContentProviderFactory> contentProviderFactory;
+@property (nonatomic, strong, nullable) id<HUBRemoteContentURLResolver> remoteContentURLResolver;
+
+/**
+ *  Any remote content provider factory that the feature should use
+ *
+ *  If you wish to implement your own remote content provider, create a `HUBRemoteContentProviderFactory` and assign it to this
+ *  property. This gives you the ability to perform custom networking code. If all you wish to do is load data from a given HTTP
+ *  URL however, consider using a `HUBRemoteContentURLResolver` (by assigning `remoteContentURLResolver`) instead.
+ *
+ *  Assigning both this property and `remoteContentURLResolver` is considered a programmer error and will trigger an assert.
+ *
+ *  See `HUBRemoteContentProviderFactory` for more information.
+ */
+@property (nonatomic, strong, nullable) id<HUBRemoteContentProviderFactory> remoteContentProviderFactory;
+
+/**
+ *  Any local content provider factory that the feature should use
+ *
+ *  If you feature should use local content that is generated in code, create a `HUBLocalContentProviderFactory` and assign it to
+ *  this property. This will enable your feature to be usable offline, and is highly recommended when relevant content can be
+ *  generated without network access.
+ *
+ *  See `HUBLocalContentProviderFactory` for more information.
+ */
+@property (nonatomic, strong, nullable) id<HUBLocalContentProviderFactory> localContentProviderFactory;
 
 /**
  *  Any identifier of a custom JSON schema to use to parse remote content data

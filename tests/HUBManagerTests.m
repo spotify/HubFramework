@@ -2,7 +2,9 @@
 
 #import "HUBManager.h"
 #import "HUBConnectivityStateResolverMock.h"
+#import "HUBDataLoaderFactoryMock.h"
 #import "HUBImageLoaderFactoryMock.h"
+#import "HUBContentProviderFactoryMock.h"
 #import "HUBComponentLayoutManagerMock.h"
 
 @interface HUBManagerTests : XCTestCase
@@ -18,10 +20,12 @@
     [super setUp];
 
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
+    id<HUBDataLoaderFactory> const dataLoaderFactory = [HUBDataLoaderFactoryMock new];
     id<HUBImageLoaderFactory> const imageLoaderFactory = [HUBImageLoaderFactoryMock new];
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     
     self.manager = [[HUBManager alloc] initWithConnectivityStateResolver:connectivityStateResolver
+                                                       dataLoaderFactory:dataLoaderFactory
                                                       imageLoaderFactory:imageLoaderFactory
                                                defaultComponentNamespace:@"default"
                                                    fallbackComponentName:@"fallback"

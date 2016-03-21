@@ -3,7 +3,8 @@
 #import "HUBViewModelLoaderImplementation.h"
 #import "HUBFeatureRegistryImplementation.h"
 #import "HUBFeatureRegistration.h"
-#import "HUBContentProviderFactory.h"
+#import "HUBRemoteContentProviderFactory.h"
+#import "HUBLocalContentProviderFactory.h"
 #import "HUBJSONSchemaRegistryImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -51,8 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    id<HUBRemoteContentProvider> const remoteContentProvider = [featureRegistration.contentProviderFactory createRemoteContentProviderForViewURI:viewURI];
-    id<HUBLocalContentProvider> const localContentProvider = [featureRegistration.contentProviderFactory createLocalContentProviderForViewURI:viewURI];
+    id<HUBRemoteContentProvider> const remoteContentProvider = [featureRegistration.remoteContentProviderFactory createRemoteContentProviderForViewURI:viewURI];
+    id<HUBLocalContentProvider> const localContentProvider = [featureRegistration.localContentProviderFactory createLocalContentProviderForViewURI:viewURI];
     
     if (remoteContentProvider == nil && localContentProvider == nil) {
         NSAssert(NO,

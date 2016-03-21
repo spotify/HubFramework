@@ -7,9 +7,14 @@
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBContentProviderFactoryMock.h"
 #import "HUBRemoteContentProviderMock.h"
+#import "HUBRemoteContentURLResolverMock.h"
+#import "HUBViewModelLoader.h"
+#import "HUBDataLoaderFactoryMock.h"
+#import "HUBDataLoaderMock.h"
 
 @interface HUBViewModelLoaderFactoryTests : XCTestCase
 
+@property (nonatomic, strong) HUBDataLoaderFactoryMock *dataLoaderFactory;
 @property (nonatomic, strong) HUBFeatureRegistryImplementation *featureRegistry;
 @property (nonatomic, copy) NSString *defaultComponentNamespace;
 @property (nonatomic, strong) HUBViewModelLoaderFactoryImplementation *viewModelLoaderFactory;
@@ -22,7 +27,8 @@
 {
     [super setUp];
     
-    self.featureRegistry = [HUBFeatureRegistryImplementation new];
+    self.dataLoaderFactory = [HUBDataLoaderFactoryMock new];
+    self.featureRegistry = [[HUBFeatureRegistryImplementation alloc] initWithDataLoaderFactory:self.dataLoaderFactory];
     self.defaultComponentNamespace = @"default";
     
     HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
@@ -43,7 +49,8 @@
     
     id<HUBFeatureConfiguration> const featureConfiguration = [self.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
                                                                                                                    rootViewURI:viewURI
-                                                                                                        contentProviderFactory:contentProviderFactory];
+                                                                                                  remoteContentProviderFactory:contentProviderFactory
+                                                                                                   localContentProviderFactory:nil];
     
     [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
     
@@ -65,11 +72,31 @@
     HUBContentProviderFactoryMock * const contentProviderFactory = [HUBContentProviderFactoryMock new];
     id<HUBFeatureConfiguration> const featureConfiguration = [self.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
                                                                                                                    rootViewURI:viewURI
-                                                                                                        contentProviderFactory:contentProviderFactory];
+                                                                                                  remoteContentProviderFactory:contentProviderFactory
+                                                                                                   localContentProviderFactory:contentProviderFactory];
     
     [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
     
     XCTAssertThrows([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
+}
+
+- (void)testDataLoaderFactoryUsedIfFeatureUsesRemoteContentURLResolver
+{
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    
+    HUBRemoteContentURLResolverMock * const URLResolver = [HUBRemoteContentURLResolverMock new];
+    URLResolver.contentURL = [NSURL URLWithString:@"https://remote.content"];
+    
+    id<HUBFeatureConfiguration> const featureConfiguration = [self.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
+                                                                                                                   rootViewURI:viewURI
+                                                                                                      remoteContentURLResolver:URLResolver];
+    
+    [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
+    
+    id<HUBViewModelLoader> const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI];
+    [viewModelLoader loadViewModel];
+    XCTAssertEqualObjects(self.dataLoaderFactory.lastCreatedDataLoader.currentDataURL, URLResolver.contentURL);
+    XCTAssertEqualObjects(self.dataLoaderFactory.lastCreatedDataLoader.featureIdentifier, featureConfiguration.featureIdentifier);
 }
 
 @end

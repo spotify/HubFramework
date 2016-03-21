@@ -17,8 +17,10 @@
 #import "HUBFeatureRegistry.h"
 
 // Content
-#import "HUBContentProviderFactory.h"
+#import "HUBRemoteContentProviderFactory.h"
 #import "HUBRemoteContentProvider.h"
+#import "HUBRemoteContentURLResolver.h"
+#import "HUBLocalContentProviderFactory.h"
 #import "HUBLocalContentProvider.h"
 
 // View
@@ -44,3 +46,11 @@
 #import "HUBComponentRegistry.h"
 #import "HUBComponentLayoutManager.h"
 #import "HUBComponentLayoutTraits.h"
+
+// Data loading
+#import "HUBDataLoaderFactory.h"
+#import "HUBDataLoader.h"
+
+// Image loading
+#import "HUBImageLoaderFactory.h"
+#import "HUBImageLoader.h"
