@@ -7,3 +7,7 @@ The Hub Framework is a Spotify feature developer toolkit that aims to reduce a l
 This repository contains Hub Framework functionality that has no dependencies on client-ios and can operate independently.
 
 Over time, more and more functionality will be moved from the HubFeature in client-ios into this repository.
+
+## Xcode file templates
+
+The Hub Framework comes with a set of Xcode file templates that make it easy to create the boilerplate for components, content providers, etc. To install, copy the `Hub Framework` folder located in `templates/xcode` to `~/Library/Developer/Xcode/Templates/File Templates` (You may need to create the last two folders in that path).
