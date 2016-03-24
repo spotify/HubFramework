@@ -49,4 +49,18 @@
     XCTAssertNil([extendedPath stringFromJSONDictionary:@{@"string": @(15)}]);
 }
 
+- (void)testCopying
+{
+    id<HUBMutableJSONPath> const original = [[HUBMutableJSONPathImplementation path] goTo:@"key"];
+    id<HUBJSONPath> const copy = [original copy];
+    id<HUBMutableJSONPath> const mutableCopy = [copy mutableCopy];
+    id<HUBJSONStringPath> const finalPath = [mutableCopy stringPath];
+    
+    NSDictionary * const dictionary = @{
+        @"key": @"value"
+    };
+    
+    XCTAssertEqualObjects([finalPath stringFromJSONDictionary:dictionary], @"value");
+}
+
 @end

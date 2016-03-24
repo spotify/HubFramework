@@ -148,6 +148,13 @@ NS_ASSUME_NONNULL_BEGIN
     return [self destinationPathWithExpectedType:[NSDictionary class]];
 }
 
+#pragma mark - NSObject
+
+- (id)copy
+{
+    return [[HUBJSONPathImplementation alloc] initWithParsingOperations:self.parsingOperations];
+}
+
 #pragma mark - Private utilities
 
 - (id<HUBMutableJSONPath>)pathByAppendingParsingOperation:(HUBJSONParsingOperation *)operation

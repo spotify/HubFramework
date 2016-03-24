@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+@protocol HUBJSONPath;
 @protocol HUBJSONBoolPath;
 @protocol HUBJSONIntegerPath;
 @protocol HUBJSONStringPath;
@@ -121,6 +122,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Turn this path into an immutable path that expects the destination value to be an `NSDictionary`
  */
 - (id<HUBJSONDictionaryPath>)dictionaryPath;
+
+#pragma mark - Copying
+
+/// Copy this path, returning an immutable copy of it
+- (id<HUBJSONPath>)copy;
 
 @end
 
