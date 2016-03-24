@@ -23,8 +23,8 @@
 
 - (instancetype)init
 {
-    HUBMutableJSONPathImplementation * const imagesDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:@"images"];
-    HUBMutableJSONPathImplementation * const targetDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:@"target"];
+    id<HUBMutableJSONPath> const imagesDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:@"images"];
+    id<HUBMutableJSONPath> const targetDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:@"target"];
     
     return [self initWithIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:@"id"] stringPath]
                 componentIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:@"component"] stringPath]

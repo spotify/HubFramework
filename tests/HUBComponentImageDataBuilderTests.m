@@ -8,6 +8,7 @@
 @interface HUBComponentImageDataBuilderTests : XCTestCase
 
 @property (nonatomic, strong) HUBComponentImageDataBuilderImplementation *builder;
+@property (nonatomic, strong) HUBJSONSchemaImplementation *schema;
 
 @end
 
@@ -18,7 +19,9 @@
 - (void)setUp
 {
     [super setUp];
+    
     self.builder = [HUBComponentImageDataBuilderImplementation new];
+    self.schema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:@"namespace"];
 }
 
 #pragma mark - Tests
@@ -69,7 +72,7 @@
         @"icon": iconIdentifier
     };
     
-    [self.builder addDataFromJSONDictionary:dictionary usingSchema:[HUBJSONSchemaImplementation new]];
+    [self.builder addDataFromJSONDictionary:dictionary usingSchema:self.schema];
     
     XCTAssertEqual(self.builder.style, HUBComponentImageStyleCircular);
     XCTAssertEqualObjects(self.builder.URL, imageURL);
@@ -78,18 +81,17 @@
 
 - (void)testInvalidImageStyleStringProducingRectangularStyle
 {
-    [self.builder addDataFromJSONDictionary:@{} usingSchema:[HUBJSONSchemaImplementation new]];
+    [self.builder addDataFromJSONDictionary:@{} usingSchema:self.schema];
     XCTAssertEqual(self.builder.style, HUBComponentImageStyleRectangular);
     
-    [self.builder addDataFromJSONDictionary:@{@"style" : @"invalid"} usingSchema:[HUBJSONSchemaImplementation new]];
+    [self.builder addDataFromJSONDictionary:@{@"style" : @"invalid"} usingSchema:self.schema];
     XCTAssertEqual(self.builder.style, HUBComponentImageStyleRectangular);
 }
 
 - (void)testProtectionAgainstInvalidImageStyleEnumValues
 {
-    id<HUBJSONSchema> const schema = [HUBJSONSchemaImplementation new];
-    schema.componentImageDataSchema.styleStringMap = @{@"invalid": @(99)};
-    [self.builder addDataFromJSONDictionary:@{@"style" : @"invalid"} usingSchema:schema];
+    self.schema.componentImageDataSchema.styleStringMap = @{@"invalid": @(99)};
+    [self.builder addDataFromJSONDictionary:@{@"style" : @"invalid"} usingSchema:self.schema];
     XCTAssertEqual(self.builder.style, HUBComponentImageStyleRectangular);
 }
 

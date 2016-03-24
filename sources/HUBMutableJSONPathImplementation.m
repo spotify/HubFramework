@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [self pathByAppendingParsingOperation:operation];
 }
 
-- (id<HUBMutableJSONPath>)runBlock:(nullable NSObject *(^)(NSObject *))block
+- (id<HUBMutableJSONPath>)runBlock:(NSObject * _Nullable(^)(NSObject *))block
 {
     HUBJSONParsingOperation * const operation = [[HUBJSONParsingOperation alloc] initWithBlock:^NSArray<NSObject *> * _Nullable (NSObject *input) {
         NSObject * const output = block(input);
@@ -80,6 +80,34 @@ NS_ASSUME_NONNULL_BEGIN
     }];
     
     return [self pathByAppendingParsingOperation:operation];
+}
+
+- (id<HUBMutableJSONPath>)combineWithPath:(id<HUBMutableJSONPath>)path
+{
+    HUBJSONParsingOperation * const operation = [[HUBJSONParsingOperation alloc] initWithBlock:^NSArray<NSObject *> * _Nullable (NSObject *input) {
+        if (![input isKindOfClass:[NSDictionary class]]) {
+            return nil;
+        }
+        
+        NSDictionary * const dictionary = (NSDictionary *)input;
+        NSMutableArray<NSObject *> * const output = [NSMutableArray new];
+        
+        NSArray<NSObject *> * const originalOutput = [[self copy] valuesFromJSONDictionary:dictionary];
+        
+        if (originalOutput != nil) {
+            [output addObjectsFromArray:originalOutput];
+        }
+        
+        NSArray<NSObject *> * const addedOutput = [[path copy] valuesFromJSONDictionary:dictionary];
+        
+        if (addedOutput != nil) {
+            [output addObjectsFromArray:addedOutput];
+        }
+        
+        return [output copy];
+    }];
+    
+    return [[HUBMutableJSONPathImplementation alloc] initWithParsingOperations:@[operation]];
 }
 
 - (id<HUBJSONBoolPath>)boolPath
@@ -146,6 +174,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBJSONDictionaryPath>)dictionaryPath
 {
     return [self destinationPathWithExpectedType:[NSDictionary class]];
+}
+
+#pragma mark - NSObject
+
+- (id)copy
+{
+    return [[HUBJSONPathImplementation alloc] initWithParsingOperations:self.parsingOperations];
 }
 
 #pragma mark - Private utilities

@@ -31,7 +31,7 @@
     self.featureRegistry = [[HUBFeatureRegistryImplementation alloc] initWithDataLoaderFactory:self.dataLoaderFactory];
     self.defaultComponentNamespace = @"default";
     
-    HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
+    HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithDefaultComponentNamespace:@"namespace"];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
     self.viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:self.featureRegistry

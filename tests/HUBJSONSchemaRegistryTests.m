@@ -15,7 +15,7 @@
 - (void)setUp
 {
     [super setUp];
-    self.registry = [HUBJSONSchemaRegistryImplementation new];
+    self.registry = [[HUBJSONSchemaRegistryImplementation alloc] initWithDefaultComponentNamespace:@"namespace"];
 }
 
 #pragma mark - Tests

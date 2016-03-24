@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         _featureRegistry = [[HUBFeatureRegistryImplementation alloc] initWithDataLoaderFactory:dataLoaderFactory];
         _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:fallbackComponentIdentifier];
-        _JSONSchemaRegistry = [HUBJSONSchemaRegistryImplementation new];
+        _JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
         _connectivityStateResolver = connectivityStateResolver;
         
         _viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:_featureRegistry

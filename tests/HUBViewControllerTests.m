@@ -55,7 +55,7 @@
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:self.componentIdentifier.componentNamespace];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    id<HUBJSONSchema> const JSONSchema = [HUBJSONSchemaImplementation new];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:@"namespace"];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
     self.viewModelLoader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
