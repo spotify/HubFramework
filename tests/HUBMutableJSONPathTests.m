@@ -49,6 +49,22 @@
     XCTAssertNil([extendedPath stringFromJSONDictionary:@{@"string": @(15)}]);
 }
 
+- (void)testCombiningPaths
+{
+    id<HUBMutableJSONPath> const pathA = [[HUBMutableJSONPathImplementation path] goTo:@"A"];
+    id<HUBMutableJSONPath> const pathB = [[HUBMutableJSONPathImplementation path] goTo:@"B"];
+    id<HUBMutableJSONPath> const combinedPath = [pathA combineWithPath:pathB];
+    
+    NSDictionary * const dictionary = @{
+        @"A": @"valueA",
+        @"B": @"valueB"
+    };
+    
+    NSArray * const values = [[combinedPath stringPath] valuesFromJSONDictionary:dictionary];
+    NSArray * const expectedValues = @[@"valueA", @"valueB"];
+    XCTAssertEqualObjects(values, expectedValues);
+}
+
 - (void)testCopying
 {
     id<HUBMutableJSONPath> const original = [[HUBMutableJSONPathImplementation path] goTo:@"key"];

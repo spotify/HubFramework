@@ -79,6 +79,35 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (id<HUBMutableJSONPath>)runBlock:(NSObject * _Nullable(^)(NSObject *input))block;
 
+/**
+ *  Combine this path with another one, forming a new path that combines the result of the two paths into an array
+ *
+ *  @param path The path to combine with the current path
+ *
+ *  This API can be used to provide backwards compatibility in an easy way when introducing new keys (or renaming
+ *  existing ones) in a JSON schema. For paths which only are expected to produce a single value, the first value
+ *  in the combination will be used, meaning that migration to new keys can be done without having to time client
+ *  & backend releases, or introducing added complexity.
+ *
+ *  For example; say you want to rename the key "identifier" to "id" in this JSON:
+ *
+ *  @code
+ *  {
+ *      "identifier": "Sunday"
+ *  }
+ *  @endcode
+ *
+ *  You could then construct a combined path that picks either of the values for the "id" (preferred, since it's
+ *  the new one) or "identifier" keys. Like this:
+ *
+ *  @code
+ *  idPath = [[[schema createNewPath] goTo:@"id"] stringPath];
+ *  identifierPath = [[[schema createNewPath] goTo:@"identifier"] stringPath];
+ *  combinedPath = [idPath combineWithPath:identifierPath];
+ *  @endcode
+ */
+- (id<HUBMutableJSONPath>)combineWithPath:(id<HUBMutableJSONPath>)path;
+
 #pragma mark - Destinations
 
 /**

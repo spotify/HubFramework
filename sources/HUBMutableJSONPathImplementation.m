@@ -82,6 +82,34 @@ NS_ASSUME_NONNULL_BEGIN
     return [self pathByAppendingParsingOperation:operation];
 }
 
+- (id<HUBMutableJSONPath>)combineWithPath:(id<HUBMutableJSONPath>)path
+{
+    HUBJSONParsingOperation * const operation = [[HUBJSONParsingOperation alloc] initWithBlock:^NSArray<NSObject *> * _Nullable (NSObject *input) {
+        if (![input isKindOfClass:[NSDictionary class]]) {
+            return nil;
+        }
+        
+        NSDictionary * const dictionary = (NSDictionary *)input;
+        NSMutableArray<NSObject *> * const output = [NSMutableArray new];
+        
+        NSArray<NSObject *> * const originalOutput = [[self copy] valuesFromJSONDictionary:dictionary];
+        
+        if (originalOutput != nil) {
+            [output addObjectsFromArray:originalOutput];
+        }
+        
+        NSArray<NSObject *> * const addedOutput = [[path copy] valuesFromJSONDictionary:dictionary];
+        
+        if (addedOutput != nil) {
+            [output addObjectsFromArray:addedOutput];
+        }
+        
+        return [output copy];
+    }];
+    
+    return [[HUBMutableJSONPathImplementation alloc] initWithParsingOperations:@[operation]];
+}
+
 - (id<HUBJSONBoolPath>)boolPath
 {
     return [self destinationPathWithExpectedType:[NSNumber class]];
