@@ -6,18 +6,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBJSONSchemaRegistryImplementation ()
 
+@property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id<HUBJSONSchema>> *customSchemasByIdentifier;
 
 @end
 
 @implementation HUBJSONSchemaRegistryImplementation
 
-- (instancetype)init
+- (instancetype)initWithDefaultComponentNamespace:(NSString *)defaultComponentNamespace
 {
     self = [super init];
     
     if (self) {
-        _defaultSchema = [HUBJSONSchemaImplementation new];
+        _defaultSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
+        _defaultComponentNamespace = defaultComponentNamespace;
         _customSchemasByIdentifier = [NSMutableDictionary new];
     }
     
@@ -35,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBJSONSchema>)createNewSchema
 {
-    return [HUBJSONSchemaImplementation new];
+    return [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:self.defaultComponentNamespace];
 }
 
 - (void)registerCustomSchema:(id<HUBJSONSchema>)schema forIdentifier:(NSString *)identifier

@@ -144,10 +144,14 @@
         @"custom": customData
     };
     
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"temp"
-                                                                                                   defaultComponentNamespace:@"namespace"];
+    NSString * const defaultComponentNamespace = @"namespace";
     
-    [builder addDataFromJSONDictionary:dictionary usingSchema:[HUBJSONSchemaImplementation new]];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"temp"
+                                                                                                   defaultComponentNamespace:defaultComponentNamespace];
+    
+    HUBJSONSchemaImplementation * const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
+    
+    [builder addDataFromJSONDictionary:dictionary usingSchema:JSONSchema];
     HUBViewModelImplementation * const model = [builder build];
     
     XCTAssertEqualObjects(model.identifier, viewIdentifier);
@@ -174,10 +178,14 @@
         }
     ];
     
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"temp"
-                                                                                                   defaultComponentNamespace:@"default"];
+    NSString * const defaultComponentNamespace = @"default";
     
-    [builder addDataFromJSONArray:array usingSchema:[HUBJSONSchemaImplementation new]];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"temp"
+                                                                                                   defaultComponentNamespace:defaultComponentNamespace];
+    
+    HUBJSONSchemaImplementation * const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
+    
+    [builder addDataFromJSONArray:array usingSchema:JSONSchema];
     HUBViewModelImplementation * const model = [builder build];
     
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, firstComponentIdentifier);

@@ -250,12 +250,15 @@
 {
     self.connectivityStateResolver.state = connectivityState;
     
+    NSString * const defaultComponentNamespace = @"default";
+    HUBJSONSchemaImplementation * const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
+    
     self.loader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:(NSURL *)[NSURL URLWithString:@"spotify:hub:test"]
                                                           featureIdentifier:@"feature"
-                                                  defaultComponentNamespace:@"default"
+                                                  defaultComponentNamespace:defaultComponentNamespace
                                                       remoteContentProvider:(useRemoteContentProvider ? self.remoteContentProvider : nil)
                                                        localContentProvider:(useLocalContentProvider ? self.localContentProvider : nil)
-                                                                 JSONSchema:[HUBJSONSchemaImplementation new]
+                                                                 JSONSchema:JSONSchema
                                                   connectivityStateResolver:self.connectivityStateResolver];
     
     self.loader.delegate = self;

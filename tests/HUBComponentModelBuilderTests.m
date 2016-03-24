@@ -286,11 +286,13 @@
         ]
     };
     
+    NSString * const defaultComponentNamespace = @"namespace";
+    
     HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
                                                                                                                    featureIdentifier:@"feature"
-                                                                                                           defaultComponentNamespace:@"namespace"];
+                                                                                                           defaultComponentNamespace:defaultComponentNamespace];
     
-    [builder addDataFromJSONDictionary:dictionary usingSchema:[HUBJSONSchemaImplementation new]];
+    [builder addDataFromJSONDictionary:dictionary usingSchema:[[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace]];
     HUBComponentModelImplementation * const model = [builder buildForIndex:0];
     
     XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
