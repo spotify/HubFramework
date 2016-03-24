@@ -76,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return A new mutable JSON path with the custom operation appended. The path that you call this method on will
  *  not be modified.
  */
-- (id<HUBMutableJSONPath>)runBlock:(nullable NSObject *(^)(NSObject *))block;
+- (id<HUBMutableJSONPath>)runBlock:(NSObject * _Nullable(^)(NSObject *input))block;
 
 #pragma mark - Destinations
 
