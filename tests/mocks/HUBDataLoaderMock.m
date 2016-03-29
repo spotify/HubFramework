@@ -4,7 +4,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBDataLoaderMock ()
 
-@property (nonatomic, copy, readwrite) NSURL *currentDataURL;
+@property (nonatomic, copy, nullable, readwrite) NSURL *currentDataURL;
 
 @end
 
