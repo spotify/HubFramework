@@ -99,6 +99,10 @@ NS_ASSUME_NONNULL_BEGIN
             componentViewFrame.origin.y = currentPoint.y + margins.top;
         }
         
+        componentViewFrame = [self horizontallyAdjustComponentViewFrame:componentViewFrame
+                                                  forCollectionViewSize:collectionViewSize
+                                                                margins:margins];
+        
         currentPoint.x = CGRectGetMaxX(componentViewFrame);
         currentRowHeight = MAX(currentRowHeight, CGRectGetHeight(componentViewFrame));
         
@@ -203,6 +207,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                   precedingComponentLayoutTraits:precedingComponent.layoutTraits];
     }
     
+    margins.right = [self.componentLayoutManager marginBetweenComponentWithLayoutTraits:componentLayoutTraits
+                                                                         andContentEdge:HUBComponentLayoutContentEdgeRight];
+    
     return margins;
 }
 
@@ -216,6 +223,17 @@ NS_ASSUME_NONNULL_BEGIN
     componentViewFrame.origin.x = currentPoint.x + componentMargins.left;
     componentViewFrame.size = [component preferredViewSizeForDisplayingModel:componentModel containerViewSize:collectionViewSize];
     componentViewFrame.size.width = MIN(CGRectGetWidth(componentViewFrame), collectionViewSize.width);
+    return componentViewFrame;
+}
+
+- (CGRect)horizontallyAdjustComponentViewFrame:(CGRect)componentViewFrame forCollectionViewSize:(CGSize)collectionViewSize margins:(UIEdgeInsets)margins
+{
+    CGFloat const horizontalOverflow = CGRectGetMaxX(componentViewFrame) + margins.right - collectionViewSize.width;
+    
+    if (horizontalOverflow > 0) {
+        componentViewFrame.size.width -= horizontalOverflow;
+    }
+    
     return componentViewFrame;
 }
 

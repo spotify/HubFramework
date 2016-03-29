@@ -79,6 +79,29 @@
     XCTAssertTrue(CGRectEqualToRect(componentViewFrame, expectedComponentViewFrame));
 }
 
+- (void)testRightContentEdgeMargin
+{
+    [self addBodyComponentWithIdentifier:self.compactComponentIdentifier];
+    
+    self.compactComponent.preferredViewSize = CGSizeMake(self.collectionViewSize.width, 50);
+    
+    CGFloat const edgeMargin = 20;
+    self.componentLayoutManager.contentEdgeMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(edgeMargin);
+    
+    HUBCollectionViewLayout * const layout = [self computeLayout];
+    
+    NSIndexPath * const componentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    CGRect const componentViewFrame = [layout layoutAttributesForItemAtIndexPath:componentIndexPath].frame;
+    CGRect const expectedComponentViewFrame = CGRectMake(
+        edgeMargin,
+        edgeMargin,
+        self.compactComponent.preferredViewSize.width - edgeMargin * 2,
+        self.compactComponent.preferredViewSize.height
+    );
+    
+    XCTAssertTrue(CGRectEqualToRect(componentViewFrame, expectedComponentViewFrame));
+}
+
 - (void)testVerticalMarginToHeaderComponent
 {
     self.viewModelBuilder.headerComponentModelBuilder.componentName = self.fullWidthComponentIdentifier.componentName;
