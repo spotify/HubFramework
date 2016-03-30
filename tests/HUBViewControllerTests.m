@@ -433,6 +433,8 @@
     
     XCTAssertEqual([component.childDelegate component:component createChildComponentAtIndex:0], childComponent);
     XCTAssertTrue(CGSizeEqualToSize(childComponent.view.frame.size, childComponent.preferredViewSize));
+    
+    XCTAssertNil([component.childDelegate component:component createChildComponentAtIndex:5]);
 }
 
 - (void)testSelectionForChildComponent
