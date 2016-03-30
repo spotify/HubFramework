@@ -49,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
     CGSize const preferredViewSize = [childComponent preferredViewSizeForDisplayingModel:childModel containerViewSize:componentView.frame.size];
     childComponentView.frame = CGRectMake(0, 0, preferredViewSize.width, preferredViewSize.height);
     
+    [childComponent configureViewWithModel:childModel];
+    
     return childComponent;
 }
 
