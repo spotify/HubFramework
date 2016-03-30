@@ -431,10 +431,12 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    XCTAssertEqual([component.childDelegate component:component createChildComponentAtIndex:0], childComponent);
+    id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
+    
+    XCTAssertEqual([childDelegate component:component createChildComponentAtIndex:0], childComponent);
     XCTAssertTrue(CGSizeEqualToSize(childComponent.view.frame.size, childComponent.preferredViewSize));
     
-    XCTAssertNil([component.childDelegate component:component createChildComponentAtIndex:5]);
+    XCTAssertNil([childDelegate component:component createChildComponentAtIndex:5]);
 }
 
 - (void)testSelectionForChildComponent
