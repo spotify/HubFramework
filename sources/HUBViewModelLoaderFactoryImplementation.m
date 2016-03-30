@@ -3,9 +3,9 @@
 #import "HUBViewModelLoaderImplementation.h"
 #import "HUBFeatureRegistryImplementation.h"
 #import "HUBFeatureRegistration.h"
-#import "HUBRemoteContentProviderFactory.h"
-#import "HUBLocalContentProviderFactory.h"
+#import "HUBContentProviderFactory.h"
 #import "HUBJSONSchemaRegistryImplementation.h"
+#import "HUBInitialViewModelRegistry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) HUBFeatureRegistryImplementation *featureRegistry;
 @property (nonatomic, strong, readonly) HUBJSONSchemaRegistryImplementation *JSONSchemaRegistry;
+@property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 
@@ -22,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFeatureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                      JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
+               initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
               defaultComponentNamespace:(NSString *)defaultComponentNamespace
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
 {
@@ -30,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (self) {
         _featureRegistry = featureRegistry;
         _JSONSchemaRegistry = JSONSchemaRegistry;
+        _initialViewModelRegistry = initialViewModelRegistry;
         _defaultComponentNamespace = [defaultComponentNamespace copy];
         _connectivityStateResolver = connectivityStateResolver;
     }
@@ -52,26 +55,28 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    id<HUBRemoteContentProvider> const remoteContentProvider = [featureRegistration.remoteContentProviderFactory createRemoteContentProviderForViewURI:viewURI];
-    id<HUBLocalContentProvider> const localContentProvider = [featureRegistration.localContentProviderFactory createLocalContentProviderForViewURI:viewURI];
+    NSMutableArray<id<HUBContentProvider>> * const allContentProviders = [NSMutableArray new];
     
-    if (remoteContentProvider == nil && localContentProvider == nil) {
-        NSAssert(NO,
-                 @"Attempted to create a view model loader for a feature that could not create any content providers. View URI: %@",
-                 viewURI.absoluteString);
-        
+    for (id<HUBContentProviderFactory> const factory in featureRegistration.contentProviderFactories) {
+        NSArray<id<HUBContentProvider>> * const contentProviders = [factory createContentProvidersForViewURI:viewURI];
+        [allContentProviders addObjectsFromArray:contentProviders];
+    }
+    
+    if (allContentProviders.count == 0) {
+        NSAssert(NO, @"No Hub Framework content providers were created for view URI: %@", viewURI);
         return nil;
     }
     
     id<HUBJSONSchema> const JSONSchema = [self JSONSchemaForFeatureWithRegistration:featureRegistration];
+    id<HUBViewModel> const initialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:viewURI];
     
     return [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
                                                    featureIdentifier:featureRegistration.featureIdentifier
                                            defaultComponentNamespace:self.defaultComponentNamespace
-                                               remoteContentProvider:remoteContentProvider
-                                                localContentProvider:localContentProvider
+                                                    contentProviders:allContentProviders
                                                           JSONSchema:JSONSchema
-                                           connectivityStateResolver:self.connectivityStateResolver];
+                                           connectivityStateResolver:self.connectivityStateResolver
+                                                    initialViewModel:initialViewModel];
 }
 
 #pragma mark - Private utilities

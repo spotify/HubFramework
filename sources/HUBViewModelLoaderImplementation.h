@@ -1,8 +1,7 @@
 #import "HUBViewModelLoader.h"
 
-@protocol HUBRemoteContentProvider;
-@protocol HUBLocalContentProvider;
 @protocol HUBJSONSchema;
+@protocol HUBContentProvider;
 @protocol HUBConnectivityStateResolver;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,18 +15,18 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewURI The URI of the view that this loader will load view models for
  *  @param featureIdentifier The identifier of the feature that this loader will belong to
  *  @param defaultComponentNamespace The default namespace that components in loaded view models should have
- *  @param remoteContentProvider Any remote content provider that the loader should use
- *  @param localContentProvider Any local content provider that the loader should use
+ *  @param contentProviders The content providers that will provide content for loaded view models
  *  @param JSONSchema The JSON schema that the loader should use for parsing
  *  @param connectivityStateResolver The connectivity state resolver used by the current `HUBManager`
+ *  @param initialViewModel Any pre-registered view model that the loader should include
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
       defaultComponentNamespace:(NSString *)defaultComponentNamespace
-          remoteContentProvider:(nullable id<HUBRemoteContentProvider>)remoteContentProvider
-           localContentProvider:(nullable id<HUBLocalContentProvider>)localContentProvider
+               contentProviders:(NSArray<id<HUBContentProvider>> *)contentProviders
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
-      connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver NS_DESIGNATED_INITIALIZER;
+      connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+               initialViewModel:(nullable id<HUBViewModel>)initialViewModel NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 

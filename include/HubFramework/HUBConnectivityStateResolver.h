@@ -1,14 +1,6 @@
-#import <Foundation/Foundation.h>
+#import "HUBConnectivityState.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-/// Enum describing various connectivity states that an application can be in
-typedef enum : NSUInteger {
-    /// The application is currently online and connected to the Internet
-    HUBConnectivityStateOnline,
-    /// The application is currently offline and not connected to the Internet
-    HUBConnectivityStateOffline
-} HUBConnectivityState;
 
 /**
  *  Protocol implemented by objects that can resolve an application's current connectivity state

@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewModelLoaderFactory:(HUBViewModelLoaderFactoryImplementation *)viewModelLoaderFactory
                             imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+                      initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
                         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
 {
     NSParameterAssert(viewModelLoaderFactory != nil);
@@ -39,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
         _imageLoaderFactory = imageLoaderFactory;
         _componentRegistry = componentRegistry;
         _componentLayoutManager = componentLayoutManager;
-        _initialViewModelRegistry = [HUBInitialViewModelRegistry new];
+        _initialViewModelRegistry = initialViewModelRegistry;
     }
     
     return self;
@@ -62,14 +63,12 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
-    id<HUBViewModel> const initialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:viewURI];
     
     return [[HUBViewControllerImplementation alloc] initWithViewModelLoader:viewModelLoader
                                                                 imageLoader:imageLoader
                                                       collectionViewFactory:collectionViewFactory
                                                           componentRegistry:self.componentRegistry
                                                      componentLayoutManager:self.componentLayoutManager
-                                                           initialViewModel:initialViewModel
                                                    initialViewModelRegistry:self.initialViewModelRegistry];
 }
 

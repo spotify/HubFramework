@@ -9,6 +9,7 @@
 #import "HUBComponentMock.h"
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentModelBuilder.h"
+#import "HUBJSONSchemaImplementation.h"
 
 @interface HUBCollectionViewLayoutTests : XCTestCase
 
@@ -56,7 +57,9 @@
     
     self.componentLayoutManager = [HUBComponentLayoutManagerMock new];
     
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:self.compactComponentIdentifier.componentNamespace];
     self.viewModelBuilder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
+                                                                                      JSONSchema:JSONSchema
                                                                        defaultComponentNamespace:self.compactComponentIdentifier.componentNamespace];
 }
 

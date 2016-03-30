@@ -19,6 +19,7 @@
     HUBJSONSchemaImplementation * const schema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
     
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:featureIdentifier
+                                                                                                                  JSONSchema:schema
                                                                                                    defaultComponentNamespace:defaultComponentNamespace];
     
     NSDictionary * const dictionary = @{
@@ -30,7 +31,7 @@
         ]
     };
     
-    [builder addDataFromJSONDictionary:dictionary usingSchema:schema];
+    [builder addDataFromJSONDictionary:dictionary];
     
     id<HUBViewModel> const viewModelFromSchema = [schema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier];
     id<HUBViewModel> const viewModelFromBuilder = [builder build];

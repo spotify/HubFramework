@@ -9,10 +9,13 @@
 #import "HUBComponentModelJSONSchema.h"
 #import "HUBJSONPath.h"
 
+#import "HUBContentProvider.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewModelBuilderImplementation ()
 
+@property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
 @property (nonatomic, strong, readonly) HUBComponentModelBuilderImplementation *headerComponentModelBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *bodyComponentModelBuilders;
@@ -29,19 +32,24 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
 
-- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier defaultComponentNamespace:(NSString *)defaultComponentNamespace
+- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
+                               JSONSchema:(id<HUBJSONSchema>)JSONSchema
+                defaultComponentNamespace:(NSString *)defaultComponentNamespace
 {
     NSParameterAssert(featureIdentifier != nil);
-    NSParameterAssert(defaultComponentNamespace);
+    NSParameterAssert(JSONSchema != nil);
+    NSParameterAssert(defaultComponentNamespace != nil);
     
     self = [super init];
     
     if (self) {
+        _JSONSchema = JSONSchema;
         _defaultComponentNamespace = [defaultComponentNamespace copy];
         _viewIdentifier = [NSUUID UUID].UUIDString;
         _featureIdentifier = [featureIdentifier copy];
         _headerComponentModelBuilderImplementation = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header"
                                                                                                            featureIdentifier:featureIdentifier
+                                                                                                                  JSONSchema:_JSONSchema
                                                                                                    defaultComponentNamespace:defaultComponentNamespace];
         
         _bodyComponentModelBuilders = [NSMutableDictionary new];
@@ -58,6 +66,26 @@ NS_ASSUME_NONNULL_BEGIN
     return self.headerComponentModelBuilderImplementation;
 }
 
+- (nullable NSError *)addJSONData:(NSData *)JSONData
+{
+    NSError *error;
+    NSObject *JSONObject = [NSJSONSerialization JSONObjectWithData:JSONData options:NSJSONReadingAllowFragments error:&error];
+    
+    if (error != nil || JSONObject == nil) {
+        return error;
+    }
+    
+    if ([JSONObject isKindOfClass:[NSDictionary class]]) {
+        [self addDataFromJSONDictionary:(NSDictionary *)JSONObject];
+    } else if ([JSONObject isKindOfClass:[NSArray class]]) {
+        [self addDataFromJSONArray:(NSArray *)JSONObject usingSchema:self.JSONSchema];
+    } else {
+        return [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil];
+    }
+    
+    return nil;
+}
+
 - (BOOL)builderExistsForBodyComponentModelWithIdentifier:(NSString *)identifier
 {
     return self.bodyComponentModelBuilders[identifier] != nil;
@@ -68,46 +96,10 @@ NS_ASSUME_NONNULL_BEGIN
     return [self getOrCreateBuilderForBodyComponentModelWithIdentifier:identifier];
 }
 
--(void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier
+- (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier
 {
     [self.bodyComponentModelBuilders removeObjectForKey:identifier];
     [self.bodyComponentIdentifierOrder removeObject:identifier];
-}
-
-#pragma mark - HUBJSONCompatibleBuilder
-
-- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary usingSchema:(id<HUBJSONSchema>)schema
-{
-    id<HUBViewModelJSONSchema> const viewModelSchema = schema.viewModelSchema;
-    
-    NSString * const viewIdentifier = [viewModelSchema.identifierPath stringFromJSONDictionary:dictionary];
-    
-    if (viewIdentifier != nil) {
-        self.viewIdentifier = viewIdentifier;
-    }
-    
-    NSString * const featureIdentifier = [viewModelSchema.featureIdentifierPath stringFromJSONDictionary:dictionary];
-    
-    if (featureIdentifier != nil) {
-        self.featureIdentifier = featureIdentifier;
-    }
-    
-    self.entityIdentifier = [viewModelSchema.entityIdentifierPath stringFromJSONDictionary:dictionary];
-    self.navigationBarTitle = [viewModelSchema.navigationBarTitlePath stringFromJSONDictionary:dictionary];
-    self.extensionURL = [viewModelSchema.extensionURLPath URLFromJSONDictionary:dictionary];
-    self.customData = [viewModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
-    
-    NSDictionary * const headerComponentModelDictionary = [viewModelSchema.headerComponentModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
-    
-    if (headerComponentModelDictionary != nil) {
-        [self.headerComponentModelBuilderImplementation addDataFromJSONDictionary:headerComponentModelDictionary usingSchema:schema];
-    }
-    
-    NSArray * const bodyComponentModelDictionaries = [viewModelSchema.bodyComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
-    
-    for (NSDictionary * const componentModelDictionary in bodyComponentModelDictionaries) {
-        [self addDataFromBodyComponentModelJSONDictionary:componentModelDictionary usingSchema:schema];
-    }
 }
 
 #pragma mark - API
@@ -123,22 +115,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return YES;
-}
-
-- (void)addDataFromJSONArray:(NSArray<NSObject *> *)array usingSchema:(id<HUBJSONSchema>)schema
-{
-    for (NSObject * const object in array) {
-        if ([object isKindOfClass:[NSDictionary class]]) {
-            [self addDataFromBodyComponentModelJSONDictionary:(NSDictionary *)object usingSchema:schema];
-        }
-    }
-}
-
-- (void)addDataFromBodyComponentModelJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary usingSchema:(id<HUBJSONSchema>)schema
-{
-    NSString * const identifier = [schema.componentModelSchema.identifierPath stringFromJSONDictionary:dictionary];
-    HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForBodyComponentModelWithIdentifier:identifier];
-    [builder addDataFromJSONDictionary:dictionary usingSchema:schema];
 }
 
 - (HUBViewModelImplementation *)build
@@ -164,7 +140,59 @@ NS_ASSUME_NONNULL_BEGIN
                                                        customData:[self.customData copy]];
 }
 
+#pragma mark - HUBJSONCompatibleBuilder
+
+- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
+{
+    id<HUBViewModelJSONSchema> const viewModelSchema = self.JSONSchema.viewModelSchema;
+    
+    NSString * const viewIdentifier = [viewModelSchema.identifierPath stringFromJSONDictionary:dictionary];
+    
+    if (viewIdentifier != nil) {
+        self.viewIdentifier = viewIdentifier;
+    }
+    
+    NSString * const featureIdentifier = [viewModelSchema.featureIdentifierPath stringFromJSONDictionary:dictionary];
+    
+    if (featureIdentifier != nil) {
+        self.featureIdentifier = featureIdentifier;
+    }
+    
+    self.entityIdentifier = [viewModelSchema.entityIdentifierPath stringFromJSONDictionary:dictionary];
+    self.navigationBarTitle = [viewModelSchema.navigationBarTitlePath stringFromJSONDictionary:dictionary];
+    self.extensionURL = [viewModelSchema.extensionURLPath URLFromJSONDictionary:dictionary];
+    self.customData = [viewModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
+    
+    NSDictionary * const headerComponentModelDictionary = [viewModelSchema.headerComponentModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (headerComponentModelDictionary != nil) {
+        [self.headerComponentModelBuilderImplementation addDataFromJSONDictionary:headerComponentModelDictionary];
+    }
+    
+    NSArray * const bodyComponentModelDictionaries = [viewModelSchema.bodyComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
+    
+    for (NSDictionary * const componentModelDictionary in bodyComponentModelDictionaries) {
+        [self addDataFromBodyComponentModelJSONDictionary:componentModelDictionary];
+    }
+}
+
 #pragma mark - Private utilities
+
+- (void)addDataFromJSONArray:(NSArray<NSObject *> *)array usingSchema:(id<HUBJSONSchema>)schema
+{
+    for (NSObject * const object in array) {
+        if ([object isKindOfClass:[NSDictionary class]]) {
+            [self addDataFromBodyComponentModelJSONDictionary:(NSDictionary *)object];
+        }
+    }
+}
+
+- (void)addDataFromBodyComponentModelJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
+{
+    NSString * const identifier = [self.JSONSchema.componentModelSchema.identifierPath stringFromJSONDictionary:dictionary];
+    HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForBodyComponentModelWithIdentifier:identifier];
+    [builder addDataFromJSONDictionary:dictionary];
+}
 
 - (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForBodyComponentModelWithIdentifier:(nullable NSString *)identifier
 {
@@ -179,6 +207,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
                                                                                                                       featureIdentifier:self.featureIdentifier
+                                                                                                                             JSONSchema:self.JSONSchema
                                                                                                               defaultComponentNamespace:self.defaultComponentNamespace];
     
     [self.bodyComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];

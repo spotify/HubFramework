@@ -6,17 +6,36 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface HUBComponentImageDataBuilderImplementation ()
+
+@property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
+
+@end
+
 @implementation HUBComponentImageDataBuilderImplementation
 
 @synthesize style = _style;
 @synthesize URL = _URL;
 @synthesize iconIdentifier = _iconIdentifier;
 
+#pragma mark - Initializer
+
+- (instancetype)initWithJSONSchema:(id<HUBJSONSchema>)JSONSchema
+{
+    self = [super init];
+    
+    if (self) {
+        _JSONSchema = JSONSchema;
+    }
+    
+    return self;
+}
+
 #pragma mark - HUBJSONCompatibleBuilder
 
-- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary usingSchema:(id<HUBJSONSchema>)schema
+- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {
-    id<HUBComponentImageDataJSONSchema> const imageDataSchema = schema.componentImageDataSchema;
+    id<HUBComponentImageDataJSONSchema> const imageDataSchema = self.JSONSchema.componentImageDataSchema;
     
     self.style = HUBComponentImageStyleRectangular;
     self.URL = [imageDataSchema.URLPath URLFromJSONDictionary:dictionary];

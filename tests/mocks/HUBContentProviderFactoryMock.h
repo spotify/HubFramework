@@ -1,16 +1,24 @@
-#import "HUBRemoteContentProviderFactory.h"
-#import "HUBLocalContentProviderFactory.h"
+#import "HUBContentProviderFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Mocked content provider factory, for use in tests only
-@interface HUBContentProviderFactoryMock : NSObject <HUBRemoteContentProviderFactory, HUBLocalContentProviderFactory>
+@interface HUBContentProviderFactoryMock : NSObject <HUBContentProviderFactory>
 
-/// The remote content provider that this factory always returns
-@property (nonatomic, strong, nullable) id<HUBRemoteContentProvider> remoteContentProvider;
+/**
+ *  Initialize an instance of this class with an array of content providers
+ *
+ *  @param contentProviders The content providers that this factory is always returning
+ */
+- (instancetype)initWithContentProviders:(NSArray<id<HUBContentProvider>> *)contentProviders NS_DESIGNATED_INITIALIZER;
 
-/// The local content provider that this factory always reeturns
-@property (nonatomic, strong, nullable) id<HUBLocalContentProvider> localContentProvider;
+#pragma mark - Unavailable initializers
+
+/// This class needs to be initialized with its designated initializer
+- (instancetype)init NS_UNAVAILABLE;
+
+/// This class needs to be initialized with its designated initializer
++ (instancetype)new NS_UNAVAILABLE;
 
 @end
 

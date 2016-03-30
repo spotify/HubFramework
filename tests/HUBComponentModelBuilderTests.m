@@ -22,8 +22,11 @@
     NSString * const componentNamespace = @"namespace";
     NSString * const componentName = @"component";
     
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:componentNamespace];
+    
     HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:modelIdentifier
                                                                                                                    featureIdentifier:featureIdentifier
+                                                                                                                          JSONSchema:JSONSchema
                                                                                                            defaultComponentNamespace:componentNamespace];
     
     XCTAssertEqualObjects(builder.modelIdentifier, modelIdentifier);
@@ -65,9 +68,9 @@
 {
     NSString * const namespaceOverride = @"namespace-override";
     
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"
-                                                                                                           defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"namespace"];
     
     builder.componentNamespace = namespaceOverride;
     builder.componentName = @"component";
@@ -77,18 +80,18 @@
 
 - (void)testMissingComponentNameProducingNilInstance
 {
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"
-                                                                                                           defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"namespace"];
     
     XCTAssertNil([builder buildForIndex:0]);
 }
 
 - (void)testDefaultImageTypes
 {
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"
-                                                                                                           defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"namespace"];
     
     builder.componentName = @"component";
     builder.mainImageDataBuilder.iconIdentifier = @"icon";
@@ -101,9 +104,9 @@
 
 - (void)testImageConvenienceAPIs
 {
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"
-                                                                                                           defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"namespace"];
     
     builder.componentName = @"component";
     builder.mainImageURL = [NSURL URLWithString:@"https://spotify.mainImage"];
@@ -115,9 +118,9 @@
 
 - (void)testCustomImageDataBuilder
 {
-    HUBComponentModelBuilderImplementation * const componentModelBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"id"
-                                                                                                                                 featureIdentifier:@"feature"
-                                                                                                                         defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const componentModelBuilder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                                featureIdentifier:@"feature"
+                                                                                        defaultComponentNamespace:@"namespace"];
     
     componentModelBuilder.componentName = @"component";
     
@@ -145,9 +148,9 @@
 - (void)testTargetInitialViewModelBuilderLazyInit
 {
     NSString * const featureIdentifier = @"feature";
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:featureIdentifier
-                                                                                                           defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:featureIdentifier
+                                                                          defaultComponentNamespace:@"namespace"];
     
     builder.componentName = @"component";
     
@@ -159,9 +162,9 @@
 
 - (void)testCreatingChildComponentModel
 {
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"
-                                                                                                           defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"namespace"];
     
     NSString * const childModelIdentifier = @"childModel";
     id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
@@ -172,9 +175,9 @@
 
 - (void)testChildComponentModelBuilderReuse
 {
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"
-                                                                                                           defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"namespace"];
     
     NSString * const childModelIdentifier = @"childModel";
     id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
@@ -185,9 +188,9 @@
 - (void)testChildComponentModelFeatureIdentifierSameAsParent
 {
     NSString * const featureIdentifier = @"feature";
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:featureIdentifier
-                                                                                                           defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:featureIdentifier
+                                                                          defaultComponentNamespace:@"namespace"];
     
     id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:@"identifier"];
     XCTAssertEqualObjects(childBuilder.targetInitialViewModelBuilder.featureIdentifier, featureIdentifier);
@@ -195,9 +198,9 @@
 
 - (void)testChildComponentModelPreferredIndexRespected
 {
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"
-                                                                                                           defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"namespace"];
     
     builder.componentName = @"component";
     
@@ -221,9 +224,9 @@
 
 - (void)testChildComponentModelOutOfBoundsPreferredIndexHandled
 {
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"
-                                                                                                           defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"namespace"];
     
     builder.componentName = @"component";
     
@@ -240,9 +243,9 @@
 
 - (void)testRemovingAllChildComponentModels
 {
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"
-                                                                                                           defaultComponentNamespace:@"namespace"];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"namespace"];
     
     builder.componentName = @"component";
     
@@ -321,11 +324,11 @@
     
     NSString * const defaultComponentNamespace = @"namespace";
     
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
-                                                                                                                   featureIdentifier:@"feature"
-                                                                                                           defaultComponentNamespace:defaultComponentNamespace];
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:defaultComponentNamespace];
     
-    [builder addDataFromJSONDictionary:dictionary usingSchema:[[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace]];
+    [builder addDataFromJSONDictionary:dictionary];
     HUBComponentModelImplementation * const model = [builder buildForIndex:0];
     
     XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
@@ -355,6 +358,20 @@
     id<HUBComponentModel> const childModel2 = model.childComponentModels[1];
     XCTAssertEqualObjects(childModel2.identifier, child2ModelIdentifier);
     XCTAssertEqualObjects(childModel2.componentIdentifier, child2ComponentIdentifier);
+}
+
+#pragma mark - Utilities
+
+- (HUBComponentModelBuilderImplementation *)createBuilderWithModelIdentifier:(NSString *)modelIdentifier
+                                                           featureIdentifier:(NSString *)featureIdentifier
+                                                   defaultComponentNamespace:(NSString *)defaultComponentNamespace
+{
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
+    
+    return [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:modelIdentifier
+                                                                 featureIdentifier:featureIdentifier
+                                                                        JSONSchema:JSONSchema
+                                                         defaultComponentNamespace:defaultComponentNamespace];
 }
 
 @end

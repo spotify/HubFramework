@@ -6,15 +6,12 @@
 #import "HUBJSONSchemaRegistryImplementation.h"
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBContentProviderFactoryMock.h"
-#import "HUBRemoteContentProviderMock.h"
-#import "HUBRemoteContentURLResolverMock.h"
+#import "HUBContentProviderMock.h"
 #import "HUBViewModelLoader.h"
-#import "HUBDataLoaderFactoryMock.h"
-#import "HUBDataLoaderMock.h"
+#import "HUBInitialViewModelRegistry.h"
 
 @interface HUBViewModelLoaderFactoryTests : XCTestCase
 
-@property (nonatomic, strong) HUBDataLoaderFactoryMock *dataLoaderFactory;
 @property (nonatomic, strong) HUBFeatureRegistryImplementation *featureRegistry;
 @property (nonatomic, copy) NSString *defaultComponentNamespace;
 @property (nonatomic, strong) HUBViewModelLoaderFactoryImplementation *viewModelLoaderFactory;
@@ -27,15 +24,16 @@
 {
     [super setUp];
     
-    self.dataLoaderFactory = [HUBDataLoaderFactoryMock new];
-    self.featureRegistry = [[HUBFeatureRegistryImplementation alloc] initWithDataLoaderFactory:self.dataLoaderFactory];
+    self.featureRegistry = [HUBFeatureRegistryImplementation new];
     self.defaultComponentNamespace = @"default";
     
     HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithDefaultComponentNamespace:@"namespace"];
+    HUBInitialViewModelRegistry * const initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
     self.viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:self.featureRegistry
                                                                                         JSONSchemaRegistry:JSONSchemaRegistry
+                                                                                  initialViewModelRegistry:initialViewModelRegistry
                                                                                  defaultComponentNamespace:self.defaultComponentNamespace
                                                                                  connectivityStateResolver:connectivityStateResolver];
 }
@@ -44,13 +42,12 @@
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
 
-    HUBContentProviderFactoryMock * const contentProviderFactory = [HUBContentProviderFactoryMock new];
-    contentProviderFactory.remoteContentProvider = [HUBRemoteContentProviderMock new];
+    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
+    HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[contentProvider]];
     
     id<HUBFeatureConfiguration> const featureConfiguration = [self.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
                                                                                                                    rootViewURI:viewURI
-                                                                                                  remoteContentProviderFactory:contentProviderFactory
-                                                                                                   localContentProviderFactory:nil];
+                                                                                                      contentProviderFactories:@[contentProviderFactory]];
     
     [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
     
@@ -69,34 +66,14 @@
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     
-    HUBContentProviderFactoryMock * const contentProviderFactory = [HUBContentProviderFactoryMock new];
+    HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
     id<HUBFeatureConfiguration> const featureConfiguration = [self.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
                                                                                                                    rootViewURI:viewURI
-                                                                                                  remoteContentProviderFactory:contentProviderFactory
-                                                                                                   localContentProviderFactory:contentProviderFactory];
+                                                                                                      contentProviderFactories:@[contentProviderFactory]];
     
     [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
     
     XCTAssertThrows([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
-}
-
-- (void)testDataLoaderFactoryUsedIfFeatureUsesRemoteContentURLResolver
-{
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    
-    HUBRemoteContentURLResolverMock * const URLResolver = [HUBRemoteContentURLResolverMock new];
-    URLResolver.contentURL = [NSURL URLWithString:@"https://remote.content"];
-    
-    id<HUBFeatureConfiguration> const featureConfiguration = [self.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
-                                                                                                                   rootViewURI:viewURI
-                                                                                                      remoteContentURLResolver:URLResolver];
-    
-    [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
-    
-    id<HUBViewModelLoader> const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI];
-    [viewModelLoader loadViewModel];
-    XCTAssertEqualObjects(self.dataLoaderFactory.lastCreatedDataLoader.currentDataURL, URLResolver.contentURL);
-    XCTAssertEqualObjects(self.dataLoaderFactory.lastCreatedDataLoader.featureIdentifier, featureConfiguration.featureIdentifier);
 }
 
 @end

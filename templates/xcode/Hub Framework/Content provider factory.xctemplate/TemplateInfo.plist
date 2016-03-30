@@ -5,11 +5,11 @@
 	<key>Kind</key>
 	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
 	<key>Description</key>
-	<string>A class that loads remote content data for a Hub Framework-powered feature</string>
+	<string>A class that creates content providers for a Hub Framework-powered feature</string>
 	<key>SortOrder</key>
 	<string>-3</string>
 	<key>DefaultCompletionName</key>
-	<string>HubRemoteContentProvider</string>
+	<string>HubContentProviderFactory</string>
 	<key>Platforms</key>
 	<array>
 		<string>com.apple.platform.iphoneos</string>

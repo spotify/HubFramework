@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ___FILEBASENAMEASIDENTIFIER___ : NSObject <HUBRemoteContentProvider>
+@interface ___FILEBASENAMEASIDENTIFIER___ : NSObject <HUBContentProvider>
 
 @end
 

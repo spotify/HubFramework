@@ -66,9 +66,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBViewModel>)viewModelFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary featureIdentifier:(NSString *)featureIdentifier
 {
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:featureIdentifier
+                                                                                                                  JSONSchema:self
                                                                                                    defaultComponentNamespace:self.defaultComponentNamespace];
     
-    [builder addDataFromJSONDictionary:dictionary usingSchema:self];
+    [builder addDataFromJSONDictionary:dictionary];
     return [builder build];
 }
 
