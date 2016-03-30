@@ -259,7 +259,7 @@
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-    [component.childEventHandler component:component willDisplayChildAtIndex:0];
+    [component.childDelegate component:component willDisplayChildAtIndex:0];
     
     XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
     XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
@@ -394,6 +394,47 @@
     XCTAssertEqual(self.collectionView.selectedIndexPaths.count, (NSUInteger)0);
 }
 
+- (void)testCreatingChildComponent
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    NSString * const componentNamespace = @"childComponentSelection";
+    NSString * const componentName = @"component";
+    NSString * const childComponentName = @"componentB";
+    HUBComponentMock * const component = [HUBComponentMock new];
+    HUBComponentMock * const childComponent = [HUBComponentMock new];
+    childComponent.preferredViewSize = CGSizeMake(100, 200);
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        componentName: component,
+        childComponentName: childComponent
+    }];
+    
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.componentNamespace = componentNamespace;
+        componentModelBuilder.componentName = componentName;
+        
+        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"];
+        childComponentModelBuilder.componentNamespace = componentNamespace;
+        childComponentModelBuilder.componentName = childComponentName;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
+    XCTAssertEqual([component.childDelegate component:component createChildComponentAtIndex:0], childComponent);
+    XCTAssertTrue(CGSizeEqualToSize(childComponent.view.frame.size, childComponent.preferredViewSize));
+}
+
 - (void)testSelectionForChildComponent
 {
     __weak __typeof(self) weakSelf = self;
@@ -434,15 +475,15 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    id<HUBComponentChildEventHandler> const childEventHandler = component.childEventHandler;
+    id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
     
-    [childEventHandler component:component childSelectedAtIndex:0];
+    [childDelegate component:component childSelectedAtIndex:0];
     
     id<HUBViewModel> const childComponentTargetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:childComponentTargetURL];
     XCTAssertEqualObjects(childComponentTargetInitialViewModel.identifier, childComponentInitialViewModelIdentifier);
     
     // Make sure bounds-checking is performed for child component index
-    [childEventHandler component:component willDisplayChildAtIndex:99];
+    [childDelegate component:component willDisplayChildAtIndex:99];
 }
 
 #pragma mark - HUBViewControllerDelegate

@@ -11,6 +11,15 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HUBComponentWrapperDelegate <NSObject>
 
 /**
+ *  Ask the delegate to create a child component for the wrapped component
+ *
+ *  @param componentWrapper The wrapper of the parent component
+ *  @param model The model that a component should be created for
+ */
+- (id<HUBComponent>)componentWrapper:(HUBComponentWrapper *)componentWrapper
+       createChildComponentWithModel:(id<HUBComponentModel>)model;
+
+/**
  *  Notify the delegate that the wrapped component is about to display a child component at a given index
  *
  *  @param componentWrapper The wrapper of the component in which the event occured

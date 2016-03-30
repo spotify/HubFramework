@@ -217,6 +217,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentWrapperDelegate
 
+- (__kindof id<HUBComponent>)componentWrapper:(HUBComponentWrapper *)componentWrapper createChildComponentWithModel:(id<HUBComponentModel>)model
+{
+    return [self.componentRegistry createComponentForIdentifier:model.componentIdentifier];
+}
+
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper componentWillDisplayChildAtIndex:(NSUInteger)childIndex
 {
     id<HUBComponentModel> const componentModel = componentWrapper.currentModel;

@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 /**
  *  Macro set to `1` if building with the iOS 9.3 SDK or later.
  */
@@ -30,3 +32,22 @@
 #else
     #define HUB_IGNORE_PARTIAL_AVAILABILTY_END
 #endif
+
+/**
+ *  Load the view for a component if it hasn't been loaded already
+ *
+ *  @param component The component to load a view for
+ *
+ *  This function asserts that a view has been loaded after -loadView was sent to the component.
+ */
+static inline UIView *HUBComponentLoadViewIfNeeded(id<HUBComponent> component) {
+    if (component.view != nil) {
+        return component.view;
+    }
+    
+    [component loadView];
+    
+    UIView * const view = component.view;
+    NSCAssert(view, @"All components are required to load a view in -loadView");
+    return view;
+}
