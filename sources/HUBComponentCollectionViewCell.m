@@ -2,6 +2,7 @@
 
 #import "HUBComponentWrapper.h"
 #import "HUBComponent.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,12 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    if (componentWrapper.component.view == nil) {
-        [componentWrapper.component loadView];
-    }
-    
-    UIView * const view = componentWrapper.component.view;
-    NSAssert(view, @"All components are required to load a view in -loadView");
+    UIView * const view = HUBComponentLoadViewIfNeeded(componentWrapper.component);
     
     if ([view isKindOfClass:[UICollectionViewCell class]]) {
         view.userInteractionEnabled = NO;
