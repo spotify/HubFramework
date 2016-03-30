@@ -130,6 +130,16 @@ NS_ASSUME_NONNULL_BEGIN
     return self.mainImageDataBuilderImplementation;
 }
 
+- (nullable NSURL *)mainImageURL
+{
+    return self.mainImageDataBuilder.URL;
+}
+
+- (void)setMainImageURL:(nullable NSURL *)mainImageURL
+{
+    self.mainImageDataBuilder.URL = mainImageURL;
+}
+
 - (id<HUBComponentImageDataBuilder>)backgroundImageDataBuilder
 {
     return self.backgroundImageDataBuilderImplementation;
@@ -138,6 +148,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBViewModelBuilder>)targetInitialViewModelBuilder
 {
     return [self getOrCreateBuilderForTargetInitialViewModel];
+}
+
+- (nullable NSURL *)backgroundImageURL
+{
+    return self.backgroundImageDataBuilder.URL;
+}
+
+- (void)setBackgroundImageURL:(nullable NSURL *)backgroundImageURL
+{
+    self.backgroundImageDataBuilder.URL = backgroundImageURL;
 }
 
 - (BOOL)builderExistsForCustomImageDataWithIdentifier:(NSString *)identifier

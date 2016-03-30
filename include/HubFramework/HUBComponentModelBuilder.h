@@ -66,8 +66,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// A builder that can be used to construct data that describes how to render the component's "main" image
 @property (nonatomic, strong, readonly) id<HUBComponentImageDataBuilder> mainImageDataBuilder;
 
+/// Any URL for the component's "main" image. This is an alias for `mainImageDataBuilder.URL`.
+@property (nonatomic, copy, nullable) NSURL *mainImageURL;
+
 /// A builder that can be used to construct data that describes how to render the component's background image
 @property (nonatomic, strong, readonly) id<HUBComponentImageDataBuilder> backgroundImageDataBuilder;
+
+/// Any URL for the component's background image. This is an alias for `backgroundImageDataBuilder.URL`.
+@property (nonatomic, copy, nullable) NSURL *backgroundImageURL;
 
 #pragma mark - Metadata
 

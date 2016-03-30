@@ -99,6 +99,20 @@
     XCTAssertEqual(model.backgroundImageData.type, HUBComponentImageTypeBackground);
 }
 
+- (void)testImageConvenienceAPIs
+{
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:@"feature"
+                                                                                                           defaultComponentNamespace:@"namespace"];
+    
+    builder.componentName = @"component";
+    builder.mainImageURL = [NSURL URLWithString:@"https://spotify.mainImage"];
+    builder.backgroundImageURL = [NSURL URLWithString:@"https://spotify.mainImage"];
+    
+    XCTAssertEqualObjects(builder.mainImageDataBuilder.URL, builder.mainImageURL);
+    XCTAssertEqualObjects(builder.backgroundImageDataBuilder.URL, builder.backgroundImageURL);
+}
+
 - (void)testCustomImageDataBuilder
 {
     HUBComponentModelBuilderImplementation * const componentModelBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"id"
