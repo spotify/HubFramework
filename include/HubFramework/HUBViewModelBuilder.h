@@ -114,6 +114,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (id<HUBComponentModelBuilder>)builderForBodyComponentModelWithIdentifier:(NSString *)identifier;
 
+/**
+ *  Remove a builder for a body component with a certain identifier
+ *
+ *  @param identifier The identifier of the component model that we want to remove
+ */
+- (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier;
+
 @end
 
 NS_ASSUME_NONNULL_END
