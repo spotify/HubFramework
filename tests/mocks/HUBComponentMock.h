@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The main image the component is currently displaying
 @property (nonatomic, strong, readonly, nullable) id<HUBComponentImageData> mainImageData;
 
+/// The number of times `updateViewForChangedSize` has been called on this component
+@property (nonatomic, readonly) NSUInteger numberOfResizes;
+
 /// The number of times `prepareViewForReuse` has been called on this component
 @property (nonatomic, readonly) NSUInteger numberOfReuses;
 
