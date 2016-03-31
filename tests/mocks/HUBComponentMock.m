@@ -4,6 +4,7 @@
 @interface HUBComponentMock ()
 
 @property (nonatomic, strong, readwrite, nullable) id<HUBComponentImageData> mainImageData;
+@property (nonatomic, readwrite) NSUInteger numberOfResizes;
 @property (nonatomic, readwrite) NSUInteger numberOfReuses;
 
 @end
@@ -30,6 +31,11 @@
 - (void)loadView
 {
     self.view = [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+- (void)updateViewAfterResize
+{
+    self.numberOfResizes++;
 }
 
 - (void)prepareViewForReuse

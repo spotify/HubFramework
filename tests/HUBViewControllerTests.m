@@ -490,6 +490,38 @@
     [childDelegate component:component willDisplayChildAtIndex:99];
 }
 
+- (void)testComponentNotifiedOfResize
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentProvider.contentLoadingBlock = ^(BOOL loadFallbackContent) {
+        __typeof(self) strongSelf = weakSelf;
+        id<HUBLocalContentProviderDelegate> const delegate = strongSelf.contentProvider.delegate;
+        
+        id<HUBViewModelBuilder> const viewModelBuilder = [delegate provideViewModelBuilderForLocalContentProvider:strongSelf.contentProvider];
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    cell.frame = CGRectMake(0, 0, 300, 200);
+    [cell layoutSubviews];
+    XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)1);
+    
+    // Subsequent layout passes should not notify the component, unless the size has changed
+    [cell layoutSubviews];
+    [cell layoutSubviews];
+    [cell layoutSubviews];
+    XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)1);
+    
+    cell.frame = CGRectMake(0, 0, 300, 100);
+    [cell layoutSubviews];
+    XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)2);
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewControllerHeaderComponentVisbilityDidChange:(UIViewController<HUBViewController> *)viewController

@@ -44,8 +44,14 @@ NS_ASSUME_NONNULL_BEGIN
     [super layoutSubviews];
     
     UIView * const componentView = self.componentWrapper.component.view;
+    CGSize previousComponentViewSize = componentView.frame.size;
+    
     componentView.bounds = self.contentView.bounds;
     componentView.center = self.contentView.center;
+    
+    if (!CGSizeEqualToSize(previousComponentViewSize, componentView.bounds.size)) {
+        [self.componentWrapper.component updateViewAfterResize];
+    }
 }
 
 @end
