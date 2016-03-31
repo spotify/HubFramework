@@ -180,6 +180,12 @@ NS_ASSUME_NONNULL_BEGIN
     return [self getOrCreateBuilderForChildComponentModelWithIdentifier:modelIdentifier];
 }
 
+- (void)removeAllChildComponentModelBuilders
+{
+    [self.childComponentModelBuilders removeAllObjects];
+    [self.childComponentIdentifierOrder removeAllObjects];
+}
+
 #pragma mark - HUBJSONCompatibleBuilder
 
 - (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary usingSchema:(id<HUBJSONSchema>)schema

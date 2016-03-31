@@ -238,6 +238,25 @@
     XCTAssertEqual(model.childComponentModels[0].index, (NSUInteger)0);
 }
 
+- (void)testRemovingAllChildComponentModels
+{
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"model"
+                                                                                                                   featureIdentifier:@"feature"
+                                                                                                           defaultComponentNamespace:@"namespace"];
+    
+    builder.componentName = @"component";
+    
+    [builder builderForChildComponentModelWithIdentifier:@"child1"].componentName = @"component";
+    [builder builderForChildComponentModelWithIdentifier:@"child2"].componentName = @"component";
+    [builder builderForChildComponentModelWithIdentifier:@"child3"].componentName = @"component";
+    
+    XCTAssertEqual([builder buildForIndex:0].childComponentModels.count, (NSUInteger)3);
+    
+    [builder removeAllChildComponentModelBuilders];
+    
+    XCTAssertEqual([builder buildForIndex:0].childComponentModels.count, (NSUInteger)0);
+}
+
 - (void)testAddingJSONData
 {
     HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"component"];
