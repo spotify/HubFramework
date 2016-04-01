@@ -69,6 +69,27 @@
     XCTAssertEqual(componentBuilder,  [builder builderForBodyComponentModelWithIdentifier:componentModelIdentifier]);
 }
 
+- (void)testRemovalOfBodyComponentBuilders
+{
+    NSString * const defaultComponentNamespace = @"default";
+    NSString * const componentModelIdentifier = @"identifier";
+
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
+                                                                                                   defaultComponentNamespace:defaultComponentNamespace];
+
+    XCTAssertFalse([builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
+
+    id<HUBComponentModelBuilder> const componentBuilder = [builder builderForBodyComponentModelWithIdentifier:componentModelIdentifier];
+
+    XCTAssertNotNil(componentBuilder);
+    XCTAssertEqualObjects(componentBuilder.componentNamespace, defaultComponentNamespace);
+    XCTAssertTrue([builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
+
+    [builder removeBuilderForBodyComponentModelWithIdentifier:componentModelIdentifier];
+
+    XCTAssertFalse([builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
+}
+
 - (void)testBodyComponentPreferredIndexRespected
 {
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"

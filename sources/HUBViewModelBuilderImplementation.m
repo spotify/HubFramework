@@ -68,6 +68,12 @@ NS_ASSUME_NONNULL_BEGIN
     return [self getOrCreateBuilderForBodyComponentModelWithIdentifier:identifier];
 }
 
+-(void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier
+{
+    [self.bodyComponentModelBuilders removeObjectForKey:identifier];
+    [self.bodyComponentIdentifierOrder removeObject:identifier];
+}
+
 #pragma mark - HUBJSONCompatibleBuilder
 
 - (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary usingSchema:(id<HUBJSONSchema>)schema
