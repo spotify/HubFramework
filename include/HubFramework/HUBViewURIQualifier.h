@@ -6,8 +6,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  Protocol that can be used as an override point, to disqualify certain view URIs for a feature
  *
  *  By default, any view URI that has a feature's `rootViewURI` as a prefix is associated with that feature.
- *  By implementing this protocol in an object, and supplying it as part of a feature's `HUBFeatureConfiguration`
- *  object, you can override this behavior and return `NO` for certain view URIs.
+ *  By implementing this protocol in an object, and supplying it when registering your feature with the Hub
+ *  Framework, you can override this behavior and return `NO` for certain view URIs.
  */
 @protocol HUBViewURIQualifier <NSObject>
 

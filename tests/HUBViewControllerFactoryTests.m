@@ -3,7 +3,6 @@
 #import "HUBViewControllerFactory.h"
 #import "HUBManager.h"
 #import "HUBFeatureRegistry.h"
-#import "HUBFeatureConfiguration.h"
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBContentProviderFactoryMock.h"
 #import "HUBContentProviderMock.h"
@@ -44,11 +43,11 @@
     HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
     HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[contentProvider]];
     
-    id<HUBFeatureConfiguration> const featureConfiguration = [self.manager.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
-                                                                                                                   rootViewURI:viewURI
-                                                                                                              contentProviderFactories:@[contentProviderFactory]];
-    
-    [self.manager.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
+    [self.manager.featureRegistry registerFeatureWithIdentifier:@"feature"
+                                                    rootViewURI:viewURI
+                                       contentProviderFactories:@[contentProviderFactory]
+                                     customJSONSchemaIdentifier:nil
+                                               viewURIQualifier:nil];
     
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
     XCTAssertNotNil([self.manager.viewControllerFactory createViewControllerForViewURI:viewURI]);

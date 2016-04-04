@@ -1,8 +1,7 @@
 #import <Foundation/Foundation.h>
 
-@protocol HUBFeatureConfiguration;
 @protocol HUBContentProviderFactory;
-@protocol HUBFeatureRegistration;
+@protocol HUBViewURIQualifier;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -12,38 +11,32 @@ NS_ASSUME_NONNULL_BEGIN
  *  A feature is the top-level entity in the Hub Framework, that is used to ecapsulate related views into a logical group.
  *  Views that belong to the same feature share a common root view URI as a prefix, as well as content providing logic
  *  and overrides.
- *
- *  You register features by creating `HUBFeatureConfiguration` objects through this registry, setting that object up
- *  according to your feature's requirements, and then finally passing it back to `-registerFeatureWithConfiguration:` to
- *  complete the registration process.
- *
- *  See `HUBFeatureConfiguration` for more information on how to configure a feature for use with the Hub Framework.
  */
 @protocol HUBFeatureRegistry <NSObject>
 
 /**
- *  Create a configuration object used to setup a feature for use with the Hub Framework
+ *  Register a feature with the Hub Framework
  *
- *  @param featureIdentifier The identifier of the feature. Must be unique across the app.
- *  @param rootViewURI The view URI that all views of the feature have as a prefix. Must be unique across the app.
- *  @param contentProviderFactories The factories that should be used to create content providers for views of the feature.
- *         The order of the array will determine which order the factories will be called in when creating content providers,
- *         which in turn will determine the content loading order.
+ *  @param featureIdentifier The identifier of the feature. Used for logging & error messages. Must be unique across the app.
+ *  @param rootViewURI The root view URI of the feature. Must be unique across the app. The Hub Framework will create view
+ *         controllers on behalf of this feature for every view URI that has this URI as a prefix. To tweak this behavior,
+ *         pass a `viewURIQualifier`.
+ *  @param contentProviderFactories The factories that should be used to create content providers for the feature's views.
+ *         The order of the factories will determine the order in which the created content providers are called each time a
+ *         view that is a part of the feature will load data. See `HUBContentProviderFactory` for more information.
+ *  @param customJSONSchemaIdentifier Any identifier of a custom schema to use to parse JSON data. If nil, the default
+ *         schema will be used. Register your custom schema using `HUBJSONSchemaRegistry`. See `HUBJSONSchema` for more info.
+ *  @param viewURIQualifier Any view URI qualifier that the feature should use. A view URI qualifier can be used to dynamically
+ *         enable/disable certain views of the feature. For more information, see `HUBViewURIQualifier`.
+ *
+ *  Registering a feature with the same root view URI as one that is already registered is considered a severe error and
+ *  will trigger an assert.
  */
-- (id<HUBFeatureConfiguration>)createConfigurationForFeatureWithIdentifier:(NSString *)featureIdentifier
-                                                               rootViewURI:(NSURL *)rootViewURI
-                                                  contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories;
-
-/**
- *  Register a feature with the Hub Framework using a configuration object
- *
- *  @param configuration The configuration object to use to register the feature
- *
- *  Once the configuration object has been passed to this method, the registration process is complete and additional changes to
- *  the configuration object will not be taken into consideration. Registering a feature with the same root view URI as one that is
- *  already registered is considered a severe error and will trigger an assert.
- */
-- (void)registerFeatureWithConfiguration:(id<HUBFeatureConfiguration>)configuration;
+- (void)registerFeatureWithIdentifier:(NSString *)featureIdentifier
+                          rootViewURI:(NSURL *)rootViewURI
+             contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
+           customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
+                     viewURIQualifier:(nullable id<HUBViewURIQualifier>)viewURIQualifier;
 
 /**
  *  Unregister a feature from the Hub Framework

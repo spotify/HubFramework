@@ -13,7 +13,6 @@
 #import "HUBMutableJSONPath.h"
 
 // Feature
-#import "HUBFeatureConfiguration.h"
 #import "HUBFeatureRegistry.h"
 
 // Content
