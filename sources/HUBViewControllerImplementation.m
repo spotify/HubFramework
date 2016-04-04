@@ -44,12 +44,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Lifecycle
 
-- (instancetype)initWithViewModelLoader:(id<HUBViewModelLoader> )viewModelLoader
+- (instancetype)initWithViewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
                             imageLoader:(id<HUBImageLoader>)imageLoader
                   collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
                       componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                  componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                       initialViewModel:(nullable id<HUBViewModel>)initialViewModel
                initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
 
 {
@@ -63,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
     _componentRegistry = componentRegistry;
     _componentLayoutManager = componentLayoutManager;
     _initialViewModelRegistry = initialViewModelRegistry;
-    _viewModel = initialViewModel;
+    _viewModel = viewModelLoader.initialViewModel;
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     _componentImageLoadingContexts = [NSMutableDictionary new];
     _contentOffsetObservingComponents = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];

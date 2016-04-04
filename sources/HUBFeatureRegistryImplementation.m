@@ -3,13 +3,11 @@
 #import "HUBFeatureConfigurationImplementation.h"
 #import "HUBFeatureRegistration.h"
 #import "HUBViewURIQualifier.h"
-#import "HUBRemoteContentURLResolverContentProviderFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBFeatureRegistryImplementation ()
 
-@property (nonatomic, strong, readonly) id<HUBDataLoaderFactory> dataLoaderFactory;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, HUBFeatureRegistration *> *registrationsByRootViewURI;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBFeatureRegistration *> *registrationsByIdentifier;
 
@@ -17,14 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBFeatureRegistryImplementation
 
-- (instancetype)initWithDataLoaderFactory:(id<HUBDataLoaderFactory>)dataLoaderFactory
+- (instancetype)init
 {
-    NSParameterAssert(dataLoaderFactory != nil);
-    
     self = [super init];
     
     if (self) {
-        _dataLoaderFactory = dataLoaderFactory;
         _registrationsByRootViewURI = [NSMutableDictionary new];
         _registrationsByIdentifier = [NSMutableDictionary new];
     }
@@ -59,26 +54,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBFeatureConfiguration>)createConfigurationForFeatureWithIdentifier:(NSString *)featureIdentifier
                                                                rootViewURI:(NSURL *)rootViewURI
-                                                  remoteContentURLResolver:(id<HUBRemoteContentURLResolver>)remoteContentURLResolver
+                                                  contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
 {
-    id<HUBFeatureConfiguration> const featureConfiguration = [[HUBFeatureConfigurationImplementation alloc] initWithFeatureIdentifier:featureIdentifier
-                                                                                                                          rootViewURI:rootViewURI];
+    NSParameterAssert(featureIdentifier != nil);
+    NSParameterAssert(rootViewURI != nil);
+    NSParameterAssert(contentProviderFactories != nil);
     
-    featureConfiguration.remoteContentURLResolver = remoteContentURLResolver;
-    return featureConfiguration;
-}
-
-- (id<HUBFeatureConfiguration>)createConfigurationForFeatureWithIdentifier:(NSString *)featureIdentifier
-                                                               rootViewURI:(NSURL *)rootViewURI
-                                              remoteContentProviderFactory:(nullable id<HUBRemoteContentProviderFactory>)remoteContentProviderFactory
-                                               localContentProviderFactory:(nullable id<HUBLocalContentProviderFactory>)localContentProviderFactory
-{
-    id<HUBFeatureConfiguration> const featureConfiguration = [[HUBFeatureConfigurationImplementation alloc] initWithFeatureIdentifier:featureIdentifier
-                                                                                                                          rootViewURI:rootViewURI];
-    
-    featureConfiguration.remoteContentProviderFactory = remoteContentProviderFactory;
-    featureConfiguration.localContentProviderFactory = localContentProviderFactory;
-    return featureConfiguration;
+    return [[HUBFeatureConfigurationImplementation alloc] initWithFeatureIdentifier:featureIdentifier
+                                                                        rootViewURI:rootViewURI
+                                                           contentProviderFactories:contentProviderFactories];
 }
 
 - (void)registerFeatureWithConfiguration:(id<HUBFeatureConfiguration>)configuration
@@ -91,27 +75,13 @@ NS_ASSUME_NONNULL_BEGIN
              @"Attempted to register a Hub Framework feature for an identifier that is already registered: %@",
              configuration.featureIdentifier);
     
-    id<HUBRemoteContentURLResolver> const remoteContentURLResolver = configuration.remoteContentURLResolver;
-    id<HUBRemoteContentProviderFactory> remoteContentProviderFactory = configuration.remoteContentProviderFactory;
-    
-    if (remoteContentURLResolver != nil) {
-        NSAssert(remoteContentProviderFactory == nil,
-                 @"Attempted to register a Hub Framework feature with both a remote content factory & URL resolver. Feature identifier: %@",
-                 configuration.featureIdentifier);
-        
-        remoteContentProviderFactory = [[HUBRemoteContentURLResolverContentProviderFactory alloc] initWithURLResolver:remoteContentURLResolver
-                                                                                                    featureIdentifier:configuration.featureIdentifier
-                                                                                                    dataLoaderFactory:self.dataLoaderFactory];
-    }
-    
-    NSAssert(remoteContentProviderFactory != nil || configuration.localContentProviderFactory != nil,
-             @"Attempted to register a Hub Framework feature without either a remote or local content provider. Feature identifier: %@",
+    NSAssert(configuration.contentProviderFactories.count > 0,
+             @"Attempted to register a Hub Framework feature without any content provider factories. Feature identifier: %@",
              configuration.featureIdentifier);
     
     HUBFeatureRegistration * const registration = [[HUBFeatureRegistration alloc] initWithFeatureIdentifier:configuration.featureIdentifier
                                                                                                 rootViewURI:configuration.rootViewURI
-                                                                               remoteContentProviderFactory:remoteContentProviderFactory
-                                                                                localContentProviderFactory:configuration.localContentProviderFactory
+                                                                                   contentProviderFactories:configuration.contentProviderFactories
                                                                                  customJSONSchemaIdentifier:configuration.customJSONSchemaIdentifier
                                                                                            viewURIQualifier:configuration.viewURIQualifier];
     

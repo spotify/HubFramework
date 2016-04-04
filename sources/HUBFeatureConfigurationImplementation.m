@@ -6,22 +6,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize featureIdentifier = _featureIdentifier;
 @synthesize rootViewURI = _rootViewURI;
-@synthesize remoteContentURLResolver = _remoteContentURLResolver;
-@synthesize remoteContentProviderFactory = _remoteContentProviderFactory;
-@synthesize localContentProviderFactory = _localContentProviderFactory;
+@synthesize contentProviderFactories = _contentProviderFactories;
 @synthesize customJSONSchemaIdentifier = _customJSONSchemaIdentifier;
 @synthesize viewURIQualifier = _viewURIQualifier;
 
-- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier rootViewURI:(NSURL *)rootViewURI
+- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
+                              rootViewURI:(NSURL *)rootViewURI
+                 contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(rootViewURI != nil);
+    NSParameterAssert(contentProviderFactories != nil);
     
     self = [super init];
     
     if (self) {
         _featureIdentifier = [featureIdentifier copy];
         _rootViewURI = [rootViewURI copy];
+        _contentProviderFactories = [contentProviderFactories mutableCopy];
     }
     
     return self;

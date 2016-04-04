@@ -23,7 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param collectionViewFactory The factory to use to create collection views
  *  @param componentRegistry The registry to use to retrieve components to render
  *  @param componentLayoutManager The object that manages layout for components in the view controller
- *  @oaram initialViewModel Any initial view model the view controller should use before loading its full one
  *  @param initialViewModelRegistry The registry to use to register initial view models for subsequent view controllers
  */
 - (instancetype)initWithViewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
@@ -31,7 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
                   collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
                       componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                  componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                       initialViewModel:(nullable id<HUBViewModel>)initialViewModel
                initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers

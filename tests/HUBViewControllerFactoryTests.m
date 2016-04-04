@@ -6,8 +6,7 @@
 #import "HUBFeatureConfiguration.h"
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBContentProviderFactoryMock.h"
-#import "HUBRemoteContentProviderMock.h"
-#import "HUBDataLoaderFactoryMock.h"
+#import "HUBContentProviderMock.h"
 #import "HUBImageLoaderFactoryMock.h"
 #import "HUBComponentLayoutManagerMock.h"
 
@@ -27,11 +26,9 @@
     
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     id<HUBImageLoaderFactory> const imageLoaderFactory = [HUBImageLoaderFactoryMock new];
-    id<HUBDataLoaderFactory> const dataLoaderFactory = [HUBDataLoaderFactoryMock new];
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     
     self.manager = [[HUBManager alloc] initWithConnectivityStateResolver:connectivityStateResolver
-                                                       dataLoaderFactory:dataLoaderFactory
                                                       imageLoaderFactory:imageLoaderFactory
                                                defaultComponentNamespace:@"default"
                                                    fallbackComponentName:@"fallback"
@@ -44,13 +41,12 @@
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     
-    HUBContentProviderFactoryMock * const contentProviderFactory = [HUBContentProviderFactoryMock new];
-    contentProviderFactory.remoteContentProvider = [HUBRemoteContentProviderMock new];
+    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
+    HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[contentProvider]];
     
     id<HUBFeatureConfiguration> const featureConfiguration = [self.manager.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
                                                                                                                    rootViewURI:viewURI
-                                                                                                          remoteContentProviderFactory:contentProviderFactory
-                                                                                                           localContentProviderFactory:nil];
+                                                                                                              contentProviderFactories:@[contentProviderFactory]];
     
     [self.manager.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
     

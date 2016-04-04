@@ -6,26 +6,26 @@
 #import "HUBViewModelLoaderFactoryImplementation.h"
 #import "HUBViewControllerFactoryImplementation.h"
 #import "HUBComponentIdentifier.h"
+#import "HUBInitialViewModelRegistry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBManager ()
 
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
+@property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 
 @end
 
 @implementation HUBManager
 
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
-                                dataLoaderFactory:(id<HUBDataLoaderFactory>)dataLoaderFactory
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                         defaultComponentNamespace:(NSString *)defaultComponentNamespace
                             fallbackComponentName:(NSString *)fallbackComponentName
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
 {
     NSParameterAssert(connectivityStateResolver != nil);
-    NSParameterAssert(dataLoaderFactory != nil);
     NSParameterAssert(imageLoaderFactory != nil);
     NSParameterAssert(defaultComponentNamespace != nil);
     NSParameterAssert(fallbackComponentName != nil);
@@ -34,22 +34,26 @@ NS_ASSUME_NONNULL_BEGIN
     self = [super init];
     
     if (self) {
+        _connectivityStateResolver = connectivityStateResolver;
+        _initialViewModelRegistry = [HUBInitialViewModelRegistry new];
+        
         HUBComponentIdentifier * const fallbackComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:defaultComponentNamespace
                                                                                                                   name:fallbackComponentName];
         
-        _featureRegistry = [[HUBFeatureRegistryImplementation alloc] initWithDataLoaderFactory:dataLoaderFactory];
+        _featureRegistry = [HUBFeatureRegistryImplementation new];
         _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:fallbackComponentIdentifier];
         _JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
-        _connectivityStateResolver = connectivityStateResolver;
         
         _viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:_featureRegistry
                                                                                         JSONSchemaRegistry:_JSONSchemaRegistry
+                                                                                  initialViewModelRegistry:_initialViewModelRegistry
                                                                                  defaultComponentNamespace:defaultComponentNamespace
                                                                                  connectivityStateResolver:_connectivityStateResolver];
         
         _viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:_viewModelLoaderFactory
                                                                                              imageLoaderFactory:imageLoaderFactory
                                                                                               componentRegistry:self.componentRegistry
+                                                                                       initialViewModelRegistry:self.initialViewModelRegistry
                                                                                          componentLayoutManager:componentLayoutManager];
     }
     

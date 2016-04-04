@@ -2,16 +2,30 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface HUBContentProviderFactoryMock ()
+
+@property (nonatomic, strong, readonly) NSArray<id<HUBContentProvider>> *contentProviders;
+
+@end
+
 @implementation HUBContentProviderFactoryMock
 
-- (nullable id<HUBRemoteContentProvider>)createRemoteContentProviderForViewURI:(NSURL *)viewURI
+- (instancetype)initWithContentProviders:(NSArray<id<HUBContentProvider>> *)contentProviders
 {
-    return self.remoteContentProvider;
+    self = [super init];
+    
+    if (self) {
+        _contentProviders = contentProviders;
+    }
+    
+    return self;
 }
 
-- (nullable id<HUBLocalContentProvider>)createLocalContentProviderForViewURI:(NSURL *)viewURI
+#pragma mark - HUBContentProviderFactory
+
+- (NSArray<id<HUBContentProvider>> *)createContentProvidersForViewURI:(NSURL *)viewURI
 {
-    return self.localContentProvider;
+    return self.contentProviders;
 }
 
 @end

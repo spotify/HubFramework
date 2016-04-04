@@ -49,6 +49,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) id<HUBViewModelLoaderDelegate> delegate;
 
 /**
+ *  The view model that should initially be used, before a "proper" view model has been loaded
+ *
+ *  Accessing this property will either return a pre-computed initial view model, or cause the loader's
+ *  content providers to be asked to prepare an initial view model. The initial view model will then be cached,
+ *  so it's fine to access this property multiple times.
+ */
+@property (nonatomic, strong, nullable, readonly) id<HUBViewModel> initialViewModel;
+
+/**
  *  Load a view model using this loader
  *
  *  Depending on the current connectivity state (determined by the current `HUBConnectivityStateResolver`),

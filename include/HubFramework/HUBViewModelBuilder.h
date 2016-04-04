@@ -96,6 +96,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
 
 /**
+ *  Add content from JSON data to this builder
+ *
+ *  @param JSONData The JSON data to add
+ *
+ *  The builder will use it's feature's `HUBJSONSchema` to parse the data that was added, and return any error that
+ *  occured while doing so, or nil if the operation was completed successfully.
+ */
+- (nullable NSError *)addJSONData:(NSData *)JSONData;
+
+/**
  *  Return whether this builder contains a builder for a body component model with a certain identifier
  *
  *  @param identifier The identifier to look for
@@ -117,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Remove a builder for a body component with a certain identifier
  *
- *  @param identifier The identifier of the component model that we want to remove
+ *  @param identifier The identifier of the component model builder to remove
  */
 - (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier;
 

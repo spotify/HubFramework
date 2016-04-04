@@ -26,10 +26,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param modelIdentifier The identifier of the model to be built. If `nil`, an `NSUUID`-based identifier will be used.
  *  @param featureIdentifier The identifier of the feature that the component will be presented in
+ *  @param JSONSchema The schema to use to parse data from any added JSON object
  *  @param defaultComponentNamespace The default component namespace that the builder should have
  */
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
                       featureIdentifier:(NSString *)featureIdentifier
+                             JSONSchema:(id<HUBJSONSchema>)JSONSchema
               defaultComponentNamespace:(NSString *)defaultComponentNamespace NS_DESIGNATED_INITIALIZER;
 
 /**

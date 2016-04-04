@@ -41,7 +41,6 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param connectivityStateResolver An object responsible for determining the current connectivity state of
  *         the application. This object will be retained.
- *  @param dataLoaderFactory A factory that create data loaders that are used to load binary data over the network
  *  @param imageLoaderFactory A factory that creates image loaders that are used to load images for components
  *  @param defaultComponentNamespace The component namespace that all component models created using this instance of the
  *         Hub Framework will initially have. This namespace can be overriden by any content provider, using either JSON
@@ -54,7 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentLayoutManager The object to use to manage layout for components. This object will be retained.
  */
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
-                                dataLoaderFactory:(id<HUBDataLoaderFactory>)dataLoaderFactory
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                         defaultComponentNamespace:(NSString *)defaultComponentNamespace
                             fallbackComponentName:(NSString *)fallbackComponentName
