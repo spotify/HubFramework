@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class HUBComponentIdentifier;
 @protocol HUBComponentImageDataBuilder;
@@ -69,11 +69,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Any URL for the component's "main" image. This is an alias for `mainImageDataBuilder.URL`.
 @property (nonatomic, copy, nullable) NSURL *mainImageURL;
 
+/// Any local component "main" image. This is an alias for `mainImageDataBuilder.localImage`.
+@property (nonatomic, strong, nullable) UIImage *mainImage;
+
 /// A builder that can be used to construct data that describes how to render the component's background image
 @property (nonatomic, strong, readonly) id<HUBComponentImageDataBuilder> backgroundImageDataBuilder;
 
 /// Any URL for the component's background image. This is an alias for `backgroundImageDataBuilder.URL`.
 @property (nonatomic, copy, nullable) NSURL *backgroundImageURL;
+
+/// Any local component background image. This is an alias for `backgroundImageDataBuilder.localImage`.
+@property (nonatomic, strong, nullable) UIImage *backgroundImage;
 
 #pragma mark - Metadata
 
