@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSURL *URL;
 
 /// Any local image that should be used, either as a placeholder or a permanent image
-@property (nonatomic, copy, nullable) UIImage *localImage;
+@property (nonatomic, strong, nullable) UIImage *localImage;
 
 /// Any identifier of an icon that should be used with the image, either as a placeholder or permanent image
 @property (nonatomic, copy, nullable) NSString *iconIdentifier;
