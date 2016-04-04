@@ -34,8 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  The identifier that this schema gets registered for must be unique. If another schema has already been registered
  *  for the given identifier, an assert will be triggered. To get the Hub Framework to use your custom schema to parse
- *  any downloaded JSON, set the `customJSONSchemaIdentifier` property on your `HUBFeatureConfiguration` when registering
- *  your feature with the framework.
+ *  any downloaded JSON, supply its identifier when registering your feature with `HUBFeatureRegistry`.
  */
 - (void)registerCustomSchema:(id<HUBJSONSchema>)schema forIdentifier:(NSString *)identifier;
 

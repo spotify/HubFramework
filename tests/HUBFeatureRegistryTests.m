@@ -1,7 +1,6 @@
 #import <XCTest/XCTest.h>
 
 #import "HUBFeatureRegistryImplementation.h"
-#import "HUBFeatureConfiguration.h"
 #import "HUBFeatureRegistration.h"
 #import "HUBContentProviderFactoryMock.h"
 #import "HUBViewURIQualifierMock.h"
@@ -24,36 +23,22 @@
 
 #pragma mark - Tests
 
-- (void)testConfigurationPropertyAssignment
-{
-    NSString * const featureIdentifier = @"Awesome feature";
-    NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
-    
-    id<HUBFeatureConfiguration> const configuration = [self.registry createConfigurationForFeatureWithIdentifier:featureIdentifier
-                                                                                                     rootViewURI:rootViewURI
-                                                                                        contentProviderFactories:@[contentProviderFactory]];
-    
-    XCTAssertEqualObjects(configuration.featureIdentifier, featureIdentifier);
-    XCTAssertEqualObjects(configuration.rootViewURI, rootViewURI);
-    XCTAssertEqualObjects(configuration.contentProviderFactories, @[contentProviderFactory]);
-}
-
 - (void)testConflictingRootViewURIsTriggerAssert
 {
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
     
-    id<HUBFeatureConfiguration> const configurationA = [self.registry createConfigurationForFeatureWithIdentifier:@"featureA"
-                                                                                                      rootViewURI:rootViewURI
-                                                                                         contentProviderFactories:@[contentProviderFactory]];
+    [self.registry registerFeatureWithIdentifier:@"featureA"
+                                     rootViewURI:rootViewURI
+                        contentProviderFactories:@[contentProviderFactory]
+                      customJSONSchemaIdentifier:nil
+                                viewURIQualifier:nil];
     
-    id<HUBFeatureConfiguration> const configurationB = [self.registry createConfigurationForFeatureWithIdentifier:@"featureB"
-                                                                                                      rootViewURI:rootViewURI
-                                                                                         contentProviderFactories:@[contentProviderFactory]];
-    
-    [self.registry registerFeatureWithConfiguration:configurationA];
-    XCTAssertThrows([self.registry registerFeatureWithConfiguration:configurationB]);
+    XCTAssertThrows([self.registry registerFeatureWithIdentifier:@"featureB"
+                                     rootViewURI:rootViewURI
+                        contentProviderFactories:@[contentProviderFactory]
+                      customJSONSchemaIdentifier:nil
+                                viewURIQualifier:nil]);
 }
 
 - (void)testConflictingIdentifiersTriggerAssert
@@ -64,37 +49,39 @@
     NSURL * const rootViewURIB = [NSURL URLWithString:@"spotify:hub:framework:b"];
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
     
-    id<HUBFeatureConfiguration> const configurationA = [self.registry createConfigurationForFeatureWithIdentifier:identifier
-                                                                                                      rootViewURI:rootViewURIA
-                                                                                         contentProviderFactories:@[contentProviderFactory]];
+    [self.registry registerFeatureWithIdentifier:identifier
+                                     rootViewURI:rootViewURIA
+                        contentProviderFactories:@[contentProviderFactory]
+                      customJSONSchemaIdentifier:nil
+                                viewURIQualifier:nil];
     
-    id<HUBFeatureConfiguration> const configurationB = [self.registry createConfigurationForFeatureWithIdentifier:identifier
-                                                                                                      rootViewURI:rootViewURIB
-                                                                                         contentProviderFactories:@[contentProviderFactory]];
-    
-    [self.registry registerFeatureWithConfiguration:configurationA];
-    XCTAssertThrows([self.registry registerFeatureWithConfiguration:configurationB]);
+    XCTAssertThrows([self.registry registerFeatureWithIdentifier:identifier
+                                                     rootViewURI:rootViewURIB
+                                        contentProviderFactories:@[contentProviderFactory]
+                                      customJSONSchemaIdentifier:nil
+                                                viewURIQualifier:nil]);
 }
 
-- (void)testRegistrationAndConfigurationMatch
+- (void)testRegistrationPropertyAssignment
 {
+    NSString * const featureIdentifier = @"identifier";
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
+    NSString * const customJSONSchemaIdentifier = @"JSON Schema";
+    id<HUBViewURIQualifier> const viewURIQualifier = [[HUBViewURIQualifierMock alloc] initWithDisqualifiedViewURIs:@[]];
     
-    id<HUBFeatureConfiguration> const configuration = [self.registry createConfigurationForFeatureWithIdentifier:@"feature"
-                                                                                                     rootViewURI:rootViewURI
-                                                                                        contentProviderFactories:@[contentProviderFactory]];
-    
-    configuration.customJSONSchemaIdentifier = @"custom schema";
-    configuration.viewURIQualifier = [[HUBViewURIQualifierMock alloc] initWithDisqualifiedViewURIs:@[]];
-    [self.registry registerFeatureWithConfiguration:configuration];
+    [self.registry registerFeatureWithIdentifier:featureIdentifier
+                                     rootViewURI:rootViewURI
+                        contentProviderFactories:@[contentProviderFactory]
+                      customJSONSchemaIdentifier:customJSONSchemaIdentifier
+                                viewURIQualifier:viewURIQualifier];
     
     HUBFeatureRegistration * const registration = [self.registry featureRegistrationForViewURI:rootViewURI];
-    XCTAssertEqualObjects(registration.featureIdentifier, configuration.featureIdentifier);
-    XCTAssertEqualObjects(registration.rootViewURI, configuration.rootViewURI);
-    XCTAssertEqualObjects(registration.contentProviderFactories, configuration.contentProviderFactories);
-    XCTAssertEqualObjects(registration.customJSONSchemaIdentifier, configuration.customJSONSchemaIdentifier);
-    XCTAssertEqual(registration.viewURIQualifier, configuration.viewURIQualifier);
+    XCTAssertEqualObjects(registration.featureIdentifier, featureIdentifier);
+    XCTAssertEqualObjects(registration.rootViewURI, rootViewURI);
+    XCTAssertEqualObjects(registration.contentProviderFactories, @[contentProviderFactory]);
+    XCTAssertEqualObjects(registration.customJSONSchemaIdentifier, customJSONSchemaIdentifier);
+    XCTAssertEqual(registration.viewURIQualifier, viewURIQualifier);
 }
 
 - (void)testSubviewMatch
@@ -102,11 +89,11 @@
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
     
-    id<HUBFeatureConfiguration> const configuration = [self.registry createConfigurationForFeatureWithIdentifier:@"feature"
-                                                                                                     rootViewURI:rootViewURI
-                                                                                        contentProviderFactories:@[contentProviderFactory]];
-    
-    [self.registry registerFeatureWithConfiguration:configuration];
+    [self.registry registerFeatureWithIdentifier:@"feature"
+                                     rootViewURI:rootViewURI
+                        contentProviderFactories:@[contentProviderFactory]
+                      customJSONSchemaIdentifier:nil
+                                viewURIQualifier:nil];
     
     NSURL * const subviewURI = [NSURL URLWithString:[NSString stringWithFormat:@"%@:subview", rootViewURI.absoluteString]];
     XCTAssertEqualObjects([self.registry featureRegistrationForViewURI:subviewURI].rootViewURI, rootViewURI);
@@ -116,13 +103,13 @@
 {
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
+    id<HUBViewURIQualifier> const viewURIQualifier = [[HUBViewURIQualifierMock alloc] initWithDisqualifiedViewURIs:@[rootViewURI]];
     
-    id<HUBFeatureConfiguration> const configuration = [self.registry createConfigurationForFeatureWithIdentifier:@"feature"
-                                                                                                     rootViewURI:rootViewURI
-                                                                                        contentProviderFactories:@[contentProviderFactory]];
-    
-    configuration.viewURIQualifier = [[HUBViewURIQualifierMock alloc] initWithDisqualifiedViewURIs:@[rootViewURI]];
-    [self.registry registerFeatureWithConfiguration:configuration];
+    [self.registry registerFeatureWithIdentifier:@"feature"
+                                     rootViewURI:rootViewURI
+                        contentProviderFactories:@[contentProviderFactory]
+                      customJSONSchemaIdentifier:nil
+                                viewURIQualifier:viewURIQualifier];
     
     XCTAssertNil([self.registry featureRegistrationForViewURI:rootViewURI]);
     
@@ -135,15 +122,15 @@
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     NSURL * const subviewURI = [NSURL URLWithString:[NSString stringWithFormat:@"%@:subview", rootViewURI.absoluteString]];
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
+    id<HUBViewURIQualifier> const viewURIQualifier = [[HUBViewURIQualifierMock alloc] initWithDisqualifiedViewURIs:@[subviewURI]];
     
-    id<HUBFeatureConfiguration> const configuration = [self.registry createConfigurationForFeatureWithIdentifier:@"feature"
-                                                                                                     rootViewURI:rootViewURI
-                                                                                        contentProviderFactories:@[contentProviderFactory]];
+    [self.registry registerFeatureWithIdentifier:@"feature"
+                                     rootViewURI:rootViewURI
+                        contentProviderFactories:@[contentProviderFactory]
+                      customJSONSchemaIdentifier:nil
+                                viewURIQualifier:viewURIQualifier];
     
-    configuration.viewURIQualifier = [[HUBViewURIQualifierMock alloc] initWithDisqualifiedViewURIs:@[subviewURI]];
-    [self.registry registerFeatureWithConfiguration:configuration];
-    
-    XCTAssertEqualObjects([self.registry featureRegistrationForViewURI:rootViewURI].rootViewURI, configuration.rootViewURI);
+    XCTAssertEqualObjects([self.registry featureRegistrationForViewURI:rootViewURI].rootViewURI, rootViewURI);
     XCTAssertNil([self.registry featureRegistrationForViewURI:subviewURI]);
 }
 
@@ -153,13 +140,20 @@
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
     
-    id<HUBFeatureConfiguration> const configuration = [self.registry createConfigurationForFeatureWithIdentifier:identifier
-                                                                                                     rootViewURI:rootViewURI
-                                                                                        contentProviderFactories:@[contentProviderFactory]];
+    [self.registry registerFeatureWithIdentifier:identifier
+                                     rootViewURI:rootViewURI
+                        contentProviderFactories:@[contentProviderFactory]
+                      customJSONSchemaIdentifier:nil
+                                viewURIQualifier:nil];
     
-    [self.registry registerFeatureWithConfiguration:configuration];
     [self.registry unregisterFeatureWithIdentifier:identifier];
-    [self.registry registerFeatureWithConfiguration:configuration];
+    
+    // The feature should now be free to be re-registered without triggering an assert
+    [self.registry registerFeatureWithIdentifier:identifier
+                                     rootViewURI:rootViewURI
+                        contentProviderFactories:@[contentProviderFactory]
+                      customJSONSchemaIdentifier:nil
+                                viewURIQualifier:nil];
 }
 
 @end

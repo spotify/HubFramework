@@ -1,6 +1,5 @@
 #import "HUBFeatureRegistryImplementation.h"
 
-#import "HUBFeatureConfigurationImplementation.h"
 #import "HUBFeatureRegistration.h"
 #import "HUBViewURIQualifier.h"
 
@@ -52,38 +51,32 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBFeatureRegistry
 
-- (id<HUBFeatureConfiguration>)createConfigurationForFeatureWithIdentifier:(NSString *)featureIdentifier
-                                                               rootViewURI:(NSURL *)rootViewURI
-                                                  contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
+- (void)registerFeatureWithIdentifier:(NSString *)featureIdentifier
+                          rootViewURI:(NSURL *)rootViewURI
+             contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
+           customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
+                     viewURIQualifier:(nullable id<HUBViewURIQualifier>)viewURIQualifier
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(rootViewURI != nil);
-    NSParameterAssert(contentProviderFactories != nil);
     
-    return [[HUBFeatureConfigurationImplementation alloc] initWithFeatureIdentifier:featureIdentifier
-                                                                        rootViewURI:rootViewURI
-                                                           contentProviderFactories:contentProviderFactories];
-}
-
-- (void)registerFeatureWithConfiguration:(id<HUBFeatureConfiguration>)configuration
-{
-    NSAssert(self.registrationsByRootViewURI[configuration.rootViewURI] == nil,
-             @"Attempted to register a Hub Framework feature for a root view URI that is already registered: %@",
-             configuration.rootViewURI);
-    
-    NSAssert(self.registrationsByIdentifier[configuration.featureIdentifier] == nil,
+    NSAssert(self.registrationsByIdentifier[featureIdentifier] == nil,
              @"Attempted to register a Hub Framework feature for an identifier that is already registered: %@",
-             configuration.featureIdentifier);
+             featureIdentifier);
     
-    NSAssert(configuration.contentProviderFactories.count > 0,
+    NSAssert(self.registrationsByRootViewURI[rootViewURI] == nil,
+             @"Attempted to register a Hub Framework feature for a root view URI that is already registered: %@",
+             rootViewURI);
+    
+    NSAssert(contentProviderFactories.count > 0,
              @"Attempted to register a Hub Framework feature without any content provider factories. Feature identifier: %@",
-             configuration.featureIdentifier);
+             featureIdentifier);
     
-    HUBFeatureRegistration * const registration = [[HUBFeatureRegistration alloc] initWithFeatureIdentifier:configuration.featureIdentifier
-                                                                                                rootViewURI:configuration.rootViewURI
-                                                                                   contentProviderFactories:configuration.contentProviderFactories
-                                                                                 customJSONSchemaIdentifier:configuration.customJSONSchemaIdentifier
-                                                                                           viewURIQualifier:configuration.viewURIQualifier];
+    HUBFeatureRegistration * const registration = [[HUBFeatureRegistration alloc] initWithFeatureIdentifier:featureIdentifier
+                                                                                                rootViewURI:rootViewURI
+                                                                                   contentProviderFactories:contentProviderFactories
+                                                                                 customJSONSchemaIdentifier:customJSONSchemaIdentifier
+                                                                                           viewURIQualifier:viewURIQualifier];
     
     self.registrationsByRootViewURI[registration.rootViewURI] = registration;
     self.registrationsByIdentifier[registration.featureIdentifier] = registration;

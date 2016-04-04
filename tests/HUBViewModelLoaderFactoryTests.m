@@ -2,7 +2,6 @@
 
 #import "HUBViewModelLoaderFactoryImplementation.h"
 #import "HUBFeatureRegistryImplementation.h"
-#import "HUBFeatureConfiguration.h"
 #import "HUBJSONSchemaRegistryImplementation.h"
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBContentProviderFactoryMock.h"
@@ -45,11 +44,11 @@
     HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
     HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[contentProvider]];
     
-    id<HUBFeatureConfiguration> const featureConfiguration = [self.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
-                                                                                                                   rootViewURI:viewURI
-                                                                                                      contentProviderFactories:@[contentProviderFactory]];
-    
-    [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
+    [self.featureRegistry registerFeatureWithIdentifier:@"feature"
+                                            rootViewURI:viewURI
+                               contentProviderFactories:@[contentProviderFactory]
+                             customJSONSchemaIdentifier:nil
+                                       viewURIQualifier:nil];
     
     XCTAssertTrue([self.viewModelLoaderFactory canCreateViewModelLoaderForViewURI:viewURI]);
     XCTAssertNotNil([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
@@ -67,11 +66,12 @@
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     
     HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
-    id<HUBFeatureConfiguration> const featureConfiguration = [self.featureRegistry createConfigurationForFeatureWithIdentifier:@"feature"
-                                                                                                                   rootViewURI:viewURI
-                                                                                                      contentProviderFactories:@[contentProviderFactory]];
     
-    [self.featureRegistry registerFeatureWithConfiguration:featureConfiguration];
+    [self.featureRegistry registerFeatureWithIdentifier:@"feature"
+                                            rootViewURI:viewURI
+                               contentProviderFactories:@[contentProviderFactory]
+                             customJSONSchemaIdentifier:nil
+                                       viewURIQualifier:nil];
     
     XCTAssertThrows([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
 }
