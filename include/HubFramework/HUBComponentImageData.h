@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -62,6 +62,12 @@ typedef NS_ENUM(NSInteger, HUBComponentImageType) {
  *  completed, so a component normally doesn't have to interact with this property itself.
  */
 @property (nonatomic, copy, readonly, nullable) NSURL *URL;
+
+/**
+ *  Any local image that should be used either as a placeholder image before the actual image has been dowloaded, or as a
+ *  permanent image.
+ */
+@property (nonatomic, strong, readonly, nullable) UIImage *localImage;
 
 /**
  *  Any identifier of an icon that should be used either as a placeholder image before the actual image has been downloaded,
