@@ -30,6 +30,7 @@
 {
     self.builder.style = HUBComponentImageStyleCircular;
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
+    self.builder.localImage = [UIImage new];
     self.builder.iconIdentifier = @"icon";
     
     NSString * const identifier = @"identifier";
@@ -41,10 +42,11 @@
     XCTAssertEqual(imageData.type, type);
     XCTAssertEqual(imageData.style, self.builder.style);
     XCTAssertEqualObjects(imageData.URL, self.builder.URL);
+    XCTAssertEqual(imageData.localImage, self.builder.localImage);
     XCTAssertEqualObjects(imageData.iconIdentifier, self.builder.iconIdentifier);
 }
 
-- (void)testNilURLAndIconIdentifierProducingNil
+- (void)testEmptyBuilderProducingNil
 {
     XCTAssertNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
 }
@@ -52,6 +54,12 @@
 - (void)testOnlyURLNotProducingNil
 {
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
+    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
+}
+
+- (void)testLocalImageOnlyNotProducingNil
+{
+    self.builder.localImage = [UIImage new];
     XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
 }
 

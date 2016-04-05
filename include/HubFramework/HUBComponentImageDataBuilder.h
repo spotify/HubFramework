@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import "HUBComponentImageData.h"
 
@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Any HTTP URL of a remote image that should be downloaded and then rendered
 @property (nonatomic, copy, nullable) NSURL *URL;
+
+/// Any local image that should be used, either as a placeholder or a permanent image
+@property (nonatomic, strong, nullable) UIImage *localImage;
 
 /// Any identifier of an icon that should be used with the image, either as a placeholder or permanent image
 @property (nonatomic, copy, nullable) NSString *iconIdentifier;

@@ -110,10 +110,14 @@
     
     builder.componentName = @"component";
     builder.mainImageURL = [NSURL URLWithString:@"https://spotify.mainImage"];
+    builder.mainImage = [UIImage new];
     builder.backgroundImageURL = [NSURL URLWithString:@"https://spotify.mainImage"];
+    builder.backgroundImage = [UIImage new];
     
     XCTAssertEqualObjects(builder.mainImageDataBuilder.URL, builder.mainImageURL);
+    XCTAssertEqual(builder.mainImageDataBuilder.localImage, builder.mainImage);
     XCTAssertEqualObjects(builder.backgroundImageDataBuilder.URL, builder.backgroundImageURL);
+    XCTAssertEqual(builder.backgroundImageDataBuilder.localImage, builder.backgroundImage);
 }
 
 - (void)testCustomImageDataBuilder
