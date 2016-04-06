@@ -159,10 +159,37 @@ NS_ASSUME_NONNULL_BEGIN
         self.featureIdentifier = featureIdentifier;
     }
     
-    self.entityIdentifier = [viewModelSchema.entityIdentifierPath stringFromJSONDictionary:dictionary];
-    self.navigationBarTitle = [viewModelSchema.navigationBarTitlePath stringFromJSONDictionary:dictionary];
-    self.extensionURL = [viewModelSchema.extensionURLPath URLFromJSONDictionary:dictionary];
-    self.customData = [viewModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
+    NSString * const entityIdentifier = [viewModelSchema.entityIdentifierPath stringFromJSONDictionary:dictionary];
+    
+    if (entityIdentifier != nil) {
+        self.entityIdentifier = entityIdentifier;
+    }
+    
+    NSString * const navigationBarTitle = [viewModelSchema.navigationBarTitlePath stringFromJSONDictionary:dictionary];
+    
+    if (navigationBarTitle != nil) {
+        self.navigationBarTitle = navigationBarTitle;
+    }
+    
+    NSURL * const extensionURL = [viewModelSchema.extensionURLPath URLFromJSONDictionary:dictionary];
+    
+    if (extensionURL != nil) {
+        self.extensionURL = extensionURL;
+    }
+    
+    NSDictionary * const customData = [viewModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (customData != nil) {
+        NSDictionary * const existingCustomData = self.customData;
+        
+        if (existingCustomData != nil) {
+            NSMutableDictionary * const mutableCustomData = [existingCustomData mutableCopy];
+            [mutableCustomData addEntriesFromDictionary:customData];
+            self.customData = [mutableCustomData copy];
+        } else {
+            self.customData = customData;
+        }
+    }
     
     NSDictionary * const headerComponentModelDictionary = [viewModelSchema.headerComponentModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
     
