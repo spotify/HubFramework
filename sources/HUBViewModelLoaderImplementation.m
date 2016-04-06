@@ -171,12 +171,23 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     if ([self currentlyLoadingContentProvider] != contentProvider) {
-        if (error == nil && self.contentProviderQueue.count == 0) {
-        if (error == nil && [self currentlyLoadingContentProvider] == nil) {
-            [self allContentProvidersDidFinish];
+        // Not the one we expected;
+
+        if ([self currentlyLoadingContentProvider] == nil && error != nil) {
+            // We finished processing the chain, so errors shouldn't retrigger reloads
+            return;
         }
-        
-        return;
+
+        NSUInteger contentProviderIndex = [self.contentProviders indexOfObject:contentProvider];
+
+        if (contentProviderIndex > self.currentlyLoadingContentProviderIndex) {
+            // Content provider in the future, this is probably an out of sync contentProvider from a previous reload;
+            // Ignore it (we'll reload it anyway if needed)
+            return;
+        } else {
+            // Previous content provider, must reset the chain starting at this point
+            self.currentlyLoadingContentProviderIndex = contentProviderIndex;
+        }
     }
     
     self.currentlyLoadingContentProviderIndex++;
