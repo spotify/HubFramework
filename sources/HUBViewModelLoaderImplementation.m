@@ -18,8 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 @property (nonatomic, strong, nullable) id<HUBViewModel> cachedInitialViewModel;
 @property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *builder;
-@property (nonatomic, strong, nullable) NSMutableArray<id<HUBContentProvider>> *contentProviderQueue;
+@property (nonatomic, assign) NSUInteger currentlyLoadingContentProviderIndex;
 @property (nonatomic, strong, nullable) NSError *encounteredError;
+
+@property (nonatomic, strong, nullable) id<HUBContentProvider> lastHandledContentProvider;
 
 @end
 
@@ -54,7 +56,9 @@ NS_ASSUME_NONNULL_BEGIN
         _JSONSchema = JSONSchema;
         _connectivityStateResolver = connectivityStateResolver;
         _cachedInitialViewModel = initialViewModel;
-        
+        _currentlyLoadingContentProviderIndex = NSNotFound;
+        _lastHandledContentProvider = nil;
+
         for (id<HUBContentProvider> const contentProvider in _contentProviders) {
             contentProvider.delegate = self;
         }
@@ -87,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadViewModel
 {
     self.builder = nil;
-    self.contentProviderQueue = [self.contentProviders mutableCopy];
+    self.currentlyLoadingContentProviderIndex = 0;
     [self loadNextContentProviderInQueue];
 }
 
@@ -122,10 +126,18 @@ NS_ASSUME_NONNULL_BEGIN
                                                       defaultComponentNamespace:self.defaultComponentNamespace];
 }
 
+- (nullable id<HUBContentProvider>)currentlyLoadingContentProvider
+{
+    if (self.currentlyLoadingContentProviderIndex >= self.contentProviders.count) {
+        return nil;
+    }
+    return self.contentProviders[self.currentlyLoadingContentProviderIndex];
+}
+
 - (void)loadNextContentProviderInQueue
 {
-    id<HUBContentProvider> const contentProvider = [self.contentProviderQueue firstObject];
-    
+    id<HUBContentProvider> const contentProvider = [self currentlyLoadingContentProvider];
+
     if (contentProvider == nil) {
         [self allContentProvidersDidFinish];
         return;
@@ -142,7 +154,10 @@ NS_ASSUME_NONNULL_BEGIN
     switch (contentProviderMode) {
         case HUBContentProviderModeNone:
         case HUBContentProviderModeSynchronous:
-            [self handleFinishedContentProvider:contentProvider mode:contentProviderMode error:nil];
+            if (self.currentlyLoadingContentProvider == contentProvider) {
+                // This means the provider hasn't been handled synchronously from within the loadMethod above
+                [self handleFinishedContentProvider:contentProvider mode:contentProviderMode error:nil];
+            }
             break;
         case HUBContentProviderModeAsynchronous:
             break;
@@ -155,15 +170,27 @@ NS_ASSUME_NONNULL_BEGIN
         self.encounteredError = error;
     }
     
-    if ([self.contentProviderQueue firstObject] != contentProvider) {
-        if (error == nil && self.contentProviderQueue.count == 0) {
-            [self allContentProvidersDidFinish];
+    if ([self currentlyLoadingContentProvider] != contentProvider) {
+        // Not the one we expected;
+
+        if ([self currentlyLoadingContentProvider] == nil && error != nil) {
+            // We finished processing the chain, so errors shouldn't retrigger reloads
+            return;
         }
-        
-        return;
+
+        NSUInteger contentProviderIndex = [self.contentProviders indexOfObject:contentProvider];
+
+        if (contentProviderIndex > self.currentlyLoadingContentProviderIndex) {
+            // Content provider in the future, this is probably an out of sync contentProvider from a previous reload;
+            // Ignore it (we'll reload it anyway if needed)
+            return;
+        } else {
+            // Previous content provider, must reset the chain starting at this point
+            self.currentlyLoadingContentProviderIndex = contentProviderIndex;
+        }
     }
     
-    [self.contentProviderQueue removeObjectAtIndex:0];
+    self.currentlyLoadingContentProviderIndex++;
     [self loadNextContentProviderInQueue];
 }
 

@@ -18,6 +18,9 @@
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromSuccessDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromFailureDelegateMethod;
 
+@property (nonatomic, assign) NSUInteger didLoadViewModelCount;
+@property (nonatomic, assign) NSUInteger didLoadViewModelErrorCount;
+
 @end
 
 @implementation HUBViewModelLoaderTests
@@ -28,6 +31,8 @@
 {
     [super setUp];
     self.connectivityStateResolver = [HUBConnectivityStateResolverMock new];
+    self.didLoadViewModelCount = 0;
+    self.didLoadViewModelErrorCount = 0;
 }
 
 - (void)tearDown
@@ -277,6 +282,28 @@
     XCTAssertEqual(contentProviderBRequestCount, (NSUInteger)1);
 }
 
+- (void)testSynchronousContentProviderDoesNotCallDelegateTwice
+{
+    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
+    
+    __weak __typeof(contentProvider) weakContentProvider = contentProvider;
+    contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        __strong __typeof(contentProvider) strongContentProvider = weakContentProvider;
+        [strongContentProvider.delegate contentProviderDidFinishLoading:strongContentProvider];
+        return HUBContentProviderModeSynchronous;
+    };
+    
+    [self createLoaderWithContentProviders:@[contentProvider]
+                         connectivityState:HUBConnectivityStateOnline
+                          initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    
+    XCTAssertEqual(self.errorFromFailureDelegateMethod, nil);
+    XCTAssertEqual(self.didLoadViewModelErrorCount, (NSUInteger)0);
+    XCTAssertEqual(self.didLoadViewModelCount, (NSUInteger)1);
+}
+
 - (void)testSynchronousContentProviderCallingErrorCallback
 {
     HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
@@ -297,6 +324,8 @@
     [self.loader loadViewModel];
     
     XCTAssertEqual(self.errorFromFailureDelegateMethod, error);
+    XCTAssertEqual(self.didLoadViewModelErrorCount, (NSUInteger)1);
+    XCTAssertEqual(self.didLoadViewModelCount, (NSUInteger)0);
 }
 
 - (void)testSubsequentlyLoadedContentNotAppendedToViewModel
@@ -321,18 +350,149 @@
     XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)1);
 }
 
+- (void)testMiddleContentProviderReloadDoesNotReloadWholeChain
+{
+    HUBContentProviderMock * const contentProvider1 = [HUBContentProviderMock new];
+    HUBContentProviderMock * const contentProvider2 = [HUBContentProviderMock new];
+    HUBContentProviderMock * const contentProvider3 = [HUBContentProviderMock new];
+
+    __block id<HUBViewModelBuilder> viewModelBuilder = nil;
+
+    __block NSInteger contentProvider1Version = 1;
+    contentProvider1.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        viewModelBuilder = builder;
+        id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component1"];
+        component.componentName = @"component1";
+        component.title = [NSString stringWithFormat:@"%@", @(contentProvider1Version++)];
+        return HUBContentProviderModeSynchronous;
+    };
+
+    __block NSInteger contentProvider2Version = 1;
+    contentProvider2.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        viewModelBuilder = builder;
+        id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component2"];
+        component.componentName = @"component2";
+        component.title = [NSString stringWithFormat:@"%@", @(contentProvider2Version++)];
+        return HUBContentProviderModeSynchronous;
+    };
+
+    __block NSInteger contentProvider3Version = 1;
+    contentProvider3.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        viewModelBuilder = builder;
+        id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component3"];
+        component.componentName = @"component3";
+        component.title = [NSString stringWithFormat:@"%@", @(contentProvider3Version++)];
+        return HUBContentProviderModeSynchronous;
+    };
+
+    [self createLoaderWithContentProviders:@[contentProvider1, contentProvider2, contentProvider3]
+                         connectivityState:HUBConnectivityStateOnline
+                          initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+
+    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)3);
+
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[0] title], @"1");
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[1] title], @"1");
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[2] title], @"1");
+
+    contentProvider2.contentLoadingBlock(viewModelBuilder);
+    [contentProvider2.delegate contentProviderDidFinishLoading:contentProvider2];
+
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[0] title], @"1");
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[1] title], @"2");
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[2] title], @"2");
+
+    contentProvider3.contentLoadingBlock(viewModelBuilder);
+    [contentProvider3.delegate contentProviderDidFinishLoading:contentProvider3];
+
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[0] title], @"1");
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[1] title], @"2");
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[2] title], @"3");
+
+    contentProvider1.contentLoadingBlock(viewModelBuilder);
+    [contentProvider1.delegate contentProviderDidFinishLoading:contentProvider1];
+
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[0] title], @"2");
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[1] title], @"3");
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[2] title], @"4");
+
+}
+
+- (void)testOutOfSyncContentProviderGetsReloadedEventually
+{
+    HUBContentProviderMock * const contentProvider1 = [HUBContentProviderMock new];
+    HUBContentProviderMock * const contentProvider2 = [HUBContentProviderMock new];
+    HUBContentProviderMock * const contentProvider3 = [HUBContentProviderMock new];
+
+    __block id<HUBViewModelBuilder> viewModelBuilder = nil;
+
+    __block NSInteger contentProvider1Version = 1;
+    contentProvider1.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        viewModelBuilder = builder;
+        id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component1"];
+        component.componentName = @"component1";
+        component.title = [NSString stringWithFormat:@"%@", @(contentProvider1Version)];
+        ++contentProvider1Version;
+        return HUBContentProviderModeAsynchronous;
+    };
+
+    __block NSInteger contentProvider2Version = 1;
+    contentProvider2.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        viewModelBuilder = builder;
+        id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component2"];
+        component.componentName = @"component2";
+        component.title = [NSString stringWithFormat:@"%@", @(contentProvider2Version)];
+        ++contentProvider2Version;
+        return HUBContentProviderModeSynchronous;
+    };
+
+    __block NSInteger contentProvider3Version = 1;
+    contentProvider3.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        viewModelBuilder = builder;
+        id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component3"];
+        component.componentName = @"component3";
+        component.title = [NSString stringWithFormat:@"%@", @(contentProvider3Version)];
+        ++contentProvider3Version;
+        return HUBContentProviderModeSynchronous;
+    };
+
+    [self createLoaderWithContentProviders:@[contentProvider1, contentProvider2, contentProvider3]
+                         connectivityState:HUBConnectivityStateOnline
+                          initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+
+    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)0);  // Not loaded yet
+
+    contentProvider2.contentLoadingBlock(viewModelBuilder);
+    [contentProvider2.delegate contentProviderDidFinishLoading:contentProvider2];  // Load out of sync
+
+    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)0);  // Not loaded yet
+
+    [contentProvider1.delegate contentProviderDidFinishLoading:contentProvider1];
+    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)3);  // All loaded
+
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[0] title], @"1");
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[1] title], @"2");
+    XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[2] title], @"1");
+}
+
 #pragma mark - HUBViewModelLoaderDelegate
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel
 {
     XCTAssertNotNil(viewModel);
     self.viewModelFromSuccessDelegateMethod = viewModel;
+    self.didLoadViewModelCount++;
 }
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didFailLoadingWithError:(NSError *)error
 {
     XCTAssertNotNil(error);
     self.errorFromFailureDelegateMethod = error;
+    self.didLoadViewModelErrorCount++;
 }
 
 #pragma mark - Utilities
