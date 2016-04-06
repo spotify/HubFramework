@@ -18,6 +18,9 @@
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromSuccessDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromFailureDelegateMethod;
 
+@property (nonatomic, assign) NSInteger didLoadViewModelCount;
+@property (nonatomic, assign) NSInteger didLoadViewModelErrorCount;
+
 @end
 
 @implementation HUBViewModelLoaderTests
@@ -28,6 +31,8 @@
 {
     [super setUp];
     self.connectivityStateResolver = [HUBConnectivityStateResolverMock new];
+    self.didLoadViewModelCount = 0;
+    self.didLoadViewModelErrorCount = 0;
 }
 
 - (void)tearDown
@@ -277,6 +282,28 @@
     XCTAssertEqual(contentProviderBRequestCount, (NSUInteger)1);
 }
 
+- (void)testSynchronousContentProviderDoesNotCallDelegateTwice
+{
+    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
+    
+    __weak __typeof(contentProvider) weakContentProvider = contentProvider;
+    contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        __strong __typeof(contentProvider) strongContentProvider = weakContentProvider;
+        [strongContentProvider.delegate contentProviderDidFinishLoading:strongContentProvider];
+        return HUBContentProviderModeSynchronous;
+    };
+    
+    [self createLoaderWithContentProviders:@[contentProvider]
+                         connectivityState:HUBConnectivityStateOnline
+                          initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    
+    XCTAssertEqual(self.errorFromFailureDelegateMethod, nil);
+    XCTAssertEqual(self.didLoadViewModelErrorCount, 0);
+    XCTAssertEqual(self.didLoadViewModelCount, 1);
+}
+
 - (void)testSynchronousContentProviderCallingErrorCallback
 {
     HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
@@ -297,6 +324,8 @@
     [self.loader loadViewModel];
     
     XCTAssertEqual(self.errorFromFailureDelegateMethod, error);
+    XCTAssertEqual(self.didLoadViewModelErrorCount, 1);
+    XCTAssertEqual(self.didLoadViewModelCount, 0);
 }
 
 - (void)testSubsequentlyLoadedContentNotAppendedToViewModel
@@ -327,12 +356,14 @@
 {
     XCTAssertNotNil(viewModel);
     self.viewModelFromSuccessDelegateMethod = viewModel;
+    self.didLoadViewModelCount++;
 }
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didFailLoadingWithError:(NSError *)error
 {
     XCTAssertNotNil(error);
     self.errorFromFailureDelegateMethod = error;
+    self.didLoadViewModelErrorCount++;
 }
 
 #pragma mark - Utilities

@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSUInteger currentlyLoadingContentProviderIndex;
 @property (nonatomic, strong, nullable) NSError *encounteredError;
 
+@property (nonatomic, strong, nullable) id<HUBContentProvider> lastHandledContentProvider;
+
 @end
 
 @implementation HUBViewModelLoaderImplementation
@@ -55,6 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
         _connectivityStateResolver = connectivityStateResolver;
         _cachedInitialViewModel = initialViewModel;
         _currentlyLoadingContentProviderIndex = NSNotFound;
+        _lastHandledContentProvider = nil;
+
         for (id<HUBContentProvider> const contentProvider in _contentProviders) {
             contentProvider.delegate = self;
         }
@@ -150,7 +154,10 @@ NS_ASSUME_NONNULL_BEGIN
     switch (contentProviderMode) {
         case HUBContentProviderModeNone:
         case HUBContentProviderModeSynchronous:
-            [self handleFinishedContentProvider:contentProvider mode:contentProviderMode error:nil];
+            if (self.currentlyLoadingContentProvider == contentProvider) {
+                // This means the provider hasn't been handled synchronously from within the loadMethod above
+                [self handleFinishedContentProvider:contentProvider mode:contentProviderMode error:nil];
+            }
             break;
         case HUBContentProviderModeAsynchronous:
             break;
