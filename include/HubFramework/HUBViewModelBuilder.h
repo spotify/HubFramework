@@ -69,10 +69,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  The builder to use to build a model for the view's header component
  *
  *  If you plan to add a header to your view, you use this builder to setup the component that will make up the header.
- *  You need to assign a `componentIdentifier` to this builder in case you want a header to be displayed, otherwise, this
- *  builder will be ignored and a UINavigationBar-based header will be used instead of a component-based one.
+ *  This builder gets lazily created the first time you access this property, and will cause a component-based header to
+ *  be added to the view. If this property is never accessed, a `UINavigationBar`-based header will be used instead.
  *
- *  In case no identifier is explicity defined for the view's header component model, it will use "header" as the default.
+ *  To remove this view model builder's header component builder, use `-removeHeaderComponentModelBuilder`.
+ *
+ *  In case no identifier is explicity defined for the returned builder, it will use "header" as the default.
  */
 @property (nonatomic, strong, readonly) id<HUBComponentModelBuilder> headerComponentModelBuilder;
 
@@ -104,6 +106,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  occured while doing so, or nil if the operation was completed successfully.
  */
 - (nullable NSError *)addJSONData:(NSData *)JSONData;
+
+/**
+ *  Remove any previously created header component model builder
+ *
+ *  Removing the header component model builder will cause the view to use a `UINavigationBar`-based header instead.
+ */
+- (void)removeHeaderComponentModelBuilder;
 
 /**
  *  Return whether this builder contains a builder for a body component model with a certain identifier

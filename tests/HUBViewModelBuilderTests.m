@@ -64,6 +64,14 @@
     XCTAssertNil(self.builder.headerComponentModelBuilder.componentName);
 }
 
+- (void)testRemovingHeaderComponentBuilder
+{
+    id<HUBComponentModelBuilder> const builder = self.builder.headerComponentModelBuilder;
+    builder.componentName = @"component";
+    [self.builder removeHeaderComponentModelBuilder];
+    XCTAssertNil(self.builder.headerComponentModelBuilder.componentName);
+}
+
 - (void)testBodyComponentBuilders
 {
     NSString * const componentModelIdentifier = @"identifier";
