@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
-@property (nonatomic, strong, readonly) HUBComponentModelBuilderImplementation *headerComponentModelBuilderImplementation;
+@property (nonatomic, strong, nullable) HUBComponentModelBuilderImplementation *headerComponentModelBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *bodyComponentModelBuilders;
 @property (nonatomic, strong, readonly) NSMutableArray<NSString *> *bodyComponentIdentifierOrder;
 
@@ -47,11 +47,6 @@ NS_ASSUME_NONNULL_BEGIN
         _defaultComponentNamespace = [defaultComponentNamespace copy];
         _viewIdentifier = [NSUUID UUID].UUIDString;
         _featureIdentifier = [featureIdentifier copy];
-        _headerComponentModelBuilderImplementation = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header"
-                                                                                                           featureIdentifier:featureIdentifier
-                                                                                                                  JSONSchema:_JSONSchema
-                                                                                                   defaultComponentNamespace:defaultComponentNamespace];
-        
         _bodyComponentModelBuilders = [NSMutableDictionary new];
         _bodyComponentIdentifierOrder = [NSMutableArray new];
     }
@@ -60,11 +55,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - HUBViewModelBuilder
-
-- (id<HUBComponentModelBuilder>)headerComponentModelBuilder
-{
-    return self.headerComponentModelBuilderImplementation;
-}
 
 - (nullable NSError *)addJSONData:(NSData *)JSONData
 {
@@ -84,6 +74,17 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return nil;
+}
+
+- (id<HUBComponentModelBuilder>)headerComponentModelBuilder
+{
+    return [self getOrCreateBuilderForHeaderComponentModel];
+}
+
+
+- (void)removeHeaderComponentModelBuilder
+{
+    self.headerComponentModelBuilderImplementation = nil;
 }
 
 - (BOOL)builderExistsForBodyComponentModelWithIdentifier:(NSString *)identifier
@@ -166,7 +167,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary * const headerComponentModelDictionary = [viewModelSchema.headerComponentModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
     
     if (headerComponentModelDictionary != nil) {
-        [self.headerComponentModelBuilderImplementation addDataFromJSONDictionary:headerComponentModelDictionary];
+        [[self getOrCreateBuilderForHeaderComponentModel] addDataFromJSONDictionary:headerComponentModelDictionary];
     }
     
     NSArray * const bodyComponentModelDictionaries = [viewModelSchema.bodyComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
@@ -192,6 +193,23 @@ NS_ASSUME_NONNULL_BEGIN
     NSString * const identifier = [self.JSONSchema.componentModelSchema.identifierPath stringFromJSONDictionary:dictionary];
     HUBComponentModelBuilderImplementation * const builder = [self getOrCreateBuilderForBodyComponentModelWithIdentifier:identifier];
     [builder addDataFromJSONDictionary:dictionary];
+}
+
+- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForHeaderComponentModel
+{
+    HUBComponentModelBuilderImplementation * const existingBuilder = self.headerComponentModelBuilderImplementation;
+    
+    if (existingBuilder != nil) {
+        return existingBuilder;
+    }
+    
+    HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header"
+                                                                                                                      featureIdentifier:self.featureIdentifier
+                                                                                                                             JSONSchema:self.JSONSchema
+                                                                                                              defaultComponentNamespace:self.defaultComponentNamespace];
+    
+    self.headerComponentModelBuilderImplementation = newBuilder;
+    return newBuilder;
 }
 
 - (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForBodyComponentModelWithIdentifier:(nullable NSString *)identifier
