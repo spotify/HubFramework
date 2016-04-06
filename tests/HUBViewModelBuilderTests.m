@@ -220,6 +220,51 @@
     XCTAssertNotNil([builder addJSONData:data]);
 }
 
+- (void)testAddingJSONDataNotRemovingExistingData
+{
+    self.builder.viewIdentifier = @"view";
+    self.builder.featureIdentifier = @"feature";
+    self.builder.entityIdentifier = @"entity";
+    self.builder.navigationBarTitle = @"title";
+    self.builder.headerComponentModelBuilder.title = @"header title";
+    self.builder.extensionURL = [NSURL URLWithString:@"http://spotify.extension.com"];
+    self.builder.customData = @{@"custom": @"data"};
+    [self.builder builderForBodyComponentModelWithIdentifier:@"component"].title = @"body title";
+    
+    NSData * const emptyJSONData = [NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:nil];
+    [self.builder addJSONData:emptyJSONData];
+    
+    XCTAssertEqualObjects(self.builder.viewIdentifier, @"view");
+    XCTAssertEqualObjects(self.builder.featureIdentifier, @"feature");
+    XCTAssertEqualObjects(self.builder.entityIdentifier, @"entity");
+    XCTAssertEqualObjects(self.builder.navigationBarTitle, @"title");
+    XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.title, @"header title");
+    XCTAssertEqualObjects(self.builder.extensionURL, [NSURL URLWithString:@"http://spotify.extension.com"]);
+    XCTAssertEqualObjects(self.builder.customData, @{@"custom" : @"data"});
+    XCTAssertTrue([self.builder builderExistsForBodyComponentModelWithIdentifier:@"component"]);
+}
+
+- (void)testCustomDataFromJSONAddedToExistingCustomData
+{
+    self.builder.customData = @{@"custom": @"data"};
+    
+    NSDictionary * const JSONDictionary = @{
+        @"custom": @{
+            @"another": @"value"
+        }
+    };
+    
+    NSData * const JSONData = [NSJSONSerialization dataWithJSONObject:JSONDictionary options:NSJSONWritingPrettyPrinted error:nil];
+    [self.builder addJSONData:JSONData];
+    
+    NSDictionary * const expectedCustomData = @{
+        @"custom": @"data",
+        @"another": @"value"
+    };
+    
+    XCTAssertEqualObjects(self.builder.customData, expectedCustomData);
+}
+
 - (void)testIsEmpty
 {
     HUBViewModelBuilderImplementation * const builder = [self createBuilderWithFeatureIdentifier:@"feature"
