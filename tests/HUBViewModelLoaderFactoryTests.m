@@ -8,6 +8,7 @@
 #import "HUBContentProviderMock.h"
 #import "HUBViewModelLoader.h"
 #import "HUBInitialViewModelRegistry.h"
+#import "HUBViewURIPredicate.h"
 
 @interface HUBViewModelLoaderFactoryTests : XCTestCase
 
@@ -40,15 +41,14 @@
 - (void)testCreatingViewModelLoaderForValidViewURI
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-
+    HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithViewURI:viewURI];
     HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
     HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[contentProvider]];
     
     [self.featureRegistry registerFeatureWithIdentifier:@"feature"
-                                            rootViewURI:viewURI
+                                       viewURIPredicate:viewURIPredicate
                                contentProviderFactories:@[contentProviderFactory]
-                             customJSONSchemaIdentifier:nil
-                                       viewURIQualifier:nil];
+                             customJSONSchemaIdentifier:nil];
     
     XCTAssertTrue([self.viewModelLoaderFactory canCreateViewModelLoaderForViewURI:viewURI]);
     XCTAssertNotNil([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
@@ -64,14 +64,13 @@
 - (void)testNoContentProviderCreatedThrows
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    
+    HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithViewURI:viewURI];
     HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
     
     [self.featureRegistry registerFeatureWithIdentifier:@"feature"
-                                            rootViewURI:viewURI
+                                       viewURIPredicate:viewURIPredicate
                                contentProviderFactories:@[contentProviderFactory]
-                             customJSONSchemaIdentifier:nil
-                                       viewURIQualifier:nil];
+                             customJSONSchemaIdentifier:nil];
     
     XCTAssertThrows([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
 }
