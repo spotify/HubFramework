@@ -364,6 +364,91 @@
     XCTAssertEqualObjects(childModel2.componentIdentifier, child2ComponentIdentifier);
 }
 
+- (void)testAddingJSONDataNotRemovingExistingData
+{
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"default"];
+    
+    NSDate * const currentDate = [NSDate date];
+    
+    builder.componentNamespace = @"namespace";
+    builder.componentName = @"name";
+    builder.contentIdentifier = @"content";
+    builder.preferredIndex = @(33);
+    builder.title = @"title";
+    builder.subtitle = @"subtitle";
+    builder.accessoryTitle = @"accessory title";
+    builder.descriptionText = @"description text";
+    builder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
+    builder.loggingData = @{@"logging": @"data"};
+    builder.date = currentDate;
+    builder.customData = @{@"custom": @"data"};
+    
+    [builder addDataFromJSONDictionary:@{}];
+    
+    XCTAssertEqualObjects(builder.componentNamespace, @"namespace");
+    XCTAssertEqualObjects(builder.componentName, @"name");
+    XCTAssertEqualObjects(builder.contentIdentifier, @"content");
+    XCTAssertEqualObjects(builder.preferredIndex, @(33));
+    XCTAssertEqualObjects(builder.title, @"title");
+    XCTAssertEqualObjects(builder.subtitle, @"subtitle");
+    XCTAssertEqualObjects(builder.accessoryTitle, @"accessory title");
+    XCTAssertEqualObjects(builder.descriptionText, @"description text");
+    XCTAssertEqualObjects(builder.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
+    XCTAssertEqualObjects(builder.loggingData, @{@"logging": @"data"});
+    XCTAssertEqualObjects(builder.date, currentDate);
+    XCTAssertEqualObjects(builder.customData, @{@"custom": @"data"});
+}
+
+- (void)testLoggingDataFromJSONAddedToExistingLoggingData
+{
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"default"];
+    
+    builder.loggingData = @{@"logging": @"data"};
+    
+    NSDictionary * const JSONDictionary = @{
+        @"logging": @{
+            @"another": @"value"
+        }
+    };
+    
+    [builder addDataFromJSONDictionary:JSONDictionary];
+    
+    NSDictionary * const expectedLoggingData = @{
+        @"logging": @"data",
+        @"another": @"value"
+    };
+    
+    XCTAssertEqualObjects(builder.loggingData, expectedLoggingData);
+}
+
+- (void)testCustomDataFromJSONAddedToExistingCustomData
+{
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
+                                                                                  featureIdentifier:@"feature"
+                                                                          defaultComponentNamespace:@"default"];
+    
+    builder.customData = @{@"custom": @"data"};
+    
+    NSDictionary * const JSONDictionary = @{
+        @"custom": @{
+            @"another": @"value"
+        }
+    };
+    
+    [builder addDataFromJSONDictionary:JSONDictionary];
+    
+    NSDictionary * const expectedCustomData = @{
+        @"custom": @"data",
+        @"another": @"value"
+    };
+    
+    XCTAssertEqualObjects(builder.customData, expectedCustomData);
+}
+
 #pragma mark - Utilities
 
 - (HUBComponentModelBuilderImplementation *)createBuilderWithModelIdentifier:(NSString *)modelIdentifier

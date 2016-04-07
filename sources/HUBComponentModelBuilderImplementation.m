@@ -216,16 +216,6 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentModelJSONSchema> componentModelSchema = self.JSONSchema.componentModelSchema;
     
-    self.contentIdentifier = [componentModelSchema.contentIdentifierPath stringFromJSONDictionary:dictionary];
-    self.title = [componentModelSchema.titlePath stringFromJSONDictionary:dictionary];
-    self.subtitle = [componentModelSchema.subtitlePath stringFromJSONDictionary:dictionary];
-    self.accessoryTitle = [componentModelSchema.accessoryTitlePath stringFromJSONDictionary:dictionary];
-    self.descriptionText = [componentModelSchema.descriptionTextPath stringFromJSONDictionary:dictionary];
-    self.targetURL = [componentModelSchema.targetURLPath URLFromJSONDictionary:dictionary];
-    self.customData = [componentModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
-    self.loggingData = [componentModelSchema.loggingDataPath dictionaryFromJSONDictionary:dictionary];
-    self.date = [componentModelSchema.datePath dateFromJSONDictionary:dictionary];
-    
     NSString * const componentIdentifierString = [componentModelSchema.componentIdentifierPath stringFromJSONDictionary:dictionary];
     
     if (componentIdentifierString != nil) {
@@ -236,6 +226,82 @@ NS_ASSUME_NONNULL_BEGIN
             self.componentName = componentIdentifierParts[1];
         } else if (componentIdentifierParts.count == 1) {
             self.componentName = componentIdentifierParts[0];
+        }
+    }
+    
+    NSString * const contentIdentifier = [componentModelSchema.contentIdentifierPath stringFromJSONDictionary:dictionary];
+    
+    if (contentIdentifier != nil) {
+        self.contentIdentifier = contentIdentifier;
+    }
+    
+    NSString * const title = [componentModelSchema.titlePath stringFromJSONDictionary:dictionary];
+    
+    if (title != nil) {
+        self.title = title;
+    }
+    
+    NSString * const subtitle = [componentModelSchema.subtitlePath stringFromJSONDictionary:dictionary];
+    
+    if (subtitle != nil) {
+        self.subtitle = subtitle;
+    }
+    
+    NSString * const accessoryTitle = [componentModelSchema.accessoryTitlePath stringFromJSONDictionary:dictionary];
+    
+    if (accessoryTitle != nil) {
+        self.accessoryTitle = accessoryTitle;
+    }
+    
+    NSString * const descriptionText = [componentModelSchema.descriptionTextPath stringFromJSONDictionary:dictionary];
+    
+    if (descriptionText != nil) {
+        self.descriptionText = descriptionText;
+    }
+    
+    NSURL * const targetURL = [componentModelSchema.targetURLPath URLFromJSONDictionary:dictionary];
+    
+    if (targetURL != nil) {
+        self.targetURL = targetURL;
+    }
+    
+    NSDictionary * const targetInitialViewModelDictionary = [componentModelSchema.targetInitialViewModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (targetInitialViewModelDictionary != nil) {
+        [[self getOrCreateBuilderForTargetInitialViewModel] addDataFromJSONDictionary:targetInitialViewModelDictionary];
+    }
+    
+    NSDictionary * const loggingData = [componentModelSchema.loggingDataPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (loggingData != nil) {
+        NSDictionary * const existingLoggingData = self.loggingData;
+        
+        if (existingLoggingData != nil) {
+            NSMutableDictionary * const mutableLoggingData = [existingLoggingData mutableCopy];
+            [mutableLoggingData addEntriesFromDictionary:loggingData];
+            self.loggingData = [mutableLoggingData copy];
+        } else {
+            self.loggingData = loggingData;
+        }
+    }
+    
+    NSDate * const date = [componentModelSchema.datePath dateFromJSONDictionary:dictionary];
+    
+    if (date != nil) {
+        self.date = date;
+    }
+    
+    NSDictionary * const customData = [componentModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (customData != nil) {
+        NSDictionary * const existingCustomData = self.customData;
+        
+        if (existingCustomData != nil) {
+            NSMutableDictionary * const mutableCustomData = [existingCustomData mutableCopy];
+            [mutableCustomData addEntriesFromDictionary:customData];
+            self.customData = [mutableCustomData copy];
+        } else {
+            self.customData = customData;
         }
     }
     
@@ -260,12 +326,6 @@ NS_ASSUME_NONNULL_BEGIN
             HUBComponentImageDataBuilderImplementation * const builder = [self getOrCreateBuilderForCustomImageDataWithIdentifier:imageIdentifier];
             [builder addDataFromJSONDictionary:imageDataDictionary];
         }
-    }
-    
-    NSDictionary * const targetInitialViewModelDictionary = [componentModelSchema.targetInitialViewModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
-    
-    if (targetInitialViewModelDictionary != nil) {
-        [[self getOrCreateBuilderForTargetInitialViewModel] addDataFromJSONDictionary:targetInitialViewModelDictionary];
     }
     
     NSArray * const childComponentModelDictionaries = [componentModelSchema.childComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
