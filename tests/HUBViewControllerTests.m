@@ -30,7 +30,7 @@
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
 @property (nonatomic, strong) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong) HUBViewControllerImplementation *viewController;
-@property (nonatomic) NSInteger numberOfHeaderComponentVisibilityChangeDelegateCalls;
+@property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 
 @end
 
@@ -81,7 +81,7 @@
     
     self.viewController.delegate = self;
     
-    self.numberOfHeaderComponentVisibilityChangeDelegateCalls = 0;
+    self.viewModelFromDelegateMethod = nil;
 }
 
 #pragma mark - Tests
@@ -98,6 +98,30 @@
     [self.viewController viewWillAppear:YES];
     
     XCTAssertTrue(contentLoaded);
+}
+
+- (void)testDelegateNotifiedOfUpdatedViewModel
+{
+    NSString * const viewModelNavBarTitleA = @"View model A";
+    NSString * const viewModelNavBarTitleB = @"View model B";
+    
+    self.contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        builder.navigationBarTitle = viewModelNavBarTitleA;
+        return HUBContentProviderModeSynchronous;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleA);
+    
+    self.contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        builder.navigationBarTitle = viewModelNavBarTitleB;
+        return HUBContentProviderModeSynchronous;
+    };
+    
+    [self.viewController viewWillAppear:YES];
+    
+    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleB);
 }
 
 - (void)testHeaderComponentImageLoading
@@ -279,30 +303,6 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
     XCTAssertFalse([self.imageLoader hasLoadedImageForURL:mainImageURL]);
-}
-
-- (void)testDelegateNotifiedWhenHeaderComponentVisibilityChanged
-{
-    __weak __typeof(self) weakSelf = self;
-    
-    self.contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> viewModelBuilder) {
-        __typeof(self) strongSelf = weakSelf;
-        viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
-        return HUBContentProviderModeSynchronous;
-    };
-    
-    [self simulateViewControllerLayoutCycle];
-    
-    XCTAssertEqual(self.numberOfHeaderComponentVisibilityChangeDelegateCalls, 1);
-    XCTAssertTrue(self.viewController.isDisplayingHeaderComponent);
-    
-    self.contentProvider.contentLoadingBlock = nil;
-    
-    [self.viewController viewWillAppear:YES];
-    [self.viewController viewDidLayoutSubviews];
-    
-    XCTAssertEqual(self.numberOfHeaderComponentVisibilityChangeDelegateCalls, 2);
-    XCTAssertFalse(self.viewController.isDisplayingHeaderComponent);
 }
 
 - (void)testHeaderComponentReuse
@@ -497,9 +497,10 @@
 
 #pragma mark - HUBViewControllerDelegate
 
-- (void)viewControllerHeaderComponentVisbilityDidChange:(UIViewController<HUBViewController> *)viewController
+- (void)viewController:(UIViewController<HUBViewController> *)viewController didUpdateWithViewModel:(id<HUBViewModel>)viewModel
 {
-    self.numberOfHeaderComponentVisibilityChangeDelegateCalls++;
+    XCTAssertEqual(viewController, self.viewController);
+    self.viewModelFromDelegateMethod = viewModel;
 }
 
 #pragma mark - Utilities

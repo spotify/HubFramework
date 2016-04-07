@@ -177,13 +177,6 @@ NS_ASSUME_NONNULL_BEGIN
     self.viewModel = nil;
 }
 
-#pragma mark - HUBViewController
-
-- (BOOL)isDisplayingHeaderComponent
-{
-    return self.headerComponentWrapper != nil;
-}
-
 #pragma mark - HUBViewModelLoaderDelegate
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel
@@ -191,6 +184,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.viewModel = viewModel;
     self.viewModelHasChangedSinceLastLayoutUpdate = YES;
     [self.view setNeedsLayout];
+    
+    [self.delegate viewController:self didUpdateWithViewModel:viewModel];
 }
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didFailLoadingWithError:(NSError *)error
@@ -321,12 +316,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)configureHeaderComponent
 {
     id<HUBComponentModel> const componentModel = self.viewModel.headerComponentModel;
-    id<HUBViewControllerDelegate> const delegate = self.delegate;
     
     if (componentModel == nil) {
         if (self.headerComponentWrapper.componentIdentifier != nil) {
             [self removeHeaderComponent];
-            [delegate viewControllerHeaderComponentVisbilityDidChange:self];
         }
         
         CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
@@ -379,7 +372,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (!shouldReuseCurrentComponent) {
         [self.view addSubview:headerView];
-        [delegate viewControllerHeaderComponentVisbilityDidChange:self];
     }
     
     if ([headerComponentWrapper.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
