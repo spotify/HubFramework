@@ -8,6 +8,7 @@
 #import "HUBContentProviderMock.h"
 #import "HUBImageLoaderFactoryMock.h"
 #import "HUBComponentLayoutManagerMock.h"
+#import "HUBViewURIPredicate.h"
 
 @interface HUBViewControllerFactoryTests : XCTestCase
 
@@ -39,15 +40,14 @@
 - (void)testCreatingViewControllerForValidViewURI
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    
+    HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithViewURI:viewURI];
     HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
     HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[contentProvider]];
     
     [self.manager.featureRegistry registerFeatureWithIdentifier:@"feature"
-                                                    rootViewURI:viewURI
+                                               viewURIPredicate:viewURIPredicate
                                        contentProviderFactories:@[contentProviderFactory]
-                                     customJSONSchemaIdentifier:nil
-                                               viewURIQualifier:nil];
+                                     customJSONSchemaIdentifier:nil];
     
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
     XCTAssertNotNil([self.manager.viewControllerFactory createViewControllerForViewURI:viewURI]);

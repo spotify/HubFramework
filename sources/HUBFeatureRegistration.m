@@ -5,23 +5,21 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBFeatureRegistration
 
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
-                              rootViewURI:(NSURL *)rootViewURI
+                         viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
                  contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
-                         viewURIQualifier:(nullable id<HUBViewURIQualifier>)viewURIQualifier
 {
     NSParameterAssert(featureIdentifier != nil);
-    NSParameterAssert(rootViewURI != nil);
+    NSParameterAssert(viewURIPredicate != nil);
     NSParameterAssert(contentProviderFactories.count > 0);
     
     self = [super init];
     
     if (self) {
         _featureIdentifier = [featureIdentifier copy];
-        _rootViewURI = [rootViewURI copy];
+        _viewURIPredicate = viewURIPredicate;
         _contentProviderFactories = [contentProviderFactories copy];
         _customJSONSchemaIdentifier = [customJSONSchemaIdentifier copy];
-        _viewURIQualifier = viewURIQualifier;
     }
     
     return self;

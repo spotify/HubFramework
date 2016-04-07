@@ -1,14 +1,14 @@
 #import "HUBFeatureRegistryImplementation.h"
 
 #import "HUBFeatureRegistration.h"
-#import "HUBViewURIQualifier.h"
+#import "HUBViewURIPredicate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBFeatureRegistryImplementation ()
 
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, HUBFeatureRegistration *> *registrationsByRootViewURI;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBFeatureRegistration *> *registrationsByIdentifier;
+@property (nonatomic, strong, readonly) NSMutableArray<NSString *> *registrationIdentifierOrder;
 
 @end
 
@@ -19,8 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
     self = [super init];
     
     if (self) {
-        _registrationsByRootViewURI = [NSMutableDictionary new];
         _registrationsByIdentifier = [NSMutableDictionary new];
+        _registrationIdentifierOrder = [NSMutableArray new];
     }
     
     return self;
@@ -30,18 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable HUBFeatureRegistration *)featureRegistrationForViewURI:(NSURL *)viewURI
 {
-    HUBFeatureRegistration * const exactMatch = self.registrationsByRootViewURI[viewURI];
-    
-    if (exactMatch != nil && [self qualifyViewURI:viewURI forFeatureWithRegistration:exactMatch]) {
-        return exactMatch;
-    }
-    
-    for (HUBFeatureRegistration * const registration in self.registrationsByRootViewURI.allValues) {
-        if (![viewURI.absoluteString hasPrefix:registration.rootViewURI.absoluteString]) {
-            continue;
-        }
+    for (NSString * const featureIdentifier in self.registrationIdentifierOrder) {
+        HUBFeatureRegistration * const registration = self.registrationsByIdentifier[featureIdentifier];
         
-        if ([self qualifyViewURI:viewURI forFeatureWithRegistration:registration]) {
+        if ([registration.viewURIPredicate evaluateViewURI:viewURI]) {
             return registration;
         }
     }
@@ -52,34 +44,28 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - HUBFeatureRegistry
 
 - (void)registerFeatureWithIdentifier:(NSString *)featureIdentifier
-                          rootViewURI:(NSURL *)rootViewURI
+                     viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
              contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
-                     viewURIQualifier:(nullable id<HUBViewURIQualifier>)viewURIQualifier
 {
     NSParameterAssert(featureIdentifier != nil);
-    NSParameterAssert(rootViewURI != nil);
+    NSParameterAssert(viewURIPredicate != nil);
     
     NSAssert(self.registrationsByIdentifier[featureIdentifier] == nil,
              @"Attempted to register a Hub Framework feature for an identifier that is already registered: %@",
              featureIdentifier);
-    
-    NSAssert(self.registrationsByRootViewURI[rootViewURI] == nil,
-             @"Attempted to register a Hub Framework feature for a root view URI that is already registered: %@",
-             rootViewURI);
     
     NSAssert(contentProviderFactories.count > 0,
              @"Attempted to register a Hub Framework feature without any content provider factories. Feature identifier: %@",
              featureIdentifier);
     
     HUBFeatureRegistration * const registration = [[HUBFeatureRegistration alloc] initWithFeatureIdentifier:featureIdentifier
-                                                                                                rootViewURI:rootViewURI
+                                                                                           viewURIPredicate:viewURIPredicate
                                                                                    contentProviderFactories:contentProviderFactories
-                                                                                 customJSONSchemaIdentifier:customJSONSchemaIdentifier
-                                                                                           viewURIQualifier:viewURIQualifier];
+                                                                                 customJSONSchemaIdentifier:customJSONSchemaIdentifier];
     
-    self.registrationsByRootViewURI[registration.rootViewURI] = registration;
     self.registrationsByIdentifier[registration.featureIdentifier] = registration;
+    [self.registrationIdentifierOrder addObject:registration.featureIdentifier];
 }
 
 - (void)unregisterFeatureWithIdentifier:(NSString *)featureIdentifier
@@ -91,18 +77,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     self.registrationsByIdentifier[featureIdentifier] = nil;
-    self.registrationsByRootViewURI[registration.rootViewURI] = nil;
-}
-
-#pragma mark - Private utilities
-
-- (BOOL)qualifyViewURI:(NSURL *)viewURI forFeatureWithRegistration:(HUBFeatureRegistration *)registration
-{
-    if (registration.viewURIQualifier == nil) {
-        return YES;
-    }
-    
-    return [registration.viewURIQualifier qualifyViewURI:viewURI];
 }
 
 @end
