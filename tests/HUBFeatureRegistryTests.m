@@ -3,7 +3,7 @@
 #import "HUBFeatureRegistryImplementation.h"
 #import "HUBFeatureRegistration.h"
 #import "HUBContentProviderFactoryMock.h"
-#import "HUBViewURIQualifierMock.h"
+#import "HUBViewURIPredicate.h"
 
 @interface HUBFeatureRegistryTests : XCTestCase
 
@@ -23,137 +23,103 @@
 
 #pragma mark - Tests
 
-- (void)testConflictingRootViewURIsTriggerAssert
-{
-    NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
-    
-    [self.registry registerFeatureWithIdentifier:@"featureA"
-                                     rootViewURI:rootViewURI
-                        contentProviderFactories:@[contentProviderFactory]
-                      customJSONSchemaIdentifier:nil
-                                viewURIQualifier:nil];
-    
-    XCTAssertThrows([self.registry registerFeatureWithIdentifier:@"featureB"
-                                     rootViewURI:rootViewURI
-                        contentProviderFactories:@[contentProviderFactory]
-                      customJSONSchemaIdentifier:nil
-                                viewURIQualifier:nil]);
-}
-
 - (void)testConflictingIdentifiersTriggerAssert
 {
     NSString * const identifier = @"identifier";
     
-    NSURL * const rootViewURIA = [NSURL URLWithString:@"spotify:hub:framework:a"];
-    NSURL * const rootViewURIB = [NSURL URLWithString:@"spotify:hub:framework:b"];
+    NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithRootViewURI:rootViewURI];
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
     
     [self.registry registerFeatureWithIdentifier:identifier
-                                     rootViewURI:rootViewURIA
+                                viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
-                      customJSONSchemaIdentifier:nil
-                                viewURIQualifier:nil];
+                      customJSONSchemaIdentifier:nil];
     
     XCTAssertThrows([self.registry registerFeatureWithIdentifier:identifier
-                                                     rootViewURI:rootViewURIB
+                                                viewURIPredicate:viewURIPredicate
                                         contentProviderFactories:@[contentProviderFactory]
-                                      customJSONSchemaIdentifier:nil
-                                                viewURIQualifier:nil]);
+                                      customJSONSchemaIdentifier:nil]);
 }
 
 - (void)testRegistrationPropertyAssignment
 {
     NSString * const featureIdentifier = @"identifier";
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithRootViewURI:rootViewURI];
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
     NSString * const customJSONSchemaIdentifier = @"JSON Schema";
-    id<HUBViewURIQualifier> const viewURIQualifier = [[HUBViewURIQualifierMock alloc] initWithDisqualifiedViewURIs:@[]];
     
     [self.registry registerFeatureWithIdentifier:featureIdentifier
-                                     rootViewURI:rootViewURI
+                                viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
-                      customJSONSchemaIdentifier:customJSONSchemaIdentifier
-                                viewURIQualifier:viewURIQualifier];
+                      customJSONSchemaIdentifier:customJSONSchemaIdentifier];
     
     HUBFeatureRegistration * const registration = [self.registry featureRegistrationForViewURI:rootViewURI];
     XCTAssertEqualObjects(registration.featureIdentifier, featureIdentifier);
-    XCTAssertEqualObjects(registration.rootViewURI, rootViewURI);
+    XCTAssertEqual(registration.viewURIPredicate, viewURIPredicate);
     XCTAssertEqualObjects(registration.contentProviderFactories, @[contentProviderFactory]);
     XCTAssertEqualObjects(registration.customJSONSchemaIdentifier, customJSONSchemaIdentifier);
-    XCTAssertEqual(registration.viewURIQualifier, viewURIQualifier);
 }
 
-- (void)testSubviewMatch
+- (void)testPredicateViewURIDisqualification
 {
-    NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithBlock:^BOOL(NSURL *evaluatedViewURI) {
+        return NO;
+    }];
+    
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
     
     [self.registry registerFeatureWithIdentifier:@"feature"
-                                     rootViewURI:rootViewURI
+                                viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
-                      customJSONSchemaIdentifier:nil
-                                viewURIQualifier:nil];
+                      customJSONSchemaIdentifier:nil];
     
-    NSURL * const subviewURI = [NSURL URLWithString:[NSString stringWithFormat:@"%@:subview", rootViewURI.absoluteString]];
-    XCTAssertEqualObjects([self.registry featureRegistrationForViewURI:subviewURI].rootViewURI, rootViewURI);
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    XCTAssertNil([self.registry featureRegistrationForViewURI:viewURI]);
 }
 
-- (void)testDisqualifyingRootViewURI
+- (void)testFeatureRegistrationOrderDeterminingViewURIEvaluationOrder
 {
-    NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithBlock:^BOOL(NSURL *evaluatedViewURI) {
+        return YES;
+    }];
+    
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
-    id<HUBViewURIQualifier> const viewURIQualifier = [[HUBViewURIQualifierMock alloc] initWithDisqualifiedViewURIs:@[rootViewURI]];
     
-    [self.registry registerFeatureWithIdentifier:@"feature"
-                                     rootViewURI:rootViewURI
+    [self.registry registerFeatureWithIdentifier:@"featureA"
+                                viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
-                      customJSONSchemaIdentifier:nil
-                                viewURIQualifier:viewURIQualifier];
+                      customJSONSchemaIdentifier:nil];
     
-    XCTAssertNil([self.registry featureRegistrationForViewURI:rootViewURI]);
-    
-    NSURL * const subviewURI = [NSURL URLWithString:[NSString stringWithFormat:@"%@:subview", rootViewURI.absoluteString]];
-    XCTAssertEqualObjects([self.registry featureRegistrationForViewURI:subviewURI].rootViewURI, rootViewURI);
-}
-
-- (void)testDisqualifyingSubviewURI
-{
-    NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    NSURL * const subviewURI = [NSURL URLWithString:[NSString stringWithFormat:@"%@:subview", rootViewURI.absoluteString]];
-    id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
-    id<HUBViewURIQualifier> const viewURIQualifier = [[HUBViewURIQualifierMock alloc] initWithDisqualifiedViewURIs:@[subviewURI]];
-    
-    [self.registry registerFeatureWithIdentifier:@"feature"
-                                     rootViewURI:rootViewURI
+    [self.registry registerFeatureWithIdentifier:@"featureB"
+                                viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
-                      customJSONSchemaIdentifier:nil
-                                viewURIQualifier:viewURIQualifier];
+                      customJSONSchemaIdentifier:nil];
     
-    XCTAssertEqualObjects([self.registry featureRegistrationForViewURI:rootViewURI].rootViewURI, rootViewURI);
-    XCTAssertNil([self.registry featureRegistrationForViewURI:subviewURI]);
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    XCTAssertEqualObjects([self.registry featureRegistrationForViewURI:viewURI].featureIdentifier, @"featureA");
 }
 
 - (void)testUnregisteringFeature
 {
     NSString * const identifier = @"Awesome feature";
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithRootViewURI:rootViewURI];
     id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
     
     [self.registry registerFeatureWithIdentifier:identifier
-                                     rootViewURI:rootViewURI
+                                viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
-                      customJSONSchemaIdentifier:nil
-                                viewURIQualifier:nil];
+                      customJSONSchemaIdentifier:nil];
     
     [self.registry unregisterFeatureWithIdentifier:identifier];
     
     // The feature should now be free to be re-registered without triggering an assert
     [self.registry registerFeatureWithIdentifier:identifier
-                                     rootViewURI:rootViewURI
+                                viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
-                      customJSONSchemaIdentifier:nil
-                                viewURIQualifier:nil];
+                      customJSONSchemaIdentifier:nil];
 }
 
 @end
