@@ -12,22 +12,22 @@
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     HUBViewURIPredicate * const predicate = [HUBViewURIPredicate predicateWithViewURI:viewURI];
-    XCTAssertTrue([predicate evalulateViewURI:viewURI]);
+    XCTAssertTrue([predicate evaluateViewURI:viewURI]);
     
     NSString * const subviewURIString = [NSString stringWithFormat:@"%@:subview", viewURI.absoluteString];
     NSURL * const subviewURI = [NSURL URLWithString:subviewURIString];
-    XCTAssertFalse([predicate evalulateViewURI:subviewURI]);
+    XCTAssertFalse([predicate evaluateViewURI:subviewURI]);
 }
 
 - (void)testPredicateWithRootViewURI
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     HUBViewURIPredicate * const predicate = [HUBViewURIPredicate predicateWithRootViewURI:viewURI];
-    XCTAssertTrue([predicate evalulateViewURI:viewURI]);
+    XCTAssertTrue([predicate evaluateViewURI:viewURI]);
     
     NSString * const subviewURIString = [NSString stringWithFormat:@"%@:subview", viewURI.absoluteString];
     NSURL * const subviewURI = [NSURL URLWithString:subviewURIString];
-    XCTAssertTrue([predicate evalulateViewURI:subviewURI]);
+    XCTAssertTrue([predicate evaluateViewURI:subviewURI]);
 }
 
 - (void)testPredicateWithRootViewURIAndExcludedViewURI
@@ -43,9 +43,9 @@
     NSSet * const excludedViewURIs = [NSSet setWithObject:subviewURIB];
     HUBViewURIPredicate * const predicate = [HUBViewURIPredicate predicateWithRootViewURI:rootViewURI excludedViewURIs:excludedViewURIs];
     
-    XCTAssertTrue([predicate evalulateViewURI:rootViewURI]);
-    XCTAssertTrue([predicate evalulateViewURI:subviewURIA]);
-    XCTAssertFalse([predicate evalulateViewURI:subviewURIB]);
+    XCTAssertTrue([predicate evaluateViewURI:rootViewURI]);
+    XCTAssertTrue([predicate evaluateViewURI:subviewURIA]);
+    XCTAssertFalse([predicate evaluateViewURI:subviewURIB]);
 }
 
 - (void)testPredicateWithPredicate
@@ -54,11 +54,11 @@
     NSPredicate * const predicate = [NSPredicate predicateWithFormat:@"absoluteString == %@", viewURI.absoluteString];
     
     HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithPredicate:predicate];
-    XCTAssertTrue([viewURIPredicate evalulateViewURI:viewURI]);
+    XCTAssertTrue([viewURIPredicate evaluateViewURI:viewURI]);
     
     NSString * const subviewURIString = [NSString stringWithFormat:@"%@:subview", viewURI.absoluteString];
     NSURL * const subviewURI = [NSURL URLWithString:subviewURIString];
-    XCTAssertFalse([viewURIPredicate evalulateViewURI:subviewURI]);
+    XCTAssertFalse([viewURIPredicate evaluateViewURI:subviewURI]);
 }
 
 - (void)testPredicateWithBlock
@@ -69,13 +69,13 @@
         return YES;
     }];
     
-    XCTAssertTrue([truePredicate evalulateViewURI:viewURI]);
+    XCTAssertTrue([truePredicate evaluateViewURI:viewURI]);
     
     HUBViewURIPredicate * const falsePredicate = [HUBViewURIPredicate predicateWithBlock:^BOOL(NSURL *evaluatedViewURI) {
         return NO;
     }];
     
-    XCTAssertFalse([falsePredicate evalulateViewURI:viewURI]);
+    XCTAssertFalse([falsePredicate evaluateViewURI:viewURI]);
 }
 
 @end

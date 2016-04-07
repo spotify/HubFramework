@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (BOOL)evalulateViewURI:(NSURL *)viewURI
+- (BOOL)evaluateViewURI:(NSURL *)viewURI
 {
     return self.block(viewURI);
 }

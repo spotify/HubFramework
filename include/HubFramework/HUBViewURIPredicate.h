@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewURI The view URI that should be evaluated, based on the underlying rules of the predicate.
  */
-- (BOOL)evalulateViewURI:(NSURL *)viewURI;
+- (BOOL)evaluateViewURI:(NSURL *)viewURI;
 
 #pragma mark - Unavailable initializers
 

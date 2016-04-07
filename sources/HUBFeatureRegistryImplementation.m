@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
     for (NSString * const featureIdentifier in self.registrationIdentifierOrder) {
         HUBFeatureRegistration * const registration = self.registrationsByIdentifier[featureIdentifier];
         
-        if ([registration.viewURIPredicate evalulateViewURI:viewURI]) {
+        if ([registration.viewURIPredicate evaluateViewURI:viewURI]) {
             return registration;
         }
     }
