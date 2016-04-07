@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol HUBViewController;
+@protocol HUBViewModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -12,15 +13,15 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HUBViewControllerDelegate <NSObject>
 
 /**
- *  Sent to the delegate when the view controller either displayed or stopped displaying a header component
+ *  Sent to a Hub Framework view controller's delegate when it was updated with a new view model
  *
- *  @param viewController The view controller in which the event occured
+ *  @param viewController The view controller that was updated
+ *  @param viewModel The view model that the view controller was updated with
  *
- *  You can use this API to hide/show the application's navigation bar, or perform additional customization
- *  needed to display a header component in a good way. To check if a header component is currently being
- *  displayed, use the `isDisplayingHeaderComponent` property on the view controller.
+ *  You can use this method to perform any custom UI operations on the whole view controller after a new view model
+ *  was constructed and started to being used.
  */
-- (void)viewControllerHeaderComponentVisbilityDidChange:(UIViewController<HUBViewController> *)viewController;
+- (void)viewController:(UIViewController<HUBViewController> *)viewController didUpdateWithViewModel:(id<HUBViewModel>)viewModel;
 
 @end
 
@@ -34,9 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The view controller's delegate. See `HUBViewControllerDelegate` for more information.
 @property (nonatomic, weak, nullable) id<HUBViewControllerDelegate> delegate;
-
-/// Whether the view controller is currently displaying a header component or not
-@property (nonatomic, readonly) BOOL isDisplayingHeaderComponent;
 
 @end
 
