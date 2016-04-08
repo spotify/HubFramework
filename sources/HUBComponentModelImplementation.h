@@ -1,4 +1,5 @@
 #import "HUBComponentModel.h"
+#import "HUBHeaderMacros.h"
 
 @class HUBComponentIdentifier;
 @class HUBComponentImageDataImplementation;
@@ -48,15 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
                        loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
                               date:(nullable NSDate *)date
-              childComponentModels:(nullable NSArray<id<HUBComponentModel>> *)childComponentModels NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+              childComponentModels:(nullable NSArray<id<HUBComponentModel>> *)childComponentModels HUB_DESIGNATED_INITIALIZER;
 
 @end
 

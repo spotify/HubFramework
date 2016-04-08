@@ -1,7 +1,6 @@
-#import <Foundation/Foundation.h>
-
 #import "HUBComponentImageData.h"
 #import "HUBComponentType.h"
+#import "HUBHeaderMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -31,15 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithImageType:(HUBComponentImageType)imageType
                   imageIdentifier:(nullable NSString *)imageIdentifier
                 wrapperIdentifier:(NSUUID *)wrapperIdentifier
-                       childIndex:(nullable NSNumber *)childIndex NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+                       childIndex:(nullable NSNumber *)childIndex HUB_DESIGNATED_INITIALIZER;
 
 @end
 

@@ -1,4 +1,5 @@
 #import "HUBViewModel.h"
+#import "HUBHeaderMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,15 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
                       extensionURL:(nullable NSURL *)extensionURL
-                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData HUB_DESIGNATED_INITIALIZER;
 
 @end
 

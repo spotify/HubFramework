@@ -1,4 +1,5 @@
 #import "HUBComponentRegistry.h"
+#import "HUBHeaderMacros.h"
 
 @class HUBComponentIdentifier;
 @protocol HUBComponent;
@@ -16,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
  *         for a certain identifier. This component identifier must be resolvable using one of the registered
  *         factories, once data loading starts, otherwise an assert is triggered.
  */
-- (instancetype)initWithFallbackComponentIdentifier:(HUBComponentIdentifier *)fallbackComponentIdentifier NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFallbackComponentIdentifier:(HUBComponentIdentifier *)fallbackComponentIdentifier HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Return a newly created component matching a given an identifier
@@ -29,14 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
  *          If this operation also failed, an assert is triggered which should be considered an API user error.
  */
 - (id<HUBComponent>)createComponentForIdentifier:(HUBComponentIdentifier *)identifier;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
 
 @end
 

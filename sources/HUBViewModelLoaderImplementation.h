@@ -1,4 +1,5 @@
 #import "HUBViewModelLoader.h"
+#import "HUBHeaderMacros.h"
 
 @protocol HUBJSONSchema;
 @protocol HUBContentProvider;
@@ -26,15 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
                contentProviders:(NSArray<id<HUBContentProvider>> *)contentProviders
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
-               initialViewModel:(nullable id<HUBViewModel>)initialViewModel NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+               initialViewModel:(nullable id<HUBViewModel>)initialViewModel HUB_DESIGNATED_INITIALIZER;
 
 @end
 

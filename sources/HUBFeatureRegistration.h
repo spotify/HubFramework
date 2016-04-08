@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBHeaderMacros.h"
 
 @protocol HUBContentProviderFactory;
 @protocol HUBContentReloadPolicy;
@@ -37,15 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
                          viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
                  contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
                       contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
-               customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+               customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier HUB_DESIGNATED_INITIALIZER;
 
 @end
 

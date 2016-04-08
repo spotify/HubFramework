@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBHeaderMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param block The block used to evaluate view URIs
  */
-- (instancetype)initWithBlock:(BOOL(^)(NSURL *))block NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBlock:(BOOL(^)(NSURL *))block HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Evaluate a view URI
@@ -72,14 +72,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewURI The view URI that should be evaluated, based on the underlying rules of the predicate.
  */
 - (BOOL)evaluateViewURI:(NSURL *)viewURI;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
 
 @end
 

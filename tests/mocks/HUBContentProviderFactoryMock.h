@@ -1,4 +1,5 @@
 #import "HUBContentProviderFactory.h"
+#import "HUBHeaderMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -10,15 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param contentProviders The content providers that this factory is always returning
  */
-- (instancetype)initWithContentProviders:(NSArray<id<HUBContentProvider>> *)contentProviders NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)initWithContentProviders:(NSArray<id<HUBContentProvider>> *)contentProviders HUB_DESIGNATED_INITIALIZER;
 
 @end
 

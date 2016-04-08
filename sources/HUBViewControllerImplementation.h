@@ -1,6 +1,5 @@
-#import <UIKit/UIKit.h>
-
 #import "HUBViewController.h"
+#import "HUBHeaderMacros.h"
 
 @protocol HUBViewModelLoader;
 @protocol HUBImageLoader;
@@ -33,18 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
                   collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
                       componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                  componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-               initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry NS_DESIGNATED_INITIALIZER;
+               initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry HUB_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
-
-/// This class cannot be initialized with a decoder
-- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
 
 /// This class cannot be used with Interface Builder
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil

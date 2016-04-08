@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBHeaderMacros.h"
 
 @protocol HUBFeatureRegistry;
 @protocol HUBComponentRegistry;
@@ -61,15 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
                         defaultComponentNamespace:(NSString *)defaultComponentNamespace
                             fallbackComponentName:(NSString *)fallbackComponentName
                        defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
-                           componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+                           componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager HUB_DESIGNATED_INITIALIZER;
 
 @end
 
