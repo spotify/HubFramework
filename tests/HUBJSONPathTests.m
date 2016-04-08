@@ -69,9 +69,11 @@
     XCTAssertNil([path dateFromJSONDictionary:@{}]);
 }
 
-- (void)testDatePathWithCustomFormat
+- (void)testDatePathWithCustomFormatter
 {
-    id<HUBJSONDatePath> const path = [[[HUBMutableJSONPathImplementation path] goTo:@"date"] datePathWithFormat:@"yy-MM"];
+    NSDateFormatter * const formatter = [NSDateFormatter new];
+    formatter.dateFormat = @"yy-MM";
+    id<HUBJSONDatePath> const path = [[[HUBMutableJSONPathImplementation path] goTo:@"date"] datePathWithFormatter:formatter];
     
     NSDateComponents * const dateComponents = [NSDateComponents new];
     dateComponents.year = 2016;

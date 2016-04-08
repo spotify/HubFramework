@@ -141,11 +141,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Turn this path into an immutable path that expects the destination value to be an `NSString` that can be parsed
- *  into an `NSDate` using a custom date format.
+ *  into an `NSDate` using a custom date formatter.
  *
- *  @param dateFormat The date format to use to parse a found `NSSring` into an `NSDate`.
+ *  @param dateFormatter The date formatter to use to parse a found `NSSring` into an `NSDate`.
  */
-- (id<HUBJSONDatePath>)datePathWithFormat:(NSString *)dateFormat;
+- (id<HUBJSONDatePath>)datePathWithFormatter:(NSDateFormatter *)dateFormatter;
 
 /**
  *  Turn this path into an immutable path that expects the destination value to be an `NSDictionary`

@@ -2,6 +2,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  Return a string representation of a `HUBComponentImageStyle` value
+ *
+ *  @param style The image style value to convert to a string
+ */
+extern NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle style);
+
 /// Concrete implementation of the `HUBComponentImageData` API
 @interface HUBComponentImageDataImplementation : NSObject <HUBComponentImageData>
 

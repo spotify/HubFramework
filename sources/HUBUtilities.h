@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "HUBComponent.h"
 
 /**
  *  Macro set to `1` if building with the iOS 9.3 SDK or later.
@@ -50,4 +51,13 @@ static inline UIView *HUBComponentLoadViewIfNeeded(id<HUBComponent> component) {
     UIView * const view = component.view;
     NSCAssert(view, @"All components are required to load a view in -loadView");
     return view;
+}
+
+/**
+ *  Create a date formatter using the default format used in the Hub Framework
+ */
+static inline NSDateFormatter *HUBDateFormatterCreateWithDefaultFormat() {
+    NSDateFormatter * const formatter = [NSDateFormatter new];
+    formatter.dateFormat = @"yyyy-MM-dd";
+    return formatter;
 }

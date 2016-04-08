@@ -146,13 +146,15 @@
     XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.targetInitialViewModelBuilder.featureIdentifier, self.builder.featureIdentifier);
 }
 
-- (void)testAddingViewModelDictionaryJSONData
+- (void)testAddingViewModelDictionaryJSONDataAndModelSerialization
 {
     NSString * const viewIdentifier = @"identifier";
     NSString * const featureIdentifier = @"feature";
     NSString * const entityIdentifier = @"entity";
     NSString * const navigationBarTitle = @"nav bar title";
+    NSString * const headerComponentModelIdentifier = @"header model";
     HUBComponentIdentifier * const headerComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"header" name:@"component"];
+    NSString * const bodyComponentModelIdentifier = @"body model";
     HUBComponentIdentifier * const bodyComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"body" name:@"component"];
     NSURL * const extensionURL = [NSURL URLWithString:@"https://spotify.com/extension"];
     NSDictionary * const customData = @{@"custom": @"data"};
@@ -163,10 +165,12 @@
         @"entity": entityIdentifier,
         @"title": navigationBarTitle,
         @"header": @{
+            @"id": headerComponentModelIdentifier,
             @"component": headerComponentIdentifier.identifierString
         },
         @"body": @[
             @{
+                @"id": bodyComponentModelIdentifier,
                 @"component": bodyComponentIdentifier.identifierString
             }
         ],
@@ -189,6 +193,9 @@
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, bodyComponentIdentifier);
     XCTAssertEqualObjects(model.extensionURL, extensionURL);
     XCTAssertEqualObjects(model.customData, customData);
+    
+    // Serializing should produce an identical dictionary as was passed as JSON data
+    XCTAssertEqualObjects(dictionary, [model serialize]);
 }
 
 - (void)testAddingComponentModelArrayJSONData

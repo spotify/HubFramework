@@ -1,5 +1,6 @@
 #import "HUBViewModelJSONSchemaImplementation.h"
 
+#import "HUBJSONKeys.h"
 #import "HUBMutableJSONPathImplementation.h"
 
 @implementation HUBViewModelJSONSchemaImplementation
@@ -17,14 +18,14 @@
 
 - (instancetype)init
 {
-    return [self initWithIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:@"id"] stringPath]
-                  featureIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:@"feature"] stringPath]
-                   entityIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:@"entity"] stringPath]
-                 navigationBarTitlePath:[[[HUBMutableJSONPathImplementation path] goTo:@"title"] stringPath]
-     headerComponentModelDictionaryPath:[[[HUBMutableJSONPathImplementation path] goTo:@"header"] dictionaryPath]
-     bodyComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:@"body"] forEach] dictionaryPath]
-                       extensionURLPath:[[[HUBMutableJSONPathImplementation path] goTo:@"extension"] URLPath]
-                         customDataPath:[[[HUBMutableJSONPathImplementation path] goTo:@"custom"] dictionaryPath]];
+    return [self initWithIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyIdentifier] stringPath]
+                  featureIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyFeature] stringPath]
+                   entityIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyEntity] stringPath]
+                 navigationBarTitlePath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyTitle] stringPath]
+     headerComponentModelDictionaryPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyHeader] dictionaryPath]
+     bodyComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyBody] forEach] dictionaryPath]
+                       extensionURLPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyExtension] URLPath]
+                         customDataPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyCustom] dictionaryPath]];
 }
 
 - (instancetype)initWithIdentifierPath:(id<HUBJSONStringPath>)identifierPath

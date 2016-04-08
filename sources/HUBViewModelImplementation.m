@@ -1,5 +1,8 @@
 #import "HUBViewModelImplementation.h"
 
+#import "HUBJSONKeys.h"
+#import "HUBComponentModel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewModelImplementation
@@ -36,6 +39,40 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return self;
+}
+
+#pragma mark - HUBSerializable
+
+- (NSDictionary<NSString *, NSObject *> *)serialize
+{
+    NSMutableDictionary<NSString *, NSObject *> * const serialization = [NSMutableDictionary new];
+    serialization[HUBJSONKeyIdentifier] = self.identifier;
+    serialization[HUBJSONKeyFeature] = self.featureIdentifier;
+    serialization[HUBJSONKeyEntity] = self.entityIdentifier;
+    serialization[HUBJSONKeyTitle] = self.navigationBarTitle;
+    serialization[HUBJSONKeyHeader] = [self.headerComponentModel serialize];
+    serialization[HUBJSONKeyBody] = [self serializedBodyComponentModels];
+    serialization[HUBJSONKeyExtension] = self.extensionURL.absoluteString;
+    serialization[HUBJSONKeyCustom] = self.customData;
+    
+    return [serialization copy];
+}
+
+- (nullable NSArray<NSDictionary<NSString *, NSObject *> *> *)serializedBodyComponentModels
+{
+    NSArray<id<HUBComponentModel>> * const bodyComponentModels = self.bodyComponentModels;
+    
+    if (bodyComponentModels.count == 0) {
+        return nil;
+    }
+    
+    NSMutableArray<NSDictionary<NSString *, NSObject *> *> * const serializedModels = [NSMutableArray new];
+    
+    for (id<HUBComponentModel> const model in bodyComponentModels) {
+        [serializedModels addObject:[model serialize]];
+    }
+    
+    return [serializedModels copy];
 }
 
 @end

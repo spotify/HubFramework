@@ -2,6 +2,7 @@
 
 #import "HUBJSONParsingOperation.h"
 #import "HUBJSONPathImplementation.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -146,20 +147,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBJSONDatePath>)datePath
 {
-    return [self datePathWithFormat:@"yyyy-MM-dd"];
+    return [self datePathWithFormatter:HUBDateFormatterCreateWithDefaultFormat()];
 }
 
-- (id<HUBJSONDatePath>)datePathWithFormat:(NSString *)dateFormat
+- (id<HUBJSONDatePath>)datePathWithFormatter:(NSDateFormatter *)dateFormatter
 {
     HUBJSONParsingOperation * const formattingOperation = [[HUBJSONParsingOperation alloc] initWithBlock:^NSArray<NSObject *> * _Nullable (NSObject *input) {
         if (![input isKindOfClass:[NSString class]]) {
             return nil;
         }
         
-        NSDateFormatter * const formatter = [NSDateFormatter new];
-        formatter.dateFormat = dateFormat;
-        
-        NSDate * const date = [formatter dateFromString:(NSString *)input];
+        NSDate * const date = [dateFormatter dateFromString:(NSString *)input];
         
         if (date == nil) {
             return nil;

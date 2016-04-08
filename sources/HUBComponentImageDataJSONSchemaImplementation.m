@@ -1,7 +1,8 @@
 #import "HUBComponentImageDataJSONSchemaImplementation.h"
 
-#import "HUBComponentImageData.h"
+#import "HUBComponentImageDataImplementation.h"
 #import "HUBMutableJSONPathImplementation.h"
+#import "HUBJSONKeys.h"
 
 @implementation HUBComponentImageDataJSONSchemaImplementation
 
@@ -13,15 +14,15 @@
 - (instancetype)init
 {
     NSDictionary * const styleStringMap = @{
-        @"none" : @(HUBComponentImageStyleNone),
-        @"rectangular" : @(HUBComponentImageStyleRectangular),
-        @"circular" : @(HUBComponentImageStyleCircular)
+        HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleNone) : @(HUBComponentImageStyleNone),
+        HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleRectangular) : @(HUBComponentImageStyleRectangular),
+        HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleCircular) : @(HUBComponentImageStyleCircular)
     };
     
-    return [self initWithStyleStringPath:[[[HUBMutableJSONPathImplementation path] goTo:@"style"] stringPath]
+    return [self initWithStyleStringPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyStyle] stringPath]
                           styleStringMap:styleStringMap
-                                 URLPath:[[[HUBMutableJSONPathImplementation path] goTo:@"url"] URLPath]
-                      iconIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:@"icon"] stringPath]];
+                                 URLPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyURL] URLPath]
+                      iconIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyIcon] stringPath]];
 }
 
 - (instancetype)initWithStyleStringPath:(id<HUBJSONStringPath>)styleStringPath

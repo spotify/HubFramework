@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "HUBSerializable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,7 +29,7 @@ typedef NS_ENUM(NSInteger, HUBComponentImageType) {
  *  You don't conform to this protocol yourself, instead the Hub Framework will create implementations of it for you
  *  based on the data supplied to a `HUBComponentModelBuilder` or through JSON data.
  */
-@protocol HUBComponentImageData <NSObject>
+@protocol HUBComponentImageData <HUBSerializable>
 
 /**
  *  Any identifier for the image
