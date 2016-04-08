@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  This API can be used for caching, saving state, or to implement tests, etc.
  */
-- (NSDictionary<NSString *, NSObject *> *)serialize;
+- (NSDictionary<NSString *, NSObject<NSCoding> *> *)serialize;
 
 @end
 

@@ -43,9 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBSerializable
 
-- (NSDictionary<NSString *, NSObject *> *)serialize
+- (NSDictionary<NSString *, NSObject<NSCoding> *> *)serialize
 {
-    NSMutableDictionary<NSString *, NSObject *> * const serialization = [NSMutableDictionary new];
+    NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyIdentifier] = self.identifier;
     serialization[HUBJSONKeyFeature] = self.featureIdentifier;
     serialization[HUBJSONKeyEntity] = self.entityIdentifier;

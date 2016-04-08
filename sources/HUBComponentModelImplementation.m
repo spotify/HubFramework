@@ -75,9 +75,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBSerializable
 
-- (NSDictionary<NSString *, NSObject *> *)serialize
+- (NSDictionary<NSString *, NSObject<NSCoding> *> *)serialize
 {
-    NSMutableDictionary<NSString *, NSObject *> const * serialization = [NSMutableDictionary new];
+    NSMutableDictionary<NSString *, NSObject<NSCoding> *> const * serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyIdentifier] = self.identifier;
     serialization[HUBJSONKeyComponent] = self.componentIdentifier.identifierString;
     serialization[HUBJSONKeyContentIdentifier] = self.contentIdentifier;
@@ -97,9 +97,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Private utilities
 
-- (nullable NSDictionary<NSString *, NSObject *> *)serializedImageData
+- (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedImageData
 {
-    NSMutableDictionary<NSString *, NSObject *> * const serialization = [NSMutableDictionary new];
+    NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyMain] = [self.mainImageData serialize];
     serialization[HUBJSONKeyBackground] = [self.backgroundImageData serialize];
     
@@ -120,9 +120,9 @@ NS_ASSUME_NONNULL_BEGIN
     return [serialization copy];
 }
 
-- (nullable NSDictionary<NSString *, NSObject *> *)serializedTargetData
+- (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedTargetData
 {
-    NSMutableDictionary<NSString *, NSObject *> * const serialization = [NSMutableDictionary new];
+    NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyURL] = self.targetURL.absoluteString;
     serialization[HUBJSONKeyView] = [self.targetInitialViewModel serialize];
     
@@ -133,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [serialization copy];
 }
 
-- (nullable NSArray<NSDictionary<NSString *, NSObject *> *> *)serializedChildComponentModels
+- (nullable NSArray<NSDictionary<NSString *, NSObject<NSCoding> *> *> *)serializedChildComponentModels
 {
     NSArray<id<HUBComponentModel>> * const childComponentModels = self.childComponentModels;
     
@@ -141,7 +141,7 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    NSMutableArray<NSDictionary<NSString *, NSObject *> *> * const serializedModels = [NSMutableArray new];
+    NSMutableArray<NSDictionary<NSString *, NSObject<NSCoding> *> *> * const serializedModels = [NSMutableArray new];
     
     for (id<HUBComponentModel> const model in childComponentModels) {
         [serializedModels addObject:[model serialize]];
