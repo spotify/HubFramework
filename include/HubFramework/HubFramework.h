@@ -18,6 +18,7 @@
 // Content
 #import "HUBContentProviderFactory.h"
 #import "HUBContentProvider.h"
+#import "HUBContentReloadPolicy.h"
 
 // View
 #import "HUBViewModel.h"
