@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol HUBContentProviderFactory;
+@protocol HUBContentReloadPolicy;
 @class HUBViewURIPredicate;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -22,7 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param contentProviderFactories The factories that should be used to create content providers for the feature's views.
  *         The order of the factories will determine the order in which the created content providers are called each time a
  *         view that is a part of the feature will load data. See `HUBContentProviderFactory` for more information.
- *  @param customJSONSchemaIdentifier Any identifier of a custom schema to use to parse JSON data. If nil, the default
+ *  @param contentReloadPolicy Any custom content reload policy that should be used for the feature. A content reload policy
+ *         determines whenever a view belonging to the feature should have its content reloaded. If `nil`, the default reload
+ *         policy for this instance of the Hub Framework will be used. See `HUBContentReloadPolicy` for more information.
+ *  @param customJSONSchemaIdentifier Any identifier of a custom schema to use to parse JSON data. If `nil`, the default
  *         schema will be used. Register your custom schema using `HUBJSONSchemaRegistry`. See `HUBJSONSchema` for more info.
  *
  *  Registering a feature with the same identifier as one that is already registered is considered a severe error and will
@@ -31,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerFeatureWithIdentifier:(NSString *)featureIdentifier
                      viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
              contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
+                  contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier;
 
 /**

@@ -34,11 +34,13 @@
     [self.registry registerFeatureWithIdentifier:identifier
                                 viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
+                             contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
     XCTAssertThrows([self.registry registerFeatureWithIdentifier:identifier
                                                 viewURIPredicate:viewURIPredicate
                                         contentProviderFactories:@[contentProviderFactory]
+                                             contentReloadPolicy:nil
                                       customJSONSchemaIdentifier:nil]);
 }
 
@@ -53,6 +55,7 @@
     [self.registry registerFeatureWithIdentifier:featureIdentifier
                                 viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
+                             contentReloadPolicy:nil
                       customJSONSchemaIdentifier:customJSONSchemaIdentifier];
     
     HUBFeatureRegistration * const registration = [self.registry featureRegistrationForViewURI:rootViewURI];
@@ -73,6 +76,7 @@
     [self.registry registerFeatureWithIdentifier:@"feature"
                                 viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
+                             contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
@@ -90,11 +94,13 @@
     [self.registry registerFeatureWithIdentifier:@"featureA"
                                 viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
+                             contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
     [self.registry registerFeatureWithIdentifier:@"featureB"
                                 viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
+                             contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
@@ -111,6 +117,7 @@
     [self.registry registerFeatureWithIdentifier:identifier
                                 viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
+                             contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
     [self.registry unregisterFeatureWithIdentifier:identifier];
@@ -119,6 +126,7 @@
     [self.registry registerFeatureWithIdentifier:identifier
                                 viewURIPredicate:viewURIPredicate
                         contentProviderFactories:@[contentProviderFactory]
+                             contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
 }
 

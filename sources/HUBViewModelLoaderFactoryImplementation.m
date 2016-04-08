@@ -40,21 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-#pragma mark - HUBViewModelLoaderFactory
+#pragma mark - API
 
-- (BOOL)canCreateViewModelLoaderForViewURI:(NSURL *)viewURI
+- (id<HUBViewModelLoader>)createViewModelLoaderForViewURI:(NSURL *)viewURI featureRegistration:(HUBFeatureRegistration *)featureRegistration
 {
-    return [self.featureRegistry featureRegistrationForViewURI:viewURI] != nil;
-}
-
-- (nullable id<HUBViewModelLoader>)createViewModelLoaderForViewURI:(NSURL *)viewURI
-{
-    HUBFeatureRegistration * const featureRegistration = [self.featureRegistry featureRegistrationForViewURI:viewURI];
-    
-    if (featureRegistration == nil) {
-        return nil;
-    }
-    
     NSMutableArray<id<HUBContentProvider>> * const allContentProviders = [NSMutableArray new];
     
     for (id<HUBContentProviderFactory> const factory in featureRegistration.contentProviderFactories) {
@@ -77,6 +66,24 @@ NS_ASSUME_NONNULL_BEGIN
                                                           JSONSchema:JSONSchema
                                            connectivityStateResolver:self.connectivityStateResolver
                                                     initialViewModel:initialViewModel];
+}
+
+#pragma mark - HUBViewModelLoaderFactory
+
+- (BOOL)canCreateViewModelLoaderForViewURI:(NSURL *)viewURI
+{
+    return [self.featureRegistry featureRegistrationForViewURI:viewURI] != nil;
+}
+
+- (nullable id<HUBViewModelLoader>)createViewModelLoaderForViewURI:(NSURL *)viewURI
+{
+    HUBFeatureRegistration * const featureRegistration = [self.featureRegistry featureRegistrationForViewURI:viewURI];
+    
+    if (featureRegistration == nil) {
+        return nil;
+    }
+    
+    return [self createViewModelLoaderForViewURI:viewURI featureRegistration:featureRegistration];
 }
 
 #pragma mark - Private utilities

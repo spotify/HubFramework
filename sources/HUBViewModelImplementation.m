@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize bodyComponentModels = _bodyComponentModels;
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
+@synthesize buildDate = _buildDate;
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
                  featureIdentifier:(NSString *)featureIdentifier
@@ -36,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
         _bodyComponentModels = bodyComponentModels;
         _extensionURL = [extensionURL copy];
         _customData = customData;
+        _buildDate = [NSDate date];
     }
     
     return self;

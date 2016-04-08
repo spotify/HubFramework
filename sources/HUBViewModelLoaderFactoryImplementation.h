@@ -4,6 +4,7 @@
 @class HUBFeatureRegistryImplementation;
 @class HUBJSONSchemaRegistryImplementation;
 @class HUBInitialViewModelRegistry;
+@class HUBFeatureRegistration;
 @protocol HUBConnectivityStateResolver;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -25,6 +26,15 @@ NS_ASSUME_NONNULL_BEGIN
                initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
               defaultComponentNamespace:(NSString *)defaultComponentNamespace
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver HUB_DESIGNATED_INITIALIZER;
+
+/**
+ *  Create a view model loader for a given view URI, using a feature registration
+ *
+ *  @param viewURI The view URI to create a view model loader for
+ *  @param featureRegistration The feature registration object to use to setup the view model loader
+ */
+- (id<HUBViewModelLoader>)createViewModelLoaderForViewURI:(NSURL *)viewURI
+                                      featureRegistration:(HUBFeatureRegistration *)featureRegistration;
 
 @end
 

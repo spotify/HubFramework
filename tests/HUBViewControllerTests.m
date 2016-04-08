@@ -18,10 +18,12 @@
 #import "HUBComponentLayoutManagerMock.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBViewModel.h"
+#import "HUBContentReloadPolicyMock.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
 @property (nonatomic, strong) HUBContentProviderMock *contentProvider;
+@property (nonatomic, strong) HUBContentReloadPolicyMock *contentReloadPolicy;
 @property (nonatomic, strong) HUBComponentIdentifier *componentIdentifier;
 @property (nonatomic, strong) HUBComponentMock *component;
 @property (nonatomic, strong) HUBCollectionViewMock *collectionView;
@@ -43,6 +45,7 @@
     [super setUp];
     
     self.contentProvider = [HUBContentProviderMock new];
+    self.contentReloadPolicy = [HUBContentReloadPolicyMock new];
     
     self.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namspace" name:@"name"];
     self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:self.componentIdentifier];
@@ -74,6 +77,7 @@
     
     self.viewController = [[HUBViewControllerImplementation alloc] initWithViewModelLoader:self.viewModelLoader
                                                                                imageLoader:self.imageLoader
+                                                                       contentReloadPolicy:self.contentReloadPolicy
                                                                      collectionViewFactory:collectionViewFactory
                                                                          componentRegistry:self.componentRegistry
                                                                     componentLayoutManager:componentLayoutManager
@@ -119,9 +123,35 @@
         return HUBContentProviderModeSynchronous;
     };
     
+    self.contentReloadPolicy.shouldReload = YES;
     [self.viewController viewWillAppear:YES];
     
     XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleB);
+}
+
+- (void)testReloadPolicyPreventingReload
+{
+    NSString * const viewModelNavBarTitleA = @"View model A";
+    NSString * const viewModelNavBarTitleB = @"View model B";
+    
+    self.contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        builder.navigationBarTitle = viewModelNavBarTitleA;
+        return HUBContentProviderModeSynchronous;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleA);
+    
+    self.contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+        builder.navigationBarTitle = viewModelNavBarTitleB;
+        return HUBContentProviderModeSynchronous;
+    };
+    
+    self.contentReloadPolicy.shouldReload = NO;
+    [self.viewController viewWillAppear:YES];
+    
+    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleA);
 }
 
 - (void)testHeaderComponentImageLoading
@@ -318,6 +348,8 @@
     [self simulateViewControllerLayoutCycle];
     
     XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)0);
+    
+    self.contentReloadPolicy.shouldReload = YES;
     
     [self.viewController viewWillAppear:YES];
     [self.viewController viewDidLayoutSubviews];
