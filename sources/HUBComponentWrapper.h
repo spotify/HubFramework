@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBHeaderMacros.h"
 
 @protocol HUBComponent;
 @protocol HUBComponentModel;
@@ -62,15 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentIdentifier The identifier that the component was resolved using
  */
 - (instancetype)initWithComponent:(id<HUBComponent>)component
-              componentIdentifier:(HUBComponentIdentifier *)componentIdentifier NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+              componentIdentifier:(HUBComponentIdentifier *)componentIdentifier HUB_DESIGNATED_INITIALIZER;
 
 @end
 

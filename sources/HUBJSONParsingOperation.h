@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBHeaderMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param block The block that contains the logic of the parsing operation
  */
-- (instancetype)initWithBlock:(NSArray<NSObject *> * _Nullable (^)(NSObject *))block NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBlock:(NSArray<NSObject *> * _Nullable (^)(NSObject *))block HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Return an array of parsed values for performing this operation with a certain input
@@ -21,14 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  couldn't be successfully performed.
  */
 - (nullable NSArray<NSObject *> *)parsedValuesForInput:(NSObject *)input;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
 
 @end
 

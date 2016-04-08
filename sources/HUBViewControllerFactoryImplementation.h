@@ -1,4 +1,5 @@
 #import "HUBViewControllerFactory.h"
+#import "HUBHeaderMacros.h"
 
 @protocol HUBImageLoaderFactory;
 @protocol HUBComponentLayoutManager;
@@ -24,15 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
                             imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
-                        componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+                        componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager HUB_DESIGNATED_INITIALIZER;
 
 @end
 

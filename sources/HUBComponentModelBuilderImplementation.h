@@ -1,5 +1,6 @@
 #import "HUBComponentModelBuilder.h"
 #import "HUBJSONCompatibleBuilder.h"
+#import "HUBHeaderMacros.h"
 
 @protocol HUBJSONSchema;
 @class HUBComponentModelImplementation;
@@ -32,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
                       featureIdentifier:(NSString *)featureIdentifier
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
-              defaultComponentNamespace:(NSString *)defaultComponentNamespace NS_DESIGNATED_INITIALIZER;
+              defaultComponentNamespace:(NSString *)defaultComponentNamespace HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Build an instance of `HUBComponentModelImplementation` from the data contained in this builder
@@ -42,14 +43,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  This method returns `nil` if the builder does not contain a `componentName`.
  */
 - (nullable HUBComponentModelImplementation *)buildForIndex:(NSUInteger)index;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
 
 @end
 

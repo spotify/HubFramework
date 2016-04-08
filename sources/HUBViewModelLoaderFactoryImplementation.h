@@ -1,4 +1,5 @@
 #import "HUBViewModelLoaderFactory.h"
+#import "HUBHeaderMacros.h"
 
 @class HUBFeatureRegistryImplementation;
 @class HUBJSONSchemaRegistryImplementation;
@@ -23,15 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
                      JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
                initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
               defaultComponentNamespace:(NSString *)defaultComponentNamespace
-              connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+              connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver HUB_DESIGNATED_INITIALIZER;
 
 @end
 

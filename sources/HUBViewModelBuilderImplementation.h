@@ -1,5 +1,6 @@
 #import "HUBViewModelBuilder.h"
 #import "HUBJSONCompatibleBuilder.h"
+#import "HUBHeaderMacros.h"
 
 @protocol HUBJSONSchema;
 @class HUBViewModelImplementation;
@@ -19,20 +20,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                                JSONSchema:(id<HUBJSONSchema>)JSONSchema
-                defaultComponentNamespace:(NSString *)defaultComponentNamespace NS_DESIGNATED_INITIALIZER;
+                defaultComponentNamespace:(NSString *)defaultComponentNamespace HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Build an instance of `HUBViewModelImplementation` from the data contained in this builder
  */
 - (HUBViewModelImplementation *)build;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
 
 @end
 

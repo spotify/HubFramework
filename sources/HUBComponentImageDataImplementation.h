@@ -1,4 +1,5 @@
 #import "HUBComponentImageData.h"
+#import "HUBHeaderMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -30,15 +31,7 @@ extern NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle st
                              style:(HUBComponentImageStyle)style
                                URL:(nullable NSURL *)URL
                         localImage:(nullable UIImage *)localImage
-                    iconIdentifier:(nullable NSString *)iconIdentifier NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+                    iconIdentifier:(nullable NSString *)iconIdentifier HUB_DESIGNATED_INITIALIZER;
 
 @end
 

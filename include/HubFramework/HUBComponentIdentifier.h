@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBHeaderMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentName The name part of the identifier
  */
 - (instancetype)initWithNamespace:(NSString *)componentNamespace
-                             name:(NSString *)componentName NS_DESIGNATED_INITIALIZER;
+                             name:(NSString *)componentName HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Compare if another component identifier is the same.
@@ -36,14 +36,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  Returns @YES if namespace and name are equal in both objects.
  */
 - (BOOL)isEqualToComponentIdentifier:(HUBComponentIdentifier *)componentIdentifier;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
 
 @end
 

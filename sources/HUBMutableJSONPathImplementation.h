@@ -1,4 +1,5 @@
 #import "HUBMutableJSONPath.h"
+#import "HUBHeaderMacros.h"
 
 @class HUBJSONParsingOperation;
 
@@ -17,15 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param parsingOperations The parsing operations that this path will consist of
  */
-- (instancetype)initWithParsingOperations:(NSArray<HUBJSONParsingOperation *> *)parsingOperations NS_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class needs to be initialized with its designated initializer
-- (instancetype)init NS_UNAVAILABLE;
-
-/// This class needs to be initialized with its designated initializer
-+ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)initWithParsingOperations:(NSArray<HUBJSONParsingOperation *> *)parsingOperations HUB_DESIGNATED_INITIALIZER;
 
 @end
 
