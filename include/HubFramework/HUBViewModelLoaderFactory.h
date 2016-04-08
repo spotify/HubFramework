@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Create a view model loader that matches a certain view URI
  *
- *  @param viewURI The view URI to return a view model loader for
+ *  @param viewURI The view URI to create a view model loader for
  *
  *  @return A loader that can be used to load a view model that matches the supplied view URI, or `nil`
  *  if the view URI couldn't be recognized by the Hub Framework. This method also returns `nil` (and
