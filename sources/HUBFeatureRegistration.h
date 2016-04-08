@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol HUBContentProviderFactory;
+@protocol HUBContentReloadPolicy;
 @class HUBViewURIPredicate;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The content provider factories that the feature is using
 @property (nonatomic, strong, readonly) NSArray<id<HUBContentProviderFactory>> *contentProviderFactories;
 
+/// Any custom content reload policy that the feature is using
+@property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
+
 /// The identifier of any custom JSON schema that the feature is using
 @property (nonatomic, copy, nullable, readonly) NSString *customJSONSchemaIdentifier;
 
@@ -26,11 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureIdentifier The identifier of the feature
  *  @param viewURIPredicate The view URI predicate that the feature will use
  *  @param contentProviderFactories The content provider factories that the feature will use
+ *  @param contentReloadPolicy Any custom content reload policy that the feature will use
  *  @param customJSONSchemaIdentifier The identifier of any custom JSON schema the feature will use
  */
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                          viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
                  contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
+                      contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers

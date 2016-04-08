@@ -46,6 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerFeatureWithIdentifier:(NSString *)featureIdentifier
                      viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
              contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
+                  contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
 {
     NSParameterAssert(featureIdentifier != nil);
@@ -62,6 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBFeatureRegistration * const registration = [[HUBFeatureRegistration alloc] initWithFeatureIdentifier:featureIdentifier
                                                                                            viewURIPredicate:viewURIPredicate
                                                                                    contentProviderFactories:contentProviderFactories
+                                                                                        contentReloadPolicy:contentReloadPolicy
                                                                                  customJSONSchemaIdentifier:customJSONSchemaIdentifier];
     
     self.registrationsByIdentifier[registration.featureIdentifier] = registration;

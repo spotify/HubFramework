@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBViewModel <HUBSerializable>
 
+#pragma mark - Identifiers
+
 /**
  *  The identifier of the view
  *
@@ -45,12 +47,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy, readonly, nullable) NSString *entityIdentifier;
 
+#pragma mark - Navigation bar title
+
 /**
  *  The title that the view should have in the navigation bar
  *
  *  In case the view has a component-based header, the value of this property is ignored by the framework.
  */
 @property (nonatomic, copy, readonly, nullable) NSString *navigationBarTitle;
+
+#pragma mark - Component models
 
 /**
  *  The model for any component that make up the view's header
@@ -69,6 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly) NSArray<id<HUBComponentModel>> *bodyComponentModels;
 
+#pragma mark - Metadata
+
 /**
  *  Any HTTP URL from which data can be downloaded to extend this view model
  *
@@ -83,6 +91,15 @@ NS_ASSUME_NONNULL_BEGIN
  *  This dictionary contains any custom data passed from the server side, or added in the local content loading process.
  */
 @property (nonatomic, strong, readonly, nullable) NSDictionary<NSString *, NSObject *> *customData;
+
+/**
+ *  The date when this view model was built by the Hub Framework
+ *
+ *  You can use this property to determine the age of the view model, to make decisions on whether to reload a view's
+ *  content or not. It will be set when the view model is built by a `HUBViewModelBuilder` according to the current date
+ *  of the device.
+ */
+@property (nonatomic, strong, readonly) NSDate *buildDate;
 
 @end
 

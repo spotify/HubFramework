@@ -1,6 +1,7 @@
 #import "HUBViewControllerFactoryImplementation.h"
 
 #import "HUBViewModelLoaderFactoryImplementation.h"
+#import "HUBFeatureRegistryImplementation.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBImageLoaderFactory.h"
 #import "HUBFeatureRegistration.h"
@@ -14,9 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) HUBViewModelLoaderFactoryImplementation *viewModelLoaderFactory;
 @property (nonatomic, strong, readonly) id<HUBImageLoaderFactory> imageLoaderFactory;
+@property (nonatomic, strong, readonly) HUBFeatureRegistryImplementation *featureRegistry;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
-@property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
+@property (nonatomic, strong, readonly) id<HUBContentReloadPolicy> defaultContentReloadPolicy;
+@property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 
 @end
 
@@ -24,13 +27,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithViewModelLoaderFactory:(HUBViewModelLoaderFactoryImplementation *)viewModelLoaderFactory
                             imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
+                               featureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
+                    defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
 {
     NSParameterAssert(viewModelLoaderFactory != nil);
     NSParameterAssert(imageLoaderFactory != nil);
+    NSParameterAssert(featureRegistry != nil);
     NSParameterAssert(componentRegistry != nil);
+    NSParameterAssert(initialViewModelRegistry != nil);
+    NSParameterAssert(defaultContentReloadPolicy != nil);
     NSParameterAssert(componentLayoutManager != nil);
     
     self = [super init];
@@ -38,9 +46,11 @@ NS_ASSUME_NONNULL_BEGIN
     if (self) {
         _viewModelLoaderFactory = viewModelLoaderFactory;
         _imageLoaderFactory = imageLoaderFactory;
+        _featureRegistry = featureRegistry;
         _componentRegistry = componentRegistry;
-        _componentLayoutManager = componentLayoutManager;
         _initialViewModelRegistry = initialViewModelRegistry;
+        _defaultContentReloadPolicy = defaultContentReloadPolicy;
+        _componentLayoutManager = componentLayoutManager;
     }
     
     return self;
@@ -55,17 +65,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI
 {
-    id<HUBViewModelLoader> const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI];
+    HUBFeatureRegistration * const featureRegistration = [self.featureRegistry featureRegistrationForViewURI:viewURI];
     
-    if (viewModelLoader == nil) {
+    if (featureRegistration == nil) {
         return nil;
     }
     
+    id<HUBViewModelLoader> const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI
+                                                                                            featureRegistration:featureRegistration];
+    
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
+    id<HUBContentReloadPolicy> const contentReloadPolicy = featureRegistration.contentReloadPolicy ?: self.defaultContentReloadPolicy;
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
     
     return [[HUBViewControllerImplementation alloc] initWithViewModelLoader:viewModelLoader
                                                                 imageLoader:imageLoader
+                                                        contentReloadPolicy:contentReloadPolicy
                                                       collectionViewFactory:collectionViewFactory
                                                           componentRegistry:self.componentRegistry
                                                      componentLayoutManager:self.componentLayoutManager

@@ -4,6 +4,7 @@
 
 @protocol HUBViewModelLoader;
 @protocol HUBImageLoader;
+@protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
 @protocol HUBViewModel;
 @class HUBCollectionViewFactory;
@@ -20,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewModelLoader The object to use to load view models for the view controller
  *  @param imageLoader The object to use to load images for components
+ *  @param contentReloadPolicy The reload policy to use to determine when to load new content
  *  @param collectionViewFactory The factory to use to create collection views
  *  @param componentRegistry The registry to use to retrieve components to render
  *  @param componentLayoutManager The object that manages layout for components in the view controller
@@ -27,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithViewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
                             imageLoader:(id<HUBImageLoader>)imageLoader
+                    contentReloadPolicy:(id<HUBContentReloadPolicy>)contentReloadPolicy
                   collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
                       componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                  componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager

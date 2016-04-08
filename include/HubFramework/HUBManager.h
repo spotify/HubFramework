@@ -8,6 +8,7 @@
 @protocol HUBConnectivityStateResolver;
 @protocol HUBDataLoaderFactory;
 @protocol HUBImageLoaderFactory;
+@protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
 @class HUBComponentIdentifier;
 
@@ -50,12 +51,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param fallbackComponentName The component name to use in case a content provider supplied an unknown component name.
  *         This name will be resolved using the `HUBComponentFactory` for `defaultComponentNamespace` as a last line of
  *         defense and must always result in a component being created.
+ *  @param defaultContentReloadPolicy The default content reload policy to use for features that do not define their own.
+ *         A content reload policy determines whenever a view belonging to the feature should have its content reloaded.
+ *         See `HUBContentReloadPolicy` for more information.
  *  @param componentLayoutManager The object to use to manage layout for components. This object will be retained.
  */
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                         defaultComponentNamespace:(NSString *)defaultComponentNamespace
                             fallbackComponentName:(NSString *)fallbackComponentName
+                       defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers

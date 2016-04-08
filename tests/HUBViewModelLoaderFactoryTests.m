@@ -48,6 +48,7 @@
     [self.featureRegistry registerFeatureWithIdentifier:@"feature"
                                        viewURIPredicate:viewURIPredicate
                                contentProviderFactories:@[contentProviderFactory]
+                                    contentReloadPolicy:nil
                              customJSONSchemaIdentifier:nil];
     
     XCTAssertTrue([self.viewModelLoaderFactory canCreateViewModelLoaderForViewURI:viewURI]);
@@ -70,6 +71,7 @@
     [self.featureRegistry registerFeatureWithIdentifier:@"feature"
                                        viewURIPredicate:viewURIPredicate
                                contentProviderFactories:@[contentProviderFactory]
+                                    contentReloadPolicy:nil
                              customJSONSchemaIdentifier:nil];
     
     XCTAssertThrows([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
