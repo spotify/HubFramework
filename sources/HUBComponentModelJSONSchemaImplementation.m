@@ -86,4 +86,26 @@
     return self;
 }
 
+#pragma mark - HUBComponentModelJSONSchema
+
+- (id)copy
+{
+    return [[HUBComponentModelJSONSchemaImplementation alloc] initWithIdentifierPath:self.identifierPath
+                                                             componentIdentifierPath:self.componentIdentifierPath
+                                                               contentIdentifierPath:self.contentIdentifierPath
+                                                                           titlePath:self.titlePath
+                                                                        subtitlePath:self.subtitlePath
+                                                                  accessoryTitlePath:self.accessoryTitlePath
+                                                                 descriptionTextPath:self.descriptionTextPath
+                                                         mainImageDataDictionaryPath:self.mainImageDataDictionaryPath
+                                                   backgroundImageDataDictionaryPath:self.backgroundImageDataDictionaryPath
+                                                       customImageDataDictionaryPath:self.customImageDataDictionaryPath
+                                                                       targetURLPath:self.targetURLPath
+                                                targetInitialViewModelDictionaryPath:self.targetInitialViewModelDictionaryPath
+                                                                      customDataPath:self.customDataPath
+                                                                     loggingDataPath:self.loggingDataPath
+                                                                            datePath:self.datePath
+                                                 childComponentModelDictionariesPath:self.childComponentModelDictionariesPath];
+}
+
 @end
