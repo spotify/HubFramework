@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBSerializable.h"
 
 @class HUBComponentIdentifier;
 @protocol HUBComponentImageData;
@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  This protocol defines an immutable component model, for its mutable counterpart; see `HUBComponentModelBuilder`.
  */
-@protocol HUBComponentModel <NSObject>
+@protocol HUBComponentModel <HUBSerializable>
 
 #pragma mark - Identifiers & index
 

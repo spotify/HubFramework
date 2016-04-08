@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBSerializable.h"
 
 @protocol HUBComponentModel;
 
@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  See also `HUBViewController` that acts as the controller for a view that renders the data from a `HUBViewModel`.
  */
-@protocol HUBViewModel <NSObject>
+@protocol HUBViewModel <HUBSerializable>
 
 /**
  *  The identifier of the view

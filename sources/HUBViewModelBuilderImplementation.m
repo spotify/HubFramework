@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponentModelBuilder>)headerComponentModelBuilder
 {
-    return [self getOrCreateBuilderForHeaderComponentModel];
+    return [self getOrCreateBuilderForHeaderComponentModelWithIdentifier:nil];
 }
 
 
@@ -194,7 +194,9 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary * const headerComponentModelDictionary = [viewModelSchema.headerComponentModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
     
     if (headerComponentModelDictionary != nil) {
-        [[self getOrCreateBuilderForHeaderComponentModel] addDataFromJSONDictionary:headerComponentModelDictionary];
+        NSString * const headerComponentModelIdentifier = [self.JSONSchema.componentModelSchema.identifierPath stringFromJSONDictionary:headerComponentModelDictionary];
+        HUBComponentModelBuilderImplementation * const headerComponentModelBuilder = [self getOrCreateBuilderForHeaderComponentModelWithIdentifier:headerComponentModelIdentifier];
+        [headerComponentModelBuilder addDataFromJSONDictionary:headerComponentModelDictionary];
     }
     
     NSArray * const bodyComponentModelDictionaries = [viewModelSchema.bodyComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
@@ -222,7 +224,7 @@ NS_ASSUME_NONNULL_BEGIN
     [builder addDataFromJSONDictionary:dictionary];
 }
 
-- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForHeaderComponentModel
+- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForHeaderComponentModelWithIdentifier:(nullable NSString *)identifier
 {
     HUBComponentModelBuilderImplementation * const existingBuilder = self.headerComponentModelBuilderImplementation;
     
@@ -230,7 +232,11 @@ NS_ASSUME_NONNULL_BEGIN
         return existingBuilder;
     }
     
-    HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:@"header"
+    if (identifier == nil) {
+        identifier = @"header";
+    }
+    
+    HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
                                                                                                                       featureIdentifier:self.featureIdentifier
                                                                                                                              JSONSchema:self.JSONSchema
                                                                                                               defaultComponentNamespace:self.defaultComponentNamespace];

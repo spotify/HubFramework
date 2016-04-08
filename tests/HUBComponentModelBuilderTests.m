@@ -4,7 +4,7 @@
 #import "HUBComponentModelImplementation.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentImageDataBuilder.h"
-#import "HUBComponentImageData.h"
+#import "HUBComponentImageDataImplementation.h"
 #import "HUBViewModel.h"
 #import "HUBViewModelBuilder.h"
 #import "HUBJSONSchemaImplementation.h"
@@ -264,8 +264,11 @@
     XCTAssertEqual([builder buildForIndex:0].childComponentModels.count, (NSUInteger)0);
 }
 
-- (void)testAddingJSONData
+- (void)testAddingJSONDataAndModelSerialization
 {
+    NSString * const featureIdentifier = @"feature";
+    
+    NSString * const modelIdentifier = @"model";
     HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"component"];
     NSString * const contentIdentifier = @"contentIdentifier";
     NSString * const title = @"A title";
@@ -278,6 +281,7 @@
     NSString * const customImageIconIdentifier = @"hologramIcon";
     NSURL * const targetURL = [NSURL URLWithString:@"spotify:hub:target"];
     NSString * const targetTitle = @"Target title";
+    NSString * const targetViewIdentifier = @"identifier";
     NSDictionary * const customData = @{@"custom": @"data"};
     NSDictionary * const loggingData = @{@"logging": @"data"};
     NSString * const child1ModelIdentifier = @"ChildComponent1";
@@ -286,6 +290,7 @@
     HUBComponentIdentifier * const child2ComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"child" name:@"component2"];
     
     NSDictionary * const dictionary = @{
+        @"id": modelIdentifier,
         @"component": componentIdentifier.identifierString,
         @"contentId": contentIdentifier,
         @"title": title,
@@ -294,20 +299,25 @@
         @"description": descriptionText,
         @"images": @{
             @"main": @{
-                @"icon": mainImageIconIdentifier
+                @"icon": mainImageIconIdentifier,
+                @"style": HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleNone)
             },
             @"background": @{
-                @"icon": backgroundImageIconIdentifier
+                @"icon": backgroundImageIconIdentifier,
+                @"style": HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleRectangular)
             },
             @"custom": @{
                 customImageIdentifier: @{
-                    @"icon": customImageIconIdentifier
+                    @"icon": customImageIconIdentifier,
+                    @"style": HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleCircular)
                 }
             }
         },
         @"target": @{
             @"url": targetURL.absoluteString,
             @"view": @{
+                @"id": targetViewIdentifier,
+                @"feature": featureIdentifier,
                 @"title": targetTitle
             }
         },
@@ -328,8 +338,8 @@
     
     NSString * const defaultComponentNamespace = @"namespace";
     
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
+    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:modelIdentifier
+                                                                                  featureIdentifier:featureIdentifier
                                                                           defaultComponentNamespace:defaultComponentNamespace];
     
     [builder addDataFromJSONDictionary:dictionary];
@@ -362,6 +372,9 @@
     id<HUBComponentModel> const childModel2 = model.childComponentModels[1];
     XCTAssertEqualObjects(childModel2.identifier, child2ModelIdentifier);
     XCTAssertEqualObjects(childModel2.componentIdentifier, child2ComponentIdentifier);
+    
+    // Serializing should produce an identical dictionary as was passed as JSON data
+    XCTAssertEqualObjects(dictionary, [model serialize]);
 }
 
 - (void)testAddingJSONDataNotRemovingExistingData

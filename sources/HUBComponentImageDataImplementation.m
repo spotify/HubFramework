@@ -1,6 +1,19 @@
 #import "HUBComponentImageDataImplementation.h"
 
+#import "HUBJSONKeys.h"
+
 NS_ASSUME_NONNULL_BEGIN
+
+NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle style) {
+    switch (style) {
+        case HUBComponentImageStyleNone:
+            return @"none";
+        case HUBComponentImageStyleRectangular:
+            return @"rectangular";
+        case HUBComponentImageStyleCircular:
+            return @"circular";
+    }
+}
 
 @implementation HUBComponentImageDataImplementation
 
@@ -30,6 +43,18 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return self;
+}
+
+#pragma mark - HUBSerializable
+
+- (NSDictionary<NSString *, NSObject<NSCoding> *> *)serialize
+{
+    NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
+    serialization[HUBJSONKeyStyle] = HUBComponentImageStyleStringFromStyle(self.style);
+    serialization[HUBJSONKeyURL] = self.URL.absoluteString;
+    serialization[HUBJSONKeyIcon] = self.iconIdentifier;
+    
+    return [serialization copy];
 }
 
 @end
