@@ -11,92 +11,95 @@
 
 @interface HUBComponentModelBuilderTests : XCTestCase
 
+@property (nonatomic, copy) NSString *defaultComponentNamespace;
+@property (nonatomic, copy) NSString *modelIdentifier;
+@property (nonatomic, copy) NSString *featureIdentifier;
+@property (nonatomic, strong) HUBComponentModelBuilderImplementation *builder;
+
 @end
 
 @implementation HUBComponentModelBuilderTests
 
+#pragma mark - XCTestCase
+
+- (void)setUp
+{
+    [super setUp];
+    
+    self.defaultComponentNamespace = @"default";
+    self.modelIdentifier = @"model";
+    self.featureIdentifier = @"feature";
+    
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:self.defaultComponentNamespace];
+    
+    self.builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:self.modelIdentifier
+                                                                         featureIdentifier:self.featureIdentifier
+                                                                                JSONSchema:JSONSchema
+                                                                 defaultComponentNamespace:self.defaultComponentNamespace];
+}
+
+#pragma mark - Tests
+
 - (void)testPropertyAssignment
 {
-    NSString * const modelIdentifier = @"model";
-    NSString * const featureIdentifier = @"feature";
-    NSString * const componentNamespace = @"namespace";
     NSString * const componentName = @"component";
     
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:componentNamespace];
+    XCTAssertEqualObjects(self.builder.modelIdentifier, self.modelIdentifier);
     
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:modelIdentifier
-                                                                                                                   featureIdentifier:featureIdentifier
-                                                                                                                          JSONSchema:JSONSchema
-                                                                                                           defaultComponentNamespace:componentNamespace];
-    
-    XCTAssertEqualObjects(builder.modelIdentifier, modelIdentifier);
-    
-    builder.componentName = componentName;
-    builder.contentIdentifier = @"content";
-    builder.title = @"title";
-    builder.subtitle = @"subtitle";
-    builder.accessoryTitle = @"accessory";
-    builder.descriptionText = @"description";
-    builder.mainImageDataBuilder.iconIdentifier = @"main";
-    builder.backgroundImageDataBuilder.iconIdentifier = @"background";
-    builder.targetURL = [NSURL URLWithString:@"spotify:hub"];
-    builder.customData = @{@"key": @"value"};
-    builder.loggingData = @{@"logging": @"data"};
-    builder.date = [NSDate date];
+    self.builder.componentName = componentName;
+    self.builder.contentIdentifier = @"content";
+    self.builder.title = @"title";
+    self.builder.subtitle = @"subtitle";
+    self.builder.accessoryTitle = @"accessory";
+    self.builder.descriptionText = @"description";
+    self.builder.mainImageDataBuilder.iconIdentifier = @"main";
+    self.builder.backgroundImageDataBuilder.iconIdentifier = @"background";
+    self.builder.targetURL = [NSURL URLWithString:@"spotify:hub"];
+    self.builder.customData = @{@"key": @"value"};
+    self.builder.loggingData = @{@"logging": @"data"};
+    self.builder.date = [NSDate date];
     
     NSUInteger const modelIndex = 5;
-    HUBComponentModelImplementation * const model = [builder buildForIndex:modelIndex];
-    HUBComponentIdentifier * const expectedComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentNamespace
+    HUBComponentModelImplementation * const model = [self.builder buildForIndex:modelIndex];
+    HUBComponentIdentifier * const expectedComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:self.defaultComponentNamespace
                                                                                                               name:componentName];
     
     XCTAssertEqualObjects(model.componentIdentifier, expectedComponentIdentifier);
-    XCTAssertEqualObjects(model.contentIdentifier, builder.contentIdentifier);
+    XCTAssertEqualObjects(model.contentIdentifier, self.builder.contentIdentifier);
     XCTAssertEqual(model.index, modelIndex);
-    XCTAssertEqualObjects(model.title, builder.title);
-    XCTAssertEqualObjects(model.subtitle, builder.subtitle);
-    XCTAssertEqualObjects(model.accessoryTitle, builder.accessoryTitle);
-    XCTAssertEqualObjects(model.descriptionText, builder.descriptionText);
-    XCTAssertEqualObjects(model.mainImageData.iconIdentifier, builder.mainImageDataBuilder.iconIdentifier);
-    XCTAssertEqualObjects(model.backgroundImageData.iconIdentifier, builder.backgroundImageDataBuilder.iconIdentifier);
-    XCTAssertEqualObjects(model.targetURL, builder.targetURL);
-    XCTAssertEqualObjects(model.customData, builder.customData);
-    XCTAssertEqualObjects(model.loggingData, builder.loggingData);
-    XCTAssertEqualObjects(model.date, builder.date);
+    XCTAssertEqualObjects(model.title, self.builder.title);
+    XCTAssertEqualObjects(model.subtitle, self.builder.subtitle);
+    XCTAssertEqualObjects(model.accessoryTitle, self.builder.accessoryTitle);
+    XCTAssertEqualObjects(model.descriptionText, self.builder.descriptionText);
+    XCTAssertEqualObjects(model.mainImageData.iconIdentifier, self.builder.mainImageDataBuilder.iconIdentifier);
+    XCTAssertEqualObjects(model.backgroundImageData.iconIdentifier, self.builder.backgroundImageDataBuilder.iconIdentifier);
+    XCTAssertEqualObjects(model.targetURL, self.builder.targetURL);
+    XCTAssertEqualObjects(model.customData, self.builder.customData);
+    XCTAssertEqualObjects(model.loggingData, self.builder.loggingData);
+    XCTAssertEqualObjects(model.date, self.builder.date);
 }
 
 - (void)testOverridingDefaultComponentNamespace
 {
     NSString * const namespaceOverride = @"namespace-override";
     
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"namespace"];
+    self.builder.componentNamespace = namespaceOverride;
+    self.builder.componentName = @"component";
     
-    builder.componentNamespace = namespaceOverride;
-    builder.componentName = @"component";
-    
-    XCTAssertEqualObjects([builder buildForIndex:0].componentIdentifier.componentNamespace, namespaceOverride);
+    XCTAssertEqualObjects([self.builder buildForIndex:0].componentIdentifier.componentNamespace, namespaceOverride);
 }
 
 - (void)testMissingComponentNameProducingNilInstance
 {
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"namespace"];
-    
-    XCTAssertNil([builder buildForIndex:0]);
+    XCTAssertNil([self.builder buildForIndex:0]);
 }
 
 - (void)testDefaultImageTypes
 {
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"namespace"];
-    
-    builder.componentName = @"component";
-    builder.mainImageDataBuilder.iconIdentifier = @"icon";
-    builder.backgroundImageDataBuilder.iconIdentifier = @"icon";
-    HUBComponentModelImplementation * const model = [builder buildForIndex:0];
+    self.builder.componentName = @"component";
+    self.builder.mainImageDataBuilder.iconIdentifier = @"icon";
+    self.builder.backgroundImageDataBuilder.iconIdentifier = @"icon";
+    HUBComponentModelImplementation * const model = [self.builder buildForIndex:0];
     
     XCTAssertEqual(model.mainImageData.type, HUBComponentImageTypeMain);
     XCTAssertEqual(model.backgroundImageData.type, HUBComponentImageTypeBackground);
@@ -104,42 +107,34 @@
 
 - (void)testImageConvenienceAPIs
 {
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"namespace"];
+    self.builder.componentName = @"component";
+    self.builder.mainImageURL = [NSURL URLWithString:@"https://spotify.mainImage"];
+    self.builder.mainImage = [UIImage new];
+    self.builder.backgroundImageURL = [NSURL URLWithString:@"https://spotify.mainImage"];
+    self.builder.backgroundImage = [UIImage new];
     
-    builder.componentName = @"component";
-    builder.mainImageURL = [NSURL URLWithString:@"https://spotify.mainImage"];
-    builder.mainImage = [UIImage new];
-    builder.backgroundImageURL = [NSURL URLWithString:@"https://spotify.mainImage"];
-    builder.backgroundImage = [UIImage new];
-    
-    XCTAssertEqualObjects(builder.mainImageDataBuilder.URL, builder.mainImageURL);
-    XCTAssertEqual(builder.mainImageDataBuilder.localImage, builder.mainImage);
-    XCTAssertEqualObjects(builder.backgroundImageDataBuilder.URL, builder.backgroundImageURL);
-    XCTAssertEqual(builder.backgroundImageDataBuilder.localImage, builder.backgroundImage);
+    XCTAssertEqualObjects(self.builder.mainImageDataBuilder.URL, self.builder.mainImageURL);
+    XCTAssertEqual(self.builder.mainImageDataBuilder.localImage, self.builder.mainImage);
+    XCTAssertEqualObjects(self.builder.backgroundImageDataBuilder.URL, self.builder.backgroundImageURL);
+    XCTAssertEqual(self.builder.backgroundImageDataBuilder.localImage, self.builder.backgroundImage);
 }
 
 - (void)testCustomImageDataBuilder
 {
-    HUBComponentModelBuilderImplementation * const componentModelBuilder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                                featureIdentifier:@"feature"
-                                                                                        defaultComponentNamespace:@"namespace"];
-    
-    componentModelBuilder.componentName = @"component";
+    self.builder.componentName = @"component";
     
     NSString * const customImageIdentifier = @"customImage";
     
-    XCTAssertFalse([componentModelBuilder builderExistsForCustomImageDataWithIdentifier:customImageIdentifier]);
+    XCTAssertFalse([self.builder builderExistsForCustomImageDataWithIdentifier:customImageIdentifier]);
     
-    id<HUBComponentImageDataBuilder> const imageDataBuilder = [componentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier];
-    XCTAssertTrue([componentModelBuilder builderExistsForCustomImageDataWithIdentifier:customImageIdentifier]);
+    id<HUBComponentImageDataBuilder> const imageDataBuilder = [self.builder builderForCustomImageDataWithIdentifier:customImageIdentifier];
+    XCTAssertTrue([self.builder builderExistsForCustomImageDataWithIdentifier:customImageIdentifier]);
     imageDataBuilder.iconIdentifier = @"icon";
     
     NSString * const emptyCustomImageBuilderIdentifier = @"empty";
-    [componentModelBuilder builderForCustomImageDataWithIdentifier:emptyCustomImageBuilderIdentifier];
+    [self.builder builderForCustomImageDataWithIdentifier:emptyCustomImageBuilderIdentifier];
     
-    HUBComponentModelImplementation * const componentModel = [componentModelBuilder buildForIndex:0];
+    HUBComponentModelImplementation * const componentModel = [self.builder buildForIndex:0];
     id<HUBComponentImageData> const customImageData = componentModel.customImageData[customImageIdentifier];
     
     XCTAssertEqualObjects(customImageData.identifier, customImageIdentifier);
@@ -151,74 +146,52 @@
 
 - (void)testTargetInitialViewModelBuilderLazyInit
 {
-    NSString * const featureIdentifier = @"feature";
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:featureIdentifier
-                                                                          defaultComponentNamespace:@"namespace"];
+    self.builder.componentName = @"component";
     
-    builder.componentName = @"component";
+    XCTAssertNil([self.builder buildForIndex:0].targetInitialViewModel);
     
-    XCTAssertNil([builder buildForIndex:0].targetInitialViewModel);
-    
-    builder.targetInitialViewModelBuilder.navigationBarTitle = @"hello";
-    XCTAssertEqualObjects([builder buildForIndex:0].targetInitialViewModel.featureIdentifier, featureIdentifier);
+    self.builder.targetInitialViewModelBuilder.navigationBarTitle = @"hello";
+    XCTAssertEqualObjects([self.builder buildForIndex:0].targetInitialViewModel.featureIdentifier, self.featureIdentifier);
 }
 
 - (void)testCreatingChildComponentModel
 {
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"namespace"];
-    
     NSString * const childModelIdentifier = @"childModel";
-    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
+    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
     
     XCTAssertEqualObjects(childBuilder.modelIdentifier, childModelIdentifier);
-    XCTAssertTrue([builder builderForChildComponentModelWithIdentifier:childModelIdentifier]);
+    XCTAssertTrue([self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier]);
 }
 
 - (void)testChildComponentModelBuilderReuse
 {
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"namespace"];
-    
     NSString * const childModelIdentifier = @"childModel";
-    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
+    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
     
-    XCTAssertEqual([builder builderForChildComponentModelWithIdentifier:childModelIdentifier], childBuilder);
+    XCTAssertEqual([self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier], childBuilder);
 }
 
 - (void)testChildComponentModelFeatureIdentifierSameAsParent
 {
-    NSString * const featureIdentifier = @"feature";
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:featureIdentifier
-                                                                          defaultComponentNamespace:@"namespace"];
-    
-    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:@"identifier"];
-    XCTAssertEqualObjects(childBuilder.targetInitialViewModelBuilder.featureIdentifier, featureIdentifier);
+    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildComponentModelWithIdentifier:@"identifier"];
+    XCTAssertEqualObjects(childBuilder.targetInitialViewModelBuilder.featureIdentifier, self.featureIdentifier);
 }
 
 - (void)testChildComponentModelPreferredIndexRespected
 {
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"namespace"];
-    
-    builder.componentName = @"component";
+    self.builder.componentName = @"component";
     
     NSString * const childIdentifierA = @"componentA";
-    id<HUBComponentModelBuilder> const childBuilderA = [builder builderForChildComponentModelWithIdentifier:childIdentifierA];
+    id<HUBComponentModelBuilder> const childBuilderA = [self.builder builderForChildComponentModelWithIdentifier:childIdentifierA];
     childBuilderA.preferredIndex = @1;
     childBuilderA.componentName = @"component";
     
     NSString * const childIdentifierB = @"componentB";
-    id<HUBComponentModelBuilder> const childBuilderB = [builder builderForChildComponentModelWithIdentifier:childIdentifierB];
+    id<HUBComponentModelBuilder> const childBuilderB = [self.builder builderForChildComponentModelWithIdentifier:childIdentifierB];
     childBuilderB.preferredIndex = @0;
     childBuilderB.componentName = @"component";
     
-    HUBComponentModelImplementation * const model = [builder buildForIndex:0];
+    HUBComponentModelImplementation * const model = [self.builder buildForIndex:0];
     XCTAssertEqual(model.childComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifierB);
     XCTAssertEqual(model.childComponentModels[0].index, (NSUInteger)0);
@@ -228,18 +201,14 @@
 
 - (void)testChildComponentModelOutOfBoundsPreferredIndexHandled
 {
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"namespace"];
-    
-    builder.componentName = @"component";
+    self.builder.componentName = @"component";
     
     NSString * const childIdentifier = @"child";
-    id<HUBComponentModelBuilder> const childBuilder = [builder builderForChildComponentModelWithIdentifier:childIdentifier];
+    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildComponentModelWithIdentifier:childIdentifier];
     childBuilder.componentName = @"component";
     childBuilder.preferredIndex = @99;
     
-    HUBComponentModelImplementation * const model = [builder buildForIndex:0];
+    HUBComponentModelImplementation * const model = [self.builder buildForIndex:0];
     XCTAssertEqual(model.childComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifier);
     XCTAssertEqual(model.childComponentModels[0].index, (NSUInteger)0);
@@ -247,21 +216,17 @@
 
 - (void)testRemovingAllChildComponentModels
 {
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"namespace"];
+    self.builder.componentName = @"component";
     
-    builder.componentName = @"component";
+    [self.builder builderForChildComponentModelWithIdentifier:@"child1"].componentName = @"component";
+    [self.builder builderForChildComponentModelWithIdentifier:@"child2"].componentName = @"component";
+    [self.builder builderForChildComponentModelWithIdentifier:@"child3"].componentName = @"component";
     
-    [builder builderForChildComponentModelWithIdentifier:@"child1"].componentName = @"component";
-    [builder builderForChildComponentModelWithIdentifier:@"child2"].componentName = @"component";
-    [builder builderForChildComponentModelWithIdentifier:@"child3"].componentName = @"component";
+    XCTAssertEqual([self.builder buildForIndex:0].childComponentModels.count, (NSUInteger)3);
     
-    XCTAssertEqual([builder buildForIndex:0].childComponentModels.count, (NSUInteger)3);
+    [self.builder removeAllChildComponentModelBuilders];
     
-    [builder removeAllChildComponentModelBuilders];
-    
-    XCTAssertEqual([builder buildForIndex:0].childComponentModels.count, (NSUInteger)0);
+    XCTAssertEqual([self.builder buildForIndex:0].childComponentModels.count, (NSUInteger)0);
 }
 
 - (void)testAddingJSONDataAndModelSerialization
@@ -336,14 +301,8 @@
         ]
     };
     
-    NSString * const defaultComponentNamespace = @"namespace";
-    
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:modelIdentifier
-                                                                                  featureIdentifier:featureIdentifier
-                                                                          defaultComponentNamespace:defaultComponentNamespace];
-    
-    [builder addDataFromJSONDictionary:dictionary];
-    HUBComponentModelImplementation * const model = [builder buildForIndex:0];
+    [self.builder addDataFromJSONDictionary:dictionary];
+    HUBComponentModelImplementation * const model = [self.builder buildForIndex:0];
     
     XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
     XCTAssertEqualObjects(model.contentIdentifier, contentIdentifier);
@@ -379,48 +338,40 @@
 
 - (void)testAddingJSONDataNotRemovingExistingData
 {
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"default"];
-    
     NSDate * const currentDate = [NSDate date];
     
-    builder.componentNamespace = @"namespace";
-    builder.componentName = @"name";
-    builder.contentIdentifier = @"content";
-    builder.preferredIndex = @(33);
-    builder.title = @"title";
-    builder.subtitle = @"subtitle";
-    builder.accessoryTitle = @"accessory title";
-    builder.descriptionText = @"description text";
-    builder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
-    builder.loggingData = @{@"logging": @"data"};
-    builder.date = currentDate;
-    builder.customData = @{@"custom": @"data"};
+    self.builder.componentNamespace = @"namespace";
+    self.builder.componentName = @"name";
+    self.builder.contentIdentifier = @"content";
+    self.builder.preferredIndex = @(33);
+    self.builder.title = @"title";
+    self.builder.subtitle = @"subtitle";
+    self.builder.accessoryTitle = @"accessory title";
+    self.builder.descriptionText = @"description text";
+    self.builder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
+    self.builder.loggingData = @{@"logging": @"data"};
+    self.builder.date = currentDate;
+    self.builder.customData = @{@"custom": @"data"};
     
-    [builder addDataFromJSONDictionary:@{}];
+    [self.builder addDataFromJSONDictionary:@{}];
     
-    XCTAssertEqualObjects(builder.componentNamespace, @"namespace");
-    XCTAssertEqualObjects(builder.componentName, @"name");
-    XCTAssertEqualObjects(builder.contentIdentifier, @"content");
-    XCTAssertEqualObjects(builder.preferredIndex, @(33));
-    XCTAssertEqualObjects(builder.title, @"title");
-    XCTAssertEqualObjects(builder.subtitle, @"subtitle");
-    XCTAssertEqualObjects(builder.accessoryTitle, @"accessory title");
-    XCTAssertEqualObjects(builder.descriptionText, @"description text");
-    XCTAssertEqualObjects(builder.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
-    XCTAssertEqualObjects(builder.loggingData, @{@"logging": @"data"});
-    XCTAssertEqualObjects(builder.date, currentDate);
-    XCTAssertEqualObjects(builder.customData, @{@"custom": @"data"});
+    XCTAssertEqualObjects(self.builder.componentNamespace, @"namespace");
+    XCTAssertEqualObjects(self.builder.componentName, @"name");
+    XCTAssertEqualObjects(self.builder.contentIdentifier, @"content");
+    XCTAssertEqualObjects(self.builder.preferredIndex, @(33));
+    XCTAssertEqualObjects(self.builder.title, @"title");
+    XCTAssertEqualObjects(self.builder.subtitle, @"subtitle");
+    XCTAssertEqualObjects(self.builder.accessoryTitle, @"accessory title");
+    XCTAssertEqualObjects(self.builder.descriptionText, @"description text");
+    XCTAssertEqualObjects(self.builder.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
+    XCTAssertEqualObjects(self.builder.loggingData, @{@"logging": @"data"});
+    XCTAssertEqualObjects(self.builder.date, currentDate);
+    XCTAssertEqualObjects(self.builder.customData, @{@"custom": @"data"});
 }
 
 - (void)testLoggingDataFromJSONAddedToExistingLoggingData
 {
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"default"];
-    
-    builder.loggingData = @{@"logging": @"data"};
+    self.builder.loggingData = @{@"logging": @"data"};
     
     NSDictionary * const JSONDictionary = @{
         @"logging": @{
@@ -428,23 +379,19 @@
         }
     };
     
-    [builder addDataFromJSONDictionary:JSONDictionary];
+    [self.builder addDataFromJSONDictionary:JSONDictionary];
     
     NSDictionary * const expectedLoggingData = @{
         @"logging": @"data",
         @"another": @"value"
     };
     
-    XCTAssertEqualObjects(builder.loggingData, expectedLoggingData);
+    XCTAssertEqualObjects(self.builder.loggingData, expectedLoggingData);
 }
 
 - (void)testCustomDataFromJSONAddedToExistingCustomData
 {
-    HUBComponentModelBuilderImplementation * const builder = [self createBuilderWithModelIdentifier:@"model"
-                                                                                  featureIdentifier:@"feature"
-                                                                          defaultComponentNamespace:@"default"];
-    
-    builder.customData = @{@"custom": @"data"};
+    self.builder.customData = @{@"custom": @"data"};
     
     NSDictionary * const JSONDictionary = @{
         @"custom": @{
@@ -452,28 +399,14 @@
         }
     };
     
-    [builder addDataFromJSONDictionary:JSONDictionary];
+    [self.builder addDataFromJSONDictionary:JSONDictionary];
     
     NSDictionary * const expectedCustomData = @{
         @"custom": @"data",
         @"another": @"value"
     };
     
-    XCTAssertEqualObjects(builder.customData, expectedCustomData);
-}
-
-#pragma mark - Utilities
-
-- (HUBComponentModelBuilderImplementation *)createBuilderWithModelIdentifier:(NSString *)modelIdentifier
-                                                           featureIdentifier:(NSString *)featureIdentifier
-                                                   defaultComponentNamespace:(NSString *)defaultComponentNamespace
-{
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
-    
-    return [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:modelIdentifier
-                                                                 featureIdentifier:featureIdentifier
-                                                                        JSONSchema:JSONSchema
-                                                         defaultComponentNamespace:defaultComponentNamespace];
+    XCTAssertEqualObjects(self.builder.customData, expectedCustomData);
 }
 
 @end
