@@ -41,4 +41,15 @@
     XCTAssertEqualObjects([viewModelFromSchema.bodyComponentModels firstObject].title, [viewModelFromBuilder.bodyComponentModels firstObject].title);
 }
 
+- (void)testCopy
+{
+    id<HUBJSONSchema> const schema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:@"default"];
+    id<HUBJSONSchema> const copy = [schema copy];
+    
+    // Assert that the copied sub schemas are not the same instance as the original ones
+    XCTAssertNotEqual(schema.viewModelSchema, copy.viewModelSchema);
+    XCTAssertNotEqual(schema.componentModelSchema, copy.componentModelSchema);
+    XCTAssertNotEqual(schema.componentImageDataSchema, copy.componentImageDataSchema);
+}
+
 @end
