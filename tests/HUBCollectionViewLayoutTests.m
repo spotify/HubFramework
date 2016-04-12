@@ -10,6 +10,7 @@
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBJSONSchemaImplementation.h"
+#import "HUBComponentDefaults.h"
 
 @interface HUBCollectionViewLayoutTests : XCTestCase
 
@@ -36,11 +37,12 @@
     self.collectionViewSize = CGSizeMake(320, 400);
     
     NSString * const componentNamespace = @"namespace";
+    NSString * const compactComponentName = @"compact";
     
     self.compactComponent = [HUBComponentMock new];
     [self.compactComponent.layoutTraits addObject:HUBComponentLayoutTraitCompactWidth];
     self.compactComponent.preferredViewSize = CGSizeMake(100, 100);
-    self.compactComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentNamespace name:@"compact"];
+    self.compactComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentNamespace name:compactComponentName];
     
     self.fullWidthComponent = [HUBComponentMock new];
     [self.fullWidthComponent.layoutTraits addObject:HUBComponentLayoutTraitFullWidth];
@@ -57,10 +59,14 @@
     
     self.componentLayoutManager = [HUBComponentLayoutManagerMock new];
     
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:self.compactComponentIdentifier.componentNamespace];
+    HUBComponentDefaults * const componentDefaults = [[HUBComponentDefaults alloc] initWithComponentNamespace:componentNamespace
+                                                                                                componentName:compactComponentName];
+    
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
+    
     self.viewModelBuilder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
                                                                                       JSONSchema:JSONSchema
-                                                                       defaultComponentNamespace:self.compactComponentIdentifier.componentNamespace];
+                                                                               componentDefaults:componentDefaults];
 }
 
 #pragma mark - Tests

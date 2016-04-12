@@ -10,6 +10,7 @@
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBContentProviderMock.h"
 #import "HUBConnectivityStateResolverMock.h"
+#import "HUBComponentDefaults+Testing.h"
 
 @interface HUBViewModelLoaderTests : XCTestCase <HUBViewModelLoaderDelegate>
 
@@ -72,10 +73,11 @@
 
 - (void)testInjectedInitialViewModelUsedInsteadOfContentProviders
 {
-    NSString * const defaultComponentNamespace = @"namespace";
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
     HUBViewModelBuilderImplementation * const viewModelBuilder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
-                                                                                                                           JSONSchema:JSONSchema defaultComponentNamespace:defaultComponentNamespace];
+                                                                                                                           JSONSchema:JSONSchema
+                                                                                                                    componentDefaults:componentDefaults];
     
     viewModelBuilder.navigationBarTitle = @"Pre-computed title";
     id<HUBViewModel> const initialViewModel = [viewModelBuilder build];
@@ -504,14 +506,14 @@
     self.connectivityStateResolver.state = connectivityState;
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:test"];
-    NSString * const defaultComponentNamespace = @"default";
-    HUBJSONSchemaImplementation * const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    HUBJSONSchemaImplementation * const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
     
     self.loader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
                                                           featureIdentifier:@"feature"
-                                                  defaultComponentNamespace:defaultComponentNamespace
                                                            contentProviders:contentProviders
                                                                  JSONSchema:JSONSchema
+                                                          componentDefaults:componentDefaults
                                                   connectivityStateResolver:self.connectivityStateResolver
                                                            initialViewModel:initialViewModel];
     

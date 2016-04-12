@@ -1,6 +1,5 @@
 #import "HUBFeatureRegistry.h"
 
-@protocol HUBDataLoaderFactory;
 @class HUBFeatureRegistration;
 
 NS_ASSUME_NONNULL_BEGIN

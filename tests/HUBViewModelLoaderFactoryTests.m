@@ -9,6 +9,7 @@
 #import "HUBViewModelLoader.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBViewURIPredicate.h"
+#import "HUBComponentDefaults+Testing.h"
 
 @interface HUBViewModelLoaderFactoryTests : XCTestCase
 
@@ -27,14 +28,15 @@
     self.featureRegistry = [HUBFeatureRegistryImplementation new];
     self.defaultComponentNamespace = @"default";
     
-    HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithDefaultComponentNamespace:@"namespace"];
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults];
     HUBInitialViewModelRegistry * const initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
     self.viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:self.featureRegistry
                                                                                         JSONSchemaRegistry:JSONSchemaRegistry
                                                                                   initialViewModelRegistry:initialViewModelRegistry
-                                                                                 defaultComponentNamespace:self.defaultComponentNamespace
+                                                                                         componentDefaults:componentDefaults
                                                                                  connectivityStateResolver:connectivityStateResolver];
 }
 

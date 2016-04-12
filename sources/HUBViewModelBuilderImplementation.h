@@ -3,6 +3,7 @@
 #import "HUBHeaderMacros.h"
 
 @protocol HUBJSONSchema;
+@class HUBComponentDefaults;
 @class HUBViewModelImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -15,12 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param featureIdentifier The identifier of the feature that this builder is for
  *  @param JSONSchema The schema to use to parse data from any added JSON object
- *  @param defaultComponentNamespace The default component namespace that all component builders created
- *         by this builder will have.
+ *  @param componentDefaults The default values to use for component model builders
  */
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                                JSONSchema:(id<HUBJSONSchema>)JSONSchema
-                defaultComponentNamespace:(NSString *)defaultComponentNamespace HUB_DESIGNATED_INITIALIZER;
+                        componentDefaults:(HUBComponentDefaults *)componentDefaults HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Build an instance of `HUBViewModelImplementation` from the data contained in this builder

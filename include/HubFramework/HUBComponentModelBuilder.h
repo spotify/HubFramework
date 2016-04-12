@@ -35,11 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The name of the component that the model should be rendered using
  *
- *  In order for a component model to be successfully built using this builder, this property must be set to
- *  non-`nil`. If the `HUBComponentFactory` corresponding to `componentNamespace` couldn't resolve a component
- *  for this name, the name passed as `fallbackComponentName` when setting up `HUBManager` will be used.
+ *  The default value of this property is the name passed as `fallbackComponentName` when setting up `HUBManager`.
+ *  If the `HUBComponentFactory` corresponding to `componentNamespace` couldn't resolve a component for this name,
+ *  the Hub Framework will fall back to the default value.
  */
-@property (nonatomic, copy, nullable) NSString *componentName;
+@property (nonatomic, copy) NSString *componentName;
 
 /// Any identifier for the model's content, that can be used for content tracking
 @property (nonatomic, copy, nullable) NSString *contentIdentifier;

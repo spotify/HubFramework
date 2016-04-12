@@ -4,6 +4,7 @@
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBViewModelImplementation.h"
 #import "HUBComponentModel.h"
+#import "HUBComponentDefaults+Testing.h"
 
 @interface HUBJSONSchemaTests : XCTestCase
 
@@ -13,14 +14,14 @@
 
 - (void)testViewModelFromJSONDictionary
 {
-    NSString * const defaultComponentNamespace = @"default";
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     NSString * const featureIdentifier = @"feature";
     
-    HUBJSONSchemaImplementation * const schema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
+    HUBJSONSchemaImplementation * const schema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
     
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:featureIdentifier
                                                                                                                   JSONSchema:schema
-                                                                                                   defaultComponentNamespace:defaultComponentNamespace];
+                                                                                                           componentDefaults:componentDefaults];
     
     NSDictionary * const dictionary = @{
         @"body": @[
@@ -43,7 +44,8 @@
 
 - (void)testCopy
 {
-    id<HUBJSONSchema> const schema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:@"default"];
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    id<HUBJSONSchema> const schema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
     id<HUBJSONSchema> const copy = [schema copy];
     
     // Assert that the copied sub schemas are not the same instance as the original ones

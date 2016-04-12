@@ -4,6 +4,7 @@
 #import "HUBComponentImageDataImplementation.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBComponentImageDataJSONSchema.h"
+#import "HUBComponentDefaults+Testing.h"
 
 @interface HUBComponentImageDataBuilderTests : XCTestCase
 
@@ -20,7 +21,8 @@
 {
     [super setUp];
     
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:@"namespace"];
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
     self.builder = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema];
 }
 

@@ -9,6 +9,7 @@
 #import "HUBJSONSchema.h"
 #import "HUBComponentModelJSONSchema.h"
 #import "HUBJSONPath.h"
+#import "HUBComponentDefaults.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
-@property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
+@property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *mainImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *backgroundImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentImageDataBuilderImplementation *> *customImageDataBuilders;
@@ -80,15 +81,10 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     NSMutableArray<id<HUBComponentModel>> * const models = [NSMutableArray new];
-    NSUInteger modelIndex = 0;
     
     for (HUBComponentModelBuilderImplementation * const builder in sortedBuilders) {
-        id<HUBComponentModel> const model = [builder buildForIndex:modelIndex];
-        
-        if (model != nil) {
-            [models addObject:model];
-            modelIndex++;
-        }
+        id<HUBComponentModel> const model = [builder buildForIndex:models.count];
+        [models addObject:model];
     }
     
     return models;
@@ -99,11 +95,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
                       featureIdentifier:(NSString *)featureIdentifier
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
-              defaultComponentNamespace:(NSString *)defaultComponentNamespace
+                      componentDefaults:(HUBComponentDefaults *)componentDefaults
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(JSONSchema != nil);
-    NSParameterAssert(defaultComponentNamespace != nil);
+    NSParameterAssert(componentDefaults != nil);
     
     if (modelIdentifier == nil) {
         modelIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
@@ -113,9 +109,11 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self) {
         _JSONSchema = JSONSchema;
+        _componentDefaults = componentDefaults;
+        
         _modelIdentifier = (NSString *)modelIdentifier;
-        _componentNamespace = [defaultComponentNamespace copy];
-        _defaultComponentNamespace = [defaultComponentNamespace copy];
+        _componentNamespace = [componentDefaults.componentNamespace copy];
+        _componentName = [componentDefaults.componentName copy];
         _featureIdentifier = [featureIdentifier copy];
         _mainImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema];
         _backgroundImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema];
@@ -339,16 +337,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (nullable HUBComponentModelImplementation *)buildForIndex:(NSUInteger)index
+- (HUBComponentModelImplementation *)buildForIndex:(NSUInteger)index
 {
-    NSString * const componentName = self.componentName;
-    
-    if (componentName == nil) {
-        return nil;
-    }
-    
     HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:self.componentNamespace
-                                                                                                      name:componentName];
+                                                                                                      name:self.componentName];
     
     id<HUBComponentImageData> const mainImageData = [self.mainImageDataBuilderImplementation buildWithIdentifier:nil
                                                                                                             type:HUBComponentImageTypeMain];
@@ -412,7 +404,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (self.targetInitialViewModelBuilderImplementation == nil) {
         self.targetInitialViewModelBuilderImplementation = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
                                                                                                                      JSONSchema:self.JSONSchema
-                                                                                                      defaultComponentNamespace:self.defaultComponentNamespace];
+                                                                                                              componentDefaults:self.componentDefaults];
     }
     
     return (HUBViewModelBuilderImplementation *)self.targetInitialViewModelBuilderImplementation;
@@ -432,7 +424,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
                                                                                                                       featureIdentifier:self.featureIdentifier
                                                                                                                              JSONSchema:self.JSONSchema
-                                                                                                              defaultComponentNamespace:self.defaultComponentNamespace];
+                                                                                                                      componentDefaults:self.componentDefaults];
     
     [self.childComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
     [self.childComponentIdentifierOrder addObject:newBuilder.modelIdentifier];

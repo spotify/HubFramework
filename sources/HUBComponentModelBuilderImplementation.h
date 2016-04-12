@@ -3,6 +3,7 @@
 #import "HUBHeaderMacros.h"
 
 @protocol HUBJSONSchema;
+@class HUBComponentDefaults;
 @class HUBComponentModelImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -28,21 +29,19 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param modelIdentifier The identifier of the model to be built. If `nil`, an `NSUUID`-based identifier will be used.
  *  @param featureIdentifier The identifier of the feature that the component will be presented in
  *  @param JSONSchema The schema to use to parse data from any added JSON object
- *  @param defaultComponentNamespace The default component namespace that the builder should have
+ *  @param componentDefaults The default component values that should be used as initial values for this builder
  */
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
                       featureIdentifier:(NSString *)featureIdentifier
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
-              defaultComponentNamespace:(NSString *)defaultComponentNamespace HUB_DESIGNATED_INITIALIZER;
+                      componentDefaults:(HUBComponentDefaults *)componentDefaults HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Build an instance of `HUBComponentModelImplementation` from the data contained in this builder
  *
  *  @param index The index that the produced model will have, either within its parent or within the root list
- *
- *  This method returns `nil` if the builder does not contain a `componentName`.
  */
-- (nullable HUBComponentModelImplementation *)buildForIndex:(NSUInteger)index;
+- (HUBComponentModelImplementation *)buildForIndex:(NSUInteger)index;
 
 @end
 

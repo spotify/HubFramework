@@ -6,6 +6,7 @@
 #import "HUBContentProviderFactory.h"
 #import "HUBJSONSchemaRegistryImplementation.h"
 #import "HUBInitialViewModelRegistry.h"
+#import "HUBComponentDefaults.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBFeatureRegistryImplementation *featureRegistry;
 @property (nonatomic, strong, readonly) HUBJSONSchemaRegistryImplementation *JSONSchemaRegistry;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
-@property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
+@property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 
 @end
@@ -24,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFeatureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                      JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
                initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
-              defaultComponentNamespace:(NSString *)defaultComponentNamespace
+                      componentDefaults:(HUBComponentDefaults *)componentDefaults
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
 {
     self = [super init];
@@ -33,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
         _featureRegistry = featureRegistry;
         _JSONSchemaRegistry = JSONSchemaRegistry;
         _initialViewModelRegistry = initialViewModelRegistry;
-        _defaultComponentNamespace = [defaultComponentNamespace copy];
+        _componentDefaults = componentDefaults;
         _connectivityStateResolver = connectivityStateResolver;
     }
     
@@ -61,9 +62,9 @@ NS_ASSUME_NONNULL_BEGIN
     
     return [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
                                                    featureIdentifier:featureRegistration.featureIdentifier
-                                           defaultComponentNamespace:self.defaultComponentNamespace
                                                     contentProviders:allContentProviders
                                                           JSONSchema:JSONSchema
+                                                   componentDefaults:self.componentDefaults
                                            connectivityStateResolver:self.connectivityStateResolver
                                                     initialViewModel:initialViewModel];
 }

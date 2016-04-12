@@ -1,6 +1,7 @@
 #import <XCTest/XCTest.h>
 
 #import "HUBJSONSchemaRegistryImplementation.h"
+#import "HUBComponentDefaults+Testing.h"
 
 @interface HUBJSONSchemaRegistryTests : XCTestCase
 
@@ -15,7 +16,9 @@
 - (void)setUp
 {
     [super setUp];
-    self.registry = [[HUBJSONSchemaRegistryImplementation alloc] initWithDefaultComponentNamespace:@"namespace"];
+    
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    self.registry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults];
 }
 
 #pragma mark - Tests

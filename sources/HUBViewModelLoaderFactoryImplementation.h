@@ -4,6 +4,7 @@
 @class HUBFeatureRegistryImplementation;
 @class HUBJSONSchemaRegistryImplementation;
 @class HUBInitialViewModelRegistry;
+@class HUBComponentDefaults;
 @class HUBFeatureRegistration;
 @protocol HUBConnectivityStateResolver;
 
@@ -18,13 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureRegistry The feature registry to use to retrieve features registrations
  *  @param JSONSchemaRegistry The JSON schema registry to use to retrieve JSON schemas
  *  @param initialViewModelRegistry The registry to use to retrieve pre-computed view models for initial content
- *  @param defaultComponentNamespace The default namespace that components in loaded view models should have
+ *  @param componentDefaults The default values to use for component model builders created when loading view models
  *  @param connectivityStateResolver The object resolving connectivity states for created view model loaders
  */
 - (instancetype)initWithFeatureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                      JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
                initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
-              defaultComponentNamespace:(NSString *)defaultComponentNamespace
+                      componentDefaults:(HUBComponentDefaults *)componentDefaults
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver HUB_DESIGNATED_INITIALIZER;
 
 /**

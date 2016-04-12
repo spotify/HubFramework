@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBJSONSchemaImplementation ()
 
-@property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
+@property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 
 @end
 
@@ -23,18 +23,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initializers
 
-- (instancetype)initWithDefaultComponentNamespace:(NSString *)defaultComponentNamespace
+- (instancetype)initWithComponentDefaults:(HUBComponentDefaults *)componentDefaults
 {
     return [self initWithViewModelSchema:[HUBViewModelJSONSchemaImplementation new]
                     componentModelSchema:[HUBComponentModelJSONSchemaImplementation new]
                 componentImageDataSchema:[HUBComponentImageDataJSONSchemaImplementation new]
-               defaultComponentNamespace:defaultComponentNamespace];
+                       componentDefaults:componentDefaults];
 }
 
 - (instancetype)initWithViewModelSchema:(id<HUBViewModelJSONSchema>)viewModelSchema
                    componentModelSchema:(id<HUBComponentModelJSONSchema>)componentModelSchema
                componentImageDataSchema:(id<HUBComponentImageDataJSONSchema>)componentImageDataSchema
-              defaultComponentNamespace:(NSString *)defaultComponentNamespace
+                      componentDefaults:(HUBComponentDefaults *)componentDefaults
 {
     self = [super init];
     
@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
         _viewModelSchema = viewModelSchema;
         _componentModelSchema = componentModelSchema;
         _componentImageDataSchema = componentImageDataSchema;
-        _defaultComponentNamespace = [defaultComponentNamespace copy];
+        _componentDefaults = componentDefaults;
     }
     
     return self;
@@ -60,14 +60,14 @@ NS_ASSUME_NONNULL_BEGIN
     return [[HUBJSONSchemaImplementation alloc] initWithViewModelSchema:[self.viewModelSchema copy]
                                                    componentModelSchema:[self.componentModelSchema copy]
                                                componentImageDataSchema:[self.componentImageDataSchema copy]
-                                              defaultComponentNamespace:self.defaultComponentNamespace];
+                                                      componentDefaults:self.componentDefaults];
 }
 
 - (id<HUBViewModel>)viewModelFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary featureIdentifier:(NSString *)featureIdentifier
 {
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:featureIdentifier
                                                                                                                   JSONSchema:self
-                                                                                                   defaultComponentNamespace:self.defaultComponentNamespace];
+                                                                                                           componentDefaults:self.componentDefaults];
     
     [builder addDataFromJSONDictionary:dictionary];
     return [builder build];
