@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// The default component namespace that all component model builders will initially have
 @property (nonatomic, copy, readonly) NSString *componentNamespace;
 
-/// The default compone tname that all component model builders will initially have
+/// The default component name that all component model builders will initially have
 @property (nonatomic, copy, readonly) NSString *componentName;
 
 /**
