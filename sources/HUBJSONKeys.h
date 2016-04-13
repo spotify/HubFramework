@@ -9,6 +9,9 @@ static NSString * const HUBJSONKeyBackground = @"background";
 /// JSON key used to encode the body of an object
 static NSString * const HUBJSONKeyBody = @"body";
 
+/// JSON key used to encode a category
+static NSString * const HUBJSONKeyCategory = @"category";
+
 /// JSON key used to encode children of an object
 static NSString * const HUBJSONKeyChildren = @"children";
 

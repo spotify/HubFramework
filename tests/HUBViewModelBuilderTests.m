@@ -166,12 +166,18 @@
         @"title": navigationBarTitle,
         @"header": @{
             @"id": headerComponentModelIdentifier,
-            @"component": headerComponentIdentifier.identifierString
+            @"component": @{
+                @"id": headerComponentIdentifier.identifierString,
+                @"category": @"headerCategory"
+            }
         },
         @"body": @[
             @{
                 @"id": bodyComponentModelIdentifier,
-                @"component": bodyComponentIdentifier.identifierString
+                @"component": @{
+                    @"id": bodyComponentIdentifier.identifierString,
+                    @"category": @"bodyCategory"
+                }
             }
         ],
         @"extension": extensionURL.absoluteString,
@@ -188,7 +194,9 @@
     XCTAssertEqualObjects(model.entityIdentifier, entityIdentifier);
     XCTAssertEqualObjects(model.navigationBarTitle, navigationBarTitle);
     XCTAssertEqualObjects(model.headerComponentModel.componentIdentifier, headerComponentIdentifier);
+    XCTAssertEqualObjects(model.headerComponentModel.componentCategory, @"headerCategory");
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, bodyComponentIdentifier);
+    XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentCategory, @"bodyCategory");
     XCTAssertEqualObjects(model.extensionURL, extensionURL);
     XCTAssertEqualObjects(model.customData, customData);
     
@@ -203,10 +211,14 @@
     
     NSArray * const array = @[
         @{
-            @"component": firstComponentIdentifier.identifierString
+            @"component": @{
+                @"id": firstComponentIdentifier.identifierString
+            }
         },
         @{
-            @"component": lastComponentIdentifier.identifierString
+            @"component": @{
+                @"id": lastComponentIdentifier.identifierString
+            }
         }
     ];
     
