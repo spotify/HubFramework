@@ -19,6 +19,7 @@
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBViewModel.h"
 #import "HUBContentReloadPolicyMock.h"
+#import "HUBComponentDefaults.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -46,7 +47,6 @@
     
     self.contentProvider = [HUBContentProviderMock new];
     self.contentReloadPolicy = [HUBContentReloadPolicyMock new];
-    
     self.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namspace" name:@"name"];
     self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:self.componentIdentifier];
     self.component = [HUBComponentMock new];
@@ -57,15 +57,18 @@
     id<HUBComponentFactory> const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{self.componentIdentifier.componentName: self.component}];
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:self.componentIdentifier.componentNamespace];
     
+    HUBComponentDefaults * const componentDefaults = [[HUBComponentDefaults alloc] initWithComponentNamespace:self.componentIdentifier.componentNamespace
+                                                                                                componentName:self.componentIdentifier.componentName];
+    
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:@"namespace"];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
     self.viewModelLoader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
                                                                    featureIdentifier:@"feature"
-                                                           defaultComponentNamespace:@"namespace"
                                                                     contentProviders:@[self.contentProvider]
                                                                           JSONSchema:JSONSchema
+                                                                   componentDefaults:componentDefaults
                                                            connectivityStateResolver:connectivityStateResolver
                                                                     initialViewModel:nil];
     

@@ -8,12 +8,13 @@
 #import "HUBViewModel.h"
 #import "HUBViewModelBuilder.h"
 #import "HUBJSONSchemaImplementation.h"
+#import "HUBComponentDefaults+Testing.h"
 
 @interface HUBComponentModelBuilderTests : XCTestCase
 
-@property (nonatomic, copy) NSString *defaultComponentNamespace;
 @property (nonatomic, copy) NSString *modelIdentifier;
 @property (nonatomic, copy) NSString *featureIdentifier;
+@property (nonatomic, strong) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong) HUBComponentModelBuilderImplementation *builder;
 
 @end
@@ -26,27 +27,26 @@
 {
     [super setUp];
     
-    self.defaultComponentNamespace = @"default";
     self.modelIdentifier = @"model";
     self.featureIdentifier = @"feature";
+    self.componentDefaults = [HUBComponentDefaults defaultsForTesting];
     
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithDefaultComponentNamespace:self.defaultComponentNamespace];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults];
     
     self.builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:self.modelIdentifier
                                                                          featureIdentifier:self.featureIdentifier
                                                                                 JSONSchema:JSONSchema
-                                                                 defaultComponentNamespace:self.defaultComponentNamespace];
+                                                                         componentDefaults:self.componentDefaults];
 }
 
 #pragma mark - Tests
 
 - (void)testPropertyAssignment
 {
-    NSString * const componentName = @"component";
-    
     XCTAssertEqualObjects(self.builder.modelIdentifier, self.modelIdentifier);
     
-    self.builder.componentName = componentName;
+    self.builder.componentNamespace = @"namespace";
+    self.builder.componentName = @"name";
     self.builder.contentIdentifier = @"content";
     self.builder.title = @"title";
     self.builder.subtitle = @"subtitle";
@@ -61,10 +61,9 @@
     
     NSUInteger const modelIndex = 5;
     HUBComponentModelImplementation * const model = [self.builder buildForIndex:modelIndex];
-    HUBComponentIdentifier * const expectedComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:self.defaultComponentNamespace
-                                                                                                              name:componentName];
     
-    XCTAssertEqualObjects(model.componentIdentifier, expectedComponentIdentifier);
+    XCTAssertEqualObjects(model.componentIdentifier.componentNamespace, @"namespace");
+    XCTAssertEqualObjects(model.componentIdentifier.componentName, @"name");
     XCTAssertEqualObjects(model.contentIdentifier, self.builder.contentIdentifier);
     XCTAssertEqual(model.index, modelIndex);
     XCTAssertEqualObjects(model.title, self.builder.title);
@@ -79,19 +78,17 @@
     XCTAssertEqualObjects(model.date, self.builder.date);
 }
 
-- (void)testOverridingDefaultComponentNamespace
+- (void)testOverridingDefaultComponentNameAndNamespace
 {
     NSString * const namespaceOverride = @"namespace-override";
+    NSString * const nameOverride = @"name-override";
     
     self.builder.componentNamespace = namespaceOverride;
-    self.builder.componentName = @"component";
+    self.builder.componentName = nameOverride;
     
-    XCTAssertEqualObjects([self.builder buildForIndex:0].componentIdentifier.componentNamespace, namespaceOverride);
-}
-
-- (void)testMissingComponentNameProducingNilInstance
-{
-    XCTAssertNil([self.builder buildForIndex:0]);
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
+    XCTAssertEqualObjects(model.componentIdentifier.componentNamespace, namespaceOverride);
+    XCTAssertEqualObjects(model.componentIdentifier.componentName, nameOverride);
 }
 
 - (void)testDefaultImageTypes

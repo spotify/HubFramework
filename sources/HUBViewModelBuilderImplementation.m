@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBViewModelBuilderImplementation ()
 
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
-@property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
+@property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, nullable) HUBComponentModelBuilderImplementation *headerComponentModelBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *bodyComponentModelBuilders;
 @property (nonatomic, strong, readonly) NSMutableArray<NSString *> *bodyComponentIdentifierOrder;
@@ -34,17 +34,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                                JSONSchema:(id<HUBJSONSchema>)JSONSchema
-                defaultComponentNamespace:(NSString *)defaultComponentNamespace
+                        componentDefaults:(HUBComponentDefaults *)componentDefaults
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(JSONSchema != nil);
-    NSParameterAssert(defaultComponentNamespace != nil);
+    NSParameterAssert(componentDefaults != nil);
     
     self = [super init];
     
     if (self) {
         _JSONSchema = JSONSchema;
-        _defaultComponentNamespace = [defaultComponentNamespace copy];
+        _componentDefaults = componentDefaults;
         _viewIdentifier = [NSUUID UUID].UUIDString;
         _featureIdentifier = [featureIdentifier copy];
         _bodyComponentModelBuilders = [NSMutableDictionary new];
@@ -81,7 +81,6 @@ NS_ASSUME_NONNULL_BEGIN
     return [self getOrCreateBuilderForHeaderComponentModelWithIdentifier:nil];
 }
 
-
 - (void)removeHeaderComponentModelBuilder
 {
     self.headerComponentModelBuilderImplementation = nil;
@@ -107,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isEmpty
 {
-    if (![self headerComponentModelBuilderIsConsideredEmpty]) {
+    if (self.headerComponentModelBuilderImplementation != nil) {
         return NO;
     }
     
@@ -120,13 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HUBViewModelImplementation *)build
 {
-    HUBComponentModelImplementation *headerComponentModel;
-    
-    if (![self headerComponentModelBuilderIsConsideredEmpty]) {
-        headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0];
-    } else {
-        headerComponentModel = nil;
-    }
+    HUBComponentModelImplementation *headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0];
     
     NSArray * const bodyComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.bodyComponentModelBuilders
                                                                                                     identifierOrder:self.bodyComponentIdentifierOrder];
@@ -239,7 +232,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
                                                                                                                       featureIdentifier:self.featureIdentifier
                                                                                                                              JSONSchema:self.JSONSchema
-                                                                                                              defaultComponentNamespace:self.defaultComponentNamespace];
+                                                                                                                      componentDefaults:self.componentDefaults];
     
     self.headerComponentModelBuilderImplementation = newBuilder;
     return newBuilder;
@@ -259,17 +252,12 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
                                                                                                                       featureIdentifier:self.featureIdentifier
                                                                                                                              JSONSchema:self.JSONSchema
-                                                                                                              defaultComponentNamespace:self.defaultComponentNamespace];
+                                                                                                                      componentDefaults:self.componentDefaults];
     
     [self.bodyComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
     [self.bodyComponentIdentifierOrder addObject:newBuilder.modelIdentifier];
     
     return newBuilder;
-}
-
-- (BOOL)headerComponentModelBuilderIsConsideredEmpty
-{
-    return self.headerComponentModelBuilder.componentName == nil;
 }
 
 @end

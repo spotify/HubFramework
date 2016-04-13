@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
-@property (nonatomic, copy, readonly) NSString *defaultComponentNamespace;
 @property (nonatomic, copy, readonly) NSArray<id<HUBContentProvider>> *contentProviders;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
+@property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 @property (nonatomic, strong, nullable) id<HUBViewModel> cachedInitialViewModel;
 @property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *builder;
@@ -33,17 +33,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
-      defaultComponentNamespace:(NSString *)defaultComponentNamespace
                contentProviders:(NSArray<id<HUBContentProvider>> *)contentProviders
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
+              componentDefaults:(HUBComponentDefaults *)componentDefaults
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                initialViewModel:(nullable id<HUBViewModel>)initialViewModel
 {
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(featureIdentifier != nil);
-    NSParameterAssert(defaultComponentNamespace != nil);
     NSParameterAssert(contentProviders.count > 0);
     NSParameterAssert(JSONSchema != nil);
+    NSParameterAssert(componentDefaults != nil);
     NSParameterAssert(connectivityStateResolver != nil);
     
     self = [super init];
@@ -51,9 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
     if (self) {
         _viewURI = [viewURI copy];
         _featureIdentifier = [featureIdentifier copy];
-        _defaultComponentNamespace = [defaultComponentNamespace copy];
         _contentProviders = [contentProviders copy];
         _JSONSchema = JSONSchema;
+        _componentDefaults = componentDefaults;
         _connectivityStateResolver = connectivityStateResolver;
         _cachedInitialViewModel = initialViewModel;
         _currentlyLoadingContentProviderIndex = NSNotFound;
@@ -123,7 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     return [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
                                                                      JSONSchema:self.JSONSchema
-                                                      defaultComponentNamespace:self.defaultComponentNamespace];
+                                                              componentDefaults:self.componentDefaults];
 }
 
 - (nullable id<HUBContentProvider>)currentlyLoadingContentProvider

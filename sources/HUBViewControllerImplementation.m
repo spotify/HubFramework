@@ -277,6 +277,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (cell.componentWrapper == nil) {
         id<HUBComponent> const component = [self.componentRegistry createComponentForIdentifier:componentModel.componentIdentifier];
+        
         HUBComponentWrapper * const componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:component
                                                                                   componentIdentifier:componentModel.componentIdentifier];
         
@@ -366,6 +367,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (!shouldReuseCurrentComponent) {
         id<HUBComponent> const component = [self.componentRegistry createComponentForIdentifier:componentModel.componentIdentifier];
+        
         HUBComponentWrapper * const headerComponentWrapper = [[HUBComponentWrapper alloc] initWithComponent:component
                                                                                         componentIdentifier:componentModel.componentIdentifier];
         

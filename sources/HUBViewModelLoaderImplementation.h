@@ -4,6 +4,7 @@
 @protocol HUBJSONSchema;
 @protocol HUBContentProvider;
 @protocol HUBConnectivityStateResolver;
+@class HUBComponentDefaults;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,17 +16,17 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewURI The URI of the view that this loader will load view models for
  *  @param featureIdentifier The identifier of the feature that this loader will belong to
- *  @param defaultComponentNamespace The default namespace that components in loaded view models should have
  *  @param contentProviders The content providers that will provide content for loaded view models
  *  @param JSONSchema The JSON schema that the loader should use for parsing
+ *  @param componentDefaults The default values to use for component model builders created when loading view models
  *  @param connectivityStateResolver The connectivity state resolver used by the current `HUBManager`
  *  @param initialViewModel Any pre-registered view model that the loader should include
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
-      defaultComponentNamespace:(NSString *)defaultComponentNamespace
                contentProviders:(NSArray<id<HUBContentProvider>> *)contentProviders
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
+              componentDefaults:(HUBComponentDefaults *)componentDefaults
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                initialViewModel:(nullable id<HUBViewModel>)initialViewModel HUB_DESIGNATED_INITIALIZER;
 

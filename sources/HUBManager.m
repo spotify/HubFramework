@@ -7,6 +7,7 @@
 #import "HUBViewControllerFactoryImplementation.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBInitialViewModelRegistry.h"
+#import "HUBComponentDefaults.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -38,17 +39,20 @@ NS_ASSUME_NONNULL_BEGIN
         _connectivityStateResolver = connectivityStateResolver;
         _initialViewModelRegistry = [HUBInitialViewModelRegistry new];
         
-        HUBComponentIdentifier * const fallbackComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:defaultComponentNamespace
-                                                                                                                  name:fallbackComponentName];
+        HUBComponentDefaults * const componentDefaults = [[HUBComponentDefaults alloc] initWithComponentNamespace:defaultComponentNamespace
+                                                                                                    componentName:fallbackComponentName];
+        
+        HUBComponentIdentifier * const fallbackComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentDefaults.componentNamespace
+                                                                                                                  name:componentDefaults.componentName];
         
         _featureRegistry = [HUBFeatureRegistryImplementation new];
         _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:fallbackComponentIdentifier];
-        _JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithDefaultComponentNamespace:defaultComponentNamespace];
+        _JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults];
         
         _viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:_featureRegistry
                                                                                         JSONSchemaRegistry:_JSONSchemaRegistry
                                                                                   initialViewModelRegistry:_initialViewModelRegistry
-                                                                                 defaultComponentNamespace:defaultComponentNamespace
+                                                                                         componentDefaults:componentDefaults
                                                                                  connectivityStateResolver:_connectivityStateResolver];
         
         _viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:_viewModelLoaderFactory

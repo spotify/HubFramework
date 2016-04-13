@@ -1,6 +1,8 @@
 #import "HUBJSONSchemaRegistry.h"
 #import "HUBHeaderMacros.h"
 
+@class HUBComponentDefaults;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBJSONSchemaRegistry` API
@@ -10,11 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> defaultSchema;
 
 /**
- *  Initialize an instance of this class with the default component namespace
+ *  Initialize an instance of this class with a set of component default values
  *
- *  @param defaultComponentNamespace The default component namespace of this Hub Framework instance
+ *  @param componentDefaults The default component values to use when parsing JSON
  */
-- (instancetype)initWithDefaultComponentNamespace:(NSString *)defaultComponentNamespace HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithComponentDefaults:(HUBComponentDefaults *)componentDefaults HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Return a custom JSON schema that has been registered for a certain identifier
