@@ -43,6 +43,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) HUBComponentIdentifier *componentIdentifier;
 
 /**
+ *  The category of the component that this model should be rendered using
+ *
+ *  The Hub Framework uses the value of this property to create a fallback component in case no component could be
+ *  created by any registered `HUBComponentFactory` for the model's `componentIdentifier`
+ */
+@property (nonatomic, copy, readonly) NSString *componentCategory;
+
+/**
  *  Any identifier for the model's content
  *
  *  Useful when using some form of content management system to generate component content on the server side.

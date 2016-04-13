@@ -4,7 +4,9 @@
 
 + (HUBComponentDefaults *)defaultsForTesting
 {
-    return [[HUBComponentDefaults alloc] initWithComponentNamespace:@"namespace" componentName:@"name"];
+    return [[HUBComponentDefaults alloc] initWithComponentNamespace:@"namespace"
+                                                      componentName:@"name"
+                                                  componentCategory:@"category"];
 }
 
 @end

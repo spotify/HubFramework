@@ -10,7 +10,7 @@
 @protocol HUBImageLoaderFactory;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
-@class HUBComponentIdentifier;
+@protocol HUBComponentFallbackHandler;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -40,28 +40,21 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Initialize an instance of this class with a component fallback handler
  *
- *  @param connectivityStateResolver An object responsible for determining the current connectivity state of
- *         the application. This object will be retained.
+ *  @param connectivityStateResolver An object responsible for determining the current connectivity state of the application.
  *  @param imageLoaderFactory A factory that creates image loaders that are used to load images for components
- *  @param defaultComponentNamespace The component namespace that all component models created using this instance of the
- *         Hub Framework will initially have. This namespace can be overriden by any content provider, using either JSON
- *         data or by using a `HUBComponentModelBuilder` directly. A `HUBComponentFactory` must be registered for this
- *         namespace before any view controllers are created through the Hub Framework. This namespace will also be used
- *         as a fallback, in case an assigned namespace couldn't be resolved.
- *  @param fallbackComponentName The component name to use in case a content provider supplied an unknown component name.
- *         This name will be resolved using the `HUBComponentFactory` for `defaultComponentNamespace` as a last line of
- *         defense and must always result in a component being created.
  *  @param defaultContentReloadPolicy The default content reload policy to use for features that do not define their own.
  *         A content reload policy determines whenever a view belonging to the feature should have its content reloaded.
  *         See `HUBContentReloadPolicy` for more information.
- *  @param componentLayoutManager The object to use to manage layout for components. This object will be retained.
+ *  @param componentLayoutManager The object to use to manage layout for components, computing margins using layout traits.
+ *         See `HUBComponentLayoutManager` for more information.
+ *  @param componentFallbackHandler The object to use to fall back to default components in case a component could not be
+ *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
  */
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
-                        defaultComponentNamespace:(NSString *)defaultComponentNamespace
-                            fallbackComponentName:(NSString *)fallbackComponentName
                        defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
-                           componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager HUB_DESIGNATED_INITIALIZER;
+                           componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler HUB_DESIGNATED_INITIALIZER;
 
 @end
 

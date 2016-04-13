@@ -4,24 +4,25 @@
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentFactory.h"
 #import "HUBComponentModel.h"
+#import "HUBComponentFallbackHandler.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBComponentRegistryImplementation ()
 
-@property (nonatomic, copy, readonly) HUBComponentIdentifier *fallbackComponentIdentifier;
+@property (nonatomic, strong, readonly) id<HUBComponentFallbackHandler> fallbackHandler;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id<HUBComponentFactory>> *componentFactories;
 
 @end
 
 @implementation HUBComponentRegistryImplementation
 
-- (instancetype)initWithFallbackComponentIdentifier:(HUBComponentIdentifier *)fallbackComponentIdentifier
+- (instancetype)initWithFallbackHandler:(id<HUBComponentFallbackHandler>)fallbackHandler
 {
     self = [super init];
     
     if (self) {
-        _fallbackComponentIdentifier = [fallbackComponentIdentifier copy];
+        _fallbackHandler = fallbackHandler;
         _componentFactories = [NSMutableDictionary new];
     }
     
@@ -30,16 +31,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (id<HUBComponent>)createComponentForIdentifier:(HUBComponentIdentifier *)identifier
+- (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model
 {
-    id<HUBComponentFactory> const factory = self.componentFactories[identifier.componentNamespace];
-    id<HUBComponent> const component = [factory createComponentForName:identifier.componentName];
+    id<HUBComponentFactory> const factory = self.componentFactories[model.componentIdentifier.componentNamespace];
+    id<HUBComponent> const component = [factory createComponentForName:model.componentIdentifier.componentName];
     
     if (component != nil) {
         return component;
     }
     
-    return [self createFallbackComponent];
+    return [self.fallbackHandler createFallbackComponentForCategory:model.componentCategory];
 }
 
 #pragma mark - HUBComponentRegistry
@@ -56,22 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)unregisterComponentFactoryForNamespace:(NSString *)componentNamespace
 {
     self.componentFactories[componentNamespace] = nil;
-}
-
-#pragma mark - Priate utilities
-
-- (id<HUBComponent>)createFallbackComponent
-{
-    id<HUBComponentFactory> const fallbackFactory = self.componentFactories[self.fallbackComponentIdentifier.componentNamespace];
-    id<HUBComponent> const fallbackComponent = [fallbackFactory createComponentForName:self.fallbackComponentIdentifier.componentName];
-    
-    NSAssert(fallbackComponent != nil,
-             @"A fallback component could not be created by HubComponentRegistry.\
-             This is a severe error. Make sure that the defaultComponentNamespace:fallbackComponentName\
-             combination passed to HubManager always results in a component. Current fallback component identifier: %@",
-             self.fallbackComponentIdentifier);
-    
-    return fallbackComponent;
 }
 
 @end

@@ -19,7 +19,8 @@
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBViewModel.h"
 #import "HUBContentReloadPolicyMock.h"
-#import "HUBComponentDefaults.h"
+#import "HUBComponentDefaults+Testing.h"
+#import "HUBComponentFallbackHandlerMock.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -45,20 +46,20 @@
 {
     [super setUp];
     
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
+    
     self.contentProvider = [HUBContentProviderMock new];
     self.contentReloadPolicy = [HUBContentReloadPolicyMock new];
-    self.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namspace" name:@"name"];
-    self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:self.componentIdentifier];
+    self.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentDefaults.componentNamespace name:componentDefaults.componentName];
+    self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler];
     self.component = [HUBComponentMock new];
     
     self.collectionView = [HUBCollectionViewMock new];
     HUBCollectionViewFactoryMock * const collectionViewFactory = [[HUBCollectionViewFactoryMock alloc] initWithCollectionView:self.collectionView];
     
-    id<HUBComponentFactory> const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{self.componentIdentifier.componentName: self.component}];
-    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:self.componentIdentifier.componentNamespace];
-    
-    HUBComponentDefaults * const componentDefaults = [[HUBComponentDefaults alloc] initWithComponentNamespace:self.componentIdentifier.componentNamespace
-                                                                                                componentName:self.componentIdentifier.componentName];
+    id<HUBComponentFactory> const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{componentDefaults.componentName: self.component}];
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentDefaults.componentNamespace];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
@@ -364,12 +365,14 @@
 
 - (void)testInitialViewModelForTargetViewControllerRegistered
 {
+    __weak __typeof(self) weakSelf = self;
+    
     NSString * const initialViewModelIdentifier = @"initialViewModel";
     NSURL * const targetViewURI = [NSURL URLWithString:@"spotify:hub:target"];
     
     self.contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"id"];
-        componentModelBuilder.componentName = @"component";
+        componentModelBuilder.componentName = weakSelf.componentIdentifier.componentName;
         componentModelBuilder.targetURL = targetViewURI;
         componentModelBuilder.targetInitialViewModelBuilder.viewIdentifier = initialViewModelIdentifier;
         

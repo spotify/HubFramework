@@ -26,20 +26,33 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The namespace of the component that the model should be rendered using
  *
- *  The default value of this property is the namespace passed as `defaultComponentNamespace` when setting up
- *  `HUBManager`. If overriden, it must match the namespace of a registered `HUBComponentFactory`. If set to an
- *  unknown namespace, the Hub Framework will fall back to the default component namespace again.
+ *  The default value of this property is the `defaultComponentNamespace` declared by the application's implementation
+ *  of `HUBComponentFallbackHandler`. If overriden, it should match the namespace of a registered `HUBComponentFactory`,
+ *  which will be asked to create a component for the model's `componentName`.
+ *
+ *  In case no `HUBComponentFactory` could be resolved for the namespace, the Hub Framework will use its fallback handler
+ *  to create a fallback component using the model's `componentCategory`.
  */
 @property (nonatomic, copy) NSString *componentNamespace;
 
 /**
  *  The name of the component that the model should be rendered using
  *
- *  The default value of this property is the name passed as `fallbackComponentName` when setting up `HUBManager`.
- *  If the `HUBComponentFactory` corresponding to `componentNamespace` couldn't resolve a component for this name,
- *  the Hub Framework will fall back to the default value.
+ *  The default value of this property is the `defaultComponentName` declared by the application's implementation
+ *  of `HUBComponentFallbackHandler`. It will be sent to the `HUBComponentFactory` resolved for `componentNamespace`,
+ *  which will be asked to create a component for the model.
  */
 @property (nonatomic, copy) NSString *componentName;
+
+/**
+ *  The category of the component that the model should be rendered using
+ *
+ *  The default value of this property is the `defaultComponentCategory` declared by the application's implementation
+ *  of `HUBComponentFallbackHandler`. It is sent to the fallback handler in case no component could be created for the
+ *  model's `componentNamespace`/`componentName` combo - so that a fallback component may be created with similar
+ *  visuals as the originally intended component.
+ */
+@property (nonatomic, copy) NSString *componentCategory;
 
 /// Any identifier for the model's content, that can be used for content tracking
 @property (nonatomic, copy, nullable) NSString *contentIdentifier;

@@ -11,6 +11,7 @@
 #import "HUBComponentModelBuilder.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBComponentDefaults.h"
+#import "HUBComponentFallbackHandlerMock.h"
 
 @interface HUBCollectionViewLayoutTests : XCTestCase
 
@@ -54,13 +55,15 @@
         self.fullWidthComponentIdentifier.componentName: self.fullWidthComponent
     }];
     
-    self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:self.compactComponentIdentifier];
+    HUBComponentDefaults * const componentDefaults = [[HUBComponentDefaults alloc] initWithComponentNamespace:componentNamespace
+                                                                                                componentName:compactComponentName
+                                                                                            componentCategory:@"category"];
+    
+    id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
+    self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler];
     [self.componentRegistry registerComponentFactory:self.componentFactory forNamespace:componentNamespace];
     
     self.componentLayoutManager = [HUBComponentLayoutManagerMock new];
-    
-    HUBComponentDefaults * const componentDefaults = [[HUBComponentDefaults alloc] initWithComponentNamespace:componentNamespace
-                                                                                                componentName:compactComponentName];
     
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
     
