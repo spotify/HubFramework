@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBComponentCategories.h"
 
 @protocol HUBComponent;
 
@@ -43,6 +43,6 @@
  *  `HUBComponentFactory`. The fallback handler must always return a component from this method, and can
  *  optionally use the provided component category to adjust which type of component to return.
  */
-- (id<HUBComponent>)createFallbackComponentForCategory:(NSString *)componentCategory;
+- (id<HUBComponent>)createFallbackComponentForCategory:(HUBComponentCategory *)componentCategory;
 
 @end

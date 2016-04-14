@@ -10,7 +10,7 @@
  *  behavior, but still contain enough information for a `HUBComponentFallbackHandler` to create appropriate fallback
  *  components based on them.
  */
-typedef NSObject HUBComponentCategory;
+typedef NSObject<NSCopying, NSCoding> HUBComponentCategory;
 
 /// Category for components that have a row-like appearance, with a full screen width and a compact height
 static HUBComponentCategory * const HUBComponentCategoryRow = @"row";
