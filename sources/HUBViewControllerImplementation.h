@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Initialize an instance of this class with its required dependencies
  *
+ *  @param viewURI The view URI that this view controller is for
  *  @param viewModelLoader The object to use to load view models for the view controller
  *  @param imageLoader The object to use to load images for components
  *  @param contentReloadPolicy The reload policy to use to determine when to load new content
@@ -26,13 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentLayoutManager The object that manages layout for components in the view controller
  *  @param initialViewModelRegistry The registry to use to register initial view models for subsequent view controllers
  */
-- (instancetype)initWithViewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
-                            imageLoader:(id<HUBImageLoader>)imageLoader
-                    contentReloadPolicy:(id<HUBContentReloadPolicy>)contentReloadPolicy
-                  collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
-                      componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
-                 componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-               initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithViewURI:(NSURL *)viewURI
+                viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
+                    imageLoader:(id<HUBImageLoader>)imageLoader
+            contentReloadPolicy:(id<HUBContentReloadPolicy>)contentReloadPolicy
+          collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
+              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry HUB_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 

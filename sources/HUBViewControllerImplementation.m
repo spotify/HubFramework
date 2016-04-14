@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewControllerImplementation () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, HUBComponentWrapperDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
+@property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
 @property (nonatomic, strong, readonly) id<HUBImageLoader> imageLoader;
 @property (nonatomic, strong, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
@@ -47,19 +48,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Lifecycle
 
-- (instancetype)initWithViewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
-                            imageLoader:(id<HUBImageLoader>)imageLoader
-                    contentReloadPolicy:(id<HUBContentReloadPolicy>)contentReloadPolicy
-                  collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
-                      componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
-                 componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-               initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
+- (instancetype)initWithViewURI:(NSURL *)viewURI
+                viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
+                    imageLoader:(id<HUBImageLoader>)imageLoader
+            contentReloadPolicy:(id<HUBContentReloadPolicy>)contentReloadPolicy
+          collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
+              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
 
 {
     if (!(self = [super initWithNibName:nil bundle:nil])) {
         return nil;
     }
     
+    _viewURI = [viewURI copy];
     _viewModelLoader = viewModelLoader;
     _imageLoader = imageLoader;
     _contentReloadPolicy = contentReloadPolicy;
@@ -327,7 +330,7 @@ NS_ASSUME_NONNULL_BEGIN
         id<HUBViewModel> const currentViewModel = self.viewModel;
         
         if (currentViewModel != nil) {
-            if (![self.contentReloadPolicy shouldReloadContentForViewWithCurrentViewModel:currentViewModel]) {
+            if (![self.contentReloadPolicy shouldReloadContentForViewURI:self.viewURI currentViewModel:currentViewModel]) {
                 return;
             }
         }

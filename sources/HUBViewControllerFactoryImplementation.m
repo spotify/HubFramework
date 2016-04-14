@@ -78,13 +78,14 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBContentReloadPolicy> const contentReloadPolicy = featureRegistration.contentReloadPolicy ?: self.defaultContentReloadPolicy;
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
     
-    return [[HUBViewControllerImplementation alloc] initWithViewModelLoader:viewModelLoader
-                                                                imageLoader:imageLoader
-                                                        contentReloadPolicy:contentReloadPolicy
-                                                      collectionViewFactory:collectionViewFactory
-                                                          componentRegistry:self.componentRegistry
-                                                     componentLayoutManager:self.componentLayoutManager
-                                                   initialViewModelRegistry:self.initialViewModelRegistry];
+    return [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
+                                                    viewModelLoader:viewModelLoader
+                                                        imageLoader:imageLoader
+                                                contentReloadPolicy:contentReloadPolicy
+                                              collectionViewFactory:collectionViewFactory
+                                                  componentRegistry:self.componentRegistry
+                                             componentLayoutManager:self.componentLayoutManager
+                                           initialViewModelRegistry:self.initialViewModelRegistry];
 }
 
 @end
