@@ -32,7 +32,7 @@
  *
  *  This property is read only once by the Hub Framework (when initializing `HUBManager`)
  */
-@property (nonatomic, copy, readonly) NSString *defaultComponentCategory;
+@property (nonatomic, copy, readonly) HUBComponentCategory *defaultComponentCategory;
 
 /**
  *  Create a fallback component to use for a certain category
