@@ -85,6 +85,8 @@
     UIViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
     [viewController viewWillAppear:YES];
     [viewController viewWillAppear:YES];
+    
+    XCTAssertEqualObjects(self.defaultContentReloadPolicy.lastViewURI, viewURI);
     XCTAssertEqual(self.defaultContentReloadPolicy.numberOfRequests, (NSUInteger)1);
 }
 

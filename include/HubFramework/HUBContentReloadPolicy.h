@@ -17,12 +17,13 @@
 /**
  *  Return whether the content for a view should be reloaded
  *
+ *  @param viewURI The URI of the view
  *  @param currentViewModel The current view model of the view
  *
  *  The Hub Framework will call this method every time a view that has already loaded a view model is about
  *  to appear on the screen. The passed `currentViewModel` can be used to inspect the current content of the
  *  view, as well as the view model's `buildDate` to determine whether a view should be reloaded or not.
  */
-- (BOOL)shouldReloadContentForViewWithCurrentViewModel:(id<HUBViewModel>)currentViewModel;
+- (BOOL)shouldReloadContentForViewURI:(NSURL *)viewURI currentViewModel:(id<HUBViewModel>)currentViewModel;
 
 @end

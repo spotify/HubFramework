@@ -79,13 +79,14 @@
     
     self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     
-    self.viewController = [[HUBViewControllerImplementation alloc] initWithViewModelLoader:self.viewModelLoader
-                                                                               imageLoader:self.imageLoader
-                                                                       contentReloadPolicy:self.contentReloadPolicy
-                                                                     collectionViewFactory:collectionViewFactory
-                                                                         componentRegistry:self.componentRegistry
-                                                                    componentLayoutManager:componentLayoutManager
-                                                                  initialViewModelRegistry:self.initialViewModelRegistry];
+    self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
+                                                                   viewModelLoader:self.viewModelLoader
+                                                                       imageLoader:self.imageLoader
+                                                               contentReloadPolicy:self.contentReloadPolicy
+                                                             collectionViewFactory:collectionViewFactory
+                                                                 componentRegistry:self.componentRegistry
+                                                            componentLayoutManager:componentLayoutManager
+                                                          initialViewModelRegistry:self.initialViewModelRegistry];
     
     self.viewController.delegate = self;
     
