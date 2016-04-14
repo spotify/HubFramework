@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBComponentCategories.h"
 
 @protocol HUBComponent;
 
@@ -32,7 +32,7 @@
  *
  *  This property is read only once by the Hub Framework (when initializing `HUBManager`)
  */
-@property (nonatomic, copy, readonly) NSString *defaultComponentCategory;
+@property (nonatomic, copy, readonly) HUBComponentCategory *defaultComponentCategory;
 
 /**
  *  Create a fallback component to use for a certain category
@@ -43,6 +43,6 @@
  *  `HUBComponentFactory`. The fallback handler must always return a component from this method, and can
  *  optionally use the provided component category to adjust which type of component to return.
  */
-- (id<HUBComponent>)createFallbackComponentForCategory:(NSString *)componentCategory;
+- (id<HUBComponent>)createFallbackComponentForCategory:(HUBComponentCategory *)componentCategory;
 
 @end

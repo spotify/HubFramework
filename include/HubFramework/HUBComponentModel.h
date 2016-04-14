@@ -1,4 +1,5 @@
 #import "HUBSerializable.h"
+#import "HUBComponentCategories.h"
 
 @class HUBComponentIdentifier;
 @protocol HUBComponentImageData;
@@ -48,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The Hub Framework uses the value of this property to create a fallback component in case no component could be
  *  created by any registered `HUBComponentFactory` for the model's `componentIdentifier`
  */
-@property (nonatomic, copy, readonly) NSString *componentCategory;
+@property (nonatomic, copy, readonly) HUBComponentCategory *componentCategory;
 
 /**
  *  Any identifier for the model's content

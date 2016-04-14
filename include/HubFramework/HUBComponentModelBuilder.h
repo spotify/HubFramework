@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "HUBComponentCategories.h"
 
 @class HUBComponentIdentifier;
 @protocol HUBComponentImageDataBuilder;
@@ -52,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  model's `componentNamespace`/`componentName` combo - so that a fallback component may be created with similar
  *  visuals as the originally intended component.
  */
-@property (nonatomic, copy) NSString *componentCategory;
+@property (nonatomic, copy) HUBComponentCategory *componentCategory;
 
 /// Any identifier for the model's content, that can be used for content tracking
 @property (nonatomic, copy, nullable) NSString *contentIdentifier;

@@ -43,6 +43,7 @@
 #import "HUBComponentRegistry.h"
 #import "HUBComponentLayoutManager.h"
 #import "HUBComponentLayoutTraits.h"
+#import "HUBComponentCategories.h"
 #import "HUBComponentFallbackHandler.h"
 
 // Image loading

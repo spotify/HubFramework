@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithIdentifier:(NSString *)identifier
                componentIdentifier:(HUBComponentIdentifier *)componentIdentifier
-                 componentCategory:(NSString *)componentCategory
+                 componentCategory:(HUBComponentCategory *)componentCategory
                  contentIdentifier:(nullable NSString *)contentIdentifier
                              index:(NSUInteger)index
                              title:(nullable NSString *)title

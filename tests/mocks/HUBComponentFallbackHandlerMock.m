@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBComponentFallbackHandlerMock ()
 
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id<HUBComponent>> *fallbackComponentsByCategory;
+@property (nonatomic, strong, readonly) NSMutableDictionary<HUBComponentCategory *, id<HUBComponent>> *fallbackComponents;
 
 @end
 
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
         _defaultComponentNamespace = componentDefaults.componentNamespace;
         _defaultComponentName = componentDefaults.componentName;
         _defaultComponentCategory = componentDefaults.componentCategory;
-        _fallbackComponentsByCategory = [NSMutableDictionary new];
+        _fallbackComponents = [NSMutableDictionary new];
     }
     
     return self;
@@ -32,16 +32,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (void)addFallbackComponent:(id<HUBComponent>)component forCategory:(NSString *)category
+- (void)addFallbackComponent:(id<HUBComponent>)component forCategory:(HUBComponentCategory *)category
 {
-    self.fallbackComponentsByCategory[category] = component;
+    self.fallbackComponents[category] = component;
 }
 
 #pragma mark - HUBComponentFallbackHandler
 
-- (id<HUBComponent>)createFallbackComponentForCategory:(NSString *)componentCategory
+- (id<HUBComponent>)createFallbackComponentForCategory:(HUBComponentCategory *)componentCategory
 {
-    id<HUBComponent> const component = self.fallbackComponentsByCategory[componentCategory];
+    id<HUBComponent> const component = self.fallbackComponents[componentCategory];
     NSAssert(component != nil, @"No fallback component defined for category: %@", componentCategory);
     return component;
 }

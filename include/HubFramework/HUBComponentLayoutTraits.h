@@ -18,12 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NSObject HUBComponentLayoutTrait;
 
 /// Layout trait for components which width does not fill the screen and is considered compact
-extern HUBComponentLayoutTrait * const HUBComponentLayoutTraitCompactWidth;
+static HUBComponentLayoutTrait * const HUBComponentLayoutTraitCompactWidth = @"compactWidth";
 
 /// Layout trait for components which width fills the screen
-extern HUBComponentLayoutTrait * const HUBComponentLayoutTraitFullWidth;
+static HUBComponentLayoutTrait * const HUBComponentLayoutTraitFullWidth = @"fullWidth";
 
 /// Layout trait for components which are stackable on top of each other, without any margin in between
-extern HUBComponentLayoutTrait * const HUBComponentLayoutTraitStackable;
+static HUBComponentLayoutTrait * const HUBComponentLayoutTraitStackable = @"stackable";
+
 
 NS_ASSUME_NONNULL_END
