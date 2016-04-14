@@ -33,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The path to follow to extract a component identifier. Maps to `componentIdentifier`.
 @property (nonatomic, strong) id<HUBJSONStringPath> componentIdentifierPath;
 
+/// The path to follow to extract a component category. Maps to `componentCategory`.
+@property (nonatomic, strong) id<HUBJSONStringPath> componentCategoryPath;
+
 /// The path to follow to extract a content identifier. Maps to `contentIdentifier`.
 @property (nonatomic, strong) id<HUBJSONStringPath> contentIdentifierPath;
 

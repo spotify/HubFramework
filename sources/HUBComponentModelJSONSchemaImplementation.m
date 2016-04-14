@@ -7,6 +7,7 @@
 
 @synthesize identifierPath = _identifierPath;
 @synthesize componentIdentifierPath = _componentIdentifierPath;
+@synthesize componentCategoryPath = _componentCategoryPath;
 @synthesize contentIdentifierPath = _contentIdentifierPath;
 @synthesize titlePath = _titlePath;
 @synthesize subtitlePath = _subtitlePath;
@@ -24,11 +25,13 @@
 
 - (instancetype)init
 {
+    id<HUBMutableJSONPath> const componentDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyComponent];
     id<HUBMutableJSONPath> const imagesDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyImages];
     id<HUBMutableJSONPath> const targetDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyTarget];
     
     return [self initWithIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyIdentifier] stringPath]
-                componentIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyComponent] stringPath]
+                componentIdentifierPath:[[componentDictionaryPath goTo:HUBJSONKeyIdentifier] stringPath]
+                  componentCategoryPath:[[componentDictionaryPath goTo:HUBJSONKeyCategory] stringPath]
                   contentIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyContentIdentifier] stringPath]
                               titlePath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyTitle] stringPath]
                            subtitlePath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeySubtitle] stringPath]
@@ -47,6 +50,7 @@
 
 - (instancetype)initWithIdentifierPath:(id<HUBJSONStringPath>)identifierPath
                componentIdentifierPath:(id<HUBJSONStringPath>)componentIdentiferPath
+                 componentCategoryPath:(id<HUBJSONStringPath>)componentCategoryPath
                  contentIdentifierPath:(id<HUBJSONStringPath>)contentIdentifierPath
                              titlePath:(id<HUBJSONStringPath>)titlePath
                           subtitlePath:(id<HUBJSONStringPath>)subtitlePath
@@ -67,6 +71,7 @@
     if (self) {
         _identifierPath = identifierPath;
         _componentIdentifierPath = componentIdentiferPath;
+        _componentCategoryPath = componentCategoryPath;
         _contentIdentifierPath = contentIdentifierPath;
         _titlePath = titlePath;
         _subtitlePath = subtitlePath;
@@ -92,6 +97,7 @@
 {
     return [[HUBComponentModelJSONSchemaImplementation alloc] initWithIdentifierPath:self.identifierPath
                                                              componentIdentifierPath:self.componentIdentifierPath
+                                                               componentCategoryPath:self.componentCategoryPath
                                                                contentIdentifierPath:self.contentIdentifierPath
                                                                            titlePath:self.titlePath
                                                                         subtitlePath:self.subtitlePath

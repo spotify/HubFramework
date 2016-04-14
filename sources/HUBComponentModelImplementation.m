@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> const * serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyIdentifier] = self.identifier;
-    serialization[HUBJSONKeyComponent] = self.componentIdentifier.identifierString;
+    serialization[HUBJSONKeyComponent] = [self serializedComponentData];
     serialization[HUBJSONKeyContentIdentifier] = self.contentIdentifier;
     serialization[HUBJSONKeyTitle] = self.title;
     serialization[HUBJSONKeySubtitle] = self.subtitle;
@@ -99,6 +99,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Private utilities
+
+- (NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedComponentData
+{
+    return @{
+        HUBJSONKeyIdentifier: self.componentIdentifier.identifierString,
+        HUBJSONKeyCategory: self.componentCategory
+    };
+}
 
 - (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedImageData
 {

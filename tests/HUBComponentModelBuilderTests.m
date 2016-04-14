@@ -254,7 +254,10 @@
     
     NSDictionary * const dictionary = @{
         @"id": modelIdentifier,
-        @"component": componentIdentifier.identifierString,
+        @"component": @{
+            @"id": componentIdentifier.identifierString,
+            @"category": @"mainCategory"
+        },
         @"contentId": contentIdentifier,
         @"title": title,
         @"subtitle": subtitle,
@@ -290,11 +293,17 @@
         @"children": @[
             @{
                 @"id": child1ModelIdentifier,
-                @"component": child1ComponentIdentifier.identifierString
+                @"component": @{
+                    @"id": child1ComponentIdentifier.identifierString,
+                    @"category": @"child1Category"
+                }
             },
             @{
                 @"id": child2ModelIdentifier,
-                @"component": child2ComponentIdentifier.identifierString
+                @"component": @{
+                    @"id": child2ComponentIdentifier.identifierString,
+                    @"category": @"child2Category"
+                }
             }
         ]
     };
@@ -303,6 +312,7 @@
     HUBComponentModelImplementation * const model = [self.builder buildForIndex:0];
     
     XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
+    XCTAssertEqualObjects(model.componentCategory, @"mainCategory");
     XCTAssertEqualObjects(model.contentIdentifier, contentIdentifier);
     XCTAssertEqualObjects(model.title, title);
     XCTAssertEqualObjects(model.subtitle, subtitle);
@@ -325,10 +335,12 @@
     id<HUBComponentModel> const childModel1 = model.childComponentModels[0];
     XCTAssertEqualObjects(childModel1.identifier, child1ModelIdentifier);
     XCTAssertEqualObjects(childModel1.componentIdentifier, child1ComponentIdentifier);
+    XCTAssertEqualObjects(childModel1.componentCategory, @"child1Category");
     
     id<HUBComponentModel> const childModel2 = model.childComponentModels[1];
     XCTAssertEqualObjects(childModel2.identifier, child2ModelIdentifier);
     XCTAssertEqualObjects(childModel2.componentIdentifier, child2ComponentIdentifier);
+    XCTAssertEqualObjects(childModel2.componentCategory, @"child2Category");
     
     // Serializing should produce an identical dictionary as was passed as JSON data
     XCTAssertEqualObjects(dictionary, [model serialize]);

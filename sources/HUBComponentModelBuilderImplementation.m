@@ -229,6 +229,12 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
+    NSString * const componentCategory = [componentModelSchema.componentCategoryPath stringFromJSONDictionary:dictionary];
+    
+    if (componentCategory != nil) {
+        self.componentCategory = componentCategory;
+    }
+    
     NSString * const contentIdentifier = [componentModelSchema.contentIdentifierPath stringFromJSONDictionary:dictionary];
     
     if (contentIdentifier != nil) {
