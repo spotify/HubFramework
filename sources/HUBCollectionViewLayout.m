@@ -54,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     for (NSUInteger componentIndex = 0; componentIndex < self.viewModel.bodyComponentModels.count; componentIndex++) {
         id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[componentIndex];
-        id<HUBComponent> const component = [self componentWithIdentifier:componentModel.componentIdentifier];
+        id<HUBComponent> const component = [self componentForModel:componentModel];
         NSSet<HUBComponentLayoutTrait *> * const componentLayoutTraits = component.layoutTraits;
         
         UIEdgeInsets margins = [self defaultMarginsForComponent:component
@@ -153,16 +153,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Private utilities
 
-- (id<HUBComponent>)componentWithIdentifier:(HUBComponentIdentifier *)componentIdentifier
+- (id<HUBComponent>)componentForModel:(id<HUBComponentModel>)model
 {
-    id<HUBComponent> const cachedComponent = self.componentCache[componentIdentifier];
+    id<HUBComponent> const cachedComponent = self.componentCache[model.componentIdentifier];
     
     if (cachedComponent != nil) {
         return cachedComponent;
     }
     
-    id<HUBComponent> const newComponent = [self.componentRegistry createComponentForIdentifier:componentIdentifier];
-    self.componentCache[componentIdentifier] = newComponent;
+    id<HUBComponent> const newComponent = [self.componentRegistry createComponentForModel:model];
+    self.componentCache[model.componentIdentifier] = newComponent;
     return newComponent;
 }
 
@@ -186,10 +186,10 @@ NS_ASSUME_NONNULL_BEGIN
     UIEdgeInsets margins = UIEdgeInsetsZero;
     
     if (componentIsInTopRow) {
-        HUBComponentIdentifier * const headerComponentIdentifier = self.viewModel.headerComponentModel.componentIdentifier;
+        id<HUBComponentModel> const headerComponentModel = self.viewModel.headerComponentModel;
         
-        if (headerComponentIdentifier != nil) {
-            id<HUBComponent> const headerComponent = [self componentWithIdentifier:headerComponentIdentifier];
+        if (headerComponentModel != nil) {
+            id<HUBComponent> const headerComponent = [self componentForModel:headerComponentModel];
             margins.top = [self.componentLayoutManager verticalMarginBetweenComponentWithLayoutTraits:componentLayoutTraits
                                                                    andHeaderComponentWithLayoutTraits:headerComponent.layoutTraits];
         } else {

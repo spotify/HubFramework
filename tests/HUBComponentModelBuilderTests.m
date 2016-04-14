@@ -47,6 +47,7 @@
     
     self.builder.componentNamespace = @"namespace";
     self.builder.componentName = @"name";
+    self.builder.componentCategory = @"category";
     self.builder.contentIdentifier = @"content";
     self.builder.title = @"title";
     self.builder.subtitle = @"subtitle";
@@ -64,6 +65,7 @@
     
     XCTAssertEqualObjects(model.componentIdentifier.componentNamespace, @"namespace");
     XCTAssertEqualObjects(model.componentIdentifier.componentName, @"name");
+    XCTAssertEqualObjects(model.componentCategory, @"category");
     XCTAssertEqualObjects(model.contentIdentifier, self.builder.contentIdentifier);
     XCTAssertEqual(model.index, modelIndex);
     XCTAssertEqualObjects(model.title, self.builder.title);
@@ -78,17 +80,16 @@
     XCTAssertEqualObjects(model.date, self.builder.date);
 }
 
-- (void)testOverridingDefaultComponentNameAndNamespace
+- (void)testOverridingDefaultComponentNameNamespaceAndCategory
 {
-    NSString * const namespaceOverride = @"namespace-override";
-    NSString * const nameOverride = @"name-override";
-    
-    self.builder.componentNamespace = namespaceOverride;
-    self.builder.componentName = nameOverride;
+    self.builder.componentNamespace = @"namespace-override";
+    self.builder.componentName = @"name-override";
+    self.builder.componentCategory = @"category-override";
     
     id<HUBComponentModel> const model = [self.builder buildForIndex:0];
-    XCTAssertEqualObjects(model.componentIdentifier.componentNamespace, namespaceOverride);
-    XCTAssertEqualObjects(model.componentIdentifier.componentName, nameOverride);
+    XCTAssertEqualObjects(model.componentIdentifier.componentNamespace, @"namespace-override");
+    XCTAssertEqualObjects(model.componentIdentifier.componentName, @"name-override");
+    XCTAssertEqualObjects(model.componentCategory, @"category-override");
 }
 
 - (void)testDefaultImageTypes

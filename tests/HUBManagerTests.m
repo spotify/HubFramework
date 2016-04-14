@@ -6,6 +6,8 @@
 #import "HUBContentProviderFactoryMock.h"
 #import "HUBComponentLayoutManagerMock.h"
 #import "HUBContentReloadPolicyMock.h"
+#import "HUBComponentFallbackHandlerMock.h"
+#import "HUBComponentDefaults+Testing.h"
 
 @interface HUBManagerTests : XCTestCase
 
@@ -23,13 +25,14 @@
     id<HUBImageLoaderFactory> const imageLoaderFactory = [HUBImageLoaderFactoryMock new];
     id<HUBContentReloadPolicy> const defaultContentReloadPolicy = [HUBContentReloadPolicyMock new];
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
     
     self.manager = [[HUBManager alloc] initWithConnectivityStateResolver:connectivityStateResolver
                                                       imageLoaderFactory:imageLoaderFactory
-                                               defaultComponentNamespace:@"default"
-                                                   fallbackComponentName:@"fallback"
                                               defaultContentReloadPolicy:defaultContentReloadPolicy
-                                                  componentLayoutManager:componentLayoutManager];
+                                                  componentLayoutManager:componentLayoutManager
+                                                componentFallbackHandler:componentFallbackHandler];
 }
 
 - (void)testRegistriesCreated

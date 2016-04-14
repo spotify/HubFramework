@@ -1,9 +1,9 @@
 #import "HUBComponentRegistry.h"
 #import "HUBHeaderMacros.h"
 
-@class HUBComponentIdentifier;
 @protocol HUBComponent;
 @protocol HUBComponentModel;
+@protocol HUBComponentFallbackHandler;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -13,23 +13,21 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Initialize an instance of this class with a component fallback handler
  *
- *  @param fallbackComponentIdentifier An identifier of a component to use in case one couldn't be resolved
- *         for a certain identifier. This component identifier must be resolvable using one of the registered
- *         factories, once data loading starts, otherwise an assert is triggered.
+ *  @param fallbackHandler The object to use to create fallback components
  */
-- (instancetype)initWithFallbackComponentIdentifier:(HUBComponentIdentifier *)fallbackComponentIdentifier HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFallbackHandler:(id<HUBComponentFallbackHandler>)fallbackHandler HUB_DESIGNATED_INITIALIZER;
 
 /**
- *  Return a newly created component matching a given an identifier
+ *  Create a new component instance for a model
  *
- *  @param identifier The identifier of a component to create
+ *  @param model The model to create a component for
  *
- *  @return A newly created component that is ready to use. In case the supplied identifier didn’t result in
- *          a component (because a factory matching it’s `componentNamespace` couldn’t be found, or that factory
- *          returned `nil`), the registry will create a component based on its `fallbackComponentIdentifier`.
- *          If this operation also failed, an assert is triggered which should be considered an API user error.
+ *  @return A newly created component that is ready to use. The component registry will first attempt
+ *          to resolve a component factory for the model's `componentNamespace`, and ask it to create
+ *          a component. However, if this fails, the registry will use its fallback handler to create
+ *          a fallback component for the model's `componentCategory`.
  */
-- (id<HUBComponent>)createComponentForIdentifier:(HUBComponentIdentifier *)identifier;
+- (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model;
 
 @end
 

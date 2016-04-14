@@ -5,9 +5,9 @@
 #import "HUBJSONSchemaRegistryImplementation.h"
 #import "HUBViewModelLoaderFactoryImplementation.h"
 #import "HUBViewControllerFactoryImplementation.h"
-#import "HUBComponentIdentifier.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBComponentDefaults.h"
+#import "HUBComponentFallbackHandler.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,31 +22,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
-                        defaultComponentNamespace:(NSString *)defaultComponentNamespace
-                            fallbackComponentName:(NSString *)fallbackComponentName
                        defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
 {
     NSParameterAssert(connectivityStateResolver != nil);
     NSParameterAssert(imageLoaderFactory != nil);
-    NSParameterAssert(defaultComponentNamespace != nil);
-    NSParameterAssert(fallbackComponentName != nil);
+    NSParameterAssert(defaultContentReloadPolicy != nil);
     NSParameterAssert(componentLayoutManager != nil);
+    NSParameterAssert(componentFallbackHandler != nil);
     
     self = [super init];
     
     if (self) {
+        HUBComponentDefaults * const componentDefaults = [[HUBComponentDefaults alloc] initWithComponentNamespace:componentFallbackHandler.defaultComponentNamespace
+                                                                                                    componentName:componentFallbackHandler.defaultComponentName
+                                                                                                componentCategory:componentFallbackHandler.defaultComponentCategory];
+        
         _connectivityStateResolver = connectivityStateResolver;
         _initialViewModelRegistry = [HUBInitialViewModelRegistry new];
-        
-        HUBComponentDefaults * const componentDefaults = [[HUBComponentDefaults alloc] initWithComponentNamespace:defaultComponentNamespace
-                                                                                                    componentName:fallbackComponentName];
-        
-        HUBComponentIdentifier * const fallbackComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentDefaults.componentNamespace
-                                                                                                                  name:componentDefaults.componentName];
-        
         _featureRegistry = [HUBFeatureRegistryImplementation new];
-        _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:fallbackComponentIdentifier];
+        _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler];
         _JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults];
         
         _viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:_featureRegistry

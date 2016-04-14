@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize modelIdentifier = _modelIdentifier;
 @synthesize componentNamespace = _componentNamespace;
 @synthesize componentName = _componentName;
+@synthesize componentCategory = _componentCategory;
 @synthesize contentIdentifier = _contentIdentifier;
 @synthesize preferredIndex = _preferredIndex;
 @synthesize title = _title;
@@ -114,6 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
         _modelIdentifier = (NSString *)modelIdentifier;
         _componentNamespace = [componentDefaults.componentNamespace copy];
         _componentName = [componentDefaults.componentName copy];
+        _componentCategory = [componentDefaults.componentCategory copy];
         _featureIdentifier = [featureIdentifier copy];
         _mainImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema];
         _backgroundImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema];
@@ -366,6 +368,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
                                                    componentIdentifier:componentIdentifier
+                                                     componentCategory:self.componentCategory
                                                      contentIdentifier:self.contentIdentifier
                                                                  index:index
                                                                  title:self.title

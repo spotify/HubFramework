@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param identifier The identifier of the model
  *  @param componentIdentifier The identifier of the component that the model should be rendered using
+ *  @param componentCategory The category of the component that the model should be rendered using
  *  @param contentIdentifier Any identifier for the model's content
  *  @param index The index of the model, either within its parent or within the root list
  *  @param title Any title that the component should render
@@ -35,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithIdentifier:(NSString *)identifier
                componentIdentifier:(HUBComponentIdentifier *)componentIdentifier
+                 componentCategory:(NSString *)componentCategory
                  contentIdentifier:(nullable NSString *)contentIdentifier
                              index:(NSUInteger)index
                              title:(nullable NSString *)title

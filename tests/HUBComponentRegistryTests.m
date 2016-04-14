@@ -5,12 +5,14 @@
 #import "HUBComponentMock.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentFactoryMock.h"
+#import "HUBComponentFallbackHandlerMock.h"
+#import "HUBComponentDefaults+Testing.h"
 
 static NSString * const DefaultNamespace = @"default";
 
 @interface HUBComponentRegistryTests : XCTestCase
 
-@property (nonatomic, strong) HUBComponentIdentifier *fallbackComponentIdentifier;
+@property (nonatomic, strong) HUBComponentFallbackHandlerMock *componentFallbackHandler;
 @property (nonatomic, strong) HUBComponentRegistryImplementation *registry;
 
 @end
@@ -23,8 +25,9 @@ static NSString * const DefaultNamespace = @"default";
 {
     [super setUp];
     
-    self.fallbackComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"fallbackNamespace" name:@"fallbackIdentifier"];
-    self.registry = [[HUBComponentRegistryImplementation alloc] initWithFallbackComponentIdentifier:self.fallbackComponentIdentifier];
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    self.componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
+    self.registry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:self.componentFallbackHandler];
 }
 
 #pragma mark - Tests
@@ -32,12 +35,13 @@ static NSString * const DefaultNamespace = @"default";
 - (void)testRegisteringComponentFactory
 {
     HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+    id<HUBComponentModel> const componentModel = [self mockedComponentModelWithComponentIdentifier:componentIdentifier componentCategory:@"category"];
     HUBComponentMock * const component = [HUBComponentMock new];
     HUBComponentFactoryMock * const factory = [[HUBComponentFactoryMock alloc] initWithComponents:@{componentIdentifier.componentName: component}];
     
     [self.registry registerComponentFactory:factory forNamespace:componentIdentifier.componentNamespace];
 
-    XCTAssertEqual([self.registry createComponentForIdentifier:componentIdentifier], component);
+    XCTAssertEqual([self.registry createComponentForModel:componentModel], component);
 }
 
 - (void)testRegisteringAlreadyRegisteredFactoryThrows
@@ -68,61 +72,71 @@ static NSString * const DefaultNamespace = @"default";
 
 - (void)testFallbackComponentCreatedForUnknownNamespace
 {
+    NSString * const componentCategory = @"category";
     HUBComponentMock * const fallbackComponent = [HUBComponentMock new];
-    NSDictionary * const fallbackFactoryComponents = @{self.fallbackComponentIdentifier.componentName: fallbackComponent};
-    HUBComponentFactoryMock * const fallbackFactory = [[HUBComponentFactoryMock alloc] initWithComponents:fallbackFactoryComponents];
-    
-    [self.registry registerComponentFactory:fallbackFactory forNamespace:self.fallbackComponentIdentifier.componentNamespace];
+    [self.componentFallbackHandler addFallbackComponent:fallbackComponent forCategory:componentCategory];
     
     HUBComponentIdentifier * const unknownNamespaceIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"unknown" name:@"name"];
-    XCTAssertEqual([self.registry createComponentForIdentifier:unknownNamespaceIdentifier], fallbackComponent);
+    id<HUBComponentModel> const componentModel = [self mockedComponentModelWithComponentIdentifier:unknownNamespaceIdentifier
+                                                                                 componentCategory:componentCategory];
+    
+    XCTAssertEqual([self.registry createComponentForModel:componentModel], fallbackComponent);
 }
 
 - (void)testFallbackComponentCreatedWhenFactoryReturnsNil
 {
+    NSString * const componentNamespace = @"namespace";
+    NSString * const componentCategory = @"category";
     HUBComponentMock * const fallbackComponent = [HUBComponentMock new];
-    NSDictionary * const factoryComponents = @{self.fallbackComponentIdentifier.componentName: fallbackComponent};
-    HUBComponentFactoryMock * const factory = [[HUBComponentFactoryMock alloc] initWithComponents:factoryComponents];
+    [self.componentFallbackHandler addFallbackComponent:fallbackComponent forCategory:componentCategory];
+
+    HUBComponentFactoryMock * const factory = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    [self.registry registerComponentFactory:factory forNamespace:componentNamespace];
     
-    [self.registry registerComponentFactory:factory forNamespace:self.fallbackComponentIdentifier.componentNamespace];
+    HUBComponentIdentifier * const unknownNameIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentNamespace name:@"unknown"];
+    id<HUBComponentModel> const componentModel = [self mockedComponentModelWithComponentIdentifier:unknownNameIdentifier
+                                                                                 componentCategory:componentCategory];
     
-    HUBComponentIdentifier * const unknownNameIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:self.fallbackComponentIdentifier.componentNamespace
-                                                                                                        name:@"unknown"];
-    
-    XCTAssertEqual([self.registry createComponentForIdentifier:unknownNameIdentifier], fallbackComponent);
+    XCTAssertEqual([self.registry createComponentForModel:componentModel], fallbackComponent);
 }
 
-- (void)testFallbackComponentFromAnotherFactory
+- (void)testFallbackComponentsForDifferentCategories
 {
-    HUBComponentMock * const fallbackComponent = [HUBComponentMock new];
-    NSDictionary * const fallbackFactoryComponents = @{self.fallbackComponentIdentifier.componentName: fallbackComponent};
-    HUBComponentFactoryMock * const fallbackFactory = [[HUBComponentFactoryMock alloc] initWithComponents:fallbackFactoryComponents];
-    [self.registry registerComponentFactory:fallbackFactory forNamespace:self.fallbackComponentIdentifier.componentNamespace];
+    NSString * const componentCategoryA = @"categoryA";
+    HUBComponentMock * const fallbackComponentA = [HUBComponentMock new];
+    [self.componentFallbackHandler addFallbackComponent:fallbackComponentA forCategory:componentCategoryA];
     
-    HUBComponentFactoryMock * const emptyFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
-    NSString * const emptyFactoryNamespace = @"empty";
-    [self.registry registerComponentFactory:emptyFactory forNamespace:emptyFactoryNamespace];
+    NSString * const componentCategoryB = @"categoryB";
+    HUBComponentMock * const fallbackComponentB = [HUBComponentMock new];
+    [self.componentFallbackHandler addFallbackComponent:fallbackComponentB forCategory:componentCategoryB];
     
-    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:emptyFactoryNamespace
-                                                                                                      name:@"unknown"];
+    NSString * const componentNamespace = @"namespace";
     
-    XCTAssertEqual([self.registry createComponentForIdentifier:componentIdentifier], fallbackComponent);
-}
-
-- (void)testFallbackComponentCreationFailureThrows
-{
-    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
-    XCTAssertThrows([self.registry createComponentForIdentifier:componentIdentifier]);
+    HUBComponentFactoryMock * const factory = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    [self.registry registerComponentFactory:factory forNamespace:componentNamespace];
+    
+    HUBComponentIdentifier * const unknownNameIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentNamespace name:@"unknown"];
+    
+    id<HUBComponentModel> const componentModelA = [self mockedComponentModelWithComponentIdentifier:unknownNameIdentifier
+                                                                                  componentCategory:componentCategoryA];
+    
+    id<HUBComponentModel> const componentModelB = [self mockedComponentModelWithComponentIdentifier:unknownNameIdentifier
+                                                                                  componentCategory:componentCategoryB];
+    
+    XCTAssertEqual([self.registry createComponentForModel:componentModelA], fallbackComponentA);
+    XCTAssertEqual([self.registry createComponentForModel:componentModelB], fallbackComponentB);
 }
 
 #pragma mark - Utilities
 
-- (HUBComponentModelImplementation *)mockedComponentModelWithComponentIdentifier:(HUBComponentIdentifier *)componentIdentifier
+- (id<HUBComponentModel>)mockedComponentModelWithComponentIdentifier:(HUBComponentIdentifier *)componentIdentifier
+                                                  componentCategory:(NSString *)componentCategory
 {
     NSString * const identifier = [NSUUID UUID].UUIDString;
 
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
                                                    componentIdentifier:componentIdentifier
+                                                     componentCategory:componentCategory
                                                      contentIdentifier:nil
                                                                  index:0
                                                                  title:nil
