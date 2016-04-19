@@ -498,7 +498,9 @@ NS_ASSUME_NONNULL_BEGIN
     
     [contextsForURL addObject:context];
     
-    [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
+    });
 }
 
 - (void)handleLoadedComponentImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache context:(HUBComponentImageLoadingContext *)context
