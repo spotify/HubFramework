@@ -80,15 +80,10 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> const * serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyIdentifier] = self.identifier;
     serialization[HUBJSONKeyComponent] = [self serializedComponentData];
-    serialization[HUBJSONKeyTitle] = self.title;
-    serialization[HUBJSONKeySubtitle] = self.subtitle;
-    serialization[HUBJSONKeyAccessoryTitle] = self.accessoryTitle;
-    serialization[HUBJSONKeyDescription] = self.descriptionText;
+    serialization[HUBJSONKeyText] = [self serializedTextData];
     serialization[HUBJSONKeyImages] = [self serializedImageData];
-    serialization[HUBJSONKeyCustom] = self.customData;
     serialization[HUBJSONKeyTarget] = [self serializedTargetData];
-    serialization[HUBJSONKeyLogging] = self.loggingData;
-    serialization[HUBJSONKeyDate] = [self encodedDate];
+    serialization[HUBJSONKeyMetadata] = [self serializedMetadata];
     serialization[HUBJSONKeyChildren] = [self serializedChildComponentModels];
     
     return [serialization copy];
@@ -102,6 +97,21 @@ NS_ASSUME_NONNULL_BEGIN
         HUBJSONKeyIdentifier: self.componentIdentifier.identifierString,
         HUBJSONKeyCategory: self.componentCategory
     };
+}
+
+- (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedTextData
+{
+    NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
+    serialization[HUBJSONKeyTitle] = self.title;
+    serialization[HUBJSONKeySubtitle] = self.subtitle;
+    serialization[HUBJSONKeyAccessory] = self.accessoryTitle;
+    serialization[HUBJSONKeyDescription] = self.descriptionText;
+    
+    if (serialization.count == 0) {
+        return nil;
+    }
+    
+    return [serialization copy];
 }
 
 - (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedImageData
@@ -137,6 +147,20 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
                   
+    return [serialization copy];
+}
+
+- (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedMetadata
+{
+    NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
+    serialization[HUBJSONKeyCustom] = self.customData;
+    serialization[HUBJSONKeyLogging] = self.loggingData;
+    serialization[HUBJSONKeyDate] = [self encodedDate];
+    
+    if (serialization.count == 0) {
+        return nil;
+    }
+    
     return [serialization copy];
 }
 

@@ -25,24 +25,26 @@
 - (instancetype)init
 {
     id<HUBMutableJSONPath> const componentDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyComponent];
+    id<HUBMutableJSONPath> const textDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyText];
     id<HUBMutableJSONPath> const imagesDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyImages];
     id<HUBMutableJSONPath> const targetDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyTarget];
+    id<HUBMutableJSONPath> const metadataDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyMetadata];
     
     return [self initWithIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyIdentifier] stringPath]
                 componentIdentifierPath:[[componentDictionaryPath goTo:HUBJSONKeyIdentifier] stringPath]
                   componentCategoryPath:[[componentDictionaryPath goTo:HUBJSONKeyCategory] stringPath]
-                              titlePath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyTitle] stringPath]
-                           subtitlePath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeySubtitle] stringPath]
-                     accessoryTitlePath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyAccessoryTitle] stringPath]
-                    descriptionTextPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyDescription] stringPath]
+                              titlePath:[[textDictionaryPath goTo:HUBJSONKeyTitle] stringPath]
+                           subtitlePath:[[textDictionaryPath goTo:HUBJSONKeySubtitle] stringPath]
+                     accessoryTitlePath:[[textDictionaryPath goTo:HUBJSONKeyAccessory] stringPath]
+                    descriptionTextPath:[[textDictionaryPath goTo:HUBJSONKeyDescription] stringPath]
             mainImageDataDictionaryPath:[[imagesDictionaryPath goTo:HUBJSONKeyMain] dictionaryPath]
       backgroundImageDataDictionaryPath:[[imagesDictionaryPath goTo:HUBJSONKeyBackground] dictionaryPath]
           customImageDataDictionaryPath:[[imagesDictionaryPath goTo:HUBJSONKeyCustom] dictionaryPath]
                           targetURLPath:[[targetDictionaryPath goTo:HUBJSONKeyURL] URLPath]
    targetInitialViewModelDictionaryPath:[[targetDictionaryPath goTo:HUBJSONKeyView] dictionaryPath]
-                         customDataPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyCustom] dictionaryPath]
-                        loggingDataPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyLogging] dictionaryPath]
-                               datePath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyDate] datePath]
+                         customDataPath:[[metadataDictionaryPath goTo:HUBJSONKeyCustom] dictionaryPath]
+                        loggingDataPath:[[metadataDictionaryPath goTo:HUBJSONKeyLogging] dictionaryPath]
+                               datePath:[[metadataDictionaryPath goTo:HUBJSONKeyDate] datePath]
     childComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyChildren] forEach] dictionaryPath]];
 }
 

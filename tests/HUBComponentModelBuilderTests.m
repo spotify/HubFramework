@@ -255,10 +255,12 @@
             @"id": componentIdentifier.identifierString,
             @"category": @"mainCategory"
         },
-        @"title": title,
-        @"subtitle": subtitle,
-        @"accessoryTitle": accessoryTitle,
-        @"description": descriptionText,
+        @"text": @{
+            @"title": title,
+            @"subtitle": subtitle,
+            @"accessory": accessoryTitle,
+            @"description": descriptionText,
+        },
         @"images": @{
             @"main": @{
                 @"icon": mainImageIconIdentifier,
@@ -283,9 +285,11 @@
                 @"title": targetTitle
             }
         },
-        @"custom": customData,
-        @"logging": loggingData,
-        @"date": @"2016-10-17",
+        @"metadata": @{
+            @"custom": customData,
+            @"logging": loggingData,
+            @"date": @"2016-10-17"
+        },
         @"children": @[
             @{
                 @"id": child1ModelIdentifier,
@@ -377,8 +381,10 @@
     self.builder.loggingData = @{@"logging": @"data"};
     
     NSDictionary * const JSONDictionary = @{
-        @"logging": @{
-            @"another": @"value"
+        @"metadata": @{
+            @"logging": @{
+                @"another": @"value"
+            }
         }
     };
     
@@ -397,8 +403,10 @@
     self.builder.customData = @{@"custom": @"data"};
     
     NSDictionary * const JSONDictionary = @{
-        @"custom": @{
-            @"another": @"value"
+        @"metadata": @{
+            @"custom": @{
+                @"another": @"value"
+            }
         }
     };
     
