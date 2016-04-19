@@ -180,9 +180,11 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
-    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
-    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
+    [self performAsynchronousTestWithBlock:^{
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
+    }];
 }
 
 - (void)testBodyComponentImageLoading
@@ -211,9 +213,11 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
-    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
-    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
+    [self performAsynchronousTestWithBlock:^{
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
+    }];
 }
 
 - (void)testMissingImageLoadingContextHandled
@@ -310,9 +314,11 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     [component.childDelegate component:component willDisplayChildAtIndex:0];
     
-    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
-    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
-    XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
+    [self performAsynchronousTestWithBlock:^{
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
+    }];
 }
 
 - (void)testNoImagesLoadedIfComponentDoesNotHandleImages
@@ -557,6 +563,20 @@
     [self.viewController viewWillAppear:YES];
     self.viewController.view.frame = CGRectMake(0, 0, 320, 400);
     [self.viewController viewDidLayoutSubviews];
+}
+
+- (void)performAsynchronousTestWithBlock:(void(^)(void))block
+{
+    XCTestExpectation * const expectation = [self expectationWithDescription:@"Async test"];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [expectation fulfill];
+    });
+    
+    [self waitForExpectationsWithTimeout:0.1 handler:^(NSError * _Nullable error) {
+        XCTAssertNil(error);
+        block();
+    }];
 }
 
 @end
