@@ -19,10 +19,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponentModelBuilder <NSObject>
 
-#pragma mark - Identifiers
+#pragma mark - Identifier & index
 
 /// The identifier of the model that this builder is for
 @property (nonatomic, copy, readonly) NSString *modelIdentifier;
+
+/// The index that the component would prefer to be placed at. Can be used to move components locally.
+@property (nonatomic, copy, nullable) NSNumber *preferredIndex;
+
+#pragma mark - Component
 
 /**
  *  The namespace of the component that the model should be rendered using
@@ -55,12 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy) HUBComponentCategory *componentCategory;
 
-#pragma mark - Moving the component to a preferred index
-
-/// The index that the component would prefer to be placed at. Can be used to move components locally.
-@property (nonatomic, copy, nullable) NSNumber *preferredIndex;
-
-#pragma mark - Standard visual content
+#pragma mark - Text
 
 /// Any title that the component should render
 @property (nonatomic, copy, nullable) NSString *title;
@@ -73,6 +73,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Any longer describing text that the component should render
 @property (nonatomic, copy, nullable) NSString *descriptionText;
+
+#pragma mark - Images
 
 /// A builder that can be used to construct data that describes how to render the component's "main" image
 @property (nonatomic, strong, readonly) id<HUBComponentImageDataBuilder> mainImageDataBuilder;
@@ -92,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Any local component background image. This is an alias for `backgroundImageDataBuilder.localImage`.
 @property (nonatomic, strong, nullable) UIImage *backgroundImage;
 
-#pragma mark - Metadata
+#pragma mark - Target
 
 /// Any URL that is the target of a user interaction with the component
 @property (nonatomic, copy, nullable) NSURL *targetURL;
@@ -100,16 +102,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// A builder that can be used to construct a pre-computed view model for a view that is the target of `targetURL`
 @property (nonatomic, strong, readonly) id<HUBViewModelBuilder> targetInitialViewModelBuilder;
 
+#pragma mark - Metadata
+
+/// Any custom data that the component should use
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
+
 /// Any data that should be logged alongside interactions or impressions for the component
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *loggingData;
 
 /// Any date that is associated with the component
 @property (nonatomic, strong, nullable) NSDate *date;
-
-#pragma mark - Custom content
-
-/// Any custom data that the component should use
-@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
 
 #pragma mark - Custom image data builders
 

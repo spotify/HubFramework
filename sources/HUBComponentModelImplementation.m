@@ -11,9 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentModelImplementation
 
 @synthesize identifier = _identifier;
+@synthesize index = _index;
 @synthesize componentIdentifier = _componentIdentifier;
 @synthesize componentCategory = _componentCategory;
-@synthesize index = _index;
 @synthesize title = _title;
 @synthesize subtitle = _subtitle;
 @synthesize accessoryTitle = _accessoryTitle;
@@ -29,9 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize childComponentModels = _childComponentModels;
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
+                             index:(NSUInteger)index
                componentIdentifier:(HUBComponentIdentifier *)componentIdentifier
                  componentCategory:(HUBComponentCategory *)componentCategory
-                             index:(NSUInteger)index
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle
                     accessoryTitle:(nullable NSString *)accessoryTitle

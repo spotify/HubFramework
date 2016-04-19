@@ -13,9 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its possible values
  *
  *  @param identifier The identifier of the model
+ *  @param index The index of the model, either within its parent or within the root list
  *  @param componentIdentifier The identifier of the component that the model should be rendered using
  *  @param componentCategory The category of the component that the model should be rendered using
- *  @param index The index of the model, either within its parent or within the root list
  *  @param title Any title that the component should render
  *  @param subtitle Any subtitle that the component should render
  *  @param accessoryTitle Any accessory title that the component should render
@@ -34,9 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  documentation in `HUBComponentModel`.
  */
 - (instancetype)initWithIdentifier:(NSString *)identifier
+                             index:(NSUInteger)index
                componentIdentifier:(HUBComponentIdentifier *)componentIdentifier
                  componentCategory:(HUBComponentCategory *)componentCategory
-                             index:(NSUInteger)index
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle
                     accessoryTitle:(nullable NSString *)accessoryTitle

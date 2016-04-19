@@ -135,9 +135,9 @@ static NSString * const DefaultNamespace = @"default";
     NSString * const identifier = [NSUUID UUID].UUIDString;
 
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
+                                                                 index:0
                                                    componentIdentifier:componentIdentifier
                                                      componentCategory:componentCategory
-                                                                 index:0
                                                                  title:nil
                                                               subtitle:nil
                                                         accessoryTitle:nil

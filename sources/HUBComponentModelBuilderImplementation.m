@@ -30,10 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentModelBuilderImplementation
 
 @synthesize modelIdentifier = _modelIdentifier;
+@synthesize preferredIndex = _preferredIndex;
 @synthesize componentNamespace = _componentNamespace;
 @synthesize componentName = _componentName;
 @synthesize componentCategory = _componentCategory;
-@synthesize preferredIndex = _preferredIndex;
 @synthesize title = _title;
 @synthesize subtitle = _subtitle;
 @synthesize accessoryTitle = _accessoryTitle;
@@ -366,9 +366,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                      identifierOrder:self.childComponentIdentifierOrder];
     
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
+                                                                 index:index
                                                    componentIdentifier:componentIdentifier
                                                      componentCategory:self.componentCategory
-                                                                 index:index
                                                                  title:self.title
                                                               subtitle:self.subtitle
                                                         accessoryTitle:self.accessoryTitle
