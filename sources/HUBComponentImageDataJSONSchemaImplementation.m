@@ -21,7 +21,7 @@
     
     return [self initWithStyleStringPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyStyle] stringPath]
                           styleStringMap:styleStringMap
-                                 URLPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyURL] URLPath]
+                                 URLPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyURI] URLPath]
                       iconIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyIcon] stringPath]];
 }
 

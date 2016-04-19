@@ -140,7 +140,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedTargetData
 {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
-    serialization[HUBJSONKeyURL] = self.targetURL.absoluteString;
+    serialization[HUBJSONKeyURI] = self.targetURL.absoluteString;
     serialization[HUBJSONKeyView] = [self.targetInitialViewModel serialize];
     
     if (serialization.count == 0) {

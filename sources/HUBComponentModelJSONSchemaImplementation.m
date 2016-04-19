@@ -40,7 +40,7 @@
             mainImageDataDictionaryPath:[[imagesDictionaryPath goTo:HUBJSONKeyMain] dictionaryPath]
       backgroundImageDataDictionaryPath:[[imagesDictionaryPath goTo:HUBJSONKeyBackground] dictionaryPath]
           customImageDataDictionaryPath:[[imagesDictionaryPath goTo:HUBJSONKeyCustom] dictionaryPath]
-                          targetURLPath:[[targetDictionaryPath goTo:HUBJSONKeyURL] URLPath]
+                          targetURLPath:[[targetDictionaryPath goTo:HUBJSONKeyURI] URLPath]
    targetInitialViewModelDictionaryPath:[[targetDictionaryPath goTo:HUBJSONKeyView] dictionaryPath]
                          customDataPath:[[metadataDictionaryPath goTo:HUBJSONKeyCustom] dictionaryPath]
                         loggingDataPath:[[metadataDictionaryPath goTo:HUBJSONKeyLogging] dictionaryPath]

@@ -51,7 +51,7 @@ NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle style) {
 {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyStyle] = HUBComponentImageStyleStringFromStyle(self.style);
-    serialization[HUBJSONKeyURL] = self.URL.absoluteString;
+    serialization[HUBJSONKeyURI] = self.URL.absoluteString;
     serialization[HUBJSONKeyIcon] = self.iconIdentifier;
     
     return [serialization copy];

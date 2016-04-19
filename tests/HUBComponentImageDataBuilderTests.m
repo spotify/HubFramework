@@ -78,7 +78,7 @@
     
     NSDictionary * const dictionary = @{
         @"style": @"circular",
-        @"url": imageURL.absoluteString,
+        @"uri": imageURL.absoluteString,
         @"icon": iconIdentifier
     };
     

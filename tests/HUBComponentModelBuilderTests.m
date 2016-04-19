@@ -278,7 +278,7 @@
             }
         },
         @"target": @{
-            @"url": targetURL.absoluteString,
+            @"uri": targetURL.absoluteString,
             @"view": @{
                 @"id": targetViewIdentifier,
                 @"feature": featureIdentifier,

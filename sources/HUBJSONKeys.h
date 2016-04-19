@@ -72,8 +72,8 @@ static NSString * const HUBJSONKeyText = @"text";
 /// JSON key used to encode a title
 static NSString * const HUBJSONKeyTitle = @"title";
 
-/// JSON key used to encode an URL
-static NSString * const HUBJSONKeyURL = @"url";
+/// JSON key used to encode an URI
+static NSString * const HUBJSONKeyURI = @"uri";
 
 /// JSON key used to encode a view identifier
 static NSString * const HUBJSONKeyView = @"view";
