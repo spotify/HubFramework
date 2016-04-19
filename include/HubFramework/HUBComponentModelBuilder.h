@@ -55,9 +55,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy) HUBComponentCategory *componentCategory;
 
-/// Any identifier for the model's content, that can be used for content tracking
-@property (nonatomic, copy, nullable) NSString *contentIdentifier;
-
 #pragma mark - Moving the component to a preferred index
 
 /// The index that the component would prefer to be placed at. Can be used to move components locally.

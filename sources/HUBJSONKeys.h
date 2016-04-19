@@ -18,9 +18,6 @@ static NSString * const HUBJSONKeyChildren = @"children";
 /// JSON key used to encode a component definition
 static NSString * const HUBJSONKeyComponent = @"component";
 
-/// JSON key used to encode a content identifier
-static NSString * const HUBJSONKeyContentIdentifier = @"contentId";
-
 /// JSON key used to encode custom data
 static NSString * const HUBJSONKeyCustom = @"custom";
 

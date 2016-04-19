@@ -33,7 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize componentNamespace = _componentNamespace;
 @synthesize componentName = _componentName;
 @synthesize componentCategory = _componentCategory;
-@synthesize contentIdentifier = _contentIdentifier;
 @synthesize preferredIndex = _preferredIndex;
 @synthesize title = _title;
 @synthesize subtitle = _subtitle;
@@ -235,12 +234,6 @@ NS_ASSUME_NONNULL_BEGIN
         self.componentCategory = componentCategory;
     }
     
-    NSString * const contentIdentifier = [componentModelSchema.contentIdentifierPath stringFromJSONDictionary:dictionary];
-    
-    if (contentIdentifier != nil) {
-        self.contentIdentifier = contentIdentifier;
-    }
-    
     NSString * const title = [componentModelSchema.titlePath stringFromJSONDictionary:dictionary];
     
     if (title != nil) {
@@ -375,7 +368,6 @@ NS_ASSUME_NONNULL_BEGIN
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
                                                    componentIdentifier:componentIdentifier
                                                      componentCategory:self.componentCategory
-                                                     contentIdentifier:self.contentIdentifier
                                                                  index:index
                                                                  title:self.title
                                                               subtitle:self.subtitle

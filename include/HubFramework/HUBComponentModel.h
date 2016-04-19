@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponentModel <HUBSerializable>
 
-#pragma mark - Identifiers & index
+#pragma mark - Identifier & index
 
 /**
  *  The identifier of this model
@@ -34,6 +34,15 @@ NS_ASSUME_NONNULL_BEGIN
  *  debugging to distinguish this set of data from others.
  */
 @property (nonatomic, copy, readonly) NSString *identifier;
+
+/**
+ *  The index of the model, either within its parent or within the root list
+ *
+ *  Components that use nested models can use this property to determine which child to map a certain model to
+ */
+@property (nonatomic, readonly) NSUInteger index;
+
+#pragma mark - Component
 
 /**
  *  The identifier of the component that this model should be rendered using
@@ -51,23 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy, readonly) HUBComponentCategory *componentCategory;
 
-/**
- *  Any identifier for the model's content
- *
- *  Useful when using some form of content management system to generate component content on the server side.
- *  This identifier enables you to track the content all the way from the server, to logs generated on the
- *  client side.
- */
-@property (nonatomic, copy, nullable, readonly) NSString *contentIdentifier;
-
-/**
- *  The index of the model, either within its parent or within the root list
- *
- *  Components that use nested models can use this property to determine which child to map a certain model to
- */
-@property (nonatomic, readonly) NSUInteger index;
-
-#pragma mark - Standard visual content
+#pragma mark - Text
 
 /**
  *  Any title that the component should render
@@ -99,6 +92,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy, nullable, readonly) NSString *descriptionText;
 
+#pragma mark - Images
+
 /**
  *  Image data for any "main" image that the component should render
  *
@@ -119,8 +114,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable, readonly) id<HUBComponentImageData> backgroundImageData;
 
-#pragma mark - Custom content
-
 /**
  *  Dictionary containing image data objects that describe how to render any custom images for the component
  *
@@ -130,15 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly) NSDictionary<NSString *, id<HUBComponentImageData>> *customImageData;
 
-/**
- *  Any custom data that the component should use
- *
- *  If a component has some specific customizability options they can be specified here. This is also a good place for additional
- *  metadata or properties that are not covered by his protocol, so that new data may be added without changing the framework itself.
- */
-@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *customData;
-
-#pragma mark - Metadata
+#pragma mark - Target
 
 /**
  *  Any URL that is the target of a user interaction with the component
@@ -161,6 +146,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  this initial one.
  */
 @property (nonatomic, copy, nullable, readonly) id<HUBViewModel> targetInitialViewModel;
+
+#pragma mark - Metadata
+
+/**
+ *  Any custom data that the component should use
+ *
+ *  If a component has some specific customizability options they can be specified here. This is also a good place for additional
+ *  metadata or properties that are not covered by his protocol, so that new data may be added without changing the framework itself.
+ */
+@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *customData;
 
 /**
  *  Any data that should be logged alongside interactions or impressions for the component

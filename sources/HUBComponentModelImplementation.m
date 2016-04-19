@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize identifier = _identifier;
 @synthesize componentIdentifier = _componentIdentifier;
 @synthesize componentCategory = _componentCategory;
-@synthesize contentIdentifier = _contentIdentifier;
 @synthesize index = _index;
 @synthesize title = _title;
 @synthesize subtitle = _subtitle;
@@ -32,7 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithIdentifier:(NSString *)identifier
                componentIdentifier:(HUBComponentIdentifier *)componentIdentifier
                  componentCategory:(HUBComponentCategory *)componentCategory
-                 contentIdentifier:(nullable NSString *)contentIdentifier
                              index:(NSUInteger)index
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle
@@ -56,7 +54,6 @@ NS_ASSUME_NONNULL_BEGIN
         _identifier = [identifier copy];
         _componentIdentifier = [componentIdentifier copy];
         _componentCategory = [componentCategory copy];
-        _contentIdentifier = [contentIdentifier copy];
         _index = index;
         _title = [title copy];
         _subtitle = [subtitle copy];
@@ -83,7 +80,6 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> const * serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyIdentifier] = self.identifier;
     serialization[HUBJSONKeyComponent] = [self serializedComponentData];
-    serialization[HUBJSONKeyContentIdentifier] = self.contentIdentifier;
     serialization[HUBJSONKeyTitle] = self.title;
     serialization[HUBJSONKeySubtitle] = self.subtitle;
     serialization[HUBJSONKeyAccessoryTitle] = self.accessoryTitle;

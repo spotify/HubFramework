@@ -48,7 +48,6 @@
     self.builder.componentNamespace = @"namespace";
     self.builder.componentName = @"name";
     self.builder.componentCategory = @"category";
-    self.builder.contentIdentifier = @"content";
     self.builder.title = @"title";
     self.builder.subtitle = @"subtitle";
     self.builder.accessoryTitle = @"accessory";
@@ -66,7 +65,6 @@
     XCTAssertEqualObjects(model.componentIdentifier.componentNamespace, @"namespace");
     XCTAssertEqualObjects(model.componentIdentifier.componentName, @"name");
     XCTAssertEqualObjects(model.componentCategory, @"category");
-    XCTAssertEqualObjects(model.contentIdentifier, self.builder.contentIdentifier);
     XCTAssertEqual(model.index, modelIndex);
     XCTAssertEqualObjects(model.title, self.builder.title);
     XCTAssertEqualObjects(model.subtitle, self.builder.subtitle);
@@ -233,7 +231,6 @@
     
     NSString * const modelIdentifier = @"model";
     HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"component"];
-    NSString * const contentIdentifier = @"contentIdentifier";
     NSString * const title = @"A title";
     NSString * const subtitle = @"A subtitle";
     NSString * const accessoryTitle = @"An accessory title";
@@ -258,7 +255,6 @@
             @"id": componentIdentifier.identifierString,
             @"category": @"mainCategory"
         },
-        @"contentId": contentIdentifier,
         @"title": title,
         @"subtitle": subtitle,
         @"accessoryTitle": accessoryTitle,
@@ -313,7 +309,6 @@
     
     XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
     XCTAssertEqualObjects(model.componentCategory, @"mainCategory");
-    XCTAssertEqualObjects(model.contentIdentifier, contentIdentifier);
     XCTAssertEqualObjects(model.title, title);
     XCTAssertEqualObjects(model.subtitle, subtitle);
     XCTAssertEqualObjects(model.accessoryTitle, accessoryTitle);
@@ -352,7 +347,6 @@
     
     self.builder.componentNamespace = @"namespace";
     self.builder.componentName = @"name";
-    self.builder.contentIdentifier = @"content";
     self.builder.preferredIndex = @(33);
     self.builder.title = @"title";
     self.builder.subtitle = @"subtitle";
@@ -367,7 +361,6 @@
     
     XCTAssertEqualObjects(self.builder.componentNamespace, @"namespace");
     XCTAssertEqualObjects(self.builder.componentName, @"name");
-    XCTAssertEqualObjects(self.builder.contentIdentifier, @"content");
     XCTAssertEqualObjects(self.builder.preferredIndex, @(33));
     XCTAssertEqualObjects(self.builder.title, @"title");
     XCTAssertEqualObjects(self.builder.subtitle, @"subtitle");
