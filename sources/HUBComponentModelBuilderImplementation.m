@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize subtitle = _subtitle;
 @synthesize accessoryTitle = _accessoryTitle;
 @synthesize descriptionText = _descriptionText;
+@synthesize iconIdentifier = _iconIdentifier;
 @synthesize targetURL = _targetURL;
 @synthesize customData = _customData;
 @synthesize loggingData = _loggingData;
@@ -327,6 +328,12 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
+    NSString * const iconIdentifier = [componentModelSchema.iconIdentifierPath stringFromJSONDictionary:dictionary];
+    
+    if (iconIdentifier != nil) {
+        self.iconIdentifier = iconIdentifier;
+    }
+    
     NSArray * const childComponentModelDictionaries = [componentModelSchema.childComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
     
     for (NSDictionary * const childComponentModelDictionary in childComponentModelDictionaries) {
@@ -376,6 +383,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                          mainImageData:mainImageData
                                                    backgroundImageData:backgroundImageData
                                                        customImageData:customImageData
+                                                        iconIdentifier:self.iconIdentifier
                                                              targetURL:self.targetURL
                                                 targetInitialViewModel:targetInitialViewModel
                                                             customData:self.customData

@@ -16,8 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize style = _style;
 @synthesize URL = _URL;
+@synthesize placeholderIdentifier = _placeholderIdentifier;
 @synthesize localImage = _localImage;
-@synthesize iconIdentifier = _iconIdentifier;
 
 #pragma mark - Initializer
 
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.style = HUBComponentImageStyleRectangular;
     self.URL = [imageDataSchema.URLPath URLFromJSONDictionary:dictionary];
-    self.iconIdentifier = [imageDataSchema.iconIdentifierPath stringFromJSONDictionary:dictionary];
+    self.placeholderIdentifier = [imageDataSchema.placeholderIdentifierPath stringFromJSONDictionary:dictionary];
     
     NSString * const styleString = [imageDataSchema.styleStringPath stringFromJSONDictionary:dictionary];
     
@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier type:(HUBComponentImageType)type
 {
-    if (self.URL == nil && self.localImage == nil && self.iconIdentifier == nil) {
+    if (self.URL == nil && self.placeholderIdentifier == nil && self.localImage == nil) {
         return nil;
     }
     
@@ -75,8 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                       type:type
                                                                      style:self.style
                                                                        URL:self.URL
-                                                                localImage:self.localImage
-                                                            iconIdentifier:self.iconIdentifier];
+                                                     placeholderIdentifier:self.placeholderIdentifier
+                                                                localImage:self.localImage];
 }
 
 NS_ASSUME_NONNULL_END

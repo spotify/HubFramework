@@ -52,8 +52,8 @@
     self.builder.subtitle = @"subtitle";
     self.builder.accessoryTitle = @"accessory";
     self.builder.descriptionText = @"description";
-    self.builder.mainImageDataBuilder.iconIdentifier = @"main";
-    self.builder.backgroundImageDataBuilder.iconIdentifier = @"background";
+    self.builder.mainImageDataBuilder.placeholderIdentifier = @"main";
+    self.builder.backgroundImageDataBuilder.placeholderIdentifier = @"background";
     self.builder.targetURL = [NSURL URLWithString:@"spotify:hub"];
     self.builder.customData = @{@"key": @"value"};
     self.builder.loggingData = @{@"logging": @"data"};
@@ -70,8 +70,8 @@
     XCTAssertEqualObjects(model.subtitle, self.builder.subtitle);
     XCTAssertEqualObjects(model.accessoryTitle, self.builder.accessoryTitle);
     XCTAssertEqualObjects(model.descriptionText, self.builder.descriptionText);
-    XCTAssertEqualObjects(model.mainImageData.iconIdentifier, self.builder.mainImageDataBuilder.iconIdentifier);
-    XCTAssertEqualObjects(model.backgroundImageData.iconIdentifier, self.builder.backgroundImageDataBuilder.iconIdentifier);
+    XCTAssertEqualObjects(model.mainImageData.placeholderIdentifier, self.builder.mainImageDataBuilder.placeholderIdentifier);
+    XCTAssertEqualObjects(model.backgroundImageData.placeholderIdentifier, self.builder.backgroundImageDataBuilder.placeholderIdentifier);
     XCTAssertEqualObjects(model.targetURL, self.builder.targetURL);
     XCTAssertEqualObjects(model.customData, self.builder.customData);
     XCTAssertEqualObjects(model.loggingData, self.builder.loggingData);
@@ -93,8 +93,8 @@
 - (void)testDefaultImageTypes
 {
     self.builder.componentName = @"component";
-    self.builder.mainImageDataBuilder.iconIdentifier = @"icon";
-    self.builder.backgroundImageDataBuilder.iconIdentifier = @"icon";
+    self.builder.mainImageDataBuilder.placeholderIdentifier = @"placeholder";
+    self.builder.backgroundImageDataBuilder.placeholderIdentifier = @"placeholder";
     HUBComponentModelImplementation * const model = [self.builder buildForIndex:0];
     
     XCTAssertEqual(model.mainImageData.type, HUBComponentImageTypeMain);
@@ -125,7 +125,7 @@
     
     id<HUBComponentImageDataBuilder> const imageDataBuilder = [self.builder builderForCustomImageDataWithIdentifier:customImageIdentifier];
     XCTAssertTrue([self.builder builderExistsForCustomImageDataWithIdentifier:customImageIdentifier]);
-    imageDataBuilder.iconIdentifier = @"icon";
+    imageDataBuilder.placeholderIdentifier = @"placeholder";
     
     NSString * const emptyCustomImageBuilderIdentifier = @"empty";
     [self.builder builderForCustomImageDataWithIdentifier:emptyCustomImageBuilderIdentifier];
@@ -135,7 +135,7 @@
     
     XCTAssertEqualObjects(customImageData.identifier, customImageIdentifier);
     XCTAssertEqual(customImageData.type, HUBComponentImageTypeCustom);
-    XCTAssertEqualObjects(customImageData.iconIdentifier, imageDataBuilder.iconIdentifier);
+    XCTAssertEqualObjects(customImageData.placeholderIdentifier, @"placeholder");
     
     XCTAssertNil(componentModel.customImageData[emptyCustomImageBuilderIdentifier]);
 }
@@ -235,10 +235,11 @@
     NSString * const subtitle = @"A subtitle";
     NSString * const accessoryTitle = @"An accessory title";
     NSString * const descriptionText = @"A description text";
-    NSString * const mainImageIconIdentifier = @"mainIcon";
-    NSString * const backgroundImageIconIdentifier = @"backgroundIcon";
+    NSString * const mainImagePlaceholderIdentifier = @"mainPlaceholder";
+    NSString * const backgroundImagePlaceholderIdentifier = @"backgroundPlaceholder";
     NSString * const customImageIdentifier = @"hologram";
-    NSString * const customImageIconIdentifier = @"hologramIcon";
+    NSString * const customImagePlaceholderIdentifier = @"hologramPlaceholder";
+    NSString * const iconIdentifier = @"icon";
     NSURL * const targetURL = [NSURL URLWithString:@"spotify:hub:target"];
     NSString * const targetTitle = @"Target title";
     NSString * const targetViewIdentifier = @"identifier";
@@ -263,19 +264,20 @@
         },
         @"images": @{
             @"main": @{
-                @"icon": mainImageIconIdentifier,
+                @"placeholder": mainImagePlaceholderIdentifier,
                 @"style": HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleNone)
             },
             @"background": @{
-                @"icon": backgroundImageIconIdentifier,
+                @"placeholder": backgroundImagePlaceholderIdentifier,
                 @"style": HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleRectangular)
             },
             @"custom": @{
                 customImageIdentifier: @{
-                    @"icon": customImageIconIdentifier,
+                    @"placeholder": customImagePlaceholderIdentifier,
                     @"style": HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleCircular)
                 }
-            }
+            },
+            @"icon": iconIdentifier
         },
         @"target": @{
             @"uri": targetURL.absoluteString,
@@ -317,9 +319,10 @@
     XCTAssertEqualObjects(model.subtitle, subtitle);
     XCTAssertEqualObjects(model.accessoryTitle, accessoryTitle);
     XCTAssertEqualObjects(model.descriptionText, descriptionText);
-    XCTAssertEqualObjects(model.mainImageData.iconIdentifier, mainImageIconIdentifier);
-    XCTAssertEqualObjects(model.backgroundImageData.iconIdentifier, backgroundImageIconIdentifier);
-    XCTAssertEqualObjects(model.customImageData[customImageIdentifier].iconIdentifier, customImageIconIdentifier);
+    XCTAssertEqualObjects(model.mainImageData.placeholderIdentifier, mainImagePlaceholderIdentifier);
+    XCTAssertEqualObjects(model.backgroundImageData.placeholderIdentifier, backgroundImagePlaceholderIdentifier);
+    XCTAssertEqualObjects(model.customImageData[customImageIdentifier].placeholderIdentifier, customImagePlaceholderIdentifier);
+    XCTAssertEqualObjects(model.iconIdentifier, iconIdentifier);
     XCTAssertEqualObjects(model.targetURL, targetURL);
     XCTAssertEqualObjects(model.targetInitialViewModel.navigationBarTitle, targetTitle);
     XCTAssertEqualObjects(model.customData, customData);

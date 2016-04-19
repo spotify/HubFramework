@@ -9,7 +9,7 @@
 @synthesize styleStringPath = _styleStringPath;
 @synthesize styleStringMap = _styleStringMap;
 @synthesize URLPath = _URLPath;
-@synthesize iconIdentifierPath = _iconIdentifierPath;
+@synthesize placeholderIdentifierPath = _placeholderIdentifierPath;
 
 - (instancetype)init
 {
@@ -22,13 +22,13 @@
     return [self initWithStyleStringPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyStyle] stringPath]
                           styleStringMap:styleStringMap
                                  URLPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyURI] URLPath]
-                      iconIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyIcon] stringPath]];
+               placeholderIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyPlaceholder] stringPath]];
 }
 
 - (instancetype)initWithStyleStringPath:(id<HUBJSONStringPath>)styleStringPath
                          styleStringMap:( NSDictionary<NSString *, NSNumber *> *)styleStringMap
                                 URLPath:(id<HUBJSONURLPath>)URLPath
-                     iconIdentifierPath:(id<HUBJSONStringPath>)iconIdentifierPath
+              placeholderIdentifierPath:(id<HUBJSONStringPath>)placeholderIdentifierPath
 {
     self = [super init];
     
@@ -36,7 +36,7 @@
         _styleStringPath = styleStringPath;
         _styleStringMap = styleStringMap;
         _URLPath = URLPath;
-        _iconIdentifierPath = iconIdentifierPath;
+        _placeholderIdentifierPath = placeholderIdentifierPath;
     }
     
     return self;
@@ -49,7 +49,7 @@
     return [[HUBComponentImageDataJSONSchemaImplementation alloc] initWithStyleStringPath:self.styleStringPath
                                                                            styleStringMap:self.styleStringMap
                                                                                   URLPath:self.URLPath
-                                                                       iconIdentifierPath:self.iconIdentifierPath];
+                                                                placeholderIdentifierPath:self.placeholderIdentifierPath];
 }
 
 @end

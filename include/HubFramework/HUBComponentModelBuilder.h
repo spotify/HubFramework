@@ -94,6 +94,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Any local component background image. This is an alias for `backgroundImageDataBuilder.localImage`.
 @property (nonatomic, strong, nullable) UIImage *backgroundImage;
 
+/// Any identifier of any icon that should be used with the component
+@property (nonatomic, copy, nullable) NSString *iconIdentifier;
+
 #pragma mark - Target
 
 /// Any URL that is the target of a user interaction with the component

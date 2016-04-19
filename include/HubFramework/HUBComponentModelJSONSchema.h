@@ -70,6 +70,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> customImageDataDictionaryPath;
 
+/// The path to follow to extract an icon identifier for the component. Maps to `iconIdentifier`.
+@property (nonatomic, strong) id<HUBJSONStringPath> iconIdentifierPath;
+
 /// The path to follow to extract a target URL. Maps to `targetURL`.
 @property (nonatomic, strong) id<HUBJSONURLPath> targetURLPath;
 

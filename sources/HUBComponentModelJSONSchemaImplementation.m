@@ -15,6 +15,7 @@
 @synthesize mainImageDataDictionaryPath = _mainImageDataDictionaryPath;
 @synthesize backgroundImageDataDictionaryPath = _backgroundImageDataDictionaryPath;
 @synthesize customImageDataDictionaryPath = _customImageDataDictionaryPath;
+@synthesize iconIdentifierPath = _iconIdentifierPath;
 @synthesize targetURLPath = _targetURLPath;
 @synthesize targetInitialViewModelDictionaryPath = _targetInitialViewModelDictionaryPath;
 @synthesize customDataPath = _customDataPath;
@@ -40,6 +41,7 @@
             mainImageDataDictionaryPath:[[imagesDictionaryPath goTo:HUBJSONKeyMain] dictionaryPath]
       backgroundImageDataDictionaryPath:[[imagesDictionaryPath goTo:HUBJSONKeyBackground] dictionaryPath]
           customImageDataDictionaryPath:[[imagesDictionaryPath goTo:HUBJSONKeyCustom] dictionaryPath]
+                     iconIdentifierPath:[[imagesDictionaryPath goTo:HUBJSONKeyIcon] stringPath]
                           targetURLPath:[[targetDictionaryPath goTo:HUBJSONKeyURI] URLPath]
    targetInitialViewModelDictionaryPath:[[targetDictionaryPath goTo:HUBJSONKeyView] dictionaryPath]
                          customDataPath:[[metadataDictionaryPath goTo:HUBJSONKeyCustom] dictionaryPath]
@@ -58,6 +60,7 @@
            mainImageDataDictionaryPath:(id<HUBJSONDictionaryPath>)mainImageDataDictionaryPath
      backgroundImageDataDictionaryPath:(id<HUBJSONDictionaryPath>)backgroundImageDataDictionaryPath
          customImageDataDictionaryPath:(id<HUBJSONDictionaryPath>)customImageDataDictionaryPath
+                    iconIdentifierPath:(id<HUBJSONStringPath>)iconIdentifierPath
                          targetURLPath:(id<HUBJSONURLPath>)targetURLPath
   targetInitialViewModelDictionaryPath:(id<HUBJSONDictionaryPath>)targetInitialViewModelDictionaryPath
                         customDataPath:(id<HUBJSONDictionaryPath>)customDataPath
@@ -78,6 +81,7 @@
         _mainImageDataDictionaryPath = mainImageDataDictionaryPath;
         _backgroundImageDataDictionaryPath = backgroundImageDataDictionaryPath;
         _customImageDataDictionaryPath = customImageDataDictionaryPath;
+        _iconIdentifierPath = iconIdentifierPath;
         _targetURLPath = targetURLPath;
         _targetInitialViewModelDictionaryPath = targetInitialViewModelDictionaryPath;
         _customDataPath = customDataPath;
@@ -103,6 +107,7 @@
                                                          mainImageDataDictionaryPath:self.mainImageDataDictionaryPath
                                                    backgroundImageDataDictionaryPath:self.backgroundImageDataDictionaryPath
                                                        customImageDataDictionaryPath:self.customImageDataDictionaryPath
+                                                                  iconIdentifierPath:self.iconIdentifierPath
                                                                        targetURLPath:self.targetURLPath
                                                 targetInitialViewModelDictionaryPath:self.targetInitialViewModelDictionaryPath
                                                                       customDataPath:self.customDataPath

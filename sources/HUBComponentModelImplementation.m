@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize mainImageData = _mainImageData;
 @synthesize backgroundImageData = _backgroundImageData;
 @synthesize customImageData = _customImageData;
+@synthesize iconIdentifier = _iconIdentifier;
 @synthesize targetURL = _targetURL;
 @synthesize targetInitialViewModel = _targetInitialViewModel;
 @synthesize customData = _customData;
@@ -39,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
                      mainImageData:(nullable id<HUBComponentImageData>)mainImageData
                backgroundImageData:(nullable id<HUBComponentImageData>)backgroundImageData
                    customImageData:(NSDictionary<NSString *, id<HUBComponentImageData>> *)customImageData
+                    iconIdentifier:(nullable NSString *)iconIdentifier
                          targetURL:(nullable NSURL *)targetURL
             targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
@@ -62,6 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
         _mainImageData = mainImageData;
         _backgroundImageData = backgroundImageData;
         _customImageData = customImageData;
+        _iconIdentifier = [iconIdentifier copy];
         _targetURL = [targetURL copy];
         _targetInitialViewModel = targetInitialViewModel;
         _customData = customData;
@@ -119,6 +122,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyMain] = [self.mainImageData serialize];
     serialization[HUBJSONKeyBackground] = [self.backgroundImageData serialize];
+    serialization[HUBJSONKeyIcon] = self.iconIdentifier;
     
     NSMutableDictionary * const customImageDataDictionary = [NSMutableDictionary new];
     

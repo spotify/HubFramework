@@ -123,6 +123,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly) NSDictionary<NSString *, id<HUBComponentImageData>> *customImageData;
 
+/**
+ *  The identifier of any icon that should be used with the component
+ *
+ *  It's up to each component to resolve this identifier into something renderable, such as an icon or other type of image.
+ */
+@property (nonatomic, copy, nullable, readonly) NSString *iconIdentifier;
+
 #pragma mark - Target
 
 /**
