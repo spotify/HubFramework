@@ -534,6 +534,12 @@
     XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)2);
 }
 
+- (void)testSettingBackgroundColorOfViewAlsoUpdatesCollectionView
+{
+    self.viewController.view.backgroundColor = [UIColor redColor];
+    XCTAssertEqualObjects(self.collectionView.backgroundColor, [UIColor redColor]);
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController didUpdateWithViewModel:(id<HUBViewModel>)viewModel

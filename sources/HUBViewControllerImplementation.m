@@ -15,6 +15,7 @@
 #import "HUBComponentImageLoadingContext.h"
 #import "HUBCollectionViewFactory.h"
 #import "HUBCollectionViewLayout.h"
+#import "HUBContainerView.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBContentReloadPolicy.h"
 
@@ -93,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadView
 {
-    self.view = [[UIView alloc] initWithFrame:CGRectZero];
+    self.view = [[HUBContainerView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewDidLoad
