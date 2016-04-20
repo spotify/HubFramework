@@ -7,11 +7,13 @@
 #import "HUBComponentIdentifier.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBComponentDefaults+Testing.h"
+#import "HUBIconImageResolverMock.h"
 
 @interface HUBViewModelBuilderTests : XCTestCase
 
 @property (nonatomic, copy) NSString *featureIdentifier;
 @property (nonatomic, strong) HUBComponentDefaults *componentDefaults;
+@property (nonatomic, strong) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong) HUBViewModelBuilderImplementation *builder;
 
 @end
@@ -26,12 +28,14 @@
     
     self.featureIdentifier = @"feature";
     self.componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    self.iconImageResolver = [HUBIconImageResolverMock new];
     
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults iconImageResolver:self.iconImageResolver];
     
     self.builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
                                                                              JSONSchema:JSONSchema
-                                                                      componentDefaults:self.componentDefaults];
+                                                                      componentDefaults:self.componentDefaults
+                                                                      iconImageResolver:self.iconImageResolver];
 }
 
 #pragma mark - Tests
@@ -89,11 +93,12 @@
 - (void)testRemovalOfBodyComponentBuilders
 {
     NSString * const componentModelIdentifier = @"identifier";
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults iconImageResolver:self.iconImageResolver];
 
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
                                                                                                                   JSONSchema:JSONSchema
-                                                                                                           componentDefaults:self.componentDefaults];
+                                                                                                           componentDefaults:self.componentDefaults
+                                                                                                           iconImageResolver:self.iconImageResolver];
 
     XCTAssertFalse([builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
 

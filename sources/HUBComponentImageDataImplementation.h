@@ -1,6 +1,8 @@
 #import "HUBComponentImageData.h"
 #import "HUBHeaderMacros.h"
 
+@protocol HUBIcon;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -20,8 +22,7 @@ extern NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle st
  *  @param type The type of the image. See `HUBComponentImageType` for more information.
  *  @param style The style the image should be rendered in
  *  @param URL Any HTTP URL of a remote image that should be downloaded and then rendered
- *  @param placeholderIdentifier The identifier of any placeholder that should be used while a
- *         remote image is downloaded.
+ *  @param placeholderIcon Any icon to use as a placeholder before a remote image has been downloaded
  *  @param localImage Any local image that should be rendered
  *
  *  For more information about these parameters and their corresponding properties, see their
@@ -31,7 +32,7 @@ extern NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle st
                               type:(HUBComponentImageType)type
                              style:(HUBComponentImageStyle)style
                                URL:(nullable NSURL *)URL
-             placeholderIdentifier:(nullable NSString *)placeholderIdentifier
+                   placeholderIcon:(nullable id<HUBIcon>)placeholderIcon
                         localImage:(nullable UIImage *)localImage HUB_DESIGNATED_INITIALIZER;
 
 @end

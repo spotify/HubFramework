@@ -10,6 +10,7 @@
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBViewURIPredicate.h"
 #import "HUBComponentDefaults+Testing.h"
+#import "HUBIconImageResolverMock.h"
 
 @interface HUBViewModelLoaderFactoryTests : XCTestCase
 
@@ -29,7 +30,10 @@
     self.defaultComponentNamespace = @"default";
     
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
-    HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults];
+    id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
+    HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                                                                          iconImageResolver:iconImageResolver];
+    
     HUBInitialViewModelRegistry * const initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
@@ -37,7 +41,8 @@
                                                                                         JSONSchemaRegistry:JSONSchemaRegistry
                                                                                   initialViewModelRegistry:initialViewModelRegistry
                                                                                          componentDefaults:componentDefaults
-                                                                                 connectivityStateResolver:connectivityStateResolver];
+                                                                                 connectivityStateResolver:connectivityStateResolver
+                                                                                         iconImageResolver:iconImageResolver];
 }
 
 - (void)testCreatingViewModelLoaderForValidViewURI

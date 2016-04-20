@@ -3,6 +3,7 @@
 #import "HUBHeaderMacros.h"
 
 @protocol HUBJSONSchema;
+@protocol HUBIconImageResolver;
 @class HUBComponentDefaults;
 @class HUBViewModelImplementation;
 
@@ -17,10 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureIdentifier The identifier of the feature that this builder is for
  *  @param JSONSchema The schema to use to parse data from any added JSON object
  *  @param componentDefaults The default values to use for component model builders
+ *  @param iconImageResolver The resolver to use to convert icons into renderable images
  */
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                                JSONSchema:(id<HUBJSONSchema>)JSONSchema
-                        componentDefaults:(HUBComponentDefaults *)componentDefaults HUB_DESIGNATED_INITIALIZER;
+                        componentDefaults:(HUBComponentDefaults *)componentDefaults
+                        iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Build an instance of `HUBViewModelImplementation` from the data contained in this builder

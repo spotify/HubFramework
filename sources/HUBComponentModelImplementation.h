@@ -2,7 +2,7 @@
 #import "HUBHeaderMacros.h"
 
 @class HUBComponentIdentifier;
-@class HUBComponentImageDataImplementation;
+@protocol HUBIcon;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param mainImageData Any image data for the component's "main" image
  *  @param backgroundImageData Any image data for the component's background image
  *  @param customImageData Any image data objects describing layout properties for custom images for the component
- *  @param iconIdentifier The identifier of any icon that should be used with the component
+ *  @param icon Any icon that the component should render
  *  @param targetURL The URL that is the target of a user interaction with the component
  *  @param targetInitialViewModel Any pre-computed view model that a view that is the target of `targetURL` should use
  *  @param customData Any custom data that the component should use
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
                      mainImageData:(nullable id<HUBComponentImageData>)mainImageData
                backgroundImageData:(nullable id<HUBComponentImageData>)backgroundImageData
                    customImageData:(NSDictionary<NSString *, id<HUBComponentImageData>> *)customImageData
-                    iconIdentifier:(nullable NSString *)iconIdentifier
+                              icon:(nullable id<HUBIcon>)icon
                          targetURL:(nullable NSURL *)targetURL
             targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData

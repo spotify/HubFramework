@@ -32,8 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The path that points to a HTTP image URL for the image that the data is for. Maps to `URL`.
 @property (nonatomic, strong) id<HUBJSONURLPath> URLPath;
 
-/// The path that points to a placeholder identifier for the image data. Maps to `placeholderIdentifier`.
-@property (nonatomic, strong) id<HUBJSONStringPath> placeholderIdentifierPath;
+/// The path that points to a placeholder icon identifier. Maps to `placeholderIconIdentifier`.
+@property (nonatomic, strong) id<HUBJSONStringPath> placeholderIconIdentifierPath;
 
 /// Create a copy of this schema, with the same paths
 - (id<HUBComponentImageDataJSONSchema>)copy;

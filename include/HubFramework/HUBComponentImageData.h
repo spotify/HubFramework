@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 #import "HUBSerializable.h"
 
+@protocol HUBIcon;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Enum describing various styles that an image can be rendered in
@@ -65,11 +67,11 @@ typedef NS_ENUM(NSInteger, HUBComponentImageType) {
 @property (nonatomic, copy, readonly, nullable) NSURL *URL;
 
 /**
- *  Any identifier of a placeholder image that should be used while a remote image is downloaded
+ *  Any icon to use as a placeholder before a remote image has been downloaded
  *
- *  It's up to each component to resolve this identifier into something renderable, such as an icon or other type of image.
+ *  Icons can be converted into images of any size. See `HUBIcon` for more information.
  */
-@property (nonatomic, copy, readonly, nullable) NSString *placeholderIdentifier;
+@property (nonatomic, strong, readonly, nullable) id<HUBIcon> placeholderIcon;
 
 /**
  *  Any local image that should be used either as a placeholder image before the actual image has been dowloaded, or as a

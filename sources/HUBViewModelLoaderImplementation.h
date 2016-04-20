@@ -4,6 +4,7 @@
 @protocol HUBJSONSchema;
 @protocol HUBContentProvider;
 @protocol HUBConnectivityStateResolver;
+@protocol HUBIconImageResolver;
 @class HUBComponentDefaults;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -20,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param JSONSchema The JSON schema that the loader should use for parsing
  *  @param componentDefaults The default values to use for component model builders created when loading view models
  *  @param connectivityStateResolver The connectivity state resolver used by the current `HUBManager`
+ *  @param iconImageResolver The resolver to use to convert icons into renderable images
  *  @param initialViewModel Any pre-registered view model that the loader should include
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
@@ -28,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
               componentDefaults:(HUBComponentDefaults *)componentDefaults
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+              iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
                initialViewModel:(nullable id<HUBViewModel>)initialViewModel HUB_DESIGNATED_INITIALIZER;
 
 @end

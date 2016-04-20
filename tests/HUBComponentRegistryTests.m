@@ -145,7 +145,7 @@ static NSString * const DefaultNamespace = @"default";
                                                          mainImageData:nil
                                                    backgroundImageData:nil
                                                        customImageData:@{}
-                                                        iconIdentifier:nil
+                                                                  icon:nil
                                                              targetURL:nil
                                                 targetInitialViewModel:nil
                                                             customData:nil

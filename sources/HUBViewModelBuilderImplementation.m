@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
+@property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable) HUBComponentModelBuilderImplementation *headerComponentModelBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *bodyComponentModelBuilders;
 @property (nonatomic, strong, readonly) NSMutableArray<NSString *> *bodyComponentIdentifierOrder;
@@ -35,16 +36,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                                JSONSchema:(id<HUBJSONSchema>)JSONSchema
                         componentDefaults:(HUBComponentDefaults *)componentDefaults
+                        iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(componentDefaults != nil);
+    NSParameterAssert(iconImageResolver != nil);
     
     self = [super init];
     
     if (self) {
         _JSONSchema = JSONSchema;
         _componentDefaults = componentDefaults;
+        _iconImageResolver = iconImageResolver;
         _viewIdentifier = [NSUUID UUID].UUIDString;
         _featureIdentifier = [featureIdentifier copy];
         _bodyComponentModelBuilders = [NSMutableDictionary new];
@@ -232,7 +236,8 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
                                                                                                                       featureIdentifier:self.featureIdentifier
                                                                                                                              JSONSchema:self.JSONSchema
-                                                                                                                      componentDefaults:self.componentDefaults];
+                                                                                                                      componentDefaults:self.componentDefaults
+                                                                                                                      iconImageResolver:self.iconImageResolver];
     
     self.headerComponentModelBuilderImplementation = newBuilder;
     return newBuilder;
@@ -252,7 +257,8 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
                                                                                                                       featureIdentifier:self.featureIdentifier
                                                                                                                              JSONSchema:self.JSONSchema
-                                                                                                                      componentDefaults:self.componentDefaults];
+                                                                                                                      componentDefaults:self.componentDefaults
+                                                                                                                      iconImageResolver:self.iconImageResolver];
     
     [self.bodyComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
     [self.bodyComponentIdentifierOrder addObject:newBuilder.modelIdentifier];

@@ -5,6 +5,8 @@
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBComponentImageDataJSONSchema.h"
 #import "HUBComponentDefaults+Testing.h"
+#import "HUBIconImageResolverMock.h"
+#import "HUBIcon.h"
 
 @interface HUBComponentImageDataBuilderTests : XCTestCase
 
@@ -22,8 +24,11 @@
     [super setUp];
     
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
-    self.builder = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema];
+    id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                                      iconImageResolver:iconImageResolver];
+    
+    self.builder = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema iconImageResolver:iconImageResolver];
 }
 
 #pragma mark - Tests
@@ -33,7 +38,7 @@
     self.builder.style = HUBComponentImageStyleCircular;
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
     self.builder.localImage = [UIImage new];
-    self.builder.placeholderIdentifier = @"placeholder";
+    self.builder.placeholderIconIdentifier = @"placeholder";
     
     NSString * const identifier = @"identifier";
     HUBComponentImageType const type = HUBComponentImageTypeCustom;
@@ -45,7 +50,7 @@
     XCTAssertEqual(imageData.style, self.builder.style);
     XCTAssertEqualObjects(imageData.URL, self.builder.URL);
     XCTAssertEqual(imageData.localImage, self.builder.localImage);
-    XCTAssertEqualObjects(imageData.placeholderIdentifier, @"placeholder");
+    XCTAssertEqualObjects(imageData.placeholderIcon.identifier, @"placeholder");
 }
 
 - (void)testEmptyBuilderProducingNil
@@ -65,9 +70,9 @@
     XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
 }
 
-- (void)testOnlyPlaceholderIdentifierNotProducingNil
+- (void)testOnlyPlaceholderIconIdentifierNotProducingNil
 {
-    self.builder.placeholderIdentifier = @"placeholder";
+    self.builder.placeholderIconIdentifier = @"placeholder";
     XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
 }
 
@@ -85,7 +90,7 @@
     
     XCTAssertEqual(self.builder.style, HUBComponentImageStyleCircular);
     XCTAssertEqualObjects(self.builder.URL, imageURL);
-    XCTAssertEqualObjects(self.builder.placeholderIdentifier, @"place_holder");
+    XCTAssertEqualObjects(self.builder.placeholderIconIdentifier, @"place_holder");
 }
 
 - (void)testInvalidImageStyleStringProducingRectangularStyle
