@@ -46,6 +46,8 @@
 #import "HUBComponentCategories.h"
 #import "HUBComponentFallbackHandler.h"
 
-// Image loading
+// Images & Icons
 #import "HUBImageLoaderFactory.h"
 #import "HUBImageLoader.h"
+#import "HUBIcon.h"
+#import "HUBIconImageResolver.h"
