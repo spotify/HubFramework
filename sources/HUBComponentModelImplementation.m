@@ -11,10 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentModelImplementation
 
 @synthesize identifier = _identifier;
+@synthesize index = _index;
 @synthesize componentIdentifier = _componentIdentifier;
 @synthesize componentCategory = _componentCategory;
-@synthesize contentIdentifier = _contentIdentifier;
-@synthesize index = _index;
 @synthesize title = _title;
 @synthesize subtitle = _subtitle;
 @synthesize accessoryTitle = _accessoryTitle;
@@ -22,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize mainImageData = _mainImageData;
 @synthesize backgroundImageData = _backgroundImageData;
 @synthesize customImageData = _customImageData;
+@synthesize iconIdentifier = _iconIdentifier;
 @synthesize targetURL = _targetURL;
 @synthesize targetInitialViewModel = _targetInitialViewModel;
 @synthesize customData = _customData;
@@ -30,10 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize childComponentModels = _childComponentModels;
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
+                             index:(NSUInteger)index
                componentIdentifier:(HUBComponentIdentifier *)componentIdentifier
                  componentCategory:(HUBComponentCategory *)componentCategory
-                 contentIdentifier:(nullable NSString *)contentIdentifier
-                             index:(NSUInteger)index
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle
                     accessoryTitle:(nullable NSString *)accessoryTitle
@@ -41,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
                      mainImageData:(nullable id<HUBComponentImageData>)mainImageData
                backgroundImageData:(nullable id<HUBComponentImageData>)backgroundImageData
                    customImageData:(NSDictionary<NSString *, id<HUBComponentImageData>> *)customImageData
+                    iconIdentifier:(nullable NSString *)iconIdentifier
                          targetURL:(nullable NSURL *)targetURL
             targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
@@ -56,7 +56,6 @@ NS_ASSUME_NONNULL_BEGIN
         _identifier = [identifier copy];
         _componentIdentifier = [componentIdentifier copy];
         _componentCategory = [componentCategory copy];
-        _contentIdentifier = [contentIdentifier copy];
         _index = index;
         _title = [title copy];
         _subtitle = [subtitle copy];
@@ -65,6 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
         _mainImageData = mainImageData;
         _backgroundImageData = backgroundImageData;
         _customImageData = customImageData;
+        _iconIdentifier = [iconIdentifier copy];
         _targetURL = [targetURL copy];
         _targetInitialViewModel = targetInitialViewModel;
         _customData = customData;
@@ -83,16 +83,10 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> const * serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyIdentifier] = self.identifier;
     serialization[HUBJSONKeyComponent] = [self serializedComponentData];
-    serialization[HUBJSONKeyContentIdentifier] = self.contentIdentifier;
-    serialization[HUBJSONKeyTitle] = self.title;
-    serialization[HUBJSONKeySubtitle] = self.subtitle;
-    serialization[HUBJSONKeyAccessoryTitle] = self.accessoryTitle;
-    serialization[HUBJSONKeyDescription] = self.descriptionText;
+    serialization[HUBJSONKeyText] = [self serializedTextData];
     serialization[HUBJSONKeyImages] = [self serializedImageData];
-    serialization[HUBJSONKeyCustom] = self.customData;
     serialization[HUBJSONKeyTarget] = [self serializedTargetData];
-    serialization[HUBJSONKeyLogging] = self.loggingData;
-    serialization[HUBJSONKeyDate] = [self encodedDate];
+    serialization[HUBJSONKeyMetadata] = [self serializedMetadata];
     serialization[HUBJSONKeyChildren] = [self serializedChildComponentModels];
     
     return [serialization copy];
@@ -108,11 +102,27 @@ NS_ASSUME_NONNULL_BEGIN
     };
 }
 
+- (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedTextData
+{
+    NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
+    serialization[HUBJSONKeyTitle] = self.title;
+    serialization[HUBJSONKeySubtitle] = self.subtitle;
+    serialization[HUBJSONKeyAccessory] = self.accessoryTitle;
+    serialization[HUBJSONKeyDescription] = self.descriptionText;
+    
+    if (serialization.count == 0) {
+        return nil;
+    }
+    
+    return [serialization copy];
+}
+
 - (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedImageData
 {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyMain] = [self.mainImageData serialize];
     serialization[HUBJSONKeyBackground] = [self.backgroundImageData serialize];
+    serialization[HUBJSONKeyIcon] = self.iconIdentifier;
     
     NSMutableDictionary * const customImageDataDictionary = [NSMutableDictionary new];
     
@@ -134,13 +144,27 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedTargetData
 {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
-    serialization[HUBJSONKeyURL] = self.targetURL.absoluteString;
+    serialization[HUBJSONKeyURI] = self.targetURL.absoluteString;
     serialization[HUBJSONKeyView] = [self.targetInitialViewModel serialize];
     
     if (serialization.count == 0) {
         return nil;
     }
                   
+    return [serialization copy];
+}
+
+- (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedMetadata
+{
+    NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
+    serialization[HUBJSONKeyCustom] = self.customData;
+    serialization[HUBJSONKeyLogging] = self.loggingData;
+    serialization[HUBJSONKeyDate] = [self encodedDate];
+    
+    if (serialization.count == 0) {
+        return nil;
+    }
+    
     return [serialization copy];
 }
 

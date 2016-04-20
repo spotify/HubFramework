@@ -36,9 +36,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// The path to follow to extract a component category. Maps to `componentCategory`.
 @property (nonatomic, strong) id<HUBJSONStringPath> componentCategoryPath;
 
-/// The path to follow to extract a content identifier. Maps to `contentIdentifier`.
-@property (nonatomic, strong) id<HUBJSONStringPath> contentIdentifierPath;
-
 /// The path to follow to extract a title. Maps to `title`.
 @property (nonatomic, strong) id<HUBJSONStringPath> titlePath;
 
@@ -72,6 +69,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  `HUBComponentImageDataJSONSchema`.
  */
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> customImageDataDictionaryPath;
+
+/// The path to follow to extract an icon identifier for the component. Maps to `iconIdentifier`.
+@property (nonatomic, strong) id<HUBJSONStringPath> iconIdentifierPath;
 
 /// The path to follow to extract a target URL. Maps to `targetURL`.
 @property (nonatomic, strong) id<HUBJSONURLPath> targetURLPath;

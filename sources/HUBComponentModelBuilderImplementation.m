@@ -30,15 +30,15 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentModelBuilderImplementation
 
 @synthesize modelIdentifier = _modelIdentifier;
+@synthesize preferredIndex = _preferredIndex;
 @synthesize componentNamespace = _componentNamespace;
 @synthesize componentName = _componentName;
 @synthesize componentCategory = _componentCategory;
-@synthesize contentIdentifier = _contentIdentifier;
-@synthesize preferredIndex = _preferredIndex;
 @synthesize title = _title;
 @synthesize subtitle = _subtitle;
 @synthesize accessoryTitle = _accessoryTitle;
 @synthesize descriptionText = _descriptionText;
+@synthesize iconIdentifier = _iconIdentifier;
 @synthesize targetURL = _targetURL;
 @synthesize customData = _customData;
 @synthesize loggingData = _loggingData;
@@ -235,12 +235,6 @@ NS_ASSUME_NONNULL_BEGIN
         self.componentCategory = componentCategory;
     }
     
-    NSString * const contentIdentifier = [componentModelSchema.contentIdentifierPath stringFromJSONDictionary:dictionary];
-    
-    if (contentIdentifier != nil) {
-        self.contentIdentifier = contentIdentifier;
-    }
-    
     NSString * const title = [componentModelSchema.titlePath stringFromJSONDictionary:dictionary];
     
     if (title != nil) {
@@ -334,6 +328,12 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
+    NSString * const iconIdentifier = [componentModelSchema.iconIdentifierPath stringFromJSONDictionary:dictionary];
+    
+    if (iconIdentifier != nil) {
+        self.iconIdentifier = iconIdentifier;
+    }
+    
     NSArray * const childComponentModelDictionaries = [componentModelSchema.childComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
     
     for (NSDictionary * const childComponentModelDictionary in childComponentModelDictionaries) {
@@ -373,10 +373,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                      identifierOrder:self.childComponentIdentifierOrder];
     
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
+                                                                 index:index
                                                    componentIdentifier:componentIdentifier
                                                      componentCategory:self.componentCategory
-                                                     contentIdentifier:self.contentIdentifier
-                                                                 index:index
                                                                  title:self.title
                                                               subtitle:self.subtitle
                                                         accessoryTitle:self.accessoryTitle
@@ -384,6 +383,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                          mainImageData:mainImageData
                                                    backgroundImageData:backgroundImageData
                                                        customImageData:customImageData
+                                                        iconIdentifier:self.iconIdentifier
                                                              targetURL:self.targetURL
                                                 targetInitialViewModel:targetInitialViewModel
                                                             customData:self.customData

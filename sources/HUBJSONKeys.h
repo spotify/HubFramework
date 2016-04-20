@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
-/// JSON key used to encode an accessory title
-static NSString * const HUBJSONKeyAccessoryTitle = @"accessoryTitle";
+/// JSON key used to encode an accessory
+static NSString * const HUBJSONKeyAccessory = @"accessory";
 
 /// JSON key used to encode background information
 static NSString * const HUBJSONKeyBackground = @"background";
@@ -17,9 +17,6 @@ static NSString * const HUBJSONKeyChildren = @"children";
 
 /// JSON key used to encode a component definition
 static NSString * const HUBJSONKeyComponent = @"component";
-
-/// JSON key used to encode a content identifier
-static NSString * const HUBJSONKeyContentIdentifier = @"contentId";
 
 /// JSON key used to encode custom data
 static NSString * const HUBJSONKeyCustom = @"custom";
@@ -57,6 +54,12 @@ static NSString * const HUBJSONKeyLogging = @"logging";
 /// JSON key used to encode the main part of a data aset
 static NSString * const HUBJSONKeyMain = @"main";
 
+/// JSON key used to encode a set of metadata
+static NSString * const HUBJSONKeyMetadata = @"metadata";
+
+/// JSON key used to encode a placeholder identifier
+static NSString * const HUBJSONKeyPlaceholder = @"placeholder";
+
 /// JSON key used to encode a style definition
 static NSString * const HUBJSONKeyStyle = @"style";
 
@@ -66,11 +69,14 @@ static NSString * const HUBJSONKeySubtitle = @"subtitle";
 /// JSON key used to encode target information
 static NSString * const HUBJSONKeyTarget = @"target";
 
+/// JSON key used to encode a set of text data
+static NSString * const HUBJSONKeyText = @"text";
+
 /// JSON key used to encode a title
 static NSString * const HUBJSONKeyTitle = @"title";
 
-/// JSON key used to encode an URL
-static NSString * const HUBJSONKeyURL = @"url";
+/// JSON key used to encode an URI
+static NSString * const HUBJSONKeyURI = @"uri";
 
 /// JSON key used to encode a view identifier
 static NSString * const HUBJSONKeyView = @"view";

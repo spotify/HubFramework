@@ -135,10 +135,9 @@ static NSString * const DefaultNamespace = @"default";
     NSString * const identifier = [NSUUID UUID].UUIDString;
 
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
+                                                                 index:0
                                                    componentIdentifier:componentIdentifier
                                                      componentCategory:componentCategory
-                                                     contentIdentifier:nil
-                                                                 index:0
                                                                  title:nil
                                                               subtitle:nil
                                                         accessoryTitle:nil
@@ -146,6 +145,7 @@ static NSString * const DefaultNamespace = @"default";
                                                          mainImageData:nil
                                                    backgroundImageData:nil
                                                        customImageData:@{}
+                                                        iconIdentifier:nil
                                                              targetURL:nil
                                                 targetInitialViewModel:nil
                                                             customData:nil

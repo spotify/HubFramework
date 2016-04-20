@@ -21,15 +21,15 @@ NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle style) {
 @synthesize type = _type;
 @synthesize style = _style;
 @synthesize URL = _URL;
+@synthesize placeholderIdentifier = _placeholderIdentifier;
 @synthesize localImage = _localImage;
-@synthesize iconIdentifier = _iconIdentifier;
 
 - (instancetype)initWithIdentifier:(nullable NSString *)identifier
                               type:(HUBComponentImageType)type
                              style:(HUBComponentImageStyle)style
                                URL:(nullable NSURL *)URL
+             placeholderIdentifier:(nullable NSString *)placeholderIdentifier
                         localImage:(nullable UIImage *)localImage
-                    iconIdentifier:(nullable NSString *)iconIdentifier
 {
     self = [super init];
     
@@ -38,8 +38,8 @@ NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle style) {
         _type = type;
         _style = style;
         _URL = [URL copy];
+        _placeholderIdentifier = [placeholderIdentifier copy];
         _localImage = localImage;
-        _iconIdentifier = [iconIdentifier copy];
     }
     
     return self;
@@ -51,8 +51,8 @@ NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle style) {
 {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyStyle] = HUBComponentImageStyleStringFromStyle(self.style);
-    serialization[HUBJSONKeyURL] = self.URL.absoluteString;
-    serialization[HUBJSONKeyIcon] = self.iconIdentifier;
+    serialization[HUBJSONKeyURI] = self.URL.absoluteString;
+    serialization[HUBJSONKeyPlaceholder] = self.placeholderIdentifier;
     
     return [serialization copy];
 }

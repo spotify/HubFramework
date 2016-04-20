@@ -33,7 +33,7 @@
     self.builder.style = HUBComponentImageStyleCircular;
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
     self.builder.localImage = [UIImage new];
-    self.builder.iconIdentifier = @"icon";
+    self.builder.placeholderIdentifier = @"placeholder";
     
     NSString * const identifier = @"identifier";
     HUBComponentImageType const type = HUBComponentImageTypeCustom;
@@ -45,7 +45,7 @@
     XCTAssertEqual(imageData.style, self.builder.style);
     XCTAssertEqualObjects(imageData.URL, self.builder.URL);
     XCTAssertEqual(imageData.localImage, self.builder.localImage);
-    XCTAssertEqualObjects(imageData.iconIdentifier, self.builder.iconIdentifier);
+    XCTAssertEqualObjects(imageData.placeholderIdentifier, @"placeholder");
 }
 
 - (void)testEmptyBuilderProducingNil
@@ -65,28 +65,27 @@
     XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
 }
 
-- (void)testOnlyIconIdentifierNotProducingNil
+- (void)testOnlyPlaceholderIdentifierNotProducingNil
 {
-    self.builder.iconIdentifier = @"icon";
+    self.builder.placeholderIdentifier = @"placeholder";
     XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
 }
 
 - (void)testAddingJSONData
 {
     NSURL * const imageURL = [NSURL URLWithString:@"http://cdn.spotify.com/image"];
-    NSString * const iconIdentifier = @"playlist";
     
     NSDictionary * const dictionary = @{
         @"style": @"circular",
-        @"url": imageURL.absoluteString,
-        @"icon": iconIdentifier
+        @"uri": imageURL.absoluteString,
+        @"placeholder": @"place_holder"
     };
     
     [self.builder addDataFromJSONDictionary:dictionary];
     
     XCTAssertEqual(self.builder.style, HUBComponentImageStyleCircular);
     XCTAssertEqualObjects(self.builder.URL, imageURL);
-    XCTAssertEqualObjects(self.builder.iconIdentifier, iconIdentifier);
+    XCTAssertEqualObjects(self.builder.placeholderIdentifier, @"place_holder");
 }
 
 - (void)testInvalidImageStyleStringProducingRectangularStyle

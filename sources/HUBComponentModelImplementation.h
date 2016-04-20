@@ -13,10 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its possible values
  *
  *  @param identifier The identifier of the model
+ *  @param index The index of the model, either within its parent or within the root list
  *  @param componentIdentifier The identifier of the component that the model should be rendered using
  *  @param componentCategory The category of the component that the model should be rendered using
- *  @param contentIdentifier Any identifier for the model's content
- *  @param index The index of the model, either within its parent or within the root list
  *  @param title Any title that the component should render
  *  @param subtitle Any subtitle that the component should render
  *  @param accessoryTitle Any accessory title that the component should render
@@ -24,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param mainImageData Any image data for the component's "main" image
  *  @param backgroundImageData Any image data for the component's background image
  *  @param customImageData Any image data objects describing layout properties for custom images for the component
+ *  @param iconIdentifier The identifier of any icon that should be used with the component
  *  @param targetURL The URL that is the target of a user interaction with the component
  *  @param targetInitialViewModel Any pre-computed view model that a view that is the target of `targetURL` should use
  *  @param customData Any custom data that the component should use
@@ -35,10 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  documentation in `HUBComponentModel`.
  */
 - (instancetype)initWithIdentifier:(NSString *)identifier
+                             index:(NSUInteger)index
                componentIdentifier:(HUBComponentIdentifier *)componentIdentifier
                  componentCategory:(HUBComponentCategory *)componentCategory
-                 contentIdentifier:(nullable NSString *)contentIdentifier
-                             index:(NSUInteger)index
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle
                     accessoryTitle:(nullable NSString *)accessoryTitle
@@ -46,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
                      mainImageData:(nullable id<HUBComponentImageData>)mainImageData
                backgroundImageData:(nullable id<HUBComponentImageData>)backgroundImageData
                    customImageData:(NSDictionary<NSString *, id<HUBComponentImageData>> *)customImageData
+                    iconIdentifier:(nullable NSString *)iconIdentifier
                          targetURL:(nullable NSURL *)targetURL
             targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
