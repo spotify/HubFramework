@@ -5,6 +5,7 @@
 #import "HUBViewModelImplementation.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentDefaults+Testing.h"
+#import "HUBIconImageResolverMock.h"
 
 @interface HUBJSONSchemaTests : XCTestCase
 
@@ -15,13 +16,16 @@
 - (void)testViewModelFromJSONDictionary
 {
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
     NSString * const featureIdentifier = @"feature";
     
-    HUBJSONSchemaImplementation * const schema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
+    HUBJSONSchemaImplementation * const schema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                                              iconImageResolver:iconImageResolver];
     
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:featureIdentifier
                                                                                                                   JSONSchema:schema
-                                                                                                           componentDefaults:componentDefaults];
+                                                                                                           componentDefaults:componentDefaults
+                                                                                                           iconImageResolver:iconImageResolver];
     
     NSDictionary * const dictionary = @{
         @"body": @[
@@ -45,7 +49,8 @@
 - (void)testCopy
 {
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
-    id<HUBJSONSchema> const schema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
+    id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
+    id<HUBJSONSchema> const schema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults iconImageResolver:iconImageResolver];
     id<HUBJSONSchema> const copy = [schema copy];
     
     // Assert that the copied sub schemas are not the same instance as the original ones

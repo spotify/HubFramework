@@ -21,6 +21,7 @@
 #import "HUBContentReloadPolicyMock.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBComponentFallbackHandlerMock.h"
+#import "HUBIconImageResolverMock.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -48,6 +49,7 @@
     
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
+    id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
     
     self.contentProvider = [HUBContentProviderMock new];
     self.contentReloadPolicy = [HUBContentReloadPolicyMock new];
@@ -62,7 +64,7 @@
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentDefaults.componentNamespace];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults iconImageResolver:iconImageResolver];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
     self.viewModelLoader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
@@ -71,6 +73,7 @@
                                                                           JSONSchema:JSONSchema
                                                                    componentDefaults:componentDefaults
                                                            connectivityStateResolver:connectivityStateResolver
+                                                                   iconImageResolver:iconImageResolver
                                                                     initialViewModel:nil];
     
     self.imageLoader = [HUBImageLoaderMock new];

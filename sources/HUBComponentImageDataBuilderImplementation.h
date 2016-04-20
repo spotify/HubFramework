@@ -3,6 +3,7 @@
 #import "HUBHeaderMacros.h"
 
 @protocol HUBComponentImageDataJSONSchema;
+@protocol HUBIconImageResolver;
 @class HUBComponentImageDataImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -14,8 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with a JSON schema
  *
  *  @param JSONSchema The schema to use to parse data from any added JSON object
+ *  @param iconImageResolver The resolver to use to convert icons into renderable images
  */
-- (instancetype)initWithJSONSchema:(id<HUBJSONSchema>)JSONSchema HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithJSONSchema:(id<HUBJSONSchema>)JSONSchema
+                 iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Build an instance of `HUBComponentImageDataImplementation` from the data contained in this builder

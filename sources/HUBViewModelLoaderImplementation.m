@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
+@property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable) id<HUBViewModel> cachedInitialViewModel;
 @property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *builder;
 @property (nonatomic, assign) NSUInteger currentlyLoadingContentProviderIndex;
@@ -37,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
               componentDefaults:(HUBComponentDefaults *)componentDefaults
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+              iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
                initialViewModel:(nullable id<HUBViewModel>)initialViewModel
 {
     NSParameterAssert(viewURI != nil);
@@ -44,6 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(contentProviders.count > 0);
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(componentDefaults != nil);
+    NSParameterAssert(iconImageResolver != nil);
     NSParameterAssert(connectivityStateResolver != nil);
     
     self = [super init];
@@ -55,6 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
         _JSONSchema = JSONSchema;
         _componentDefaults = componentDefaults;
         _connectivityStateResolver = connectivityStateResolver;
+        _iconImageResolver = iconImageResolver;
         _cachedInitialViewModel = initialViewModel;
         _currentlyLoadingContentProviderIndex = NSNotFound;
         _lastHandledContentProvider = nil;
@@ -123,7 +127,8 @@ NS_ASSUME_NONNULL_BEGIN
 {
     return [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
                                                                      JSONSchema:self.JSONSchema
-                                                              componentDefaults:self.componentDefaults];
+                                                              componentDefaults:self.componentDefaults
+                                                              iconImageResolver:self.iconImageResolver];
 }
 
 - (nullable id<HUBContentProvider>)currentlyLoadingContentProvider

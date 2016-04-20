@@ -9,7 +9,7 @@
 @synthesize styleStringPath = _styleStringPath;
 @synthesize styleStringMap = _styleStringMap;
 @synthesize URLPath = _URLPath;
-@synthesize placeholderIdentifierPath = _placeholderIdentifierPath;
+@synthesize placeholderIconIdentifierPath = _placeholderIconIdentifierPath;
 
 - (instancetype)init
 {
@@ -22,13 +22,13 @@
     return [self initWithStyleStringPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyStyle] stringPath]
                           styleStringMap:styleStringMap
                                  URLPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyURI] URLPath]
-               placeholderIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyPlaceholder] stringPath]];
+           placeholderIconIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyPlaceholder] stringPath]];
 }
 
 - (instancetype)initWithStyleStringPath:(id<HUBJSONStringPath>)styleStringPath
                          styleStringMap:( NSDictionary<NSString *, NSNumber *> *)styleStringMap
                                 URLPath:(id<HUBJSONURLPath>)URLPath
-              placeholderIdentifierPath:(id<HUBJSONStringPath>)placeholderIdentifierPath
+          placeholderIconIdentifierPath:(id<HUBJSONStringPath>)placeholderIconIdentifierPath
 {
     self = [super init];
     
@@ -36,7 +36,7 @@
         _styleStringPath = styleStringPath;
         _styleStringMap = styleStringMap;
         _URLPath = URLPath;
-        _placeholderIdentifierPath = placeholderIdentifierPath;
+        _placeholderIconIdentifierPath = placeholderIconIdentifierPath;
     }
     
     return self;
@@ -49,7 +49,7 @@
     return [[HUBComponentImageDataJSONSchemaImplementation alloc] initWithStyleStringPath:self.styleStringPath
                                                                            styleStringMap:self.styleStringMap
                                                                                   URLPath:self.URLPath
-                                                                placeholderIdentifierPath:self.placeholderIdentifierPath];
+                                                            placeholderIconIdentifierPath:self.placeholderIconIdentifierPath];
 }
 
 @end

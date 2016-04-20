@@ -12,6 +12,7 @@
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBComponentDefaults.h"
 #import "HUBComponentFallbackHandlerMock.h"
+#import "HUBIconImageResolverMock.h"
 
 @interface HUBCollectionViewLayoutTests : XCTestCase
 
@@ -65,11 +66,15 @@
     
     self.componentLayoutManager = [HUBComponentLayoutManagerMock new];
     
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
+    id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
+    
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                                      iconImageResolver:iconImageResolver];
     
     self.viewModelBuilder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
                                                                                       JSONSchema:JSONSchema
-                                                                               componentDefaults:componentDefaults];
+                                                                               componentDefaults:componentDefaults
+                                                                               iconImageResolver:iconImageResolver];
 }
 
 #pragma mark - Tests

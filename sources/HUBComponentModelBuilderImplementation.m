@@ -10,6 +10,7 @@
 #import "HUBComponentModelJSONSchema.h"
 #import "HUBJSONPath.h"
 #import "HUBComponentDefaults.h"
+#import "HUBIconImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
+@property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *mainImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *backgroundImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentImageDataBuilderImplementation *> *customImageDataBuilders;
@@ -97,10 +99,12 @@ NS_ASSUME_NONNULL_BEGIN
                       featureIdentifier:(NSString *)featureIdentifier
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
+                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(componentDefaults != nil);
+    NSParameterAssert(iconImageResolver != nil);
     
     if (modelIdentifier == nil) {
         modelIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
@@ -111,14 +115,20 @@ NS_ASSUME_NONNULL_BEGIN
     if (self) {
         _JSONSchema = JSONSchema;
         _componentDefaults = componentDefaults;
+        _iconImageResolver = iconImageResolver;
         
         _modelIdentifier = (NSString *)modelIdentifier;
         _componentNamespace = [componentDefaults.componentNamespace copy];
         _componentName = [componentDefaults.componentName copy];
         _componentCategory = [componentDefaults.componentCategory copy];
         _featureIdentifier = [featureIdentifier copy];
-        _mainImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema];
-        _backgroundImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema];
+        
+        _mainImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema
+                                                                                                   iconImageResolver:iconImageResolver];
+        
+        _backgroundImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema
+                                                                                                         iconImageResolver:iconImageResolver];
+        
         _customImageDataBuilders = [NSMutableDictionary new];
         _childComponentModelBuilders = [NSMutableDictionary new];
         _childComponentIdentifierOrder = [NSMutableArray new];
@@ -367,6 +377,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
+    id<HUBIcon> const icon = [self buildIconForPlaceholder:NO];
     id<HUBViewModel> const targetInitialViewModel = [self.targetInitialViewModelBuilderImplementation build];
     
     NSArray * const childComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.childComponentModelBuilders
@@ -383,7 +394,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                          mainImageData:mainImageData
                                                    backgroundImageData:backgroundImageData
                                                        customImageData:customImageData
-                                                        iconIdentifier:self.iconIdentifier
+                                                                  icon:icon
                                                              targetURL:self.targetURL
                                                 targetInitialViewModel:targetInitialViewModel
                                                             customData:self.customData
@@ -402,7 +413,9 @@ NS_ASSUME_NONNULL_BEGIN
         return existingBuilder;
     }
     
-    HUBComponentImageDataBuilderImplementation * const newBuilder = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema];
+    HUBComponentImageDataBuilderImplementation * const newBuilder = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
+                                                                                                                         iconImageResolver:self.iconImageResolver];
+    
     [self.customImageDataBuilders setObject:newBuilder forKey:identifier];
     return newBuilder;
 }
@@ -413,7 +426,8 @@ NS_ASSUME_NONNULL_BEGIN
     if (self.targetInitialViewModelBuilderImplementation == nil) {
         self.targetInitialViewModelBuilderImplementation = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
                                                                                                                      JSONSchema:self.JSONSchema
-                                                                                                              componentDefaults:self.componentDefaults];
+                                                                                                              componentDefaults:self.componentDefaults
+                                                                                                              iconImageResolver:self.iconImageResolver];
     }
     
     return (HUBViewModelBuilderImplementation *)self.targetInitialViewModelBuilderImplementation;
@@ -433,12 +447,24 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
                                                                                                                       featureIdentifier:self.featureIdentifier
                                                                                                                              JSONSchema:self.JSONSchema
-                                                                                                                      componentDefaults:self.componentDefaults];
+                                                                                                                      componentDefaults:self.componentDefaults
+                                                                                                                      iconImageResolver:self.iconImageResolver];
     
     [self.childComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
     [self.childComponentIdentifierOrder addObject:newBuilder.modelIdentifier];
     
     return newBuilder;
+}
+
+- (nullable id<HUBIcon>)buildIconForPlaceholder:(BOOL)forPlaceholder
+{
+    NSString * const iconIdentifier = self.iconIdentifier;
+    
+    if (iconIdentifier == nil) {
+        return nil;
+    }
+    
+    return [[HUBIconImplementation alloc] initWithIdentifier:iconIdentifier imageResolver:self.iconImageResolver isPlaceholder:forPlaceholder];
 }
 
 @end

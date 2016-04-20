@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBJSONSchemaImplementation ()
 
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
+@property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
 
 @end
 
@@ -23,19 +24,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initializers
 
-- (instancetype)initWithComponentDefaults:(HUBComponentDefaults *)componentDefaults
+- (instancetype)initWithComponentDefaults:(HUBComponentDefaults *)componentDefaults iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
 {
     return [self initWithViewModelSchema:[HUBViewModelJSONSchemaImplementation new]
                     componentModelSchema:[HUBComponentModelJSONSchemaImplementation new]
                 componentImageDataSchema:[HUBComponentImageDataJSONSchemaImplementation new]
-                       componentDefaults:componentDefaults];
+                       componentDefaults:componentDefaults
+                       iconImageResolver:iconImageResolver];
 }
 
 - (instancetype)initWithViewModelSchema:(id<HUBViewModelJSONSchema>)viewModelSchema
                    componentModelSchema:(id<HUBComponentModelJSONSchema>)componentModelSchema
                componentImageDataSchema:(id<HUBComponentImageDataJSONSchema>)componentImageDataSchema
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
+                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
 {
+    NSParameterAssert(viewModelSchema != nil);
+    NSParameterAssert(componentModelSchema != nil);
+    NSParameterAssert(componentImageDataSchema != nil);
+    NSParameterAssert(componentDefaults != nil);
+    NSParameterAssert(iconImageResolver != nil);
+    
     self = [super init];
     
     if (self) {
@@ -43,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
         _componentModelSchema = componentModelSchema;
         _componentImageDataSchema = componentImageDataSchema;
         _componentDefaults = componentDefaults;
+        _iconImageResolver = iconImageResolver;
     }
     
     return self;
@@ -60,14 +70,16 @@ NS_ASSUME_NONNULL_BEGIN
     return [[HUBJSONSchemaImplementation alloc] initWithViewModelSchema:[self.viewModelSchema copy]
                                                    componentModelSchema:[self.componentModelSchema copy]
                                                componentImageDataSchema:[self.componentImageDataSchema copy]
-                                                      componentDefaults:self.componentDefaults];
+                                                      componentDefaults:self.componentDefaults
+                                                      iconImageResolver:self.iconImageResolver];
 }
 
 - (id<HUBViewModel>)viewModelFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary featureIdentifier:(NSString *)featureIdentifier
 {
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:featureIdentifier
                                                                                                                   JSONSchema:self
-                                                                                                           componentDefaults:self.componentDefaults];
+                                                                                                           componentDefaults:self.componentDefaults
+                                                                                                           iconImageResolver:self.iconImageResolver];
     
     [builder addDataFromJSONDictionary:dictionary];
     return [builder build];

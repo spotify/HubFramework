@@ -3,12 +3,14 @@
 #import "HUBComponentImageDataImplementation.h"
 #import "HUBJSONSchema.h"
 #import "HUBComponentImageDataJSONSchema.h"
+#import "HUBIconImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBComponentImageDataBuilderImplementation ()
 
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
+@property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
 
 @end
 
@@ -16,17 +18,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize style = _style;
 @synthesize URL = _URL;
-@synthesize placeholderIdentifier = _placeholderIdentifier;
+@synthesize placeholderIconIdentifier = _placeholderIconIdentifier;
 @synthesize localImage = _localImage;
 
 #pragma mark - Initializer
 
-- (instancetype)initWithJSONSchema:(id<HUBJSONSchema>)JSONSchema
+- (instancetype)initWithJSONSchema:(id<HUBJSONSchema>)JSONSchema iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
 {
     self = [super init];
     
     if (self) {
         _JSONSchema = JSONSchema;
+        _iconImageResolver = iconImageResolver;
     }
     
     return self;
@@ -40,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.style = HUBComponentImageStyleRectangular;
     self.URL = [imageDataSchema.URLPath URLFromJSONDictionary:dictionary];
-    self.placeholderIdentifier = [imageDataSchema.placeholderIdentifierPath stringFromJSONDictionary:dictionary];
+    self.placeholderIconIdentifier = [imageDataSchema.placeholderIconIdentifierPath stringFromJSONDictionary:dictionary];
     
     NSString * const styleString = [imageDataSchema.styleStringPath stringFromJSONDictionary:dictionary];
     
@@ -67,16 +70,33 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier type:(HUBComponentImageType)type
 {
-    if (self.URL == nil && self.placeholderIdentifier == nil && self.localImage == nil) {
+    if (self.URL == nil && self.placeholderIconIdentifier == nil && self.localImage == nil) {
         return nil;
     }
+    
+    id<HUBIcon> const placeholderIcon = [self buildPlaceholderIcon];
     
     return [[HUBComponentImageDataImplementation alloc] initWithIdentifier:identifier
                                                                       type:type
                                                                      style:self.style
                                                                        URL:self.URL
-                                                     placeholderIdentifier:self.placeholderIdentifier
+                                                           placeholderIcon:placeholderIcon
                                                                 localImage:self.localImage];
+}
+
+#pragma mark - Private utilities
+
+- (nullable id<HUBIcon>)buildPlaceholderIcon
+{
+    NSString * const placeholderIconIdentifier = self.placeholderIconIdentifier;
+    
+    if (placeholderIconIdentifier == nil) {
+        return nil;
+    }
+    
+    return [[HUBIconImplementation alloc] initWithIdentifier:placeholderIconIdentifier
+                                               imageResolver:self.iconImageResolver
+                                               isPlaceholder:YES];
 }
 
 NS_ASSUME_NONNULL_END

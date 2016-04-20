@@ -22,12 +22,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
+                                iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
                        defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
 {
     NSParameterAssert(connectivityStateResolver != nil);
     NSParameterAssert(imageLoaderFactory != nil);
+    NSParameterAssert(iconImageResolver != nil);
     NSParameterAssert(defaultContentReloadPolicy != nil);
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentFallbackHandler != nil);
@@ -43,13 +45,14 @@ NS_ASSUME_NONNULL_BEGIN
         _initialViewModelRegistry = [HUBInitialViewModelRegistry new];
         _featureRegistry = [HUBFeatureRegistryImplementation new];
         _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler];
-        _JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults];
+        _JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults iconImageResolver:iconImageResolver];
         
         _viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:_featureRegistry
                                                                                         JSONSchemaRegistry:_JSONSchemaRegistry
                                                                                   initialViewModelRegistry:_initialViewModelRegistry
                                                                                          componentDefaults:componentDefaults
-                                                                                 connectivityStateResolver:_connectivityStateResolver];
+                                                                                 connectivityStateResolver:_connectivityStateResolver
+                                                                                         iconImageResolver:iconImageResolver];
         
         _viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:_viewModelLoaderFactory
                                                                                              imageLoaderFactory:imageLoaderFactory

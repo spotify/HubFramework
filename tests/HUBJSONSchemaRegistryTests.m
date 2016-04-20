@@ -2,6 +2,7 @@
 
 #import "HUBJSONSchemaRegistryImplementation.h"
 #import "HUBComponentDefaults+Testing.h"
+#import "HUBIconImageResolverMock.h"
 
 @interface HUBJSONSchemaRegistryTests : XCTestCase
 
@@ -18,7 +19,10 @@
     [super setUp];
     
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
-    self.registry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults];
+    id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
+    
+    self.registry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                         iconImageResolver:iconImageResolver];
 }
 
 #pragma mark - Tests

@@ -11,6 +11,7 @@
 #import "HUBContentProviderMock.h"
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBComponentDefaults+Testing.h"
+#import "HUBIconImageResolverMock.h"
 
 @interface HUBViewModelLoaderTests : XCTestCase <HUBViewModelLoaderDelegate>
 
@@ -74,10 +75,13 @@
 - (void)testInjectedInitialViewModelUsedInsteadOfContentProviders
 {
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
+    id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults iconImageResolver:iconImageResolver];
+    
     HUBViewModelBuilderImplementation * const viewModelBuilder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
                                                                                                                            JSONSchema:JSONSchema
-                                                                                                                    componentDefaults:componentDefaults];
+                                                                                                                    componentDefaults:componentDefaults
+                                                                                                                    iconImageResolver:iconImageResolver];
     
     viewModelBuilder.navigationBarTitle = @"Pre-computed title";
     id<HUBViewModel> const initialViewModel = [viewModelBuilder build];
@@ -507,7 +511,9 @@
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:test"];
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
-    HUBJSONSchemaImplementation * const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults];
+    id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
+    HUBJSONSchemaImplementation * const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                                                  iconImageResolver:iconImageResolver];
     
     self.loader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
                                                           featureIdentifier:@"feature"
@@ -515,6 +521,7 @@
                                                                  JSONSchema:JSONSchema
                                                           componentDefaults:componentDefaults
                                                   connectivityStateResolver:self.connectivityStateResolver
+                                                          iconImageResolver:iconImageResolver
                                                            initialViewModel:initialViewModel];
     
     self.loader.delegate = self;

@@ -1,6 +1,7 @@
 #import "HUBJSONSchemaRegistry.h"
 #import "HUBHeaderMacros.h"
 
+@protocol HUBIconImageResolver;
 @class HUBComponentDefaults;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -15,8 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with a set of component default values
  *
  *  @param componentDefaults The default component values to use when parsing JSON
+ *  @param iconImageResolver The resolver to use to convert icons into renderable images
  */
-- (instancetype)initWithComponentDefaults:(HUBComponentDefaults *)componentDefaults HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithComponentDefaults:(HUBComponentDefaults *)componentDefaults
+                        iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Return a custom JSON schema that has been registered for a certain identifier

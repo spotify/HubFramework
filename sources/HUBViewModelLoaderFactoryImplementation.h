@@ -7,6 +7,7 @@
 @class HUBComponentDefaults;
 @class HUBFeatureRegistration;
 @protocol HUBConnectivityStateResolver;
+@protocol HUBIconImageResolver;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,12 +22,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param initialViewModelRegistry The registry to use to retrieve pre-computed view models for initial content
  *  @param componentDefaults The default values to use for component model builders created when loading view models
  *  @param connectivityStateResolver The object resolving connectivity states for created view model loaders
+ *  @param iconImageResolver The resolver to use to convert icons into renderable images
  */
 - (instancetype)initWithFeatureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                      JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
                initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
-              connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver HUB_DESIGNATED_INITIALIZER;
+              connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Create a view model loader for a given view URI, using a feature registration

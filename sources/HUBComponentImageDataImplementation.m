@@ -1,6 +1,7 @@
 #import "HUBComponentImageDataImplementation.h"
 
 #import "HUBJSONKeys.h"
+#import "HUBIcon.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,14 +22,14 @@ NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle style) {
 @synthesize type = _type;
 @synthesize style = _style;
 @synthesize URL = _URL;
-@synthesize placeholderIdentifier = _placeholderIdentifier;
+@synthesize placeholderIcon = _placeholderIcon;
 @synthesize localImage = _localImage;
 
 - (instancetype)initWithIdentifier:(nullable NSString *)identifier
                               type:(HUBComponentImageType)type
                              style:(HUBComponentImageStyle)style
                                URL:(nullable NSURL *)URL
-             placeholderIdentifier:(nullable NSString *)placeholderIdentifier
+                   placeholderIcon:(nullable id<HUBIcon>)placeholderIcon
                         localImage:(nullable UIImage *)localImage
 {
     self = [super init];
@@ -38,7 +39,7 @@ NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle style) {
         _type = type;
         _style = style;
         _URL = [URL copy];
-        _placeholderIdentifier = [placeholderIdentifier copy];
+        _placeholderIcon = placeholderIcon;
         _localImage = localImage;
     }
     
@@ -52,7 +53,7 @@ NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle style) {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyStyle] = HUBComponentImageStyleStringFromStyle(self.style);
     serialization[HUBJSONKeyURI] = self.URL.absoluteString;
-    serialization[HUBJSONKeyPlaceholder] = self.placeholderIdentifier;
+    serialization[HUBJSONKeyPlaceholder] = self.placeholderIcon.identifier;
     
     return [serialization copy];
 }

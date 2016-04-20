@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
+@property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
 
 @end
 
@@ -27,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
                initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
 {
     self = [super init];
     
@@ -36,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
         _initialViewModelRegistry = initialViewModelRegistry;
         _componentDefaults = componentDefaults;
         _connectivityStateResolver = connectivityStateResolver;
+        _iconImageResolver = iconImageResolver;
     }
     
     return self;
@@ -66,6 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                           JSONSchema:JSONSchema
                                                    componentDefaults:self.componentDefaults
                                            connectivityStateResolver:self.connectivityStateResolver
+                                                   iconImageResolver:self.iconImageResolver
                                                     initialViewModel:initialViewModel];
 }
 

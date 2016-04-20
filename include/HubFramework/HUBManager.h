@@ -8,6 +8,7 @@
 @protocol HUBConnectivityStateResolver;
 @protocol HUBDataLoaderFactory;
 @protocol HUBImageLoaderFactory;
+@protocol HUBIconImageResolver;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
 @protocol HUBComponentFallbackHandler;
@@ -42,6 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param connectivityStateResolver An object responsible for determining the current connectivity state of the application.
  *  @param imageLoaderFactory A factory that creates image loaders that are used to load images for components
+ *  @param iconImageResolver An object responsible for converting icons into renderable images. See `HUBIconImageResolver` for
+ *         more information.
  *  @param defaultContentReloadPolicy The default content reload policy to use for features that do not define their own.
  *         A content reload policy determines whenever a view belonging to the feature should have its content reloaded.
  *         See `HUBContentReloadPolicy` for more information.
@@ -52,6 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
+                                iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
                        defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler HUB_DESIGNATED_INITIALIZER;

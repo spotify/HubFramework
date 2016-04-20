@@ -9,6 +9,8 @@
 #import "HUBViewModelBuilder.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBComponentDefaults+Testing.h"
+#import "HUBIconImageResolverMock.h"
+#import "HUBIcon.h"
 
 @interface HUBComponentModelBuilderTests : XCTestCase
 
@@ -31,12 +33,14 @@
     self.featureIdentifier = @"feature";
     self.componentDefaults = [HUBComponentDefaults defaultsForTesting];
     
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults];
+    id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults iconImageResolver:iconImageResolver];
     
     self.builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:self.modelIdentifier
                                                                          featureIdentifier:self.featureIdentifier
                                                                                 JSONSchema:JSONSchema
-                                                                         componentDefaults:self.componentDefaults];
+                                                                         componentDefaults:self.componentDefaults
+                                                                         iconImageResolver:iconImageResolver];
 }
 
 #pragma mark - Tests
@@ -52,8 +56,8 @@
     self.builder.subtitle = @"subtitle";
     self.builder.accessoryTitle = @"accessory";
     self.builder.descriptionText = @"description";
-    self.builder.mainImageDataBuilder.placeholderIdentifier = @"main";
-    self.builder.backgroundImageDataBuilder.placeholderIdentifier = @"background";
+    self.builder.mainImageDataBuilder.placeholderIconIdentifier = @"main";
+    self.builder.backgroundImageDataBuilder.placeholderIconIdentifier = @"background";
     self.builder.targetURL = [NSURL URLWithString:@"spotify:hub"];
     self.builder.customData = @{@"key": @"value"};
     self.builder.loggingData = @{@"logging": @"data"};
@@ -70,8 +74,8 @@
     XCTAssertEqualObjects(model.subtitle, self.builder.subtitle);
     XCTAssertEqualObjects(model.accessoryTitle, self.builder.accessoryTitle);
     XCTAssertEqualObjects(model.descriptionText, self.builder.descriptionText);
-    XCTAssertEqualObjects(model.mainImageData.placeholderIdentifier, self.builder.mainImageDataBuilder.placeholderIdentifier);
-    XCTAssertEqualObjects(model.backgroundImageData.placeholderIdentifier, self.builder.backgroundImageDataBuilder.placeholderIdentifier);
+    XCTAssertEqualObjects(model.mainImageData.placeholderIcon.identifier, @"main");
+    XCTAssertEqualObjects(model.backgroundImageData.placeholderIcon.identifier, @"background");
     XCTAssertEqualObjects(model.targetURL, self.builder.targetURL);
     XCTAssertEqualObjects(model.customData, self.builder.customData);
     XCTAssertEqualObjects(model.loggingData, self.builder.loggingData);
@@ -93,8 +97,8 @@
 - (void)testDefaultImageTypes
 {
     self.builder.componentName = @"component";
-    self.builder.mainImageDataBuilder.placeholderIdentifier = @"placeholder";
-    self.builder.backgroundImageDataBuilder.placeholderIdentifier = @"placeholder";
+    self.builder.mainImageDataBuilder.placeholderIconIdentifier = @"placeholder";
+    self.builder.backgroundImageDataBuilder.placeholderIconIdentifier = @"placeholder";
     HUBComponentModelImplementation * const model = [self.builder buildForIndex:0];
     
     XCTAssertEqual(model.mainImageData.type, HUBComponentImageTypeMain);
@@ -125,7 +129,7 @@
     
     id<HUBComponentImageDataBuilder> const imageDataBuilder = [self.builder builderForCustomImageDataWithIdentifier:customImageIdentifier];
     XCTAssertTrue([self.builder builderExistsForCustomImageDataWithIdentifier:customImageIdentifier]);
-    imageDataBuilder.placeholderIdentifier = @"placeholder";
+    imageDataBuilder.placeholderIconIdentifier = @"placeholder";
     
     NSString * const emptyCustomImageBuilderIdentifier = @"empty";
     [self.builder builderForCustomImageDataWithIdentifier:emptyCustomImageBuilderIdentifier];
@@ -135,7 +139,7 @@
     
     XCTAssertEqualObjects(customImageData.identifier, customImageIdentifier);
     XCTAssertEqual(customImageData.type, HUBComponentImageTypeCustom);
-    XCTAssertEqualObjects(customImageData.placeholderIdentifier, @"placeholder");
+    XCTAssertEqualObjects(customImageData.placeholderIcon.identifier, @"placeholder");
     
     XCTAssertNil(componentModel.customImageData[emptyCustomImageBuilderIdentifier]);
 }
@@ -319,10 +323,10 @@
     XCTAssertEqualObjects(model.subtitle, subtitle);
     XCTAssertEqualObjects(model.accessoryTitle, accessoryTitle);
     XCTAssertEqualObjects(model.descriptionText, descriptionText);
-    XCTAssertEqualObjects(model.mainImageData.placeholderIdentifier, mainImagePlaceholderIdentifier);
-    XCTAssertEqualObjects(model.backgroundImageData.placeholderIdentifier, backgroundImagePlaceholderIdentifier);
-    XCTAssertEqualObjects(model.customImageData[customImageIdentifier].placeholderIdentifier, customImagePlaceholderIdentifier);
-    XCTAssertEqualObjects(model.iconIdentifier, iconIdentifier);
+    XCTAssertEqualObjects(model.mainImageData.placeholderIcon.identifier, mainImagePlaceholderIdentifier);
+    XCTAssertEqualObjects(model.backgroundImageData.placeholderIcon.identifier, backgroundImagePlaceholderIdentifier);
+    XCTAssertEqualObjects(model.customImageData[customImageIdentifier].placeholderIcon.identifier, customImagePlaceholderIdentifier);
+    XCTAssertEqualObjects(model.icon.identifier, iconIdentifier);
     XCTAssertEqualObjects(model.targetURL, targetURL);
     XCTAssertEqualObjects(model.targetInitialViewModel.navigationBarTitle, targetTitle);
     XCTAssertEqualObjects(model.customData, customData);

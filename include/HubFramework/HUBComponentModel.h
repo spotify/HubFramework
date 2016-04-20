@@ -5,6 +5,7 @@
 @protocol HUBComponentImageData;
 @protocol HUBComponentModel;
 @protocol HUBViewModel;
+@protocol HUBIcon;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -124,11 +125,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSDictionary<NSString *, id<HUBComponentImageData>> *customImageData;
 
 /**
- *  The identifier of any icon that should be used with the component
+ *  Any icon that the component should render
  *
- *  It's up to each component to resolve this identifier into something renderable, such as an icon or other type of image.
+ *  Use the icon object to retrieve an image for a given size. See `HUBIcon` for more information.
  */
-@property (nonatomic, copy, nullable, readonly) NSString *iconIdentifier;
+@property (nonatomic, strong, nullable, readonly) id<HUBIcon> icon;
 
 #pragma mark - Target
 
