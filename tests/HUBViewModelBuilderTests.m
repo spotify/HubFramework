@@ -93,24 +93,30 @@
 - (void)testRemovalOfBodyComponentBuilders
 {
     NSString * const componentModelIdentifier = @"identifier";
-    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults iconImageResolver:self.iconImageResolver];
+    
+    XCTAssertFalse([self.builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
 
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
-                                                                                                                  JSONSchema:JSONSchema
-                                                                                                           componentDefaults:self.componentDefaults
-                                                                                                           iconImageResolver:self.iconImageResolver];
-
-    XCTAssertFalse([builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
-
-    id<HUBComponentModelBuilder> const componentBuilder = [builder builderForBodyComponentModelWithIdentifier:componentModelIdentifier];
+    id<HUBComponentModelBuilder> const componentBuilder = [self.builder builderForBodyComponentModelWithIdentifier:componentModelIdentifier];
 
     XCTAssertNotNil(componentBuilder);
     XCTAssertEqualObjects(componentBuilder.componentNamespace, self.componentDefaults.componentNamespace);
-    XCTAssertTrue([builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
+    XCTAssertTrue([self.builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
 
-    [builder removeBuilderForBodyComponentModelWithIdentifier:componentModelIdentifier];
+    [self.builder removeBuilderForBodyComponentModelWithIdentifier:componentModelIdentifier];
 
-    XCTAssertFalse([builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
+    XCTAssertFalse([self.builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
+}
+
+- (void)testRemoveAllComponentModelBuilders
+{
+    self.builder.headerComponentModelBuilder.title = @"Header title";
+    [self.builder builderForBodyComponentModelWithIdentifier:@"body"].title = @"Body title";
+    
+    XCTAssertFalse(self.builder.isEmpty);
+    
+    [self.builder removeAllComponentModelBuilders];
+    
+    XCTAssertTrue(self.builder.isEmpty);
 }
 
 - (void)testBodyComponentPreferredIndexRespected

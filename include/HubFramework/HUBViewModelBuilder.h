@@ -140,6 +140,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier;
 
+/**
+ *  Remove all component model builders that this builder contains
+ *
+ *  All body component model builders, as well as any header component model builder, will be removed.
+ */
+- (void)removeAllComponentModelBuilders;
+
 @end
 
 NS_ASSUME_NONNULL_END

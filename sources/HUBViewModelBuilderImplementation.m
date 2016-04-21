@@ -106,6 +106,13 @@ NS_ASSUME_NONNULL_BEGIN
     [self.bodyComponentIdentifierOrder removeObject:identifier];
 }
 
+- (void)removeAllComponentModelBuilders
+{
+    [self removeHeaderComponentModelBuilder];
+    [self.bodyComponentModelBuilders removeAllObjects];
+    [self.bodyComponentIdentifierOrder removeAllObjects];
+}
+
 #pragma mark - API
 
 - (BOOL)isEmpty
