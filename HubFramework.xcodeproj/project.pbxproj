@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8A0E4B7A1CB562140019DE71 /* HUBViewURIPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E4B791CB562140019DE71 /* HUBViewURIPredicate.m */; };
 		8A0E4B7C1CB568D50019DE71 /* HUBViewURIPredicateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E4B7B1CB568D50019DE71 /* HUBViewURIPredicateTests.m */; };
+		8A16274E1CC90B8F005CC3FB /* HUBCollectionViewCellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A16274D1CC90B8F005CC3FB /* HUBCollectionViewCellTests.m */; };
 		8A3D83941CA3FC3500662B73 /* HUBJSONSchemaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D83931CA3FC3500662B73 /* HUBJSONSchemaTests.m */; };
 		8A48F2FF1C7C94EC00B1467C /* HUBViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A48F2FE1C7C94EC00B1467C /* HUBViewControllerTests.m */; };
 		8A49BAF81C777FB1005F7453 /* HUBComponentImageLoadingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A49BAF71C777FB0005F7453 /* HUBComponentImageLoadingContext.m */; };
@@ -139,6 +140,7 @@
 		8A1585941C8EFF1E0008FDF9 /* HUBComponentWithImageHandling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentWithImageHandling.h; sourceTree = "<group>"; };
 		8A1585951C8EFF550008FDF9 /* HUBComponentContentOffsetObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentContentOffsetObserver.h; sourceTree = "<group>"; };
 		8A1585961C8F003C0008FDF9 /* HUBComponentWithChildren.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentWithChildren.h; sourceTree = "<group>"; };
+		8A16274D1CC90B8F005CC3FB /* HUBCollectionViewCellTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewCellTests.m; sourceTree = "<group>"; };
 		8A3D83931CA3FC3500662B73 /* HUBJSONSchemaTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBJSONSchemaTests.m; sourceTree = "<group>"; };
 		8A40B12D1CAAA71500EBDDE2 /* HUBContentProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBContentProvider.h; sourceTree = "<group>"; };
 		8A40B12F1CAAAF8F00EBDDE2 /* HUBContentProviderFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBContentProviderFactory.h; sourceTree = "<group>"; };
@@ -532,6 +534,7 @@
 				8AA97C151C60C5320078F19D /* HUBFeatureRegistryTests.m */,
 				8A48F2FE1C7C94EC00B1467C /* HUBViewControllerTests.m */,
 				8A6BA04F1C899E1C0057485D /* HUBCollectionViewLayoutTests.m */,
+				8A16274D1CC90B8F005CC3FB /* HUBCollectionViewCellTests.m */,
 				8A0E4B7B1CB568D50019DE71 /* HUBViewURIPredicateTests.m */,
 				8AD00A0D1CC79F850012A9AF /* HUBIconTests.m */,
 				8ADD42A61C21CFE800D1A801 /* Info.plist */,
@@ -780,6 +783,7 @@
 				DDA41CA71C6D09250056E511 /* HUBComponentCollectionViewCell.m in Sources */,
 				8A58E1491C5FA62E00F41A5C /* HUBComponentImageDataBuilderTests.m in Sources */,
 				DDA41CA21C6D09250056E511 /* HUBComponentModelImplementation.m in Sources */,
+				8A16274E1CC90B8F005CC3FB /* HUBCollectionViewCellTests.m in Sources */,
 				8A5D7A4B1CB7F0B400B987BA /* HUBContentReloadPolicyMock.m in Sources */,
 				DDA41C941C6D08F50056E511 /* HUBMutableJSONPathImplementation.m in Sources */,
 				8ADD42A71C21CFE800D1A801 /* HUBComponentRegistryTests.m in Sources */,

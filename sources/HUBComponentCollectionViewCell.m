@@ -39,6 +39,28 @@ NS_ASSUME_NONNULL_BEGIN
     [self.componentWrapper.component prepareViewForReuse];
 }
 
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    
+    UIView * const componentView = self.componentWrapper.component.view;
+    
+    if ([componentView isKindOfClass:[UICollectionViewCell class]]) {
+        ((UICollectionViewCell *)componentView).selected = selected;
+    }
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    UIView * const componentView = self.componentWrapper.component.view;
+    
+    if ([componentView isKindOfClass:[UICollectionViewCell class]]) {
+        ((UICollectionViewCell *)componentView).highlighted = highlighted;
+    }
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
