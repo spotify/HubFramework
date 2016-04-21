@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The size that the component should return as its preferred view size
 @property (nonatomic) CGSize preferredViewSize;
 
+/// The view that the component is using to render its content. Reset on `-loadView`.
+@property (nonatomic, strong, nullable) UIView *view;
+
 /// The main image the component is currently displaying
 @property (nonatomic, strong, readonly, nullable) id<HUBComponentImageData> mainImageData;
 
