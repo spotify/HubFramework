@@ -2,6 +2,7 @@
 
 #import "HUBComponentWrapper.h"
 #import "HUBComponent.h"
+#import "HUBComponentViewObserver.h"
 #import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -23,7 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    UIView * const view = HUBComponentLoadViewIfNeeded(componentWrapper.component);
+    HUBComponentWrapper * const nonNilComponentWrapper = componentWrapper;
+    UIView * const view = HUBComponentLoadViewIfNeeded(nonNilComponentWrapper.component);
     
     if ([view isKindOfClass:[UICollectionViewCell class]]) {
         view.userInteractionEnabled = NO;
@@ -65,14 +67,17 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super layoutSubviews];
     
-    UIView * const componentView = self.componentWrapper.component.view;
+    id<HUBComponent> const component = self.componentWrapper.component;
+    UIView * const componentView = component.view;
     CGSize previousComponentViewSize = componentView.frame.size;
     
     componentView.bounds = self.contentView.bounds;
     componentView.center = self.contentView.center;
     
     if (!CGSizeEqualToSize(previousComponentViewSize, componentView.bounds.size)) {
-        [self.componentWrapper.component updateViewAfterResize];
+        if ([component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
+            [(id<HUBComponentViewObserver>)component viewDidResize];
+        }
     }
 }
 

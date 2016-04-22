@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentRegistry The registry to use to retrieve components to render
  *  @param componentLayoutManager The object that manages layout for components in the view controller
  *  @param initialViewModelRegistry The registry to use to register initial view models for subsequent view controllers
+ *  @param device The device that the view controller will be presented using
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
                 viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
@@ -34,7 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry HUB_DESIGNATED_INITIALIZER;
+       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
+                         device:(UIDevice *)device HUB_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 

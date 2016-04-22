@@ -22,6 +22,8 @@
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBIconImageResolverMock.h"
+#import "HUBDeviceMock.h"
+#import "HUBUtilities.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -34,6 +36,7 @@
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
 @property (nonatomic, strong) HUBInitialViewModelRegistry *initialViewModelRegistry;
+@property (nonatomic, strong) HUBDeviceMock *device;
 @property (nonatomic, strong) HUBViewControllerImplementation *viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 
@@ -81,6 +84,7 @@
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     
     self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
+    self.device = [HUBDeviceMock new];
     
     self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
                                                                    viewModelLoader:self.viewModelLoader
@@ -89,7 +93,8 @@
                                                              collectionViewFactory:collectionViewFactory
                                                                  componentRegistry:self.componentRegistry
                                                             componentLayoutManager:componentLayoutManager
-                                                          initialViewModelRegistry:self.initialViewModelRegistry];
+                                                          initialViewModelRegistry:self.initialViewModelRegistry
+                                                                            device:self.device];
     
     self.viewController.delegate = self;
     
@@ -514,6 +519,8 @@
 
 - (void)testComponentNotifiedOfResize
 {
+    self.component.isViewObserver = YES;
+    
     __weak __typeof(self) weakSelf = self;
     
     self.contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> viewModelBuilder) {
@@ -541,6 +548,52 @@
     cell.frame = CGRectMake(0, 0, 300, 100);
     [cell layoutSubviews];
     XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)2);
+}
+
+- (void)testComponentNotifiedOfViewWillAppearOnCellCreationOnSystemVersion7
+{
+    self.device.mockedSystemVersion = @"7.0.0";
+    self.component.isViewObserver = YES;
+    
+    self.contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].title = @"A title";
+        return HUBContentProviderModeSynchronous;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
+    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
+}
+
+- (void)testComponentNotifiedOfViewWillAppearWhenCellIsDisplayed
+{
+    self.device.mockedSystemVersion = @"8.0.0";
+    self.component.isViewObserver = YES;
+    
+    self.contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].title = @"title";
+        return HUBContentProviderModeSynchronous;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    self.collectionView.cells[indexPath] = cell;
+    
+HUB_IGNORE_PARTIAL_AVAILABILTY_BEGIN
+    [self.collectionView.delegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+HUB_IGNORE_PARTIAL_AVAILABILTY_END
+    
+    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
+    
+    self.collectionView.mockedIndexPathsForVisibleItems = @[indexPath];
+    [self.viewController viewWillAppear:NO];
+    
+    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)2);
 }
 
 - (void)testSettingBackgroundColorOfViewAlsoUpdatesCollectionView
