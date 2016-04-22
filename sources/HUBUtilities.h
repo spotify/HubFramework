@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 #import "HUBComponent.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Macro set to `1` if building with the iOS 9.3 SDK or later.
  */
@@ -35,6 +37,16 @@
 #endif
 
 /**
+ *  Return whether a given device is running iOS 8 or higher
+ *
+ *  @param device The device to perfrom the system version check for
+ */
+static inline BOOL HUBDeviceIsRunningSystemVersion8OrHigher(UIDevice *device) {
+    NSArray<NSString *> * const versionComponents = [device.systemVersion componentsSeparatedByString:@"."];
+    return [[versionComponents firstObject] integerValue] >= 8;
+}
+
+/**
  *  Load the view for a component if it hasn't been loaded already
  *
  *  @param component The component to load a view for
@@ -42,11 +54,9 @@
  *  This function asserts that a view has been loaded after -loadView was sent to the component.
  */
 static inline UIView *HUBComponentLoadViewIfNeeded(id<HUBComponent> component) {
-    if (component.view != nil) {
-        return component.view;
+    if (component.view == nil) {
+        [component loadView];
     }
-    
-    [component loadView];
     
     UIView * const view = component.view;
     NSCAssert(view, @"All components are required to load a view in -loadView");
@@ -61,3 +71,5 @@ static inline NSDateFormatter *HUBDateFormatterCreateWithDefaultFormat() {
     formatter.dateFormat = @"yyyy-MM-dd";
     return formatter;
 }
+
+NS_ASSUME_NONNULL_END

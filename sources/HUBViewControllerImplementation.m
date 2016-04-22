@@ -6,6 +6,7 @@
 #import "HUBComponentImageData.h"
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentContentOffsetObserver.h"
+#import "HUBComponentViewObserver.h"
 #import "HUBComponentWrapper.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponentCollectionViewCell.h"
@@ -31,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
+@property (nonatomic, weak, nullable) UIDevice *device;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
@@ -57,6 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
        initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
+                         device:(UIDevice *)device
 
 {
     if (!(self = [super initWithNibName:nil bundle:nil])) {
@@ -71,6 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
     _componentRegistry = componentRegistry;
     _componentLayoutManager = componentLayoutManager;
     _initialViewModelRegistry = initialViewModelRegistry;
+    _device = device;
     _viewModel = viewModelLoader.initialViewModel;
     _viewModelIsInitial = YES;
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
@@ -113,6 +117,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super viewWillAppear:animated];
     [self loadViewModelIfNeeded];
+    
+    for (NSIndexPath * const indexPath in self.collectionView.indexPathsForVisibleItems) {
+        HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        [self collectionViewCellWillAppear:cell];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -303,6 +312,14 @@ NS_ASSUME_NONNULL_BEGIN
         [self.contentOffsetObservingComponents addObject:(id<HUBComponentContentOffsetObserver>)componentWrapper.component];
     }
     
+    UIDevice * const device = self.device;
+    
+    if (device != nil) {
+        if (!HUBDeviceIsRunningSystemVersion8OrHigher(device)) {
+            [self collectionViewCellWillAppear:cell];
+        }
+    }
+    
     return cell;
 }
 
@@ -312,6 +329,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
     [self handleSelectionForComponentWithModel:componentModel];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -424,6 +446,15 @@ NS_ASSUME_NONNULL_BEGIN
     UIEdgeInsets collectionViewScrollIndicatorInsets = self.collectionView.scrollIndicatorInsets;
     collectionViewScrollIndicatorInsets.top = topContentInset;
     self.collectionView.scrollIndicatorInsets = collectionViewScrollIndicatorInsets;
+}
+
+- (void)collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell
+{
+    id<HUBComponent> const component = cell.componentWrapper.component;
+    
+    if ([component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
+        [(id<HUBComponentViewObserver>)component viewWillAppear];
+    }
 }
 
 - (void)loadImagesForComponent:(id<HUBComponent>)component

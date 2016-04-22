@@ -85,7 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
                                               collectionViewFactory:collectionViewFactory
                                                   componentRegistry:self.componentRegistry
                                              componentLayoutManager:self.componentLayoutManager
-                                           initialViewModelRegistry:self.initialViewModelRegistry];
+                                           initialViewModelRegistry:self.initialViewModelRegistry
+                                                             device:[UIDevice currentDevice]];
 }
 
 @end

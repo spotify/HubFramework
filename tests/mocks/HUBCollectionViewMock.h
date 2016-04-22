@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The index paths that are currently considered selected in the collection view
 @property (nonatomic, strong, readonly) NSSet<NSIndexPath *> *selectedIndexPaths;
 
+/// The index paths of the items that the collection view should act like it's displaying
+@property (nonatomic, strong, nullable) NSArray<NSIndexPath *> *mockedIndexPathsForVisibleItems;
+
 @end
 
 NS_ASSUME_NONNULL_END

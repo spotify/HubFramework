@@ -5,6 +5,7 @@
 
 @property (nonatomic, strong, readwrite, nullable) id<HUBComponentImageData> mainImageData;
 @property (nonatomic, readwrite) NSUInteger numberOfResizes;
+@property (nonatomic, readwrite) NSUInteger numberOfAppearances;
 @property (nonatomic, readwrite) NSUInteger numberOfReuses;
 
 @end
@@ -31,11 +32,6 @@
 - (void)loadView
 {
     self.view = [[UIView alloc] initWithFrame:CGRectZero];
-}
-
-- (void)updateViewAfterResize
-{
-    self.numberOfResizes++;
 }
 
 - (void)prepareViewForReuse
@@ -72,12 +68,28 @@
     }
 }
 
+#pragma mark - HUBComponentViewObserver
+
+- (void)viewDidResize
+{
+    self.numberOfResizes++;
+}
+
+- (void)viewWillAppear
+{
+    self.numberOfAppearances++;
+}
+
 #pragma mark - Mocking tools
 
 - (BOOL)conformsToProtocol:(Protocol *)protocol
 {
     if (protocol == @protocol(HUBComponentWithImageHandling)) {
         return self.canHandleImages;
+    }
+    
+    if (protocol == @protocol(HUBComponentViewObserver)) {
+        return self.isViewObserver;
     }
     
     return [super conformsToProtocol:protocol];

@@ -32,6 +32,17 @@ NS_ASSUME_NONNULL_BEGIN
     return [self.mutableSelectedIndexPaths copy];
 }
 
+- (NSArray<NSIndexPath *> *)indexPathsForVisibleItems
+{
+    NSArray<NSIndexPath *> * const mockedIndexPaths = self.mockedIndexPathsForVisibleItems;
+    
+    if (mockedIndexPaths != nil) {
+        return mockedIndexPaths;
+    }
+    
+    return [super indexPathsForVisibleItems];
+}
+
 #pragma mark - UICollectionView
 
 - (nullable UICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath

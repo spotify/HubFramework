@@ -86,15 +86,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)preferredViewSizeForDisplayingModel:(id<HUBComponentModel>)model
                             containerViewSize:(CGSize)containerViewSize;
 
-/**
- *  Update the view after it was resized by the layout system
- *
- *  The Hub Framework will send this message to your component every time the layout system has changed the
- *  size of the component's view. This is where the component should perform any manual repositioning or
- *  resizing of any subviews that its managing; it's the equivalent of `-layoutSubviews` in a UIView subclass.
- */
-- (void)updateViewAfterResize;
-
 #pragma mark - Reusing Views
 
 /**
