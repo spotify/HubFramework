@@ -2,7 +2,7 @@
 
 #import "HUBFeatureRegistryImplementation.h"
 #import "HUBFeatureRegistration.h"
-#import "HUBContentProviderFactoryMock.h"
+#import "HUBContentOperationFactoryMock.h"
 #import "HUBViewURIPredicate.h"
 
 @interface HUBFeatureRegistryTests : XCTestCase
@@ -29,17 +29,17 @@
     
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithRootViewURI:rootViewURI];
-    id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
+    id<HUBContentOperationFactory> const contentOperationFactory = [[HUBContentOperationFactoryMock alloc] initWithContentOperations:@[]];
     
     [self.registry registerFeatureWithIdentifier:identifier
                                 viewURIPredicate:viewURIPredicate
-                        contentProviderFactories:@[contentProviderFactory]
+                       contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
     XCTAssertThrows([self.registry registerFeatureWithIdentifier:identifier
                                                 viewURIPredicate:viewURIPredicate
-                                        contentProviderFactories:@[contentProviderFactory]
+                                       contentOperationFactories:@[contentOperationFactory]
                                              contentReloadPolicy:nil
                                       customJSONSchemaIdentifier:nil]);
 }
@@ -49,19 +49,19 @@
     NSString * const featureIdentifier = @"identifier";
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithRootViewURI:rootViewURI];
-    id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
+    id<HUBContentOperationFactory> const contentOperationFactory = [[HUBContentOperationFactoryMock alloc] initWithContentOperations:@[]];
     NSString * const customJSONSchemaIdentifier = @"JSON Schema";
     
     [self.registry registerFeatureWithIdentifier:featureIdentifier
                                 viewURIPredicate:viewURIPredicate
-                        contentProviderFactories:@[contentProviderFactory]
+                       contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:customJSONSchemaIdentifier];
     
     HUBFeatureRegistration * const registration = [self.registry featureRegistrationForViewURI:rootViewURI];
     XCTAssertEqualObjects(registration.featureIdentifier, featureIdentifier);
     XCTAssertEqual(registration.viewURIPredicate, viewURIPredicate);
-    XCTAssertEqualObjects(registration.contentProviderFactories, @[contentProviderFactory]);
+    XCTAssertEqualObjects(registration.contentOperationFactories, @[contentOperationFactory]);
     XCTAssertEqualObjects(registration.customJSONSchemaIdentifier, customJSONSchemaIdentifier);
 }
 
@@ -71,11 +71,11 @@
         return NO;
     }];
     
-    id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
+    id<HUBContentOperationFactory> const contentOperationFactory = [[HUBContentOperationFactoryMock alloc] initWithContentOperations:@[]];
     
     [self.registry registerFeatureWithIdentifier:@"feature"
                                 viewURIPredicate:viewURIPredicate
-                        contentProviderFactories:@[contentProviderFactory]
+                       contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
@@ -89,17 +89,17 @@
         return YES;
     }];
     
-    id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
+    id<HUBContentOperationFactory> const contentOperationFactory = [[HUBContentOperationFactoryMock alloc] initWithContentOperations:@[]];
     
     [self.registry registerFeatureWithIdentifier:@"featureA"
                                 viewURIPredicate:viewURIPredicate
-                        contentProviderFactories:@[contentProviderFactory]
+                       contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
     [self.registry registerFeatureWithIdentifier:@"featureB"
                                 viewURIPredicate:viewURIPredicate
-                        contentProviderFactories:@[contentProviderFactory]
+                       contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
@@ -112,11 +112,11 @@
     NSString * const identifier = @"Awesome feature";
     NSURL * const rootViewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithRootViewURI:rootViewURI];
-    id<HUBContentProviderFactory> const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[]];
+    id<HUBContentOperationFactory> const contentOperationFactory = [[HUBContentOperationFactoryMock alloc] initWithContentOperations:@[]];
     
     [self.registry registerFeatureWithIdentifier:identifier
                                 viewURIPredicate:viewURIPredicate
-                        contentProviderFactories:@[contentProviderFactory]
+                       contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
@@ -125,7 +125,7 @@
     // The feature should now be free to be re-registered without triggering an assert
     [self.registry registerFeatureWithIdentifier:identifier
                                 viewURIPredicate:viewURIPredicate
-                        contentProviderFactories:@[contentProviderFactory]
+                       contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
 }

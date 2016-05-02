@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)registerFeatureWithIdentifier:(NSString *)featureIdentifier
                      viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
-             contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
+            contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                   contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
 {
@@ -56,13 +56,13 @@ NS_ASSUME_NONNULL_BEGIN
              @"Attempted to register a Hub Framework feature for an identifier that is already registered: %@",
              featureIdentifier);
     
-    NSAssert(contentProviderFactories.count > 0,
-             @"Attempted to register a Hub Framework feature without any content provider factories. Feature identifier: %@",
+    NSAssert(contentOperationFactories.count > 0,
+             @"Attempted to register a Hub Framework feature without any content operation factories. Feature identifier: %@",
              featureIdentifier);
     
     HUBFeatureRegistration * const registration = [[HUBFeatureRegistration alloc] initWithFeatureIdentifier:featureIdentifier
                                                                                            viewURIPredicate:viewURIPredicate
-                                                                                   contentProviderFactories:contentProviderFactories
+                                                                                  contentOperationFactories:contentOperationFactories
                                                                                         contentReloadPolicy:contentReloadPolicy
                                                                                  customJSONSchemaIdentifier:customJSONSchemaIdentifier];
     

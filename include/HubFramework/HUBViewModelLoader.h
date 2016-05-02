@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The view model that should initially be used, before a "proper" view model has been loaded
  *
  *  Accessing this property will either return a pre-computed initial view model, or cause the loader's
- *  content providers to be asked to prepare an initial view model. The initial view model will then be cached,
+ *  content operations to be asked to prepare an initial view model. The initial view model will then be cached,
  *  so it's fine to access this property multiple times.
  */
 @property (nonatomic, strong, nullable, readonly) id<HUBViewModel> initialViewModel;
@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Depending on the current connectivity state (determined by the current `HUBConnectivityStateResolver`),
  *  and the configuration of the feature that his view model is serving, a combination of remote and local
- *  content will be loaded using the respective content providers.
+ *  content will be loaded using the respective content operations.
  *
  *  The loader will notify its delegate once the operation was completed or if it failed.
  *  See `HUBViewModelLoaderDelegate` for more information.

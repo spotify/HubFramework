@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@protocol HUBContentProviderFactory;
+@protocol HUBContentOperationFactory;
 @protocol HUBContentReloadPolicy;
 @class HUBViewURIPredicate;
 
@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Protocol defining the public API of a Hub feature registry
  *
  *  A feature is the top-level entity in the Hub Framework, that is used to ecapsulate related views into a logical group.
- *  Views that belong to the same feature share the same setup, such as a view URI predicate, content provider factories, etc.
+ *  Views that belong to the same feature share the same setup, such as a view URI predicate, content operation factories, etc.
  */
 @protocol HUBFeatureRegistry <NSObject>
 
@@ -20,9 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureIdentifier The identifier of the feature. Used for logging & error messages. Must be unique across the app.
  *  @param viewURIPredicate The predicate that should be used to determine whether a given view URI is part of the feature.
  *         Use `HUBViewURIPredicate` to define a predicate that matches what type of view URIs your feature should handle.
- *  @param contentProviderFactories The factories that should be used to create content providers for the feature's views.
- *         The order of the factories will determine the order in which the created content providers are called each time a
- *         view that is a part of the feature will load data. See `HUBContentProviderFactory` for more information.
+ *  @param contentOperationFactories The factories that should be used to create content operations for the feature's views.
+ *         The order of the factories will determine the order in which the created content operations are called each time a
+ *         view that is a part of the feature will load content. See `HUBContentOperationFactory` for more information.
  *  @param contentReloadPolicy Any custom content reload policy that should be used for the feature. A content reload policy
  *         determines whenever a view belonging to the feature should have its content reloaded. If `nil`, the default reload
  *         policy for this instance of the Hub Framework will be used. See `HUBContentReloadPolicy` for more information.
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)registerFeatureWithIdentifier:(NSString *)featureIdentifier
                      viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
-             contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
+            contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                   contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier;
 

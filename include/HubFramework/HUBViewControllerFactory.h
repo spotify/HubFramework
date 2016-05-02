@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewURI The view URI to create a view controller for
  *
  *  @return A Hub Framework-powered view controller used for rendering content provided by a feature’s
- *  content providers, using a User Interface consisting of `HUBComponent` views. If a view controller
+ *  content operations, using a User Interface consisting of `HUBComponent` views. If a view controller
  *  could not be created for the supplied viewURI (because a feature registration could not be resolved
  *  for it), this method returns `nil`.
  */

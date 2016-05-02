@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return A loader that can be used to load a view model that matches the supplied view URI, or `nil`
  *  if the view URI couldn't be recognized by the Hub Framework. This method also returns `nil` (and
  *  triggers an assert) if a view model loader was requested for a feature that was not able to create
- *  any contnet providers.
+ *  any content operations.
  */
 - (nullable id<HUBViewModelLoader>)createViewModelLoaderForViewURI:(NSURL *)viewURI;
 

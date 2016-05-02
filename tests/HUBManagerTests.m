@@ -3,7 +3,7 @@
 #import "HUBManager.h"
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBImageLoaderFactoryMock.h"
-#import "HUBContentProviderFactoryMock.h"
+#import "HUBContentOperationFactoryMock.h"
 #import "HUBComponentLayoutManagerMock.h"
 #import "HUBContentReloadPolicyMock.h"
 #import "HUBComponentFallbackHandlerMock.h"

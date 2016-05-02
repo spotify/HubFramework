@@ -1,28 +1,26 @@
 #import "HUBViewModelLoaderImplementation.h"
 
 #import "HUBConnectivityStateResolver.h"
-#import "HUBContentProvider.h"
+#import "HUBContentOperation.h"
 #import "HUBJSONSchema.h"
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBViewModelImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewModelLoaderImplementation () <HUBContentProviderDelegate>
+@interface HUBViewModelLoaderImplementation () <HUBContentOperationDelegate>
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
-@property (nonatomic, copy, readonly) NSArray<id<HUBContentProvider>> *contentProviders;
+@property (nonatomic, copy, readonly) NSArray<id<HUBContentOperation>> *contentOperations;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 @property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable) id<HUBViewModel> cachedInitialViewModel;
 @property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *builder;
-@property (nonatomic, assign) NSUInteger currentlyLoadingContentProviderIndex;
+@property (nonatomic, assign) NSUInteger currentlyLoadingContentOperationIndex;
 @property (nonatomic, strong, nullable) NSError *encounteredError;
-
-@property (nonatomic, strong, nullable) id<HUBContentProvider> lastHandledContentProvider;
 
 @end
 
@@ -34,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
-               contentProviders:(NSArray<id<HUBContentProvider>> *)contentProviders
+              contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
               componentDefaults:(HUBComponentDefaults *)componentDefaults
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
@@ -43,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(featureIdentifier != nil);
-    NSParameterAssert(contentProviders.count > 0);
+    NSParameterAssert(contentOperations.count > 0);
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(componentDefaults != nil);
     NSParameterAssert(iconImageResolver != nil);
@@ -54,17 +52,16 @@ NS_ASSUME_NONNULL_BEGIN
     if (self) {
         _viewURI = [viewURI copy];
         _featureIdentifier = [featureIdentifier copy];
-        _contentProviders = [contentProviders copy];
+        _contentOperations = [contentOperations copy];
         _JSONSchema = JSONSchema;
         _componentDefaults = componentDefaults;
         _connectivityStateResolver = connectivityStateResolver;
         _iconImageResolver = iconImageResolver;
         _cachedInitialViewModel = initialViewModel;
-        _currentlyLoadingContentProviderIndex = NSNotFound;
-        _lastHandledContentProvider = nil;
+        _currentlyLoadingContentOperationIndex = NSNotFound;
 
-        for (id<HUBContentProvider> const contentProvider in _contentProviders) {
-            contentProvider.delegate = self;
+        for (id<HUBContentOperation> const operation in _contentOperations) {
+            operation.delegate = self;
         }
     }
     
@@ -83,8 +80,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     HUBViewModelBuilderImplementation * const builder = [self createBuilder];
     
-    for (id<HUBContentProvider> const contentProvider in self.contentProviders) {
-        [contentProvider addInitialContentForViewURI:self.viewURI toViewModelBuilder:builder];
+    for (id<HUBContentOperation> const operation in self.contentOperations) {
+        [operation addInitialContentForViewURI:self.viewURI toViewModelBuilder:builder];
     }
     
     id<HUBViewModel> const initialViewModel = [builder build];
@@ -95,20 +92,20 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadViewModel
 {
     self.builder = nil;
-    self.currentlyLoadingContentProviderIndex = 0;
-    [self loadNextContentProviderInQueue];
+    self.currentlyLoadingContentOperationIndex = 0;
+    [self loadNextContentOperationInQueue];
 }
 
-#pragma mark - HUBContentProviderDelegate
+#pragma mark - HUBContentOperationDelegate
 
-- (void)contentProviderDidFinishLoading:(id<HUBContentProvider>)contentProvider
+- (void)contentOperationDidFinish:(id<HUBContentOperation>)operation
 {
-    [self handleFinishedContentProvider:contentProvider mode:HUBContentProviderModeAsynchronous error:nil];
+    [self handleFinishedContentOperation:operation mode:HUBContentOperationModeAsynchronous error:nil];
 }
 
-- (void)contentProvider:(id<HUBContentProvider>)contentProvider didFailLoadingWithError:(NSError *)error
+- (void)contentOperation:(id<HUBContentOperation>)operation didFailWithError:(NSError *)error
 {
-    [self handleFinishedContentProvider:contentProvider mode:HUBContentProviderModeAsynchronous error:error];
+    [self handleFinishedContentOperation:operation mode:HUBContentOperationModeAsynchronous error:error];
 }
 
 #pragma mark - Private utilities
@@ -131,75 +128,76 @@ NS_ASSUME_NONNULL_BEGIN
                                                               iconImageResolver:self.iconImageResolver];
 }
 
-- (nullable id<HUBContentProvider>)currentlyLoadingContentProvider
+- (nullable id<HUBContentOperation>)currentlyLoadingContentOperation
 {
-    if (self.currentlyLoadingContentProviderIndex >= self.contentProviders.count) {
+    if (self.currentlyLoadingContentOperationIndex >= self.contentOperations.count) {
         return nil;
     }
-    return self.contentProviders[self.currentlyLoadingContentProviderIndex];
+    
+    return self.contentOperations[self.currentlyLoadingContentOperationIndex];
 }
 
-- (void)loadNextContentProviderInQueue
+- (void)loadNextContentOperationInQueue
 {
-    id<HUBContentProvider> const contentProvider = [self currentlyLoadingContentProvider];
+    id<HUBContentOperation> const contentOperation = [self currentlyLoadingContentOperation];
 
-    if (contentProvider == nil) {
-        [self allContentProvidersDidFinish];
+    if (contentOperation == nil) {
+        [self allContentOperationsDidFinish];
         return;
     }
     
     HUBConnectivityState const connectivityState = [self.connectivityStateResolver resolveConnectivityState];
     id<HUBViewModelBuilder> const builder = [self getOrCreateBuilder];
     
-    HUBContentProviderMode const contentProviderMode = [contentProvider loadContentForViewURI:self.viewURI
-                                                                            connectivityState:connectivityState
-                                                                             viewModelBuilder:builder
-                                                                 previousContentProviderError:self.encounteredError];
+    HUBContentOperationMode const contentOperationMode = [contentOperation loadContentForViewURI:self.viewURI
+                                                                                connectivityState:connectivityState
+                                                                                viewModelBuilder:builder
+                                                                   previousContentOperationError:self.encounteredError];
     
-    switch (contentProviderMode) {
-        case HUBContentProviderModeNone:
-        case HUBContentProviderModeSynchronous:
-            if (self.currentlyLoadingContentProvider == contentProvider) {
-                // This means the provider hasn't been handled synchronously from within the loadMethod above
-                [self handleFinishedContentProvider:contentProvider mode:contentProviderMode error:nil];
+    switch (contentOperationMode) {
+        case HUBContentOperationModeNone:
+        case HUBContentOperationModeSynchronous:
+            if (self.currentlyLoadingContentOperation == contentOperation) {
+                // This means the operation hasn't been handled synchronously from within the loadMethod above
+                [self handleFinishedContentOperation:contentOperation mode:contentOperationMode error:nil];
             }
             break;
-        case HUBContentProviderModeAsynchronous:
+        case HUBContentOperationModeAsynchronous:
             break;
     }
 }
 
-- (void)handleFinishedContentProvider:(id<HUBContentProvider>)contentProvider mode:(HUBContentProviderMode)mode error:(nullable NSError *)error
+- (void)handleFinishedContentOperation:(id<HUBContentOperation>)operation mode:(HUBContentOperationMode)mode error:(nullable NSError *)error
 {
-    if (mode != HUBContentProviderModeNone) {
+    if (mode != HUBContentOperationModeNone) {
         self.encounteredError = error;
     }
     
-    if ([self currentlyLoadingContentProvider] != contentProvider) {
+    if ([self currentlyLoadingContentOperation] != operation) {
         // Not the one we expected;
 
-        if ([self currentlyLoadingContentProvider] == nil && error != nil) {
+        if ([self currentlyLoadingContentOperation] == nil && error != nil) {
             // We finished processing the chain, so errors shouldn't retrigger reloads
             return;
         }
 
-        NSUInteger contentProviderIndex = [self.contentProviders indexOfObject:contentProvider];
+        NSUInteger operationIndex = [self.contentOperations indexOfObject:operation];
 
-        if (contentProviderIndex > self.currentlyLoadingContentProviderIndex) {
-            // Content provider in the future, this is probably an out of sync contentProvider from a previous reload;
+        if (operationIndex > self.currentlyLoadingContentOperationIndex) {
+            // Content operation in the future, this is probably an out of sync operation from a previous reload;
             // Ignore it (we'll reload it anyway if needed)
             return;
         } else {
-            // Previous content provider, must reset the chain starting at this point
-            self.currentlyLoadingContentProviderIndex = contentProviderIndex;
+            // Previous content operation, must reset the chain starting at this point
+            self.currentlyLoadingContentOperationIndex = operationIndex;
         }
     }
     
-    self.currentlyLoadingContentProviderIndex++;
-    [self loadNextContentProviderInQueue];
+    self.currentlyLoadingContentOperationIndex++;
+    [self loadNextContentOperationInQueue];
 }
 
-- (void)allContentProvidersDidFinish
+- (void)allContentOperationsDidFinish
 {
     id<HUBViewModelLoaderDelegate> const delegate = self.delegate;
     
