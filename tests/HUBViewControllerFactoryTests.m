@@ -4,8 +4,8 @@
 #import "HUBManager.h"
 #import "HUBFeatureRegistry.h"
 #import "HUBConnectivityStateResolverMock.h"
-#import "HUBContentProviderFactoryMock.h"
-#import "HUBContentProviderMock.h"
+#import "HUBContentOperationFactoryMock.h"
+#import "HUBContentOperationMock.h"
 #import "HUBImageLoaderFactoryMock.h"
 #import "HUBComponentLayoutManagerMock.h"
 #import "HUBViewURIPredicate.h"
@@ -52,12 +52,12 @@
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithViewURI:viewURI];
-    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
-    HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[contentProvider]];
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    HUBContentOperationFactoryMock * const contentOperationFactory = [[HUBContentOperationFactoryMock alloc] initWithContentOperations:@[contentOperation]];
     
     [self.manager.featureRegistry registerFeatureWithIdentifier:@"feature"
                                                viewURIPredicate:viewURIPredicate
-                                       contentProviderFactories:@[contentProviderFactory]
+                                      contentOperationFactories:@[contentOperationFactory]
                                             contentReloadPolicy:nil
                                      customJSONSchemaIdentifier:nil];
     
@@ -76,12 +76,12 @@
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithViewURI:viewURI];
-    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
-    HUBContentProviderFactoryMock * const contentProviderFactory = [[HUBContentProviderFactoryMock alloc] initWithContentProviders:@[contentProvider]];
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    HUBContentOperationFactoryMock * const contentOperationFactory = [[HUBContentOperationFactoryMock alloc] initWithContentOperations:@[contentOperation]];
     
     [self.manager.featureRegistry registerFeatureWithIdentifier:@"feature"
                                                viewURIPredicate:viewURIPredicate
-                                       contentProviderFactories:@[contentProviderFactory]
+                                      contentOperationFactories:@[contentOperationFactory]
                                             contentReloadPolicy:nil
                                      customJSONSchemaIdentifier:nil];
     

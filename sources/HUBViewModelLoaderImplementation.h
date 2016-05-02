@@ -2,7 +2,7 @@
 #import "HUBHeaderMacros.h"
 
 @protocol HUBJSONSchema;
-@protocol HUBContentProvider;
+@protocol HUBContentOperation;
 @protocol HUBConnectivityStateResolver;
 @protocol HUBIconImageResolver;
 @class HUBComponentDefaults;
@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewURI The URI of the view that this loader will load view models for
  *  @param featureIdentifier The identifier of the feature that this loader will belong to
- *  @param contentProviders The content providers that will provide content for loaded view models
+ *  @param contentOperations The content operations that will create content for loaded view models
  *  @param JSONSchema The JSON schema that the loader should use for parsing
  *  @param componentDefaults The default values to use for component model builders created when loading view models
  *  @param connectivityStateResolver The connectivity state resolver used by the current `HUBManager`
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
-               contentProviders:(NSArray<id<HUBContentProvider>> *)contentProviders
+              contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
               componentDefaults:(HUBComponentDefaults *)componentDefaults
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver

@@ -8,7 +8,7 @@
 #import "HUBComponentModel.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBJSONSchemaImplementation.h"
-#import "HUBContentProviderMock.h"
+#import "HUBContentOperationMock.h"
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBIconImageResolverMock.h"
@@ -53,15 +53,15 @@
 {
     __block NSUInteger numberOfInitialViewModelRequests = 0;
     
-    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
-    contentProvider.initialContentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    contentOperation.initialContentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
         builder.navigationBarTitle = @"A title";
         numberOfInitialViewModelRequests++;
     };
     
-    [self createLoaderWithContentProviders:@[contentProvider]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
     
     XCTAssertEqualObjects(self.loader.initialViewModel.navigationBarTitle, @"A title");
     
@@ -72,7 +72,7 @@
     XCTAssertEqual(numberOfInitialViewModelRequests, (NSUInteger)1);
 }
 
-- (void)testInjectedInitialViewModelUsedInsteadOfContentProviders
+- (void)testInjectedInitialViewModelUsedInsteadOfContentOperations
 {
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
@@ -86,222 +86,222 @@
     viewModelBuilder.navigationBarTitle = @"Pre-computed title";
     id<HUBViewModel> const initialViewModel = [viewModelBuilder build];
     
-    __block BOOL contentProviderCalled = NO;
+    __block BOOL contentOperationCalled = NO;
     
-    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
-    contentProvider.initialContentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
-        contentProviderCalled = YES;
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    contentOperation.initialContentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        contentOperationCalled = YES;
     };
     
-    [self createLoaderWithContentProviders:@[contentProvider]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:initialViewModel];
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:initialViewModel];
     
     XCTAssertEqualObjects(self.loader.initialViewModel.navigationBarTitle, @"Pre-computed title");
-    XCTAssertFalse(contentProviderCalled);
+    XCTAssertFalse(contentOperationCalled);
 }
 
 - (void)testSuccessfullyLoadingViewModel
 {
-    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
-    contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         builder.navigationBarTitle = @"A title";
-        return HUBContentProviderModeSynchronous;
+        return HUBContentOperationModeSynchronous;
     };
     
-    [self createLoaderWithContentProviders:@[contentProvider]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
     
     [self.loader loadViewModel];
-    [contentProvider.delegate contentProviderDidFinishLoading:contentProvider];
+    [contentOperation.delegate contentOperationDidFinish:contentOperation];
     
     XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle, @"A title");
     XCTAssertNil(self.errorFromFailureDelegateMethod);
 }
 
-- (void)testSingleContentProviderError
+- (void)testSingleContentOperationError
 {
-    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
     
-    contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
-        return HUBContentProviderModeAsynchronous;
+    contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+        return HUBContentOperationModeAsynchronous;
     };
     
-    [self createLoaderWithContentProviders:@[contentProvider]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
     
     [self.loader loadViewModel];
     
     NSError * const error = [NSError errorWithDomain:@"domain" code:7 userInfo:nil];
-    [contentProvider.delegate contentProvider:contentProvider didFailLoadingWithError:error];
+    [contentOperation.delegate contentOperation:contentOperation didFailWithError:error];
     
     XCTAssertNil(self.viewModelFromSuccessDelegateMethod);
     XCTAssertEqual(error, self.errorFromFailureDelegateMethod);
 }
 
-- (void)testContentProviderErrorRecovery
+- (void)testContentOperationErrorRecovery
 {
-    HUBContentProviderMock * const contentProviderA = [HUBContentProviderMock new];
-    HUBContentProviderMock * const contentProviderB = [HUBContentProviderMock new];
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
     
-    contentProviderA.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
-        return HUBContentProviderModeAsynchronous;
+    contentOperationA.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+        return HUBContentOperationModeAsynchronous;
     };
     
-    contentProviderB.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    contentOperationB.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         builder.navigationBarTitle = @"A title";
-        return HUBContentProviderModeSynchronous;
+        return HUBContentOperationModeSynchronous;
     };
     
-    [self createLoaderWithContentProviders:@[contentProviderA, contentProviderB]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
     
     [self.loader loadViewModel];
     
     NSError * const error = [NSError errorWithDomain:@"domain" code:7 userInfo:nil];
-    [contentProviderA.delegate contentProvider:contentProviderA didFailLoadingWithError:error];
+    [contentOperationA.delegate contentOperation:contentOperationA didFailWithError:error];
     
-    XCTAssertEqualObjects(contentProviderB.previousContentProviderError, error);
-    [contentProviderB.delegate contentProviderDidFinishLoading:contentProviderB];
+    XCTAssertEqualObjects(contentOperationB.previousContentOperationError, error);
+    [contentOperationB.delegate contentOperationDidFinish:contentOperationB];
     
     XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle, @"A title");
     XCTAssertNil(self.errorFromFailureDelegateMethod);
 }
 
-- (void)testNoErrorRecoveryForUnusedContentProvider
+- (void)testNoErrorRecoveryForUnusedContentOperation
 {
-    HUBContentProviderMock * const contentProviderA = [HUBContentProviderMock new];
-    HUBContentProviderMock * const contentProviderB = [HUBContentProviderMock new];
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
     
-    contentProviderA.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
-        return HUBContentProviderModeAsynchronous;
+    contentOperationA.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+        return HUBContentOperationModeAsynchronous;
     };
     
-    contentProviderB.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
-        return HUBContentProviderModeNone;
+    contentOperationB.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+        return HUBContentOperationModeNone;
     };
     
-    [self createLoaderWithContentProviders:@[contentProviderA, contentProviderB]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
     
     [self.loader loadViewModel];
     
     NSError * const error = [NSError errorWithDomain:@"domain" code:7 userInfo:nil];
-    [contentProviderA.delegate contentProvider:contentProviderA didFailLoadingWithError:error];
+    [contentOperationA.delegate contentOperation:contentOperationA didFailWithError:error];
     
     XCTAssertEqual(self.errorFromFailureDelegateMethod, error);
 }
 
-- (void)testSameViewModelBuilderUsedForMultipleContentProviders
+- (void)testSameViewModelBuilderUsedForMultipleContentOperations
 {
-    HUBContentProviderMock * const contentProviderA = [HUBContentProviderMock new];
-    HUBContentProviderMock * const contentProviderB = [HUBContentProviderMock new];
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
     
     __block id<HUBViewModelBuilder> builderA = nil;
     __block id<HUBViewModelBuilder> builderB = nil;
     
-    contentProviderA.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    contentOperationA.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         builderA = builder;
-        return HUBContentProviderModeSynchronous;
+        return HUBContentOperationModeSynchronous;
     };
     
-    contentProviderB.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    contentOperationB.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         builderB = builder;
-        return HUBContentProviderModeSynchronous;
+        return HUBContentOperationModeSynchronous;
     };
     
     XCTAssertEqual(builderA, builderB);
 }
 
-- (void)testAsynchronousContentProviderMultipleDelegateCallbacks
+- (void)testAsynchronousContentOperationMultipleDelegateCallbacks
 {
-    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
     
     __block id<HUBViewModelBuilder> viewModelBuilder = nil;
     
-    contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         viewModelBuilder = builder;
         viewModelBuilder.navigationBarTitle = @"A title";
-        return HUBContentProviderModeAsynchronous;
+        return HUBContentOperationModeAsynchronous;
     };
     
-    [self createLoaderWithContentProviders:@[contentProvider]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
     
     [self.loader loadViewModel];
     
     XCTAssertNil(self.viewModelFromSuccessDelegateMethod);
     XCTAssertNil(self.errorFromFailureDelegateMethod);
     
-    id<HUBContentProviderDelegate> const contentProviderDelegate = contentProvider.delegate;
+    id<HUBContentOperationDelegate> const contentOperationDelegate = contentOperation.delegate;
     
-    [contentProviderDelegate contentProviderDidFinishLoading:contentProvider];
+    [contentOperationDelegate contentOperationDidFinish:contentOperation];
     
     XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle, @"A title");
     XCTAssertNil(self.errorFromFailureDelegateMethod);
     
     viewModelBuilder.navigationBarTitle = @"Another title";
-    [contentProviderDelegate contentProviderDidFinishLoading:contentProvider];
+    [contentOperationDelegate contentOperationDidFinish:contentOperation];
     
     XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle, @"Another title");
     XCTAssertNil(self.errorFromFailureDelegateMethod);
     
     // Errors occuring mid-view lifecycle should be ignored
     NSError * const error = [NSError errorWithDomain:@"domain" code:7 userInfo:nil];
-    [contentProviderDelegate contentProvider:contentProvider didFailLoadingWithError:error];
+    [contentOperationDelegate contentOperation:contentOperation didFailWithError:error];
     
     XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle, @"Another title");
     XCTAssertNil(self.errorFromFailureDelegateMethod);
 }
 
-- (void)testSynchronousContentProviderCallingSuccessCallback
+- (void)testSynchronousContentOperationCallingSuccessCallback
 {
-    HUBContentProviderMock * const contentProviderA = [HUBContentProviderMock new];
-    HUBContentProviderMock * const contentProviderB = [HUBContentProviderMock new];
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
     
-    __weak __typeof(contentProviderA) weakContentProviderA = contentProviderA;
+    __weak __typeof(contentOperationA) weakContentOperationA = contentOperationA;
     
-    contentProviderA.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
-        __strong __typeof(contentProviderA) strongContentProviderA = weakContentProviderA;
-        [strongContentProviderA.delegate contentProviderDidFinishLoading:strongContentProviderA];
-        return HUBContentProviderModeSynchronous;
+    contentOperationA.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+        __strong __typeof(contentOperationA) strongContentOperationA = weakContentOperationA;
+        [strongContentOperationA.delegate contentOperationDidFinish:strongContentOperationA];
+        return HUBContentOperationModeSynchronous;
     };
     
-    __block NSUInteger contentProviderBRequestCount = 0;
+    __block NSUInteger contentOperationBRequestCount = 0;
     
-    contentProviderB.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
-        contentProviderBRequestCount++;
-        return HUBContentProviderModeSynchronous;
+    contentOperationB.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+        contentOperationBRequestCount++;
+        return HUBContentOperationModeSynchronous;
     };
     
-    [self createLoaderWithContentProviders:@[contentProviderA, contentProviderB]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
     
     [self.loader loadViewModel];
     
-    XCTAssertEqual(contentProviderBRequestCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperationBRequestCount, (NSUInteger)1);
 }
 
-- (void)testSynchronousContentProviderDoesNotCallDelegateTwice
+- (void)testSynchronousContentOperationDoesNotCallDelegateTwice
 {
-    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
     
-    __weak __typeof(contentProvider) weakContentProvider = contentProvider;
-    contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
-        __strong __typeof(contentProvider) strongContentProvider = weakContentProvider;
-        [strongContentProvider.delegate contentProviderDidFinishLoading:strongContentProvider];
-        return HUBContentProviderModeSynchronous;
+    __weak __typeof(contentOperation) weakContentOperation = contentOperation;
+    contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+        __strong __typeof(contentOperation) strongContentOperation = weakContentOperation;
+        [strongContentOperation.delegate contentOperationDidFinish:strongContentOperation];
+        return HUBContentOperationModeSynchronous;
     };
     
-    [self createLoaderWithContentProviders:@[contentProvider]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
     
     [self.loader loadViewModel];
     
@@ -310,22 +310,22 @@
     XCTAssertEqual(self.didLoadViewModelCount, (NSUInteger)1);
 }
 
-- (void)testSynchronousContentProviderCallingErrorCallback
+- (void)testSynchronousContentOperationCallingErrorCallback
 {
-    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
     
-    __weak __typeof(contentProvider) weakContentProvider = contentProvider;
+    __weak __typeof(contentOperation) weakContentOperation = contentOperation;
     NSError * const error = [NSError errorWithDomain:@"domain" code:5 userInfo:nil];
     
-    contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
-        __strong __typeof(contentProvider) strongContentProvider = weakContentProvider;
-        [strongContentProvider.delegate contentProvider:strongContentProvider didFailLoadingWithError:error];
-        return HUBContentProviderModeSynchronous;
+    contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+        __strong __typeof(contentOperation) strongContentOperation = weakContentOperation;
+        [strongContentOperation.delegate contentOperation:strongContentOperation didFailWithError:error];
+        return HUBContentOperationModeSynchronous;
     };
     
-    [self createLoaderWithContentProviders:@[contentProvider]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
     
     [self.loader loadViewModel];
     
@@ -336,17 +336,17 @@
 
 - (void)testSubsequentlyLoadedContentNotAppendedToViewModel
 {
-    HUBContentProviderMock * const contentProvider = [HUBContentProviderMock new];
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
     
-    contentProvider.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         NSString * const randomComponentIdentifier = [NSUUID UUID].UUIDString;
         [builder builderForBodyComponentModelWithIdentifier:randomComponentIdentifier].componentName = @"component";
-        return HUBContentProviderModeSynchronous;
+        return HUBContentOperationModeSynchronous;
     };
     
-    [self createLoaderWithContentProviders:@[contentProvider]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
     
     [self.loader loadViewModel];
     
@@ -356,44 +356,44 @@
     XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)1);
 }
 
-- (void)testMiddleContentProviderReloadDoesNotReloadWholeChain
+- (void)testMiddleContentOperationReloadDoesNotReloadWholeChain
 {
-    HUBContentProviderMock * const contentProvider1 = [HUBContentProviderMock new];
-    HUBContentProviderMock * const contentProvider2 = [HUBContentProviderMock new];
-    HUBContentProviderMock * const contentProvider3 = [HUBContentProviderMock new];
+    HUBContentOperationMock * const contentOperation1 = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperation2 = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperation3 = [HUBContentOperationMock new];
 
     __block id<HUBViewModelBuilder> viewModelBuilder = nil;
 
-    __block NSInteger contentProvider1Version = 1;
-    contentProvider1.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    __block NSInteger contentOperation1Version = 1;
+    contentOperation1.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         viewModelBuilder = builder;
         id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component1"];
         component.componentName = @"component1";
-        component.title = [NSString stringWithFormat:@"%@", @(contentProvider1Version++)];
-        return HUBContentProviderModeSynchronous;
+        component.title = [NSString stringWithFormat:@"%@", @(contentOperation1Version++)];
+        return HUBContentOperationModeSynchronous;
     };
 
-    __block NSInteger contentProvider2Version = 1;
-    contentProvider2.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    __block NSInteger contentOperation2Version = 1;
+    contentOperation2.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         viewModelBuilder = builder;
         id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component2"];
         component.componentName = @"component2";
-        component.title = [NSString stringWithFormat:@"%@", @(contentProvider2Version++)];
-        return HUBContentProviderModeSynchronous;
+        component.title = [NSString stringWithFormat:@"%@", @(contentOperation2Version++)];
+        return HUBContentOperationModeSynchronous;
     };
 
-    __block NSInteger contentProvider3Version = 1;
-    contentProvider3.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    __block NSInteger contentOperation3Version = 1;
+    contentOperation3.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         viewModelBuilder = builder;
         id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component3"];
         component.componentName = @"component3";
-        component.title = [NSString stringWithFormat:@"%@", @(contentProvider3Version++)];
-        return HUBContentProviderModeSynchronous;
+        component.title = [NSString stringWithFormat:@"%@", @(contentOperation3Version++)];
+        return HUBContentOperationModeSynchronous;
     };
 
-    [self createLoaderWithContentProviders:@[contentProvider1, contentProvider2, contentProvider3]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperation1, contentOperation2, contentOperation3]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
     
     [self.loader loadViewModel];
 
@@ -403,22 +403,22 @@
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[1] title], @"1");
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[2] title], @"1");
 
-    contentProvider2.contentLoadingBlock(viewModelBuilder);
-    [contentProvider2.delegate contentProviderDidFinishLoading:contentProvider2];
+    contentOperation2.contentLoadingBlock(viewModelBuilder);
+    [contentOperation2.delegate contentOperationDidFinish:contentOperation2];
 
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[0] title], @"1");
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[1] title], @"2");
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[2] title], @"2");
 
-    contentProvider3.contentLoadingBlock(viewModelBuilder);
-    [contentProvider3.delegate contentProviderDidFinishLoading:contentProvider3];
+    contentOperation3.contentLoadingBlock(viewModelBuilder);
+    [contentOperation3.delegate contentOperationDidFinish:contentOperation3];
 
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[0] title], @"1");
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[1] title], @"2");
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[2] title], @"3");
 
-    contentProvider1.contentLoadingBlock(viewModelBuilder);
-    [contentProvider1.delegate contentProviderDidFinishLoading:contentProvider1];
+    contentOperation1.contentLoadingBlock(viewModelBuilder);
+    [contentOperation1.delegate contentOperationDidFinish:contentOperation1];
 
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[0] title], @"2");
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[1] title], @"3");
@@ -426,58 +426,58 @@
 
 }
 
-- (void)testOutOfSyncContentProviderGetsReloadedEventually
+- (void)testOutOfSyncContentOperationGetsReloadedEventually
 {
-    HUBContentProviderMock * const contentProvider1 = [HUBContentProviderMock new];
-    HUBContentProviderMock * const contentProvider2 = [HUBContentProviderMock new];
-    HUBContentProviderMock * const contentProvider3 = [HUBContentProviderMock new];
+    HUBContentOperationMock * const contentOperation1 = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperation2 = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperation3 = [HUBContentOperationMock new];
 
     __block id<HUBViewModelBuilder> viewModelBuilder = nil;
 
-    __block NSInteger contentProvider1Version = 1;
-    contentProvider1.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    __block NSInteger contentOperation1Version = 1;
+    contentOperation1.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         viewModelBuilder = builder;
         id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component1"];
         component.componentName = @"component1";
-        component.title = [NSString stringWithFormat:@"%@", @(contentProvider1Version)];
-        ++contentProvider1Version;
-        return HUBContentProviderModeAsynchronous;
+        component.title = [NSString stringWithFormat:@"%@", @(contentOperation1Version)];
+        ++contentOperation1Version;
+        return HUBContentOperationModeAsynchronous;
     };
 
-    __block NSInteger contentProvider2Version = 1;
-    contentProvider2.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    __block NSInteger contentOperation2Version = 1;
+    contentOperation2.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         viewModelBuilder = builder;
         id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component2"];
         component.componentName = @"component2";
-        component.title = [NSString stringWithFormat:@"%@", @(contentProvider2Version)];
-        ++contentProvider2Version;
-        return HUBContentProviderModeSynchronous;
+        component.title = [NSString stringWithFormat:@"%@", @(contentOperation2Version)];
+        ++contentOperation2Version;
+        return HUBContentOperationModeSynchronous;
     };
 
-    __block NSInteger contentProvider3Version = 1;
-    contentProvider3.contentLoadingBlock = ^HUBContentProviderMode(id<HUBViewModelBuilder> builder) {
+    __block NSInteger contentOperation3Version = 1;
+    contentOperation3.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
         viewModelBuilder = builder;
         id<HUBComponentModelBuilder> component = [builder builderForBodyComponentModelWithIdentifier:@"component3"];
         component.componentName = @"component3";
-        component.title = [NSString stringWithFormat:@"%@", @(contentProvider3Version)];
-        ++contentProvider3Version;
-        return HUBContentProviderModeSynchronous;
+        component.title = [NSString stringWithFormat:@"%@", @(contentOperation3Version)];
+        ++contentOperation3Version;
+        return HUBContentOperationModeSynchronous;
     };
 
-    [self createLoaderWithContentProviders:@[contentProvider1, contentProvider2, contentProvider3]
-                         connectivityState:HUBConnectivityStateOnline
-                          initialViewModel:nil];
+    [self createLoaderWithContentOperations:@[contentOperation1, contentOperation2, contentOperation3]
+                            connectivityState:HUBConnectivityStateOnline
+                            initialViewModel:nil];
     
     [self.loader loadViewModel];
 
     XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)0);  // Not loaded yet
 
-    contentProvider2.contentLoadingBlock(viewModelBuilder);
-    [contentProvider2.delegate contentProviderDidFinishLoading:contentProvider2];  // Load out of sync
+    contentOperation2.contentLoadingBlock(viewModelBuilder);
+    [contentOperation2.delegate contentOperationDidFinish:contentOperation2];  // Load out of sync
 
     XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)0);  // Not loaded yet
 
-    [contentProvider1.delegate contentProviderDidFinishLoading:contentProvider1];
+    [contentOperation1.delegate contentOperationDidFinish:contentOperation1];
     XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)3);  // All loaded
 
     XCTAssertEqualObjects([self.viewModelFromSuccessDelegateMethod.bodyComponentModels[0] title], @"1");
@@ -503,9 +503,9 @@
 
 #pragma mark - Utilities
 
-- (void)createLoaderWithContentProviders:(NSArray<id<HUBContentProvider>> *)contentProviders
-                       connectivityState:(HUBConnectivityState)connectivityState
-                        initialViewModel:(nullable id<HUBViewModel>)initialViewModel
+- (void)createLoaderWithContentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+                        connectivityState:(HUBConnectivityState)connectivityState
+                         initialViewModel:(nullable id<HUBViewModel>)initialViewModel
 {
     self.connectivityStateResolver.state = connectivityState;
     
@@ -517,7 +517,7 @@
     
     self.loader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
                                                           featureIdentifier:@"feature"
-                                                           contentProviders:contentProviders
+                                                          contentOperations:contentOperations
                                                                  JSONSchema:JSONSchema
                                                           componentDefaults:componentDefaults
                                                   connectivityStateResolver:self.connectivityStateResolver

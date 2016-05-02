@@ -16,8 +16,8 @@
 #import "HUBFeatureRegistry.h"
 
 // Content
-#import "HUBContentProviderFactory.h"
-#import "HUBContentProvider.h"
+#import "HUBContentOperationFactory.h"
+#import "HUBContentOperation.h"
 #import "HUBContentReloadPolicy.h"
 
 // View

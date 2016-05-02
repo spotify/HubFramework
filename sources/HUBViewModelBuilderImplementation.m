@@ -9,7 +9,7 @@
 #import "HUBComponentModelJSONSchema.h"
 #import "HUBJSONPath.h"
 
-#import "HUBContentProvider.h"
+#import "HUBContentOperation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

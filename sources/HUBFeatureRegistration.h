@@ -1,6 +1,6 @@
 #import "HUBHeaderMacros.h"
 
-@protocol HUBContentProviderFactory;
+@protocol HUBContentOperationFactory;
 @protocol HUBContentReloadPolicy;
 @class HUBViewURIPredicate;
 
@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The view URI predicate that the feature will use
 @property (nonatomic, strong, readonly) HUBViewURIPredicate *viewURIPredicate;
 
-/// The content provider factories that the feature is using
-@property (nonatomic, strong, readonly) NSArray<id<HUBContentProviderFactory>> *contentProviderFactories;
+/// The content operation factories that the feature is using
+@property (nonatomic, strong, readonly) NSArray<id<HUBContentOperationFactory>> *contentOperationFactories;
 
 /// Any custom content reload policy that the feature is using
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
@@ -29,13 +29,13 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param featureIdentifier The identifier of the feature
  *  @param viewURIPredicate The view URI predicate that the feature will use
- *  @param contentProviderFactories The content provider factories that the feature will use
+ *  @param contentOperationFactories The content operation factories that the feature will use
  *  @param contentReloadPolicy Any custom content reload policy that the feature will use
  *  @param customJSONSchemaIdentifier The identifier of any custom JSON schema the feature will use
  */
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                          viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
-                 contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
+                contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                       contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier HUB_DESIGNATED_INITIALIZER;
 

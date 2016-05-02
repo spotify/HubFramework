@@ -1,18 +1,18 @@
-#import "HUBContentProviderMock.h"
+#import "HUBContentOperationMock.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBContentProviderMock ()
+@interface HUBContentOperationMock ()
 
-@property (nonatomic, strong, readwrite, nullable) NSError *previousContentProviderError;
+@property (nonatomic, strong, readwrite, nullable) NSError *previousContentOperationError;
 
 @end
 
-@implementation HUBContentProviderMock
+@implementation HUBContentOperationMock
 
 @synthesize delegate = _delegate;
 
-#pragma mark - HUBContentProvider
+#pragma mark - HUBContentOperation
 
 - (void)addInitialContentForViewURI:(NSURL *)viewURI toViewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
 {
@@ -21,21 +21,21 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (HUBContentProviderMode)loadContentForViewURI:(NSURL *)viewURI
+- (HUBContentOperationMode)loadContentForViewURI:(NSURL *)viewURI
                               connectivityState:(HUBConnectivityState)connectivityState
                                viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
-                   previousContentProviderError:(nullable NSError *)previousContentProviderError
+                    previousContentOperationError:(nullable NSError *)previousContentOperationError
 {
-    self.previousContentProviderError = previousContentProviderError;
+    self.previousContentOperationError = previousContentOperationError;
     
     if (self.contentLoadingBlock != nil) {
         return self.contentLoadingBlock(viewModelBuilder);
     }
     
-    return HUBContentProviderModeNone;
+    return HUBContentOperationModeNone;
 }
 
-- (HUBContentProviderMode)loadContentFromExtensionURL:(NSURL *)extensionURL
+- (HUBContentOperationMode)loadContentFromExtensionURL:(NSURL *)extensionURL
                                            forViewURI:(NSURL *)viewURI
                                      viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
 {
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
         return self.extensionContentLoadingBlock(viewModelBuilder);
     }
     
-    return HUBContentProviderModeNone;
+    return HUBContentOperationModeNone;
 }
 
 @end

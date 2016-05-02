@@ -10,9 +10,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  This builder acts like a mutable model counterpart for `HUBViewModel`, with the key difference that they
  *  are not related by inheritance.
  *
- *  If a remote content provider is used, a view model builder object comes pre-populated with content derived
- *  from the JSON data the remote content provider downloaded.
- *
  *  For more information regarding the properties that this builder enables you to set, see the documentation
  *  for `HUBViewModel`.
  */
@@ -81,9 +78,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Any HTTP URL from which data can be downloaded to extend the view model
  *
- *  You can use this property to implement pagination for your view's content. When the user has scrolled to the
- *  bottom of a view, and that view model's extension URL != nil, the Hub Framework will automatically ask its remote
- *  content provider to download JSON from this URL, and use it to extend the current view model.
+ *  You can use this property to implement pagination for your view's content. When the user has scrolled to the bottom
+ *  of a view, and that view model's extension URL != nil, the Hub Framework will automatically ask its content operations
+ *  to extend the view model with data from this URL.
  */
 @property (nonatomic, copy, nullable) NSURL *extensionURL;
 

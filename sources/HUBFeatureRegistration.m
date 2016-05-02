@@ -6,20 +6,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                          viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
-                 contentProviderFactories:(NSArray<id<HUBContentProviderFactory>> *)contentProviderFactories
+                contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                       contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(viewURIPredicate != nil);
-    NSParameterAssert(contentProviderFactories.count > 0);
+    NSParameterAssert(contentOperationFactories.count > 0);
     
     self = [super init];
     
     if (self) {
         _featureIdentifier = [featureIdentifier copy];
         _viewURIPredicate = viewURIPredicate;
-        _contentProviderFactories = [contentProviderFactories copy];
+        _contentOperationFactories = [contentOperationFactories copy];
         _contentReloadPolicy = contentReloadPolicy;
         _customJSONSchemaIdentifier = [customJSONSchemaIdentifier copy];
     }

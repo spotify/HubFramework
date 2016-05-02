@@ -3,7 +3,7 @@
 #import "HUBViewModelLoaderImplementation.h"
 #import "HUBFeatureRegistryImplementation.h"
 #import "HUBFeatureRegistration.h"
-#import "HUBContentProviderFactory.h"
+#import "HUBContentOperationFactory.h"
 #import "HUBJSONSchemaRegistryImplementation.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBComponentDefaults.h"
@@ -48,15 +48,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBViewModelLoader>)createViewModelLoaderForViewURI:(NSURL *)viewURI featureRegistration:(HUBFeatureRegistration *)featureRegistration
 {
-    NSMutableArray<id<HUBContentProvider>> * const allContentProviders = [NSMutableArray new];
+    NSMutableArray<id<HUBContentOperation>> * const allContentOperations = [NSMutableArray new];
     
-    for (id<HUBContentProviderFactory> const factory in featureRegistration.contentProviderFactories) {
-        NSArray<id<HUBContentProvider>> * const contentProviders = [factory createContentProvidersForViewURI:viewURI];
-        [allContentProviders addObjectsFromArray:contentProviders];
+    for (id<HUBContentOperationFactory> const factory in featureRegistration.contentOperationFactories) {
+        NSArray<id<HUBContentOperation>> * const contentOperations = [factory createContentOperationsForViewURI:viewURI];
+        [allContentOperations addObjectsFromArray:contentOperations];
     }
     
-    if (allContentProviders.count == 0) {
-        NSAssert(NO, @"No Hub Framework content providers were created for view URI: %@", viewURI);
+    if (allContentOperations.count == 0) {
+        NSAssert(NO, @"No Hub Framework content operations were created for view URI: %@", viewURI);
         return nil;
     }
     
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     return [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
                                                    featureIdentifier:featureRegistration.featureIdentifier
-                                                    contentProviders:allContentProviders
+                                                   contentOperations:allContentOperations
                                                           JSONSchema:JSONSchema
                                                    componentDefaults:self.componentDefaults
                                            connectivityStateResolver:self.connectivityStateResolver
