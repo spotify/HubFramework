@@ -100,6 +100,8 @@ NS_ASSUME_NONNULL_BEGIN
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
                       iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+                   mainImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)mainImageDataBuilder
+             backgroundImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)backgroundImageDataBuilder
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(JSONSchema != nil);
@@ -123,11 +125,21 @@ NS_ASSUME_NONNULL_BEGIN
         _componentCategory = [componentDefaults.componentCategory copy];
         _featureIdentifier = [featureIdentifier copy];
         
-        _mainImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema
-                                                                                                   iconImageResolver:iconImageResolver];
+        if (mainImageDataBuilder != nil) {
+            HUBComponentImageDataBuilderImplementation * const nonNilMainImageDataBuilder = mainImageDataBuilder;
+            _mainImageDataBuilderImplementation = nonNilMainImageDataBuilder;
+        } else {
+            _mainImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema
+                                                                                                       iconImageResolver:iconImageResolver];
+        }
         
-        _backgroundImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema
-                                                                                                         iconImageResolver:iconImageResolver];
+        if (backgroundImageDataBuilder != nil) {
+            HUBComponentImageDataBuilderImplementation * const nonNilBackgroundImageDataBuilder = backgroundImageDataBuilder;
+            _backgroundImageDataBuilderImplementation = nonNilBackgroundImageDataBuilder;
+        } else {
+            _backgroundImageDataBuilderImplementation = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema
+                                                                                                             iconImageResolver:iconImageResolver];
+        }
         
         _customImageDataBuilders = [NSMutableDictionary new];
         _childComponentModelBuilders = [NSMutableDictionary new];
@@ -353,6 +365,46 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(nullable NSZone *)zone
+{
+    HUBComponentImageDataBuilderImplementation * const mainImageDataBuilder = [self.mainImageDataBuilderImplementation copy];
+    HUBComponentImageDataBuilderImplementation * const backgroundImageDataBuilder = [self.backgroundImageDataBuilderImplementation copy];
+    
+    HUBComponentModelBuilderImplementation * const copy = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:self.modelIdentifier
+                                                                                                                featureIdentifier:self.featureIdentifier
+                                                                                                                       JSONSchema:self.JSONSchema
+                                                                                                                componentDefaults:self.componentDefaults
+                                                                                                                iconImageResolver:self.iconImageResolver
+                                                                                                             mainImageDataBuilder:mainImageDataBuilder
+                                                                                                       backgroundImageDataBuilder:backgroundImageDataBuilder];
+    
+    copy.preferredIndex = self.preferredIndex;
+    copy.title = self.title;
+    copy.subtitle = self.subtitle;
+    copy.accessoryTitle = self.accessoryTitle;
+    copy.descriptionText = self.descriptionText;
+    copy.iconIdentifier = self.iconIdentifier;
+    copy.targetURL = self.targetURL;
+    copy.targetInitialViewModelBuilderImplementation = [self.targetInitialViewModelBuilderImplementation copy];
+    copy.customData = self.customData;
+    copy.loggingData = self.loggingData;
+    copy.date = self.date;
+    
+    for (NSString * const customImageIdentifier in self.customImageDataBuilders.allKeys) {
+        copy.customImageDataBuilders[customImageIdentifier] = [self.customImageDataBuilders[customImageIdentifier] copy];
+    }
+    
+    for (NSString * const childComponentModelIdentifier in self.childComponentModelBuilders.allKeys) {
+        copy.childComponentModelBuilders[childComponentModelIdentifier] = [self.childComponentModelBuilders[childComponentModelIdentifier] copy];
+    }
+    
+    [copy.childComponentIdentifierOrder addObjectsFromArray:self.childComponentIdentifierOrder];
+    
+    return copy;
+}
+
 #pragma mark - API
 
 - (HUBComponentModelImplementation *)buildForIndex:(NSUInteger)index
@@ -448,7 +500,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                       featureIdentifier:self.featureIdentifier
                                                                                                                              JSONSchema:self.JSONSchema
                                                                                                                       componentDefaults:self.componentDefaults
-                                                                                                                      iconImageResolver:self.iconImageResolver];
+                                                                                                                      iconImageResolver:self.iconImageResolver
+                                                                                                                   mainImageDataBuilder:nil
+                                                                                                             backgroundImageDataBuilder:nil];
     
     [self.childComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
     [self.childComponentIdentifierOrder addObject:newBuilder.modelIdentifier];

@@ -6,11 +6,12 @@
 @protocol HUBIconImageResolver;
 @class HUBComponentDefaults;
 @class HUBComponentModelImplementation;
+@class HUBComponentImageDataBuilderImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBComponentModelBuilder` API
-@interface HUBComponentModelBuilderImplementation : NSObject <HUBComponentModelBuilder, HUBJSONCompatibleBuilder>
+@interface HUBComponentModelBuilderImplementation : NSObject <HUBComponentModelBuilder, HUBJSONCompatibleBuilder, NSCopying>
 
 /**
  *  Build an array of component models from a collection of builders
@@ -32,12 +33,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param JSONSchema The schema to use to parse data from any added JSON object
  *  @param componentDefaults The default component values that should be used as initial values for this builder
  *  @param iconImageResolver The resolver to use to convert icons into renderable images
+ *  @param mainImageDataBuilder Any specific image data builder that the object should use for its main image.
+ *  @param backgroundImageDataBuilder Any specific image data builder that the object should use for its background image.
  */
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
                       featureIdentifier:(NSString *)featureIdentifier
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
-                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
+                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+                   mainImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)mainImageDataBuilder
+             backgroundImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)backgroundImageDataBuilder HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Build an instance of `HUBComponentModelImplementation` from the data contained in this builder
