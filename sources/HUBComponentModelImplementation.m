@@ -127,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSMutableDictionary * const customImageDataDictionary = [NSMutableDictionary new];
     
-    for (NSString * const imageIdentifier in self.customImageData.allKeys) {
+    for (NSString * const imageIdentifier in self.customImageData) {
         customImageDataDictionary[imageIdentifier] = [self.customImageData[imageIdentifier] serialize];
     }
     

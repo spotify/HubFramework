@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
         [sortedBuilders addObject:builder];
     }
     
-    for (NSNumber * const preferredIndex in buildersByPreferredIndex.allKeys) {
+    for (NSNumber * const preferredIndex in buildersByPreferredIndex) {
         HUBComponentModelBuilderImplementation * const builder = buildersByPreferredIndex[preferredIndex];
         NSUInteger decodedPreferredIndex = preferredIndex.unsignedIntegerValue;
         
@@ -341,7 +341,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSDictionary * const customImageDataDictionary = [componentModelSchema.customImageDataDictionaryPath dictionaryFromJSONDictionary:dictionary];
     
-    for (NSString * const imageIdentifier in customImageDataDictionary.allKeys) {
+    for (NSString * const imageIdentifier in customImageDataDictionary) {
         NSDictionary * const imageDataDictionary = customImageDataDictionary[imageIdentifier];
         
         if ([imageDataDictionary isKindOfClass:[NSDictionary class]]) {
@@ -392,11 +392,11 @@ NS_ASSUME_NONNULL_BEGIN
     copy.loggingData = self.loggingData;
     copy.date = self.date;
     
-    for (NSString * const customImageIdentifier in self.customImageDataBuilders.allKeys) {
+    for (NSString * const customImageIdentifier in self.customImageDataBuilders) {
         copy.customImageDataBuilders[customImageIdentifier] = [self.customImageDataBuilders[customImageIdentifier] copy];
     }
     
-    for (NSString * const childComponentModelIdentifier in self.childComponentModelBuilders.allKeys) {
+    for (NSString * const childComponentModelIdentifier in self.childComponentModelBuilders) {
         copy.childComponentModelBuilders[childComponentModelIdentifier] = [self.childComponentModelBuilders[childComponentModelIdentifier] copy];
     }
     
@@ -420,7 +420,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSMutableDictionary * const customImageData = [NSMutableDictionary new];
     
-    for (NSString * const imageIdentifier in self.customImageDataBuilders.allKeys) {
+    for (NSString * const imageIdentifier in self.customImageDataBuilders) {
         HUBComponentImageDataBuilderImplementation * const builder = self.customImageDataBuilders[imageIdentifier];
         id<HUBComponentImageData> const imageData = [builder buildWithIdentifier:imageIdentifier type:HUBComponentImageTypeCustom];
         
