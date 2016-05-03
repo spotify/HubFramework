@@ -309,4 +309,31 @@
     XCTAssertFalse(self.builder.isEmpty);
 }
 
+- (void)testCopying
+{
+    self.builder.viewIdentifier = @"id";
+    self.builder.featureIdentifier = @"feature";
+    self.builder.entityIdentifier = @"entity";
+    self.builder.navigationBarTitle = @"title";
+    self.builder.headerComponentModelBuilder.title = @"headerTitle";
+    
+    id<HUBComponentModelBuilder> const bodyComponentModelBuilder = [self.builder builderForBodyComponentModelWithIdentifier:@"body"];
+    bodyComponentModelBuilder.title = @"bodyTitle";
+    
+    HUBViewModelBuilderImplementation * const builderCopy = [self.builder copy];
+    XCTAssertNotEqual(self.builder, builderCopy);
+    
+    XCTAssertEqualObjects(builderCopy.viewIdentifier, @"id");
+    XCTAssertEqualObjects(builderCopy.featureIdentifier, @"feature");
+    XCTAssertEqualObjects(builderCopy.entityIdentifier, @"entity");
+    XCTAssertEqualObjects(builderCopy.navigationBarTitle, @"title");
+    
+    XCTAssertNotEqual(builderCopy.headerComponentModelBuilder, self.builder.headerComponentModelBuilder);
+    XCTAssertEqualObjects(builderCopy.headerComponentModelBuilder.title, @"headerTitle");
+    
+    id<HUBComponentModelBuilder> const copiedComponentModelBuilder = [builderCopy builderForBodyComponentModelWithIdentifier:@"body"];
+    XCTAssertNotEqual(bodyComponentModelBuilder, copiedComponentModelBuilder);
+    XCTAssertEqualObjects(copiedComponentModelBuilder.title, @"bodyTitle");
+}
+
 @end

@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
 
+#pragma mark - Initializer
+
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                                JSONSchema:(id<HUBJSONSchema>)JSONSchema
                         componentDefaults:(HUBComponentDefaults *)componentDefaults
@@ -210,6 +212,29 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(nullable NSZone *)zone
+{
+    HUBViewModelBuilderImplementation * const copy = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
+                                                                                                               JSONSchema:self.JSONSchema
+                                                                                                        componentDefaults:self.componentDefaults
+                                                                                                        iconImageResolver:self.iconImageResolver];
+    
+    copy.viewIdentifier = self.viewIdentifier;
+    copy.entityIdentifier = self.entityIdentifier;
+    copy.navigationBarTitle = self.navigationBarTitle;
+    copy.headerComponentModelBuilderImplementation = [self.headerComponentModelBuilderImplementation copy];
+    
+    for (NSString * const builderIdentifier in self.bodyComponentModelBuilders) {
+        copy.bodyComponentModelBuilders[builderIdentifier] = [self.bodyComponentModelBuilders[builderIdentifier] copy];
+    }
+    
+    [copy.bodyComponentIdentifierOrder addObjectsFromArray:self.bodyComponentIdentifierOrder];
+    
+    return copy;
+}
+
 #pragma mark - Private utilities
 
 - (void)addDataFromJSONArray:(NSArray<NSObject *> *)array usingSchema:(id<HUBJSONSchema>)schema
@@ -244,7 +269,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                       featureIdentifier:self.featureIdentifier
                                                                                                                              JSONSchema:self.JSONSchema
                                                                                                                       componentDefaults:self.componentDefaults
-                                                                                                                      iconImageResolver:self.iconImageResolver];
+                                                                                                                      iconImageResolver:self.iconImageResolver
+                                                                                                                   mainImageDataBuilder:nil
+                                                                                                             backgroundImageDataBuilder:nil];
     
     self.headerComponentModelBuilderImplementation = newBuilder;
     return newBuilder;
@@ -265,7 +292,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                       featureIdentifier:self.featureIdentifier
                                                                                                                              JSONSchema:self.JSONSchema
                                                                                                                       componentDefaults:self.componentDefaults
-                                                                                                                      iconImageResolver:self.iconImageResolver];
+                                                                                                                      iconImageResolver:self.iconImageResolver
+                                                                                                                   mainImageDataBuilder:nil
+                                                                                                             backgroundImageDataBuilder:nil];
     
     [self.bodyComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
     [self.bodyComponentIdentifierOrder addObject:newBuilder.modelIdentifier];

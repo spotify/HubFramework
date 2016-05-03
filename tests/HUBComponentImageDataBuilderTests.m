@@ -109,4 +109,22 @@
     XCTAssertEqual(self.builder.style, HUBComponentImageStyleRectangular);
 }
 
+- (void)testCopying
+{
+    UIImage * const localImage = [UIImage new];
+    
+    self.builder.style = HUBComponentImageStyleCircular;
+    self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
+    self.builder.localImage = localImage;
+    self.builder.placeholderIconIdentifier = @"placeholder";
+    
+    HUBComponentImageDataBuilderImplementation * const builderCopy = [self.builder copy];
+    XCTAssertNotEqual(self.builder, builderCopy);
+    
+    XCTAssertEqual(builderCopy.style, HUBComponentImageStyleCircular);
+    XCTAssertEqualObjects(builderCopy.URL, [NSURL URLWithString:@"cdn.spotify.com/hub"]);
+    XCTAssertEqualObjects(builderCopy.localImage, localImage);
+    XCTAssertEqualObjects(builderCopy.placeholderIconIdentifier, @"placeholder");
+}
+
 @end

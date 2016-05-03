@@ -40,7 +40,9 @@
                                                                          featureIdentifier:self.featureIdentifier
                                                                                 JSONSchema:JSONSchema
                                                                          componentDefaults:self.componentDefaults
-                                                                         iconImageResolver:iconImageResolver];
+                                                                         iconImageResolver:iconImageResolver
+                                                                      mainImageDataBuilder:nil
+                                                                backgroundImageDataBuilder:nil];
 }
 
 #pragma mark - Tests
@@ -425,6 +427,53 @@
     };
     
     XCTAssertEqualObjects(self.builder.customData, expectedCustomData);
+}
+
+- (void)testCopying
+{
+    NSDate * const currentDate = [NSDate date];
+    
+    self.builder.componentNamespace = @"namespace";
+    self.builder.componentName = @"name";
+    self.builder.preferredIndex = @(33);
+    self.builder.title = @"title";
+    self.builder.subtitle = @"subtitle";
+    self.builder.accessoryTitle = @"accessory title";
+    self.builder.descriptionText = @"description text";
+    self.builder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
+    self.builder.loggingData = @{@"logging": @"data"};
+    self.builder.date = currentDate;
+    self.builder.customData = @{@"custom": @"data"};
+    
+    self.builder.mainImageDataBuilder.placeholderIconIdentifier = @"mainPlaceholder";
+    self.builder.backgroundImageDataBuilder.placeholderIconIdentifier = @"backgroundPlaceholder";
+    
+    id<HUBComponentImageDataBuilder> const customImageDataBuilder = [self.builder builderForCustomImageDataWithIdentifier:@"customImage"];
+    customImageDataBuilder.placeholderIconIdentifier = @"customPlaceholder";
+    
+    HUBComponentModelBuilderImplementation * const builderCopy = [self.builder copy];
+    
+    XCTAssertEqualObjects(builderCopy.componentNamespace, @"namespace");
+    XCTAssertEqualObjects(builderCopy.componentName, @"name");
+    XCTAssertEqualObjects(builderCopy.preferredIndex, @(33));
+    XCTAssertEqualObjects(builderCopy.title, @"title");
+    XCTAssertEqualObjects(builderCopy.subtitle, @"subtitle");
+    XCTAssertEqualObjects(builderCopy.accessoryTitle, @"accessory title");
+    XCTAssertEqualObjects(builderCopy.descriptionText, @"description text");
+    XCTAssertEqualObjects(builderCopy.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
+    XCTAssertEqualObjects(builderCopy.loggingData, @{@"logging": @"data"});
+    XCTAssertEqualObjects(builderCopy.date, currentDate);
+    XCTAssertEqualObjects(builderCopy.customData, @{@"custom": @"data"});
+    
+    XCTAssertNotEqual(self.builder.mainImageDataBuilder, builderCopy.mainImageDataBuilder);
+    XCTAssertEqualObjects(builderCopy.mainImageDataBuilder.placeholderIconIdentifier, @"mainPlaceholder");
+    
+    XCTAssertNotEqual(self.builder.backgroundImageDataBuilder, builderCopy.backgroundImageDataBuilder);
+    XCTAssertEqualObjects(builderCopy.backgroundImageDataBuilder.placeholderIconIdentifier, @"backgroundPlaceholder");
+    
+    id<HUBComponentImageDataBuilder> const copiedCustomImageDataBuilder = [builderCopy builderForCustomImageDataWithIdentifier:@"customImage"];
+    XCTAssertNotEqual(customImageDataBuilder, copiedCustomImageDataBuilder);
+    XCTAssertEqualObjects(copiedCustomImageDataBuilder.placeholderIconIdentifier, @"customPlaceholder");
 }
 
 @end

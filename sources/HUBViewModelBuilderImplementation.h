@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBViewModelBuilder` API
-@interface HUBViewModelBuilderImplementation : NSObject <HUBViewModelBuilder, HUBJSONCompatibleBuilder>
+@interface HUBViewModelBuilderImplementation : NSObject <HUBViewModelBuilder, HUBJSONCompatibleBuilder, NSCopying>
 
 /**
  *  Initialize an instance of this class with a feature identifier

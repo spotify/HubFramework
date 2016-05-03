@@ -9,7 +9,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBComponentImageDataBuilder` API
-@interface HUBComponentImageDataBuilderImplementation : NSObject <HUBComponentImageDataBuilder, HUBJSONCompatibleBuilder>
+@interface HUBComponentImageDataBuilderImplementation : NSObject <HUBComponentImageDataBuilder, HUBJSONCompatibleBuilder, NSCopying>
 
 /**
  *  Initialize an instance of this class with a JSON schema

@@ -66,6 +66,21 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(nullable NSZone *)zone
+{
+    HUBComponentImageDataBuilderImplementation * const copy = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
+                                                                                                                   iconImageResolver:self.iconImageResolver];
+    
+    copy.style = self.style;
+    copy.URL = self.URL;
+    copy.placeholderIconIdentifier = self.placeholderIconIdentifier;
+    copy.localImage = self.localImage;
+    
+    return copy;
+}
+
 #pragma mark - API
 
 - (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier type:(HUBComponentImageType)type
