@@ -104,7 +104,7 @@
 #pragma mark - Tests
 
 - (void)testContentLoadedOnViewWillAppear
-{;
+{
     __block BOOL contentLoaded = NO;
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
