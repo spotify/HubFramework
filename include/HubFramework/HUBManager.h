@@ -54,10 +54,10 @@ NS_ASSUME_NONNULL_BEGIN
  *         A content reload policy determines whenever a view belonging to the feature should have its content reloaded.
  *         See `HUBContentReloadPolicy` for more information.
  *  @param prependedContentOperationFactory Any content operation factory that should be prepended to the chain of content
- *         operation factories for all views. The operations that this factory produces will therefor always be prepended
+ *         operation factories for all views. The operations that this factory produces will therefore always be prepended
  *         to the content loading chain of any view.
  *  @param appendedContentOperationFactory Any content operation factory that should be appended to the chain of content
- *         operation factories for all views. The operations that this factory produces will therefor always be appended
+ *         operation factories for all views. The operations that this factory produces will therefore always be appended
  *         to the content loading chain of any view.
  */
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
