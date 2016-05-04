@@ -162,9 +162,10 @@ NS_ASSUME_NONNULL_BEGIN
         operationIndex++;
     }
     
+    BOOL const shouldRestartQueue = (self.contentOperationQueue.count == 0);
     [self.contentOperationQueue addObjectsFromArray:operations];
     
-    if (self.contentOperationQueue.count == operations.count) {
+    if (shouldRestartQueue) {
         [self performFirstContentOperationInQueue];
     }
 }
