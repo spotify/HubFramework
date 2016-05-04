@@ -8,6 +8,7 @@
 @class HUBFeatureRegistration;
 @protocol HUBConnectivityStateResolver;
 @protocol HUBIconImageResolver;
+@protocol HUBContentOperationFactory;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,13 +24,19 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentDefaults The default values to use for component model builders created when loading view models
  *  @param connectivityStateResolver The object resolving connectivity states for created view model loaders
  *  @param iconImageResolver The resolver to use to convert icons into renderable images
+ *  @param prependedContentOperationFactory Any content operation factory which operations should be prepended to all
+ *         views' content loading chains.
+ *  @param appendedContentOperationFactory Any content operation factory which operations should be appended to all
+ *         views' content loading chains.
  */
 - (instancetype)initWithFeatureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                      JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
                initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
-                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
+                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+       prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
+        appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Create a view model loader for a given view URI, using a feature registration

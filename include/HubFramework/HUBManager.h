@@ -12,6 +12,7 @@
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
 @protocol HUBComponentFallbackHandler;
+@protocol HUBContentOperationFactory;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -45,20 +46,28 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param imageLoaderFactory A factory that creates image loaders that are used to load images for components
  *  @param iconImageResolver An object responsible for converting icons into renderable images. See `HUBIconImageResolver` for
  *         more information.
- *  @param defaultContentReloadPolicy The default content reload policy to use for features that do not define their own.
- *         A content reload policy determines whenever a view belonging to the feature should have its content reloaded.
- *         See `HUBContentReloadPolicy` for more information.
  *  @param componentLayoutManager The object to use to manage layout for components, computing margins using layout traits.
  *         See `HUBComponentLayoutManager` for more information.
  *  @param componentFallbackHandler The object to use to fall back to default components in case a component could not be
  *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
+ *  @param defaultContentReloadPolicy The default content reload policy to use for features that do not define their own.
+ *         A content reload policy determines whenever a view belonging to the feature should have its content reloaded.
+ *         See `HUBContentReloadPolicy` for more information.
+ *  @param prependedContentOperationFactory Any content operation factory that should be prepended to the chain of content
+ *         operation factories for all views. The operations that this factory produces will therefore always be prepended
+ *         to the content loading chain of any view.
+ *  @param appendedContentOperationFactory Any content operation factory that should be appended to the chain of content
+ *         operation factories for all views. The operations that this factory produces will therefore always be appended
+ *         to the content loading chain of any view.
  */
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                                 iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
-                       defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler HUB_DESIGNATED_INITIALIZER;
+                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                       defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
+                 prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
+                  appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory HUB_DESIGNATED_INITIALIZER;
 
 @end
 
