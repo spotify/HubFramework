@@ -2,12 +2,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBContentOperationFactoryMock ()
-
-@property (nonatomic, strong, readonly) NSArray<id<HUBContentOperation>> *contentOperations;
-
-@end
-
 @implementation HUBContentOperationFactoryMock
 
 - (instancetype)initWithContentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations

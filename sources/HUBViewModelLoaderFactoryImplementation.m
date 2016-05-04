@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 @property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
+@property (nonatomic, strong, nullable, readonly) id<HUBContentOperationFactory> prependedContentOperationFactory;
+@property (nonatomic, strong, nullable, readonly) id<HUBContentOperationFactory> appendedContentOperationFactory;
 
 @end
 
@@ -29,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                       iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+       prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
+        appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
 {
     self = [super init];
     
@@ -39,6 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
         _componentDefaults = componentDefaults;
         _connectivityStateResolver = connectivityStateResolver;
         _iconImageResolver = iconImageResolver;
+        _prependedContentOperationFactory = prependedContentOperationFactory;
+        _appendedContentOperationFactory = appendedContentOperationFactory;
     }
     
     return self;
@@ -50,9 +56,21 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSMutableArray<id<HUBContentOperation>> * const allContentOperations = [NSMutableArray new];
     
+    NSArray * const prependedContentOperations = [self.prependedContentOperationFactory createContentOperationsForViewURI:viewURI];
+    
+    if (prependedContentOperations != nil) {
+        [allContentOperations addObjectsFromArray:prependedContentOperations];
+    }
+    
     for (id<HUBContentOperationFactory> const factory in featureRegistration.contentOperationFactories) {
         NSArray<id<HUBContentOperation>> * const contentOperations = [factory createContentOperationsForViewURI:viewURI];
         [allContentOperations addObjectsFromArray:contentOperations];
+    }
+    
+    NSArray * const appendedContentOperations = [self.appendedContentOperationFactory createContentOperationsForViewURI:viewURI];
+    
+    if (appendedContentOperations != nil) {
+        [allContentOperations addObjectsFromArray:appendedContentOperations];
     }
     
     if (allContentOperations.count == 0) {

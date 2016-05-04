@@ -33,9 +33,11 @@
     self.manager = [[HUBManager alloc] initWithConnectivityStateResolver:connectivityStateResolver
                                                       imageLoaderFactory:imageLoaderFactory
                                                        iconImageResolver:iconImageResolver
-                                              defaultContentReloadPolicy:defaultContentReloadPolicy
                                                   componentLayoutManager:componentLayoutManager
-                                                componentFallbackHandler:componentFallbackHandler];
+                                                componentFallbackHandler:componentFallbackHandler
+                                              defaultContentReloadPolicy:defaultContentReloadPolicy
+                                        prependedContentOperationFactory:nil
+                                         appendedContentOperationFactory:nil];
 }
 
 - (void)testRegistriesCreated

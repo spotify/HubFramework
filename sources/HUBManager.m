@@ -23,9 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                                 iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
-                       defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                       defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
+                 prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
+                  appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
 {
     NSParameterAssert(connectivityStateResolver != nil);
     NSParameterAssert(imageLoaderFactory != nil);
@@ -52,7 +54,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                   initialViewModelRegistry:_initialViewModelRegistry
                                                                                          componentDefaults:componentDefaults
                                                                                  connectivityStateResolver:_connectivityStateResolver
-                                                                                         iconImageResolver:iconImageResolver];
+                                                                                         iconImageResolver:iconImageResolver
+                                                                          prependedContentOperationFactory:prependedContentOperationFactory
+                                                                           appendedContentOperationFactory:appendedContentOperationFactory];
         
         _viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:_viewModelLoaderFactory
                                                                                              imageLoaderFactory:imageLoaderFactory
