@@ -101,7 +101,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBContentOperationDelegate
 
-- (void)contentOperationWrapperDidFinish:(HUBContentOperationWrapper *)operationWrapper error:(nullable NSError *)error
+- (void)contentOperationWrapperDidFinish:(HUBContentOperationWrapper *)operationWrapper
+{
+    self.encounteredError = nil;
+    [self performFirstContentOperationInQueue];
+}
+
+- (void)contentOperationWrapper:(HUBContentOperationWrapper *)operationWrapper didFailWithError:(NSError *)error
 {
     self.encounteredError = error;
     [self performFirstContentOperationInQueue];

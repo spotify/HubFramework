@@ -15,9 +15,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  Notify the operation wrapper's delegate that the underlying operation finished
  *
  *  @param operationWrapper The operation wrapper in question
- *  @param error Any error that the underlying operation encountered
  */
-- (void)contentOperationWrapperDidFinish:(HUBContentOperationWrapper *)operationWrapper error:(nullable NSError *)error;
+- (void)contentOperationWrapperDidFinish:(HUBContentOperationWrapper *)operationWrapper;
+
+/**
+ *  Notify the operation wrapper's delegate that the underlying operation failed with an error
+ *
+ *  @param operationWrapper The operation wrapper in question
+ *  @param error The error that the underlying operation encountered
+ */
+- (void)contentOperationWrapper:(HUBContentOperationWrapper *)operationWrapper didFailWithError:(NSError *)error;
 
 /**
  *  Notify the operation wrapper's delegate that the underlying operation requires rescheduling

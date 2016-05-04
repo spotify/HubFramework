@@ -67,7 +67,15 @@
     }
     
     self.isExecuting = NO;
-    [self.delegate contentOperationWrapperDidFinish:self error:error];
+    
+    id<HUBContentOperationWrapperDelegate> const delegate = self.delegate;
+    
+    if (error == nil) {
+        [delegate contentOperationWrapperDidFinish:self];
+    } else {
+        NSError * const nonNilError = error;
+        [delegate contentOperationWrapper:self didFailWithError:nonNilError];
+    }
 }
 
 @end
