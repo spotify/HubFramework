@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewModelBuilder The builder that can be used to add, change or remove content to/from the view
  *  @param previousError Any error encountered by a previous content operation in the view's content loading chain.
  *         If this is non-`nil`, you can attempt to recover the error in this content operation, to provide any relevant
- *         content to avoid displaying an error screen for the user. In case this conent operation can't recover the error,
+ *         content to avoid displaying an error screen for the user. In case this content operation can't recover the error,
  *         it should propagate the error using the error delegate callback method.
  *
  *  The operation should perform any work to add, change or remove content to/from the view, and then call its delegate once
