@@ -104,12 +104,12 @@
 #pragma mark - Tests
 
 - (void)testContentLoadedOnViewWillAppear
-{;
+{
     __block BOOL contentLoaded = NO;
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
         contentLoaded = YES;
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self.viewController viewWillAppear:YES];
@@ -122,18 +122,18 @@
     NSString * const viewModelNavBarTitleA = @"View model A";
     NSString * const viewModelNavBarTitleB = @"View model B";
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
         builder.navigationBarTitle = viewModelNavBarTitleA;
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
     
     XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleA);
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
         builder.navigationBarTitle = viewModelNavBarTitleB;
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     self.contentReloadPolicy.shouldReload = YES;
@@ -147,18 +147,18 @@
     NSString * const viewModelNavBarTitleA = @"View model A";
     NSString * const viewModelNavBarTitleB = @"View model B";
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
         builder.navigationBarTitle = viewModelNavBarTitleA;
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
     
     XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleA);
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
         builder.navigationBarTitle = viewModelNavBarTitleB;
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     self.contentReloadPolicy.shouldReload = NO;
@@ -176,14 +176,15 @@
     
     __weak __typeof(self) weakSelf = self;
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> builder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
         __typeof(self) strongSelf = weakSelf;
+        
         builder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
         builder.headerComponentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
         builder.headerComponentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
         [builder.headerComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
         
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -204,7 +205,7 @@
     
     __weak __typeof(self) weakSelf = self;
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
         
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
@@ -213,7 +214,7 @@
         componentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
         [componentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
         
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -251,7 +252,7 @@
     
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const componentModelBuilderA = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"componentA"];
         componentModelBuilderA.componentNamespace = componentNamespace;
         componentModelBuilderA.componentName = componentNameA;
@@ -262,7 +263,7 @@
         componentModelBuilderB.componentName = componentNameB;
         componentModelBuilderB.mainImageDataBuilder.URL = imageURL;
         
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -301,7 +302,7 @@
     
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
         componentModelBuilder.componentNamespace = componentNamespace;
         componentModelBuilder.componentName = componentName;
@@ -313,7 +314,7 @@
         childComponentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
         [childComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
         
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -336,14 +337,14 @@
     NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
     __weak __typeof(self) weakSelf = self;
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
         
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
         componentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
         componentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
         
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -358,10 +359,10 @@
 {
     __weak __typeof(self) weakSelf = self;
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
         viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -385,13 +386,13 @@
     NSString * const initialViewModelIdentifier = @"initialViewModel";
     NSURL * const targetViewURI = [NSURL URLWithString:@"spotify:hub:target"];
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"id"];
         componentModelBuilder.componentName = weakSelf.componentIdentifier.componentName;
         componentModelBuilder.targetURL = targetViewURI;
         componentModelBuilder.targetInitialViewModelBuilder.viewIdentifier = initialViewModelIdentifier;
         
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -407,13 +408,13 @@
 {
     __weak __typeof(self) weakSelf = self;
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
         
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
         componentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
         
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -445,7 +446,7 @@
     
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
         componentModelBuilder.componentNamespace = componentNamespace;
         componentModelBuilder.componentName = componentName;
@@ -454,7 +455,7 @@
         childComponentModelBuilder.componentNamespace = componentNamespace;
         childComponentModelBuilder.componentName = childComponentName;
         
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -487,7 +488,7 @@
     
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
         componentModelBuilder.componentNamespace = componentNamespace;
         componentModelBuilder.componentName = componentName;
@@ -498,7 +499,7 @@
         childComponentModelBuilder.targetURL = childComponentTargetURL;
         childComponentModelBuilder.targetInitialViewModelBuilder.viewIdentifier = childComponentInitialViewModelIdentifier;
         
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -523,12 +524,12 @@
     
     __weak __typeof(self) weakSelf = self;
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
         componentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
         
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -555,9 +556,9 @@
     self.device.mockedSystemVersion = @"7.0.0";
     self.component.isViewObserver = YES;
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].title = @"A title";
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
@@ -573,9 +574,9 @@
     self.device.mockedSystemVersion = @"8.0.0";
     self.component.isViewObserver = YES;
     
-    self.contentOperation.contentLoadingBlock = ^HUBContentOperationMode(id<HUBViewModelBuilder> viewModelBuilder) {
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].title = @"title";
-        return HUBContentOperationModeSynchronous;
+        return YES;
     };
     
     [self simulateViewControllerLayoutCycle];

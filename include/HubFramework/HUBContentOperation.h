@@ -5,24 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#pragma mark - HUBContentOperationMode
-
-/**
- *  Enum describing various modes that a content operation can use
- *
- *  A content operation's current mode gives the Hub Framework a hint on whether it should wait for the content
- *  operation to finish asynchronously, or whether it can continue the content loading process once the content
- *  operation has been called.
- */
-typedef NS_ENUM(NSInteger, HUBContentOperationMode) {
-    /// The content operation is currently not in any mode (not active)
-    HUBContentOperationModeNone,
-    /// The content operation is currently loading synchronously
-    HUBContentOperationModeSynchronous,
-    /// The content operation is currently loading asynchronously
-    HUBContentOperationModeAsynchronous
-};
-
 #pragma mark - HUBContentOperationDelegate
 
 /**
@@ -39,11 +21,10 @@ typedef NS_ENUM(NSInteger, HUBContentOperationMode) {
  *
  *  @param operation The operation that finished
  *
- *  If a content operation loads content asynchronously (`HUBContentOperationModeAsynchronous`), it should call
- *  this method once it successfully loaded its content, and added it to the current `HUBViewModelBuilder`.
- *
- *  This method can also be used in case a content operation updated its content after it was initially loaded,
- *  and wants to trigger a rendering update.
+ *  All operations are required to either call this method, or the one that signals a failure, to notify the
+ *  framework of its outcome. Note that this method can only be called once per execution - multiple calls will
+ *  be ignored. To be able to update the operation's state - first call `-contentOperationRequiresRescheduling:`
+ *  to get the Hub Framework to reschedule and re-execute the operation.
  */
 - (void)contentOperationDidFinish:(id<HUBContentOperation>)operation;
 
@@ -60,6 +41,18 @@ typedef NS_ENUM(NSInteger, HUBContentOperationMode) {
  *  visual representation of it will be rendered instead of content.
  */
 - (void)contentOperation:(id<HUBContentOperation>)operation didFailWithError:(NSError *)error;
+
+/**
+ *  Notify the Hub Framework that a content operation requires rescheduling
+ *
+ *  @param operation The operation that requires rescheduling
+ *
+ *  Use this method to get an operation to be re-executed by the framework, to be able to react to changes in any
+ *  underlying data model or after a certain period of time has passed. When this is called, the framework will put
+ *  the operation - as well as any subsequent operations after it in the content loading chain - in its content loading
+ *  queue, and will execute it as soon as possible.
+ */
+- (void)contentOperationRequiresRescheduling:(id<HUBContentOperation>)operation;
 
 @end
 
@@ -98,61 +91,26 @@ typedef NS_ENUM(NSInteger, HUBContentOperationMode) {
 - (void)addInitialContentForViewURI:(NSURL *)viewURI
                  toViewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder;
 
-/**
- *  Load the content to be provided by this content operation
- *
- *  @param viewURI The URI of the view to load content for
- *  @param connectivityState The current connectivity state of the app. You can use the value of this parameter to
- *         determine whether your content operation should be used or not, in case it requires a certain state.
- *  @param viewModelBuilder The builder that should be used to add content to the view. In case the content operation
- *         does its work asynchronously, it may retain this object for future use.
- *  @param previousContentOperationError Any error encountered by a previous content operation in the list of the view's
- *         content operations. If this is non-`nil`, you can attempt to recover the error in this content operation, to
- *         provide any relevant to avoid displaying an error screen for the user. In case this conent operation can't
- *         recover the error, it should either return `HUBContentOperationModeNone` or propagate the error using the
- *         error delegate callback method.
- *
- *  @return An enum value describing what mode the content operation is currently in. If the content operation is finished
- *          at this point, it should return `HUBContentOperationModeSynchronous`. In case it needs more time to load, it
- *          should return `HUBContentOperationModeAsynchronous` and use its delegate to notify the Hub Framework when it
- *          finished loading. `HUBContentOperationModeNone` can also be returned to indicate that the content operation won't
- *          do any work at this time.
- *
- *  The Hub Framework will call this method on all content operations associated with a certain view when the view is about
- *  to appear on the screen. Content operations are always called in sequence, so the passed builder may contain conent
- *  already loaded by a previous content operation. Subsequent content operations are therefor able to modify content added
- *  by previous ones.
- */
-- (HUBContentOperationMode)loadContentForViewURI:(NSURL *)viewURI
-                              connectivityState:(HUBConnectivityState)connectivityState
-                               viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
-                   previousContentOperationError:(nullable NSError *)previousContentOperationError;
 
 /**
- *  Extend the current view model by loading content from a certain URL
+ *  Perform the operation for a view with a certain view URI
  *
- *  @param extensionURL The HTTP URL that should be used to load extension data
- *  @param viewURI The URI of the view to load extension content for
- *  @param viewModelBuilder The builder to use to add the extension content. It will contain the content already present
- *         in the view in question.
+ *  @param viewURI The URI of the view that the content operation should be performed for
+ *  @param connectivityState The current connectivity state, as resolved by `HUBConnectivityStateResolver`
+ *  @param viewModelBuilder The builder that can be used to add, change or remove content to/from the view
+ *  @param previousError Any error encountered by a previous content operation in the view's content loading chain.
+ *         If this is non-`nil`, you can attempt to recover the error in this content operation, to provide any relevant
+ *         content to avoid displaying an error screen for the user. In case this content operation can't recover the error,
+ *         it should propagate the error using the error delegate callback method.
  *
- *  @return An enum value describing what mode the content operation is currently in. If the content operation is finished
- *          at this point, it should return `HUBContentOperationModeSynchronous`. In case it needs more time to load, it
- *          should return `HUBContentOperationModeAsynchronous` and use its delegate to notify the Hub Framework when it
- *          finished loading. `HUBContentOperationModeNone` can also be returned to indicate that the content operation won't
- *          do any work at this time.
- *
- *  The Hub Framework will call this method on all content operations associated with a certain view when the view was
- *  scrolled to the bottom, and if the current view model contains an `extensionURL`. This can be used to implement paginated
- *  content. If possible, the content operation should use the URL provided as `extensionURL` to load content.
- *
- *  This method will only be called if the current connectivity state is `HUBConnectivityStateOnline`.
- *
- *  Any errors encountered during this process are not taken into account, as this is considered an optional operation.
+ *  The operation should perform any work to add, change or remove content to/from the view, and then call its delegate once
+ *  done (either using the success or failure method). If the operation cannot perform any work at this point, it still needs
+ *  to call the delegate to make the content loading chain progress.
  */
-- (HUBContentOperationMode)loadContentFromExtensionURL:(NSURL *)extensionURL
-                                           forViewURI:(NSURL *)viewURI
-                                     viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder;
+- (void)performForViewURI:(NSURL *)viewURI
+        connectivityState:(HUBConnectivityState)connectivityState
+         viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
+            previousError:(nullable NSError *)previousError;
 
 @end
 

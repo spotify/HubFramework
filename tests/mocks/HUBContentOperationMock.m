@@ -4,7 +4,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBContentOperationMock ()
 
+@property (nonatomic, assign, readwrite) NSUInteger performCount;
 @property (nonatomic, strong, readwrite, nullable) NSError *previousContentOperationError;
+@property (nonatomic, assign, readwrite) HUBConnectivityState connectivityState;
 
 @end
 
@@ -21,29 +23,26 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (HUBContentOperationMode)loadContentForViewURI:(NSURL *)viewURI
-                              connectivityState:(HUBConnectivityState)connectivityState
-                               viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
-                    previousContentOperationError:(nullable NSError *)previousContentOperationError
+- (void)performForViewURI:(NSURL *)viewURI
+        connectivityState:(HUBConnectivityState)connectivityState
+         viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
+            previousError:(nullable NSError *)previousError
 {
-    self.previousContentOperationError = previousContentOperationError;
+    self.connectivityState = connectivityState;
+    self.performCount++;
+    self.previousContentOperationError = previousError;
+    
+    id<HUBContentOperationDelegate> const delegate = self.delegate;
     
     if (self.contentLoadingBlock != nil) {
-        return self.contentLoadingBlock(viewModelBuilder);
+        BOOL const shouldCallDelegate = self.contentLoadingBlock(viewModelBuilder);
+        
+        if (shouldCallDelegate) {
+            [delegate contentOperationDidFinish:self];
+        }
+    } else {
+        [delegate contentOperationDidFinish:self];
     }
-    
-    return HUBContentOperationModeNone;
-}
-
-- (HUBContentOperationMode)loadContentFromExtensionURL:(NSURL *)extensionURL
-                                           forViewURI:(NSURL *)viewURI
-                                     viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
-{
-    if (self.extensionContentLoadingBlock != nil) {
-        return self.extensionContentLoadingBlock(viewModelBuilder);
-    }
-    
-    return HUBContentOperationModeNone;
 }
 
 @end

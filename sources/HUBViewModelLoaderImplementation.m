@@ -5,21 +5,24 @@
 #import "HUBJSONSchema.h"
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBViewModelImplementation.h"
+#import "HUBContentOperationWrapper.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewModelLoaderImplementation () <HUBContentOperationDelegate>
+@interface HUBViewModelLoaderImplementation () <HUBContentOperationWrapperDelegate>
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
 @property (nonatomic, copy, readonly) NSArray<id<HUBContentOperation>> *contentOperations;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBContentOperationWrapper *> *contentOperationWrappers;
+@property (nonatomic, strong, readonly) NSMutableArray<HUBContentOperationWrapper *> *contentOperationQueue;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
+@property (nonatomic, assign) HUBConnectivityState connectivityState;
 @property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable) id<HUBViewModel> cachedInitialViewModel;
 @property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *builder;
-@property (nonatomic, assign) NSUInteger currentlyLoadingContentOperationIndex;
 @property (nonatomic, strong, nullable) NSError *encounteredError;
 
 @end
@@ -53,16 +56,14 @@ NS_ASSUME_NONNULL_BEGIN
         _viewURI = [viewURI copy];
         _featureIdentifier = [featureIdentifier copy];
         _contentOperations = [contentOperations copy];
+        _contentOperationWrappers = [NSMutableDictionary new];
+        _contentOperationQueue = [NSMutableArray new];
         _JSONSchema = JSONSchema;
         _componentDefaults = componentDefaults;
         _connectivityStateResolver = connectivityStateResolver;
+        _connectivityState = [_connectivityStateResolver resolveConnectivityState];
         _iconImageResolver = iconImageResolver;
         _cachedInitialViewModel = initialViewModel;
-        _currentlyLoadingContentOperationIndex = NSNotFound;
-
-        for (id<HUBContentOperation> const operation in _contentOperations) {
-            operation.delegate = self;
-        }
     }
     
     return self;
@@ -92,32 +93,42 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadViewModel
 {
     self.builder = nil;
-    self.currentlyLoadingContentOperationIndex = 0;
-    [self loadNextContentOperationInQueue];
+    self.encounteredError = nil;
+    
+    [self.contentOperationWrappers removeAllObjects];
+    [self scheduleContentOperationsFromIndex:0];
 }
 
 #pragma mark - HUBContentOperationDelegate
 
-- (void)contentOperationDidFinish:(id<HUBContentOperation>)operation
+- (void)contentOperationWrapperDidFinish:(HUBContentOperationWrapper *)operationWrapper
 {
-    [self handleFinishedContentOperation:operation mode:HUBContentOperationModeAsynchronous error:nil];
+    self.encounteredError = nil;
+    [self performFirstContentOperationInQueue];
 }
 
-- (void)contentOperation:(id<HUBContentOperation>)operation didFailWithError:(NSError *)error
+- (void)contentOperationWrapper:(HUBContentOperationWrapper *)operationWrapper didFailWithError:(NSError *)error
 {
-    [self handleFinishedContentOperation:operation mode:HUBContentOperationModeAsynchronous error:error];
+    self.encounteredError = error;
+    [self performFirstContentOperationInQueue];
+}
+
+- (void)contentOperationWrapperRequiresRescheduling:(HUBContentOperationWrapper *)operationWrapper
+{
+    [self scheduleContentOperationsFromIndex:operationWrapper.index];
 }
 
 #pragma mark - Private utilities
 
-- (HUBViewModelBuilderImplementation *)getOrCreateBuilder
+- (HUBViewModelBuilderImplementation *)createOrCopyBuilder
 {
-    if (self.builder == nil) {
-        self.builder = [self createBuilder];
+    HUBViewModelBuilderImplementation * const existingBuilder = self.builder;
+    
+    if (existingBuilder != nil) {
+        return [existingBuilder copy];
     }
     
-    HUBViewModelBuilderImplementation * const builder = self.builder;
-    return builder;
+    return [self createBuilder];
 }
                                              
 - (HUBViewModelBuilderImplementation *)createBuilder
@@ -128,94 +139,69 @@ NS_ASSUME_NONNULL_BEGIN
                                                               iconImageResolver:self.iconImageResolver];
 }
 
-- (nullable id<HUBContentOperation>)currentlyLoadingContentOperation
-{
-    if (self.currentlyLoadingContentOperationIndex >= self.contentOperations.count) {
-        return nil;
+- (void)scheduleContentOperationsFromIndex:(NSUInteger)startIndex
+{    
+    NSParameterAssert(startIndex < self.contentOperations.count);
+    
+    NSMutableArray<HUBContentOperationWrapper *> * const operations = [NSMutableArray new];
+    NSUInteger operationIndex = startIndex;
+    
+    while (operationIndex < self.contentOperations.count) {
+        HUBContentOperationWrapper * const cachedOperationWrapper = self.contentOperationWrappers[@(operationIndex)];
+        
+        if (cachedOperationWrapper != nil) {
+            [operations addObject:cachedOperationWrapper];
+        } else {
+            id<HUBContentOperation> const operation = self.contentOperations[operationIndex];
+            HUBContentOperationWrapper * const operationWrapper = [[HUBContentOperationWrapper alloc] initWithContentOperation:operation index:operationIndex];
+            operationWrapper.delegate = self;
+            [operations addObject:operationWrapper];
+            self.contentOperationWrappers[@(operationIndex)] = operationWrapper;
+        }
+        
+        operationIndex++;
     }
     
-    return self.contentOperations[self.currentlyLoadingContentOperationIndex];
+    BOOL const shouldRestartQueue = (self.contentOperationQueue.count == 0);
+    [self.contentOperationQueue addObjectsFromArray:operations];
+    
+    if (shouldRestartQueue) {
+        [self performFirstContentOperationInQueue];
+    }
 }
 
-- (void)loadNextContentOperationInQueue
+- (void)performFirstContentOperationInQueue
 {
-    id<HUBContentOperation> const contentOperation = [self currentlyLoadingContentOperation];
-
-    if (contentOperation == nil) {
-        [self allContentOperationsDidFinish];
+    if (self.contentOperationQueue.count == 0) {
+        [self contentOperationQueueDidBecomeEmpty];
         return;
     }
     
-    HUBConnectivityState const connectivityState = [self.connectivityStateResolver resolveConnectivityState];
-    id<HUBViewModelBuilder> const builder = [self getOrCreateBuilder];
+    HUBContentOperationWrapper * const operation = self.contentOperationQueue[0];
+    [self.contentOperationQueue removeObjectAtIndex:0];
     
-    HUBContentOperationMode const contentOperationMode = [contentOperation loadContentForViewURI:self.viewURI
-                                                                                connectivityState:connectivityState
-                                                                                viewModelBuilder:builder
-                                                                   previousContentOperationError:self.encounteredError];
+    HUBViewModelBuilderImplementation * const builder = [self createOrCopyBuilder];
+    self.builder = builder;
     
-    switch (contentOperationMode) {
-        case HUBContentOperationModeNone:
-        case HUBContentOperationModeSynchronous:
-            if (self.currentlyLoadingContentOperation == contentOperation) {
-                // This means the operation hasn't been handled synchronously from within the loadMethod above
-                [self handleFinishedContentOperation:contentOperation mode:contentOperationMode error:nil];
-            }
-            break;
-        case HUBContentOperationModeAsynchronous:
-            break;
-    }
+    [operation performOperationForViewURI:self.viewURI
+                        connectivityState:self.connectivityState
+                         viewModelBuilder:builder
+                            previousError:self.encounteredError];
 }
 
-- (void)handleFinishedContentOperation:(id<HUBContentOperation>)operation mode:(HUBContentOperationMode)mode error:(nullable NSError *)error
-{
-    if (mode != HUBContentOperationModeNone) {
-        self.encounteredError = error;
-    }
-    
-    if ([self currentlyLoadingContentOperation] != operation) {
-        // Not the one we expected;
-
-        if ([self currentlyLoadingContentOperation] == nil && error != nil) {
-            // We finished processing the chain, so errors shouldn't retrigger reloads
-            return;
-        }
-
-        NSUInteger operationIndex = [self.contentOperations indexOfObject:operation];
-
-        if (operationIndex > self.currentlyLoadingContentOperationIndex) {
-            // Content operation in the future, this is probably an out of sync operation from a previous reload;
-            // Ignore it (we'll reload it anyway if needed)
-            return;
-        } else {
-            // Previous content operation, must reset the chain starting at this point
-            self.currentlyLoadingContentOperationIndex = operationIndex;
-        }
-    }
-    
-    self.currentlyLoadingContentOperationIndex++;
-    [self loadNextContentOperationInQueue];
-}
-
-- (void)allContentOperationsDidFinish
+- (void)contentOperationQueueDidBecomeEmpty
 {
     id<HUBViewModelLoaderDelegate> const delegate = self.delegate;
     
-    if (delegate == nil) {
+    if (self.encounteredError != nil) {
+        NSError * const error = self.encounteredError;
+        [delegate viewModelLoader:self didFailLoadingWithError:error];
+        self.encounteredError = nil;
         return;
     }
     
-    if (self.encounteredError == nil) {
-        if (self.builder == nil) {
-            return;
-        }
-        
-        id<HUBViewModel> const viewModel = [self.builder build];
-        [delegate viewModelLoader:self didLoadViewModel:viewModel];
-    } else {
-        NSError * const error = self.encounteredError;
-        [delegate viewModelLoader:self didFailLoadingWithError:error];
-    }
+    id<HUBViewModel> const viewModel = [self.builder build];
+    [delegate viewModelLoader:self didLoadViewModel:viewModel];
 }
 
 @end
