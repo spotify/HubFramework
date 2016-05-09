@@ -33,12 +33,14 @@
     
     [self.registry registerFeatureWithIdentifier:identifier
                                 viewURIPredicate:viewURIPredicate
+                                           title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
     XCTAssertThrows([self.registry registerFeatureWithIdentifier:identifier
                                                 viewURIPredicate:viewURIPredicate
+                                                           title:@"Title"
                                        contentOperationFactories:@[contentOperationFactory]
                                              contentReloadPolicy:nil
                                       customJSONSchemaIdentifier:nil]);
@@ -54,12 +56,14 @@
     
     [self.registry registerFeatureWithIdentifier:featureIdentifier
                                 viewURIPredicate:viewURIPredicate
+                                           title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:customJSONSchemaIdentifier];
     
     HUBFeatureRegistration * const registration = [self.registry featureRegistrationForViewURI:rootViewURI];
     XCTAssertEqualObjects(registration.featureIdentifier, featureIdentifier);
+    XCTAssertEqualObjects(registration.featureTitle, @"Title");
     XCTAssertEqual(registration.viewURIPredicate, viewURIPredicate);
     XCTAssertEqualObjects(registration.contentOperationFactories, @[contentOperationFactory]);
     XCTAssertEqualObjects(registration.customJSONSchemaIdentifier, customJSONSchemaIdentifier);
@@ -75,6 +79,7 @@
     
     [self.registry registerFeatureWithIdentifier:@"feature"
                                 viewURIPredicate:viewURIPredicate
+                                           title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
@@ -93,12 +98,14 @@
     
     [self.registry registerFeatureWithIdentifier:@"featureA"
                                 viewURIPredicate:viewURIPredicate
+                                           title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
     
     [self.registry registerFeatureWithIdentifier:@"featureB"
                                 viewURIPredicate:viewURIPredicate
+                                           title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
@@ -116,6 +123,7 @@
     
     [self.registry registerFeatureWithIdentifier:identifier
                                 viewURIPredicate:viewURIPredicate
+                                           title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];
@@ -125,6 +133,7 @@
     // The feature should now be free to be re-registered without triggering an assert
     [self.registry registerFeatureWithIdentifier:identifier
                                 viewURIPredicate:viewURIPredicate
+                                           title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil];

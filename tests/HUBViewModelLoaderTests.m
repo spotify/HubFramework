@@ -12,10 +12,12 @@
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBIconImageResolverMock.h"
+#import "HUBFeatureInfoImplementation.h"
 
 @interface HUBViewModelLoaderTests : XCTestCase <HUBViewModelLoaderDelegate>
 
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *loader;
+@property (nonatomic, strong) id<HUBFeatureInfo> featureInfo;
 @property (nonatomic, strong) HUBConnectivityStateResolverMock *connectivityStateResolver;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromSuccessDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromFailureDelegateMethod;
@@ -32,6 +34,8 @@
 - (void)setUp
 {
     [super setUp];
+    
+    self.featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
     self.connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     self.didLoadViewModelCount = 0;
     self.didLoadViewModelErrorCount = 0;
@@ -412,6 +416,20 @@
     XCTAssertEqual(contentOperationB.connectivityState, HUBConnectivityStateOnline);
 }
 
+- (void)testCorrectFeatureInfoSentToContentOperations
+{
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    
+    XCTAssertNotNil(contentOperation.featureInfo);
+    XCTAssertEqual(contentOperation.featureInfo, self.featureInfo);
+}
+
 #pragma mark - HUBViewModelLoaderDelegate
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel
@@ -443,7 +461,7 @@
                                                                                                   iconImageResolver:iconImageResolver];
     
     self.loader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
-                                                          featureIdentifier:@"feature"
+                                                                featureInfo:self.featureInfo
                                                           contentOperations:contentOperations
                                                                  JSONSchema:JSONSchema
                                                           componentDefaults:componentDefaults

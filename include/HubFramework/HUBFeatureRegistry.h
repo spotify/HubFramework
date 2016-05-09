@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureIdentifier The identifier of the feature. Used for logging & error messages. Must be unique across the app.
  *  @param viewURIPredicate The predicate that should be used to determine whether a given view URI is part of the feature.
  *         Use `HUBViewURIPredicate` to define a predicate that matches what type of view URIs your feature should handle.
+ *  @param title The title of the feature. This will be sent as part of the feature info to the content operations for views
+ *         created for the feature. Should be fully localized and ready to be presented in the user interface.
  *  @param contentOperationFactories The factories that should be used to create content operations for the feature's views.
  *         The order of the factories will determine the order in which the created content operations are called each time a
  *         view that is a part of the feature will load content. See `HUBContentOperationFactory` for more information.
@@ -34,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)registerFeatureWithIdentifier:(NSString *)featureIdentifier
                      viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
+                                title:(NSString *)title
             contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                   contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier;

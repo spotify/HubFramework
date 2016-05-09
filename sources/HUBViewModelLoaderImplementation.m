@@ -1,5 +1,6 @@
 #import "HUBViewModelLoaderImplementation.h"
 
+#import "HUBFeatureInfo.h"
 #import "HUBConnectivityStateResolver.h"
 #import "HUBContentOperation.h"
 #import "HUBJSONSchema.h"
@@ -12,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBViewModelLoaderImplementation () <HUBContentOperationWrapperDelegate>
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
-@property (nonatomic, copy, readonly) NSString *featureIdentifier;
+@property (nonatomic, strong, readonly) id<HUBFeatureInfo> featureInfo;
 @property (nonatomic, copy, readonly) NSArray<id<HUBContentOperation>> *contentOperations;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBContentOperationWrapper *> *contentOperationWrappers;
 @property (nonatomic, strong, readonly) NSMutableArray<HUBContentOperationWrapper *> *contentOperationQueue;
@@ -34,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Public API
 
 - (instancetype)initWithViewURI:(NSURL *)viewURI
-              featureIdentifier:(NSString *)featureIdentifier
+                    featureInfo:(id<HUBFeatureInfo>)featureInfo
               contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
               componentDefaults:(HUBComponentDefaults *)componentDefaults
@@ -43,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
                initialViewModel:(nullable id<HUBViewModel>)initialViewModel
 {
     NSParameterAssert(viewURI != nil);
-    NSParameterAssert(featureIdentifier != nil);
+    NSParameterAssert(featureInfo != nil);
     NSParameterAssert(contentOperations.count > 0);
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(componentDefaults != nil);
@@ -54,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self) {
         _viewURI = [viewURI copy];
-        _featureIdentifier = [featureIdentifier copy];
+        _featureInfo = featureInfo;
         _contentOperations = [contentOperations copy];
         _contentOperationWrappers = [NSMutableDictionary new];
         _contentOperationQueue = [NSMutableArray new];
@@ -133,7 +134,7 @@ NS_ASSUME_NONNULL_BEGIN
                                              
 - (HUBViewModelBuilderImplementation *)createBuilder
 {
-    return [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
+    return [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureInfo.identifier
                                                                      JSONSchema:self.JSONSchema
                                                               componentDefaults:self.componentDefaults
                                                               iconImageResolver:self.iconImageResolver];
@@ -184,6 +185,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.builder = builder;
     
     [operation performOperationForViewURI:self.viewURI
+                              featureInfo:self.featureInfo
                         connectivityState:self.connectivityState
                          viewModelBuilder:builder
                             previousError:self.encounteredError];

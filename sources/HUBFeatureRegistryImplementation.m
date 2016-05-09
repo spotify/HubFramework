@@ -2,6 +2,7 @@
 
 #import "HUBFeatureRegistration.h"
 #import "HUBViewURIPredicate.h"
+#import "HUBFeatureInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -45,12 +46,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)registerFeatureWithIdentifier:(NSString *)featureIdentifier
                      viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
+                                title:(NSString *)title
             contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                   contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(viewURIPredicate != nil);
+    NSParameterAssert(title != nil);
     
     NSAssert(self.registrationsByIdentifier[featureIdentifier] == nil,
              @"Attempted to register a Hub Framework feature for an identifier that is already registered: %@",
@@ -61,6 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
              featureIdentifier);
     
     HUBFeatureRegistration * const registration = [[HUBFeatureRegistration alloc] initWithFeatureIdentifier:featureIdentifier
+                                                                                                      title:title
                                                                                            viewURIPredicate:viewURIPredicate
                                                                                   contentOperationFactories:contentOperationFactories
                                                                                         contentReloadPolicy:contentReloadPolicy

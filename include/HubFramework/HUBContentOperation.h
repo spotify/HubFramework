@@ -2,6 +2,7 @@
 
 @protocol HUBContentOperation;
 @protocol HUBViewModelBuilder;
+@protocol HUBFeatureInfo;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -95,7 +96,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Perform the operation for a view with a certain view URI
  *
- *  @param viewURI The URI of the view that the content operation should be performed for
+ *  @param viewURI The URI of the view that the content operation is being used in
+ *  @param featureInfo An object containing information about the feature that the operation is being used in
  *  @param connectivityState The current connectivity state, as resolved by `HUBConnectivityStateResolver`
  *  @param viewModelBuilder The builder that can be used to add, change or remove content to/from the view
  *  @param previousError Any error encountered by a previous content operation in the view's content loading chain.
@@ -108,6 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  to call the delegate to make the content loading chain progress.
  */
 - (void)performForViewURI:(NSURL *)viewURI
+              featureInfo:(id<HUBFeatureInfo>)featureInfo
         connectivityState:(HUBConnectivityState)connectivityState
          viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
             previousError:(nullable NSError *)previousError;

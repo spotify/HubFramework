@@ -7,6 +7,7 @@
 #import "HUBJSONSchemaRegistryImplementation.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBComponentDefaults.h"
+#import "HUBFeatureInfoImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -48,6 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBViewModelLoader>)createViewModelLoaderForViewURI:(NSURL *)viewURI featureRegistration:(HUBFeatureRegistration *)featureRegistration
 {
+    id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureRegistration.featureIdentifier
+                                                                                              title:featureRegistration.featureTitle];
+    
     NSMutableArray<id<HUBContentOperation>> * const allContentOperations = [NSMutableArray new];
     
     for (id<HUBContentOperationFactory> const factory in featureRegistration.contentOperationFactories) {
@@ -64,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBViewModel> const initialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:viewURI];
     
     return [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
-                                                   featureIdentifier:featureRegistration.featureIdentifier
+                                                         featureInfo:featureInfo
                                                    contentOperations:allContentOperations
                                                           JSONSchema:JSONSchema
                                                    componentDefaults:self.componentDefaults

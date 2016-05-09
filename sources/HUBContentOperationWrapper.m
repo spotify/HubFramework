@@ -29,6 +29,7 @@
 #pragma mark - API
 
 - (void)performOperationForViewURI:(NSURL *)viewURI
+                       featureInfo:(id<HUBFeatureInfo>)featureInfo
                  connectivityState:(HUBConnectivityState)connectivityState
                   viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
                      previousError:(nullable NSError *)previousError
@@ -36,6 +37,7 @@
     self.isExecuting = YES;
     
     [self.contentOperation performForViewURI:viewURI
+                                 featureInfo:featureInfo
                            connectivityState:connectivityState
                             viewModelBuilder:viewModelBuilder
                                previousError:previousError];

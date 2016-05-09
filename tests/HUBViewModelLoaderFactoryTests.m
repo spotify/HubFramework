@@ -54,6 +54,7 @@
     
     [self.featureRegistry registerFeatureWithIdentifier:@"feature"
                                        viewURIPredicate:viewURIPredicate
+                                                  title:@"Title"
                               contentOperationFactories:@[contentOperationFactory]
                                     contentReloadPolicy:nil
                              customJSONSchemaIdentifier:nil];
@@ -77,6 +78,7 @@
     
     [self.featureRegistry registerFeatureWithIdentifier:@"feature"
                                        viewURIPredicate:viewURIPredicate
+                                                  title:@"Title"
                               contentOperationFactories:@[contentOperationFactory]
                                     contentReloadPolicy:nil
                              customJSONSchemaIdentifier:nil];
