@@ -24,6 +24,7 @@
 #import "HUBIconImageResolverMock.h"
 #import "HUBDeviceMock.h"
 #import "HUBUtilities.h"
+#import "HUBFeatureInfoImplementation.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -67,11 +68,13 @@
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentDefaults.componentNamespace];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBFeatureInfoImplementation * const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
+    
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults iconImageResolver:iconImageResolver];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
     self.viewModelLoader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
-                                                                   featureIdentifier:@"feature"
+                                                                         featureInfo:featureInfo
                                                                    contentOperations:@[self.contentOperation]
                                                                           JSONSchema:JSONSchema
                                                                    componentDefaults:componentDefaults

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8A0E4B7A1CB562140019DE71 /* HUBViewURIPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E4B791CB562140019DE71 /* HUBViewURIPredicate.m */; };
 		8A0E4B7C1CB568D50019DE71 /* HUBViewURIPredicateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E4B7B1CB568D50019DE71 /* HUBViewURIPredicateTests.m */; };
+		8A1132C11CDA4BA60053AA26 /* HUBFeatureInfoImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1132C01CDA4BA60053AA26 /* HUBFeatureInfoImplementation.m */; };
 		8A16274E1CC90B8F005CC3FB /* HUBCollectionViewCellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A16274D1CC90B8F005CC3FB /* HUBCollectionViewCellTests.m */; };
 		8A2061151CCA1C17008C34E3 /* HUBDeviceMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2061141CCA1C17008C34E3 /* HUBDeviceMock.m */; };
 		8A3D83941CA3FC3500662B73 /* HUBJSONSchemaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D83931CA3FC3500662B73 /* HUBJSONSchemaTests.m */; };
@@ -139,6 +140,9 @@
 		8A0E4B7B1CB568D50019DE71 /* HUBViewURIPredicateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBViewURIPredicateTests.m; sourceTree = "<group>"; };
 		8A0E4B801CB69CD80019DE71 /* HUBSerializable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBSerializable.h; sourceTree = "<group>"; };
 		8A0E4B821CB69DDF0019DE71 /* HUBJSONKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBJSONKeys.h; sourceTree = "<group>"; };
+		8A1132BE1CDA477E0053AA26 /* HUBFeatureInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBFeatureInfo.h; sourceTree = "<group>"; };
+		8A1132BF1CDA4BA60053AA26 /* HUBFeatureInfoImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBFeatureInfoImplementation.h; sourceTree = "<group>"; };
+		8A1132C01CDA4BA60053AA26 /* HUBFeatureInfoImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBFeatureInfoImplementation.m; sourceTree = "<group>"; };
 		8A1585941C8EFF1E0008FDF9 /* HUBComponentWithImageHandling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentWithImageHandling.h; sourceTree = "<group>"; };
 		8A1585951C8EFF550008FDF9 /* HUBComponentContentOffsetObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentContentOffsetObserver.h; sourceTree = "<group>"; };
 		8A1585961C8F003C0008FDF9 /* HUBComponentWithChildren.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentWithChildren.h; sourceTree = "<group>"; };
@@ -531,6 +535,7 @@
 			isa = PBXGroup;
 			children = (
 				8AA97C091C60B9FE0078F19D /* HUBFeatureRegistry.h */,
+				8A1132BE1CDA477E0053AA26 /* HUBFeatureInfo.h */,
 			);
 			name = Feature;
 			sourceTree = "<group>";
@@ -542,6 +547,8 @@
 				8AA97C0C1C60BA4E0078F19D /* HUBFeatureRegistryImplementation.m */,
 				8AA97C121C60BD6D0078F19D /* HUBFeatureRegistration.h */,
 				8AA97C131C60BD6D0078F19D /* HUBFeatureRegistration.m */,
+				8A1132BF1CDA4BA60053AA26 /* HUBFeatureInfoImplementation.h */,
+				8A1132C01CDA4BA60053AA26 /* HUBFeatureInfoImplementation.m */,
 			);
 			name = Feature;
 			sourceTree = "<group>";
@@ -774,6 +781,7 @@
 				8AA29C8C1C4FAD6700E972B7 /* HUBComponentModelBuilderImplementation.m in Sources */,
 				8AFDCAC51C8DD5920068DECC /* HUBInitialViewModelRegistry.m in Sources */,
 				8A0E4B7A1CB562140019DE71 /* HUBViewURIPredicate.m in Sources */,
+				8A1132C11CDA4BA60053AA26 /* HUBFeatureInfoImplementation.m in Sources */,
 				8AD009FE1CC64EF80012A9AF /* HUBContainerView.m in Sources */,
 				8AD064701C68EDA20086C081 /* HUBViewControllerFactoryImplementation.m in Sources */,
 				8ACB2A7A1C6A2F7C000741D7 /* HUBComponentIdentifier.m in Sources */,

@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The identifier of the feature that this registration is for
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
 
+/// The localized title of the feature that this registration is for
+@property (nonatomic, copy, readonly) NSString *featureTitle;
+
 /// The view URI predicate that the feature will use
 @property (nonatomic, strong, readonly) HUBViewURIPredicate *viewURIPredicate;
 
@@ -28,12 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its possible values
  *
  *  @param featureIdentifier The identifier of the feature
+ *  @param featureTitle The localized title of the feature
  *  @param viewURIPredicate The view URI predicate that the feature will use
  *  @param contentOperationFactories The content operation factories that the feature will use
  *  @param contentReloadPolicy Any custom content reload policy that the feature will use
  *  @param customJSONSchemaIdentifier The identifier of any custom JSON schema the feature will use
  */
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
+                                    title:(NSString *)featureTitle
                          viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
                 contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                       contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy

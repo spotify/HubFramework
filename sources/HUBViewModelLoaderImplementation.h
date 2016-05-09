@@ -1,6 +1,7 @@
 #import "HUBViewModelLoader.h"
 #import "HUBHeaderMacros.h"
 
+@protocol HUBFeatureInfo;
 @protocol HUBJSONSchema;
 @protocol HUBContentOperation;
 @protocol HUBConnectivityStateResolver;
@@ -16,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its required dependencies & values
  *
  *  @param viewURI The URI of the view that this loader will load view models for
- *  @param featureIdentifier The identifier of the feature that this loader will belong to
+ *  @param featureInfo An object containing information about the feature that the loader will be used for
  *  @param contentOperations The content operations that will create content for loaded view models
  *  @param JSONSchema The JSON schema that the loader should use for parsing
  *  @param componentDefaults The default values to use for component model builders created when loading view models
@@ -25,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param initialViewModel Any pre-registered view model that the loader should include
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
-              featureIdentifier:(NSString *)featureIdentifier
+                    featureInfo:(id<HUBFeatureInfo>)featureInfo
               contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
               componentDefaults:(HUBComponentDefaults *)componentDefaults

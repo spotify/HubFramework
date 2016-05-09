@@ -14,6 +14,7 @@
 
 // Feature
 #import "HUBFeatureRegistry.h"
+#import "HUBFeatureInfo.h"
 
 // Content
 #import "HUBContentOperationFactory.h"

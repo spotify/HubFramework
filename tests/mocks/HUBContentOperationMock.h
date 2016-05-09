@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The number of times this operation has been performed
 @property (nonatomic, assign, readonly) NSUInteger performCount;
 
+/// The feature info that was most recently sent to this operation
+@property (nonatomic, strong, readonly) id<HUBFeatureInfo> featureInfo;
+
 /// The connectivity state that was most recently sent to this operation
 @property (nonatomic, assign, readonly) HUBConnectivityState connectivityState;
 
