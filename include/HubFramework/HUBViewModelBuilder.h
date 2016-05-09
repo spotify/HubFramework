@@ -76,6 +76,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBComponentModelBuilder> headerComponentModelBuilder;
 
 /**
+ *  The builder to use to build a model for any overlay component for the view
+ *
+ *  Use this builder to setup any component that will be rendered as an overlay for the view, on top of the rest of the
+ *  view's content. This can be used to display loading indicators, popups, or other overlay content. This builder gets
+ *  lazily created the first time you access this property. To remove it, use `-removeOverlayComponentModelBuilder`.
+ *
+ *  In case no identifier is explicity defined for the returned builder, it will use "overlay" as the default.
+ */
+@property (nonatomic, strong, readonly) id<HUBComponentModelBuilder> overlayComponentModelBuilder;
+
+/**
  *  Any HTTP URL from which data can be downloaded to extend the view model
  *
  *  You can use this property to implement pagination for your view's content. When the user has scrolled to the bottom
@@ -136,6 +147,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param identifier The identifier of the component model builder to remove
  */
 - (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier;
+
+/**
+ *  Remove any previously created overlay component model builder
+ */
+- (void)removeOverlayComponentModelBuilder;
 
 /**
  *  Remove all component model builders that this builder contains

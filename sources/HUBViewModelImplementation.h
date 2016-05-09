@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param navigationBarTitle The title that the view should have in the navigation bar
  *  @param headerComponentModel The model for any component that make up the view's header
  *  @param bodyComponentModels The models for the components that make up the view's body
+ *  @param overlayComponentModel The model for any component that will be rendered as an overlay
  *  @param extensionURL Any HTTP URL from which data can be downloaded to extend this view model
  *  @param customData Any custom data that should be associated with the view
  */
@@ -24,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
                 navigationBarTitle:(nullable NSString *)navigationBarTitle
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
+             overlayComponentModel:(nullable id<HUBComponentModel>)overlayComponentModel
                       extensionURL:(nullable NSURL *)extensionURL
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData HUB_DESIGNATED_INITIALIZER;
 

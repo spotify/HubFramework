@@ -67,6 +67,7 @@
     XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.modelIdentifier, @"header");
     XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.componentNamespace, self.componentDefaults.componentNamespace);
     XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.componentName, self.componentDefaults.componentName);
+    XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.componentCategory, self.componentDefaults.componentCategory);
 }
 
 - (void)testRemovingHeaderComponentBuilder
@@ -152,6 +153,22 @@
     XCTAssertEqual(model.bodyComponentModels[0].index, (NSUInteger)0);
 }
 
+- (void)testOverlayComponentModelBuilder
+{
+    XCTAssertEqualObjects(self.builder.overlayComponentModelBuilder.modelIdentifier, @"overlay");
+    XCTAssertEqualObjects(self.builder.overlayComponentModelBuilder.componentNamespace, self.componentDefaults.componentNamespace);
+    XCTAssertEqualObjects(self.builder.overlayComponentModelBuilder.componentName, self.componentDefaults.componentName);
+    XCTAssertEqualObjects(self.builder.overlayComponentModelBuilder.componentCategory, self.componentDefaults.componentCategory);
+}
+
+- (void)testRemovingOverlayComponentModelBuilder
+{
+    id<HUBComponentModelBuilder> const builder = self.builder.overlayComponentModelBuilder;
+    builder.title = @"title";
+    [self.builder removeOverlayComponentModelBuilder];
+    XCTAssertNil(self.builder.overlayComponentModelBuilder.title);
+}
+
 - (void)testFeatureIdentifierMatchingComponentTargetInitialViewModelFeatureIdentifier
 {
     XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.targetInitialViewModelBuilder.featureIdentifier, self.builder.featureIdentifier);
@@ -167,6 +184,7 @@
     HUBComponentIdentifier * const headerComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"header" name:@"component"];
     NSString * const bodyComponentModelIdentifier = @"body model";
     HUBComponentIdentifier * const bodyComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"body" name:@"component"];
+    HUBComponentIdentifier * const overlayComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"overlay" name:@"component"];
     NSURL * const extensionURL = [NSURL URLWithString:@"https://spotify.com/extension"];
     NSDictionary * const customData = @{@"custom": @"data"};
     
@@ -191,6 +209,13 @@
                 }
             }
         ],
+        @"overlay": @{
+            @"id": @"overlay component",
+            @"component": @{
+                @"id": overlayComponentIdentifier.identifierString,
+                @"category": @"overlayCategory"
+            }
+        },
         @"extension": extensionURL.absoluteString,
         @"custom": customData
     };
@@ -208,6 +233,8 @@
     XCTAssertEqualObjects(model.headerComponentModel.componentCategory, @"headerCategory");
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, bodyComponentIdentifier);
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentCategory, @"bodyCategory");
+    XCTAssertEqualObjects(model.overlayComponentModel.componentIdentifier, overlayComponentIdentifier);
+    XCTAssertEqualObjects(model.overlayComponentModel.componentCategory, @"overlayCategory");
     XCTAssertEqualObjects(model.extensionURL, extensionURL);
     XCTAssertEqualObjects(model.customData, customData);
     

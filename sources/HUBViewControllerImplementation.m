@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponents;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *headerComponentWrapper;
+@property (nonatomic, strong, nullable) HUBComponentWrapper *overlayComponentWrapper;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic) BOOL viewModelIsInitial;
@@ -152,6 +153,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.collectionView.frame = self.view.bounds;
     
     [self configureHeaderComponent];
+    [self configureOverlayComponent];
     
     HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
                                                                               componentRegistry:self.componentRegistry
@@ -381,60 +383,86 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    BOOL shouldReuseCurrentComponent = NO;
+    self.headerComponentWrapper = [self configureHeaderOrOverlayComponentWrapperWithModel:componentModel
+                                                                 previousComponentWrapper:self.headerComponentWrapper];
     
-    if (self.headerComponentWrapper != nil) {
-        if (![self.headerComponentWrapper.componentIdentifier isEqual:componentModel.componentIdentifier]) {
-            [self removeHeaderComponent];
-        } else {
-            shouldReuseCurrentComponent = YES;
-        }
-    }
-    
-    if (!shouldReuseCurrentComponent) {
-        id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
-        
-        HUBComponentWrapper * const headerComponentWrapper = [[HUBComponentWrapper alloc] initWithComponent:component
-                                                                                        componentIdentifier:componentModel.componentIdentifier];
-        
-        headerComponentWrapper.delegate = self;
-        self.headerComponentWrapper = headerComponentWrapper;
-        self.componentWrappersByIdentifier[headerComponentWrapper.identifier] = headerComponentWrapper;
-        
-        [component loadView];
-    } else {
-        [self.headerComponentWrapper.component prepareViewForReuse];
-    }
-    
-    HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
-    
-    CGSize const headerSize = [headerComponentWrapper.component preferredViewSizeForDisplayingModel:componentModel containerViewSize:self.view.frame.size];
-    UIView * const headerView = self.headerComponentWrapper.component.view;
-    headerView.frame = CGRectMake(0, 0, headerSize.width, headerSize.height);
-    
-    [headerComponentWrapper.component configureViewWithModel:componentModel];
-    headerComponentWrapper.currentModel = componentModel;
-    
-    [self loadImagesForComponent:headerComponentWrapper.component
-                           model:componentModel
-               wrapperIdentifier:headerComponentWrapper.identifier
-                      childIndex:0];
-    
-    if (!shouldReuseCurrentComponent) {
-        [self.view addSubview:headerView];
-    }
-    
-    if ([headerComponentWrapper.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
-        [self.contentOffsetObservingComponents addObject:(id<HUBComponentContentOffsetObserver>)headerComponentWrapper.component];
-    }
-    
-    [self adjustCollectionViewContentInsetWithTopValue:headerSize.height];
+    CGFloat const headerViewHeight = CGRectGetHeight(self.headerComponentWrapper.component.view.frame);
+    [self adjustCollectionViewContentInsetWithTopValue:headerViewHeight];
 }
 
 - (void)removeHeaderComponent
 {
     [self.headerComponentWrapper.component.view removeFromSuperview];
     self.headerComponentWrapper = nil;
+}
+
+- (void)configureOverlayComponent
+{
+    id<HUBComponentModel> const componentModel = self.viewModel.overlayComponentModel;
+    
+    if (componentModel == nil) {
+        [self removeOverlayComponent];
+        return;
+    }
+    
+    self.overlayComponentWrapper = [self configureHeaderOrOverlayComponentWrapperWithModel:componentModel
+                                                                  previousComponentWrapper:self.overlayComponentWrapper];
+    
+    self.overlayComponentWrapper.component.view.center = self.view.center;
+}
+
+- (void)removeOverlayComponent
+{
+    [self.overlayComponentWrapper.component.view removeFromSuperview];
+    self.overlayComponentWrapper = nil;
+}
+
+- (nullable HUBComponentWrapper *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
+                                                           previousComponentWrapper:(nullable HUBComponentWrapper *)previousComponentWrapper
+{
+    BOOL const shouldReuseCurrentComponent = [previousComponentWrapper.componentIdentifier isEqual:componentModel.componentIdentifier];
+    HUBComponentWrapper *componentWrapper;
+    
+    if (shouldReuseCurrentComponent) {
+        [previousComponentWrapper.component prepareViewForReuse];
+        componentWrapper = previousComponentWrapper;
+    } else {
+        NSUUID * const previousComponentWrapperIdentifier = previousComponentWrapper.identifier;
+        
+        if (previousComponentWrapperIdentifier != nil) {
+            self.componentWrappersByIdentifier[previousComponentWrapperIdentifier] = nil;
+        }
+        
+        id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
+        
+        componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:component
+                                                      componentIdentifier:componentModel.componentIdentifier];
+        
+        componentWrapper.delegate = self;
+        self.componentWrappersByIdentifier[componentWrapper.identifier] = componentWrapper;
+    }
+    
+    CGSize const componentViewSize = [componentWrapper.component preferredViewSizeForDisplayingModel:componentModel containerViewSize:self.view.frame.size];
+    UIView * const componentView = HUBComponentLoadViewIfNeeded(componentWrapper.component);
+    componentView.frame = CGRectMake(0, 0, componentViewSize.width, componentViewSize.height);
+    
+    [componentWrapper.component configureViewWithModel:componentModel];
+    componentWrapper.currentModel = componentModel;
+    
+    [self loadImagesForComponent:componentWrapper.component
+                           model:componentModel
+               wrapperIdentifier:componentWrapper.identifier
+                      childIndex:0];
+    
+    if (!shouldReuseCurrentComponent) {
+        [self.view addSubview:componentView];
+    }
+    
+    if ([componentWrapper.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
+        [self.contentOffsetObservingComponents addObject:(id<HUBComponentContentOffsetObserver>)componentWrapper.component];
+    }
+    
+    return componentWrapper;
 }
 
 - (void)adjustCollectionViewContentInsetWithTopValue:(CGFloat)topContentInset
