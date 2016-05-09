@@ -380,6 +380,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                              mainImageDataBuilder:mainImageDataBuilder
                                                                                                        backgroundImageDataBuilder:backgroundImageDataBuilder];
     
+    copy.componentNamespace = self.componentNamespace;
+    copy.componentName = self.componentName;
+    copy.componentCategory = self.componentCategory;
     copy.preferredIndex = self.preferredIndex;
     copy.title = self.title;
     copy.subtitle = self.subtitle;

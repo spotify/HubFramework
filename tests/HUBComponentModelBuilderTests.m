@@ -433,8 +433,9 @@
 {
     NSDate * const currentDate = [NSDate date];
     
-    self.builder.componentNamespace = @"namespace";
-    self.builder.componentName = @"name";
+    self.builder.componentNamespace = @"namespace for copying";
+    self.builder.componentName = @"name for copying";
+    self.builder.componentCategory = @"category for copying";
     self.builder.preferredIndex = @(33);
     self.builder.title = @"title";
     self.builder.subtitle = @"subtitle";
@@ -453,8 +454,9 @@
     
     HUBComponentModelBuilderImplementation * const builderCopy = [self.builder copy];
     
-    XCTAssertEqualObjects(builderCopy.componentNamespace, @"namespace");
-    XCTAssertEqualObjects(builderCopy.componentName, @"name");
+    XCTAssertEqualObjects(builderCopy.componentNamespace, @"namespace for copying");
+    XCTAssertEqualObjects(builderCopy.componentName, @"name for copying");
+    XCTAssertEqualObjects(builderCopy.componentCategory, @"category for copying");
     XCTAssertEqualObjects(builderCopy.preferredIndex, @(33));
     XCTAssertEqualObjects(builderCopy.title, @"title");
     XCTAssertEqualObjects(builderCopy.subtitle, @"subtitle");
