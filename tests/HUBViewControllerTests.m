@@ -232,6 +232,36 @@
     }];
 }
 
+- (void)testOverlayComponentImageLoading
+{
+    NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
+    NSURL * const backgroundImageURL = [NSURL URLWithString:@"https://image.background"];
+    NSURL * const customImageURL = [NSURL URLWithString:@"https://image.custom"];
+    NSString * const customImageIdentifier = @"custom";
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        __typeof(self) strongSelf = weakSelf;
+        
+        builder.overlayComponentModelBuilder.componentNamespace = strongSelf.componentIdentifier.componentNamespace;
+        builder.overlayComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        builder.overlayComponentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
+        builder.overlayComponentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
+        [builder.overlayComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
+        
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    [self performAsynchronousTestWithBlock:^{
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
+        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
+    }];
+}
+
 - (void)testMissingImageLoadingContextHandled
 {
     NSURL * const imageURL = [NSURL URLWithString:@"http://image.com"];
@@ -365,6 +395,30 @@
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
         viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)0);
+    
+    self.contentReloadPolicy.shouldReload = YES;
+    
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    
+    XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
+}
+
+- (void)testOverlayComponentReuse
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        __typeof(self) strongSelf = weakSelf;
+        viewModelBuilder.overlayComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
         return YES;
     };
     

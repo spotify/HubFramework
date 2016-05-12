@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize navigationBarTitle = _navigationBarTitle;
 @synthesize headerComponentModel = _headerComponentModel;
 @synthesize bodyComponentModels = _bodyComponentModels;
+@synthesize overlayComponentModel = _overlayComponentModel;
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
 @synthesize buildDate = _buildDate;
@@ -23,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
                 navigationBarTitle:(nullable NSString *)navigationBarTitle
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
+             overlayComponentModel:(nullable id<HUBComponentModel>)overlayComponentModel
                       extensionURL:(nullable NSURL *)extensionURL
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
 {
@@ -35,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
         _navigationBarTitle = [navigationBarTitle copy];
         _headerComponentModel = headerComponentModel;
         _bodyComponentModels = bodyComponentModels;
+        _overlayComponentModel = overlayComponentModel;
         _extensionURL = [extensionURL copy];
         _customData = customData;
         _buildDate = [NSDate date];
@@ -54,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
     serialization[HUBJSONKeyTitle] = self.navigationBarTitle;
     serialization[HUBJSONKeyHeader] = [self.headerComponentModel serialize];
     serialization[HUBJSONKeyBody] = [self serializedBodyComponentModels];
+    serialization[HUBJSONKeyOverlay] = [self.overlayComponentModel serialize];
     serialization[HUBJSONKeyExtension] = self.extensionURL.absoluteString;
     serialization[HUBJSONKeyCustom] = self.customData;
     

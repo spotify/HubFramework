@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable) HUBComponentModelBuilderImplementation *headerComponentModelBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *bodyComponentModelBuilders;
+@property (nonatomic, strong, nullable) HUBComponentModelBuilderImplementation *overlayComponentModelBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableArray<NSString *> *bodyComponentIdentifierOrder;
 
 @end
@@ -108,6 +109,16 @@ NS_ASSUME_NONNULL_BEGIN
     [self.bodyComponentIdentifierOrder removeObject:identifier];
 }
 
+- (id<HUBComponentModelBuilder>)overlayComponentModelBuilder
+{
+    return [self getOrCreateBuilderForOverlayComponentModelWithIdentifier:nil];
+}
+
+- (void)removeOverlayComponentModelBuilder
+{
+    self.overlayComponentModelBuilderImplementation = nil;
+}
+
 - (void)removeAllComponentModelBuilders
 {
     [self removeHeaderComponentModelBuilder];
@@ -132,10 +143,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HUBViewModelImplementation *)build
 {
-    HUBComponentModelImplementation *headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0];
+    HUBComponentModelImplementation * const headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0];
     
     NSArray * const bodyComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.bodyComponentModelBuilders
                                                                                                     identifierOrder:self.bodyComponentIdentifierOrder];
+    
+    HUBComponentModelImplementation * const overlayComponentModel = [self.overlayComponentModelBuilderImplementation buildForIndex:0];
     
     return [[HUBViewModelImplementation alloc] initWithIdentifier:self.viewIdentifier
                                                 featureIdentifier:self.featureIdentifier
@@ -143,6 +156,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                navigationBarTitle:self.navigationBarTitle
                                              headerComponentModel:headerComponentModel
                                               bodyComponentModels:[bodyComponentModels copy]
+                                            overlayComponentModel:overlayComponentModel
                                                      extensionURL:self.extensionURL
                                                        customData:[self.customData copy]];
 }
@@ -209,6 +223,14 @@ NS_ASSUME_NONNULL_BEGIN
     
     for (NSDictionary * const componentModelDictionary in bodyComponentModelDictionaries) {
         [self addDataFromBodyComponentModelJSONDictionary:componentModelDictionary];
+    }
+    
+    NSDictionary * const overlayComponentModelDictionary = [viewModelSchema.overlayComponentModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (overlayComponentModelDictionary != nil) {
+        NSString * const overlayComponentModelIdentifier = [self.JSONSchema.componentModelSchema.identifierPath stringFromJSONDictionary:overlayComponentModelDictionary];
+        HUBComponentModelBuilderImplementation * const overlayComponentModelBuilder = [self getOrCreateBuilderForOverlayComponentModelWithIdentifier:overlayComponentModelIdentifier];
+        [overlayComponentModelBuilder addDataFromJSONDictionary:overlayComponentModelDictionary];
     }
 }
 
@@ -299,6 +321,30 @@ NS_ASSUME_NONNULL_BEGIN
     [self.bodyComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
     [self.bodyComponentIdentifierOrder addObject:newBuilder.modelIdentifier];
     
+    return newBuilder;
+}
+
+- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForOverlayComponentModelWithIdentifier:(nullable NSString *)identifier
+{
+    HUBComponentModelBuilderImplementation * const existingBuilder = self.overlayComponentModelBuilderImplementation;
+    
+    if (existingBuilder != nil) {
+        return existingBuilder;
+    }
+    
+    if (identifier == nil) {
+        identifier = @"overlay";
+    }
+    
+    HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
+                                                                                                                      featureIdentifier:self.featureIdentifier
+                                                                                                                             JSONSchema:self.JSONSchema
+                                                                                                                      componentDefaults:self.componentDefaults
+                                                                                                                      iconImageResolver:self.iconImageResolver
+                                                                                                                   mainImageDataBuilder:nil
+                                                                                                             backgroundImageDataBuilder:nil];
+    
+    self.overlayComponentModelBuilderImplementation = newBuilder;
     return newBuilder;
 }
 

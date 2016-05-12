@@ -11,6 +11,7 @@
 @synthesize navigationBarTitlePath = _navigationBarTitlePath;
 @synthesize headerComponentModelDictionaryPath = _headerComponentModelDictionaryPath;
 @synthesize bodyComponentModelDictionariesPath = _bodyComponentModelDictionariesPath;
+@synthesize overlayComponentModelDictionaryPath = _overlayComponentModelDictionaryPath;
 @synthesize extensionURLPath = _extensionURLPath;
 @synthesize customDataPath = _customDataPath;
 
@@ -24,6 +25,7 @@
                  navigationBarTitlePath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyTitle] stringPath]
      headerComponentModelDictionaryPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyHeader] dictionaryPath]
      bodyComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyBody] forEach] dictionaryPath]
+    overlayComponentModelDictionaryPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyOverlay] dictionaryPath]
                        extensionURLPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyExtension] URLPath]
                          customDataPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyCustom] dictionaryPath]];
 }
@@ -34,6 +36,7 @@
                 navigationBarTitlePath:(id<HUBJSONStringPath>)navigationBarTitlePath
     headerComponentModelDictionaryPath:(id<HUBJSONDictionaryPath>)headerComponentModelDictionaryPath
     bodyComponentModelDictionariesPath:(id<HUBJSONDictionaryPath>)bodyComponentModelDictionariesPath
+   overlayComponentModelDictionaryPath:(id<HUBJSONDictionaryPath>)overlayComponentModelDictionaryPath
                       extensionURLPath:(id<HUBJSONURLPath>)extensionURLPath
                         customDataPath:(id<HUBJSONDictionaryPath>)customDataPath
 {
@@ -46,6 +49,7 @@
         _navigationBarTitlePath = navigationBarTitlePath;
         _headerComponentModelDictionaryPath = headerComponentModelDictionaryPath;
         _bodyComponentModelDictionariesPath = bodyComponentModelDictionariesPath;
+        _overlayComponentModelDictionaryPath = overlayComponentModelDictionaryPath;
         _extensionURLPath = extensionURLPath;
         _customDataPath = customDataPath;
     }
@@ -63,6 +67,7 @@
                                                          navigationBarTitlePath:self.navigationBarTitlePath
                                              headerComponentModelDictionaryPath:self.headerComponentModelDictionaryPath
                                              bodyComponentModelDictionariesPath:self.bodyComponentModelDictionariesPath
+                                            overlayComponentModelDictionaryPath:self.overlayComponentModelDictionaryPath
                                                                extensionURLPath:self.extensionURLPath
                                                                  customDataPath:self.customDataPath];
 }

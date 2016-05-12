@@ -57,6 +57,9 @@ static NSString * const HUBJSONKeyMain = @"main";
 /// JSON key used to encode a set of metadata
 static NSString * const HUBJSONKeyMetadata = @"metadata";
 
+/// JSON key used to encode an overlay
+static NSString * const HUBJSONKeyOverlay = @"overlay";
+
 /// JSON key used to encode a placeholder identifier
 static NSString * const HUBJSONKeyPlaceholder = @"placeholder";
 
