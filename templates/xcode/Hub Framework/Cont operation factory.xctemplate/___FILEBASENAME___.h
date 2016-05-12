@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ___FILEBASENAMEASIDENTIFIER___ : NSObject <HUBContentProviderFactory>
+@interface ___FILEBASENAMEASIDENTIFIER___ : NSObject <HUBContentOperationFactory>
 
 @end
 
