@@ -55,12 +55,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> bodyComponentModelDictionariesPath;
 
 /**
- *  The path to follow to extract a dictionary for any overlay component model.
+ *  The path to follow to extract an array of dictionaries for the view's overlay component models.
  *  Maps to `overlayComponentModel`.
  *
  *  The dictionary extracted by following this path will then be parsed using `HUBComponentModelJSONSchema`.
  */
-@property (nonatomic, strong) id<HUBJSONDictionaryPath> overlayComponentModelDictionaryPath;
+@property (nonatomic, strong) id<HUBJSONDictionaryPath> overlayComponentModelDictionariesPath;
 
 /// The path to follow to extract a view model extension URL. Maps to `extensionURL`.
 @property (nonatomic, strong) id<HUBJSONURLPath> extensionURLPath;

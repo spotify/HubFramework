@@ -244,11 +244,13 @@
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
         __typeof(self) strongSelf = weakSelf;
         
-        builder.overlayComponentModelBuilder.componentNamespace = strongSelf.componentIdentifier.componentNamespace;
-        builder.overlayComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
-        builder.overlayComponentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
-        builder.overlayComponentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
-        [builder.overlayComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
+        id<HUBComponentModelBuilder> const overlayComponentModelBuilder = [builder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+        
+        overlayComponentModelBuilder.componentNamespace = strongSelf.componentIdentifier.componentNamespace;
+        overlayComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        overlayComponentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
+        overlayComponentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
+        [overlayComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
         
         return YES;
     };
@@ -414,17 +416,38 @@
 
 - (void)testOverlayComponentReuse
 {
-    __weak __typeof(self) weakSelf = self;
+    HUBComponentMock * const componentA = [HUBComponentMock new];
+    HUBComponentMock * const componentB = [HUBComponentMock new];
+    
+    id<HUBComponentFactory> const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        @"a": componentA,
+        @"b": componentB
+    }];
+    
+    NSString * const componentNamespace = @"overlayReuse";
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+    
+    __block NSUInteger loadCount = 0;
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        __typeof(self) strongSelf = weakSelf;
-        viewModelBuilder.overlayComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        id<HUBComponentModelBuilder> const overlayComponentModelBuilder = [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+        overlayComponentModelBuilder.componentNamespace = componentNamespace;
+        
+        if (loadCount < 3) {
+            overlayComponentModelBuilder.componentName = @"a";
+        } else {
+            overlayComponentModelBuilder.componentName = @"b";
+        }
+        
+        loadCount++;
+        
         return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
     
-    XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)0);
+    XCTAssertEqual(componentA.numberOfReuses, (NSUInteger)0);
+    XCTAssertEqual(componentB.numberOfReuses, (NSUInteger)0);
     
     self.contentReloadPolicy.shouldReload = YES;
     
@@ -433,7 +456,16 @@
     [self.viewController viewWillAppear:YES];
     [self.viewController viewDidLayoutSubviews];
     
-    XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
+    XCTAssertEqual(componentA.numberOfReuses, (NSUInteger)2);
+    XCTAssertEqual(componentB.numberOfReuses, (NSUInteger)0);
+    
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    
+    XCTAssertEqual(componentA.numberOfReuses, (NSUInteger)2);
+    XCTAssertEqual(componentB.numberOfReuses, (NSUInteger)1);
 }
 
 - (void)testInitialViewModelForTargetViewControllerRegistered
