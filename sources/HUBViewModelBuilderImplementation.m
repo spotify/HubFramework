@@ -122,6 +122,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeAllComponentModelBuilders
 {
     [self removeHeaderComponentModelBuilder];
+    [self removeOverlayComponentModelBuilder];
     [self.bodyComponentModelBuilders removeAllObjects];
     [self.bodyComponentIdentifierOrder removeAllObjects];
 }
@@ -135,6 +136,10 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     if (self.bodyComponentModelBuilders.count > 0) {
+        return NO;
+    }
+    
+    if (self.overlayComponentModelBuilderImplementation != nil) {
         return NO;
     }
     

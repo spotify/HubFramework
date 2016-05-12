@@ -111,6 +111,7 @@
 - (void)testRemoveAllComponentModelBuilders
 {
     self.builder.headerComponentModelBuilder.title = @"Header title";
+    self.builder.overlayComponentModelBuilder.title = @"Overlay title";
     [self.builder builderForBodyComponentModelWithIdentifier:@"body"].title = @"Body title";
     
     XCTAssertFalse(self.builder.isEmpty);
@@ -333,6 +334,12 @@
 - (void)testNotEmptyAfterAddingBodyComponentModel
 {
     [self.builder builderForBodyComponentModelWithIdentifier:@"id"];
+    XCTAssertFalse(self.builder.isEmpty);
+}
+
+- (void)testNotEmptyAfterAccessingOverlayComponentModelBuilder
+{
+    self.builder.overlayComponentModelBuilder.title = @"title";
     XCTAssertFalse(self.builder.isEmpty);
 }
 
