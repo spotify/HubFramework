@@ -15,12 +15,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBViewModelBuilder <NSObject>
 
+#pragma mark - The status of the builder
+
 /**
  *  Whether this builder is currently empty, and does not contain any content
  *
  *  As soon as any header or body component model has been added to this builder, it is no longer considered empty
  */
 @property (nonatomic, readonly) BOOL isEmpty;
+
+#pragma mark - Identifiers
 
 /**
  *  The identifier that the view should have
@@ -55,6 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy, nullable) NSString *entityIdentifier;
 
+#pragma mark - Navigation bar & header
+
 /**
  *  The title that the view should have in the navigation bar
  *
@@ -75,16 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly) id<HUBComponentModelBuilder> headerComponentModelBuilder;
 
-/**
- *  The builder to use to build a model for any overlay component for the view
- *
- *  Use this builder to setup any component that will be rendered as an overlay for the view, on top of the rest of the
- *  view's content. This can be used to display loading indicators, popups, or other overlay content. This builder gets
- *  lazily created the first time you access this property. To remove it, use `-removeOverlayComponentModelBuilder`.
- *
- *  In case no identifier is explicity defined for the returned builder, it will use "overlay" as the default.
- */
-@property (nonatomic, strong, readonly) id<HUBComponentModelBuilder> overlayComponentModelBuilder;
+#pragma mark - Metadata
 
 /**
  *  Any HTTP URL from which data can be downloaded to extend the view model
@@ -105,6 +102,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
 
+#pragma mark - Adding JSON data to the builder
+
 /**
  *  Add content from JSON data to this builder
  *
@@ -115,12 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable NSError *)addJSONData:(NSData *)JSONData;
 
-/**
- *  Remove any previously created header component model builder
- *
- *  Removing the header component model builder will cause the view to use a `UINavigationBar`-based header instead.
- */
-- (void)removeHeaderComponentModelBuilder;
+#pragma mark - Checking if component model builders exist
 
 /**
  *  Return whether this builder contains a builder for a body component model with a certain identifier
@@ -130,16 +124,53 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)builderExistsForBodyComponentModelWithIdentifier:(NSString *)identifier;
 
 /**
+ *  Return whether this builder contains a builder for an overlay component model with a certain identifier
+ *
+ *  @param identifier The identifier to look for
+ */
+- (BOOL)builderExistsForOverlayComponentModelWithIdentifier:(NSString *)identifier;
+
+#pragma mark - Retrieving component model builders by identifier
+
+/**
  *  Get or create a builder for a body component model with a certain identifier
  *
  *  @param identifier The identifier that the component model should have
  *
- *  @return If a builder already exists for the supplied identifier, then it's returned. Otherwise a new builder is
- *  created, which can be used to build a body component model. Since this method lazily creates a builder in case
- *  one doesn't already exist, use the `-builderExistsForBodyComponentModelWithIdentifier:` API instead if you simply
- *  wish to check for the existance of a builder. See `HUBComponentModelBuilder` for more information.
+ *  @return If a body component model builder already exists for the supplied identifier, then it's returned. Otherwise a
+ *  new builder is created, which can be used to build a body component model. Since this method lazily creates a builder
+ *  in case one doesn't already exist, use the `-builderExistsForBodyComponentModelWithIdentifier:` API instead if you
+ *  simply wish to check for the existance of a builder. See `HUBComponentModelBuilder` for more information.
  */
 - (id<HUBComponentModelBuilder>)builderForBodyComponentModelWithIdentifier:(NSString *)identifier;
+
+/**
+ *  Get or create a builder for an overlay component model with a certain identifier
+ *
+ *  @param identifier The identifier that the component model should have
+ *
+ *  @return If an overlay component model builder already exists for the supplied identifier, then it's returned. Otherwise a
+ *  new builder is created, which can be used to build an overlay component model. Since this method lazily creates a builder
+ *  in case one doesn't already exist, use the `-builderExistsForOverlayComponentModelWithIdentifier:` API instead if you
+ *  simply wish to check for the existance of a builder.
+ *
+ *  Use overlay component model builders to setup any components that will be rendered as overlays for the view, on top of the
+ *  rest of the view's content. This can be used to display loading indicators, popups, or other overlay content. Overlays are
+ *  always rendered at the center of their container view, stacked on top of each other on the z axis. The components indexes
+ *  (can be controlled by setting `preferredIndex` on their component model builders) determines the rendering order.
+ *
+ *  See `HUBComponentModelBuilder` for more information.
+ */
+- (id<HUBComponentModelBuilder>)builderForOverlayComponentModelWithIdentifier:(NSString *)identifier;
+
+#pragma mark - Removing component model builders
+
+/**
+ *  Remove any previously created header component model builder
+ *
+ *  Removing the header component model builder will cause the view to use a `UINavigationBar`-based header instead.
+ */
+- (void)removeHeaderComponentModelBuilder;
 
 /**
  *  Remove a builder for a body component with a certain identifier
@@ -149,9 +180,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier;
 
 /**
- *  Remove any previously created overlay component model builder
+ *  Remove a builder for an overlay component with a certain identifier
+ *
+ *  @param identifier The identifier of the component model builder to remove
  */
-- (void)removeOverlayComponentModelBuilder;
+- (void)removeBuilderForOverlayComponentModelWithIdentifier:(NSString *)identifier;
 
 /**
  *  Remove all component model builders that this builder contains

@@ -20,8 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable) HUBComponentModelBuilderImplementation *headerComponentModelBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *bodyComponentModelBuilders;
-@property (nonatomic, strong, nullable) HUBComponentModelBuilderImplementation *overlayComponentModelBuilderImplementation;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *overlayComponentModelBuilders;
 @property (nonatomic, strong, readonly) NSMutableArray<NSString *> *bodyComponentIdentifierOrder;
+@property (nonatomic, strong, readonly) NSMutableArray<NSString *> *overlayComponentIdentifierOrder;
 
 @end
 
@@ -55,7 +56,9 @@ NS_ASSUME_NONNULL_BEGIN
         _viewIdentifier = [NSUUID UUID].UUIDString;
         _featureIdentifier = [featureIdentifier copy];
         _bodyComponentModelBuilders = [NSMutableDictionary new];
+        _overlayComponentModelBuilders = [NSMutableDictionary new];
         _bodyComponentIdentifierOrder = [NSMutableArray new];
+        _overlayComponentIdentifierOrder = [NSMutableArray new];
     }
     
     return self;
@@ -88,19 +91,29 @@ NS_ASSUME_NONNULL_BEGIN
     return [self getOrCreateBuilderForHeaderComponentModelWithIdentifier:nil];
 }
 
-- (void)removeHeaderComponentModelBuilder
-{
-    self.headerComponentModelBuilderImplementation = nil;
-}
-
 - (BOOL)builderExistsForBodyComponentModelWithIdentifier:(NSString *)identifier
 {
     return self.bodyComponentModelBuilders[identifier] != nil;
 }
 
+- (BOOL)builderExistsForOverlayComponentModelWithIdentifier:(NSString *)identifier
+{
+    return self.overlayComponentModelBuilders[identifier] != nil;
+}
+
 - (id<HUBComponentModelBuilder>)builderForBodyComponentModelWithIdentifier:(NSString *)identifier
 {
     return [self getOrCreateBuilderForBodyComponentModelWithIdentifier:identifier];
+}
+
+- (id<HUBComponentModelBuilder>)builderForOverlayComponentModelWithIdentifier:(NSString *)identifier
+{
+    return [self getOrCreateBuilderForOverlayComponentModelWithIdentifier:identifier];
+}
+
+- (void)removeHeaderComponentModelBuilder
+{
+    self.headerComponentModelBuilderImplementation = nil;
 }
 
 - (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier
@@ -109,22 +122,21 @@ NS_ASSUME_NONNULL_BEGIN
     [self.bodyComponentIdentifierOrder removeObject:identifier];
 }
 
-- (id<HUBComponentModelBuilder>)overlayComponentModelBuilder
+- (void)removeBuilderForOverlayComponentModelWithIdentifier:(NSString *)identifier
 {
-    return [self getOrCreateBuilderForOverlayComponentModelWithIdentifier:nil];
-}
-
-- (void)removeOverlayComponentModelBuilder
-{
-    self.overlayComponentModelBuilderImplementation = nil;
+    [self.overlayComponentModelBuilders removeObjectForKey:identifier];
+    [self.overlayComponentIdentifierOrder removeObject:identifier];
 }
 
 - (void)removeAllComponentModelBuilders
 {
     [self removeHeaderComponentModelBuilder];
-    [self removeOverlayComponentModelBuilder];
+    
     [self.bodyComponentModelBuilders removeAllObjects];
     [self.bodyComponentIdentifierOrder removeAllObjects];
+    
+    [self.overlayComponentModelBuilders removeAllObjects];
+    [self.overlayComponentIdentifierOrder removeAllObjects];
 }
 
 #pragma mark - API
@@ -139,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
         return NO;
     }
     
-    if (self.overlayComponentModelBuilderImplementation != nil) {
+    if (self.overlayComponentModelBuilders.count > 0) {
         return NO;
     }
     
@@ -153,15 +165,16 @@ NS_ASSUME_NONNULL_BEGIN
     NSArray * const bodyComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.bodyComponentModelBuilders
                                                                                                     identifierOrder:self.bodyComponentIdentifierOrder];
     
-    HUBComponentModelImplementation * const overlayComponentModel = [self.overlayComponentModelBuilderImplementation buildForIndex:0];
+    NSArray * const overlayComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.overlayComponentModelBuilders
+                                                                                                       identifierOrder:self.overlayComponentIdentifierOrder];
     
     return [[HUBViewModelImplementation alloc] initWithIdentifier:self.viewIdentifier
                                                 featureIdentifier:self.featureIdentifier
                                                  entityIdentifier:self.entityIdentifier
                                                navigationBarTitle:self.navigationBarTitle
                                              headerComponentModel:headerComponentModel
-                                              bodyComponentModels:[bodyComponentModels copy]
-                                            overlayComponentModel:overlayComponentModel
+                                              bodyComponentModels:bodyComponentModels
+                                           overlayComponentModels:overlayComponentModels
                                                      extensionURL:self.extensionURL
                                                        customData:[self.customData copy]];
 }
@@ -230,12 +243,12 @@ NS_ASSUME_NONNULL_BEGIN
         [self addDataFromBodyComponentModelJSONDictionary:componentModelDictionary];
     }
     
-    NSDictionary * const overlayComponentModelDictionary = [viewModelSchema.overlayComponentModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
+    NSArray * const overlayComponentModelDictionaries = [viewModelSchema.overlayComponentModelDictionariesPath valuesFromJSONDictionary:dictionary];
     
-    if (overlayComponentModelDictionary != nil) {
-        NSString * const overlayComponentModelIdentifier = [self.JSONSchema.componentModelSchema.identifierPath stringFromJSONDictionary:overlayComponentModelDictionary];
-        HUBComponentModelBuilderImplementation * const overlayComponentModelBuilder = [self getOrCreateBuilderForOverlayComponentModelWithIdentifier:overlayComponentModelIdentifier];
-        [overlayComponentModelBuilder addDataFromJSONDictionary:overlayComponentModelDictionary];
+    for (NSDictionary * const componentModelDictionary in overlayComponentModelDictionaries) {
+        NSString * const componentIdentifier = [self.JSONSchema.componentModelSchema.identifierPath stringFromJSONDictionary:componentModelDictionary];
+        HUBComponentModelBuilderImplementation * const componentModelBuilder = [self getOrCreateBuilderForOverlayComponentModelWithIdentifier:componentIdentifier];
+        [componentModelBuilder addDataFromJSONDictionary:componentModelDictionary];
     }
 }
 
@@ -292,38 +305,22 @@ NS_ASSUME_NONNULL_BEGIN
         identifier = @"header";
     }
     
-    HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
-                                                                                                                      featureIdentifier:self.featureIdentifier
-                                                                                                                             JSONSchema:self.JSONSchema
-                                                                                                                      componentDefaults:self.componentDefaults
-                                                                                                                      iconImageResolver:self.iconImageResolver
-                                                                                                                   mainImageDataBuilder:nil
-                                                                                                             backgroundImageDataBuilder:nil];
-    
+    HUBComponentModelBuilderImplementation * const newBuilder = [self createComponentModelBuilderWithIdentifier:identifier];
     self.headerComponentModelBuilderImplementation = newBuilder;
     return newBuilder;
 }
 
 - (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForBodyComponentModelWithIdentifier:(nullable NSString *)identifier
 {
-    if (identifier != nil) {
-        NSString * const existingBuilderIdentifier = identifier;
-        HUBComponentModelBuilderImplementation * const existingBuilder = self.bodyComponentModelBuilders[existingBuilderIdentifier];
-        
-        if (existingBuilder != nil) {
-            return existingBuilder;
-        }
+    HUBComponentModelBuilderImplementation * const existingBuilder = [self existingComponentModelBuilderFromDictionary:self.bodyComponentModelBuilders
+                                                                                                       modelIdentifier:identifier];
+    
+    if (existingBuilder != nil) {
+        return existingBuilder;
     }
     
-    HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
-                                                                                                                      featureIdentifier:self.featureIdentifier
-                                                                                                                             JSONSchema:self.JSONSchema
-                                                                                                                      componentDefaults:self.componentDefaults
-                                                                                                                      iconImageResolver:self.iconImageResolver
-                                                                                                                   mainImageDataBuilder:nil
-                                                                                                             backgroundImageDataBuilder:nil];
-    
-    [self.bodyComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
+    HUBComponentModelBuilderImplementation * const newBuilder = [self createComponentModelBuilderWithIdentifier:identifier];
+    self.bodyComponentModelBuilders[newBuilder.modelIdentifier] = newBuilder;
     [self.bodyComponentIdentifierOrder addObject:newBuilder.modelIdentifier];
     
     return newBuilder;
@@ -331,26 +328,42 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForOverlayComponentModelWithIdentifier:(nullable NSString *)identifier
 {
-    HUBComponentModelBuilderImplementation * const existingBuilder = self.overlayComponentModelBuilderImplementation;
+    HUBComponentModelBuilderImplementation * const existingBuilder = [self existingComponentModelBuilderFromDictionary:self.overlayComponentModelBuilders
+                                                                                                       modelIdentifier:identifier];
     
     if (existingBuilder != nil) {
         return existingBuilder;
     }
     
-    if (identifier == nil) {
-        identifier = @"overlay";
+    HUBComponentModelBuilderImplementation * const newBuilder = [self createComponentModelBuilderWithIdentifier:identifier];
+    self.overlayComponentModelBuilders[newBuilder.modelIdentifier] = newBuilder;
+    [self.overlayComponentIdentifierOrder addObject:newBuilder.modelIdentifier];
+    
+    return newBuilder;
+}
+
+- (nullable HUBComponentModelBuilderImplementation *)existingComponentModelBuilderFromDictionary:(NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *)dictionary
+                                                                                 modelIdentifier:(nullable NSString *)modelIdentifier
+{
+    if (modelIdentifier == nil) {
+        return nil;
     }
     
-    HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
-                                                                                                                      featureIdentifier:self.featureIdentifier
-                                                                                                                             JSONSchema:self.JSONSchema
-                                                                                                                      componentDefaults:self.componentDefaults
-                                                                                                                      iconImageResolver:self.iconImageResolver
-                                                                                                                   mainImageDataBuilder:nil
-                                                                                                             backgroundImageDataBuilder:nil];
-    
-    self.overlayComponentModelBuilderImplementation = newBuilder;
-    return newBuilder;
+    NSString * const existingBuilderIdentifier = modelIdentifier;
+    HUBComponentModelBuilderImplementation * const existingBuilder = dictionary[existingBuilderIdentifier];
+    return existingBuilder;
+}
+
+
+- (HUBComponentModelBuilderImplementation *)createComponentModelBuilderWithIdentifier:(nullable NSString *)identifier
+{
+    return [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
+                                                                 featureIdentifier:self.featureIdentifier
+                                                                        JSONSchema:self.JSONSchema
+                                                                 componentDefaults:self.componentDefaults
+                                                                 iconImageResolver:self.iconImageResolver
+                                                              mainImageDataBuilder:nil
+                                                        backgroundImageDataBuilder:nil];
 }
 
 @end

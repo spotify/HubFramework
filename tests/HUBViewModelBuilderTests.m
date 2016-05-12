@@ -111,8 +111,8 @@
 - (void)testRemoveAllComponentModelBuilders
 {
     self.builder.headerComponentModelBuilder.title = @"Header title";
-    self.builder.overlayComponentModelBuilder.title = @"Overlay title";
     [self.builder builderForBodyComponentModelWithIdentifier:@"body"].title = @"Body title";
+    [self.builder builderForOverlayComponentModelWithIdentifier:@"overlay"].title = @"Overlay title";
     
     XCTAssertFalse(self.builder.isEmpty);
     
@@ -154,20 +154,40 @@
     XCTAssertEqual(model.bodyComponentModels[0].index, (NSUInteger)0);
 }
 
-- (void)testOverlayComponentModelBuilder
+- (void)testOverlayComponentModelBuilders
 {
-    XCTAssertEqualObjects(self.builder.overlayComponentModelBuilder.modelIdentifier, @"overlay");
-    XCTAssertEqualObjects(self.builder.overlayComponentModelBuilder.componentNamespace, self.componentDefaults.componentNamespace);
-    XCTAssertEqualObjects(self.builder.overlayComponentModelBuilder.componentName, self.componentDefaults.componentName);
-    XCTAssertEqualObjects(self.builder.overlayComponentModelBuilder.componentCategory, self.componentDefaults.componentCategory);
+    NSString * const componentIdentifier = @"overlay";
+    XCTAssertFalse([self.builder builderExistsForOverlayComponentModelWithIdentifier:componentIdentifier]);
+    
+    id<HUBComponentModelBuilder> const builder = [self.builder builderForOverlayComponentModelWithIdentifier:componentIdentifier];
+    XCTAssertEqualObjects(builder.modelIdentifier, componentIdentifier);
+    
+    [self.builder removeBuilderForOverlayComponentModelWithIdentifier:componentIdentifier];
+    XCTAssertFalse([self.builder builderExistsForOverlayComponentModelWithIdentifier:componentIdentifier]);
 }
 
-- (void)testRemovingOverlayComponentModelBuilder
+- (void)testOverlayComponentPreferredIndexRespected
 {
-    id<HUBComponentModelBuilder> const builder = self.builder.overlayComponentModelBuilder;
-    builder.title = @"title";
-    [self.builder removeOverlayComponentModelBuilder];
-    XCTAssertNil(self.builder.overlayComponentModelBuilder.title);
+    [self.builder builderForOverlayComponentModelWithIdentifier:@"componentA"].preferredIndex = @1;
+    [self.builder builderForOverlayComponentModelWithIdentifier:@"componentB"].preferredIndex = @0;
+    
+    HUBViewModelImplementation * const model = [self.builder build];
+    
+    XCTAssertEqual(model.overlayComponentModels.count, (NSUInteger)2);
+    XCTAssertEqualObjects(model.overlayComponentModels[0].identifier, @"componentB");
+    XCTAssertEqual(model.overlayComponentModels[0].index, (NSUInteger)0);
+    XCTAssertEqualObjects(model.overlayComponentModels[1].identifier, @"componentA");
+    XCTAssertEqual(model.overlayComponentModels[1].index, (NSUInteger)1);
+}
+
+- (void)testOverlayComponentOutOfBoundsPreferredIndexHandled
+{
+    [self.builder builderForOverlayComponentModelWithIdentifier:@"overlay"].preferredIndex = @99;
+    HUBViewModelImplementation * const model = [self.builder build];
+    
+    XCTAssertEqual(model.overlayComponentModels.count, (NSUInteger)1);
+    XCTAssertEqualObjects(model.overlayComponentModels[0].identifier, @"overlay");
+    XCTAssertEqual(model.overlayComponentModels[0].index, (NSUInteger)0);
 }
 
 - (void)testFeatureIdentifierMatchingComponentTargetInitialViewModelFeatureIdentifier
@@ -210,13 +230,15 @@
                 }
             }
         ],
-        @"overlay": @{
-            @"id": @"overlay component",
-            @"component": @{
-                @"id": overlayComponentIdentifier.identifierString,
-                @"category": @"overlayCategory"
+        @"overlays": @[
+            @{
+                @"id": @"overlay component",
+                @"component": @{
+                    @"id": overlayComponentIdentifier.identifierString,
+                    @"category": @"overlayCategory"
+                }
             }
-        },
+        ],
         @"extension": extensionURL.absoluteString,
         @"custom": customData
     };
@@ -234,8 +256,8 @@
     XCTAssertEqualObjects(model.headerComponentModel.componentCategory, @"headerCategory");
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, bodyComponentIdentifier);
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentCategory, @"bodyCategory");
-    XCTAssertEqualObjects(model.overlayComponentModel.componentIdentifier, overlayComponentIdentifier);
-    XCTAssertEqualObjects(model.overlayComponentModel.componentCategory, @"overlayCategory");
+    XCTAssertEqualObjects([model.overlayComponentModels firstObject].componentIdentifier, overlayComponentIdentifier);
+    XCTAssertEqualObjects([model.overlayComponentModels firstObject].componentCategory, @"overlayCategory");
     XCTAssertEqualObjects(model.extensionURL, extensionURL);
     XCTAssertEqualObjects(model.customData, customData);
     
@@ -337,9 +359,9 @@
     XCTAssertFalse(self.builder.isEmpty);
 }
 
-- (void)testNotEmptyAfterAccessingOverlayComponentModelBuilder
+- (void)testNotEmptyAfterAddingOverlayComponentModel
 {
-    self.builder.overlayComponentModelBuilder.title = @"title";
+    [self.builder builderForOverlayComponentModelWithIdentifier:@"id"];
     XCTAssertFalse(self.builder.isEmpty);
 }
 

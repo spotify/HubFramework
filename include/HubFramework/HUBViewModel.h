@@ -76,11 +76,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSArray<id<HUBComponentModel>> *bodyComponentModels;
 
 /**
- *  The model for any component that will be rendered as an overlay for the view
+ *  The models for the components that will be rendered as overlays for the view
  *
  *  See `HUBComponentModel` for more information on how component models work.
  */
-@property (nonatomic, strong, readonly, nullable) id<HUBComponentModel> overlayComponentModel;
+@property (nonatomic, strong, readonly) NSArray<id<HUBComponentModel>> *overlayComponentModels;
 
 #pragma mark - Metadata
 

@@ -90,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
         [models addObject:model];
     }
     
-    return models;
+    return [models copy];
 }
 
 #pragma mark - Initializer

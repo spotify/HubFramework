@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponents;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *headerComponentWrapper;
-@property (nonatomic, strong, nullable) HUBComponentWrapper *overlayComponentWrapper;
+@property (nonatomic, strong, readonly) NSMutableArray<HUBComponentWrapper *> *overlayComponentWrappers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic) BOOL viewModelIsInitial;
@@ -81,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     _componentImageLoadingContexts = [NSMutableDictionary new];
     _contentOffsetObservingComponents = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
+    _overlayComponentWrappers = [NSMutableArray new];
     _componentWrappersByIdentifier = [NSMutableDictionary new];
     
     _viewModelLoader.delegate = self;
@@ -153,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.collectionView.frame = self.view.bounds;
     
     [self configureHeaderComponent];
-    [self configureOverlayComponent];
+    [self configureOverlayComponents];
     
     HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
                                                                               componentRegistry:self.componentRegistry
@@ -396,29 +397,29 @@ NS_ASSUME_NONNULL_BEGIN
     self.headerComponentWrapper = nil;
 }
 
-- (void)configureOverlayComponent
+- (void)configureOverlayComponents
 {
-    id<HUBComponentModel> const componentModel = self.viewModel.overlayComponentModel;
+    NSArray * const currentOverlayComponentWrappers = [self.overlayComponentWrappers copy];
+    [self.overlayComponentWrappers removeAllObjects];
     
-    if (componentModel == nil) {
-        [self removeOverlayComponent];
-        return;
+    for (id<HUBComponentModel> const componentModel in self.viewModel.overlayComponentModels) {
+        HUBComponentWrapper *componentWrapper = nil;
+        
+        if (self.overlayComponentWrappers.count < currentOverlayComponentWrappers.count) {
+            componentWrapper = currentOverlayComponentWrappers[self.overlayComponentWrappers.count];
+        }
+        
+        componentWrapper = [self configureHeaderOrOverlayComponentWrapperWithModel:componentModel
+                                                          previousComponentWrapper:componentWrapper];
+        
+        [self.overlayComponentWrappers addObject:componentWrapper];
+        
+        componentWrapper.component.view.center = self.collectionView.center;
     }
-    
-    self.overlayComponentWrapper = [self configureHeaderOrOverlayComponentWrapperWithModel:componentModel
-                                                                  previousComponentWrapper:self.overlayComponentWrapper];
-    
-    self.overlayComponentWrapper.component.view.center = self.view.center;
 }
 
-- (void)removeOverlayComponent
-{
-    [self.overlayComponentWrapper.component.view removeFromSuperview];
-    self.overlayComponentWrapper = nil;
-}
-
-- (nullable HUBComponentWrapper *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
-                                                           previousComponentWrapper:(nullable HUBComponentWrapper *)previousComponentWrapper
+- (HUBComponentWrapper *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
+                                                  previousComponentWrapper:(nullable HUBComponentWrapper *)previousComponentWrapper
 {
     BOOL const shouldReuseCurrentComponent = [previousComponentWrapper.componentIdentifier isEqual:componentModel.componentIdentifier];
     HUBComponentWrapper *componentWrapper;
