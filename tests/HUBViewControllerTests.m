@@ -10,6 +10,7 @@
 #import "HUBImageLoaderMock.h"
 #import "HUBViewModelBuilder.h"
 #import "HUBComponentModelBuilder.h"
+#import "HUBComponentModel.h"
 #import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentMock.h"
@@ -40,6 +41,8 @@
 @property (nonatomic, strong) HUBDeviceMock *device;
 @property (nonatomic, strong) HUBViewControllerImplementation *viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
+@property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromAppearanceDelegateMethod;
+@property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromSelectionDelegateMethod;
 
 @end
 
@@ -102,6 +105,8 @@
     self.viewController.delegate = self;
     
     self.viewModelFromDelegateMethod = nil;
+    self.componentModelsFromAppearanceDelegateMethod = [NSMutableArray new];
+    self.componentModelsFromSelectionDelegateMethod = [NSMutableArray new];
 }
 
 #pragma mark - Tests
@@ -598,6 +603,49 @@
     XCTAssertNil([childDelegate component:component createChildComponentAtIndex:5]);
 }
 
+- (void)testSelectionForRootComponent
+{
+    NSString * const componentNamespace = @"selectionForRootComponent";
+    NSString * const nonSelectableIdentifier = @"nonSelectable";
+    NSString * const selectableIdentifier = @"selectable";
+    
+    HUBComponentMock * const nonSelectableComponent = [HUBComponentMock new];
+    HUBComponentMock * const selectableComponent = [HUBComponentMock new];
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        nonSelectableIdentifier: nonSelectableComponent,
+        selectableIdentifier: selectableComponent
+    }];
+    
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const nonSelectableBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:nonSelectableIdentifier];
+        nonSelectableBuilder.componentNamespace = componentNamespace;
+        nonSelectableBuilder.componentName = nonSelectableIdentifier;
+        
+        id<HUBComponentModelBuilder> const selectableBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:selectableIdentifier];
+        selectableBuilder.componentNamespace = componentNamespace;
+        selectableBuilder.componentName = selectableIdentifier;
+        selectableBuilder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
+        
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
+    
+    NSIndexPath * const nonSelectableIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [collectionViewDelegate collectionView:self.collectionView didSelectItemAtIndexPath:nonSelectableIndexPath];
+    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)0);
+    
+    NSIndexPath * const selectableIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
+    [collectionViewDelegate collectionView:self.collectionView didSelectItemAtIndexPath:selectableIndexPath];
+    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
+    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
+}
+
 - (void)testSelectionForChildComponent
 {
     NSString * const componentNamespace = @"childComponentSelection";
@@ -635,7 +683,6 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
     id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
-    
     [childDelegate component:component childSelectedAtIndex:0];
     
     id<HUBViewModel> const childComponentTargetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:childComponentTargetURL];
@@ -643,6 +690,9 @@
     
     // Make sure bounds-checking is performed for child component index
     [childDelegate component:component willDisplayChildAtIndex:99];
+    
+    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
+    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].targetURL, childComponentTargetURL);
 }
 
 - (void)testComponentNotifiedOfResize
@@ -717,11 +767,15 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_BEGIN
 HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
+    XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, (NSUInteger)1);
+    XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod[0].title, @"title");
     
     self.collectionView.mockedIndexPathsForVisibleItems = @[indexPath];
     [self.viewController viewWillAppear:NO];
     
     XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)2);
+    XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, (NSUInteger)2);
+    XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod[1].title, @"title");
 }
 
 - (void)testSettingBackgroundColorOfViewAlsoUpdatesCollectionView
@@ -736,6 +790,18 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
 {
     XCTAssertEqual(viewController, self.viewController);
     self.viewModelFromDelegateMethod = viewModel;
+}
+
+- (void)viewController:(UIViewController<HUBViewController> *)viewController componentWillAppearWithModel:(id<HUBComponentModel>)componentModel
+{
+    XCTAssertEqual(viewController, self.viewController);
+    [self.componentModelsFromAppearanceDelegateMethod addObject:componentModel];
+}
+
+- (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
+{
+    XCTAssertEqual(viewController, self.viewController);
+    [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];
 }
 
 #pragma mark - Utilities
