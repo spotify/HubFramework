@@ -124,6 +124,8 @@ NS_ASSUME_NONNULL_BEGIN
         HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         [self collectionViewCellWillAppear:cell];
     }
+    
+    [self headerAndOverlayComponentViewsWillAppear];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -155,6 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     [self configureHeaderComponent];
     [self configureOverlayComponents];
+    [self headerAndOverlayComponentViewsWillAppear];
     
     HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
                                                                               componentRegistry:self.componentRegistry
@@ -483,6 +486,23 @@ NS_ASSUME_NONNULL_BEGIN
     
     if ([component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
         [(id<HUBComponentViewObserver>)component viewWillAppear];
+    }
+}
+
+- (void)headerAndOverlayComponentViewsWillAppear
+{
+    id<HUBComponent> const headerComponent = self.headerComponentWrapper.component;
+    
+    if (headerComponent != nil) {
+        if ([headerComponent conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
+            [(id<HUBComponentViewObserver>)headerComponent viewWillAppear];
+        }
+    }
+    
+    for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
+        if ([overlayComponentWrapper.component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
+            [(id<HUBComponentViewObserver>)overlayComponentWrapper.component viewWillAppear];
+        }
     }
 }
 

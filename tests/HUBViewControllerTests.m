@@ -414,6 +414,25 @@
     XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
 }
 
+- (void)testHeaderComponentNotifiedOfViewWillAppear
+{
+    self.component.isViewObserver = YES;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
+    
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewWillAppear:YES];
+    
+    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)3);
+}
+
 - (void)testOverlayComponentReuse
 {
     HUBComponentMock * const componentA = [HUBComponentMock new];
@@ -466,6 +485,25 @@
     
     XCTAssertEqual(componentA.numberOfReuses, (NSUInteger)2);
     XCTAssertEqual(componentB.numberOfReuses, (NSUInteger)1);
+}
+
+- (void)testOverlayComponentsNotifiedOfViewWillAppear
+{
+    self.component.isViewObserver = YES;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"].title = @"Header";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
+    
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewWillAppear:YES];
+    
+    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)3);
 }
 
 - (void)testInitialViewModelForTargetViewControllerRegistered
