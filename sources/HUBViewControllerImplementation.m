@@ -483,10 +483,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell
 {
     id<HUBComponent> const component = cell.componentWrapper.component;
+    id<HUBComponentModel> const model = cell.componentWrapper.currentModel;
     
     if ([component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
         [(id<HUBComponentViewObserver>)component viewWillAppear];
     }
+    
+    [self.delegate viewController:self componentWillAppearWithModel:model];
 }
 
 - (void)headerAndOverlayComponentViewsWillAppear
@@ -657,6 +660,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     [[UIApplication sharedApplication] openURL:targetURL];
+    
+    [self.delegate viewController:self componentSelectedWithModel:componentModel];
 }
 
 @end

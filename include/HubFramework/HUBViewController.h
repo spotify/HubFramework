@@ -2,6 +2,7 @@
 
 @protocol HUBViewController;
 @protocol HUBViewModel;
+@protocol HUBComponentModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,6 +23,22 @@ NS_ASSUME_NONNULL_BEGIN
  *  was constructed and started to being used.
  */
 - (void)viewController:(UIViewController<HUBViewController> *)viewController didUpdateWithViewModel:(id<HUBViewModel>)viewModel;
+
+/**
+ *  Sent to a Hub Framework view controller's delegate when a component is about to appear on the screen
+ *
+ *  @param viewController The view controller in which a component is about to appear
+ *  @param componentModel The model of the component that is about to appear
+ */
+- (void)viewController:(UIViewController<HUBViewController> *)viewController componentWillAppearWithModel:(id<HUBComponentModel>)componentModel;
+
+/**
+ *  Sent to a Hub Framework view controller's delegate when a component was selected
+ *
+ *  @param viewController The view controller in which the component was selected
+ *  @param componentModel The model of the component that was selected
+ */
+- (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
 
 @end
 
