@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBJSONSchemaImplementation ()
 
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
-@property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
+@property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 
 @end
 
@@ -24,7 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initializers
 
-- (instancetype)initWithComponentDefaults:(HUBComponentDefaults *)componentDefaults iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+- (instancetype)initWithComponentDefaults:(HUBComponentDefaults *)componentDefaults
+                        iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
 {
     return [self initWithViewModelSchema:[HUBViewModelJSONSchemaImplementation new]
                     componentModelSchema:[HUBComponentModelJSONSchemaImplementation new]
@@ -37,13 +38,12 @@ NS_ASSUME_NONNULL_BEGIN
                    componentModelSchema:(id<HUBComponentModelJSONSchema>)componentModelSchema
                componentImageDataSchema:(id<HUBComponentImageDataJSONSchema>)componentImageDataSchema
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
-                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+                      iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
 {
     NSParameterAssert(viewModelSchema != nil);
     NSParameterAssert(componentModelSchema != nil);
     NSParameterAssert(componentImageDataSchema != nil);
     NSParameterAssert(componentDefaults != nil);
-    NSParameterAssert(iconImageResolver != nil);
     
     self = [super init];
     

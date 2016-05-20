@@ -22,16 +22,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
-                                iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                                iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
                        defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                  prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                   appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
 {
     NSParameterAssert(connectivityStateResolver != nil);
     NSParameterAssert(imageLoaderFactory != nil);
-    NSParameterAssert(iconImageResolver != nil);
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentFallbackHandler != nil);
     

@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
                       featureIdentifier:(NSString *)featureIdentifier
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
-                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+                      iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
                    mainImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)mainImageDataBuilder
              backgroundImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)backgroundImageDataBuilder HUB_DESIGNATED_INITIALIZER;
 

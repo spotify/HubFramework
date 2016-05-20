@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
-@property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
+@property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *mainImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *backgroundImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentImageDataBuilderImplementation *> *customImageDataBuilders;
@@ -99,14 +99,13 @@ NS_ASSUME_NONNULL_BEGIN
                       featureIdentifier:(NSString *)featureIdentifier
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
-                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+                      iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
                    mainImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)mainImageDataBuilder
              backgroundImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)backgroundImageDataBuilder
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(componentDefaults != nil);
-    NSParameterAssert(iconImageResolver != nil);
     
     if (modelIdentifier == nil) {
         modelIdentifier = [NSString stringWithFormat:@"UnknownComponent:%@", [NSUUID UUID].UUIDString];
@@ -515,13 +514,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id<HUBIcon>)buildIconForPlaceholder:(BOOL)forPlaceholder
 {
+    id<HUBIconImageResolver> const iconImageResolver = self.iconImageResolver;
+    
+    if (iconImageResolver == nil) {
+        return nil;
+    }
+    
     NSString * const iconIdentifier = self.iconIdentifier;
     
     if (iconIdentifier == nil) {
         return nil;
     }
     
-    return [[HUBIconImplementation alloc] initWithIdentifier:iconIdentifier imageResolver:self.iconImageResolver isPlaceholder:forPlaceholder];
+    return [[HUBIconImplementation alloc] initWithIdentifier:iconIdentifier imageResolver:iconImageResolver isPlaceholder:forPlaceholder];
 }
 
 @end

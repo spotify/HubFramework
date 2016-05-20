@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 @property (nonatomic, assign) HUBConnectivityState connectivityState;
-@property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
+@property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable) id<HUBViewModel> cachedInitialViewModel;
 @property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *builder;
 @property (nonatomic, strong, nullable) NSError *encounteredError;
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
               componentDefaults:(HUBComponentDefaults *)componentDefaults
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
-              iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+              iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
                initialViewModel:(nullable id<HUBViewModel>)initialViewModel
 {
     NSParameterAssert(viewURI != nil);
@@ -48,7 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(contentOperations.count > 0);
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(componentDefaults != nil);
-    NSParameterAssert(iconImageResolver != nil);
     NSParameterAssert(connectivityStateResolver != nil);
     
     self = [super init];

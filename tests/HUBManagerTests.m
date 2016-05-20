@@ -8,7 +8,6 @@
 #import "HUBContentReloadPolicyMock.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBComponentDefaults+Testing.h"
-#import "HUBIconImageResolverMock.h"
 
 @interface HUBManagerTests : XCTestCase
 
@@ -24,7 +23,6 @@
 
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     id<HUBImageLoaderFactory> const imageLoaderFactory = [HUBImageLoaderFactoryMock new];
-    id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
     id<HUBContentReloadPolicy> const defaultContentReloadPolicy = [HUBContentReloadPolicyMock new];
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
@@ -32,9 +30,9 @@
     
     self.manager = [[HUBManager alloc] initWithConnectivityStateResolver:connectivityStateResolver
                                                       imageLoaderFactory:imageLoaderFactory
-                                                       iconImageResolver:iconImageResolver
                                                   componentLayoutManager:componentLayoutManager
                                                 componentFallbackHandler:componentFallbackHandler
+                                                       iconImageResolver:nil
                                               defaultContentReloadPolicy:defaultContentReloadPolicy
                                         prependedContentOperationFactory:nil
                                          appendedContentOperationFactory:nil];

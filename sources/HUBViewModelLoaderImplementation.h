@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
               componentDefaults:(HUBComponentDefaults *)componentDefaults
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
-              iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+              iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
                initialViewModel:(nullable id<HUBViewModel>)initialViewModel HUB_DESIGNATED_INITIALIZER;
 
 @end

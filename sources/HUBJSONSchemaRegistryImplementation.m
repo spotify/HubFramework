@@ -12,10 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBJSONSchemaRegistryImplementation
 
-- (instancetype)initWithComponentDefaults:(HUBComponentDefaults *)componentDefaults iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+- (instancetype)initWithComponentDefaults:(HUBComponentDefaults *)componentDefaults
+                        iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
 {
     NSParameterAssert(componentDefaults != nil);
-    NSParameterAssert(iconImageResolver != nil);
     
     self = [super init];
     
