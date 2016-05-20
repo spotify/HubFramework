@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
                initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
-                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+                      iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
        prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
         appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory HUB_DESIGNATED_INITIALIZER;
 

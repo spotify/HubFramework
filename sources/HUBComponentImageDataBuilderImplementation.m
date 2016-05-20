@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBComponentImageDataBuilderImplementation ()
 
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
-@property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
+@property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 
 @end
 
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initializer
 
-- (instancetype)initWithJSONSchema:(id<HUBJSONSchema>)JSONSchema iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+- (instancetype)initWithJSONSchema:(id<HUBJSONSchema>)JSONSchema iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
 {
     self = [super init];
     
@@ -85,11 +85,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier type:(HUBComponentImageType)type
 {
-    if (self.URL == nil && self.placeholderIconIdentifier == nil && self.localImage == nil) {
+    id<HUBIcon> const placeholderIcon = [self buildPlaceholderIcon];
+    
+    if (self.URL == nil && self.localImage == nil && placeholderIcon == nil) {
         return nil;
     }
-    
-    id<HUBIcon> const placeholderIcon = [self buildPlaceholderIcon];
     
     return [[HUBComponentImageDataImplementation alloc] initWithIdentifier:identifier
                                                                       type:type
@@ -103,6 +103,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id<HUBIcon>)buildPlaceholderIcon
 {
+    id<HUBIconImageResolver> const iconImageResolver = self.iconImageResolver;
+    
+    if (iconImageResolver == nil) {
+        return nil;
+    }
+    
     NSString * const placeholderIconIdentifier = self.placeholderIconIdentifier;
     
     if (placeholderIconIdentifier == nil) {
@@ -110,7 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return [[HUBIconImplementation alloc] initWithIdentifier:placeholderIconIdentifier
-                                               imageResolver:self.iconImageResolver
+                                               imageResolver:iconImageResolver
                                                isPlaceholder:YES];
 }
 

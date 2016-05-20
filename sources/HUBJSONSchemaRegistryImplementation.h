@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param iconImageResolver The resolver to use to convert icons into renderable images
  */
 - (instancetype)initWithComponentDefaults:(HUBComponentDefaults *)componentDefaults
-                        iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
+                        iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Return a custom JSON schema that has been registered for a certain identifier

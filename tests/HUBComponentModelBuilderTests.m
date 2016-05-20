@@ -146,6 +146,26 @@
     XCTAssertNil(componentModel.customImageData[emptyCustomImageBuilderIdentifier]);
 }
 
+- (void)testNilIconImageResolverAlwaysResultingInNilIcon
+{
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults
+                                                                                      iconImageResolver:nil];
+    
+    self.builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:self.modelIdentifier
+                                                                         featureIdentifier:self.featureIdentifier
+                                                                                JSONSchema:JSONSchema
+                                                                         componentDefaults:self.componentDefaults
+                                                                         iconImageResolver:nil
+                                                                      mainImageDataBuilder:nil
+                                                                backgroundImageDataBuilder:nil];
+    
+    self.builder.iconIdentifier = @"icon";
+    
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
+    XCTAssertNotNil(model);
+    XCTAssertNil(model.icon);
+}
+
 - (void)testTargetInitialViewModelBuilderLazyInit
 {
     self.builder.componentName = @"component";

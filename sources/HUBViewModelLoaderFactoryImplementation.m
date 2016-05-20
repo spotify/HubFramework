@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
-@property (nonatomic, strong, readonly) id<HUBIconImageResolver> iconImageResolver;
+@property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentOperationFactory> prependedContentOperationFactory;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentOperationFactory> appendedContentOperationFactory;
 
@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
                initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
-                      iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
+                      iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
        prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
         appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
 {

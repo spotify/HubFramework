@@ -44,12 +44,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param connectivityStateResolver An object responsible for determining the current connectivity state of the application.
  *  @param imageLoaderFactory A factory that creates image loaders that are used to load images for components
- *  @param iconImageResolver An object responsible for converting icons into renderable images. See `HUBIconImageResolver` for
- *         more information.
  *  @param componentLayoutManager The object to use to manage layout for components, computing margins using layout traits.
  *         See `HUBComponentLayoutManager` for more information.
  *  @param componentFallbackHandler The object to use to fall back to default components in case a component could not be
  *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
+ *  @param iconImageResolver Any object responsible for converting icons into renderable images. If nil, this instance of
+ *         the Hub Framework won't support icons. See `HUBIconImageResolver` for more information.
  *  @param defaultContentReloadPolicy Any default content reload policy to use for features that do not define their own.
  *         A content reload policy determines whenever a view belonging to the feature should have its content reloaded.
  *         If nil, any feature not defining its own reload policy will always be reloaded whenever a view that belongs to
@@ -63,9 +63,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                                imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
-                                iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                                iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
                        defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                  prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                   appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory HUB_DESIGNATED_INITIALIZER;
