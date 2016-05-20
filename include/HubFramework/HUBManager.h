@@ -50,9 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
  *         See `HUBComponentLayoutManager` for more information.
  *  @param componentFallbackHandler The object to use to fall back to default components in case a component could not be
  *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
- *  @param defaultContentReloadPolicy The default content reload policy to use for features that do not define their own.
+ *  @param defaultContentReloadPolicy Any default content reload policy to use for features that do not define their own.
  *         A content reload policy determines whenever a view belonging to the feature should have its content reloaded.
- *         See `HUBContentReloadPolicy` for more information.
+ *         If nil, any feature not defining its own reload policy will always be reloaded whenever a view that belongs to
+ *         it re-appears. See `HUBContentReloadPolicy` for more information.
  *  @param prependedContentOperationFactory Any content operation factory that should be prepended to the chain of content
  *         operation factories for all views. The operations that this factory produces will therefore always be prepended
  *         to the content loading chain of any view.
