@@ -18,8 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBFeatureRegistryImplementation *featureRegistry;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
-@property (nonatomic, strong, readonly) id<HUBContentReloadPolicy> defaultContentReloadPolicy;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
+@property (nonatomic, strong, readonly, nullable) id<HUBContentReloadPolicy> defaultContentReloadPolicy;
 
 @end
 
@@ -30,15 +30,14 @@ NS_ASSUME_NONNULL_BEGIN
                                featureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
-                    defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                    defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
 {
     NSParameterAssert(viewModelLoaderFactory != nil);
     NSParameterAssert(imageLoaderFactory != nil);
     NSParameterAssert(featureRegistry != nil);
     NSParameterAssert(componentRegistry != nil);
     NSParameterAssert(initialViewModelRegistry != nil);
-    NSParameterAssert(defaultContentReloadPolicy != nil);
     NSParameterAssert(componentLayoutManager != nil);
     
     self = [super init];
@@ -81,12 +80,12 @@ NS_ASSUME_NONNULL_BEGIN
     return [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
                                                     viewModelLoader:viewModelLoader
                                                         imageLoader:imageLoader
-                                                contentReloadPolicy:contentReloadPolicy
                                               collectionViewFactory:collectionViewFactory
                                                   componentRegistry:self.componentRegistry
                                              componentLayoutManager:self.componentLayoutManager
                                            initialViewModelRegistry:self.initialViewModelRegistry
-                                                             device:[UIDevice currentDevice]];
+                                                             device:[UIDevice currentDevice]
+                                                contentReloadPolicy:contentReloadPolicy];
 }
 
 @end

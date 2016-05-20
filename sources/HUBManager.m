@@ -25,14 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
                                 iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                       defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
+                       defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                  prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                   appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
 {
     NSParameterAssert(connectivityStateResolver != nil);
     NSParameterAssert(imageLoaderFactory != nil);
     NSParameterAssert(iconImageResolver != nil);
-    NSParameterAssert(defaultContentReloadPolicy != nil);
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentFallbackHandler != nil);
     
@@ -63,8 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                 featureRegistry:_featureRegistry
                                                                                               componentRegistry:_componentRegistry
                                                                                        initialViewModelRegistry:_initialViewModelRegistry
-                                                                                     defaultContentReloadPolicy:defaultContentReloadPolicy
-                                                                                         componentLayoutManager:componentLayoutManager];
+                                                                                         componentLayoutManager:componentLayoutManager
+                                                                                     defaultContentReloadPolicy:defaultContentReloadPolicy];
     }
     
     return self;

@@ -21,22 +21,22 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewURI The view URI that this view controller is for
  *  @param viewModelLoader The object to use to load view models for the view controller
  *  @param imageLoader The object to use to load images for components
- *  @param contentReloadPolicy The reload policy to use to determine when to load new content
  *  @param collectionViewFactory The factory to use to create collection views
  *  @param componentRegistry The registry to use to retrieve components to render
  *  @param componentLayoutManager The object that manages layout for components in the view controller
  *  @param initialViewModelRegistry The registry to use to register initial view models for subsequent view controllers
  *  @param device The device that the view controller will be presented using
+ *  @param contentReloadPolicy The reload policy to use to determine when to load new content
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
                 viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
                     imageLoader:(id<HUBImageLoader>)imageLoader
-            contentReloadPolicy:(id<HUBContentReloadPolicy>)contentReloadPolicy
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
        initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
-                         device:(UIDevice *)device HUB_DESIGNATED_INITIALIZER;
+                         device:(UIDevice *)device
+            contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy HUB_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 

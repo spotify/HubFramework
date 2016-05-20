@@ -34,6 +34,7 @@
 @property (nonatomic, strong) HUBComponentIdentifier *componentIdentifier;
 @property (nonatomic, strong) HUBComponentMock *component;
 @property (nonatomic, strong) HUBCollectionViewMock *collectionView;
+@property (nonatomic, strong) HUBCollectionViewFactoryMock *collectionViewFactory;
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
@@ -65,7 +66,7 @@
     self.component = [HUBComponentMock new];
     
     self.collectionView = [HUBCollectionViewMock new];
-    HUBCollectionViewFactoryMock * const collectionViewFactory = [[HUBCollectionViewFactoryMock alloc] initWithCollectionView:self.collectionView];
+    self.collectionViewFactory = [[HUBCollectionViewFactoryMock alloc] initWithCollectionView:self.collectionView];
     
     id<HUBComponentFactory> const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{componentDefaults.componentName: self.component}];
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentDefaults.componentNamespace];
@@ -95,12 +96,12 @@
     self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
                                                                    viewModelLoader:self.viewModelLoader
                                                                        imageLoader:self.imageLoader
-                                                               contentReloadPolicy:self.contentReloadPolicy
-                                                             collectionViewFactory:collectionViewFactory
+                                                             collectionViewFactory:self.collectionViewFactory
                                                                  componentRegistry:self.componentRegistry
                                                             componentLayoutManager:componentLayoutManager
                                                           initialViewModelRegistry:self.initialViewModelRegistry
-                                                                            device:self.device];
+                                                                            device:self.device
+                                                               contentReloadPolicy:self.contentReloadPolicy];
     
     self.viewController.delegate = self;
     
@@ -173,6 +174,38 @@
     [self.viewController viewWillAppear:YES];
     
     XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleA);
+}
+
+- (void)testNilReloadPolicyAlwaysResultingInReload
+{
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    
+    self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
+                                                                   viewModelLoader:self.viewModelLoader
+                                                                       imageLoader:self.imageLoader
+                                                             collectionViewFactory:self.collectionViewFactory
+                                                                 componentRegistry:self.componentRegistry
+                                                            componentLayoutManager:componentLayoutManager
+                                                          initialViewModelRegistry:self.initialViewModelRegistry
+                                                                            device:self.device
+                                                               contentReloadPolicy:nil];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        builder.navigationBarTitle = @"Hub Framework";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqual(self.contentOperation.performCount, (NSUInteger)1);
+    
+    [self.viewController viewWillAppear:NO];
+    [self.viewController viewWillAppear:NO];
+    [self.viewController viewWillAppear:NO];
+    [self.viewController viewWillAppear:NO];
+    
+    XCTAssertEqual(self.contentOperation.performCount, (NSUInteger)5);
 }
 
 - (void)testHeaderComponentImageLoading
