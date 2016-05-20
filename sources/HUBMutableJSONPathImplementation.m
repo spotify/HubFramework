@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [self pathByAppendingParsingOperation:operation];
 }
 
-- (id<HUBMutableJSONPath>)runBlock:(NSObject * _Nullable(^)(NSObject *))block
+- (id<HUBMutableJSONPath>)runBlock:(HUBMutableJSONPathBlock)block
 {
     HUBJSONParsingOperation * const operation = [[HUBJSONParsingOperation alloc] initWithBlock:^NSArray<NSObject *> * _Nullable (NSObject *input) {
         NSObject * const output = block(input);
