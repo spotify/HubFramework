@@ -21,16 +21,15 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBManager
 
 - (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
-                               imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                               imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
                                 iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
                        defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                  prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                   appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
 {
     NSParameterAssert(connectivityStateResolver != nil);
-    NSParameterAssert(imageLoaderFactory != nil);
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentFallbackHandler != nil);
     
@@ -57,12 +56,12 @@ NS_ASSUME_NONNULL_BEGIN
                                                                            appendedContentOperationFactory:appendedContentOperationFactory];
         
         _viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:_viewModelLoaderFactory
-                                                                                             imageLoaderFactory:imageLoaderFactory
                                                                                                 featureRegistry:_featureRegistry
                                                                                               componentRegistry:_componentRegistry
                                                                                        initialViewModelRegistry:_initialViewModelRegistry
                                                                                          componentLayoutManager:componentLayoutManager
-                                                                                     defaultContentReloadPolicy:defaultContentReloadPolicy];
+                                                                                     defaultContentReloadPolicy:defaultContentReloadPolicy
+                                                                                             imageLoaderFactory:imageLoaderFactory];
     }
     
     return self;

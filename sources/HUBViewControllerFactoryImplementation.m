@@ -14,27 +14,26 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBViewControllerFactoryImplementation ()
 
 @property (nonatomic, strong, readonly) HUBViewModelLoaderFactoryImplementation *viewModelLoaderFactory;
-@property (nonatomic, strong, readonly) id<HUBImageLoaderFactory> imageLoaderFactory;
 @property (nonatomic, strong, readonly) HUBFeatureRegistryImplementation *featureRegistry;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly, nullable) id<HUBContentReloadPolicy> defaultContentReloadPolicy;
+@property (nonatomic, strong, readonly, nullable) id<HUBImageLoaderFactory> imageLoaderFactory;
 
 @end
 
 @implementation HUBViewControllerFactoryImplementation
 
 - (instancetype)initWithViewModelLoaderFactory:(HUBViewModelLoaderFactoryImplementation *)viewModelLoaderFactory
-                            imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
                                featureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
                         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                     defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
+                            imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
 {
     NSParameterAssert(viewModelLoaderFactory != nil);
-    NSParameterAssert(imageLoaderFactory != nil);
     NSParameterAssert(featureRegistry != nil);
     NSParameterAssert(componentRegistry != nil);
     NSParameterAssert(initialViewModelRegistry != nil);
@@ -44,12 +43,12 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self) {
         _viewModelLoaderFactory = viewModelLoaderFactory;
-        _imageLoaderFactory = imageLoaderFactory;
         _featureRegistry = featureRegistry;
         _componentRegistry = componentRegistry;
         _initialViewModelRegistry = initialViewModelRegistry;
         _defaultContentReloadPolicy = defaultContentReloadPolicy;
         _componentLayoutManager = componentLayoutManager;
+        _imageLoaderFactory = imageLoaderFactory;
     }
     
     return self;
@@ -79,13 +78,13 @@ NS_ASSUME_NONNULL_BEGIN
     
     return [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
                                                     viewModelLoader:viewModelLoader
-                                                        imageLoader:imageLoader
                                               collectionViewFactory:collectionViewFactory
                                                   componentRegistry:self.componentRegistry
                                              componentLayoutManager:self.componentLayoutManager
                                            initialViewModelRegistry:self.initialViewModelRegistry
                                                              device:[UIDevice currentDevice]
-                                                contentReloadPolicy:contentReloadPolicy];
+                                                contentReloadPolicy:contentReloadPolicy
+                                                        imageLoader:imageLoader];
 }
 
 @end
