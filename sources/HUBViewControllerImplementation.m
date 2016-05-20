@@ -27,12 +27,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
 @property (nonatomic, strong, readonly) id<HUBImageLoader> imageLoader;
-@property (nonatomic, strong, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, weak, nullable) UIDevice *device;
+@property (nonatomic, strong, readonly, nullable) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
@@ -55,12 +55,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewURI:(NSURL *)viewURI
                 viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
                     imageLoader:(id<HUBImageLoader>)imageLoader
-            contentReloadPolicy:(id<HUBContentReloadPolicy>)contentReloadPolicy
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
        initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
                          device:(UIDevice *)device
+            contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
 
 {
     if (!(self = [super initWithNibName:nil bundle:nil])) {
@@ -70,12 +70,12 @@ NS_ASSUME_NONNULL_BEGIN
     _viewURI = [viewURI copy];
     _viewModelLoader = viewModelLoader;
     _imageLoader = imageLoader;
-    _contentReloadPolicy = contentReloadPolicy;
     _collectionViewFactory = collectionViewFactory;
     _componentRegistry = componentRegistry;
     _componentLayoutManager = componentLayoutManager;
     _initialViewModelRegistry = initialViewModelRegistry;
     _device = device;
+    _contentReloadPolicy = contentReloadPolicy;
     _viewModel = viewModelLoader.initialViewModel;
     _viewModelIsInitial = YES;
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
@@ -355,12 +355,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadViewModelIfNeeded
 {
-    if (!self.viewModelIsInitial) {
-        id<HUBViewModel> const currentViewModel = self.viewModel;
-        
-        if (currentViewModel != nil) {
-            if (![self.contentReloadPolicy shouldReloadContentForViewURI:self.viewURI currentViewModel:currentViewModel]) {
-                return;
+    if (self.contentReloadPolicy != nil) {
+        if (!self.viewModelIsInitial) {
+            id<HUBViewModel> const currentViewModel = self.viewModel;
+            
+            if (currentViewModel != nil) {
+                if (![self.contentReloadPolicy shouldReloadContentForViewURI:self.viewURI currentViewModel:currentViewModel]) {
+                    return;
+                }
             }
         }
     }

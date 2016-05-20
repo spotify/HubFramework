@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 iconImageResolver:(id<HUBIconImageResolver>)iconImageResolver
                            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                       defaultContentReloadPolicy:(id<HUBContentReloadPolicy>)defaultContentReloadPolicy
+                       defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                  prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                   appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory HUB_DESIGNATED_INITIALIZER;
 
