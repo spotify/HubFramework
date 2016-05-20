@@ -85,11 +85,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier type:(HUBComponentImageType)type
 {
-    if (self.URL == nil && self.placeholderIconIdentifier == nil && self.localImage == nil) {
+    id<HUBIcon> const placeholderIcon = [self buildPlaceholderIcon];
+    
+    if (self.URL == nil && self.localImage == nil && placeholderIcon == nil) {
         return nil;
     }
-    
-    id<HUBIcon> const placeholderIcon = [self buildPlaceholderIcon];
     
     return [[HUBComponentImageDataImplementation alloc] initWithIdentifier:identifier
                                                                       type:type

@@ -76,6 +76,24 @@
     XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
 }
 
+- (void)testNilIconImageResolverAlwaysResultingInNilPlaceholderIcon
+{
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                                      iconImageResolver:nil];
+    
+    self.builder = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema iconImageResolver:nil];
+    self.builder.placeholderIconIdentifier = @"placeholder";
+    
+    // Since icon is now nil, the builder itself should also return nil (since it doesn't contain any other data)
+    XCTAssertNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
+    
+    self.builder.localImage = [UIImage new];
+    HUBComponentImageDataImplementation * const imageData = [self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain];
+    XCTAssertNotNil(imageData);
+    XCTAssertNil(imageData.placeholderIcon);
+}
+
 - (void)testAddingJSONData
 {
     NSURL * const imageURL = [NSURL URLWithString:@"http://cdn.spotify.com/image"];
