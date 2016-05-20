@@ -95,13 +95,13 @@
     
     self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
                                                                    viewModelLoader:self.viewModelLoader
-                                                                       imageLoader:self.imageLoader
                                                              collectionViewFactory:self.collectionViewFactory
                                                                  componentRegistry:self.componentRegistry
                                                             componentLayoutManager:componentLayoutManager
                                                           initialViewModelRegistry:self.initialViewModelRegistry
                                                                             device:self.device
-                                                               contentReloadPolicy:self.contentReloadPolicy];
+                                                               contentReloadPolicy:self.contentReloadPolicy
+                                                                       imageLoader:self.imageLoader];
     
     self.viewController.delegate = self;
     
@@ -183,13 +183,13 @@
     
     self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
                                                                    viewModelLoader:self.viewModelLoader
-                                                                       imageLoader:self.imageLoader
                                                              collectionViewFactory:self.collectionViewFactory
                                                                  componentRegistry:self.componentRegistry
                                                             componentLayoutManager:componentLayoutManager
                                                           initialViewModelRegistry:self.initialViewModelRegistry
                                                                             device:self.device
-                                                               contentReloadPolicy:nil];
+                                                               contentReloadPolicy:nil
+                                                                       imageLoader:self.imageLoader];
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
         builder.navigationBarTitle = @"Hub Framework";
