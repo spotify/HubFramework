@@ -21,3 +21,5 @@ static HUBComponentCategory * const HUBComponentCategoryCard = @"card";
 /// Category for components that have a carousel-like apperance, with a swipeable horizontal set of child components
 static HUBComponentCategory * const HUBComponentCategoryCarousel = @"carousel";
 
+/// Category for components that have a banner-like appearance, imagery-heavy with a full screen width and compact height
+static HUBComponentCategory * const HUBComponentCategoryBanner = @"banner";
