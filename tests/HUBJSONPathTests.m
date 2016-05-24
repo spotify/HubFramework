@@ -94,12 +94,12 @@
     NSArray * const validArray = @[@"hello", @"how", @"are", @"you?"];
     XCTAssertEqualObjects([path valuesFromJSONDictionary:@{@"array": validArray}], validArray);
     
-    NSArray * const invalidArray = @[@"hello", @(15)];
-    XCTAssertNil([path valuesFromJSONDictionary:@{@"array": invalidArray}]);
+    NSArray * const arrayWithInvalidElement = @[@"hello", @(15)];
+    XCTAssertEqualObjects([path valuesFromJSONDictionary:@{@"array": arrayWithInvalidElement}], @[@"hello"]);
     
     XCTAssertEqualObjects([path valuesFromJSONDictionary:@{@"array": @[]}], @[]);
-    XCTAssertNil([path valuesFromJSONDictionary:@{@"array": @"notAnArray"}]);
-    XCTAssertNil([path valuesFromJSONDictionary:@{}]);
+    XCTAssertEqualObjects([path valuesFromJSONDictionary:@{@"array": @"notAnArray"}], @[]);
+    XCTAssertEqualObjects([path valuesFromJSONDictionary:@{}], @[]);
 }
 
 - (void)testDictionaryPath

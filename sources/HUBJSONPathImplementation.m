@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBDictionaryPath
 
-- (nullable NSArray<NSObject *> *)valuesFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
+- (NSArray<NSObject *> *)valuesFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {
     NSArray<NSObject *> *currentValues = @[dictionary];
     
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
         currentValues = [self valuesByPerformingParsingOperation:operation withInputValues:currentValues];
         
         if (currentValues == nil) {
-            return nil;
+            return @[];
         }
     }
     
@@ -104,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
         NSArray * const operationOutput = [operation parsedValuesForInput:value];
         
         if (operationOutput == nil) {
-            return nil;
+            continue;
         }
         
         [outputValues addObjectsFromArray:operationOutput];

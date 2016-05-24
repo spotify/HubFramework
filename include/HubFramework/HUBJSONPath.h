@@ -24,10 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param dictionary The JSON dictionary to apply the path on
  *
- *  @return An array of type-checked values, depending on what type that the path is associated with, or nil
- *  if any of the operations in the path could be completed, or if type-checking failed.
+ *  @return An array of type-checked values, depending on what type that the path is associated with
  */
-- (nullable NSArray<NSObject *> *)valuesFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary;
+- (NSArray<NSObject *> *)valuesFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary;
 
 /**
  *  Return a mutable copy of this path, that can be used to extend it with additional operations
