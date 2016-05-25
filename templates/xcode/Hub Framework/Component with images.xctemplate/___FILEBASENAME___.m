@@ -24,11 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
     return CGSizeZero;
 }
 
-- (void)updateViewAfterResize
-{
-    // Update your view after its size was changed, layout subviews, etc.
-}
-
 - (void)prepareViewForReuse
 {
     // Prepare your view for reuse, reset state, remove highlights, etc.
