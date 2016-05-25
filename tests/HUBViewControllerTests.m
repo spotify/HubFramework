@@ -42,6 +42,7 @@
 @property (nonatomic, strong) HUBViewControllerImplementation *viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromAppearanceDelegateMethod;
+@property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromDisapperanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromSelectionDelegateMethod;
 
 @end
@@ -106,6 +107,7 @@
     
     self.viewModelFromDelegateMethod = nil;
     self.componentModelsFromAppearanceDelegateMethod = [NSMutableArray new];
+    self.componentModelsFromDisapperanceDelegateMethod = [NSMutableArray new];
     self.componentModelsFromSelectionDelegateMethod = [NSMutableArray new];
 }
 
@@ -361,7 +363,7 @@
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-    [component.childDelegate component:component willDisplayChildAtIndex:0];
+    [component.childDelegate component:component willDisplayChildAtIndex:0 view:[UIView new]];
     
     [self performAsynchronousTestWithBlock:^{
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
@@ -683,13 +685,13 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
     id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
-    [childDelegate component:component childSelectedAtIndex:0];
+    [childDelegate component:component childSelectedAtIndex:0 view:[UIView new]];
     
     id<HUBViewModel> const childComponentTargetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:childComponentTargetURL];
     XCTAssertEqualObjects(childComponentTargetInitialViewModel.identifier, childComponentInitialViewModelIdentifier);
     
     // Make sure bounds-checking is performed for child component index
-    [childDelegate component:component willDisplayChildAtIndex:99];
+    [childDelegate component:component willDisplayChildAtIndex:99 view:[UIView new]];
     
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].targetURL, childComponentTargetURL);
@@ -778,6 +780,42 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod[1].title, @"title");
 }
 
+- (void)testDelegateNotifiedWhenRootComponentDisappeared
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].title = @"Title";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    [self.collectionView.delegate collectionView:self.collectionView didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
+    
+    XCTAssertEqual(self.componentModelsFromDisapperanceDelegateMethod.count, (NSUInteger)1);
+    XCTAssertEqualObjects(self.componentModelsFromDisapperanceDelegateMethod[0].title, @"Title");
+}
+
+- (void)testDelegateNotifiedWhenChildComponentDisappeared
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.title = @"Title";
+        [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"].title = @"Child title";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    [self.component.childDelegate component:self.component didStopDisplayingChildAtIndex:0 view:[UIView new]];
+    
+    XCTAssertEqual(self.componentModelsFromDisapperanceDelegateMethod.count, (NSUInteger)1);
+    XCTAssertEqualObjects(self.componentModelsFromDisapperanceDelegateMethod[0].title, @"Child title");
+    
+}
+
 - (void)testSettingBackgroundColorOfViewAlsoUpdatesCollectionView
 {
     self.viewController.view.backgroundColor = [UIColor redColor];
@@ -792,13 +830,25 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     self.viewModelFromDelegateMethod = viewModel;
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController componentWillAppearWithModel:(id<HUBComponentModel>)componentModel
+- (void)viewController:(UIViewController<HUBViewController> *)viewController
+    componentWithModel:(id<HUBComponentModel>)componentModel
+      willAppearInView:(UIView *)componentView
 {
     XCTAssertEqual(viewController, self.viewController);
     [self.componentModelsFromAppearanceDelegateMethod addObject:componentModel];
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
+- (void)viewController:(UIViewController<HUBViewController> *)viewController
+    componentWithModel:(id<HUBComponentModel>)componentModel
+  didDisappearFromView:(UIView *)componentView
+{
+    XCTAssertEqual(viewController, self.viewController);
+    [self.componentModelsFromDisapperanceDelegateMethod addObject:componentModel];
+}
+
+- (void)viewController:(UIViewController<HUBViewController> *)viewController
+    componentWithModel:(id<HUBComponentModel>)componentModel
+        selectedInView:(UIView *)componentView
 {
     XCTAssertEqual(viewController, self.viewController);
     [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];

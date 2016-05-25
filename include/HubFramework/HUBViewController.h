@@ -2,6 +2,7 @@
 
 @protocol HUBViewController;
 @protocol HUBViewModel;
+@protocol HUBComponent;
 @protocol HUBComponentModel;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -29,16 +30,33 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewController The view controller in which a component is about to appear
  *  @param componentModel The model of the component that is about to appear
+ *  @param componentView The view that the component is about to appear in
  */
-- (void)viewController:(UIViewController<HUBViewController> *)viewController componentWillAppearWithModel:(id<HUBComponentModel>)componentModel;
+- (void)viewController:(UIViewController<HUBViewController> *)viewController
+    componentWithModel:(id<HUBComponentModel>)componentModel
+      willAppearInView:(UIView *)componentView;
+
+/**
+ *  Sent to a Hub Framework view controller's delegate when a component disappeared from the screen
+ *
+ *  @param viewController The view controller in which a component disappeared
+ *  @param componentModel The model of the component that disappeared
+ *  @param componentView The view that the component disappeared from
+ */
+- (void)viewController:(UIViewController<HUBViewController> *)viewController
+    componentWithModel:(id<HUBComponentModel>)componentModel
+  didDisappearFromView:(UIView *)componentView;
 
 /**
  *  Sent to a Hub Framework view controller's delegate when a component was selected
  *
  *  @param viewController The view controller in which the component was selected
  *  @param componentModel The model of the component that was selected
+ *  @param componentView The view that the component was selected in
  */
-- (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
+- (void)viewController:(UIViewController<HUBViewController> *)viewController
+    componentWithModel:(id<HUBComponentModel>)componentModel
+        selectedInView:(UIView *)componentView;
 
 @end
 
