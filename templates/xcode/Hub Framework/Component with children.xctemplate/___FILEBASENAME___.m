@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation ___FILEBASENAMEASIDENTIFIER___
 
 @synthesize view = _view;
-@synthesize childEventHandler = _childEventHandler;
+@synthesize childDelegate = _childDelegate;
 
 - (NSSet<HUBComponentLayoutTrait *> *)layoutTraits
 {
@@ -23,11 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 {
     // Return the size you'd prefer that the layout system resizes your view to
     return CGSizeZero;
-}
-
-- (void)updateViewAfterResize
-{
-    // Update your view after its size was changed, layout subviews, etc.
 }
 
 - (void)prepareViewForReuse
