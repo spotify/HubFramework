@@ -37,22 +37,33 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param component The parent component
  *  @param childIndex The index of the child component that is about to be displayed
+ *  @param childView The view of the child component that is about to be displayed
  *
  *  If your component has nested child components, you should call this method every time a child is about to
  *  appear on the screen, to enable the Hub Framework to load images and perform other setup work for it.
  */
-- (void)component:(id<HUBComponentWithChildren>)component willDisplayChildAtIndex:(NSUInteger)childIndex;
+- (void)component:(id<HUBComponentWithChildren>)component willDisplayChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView;
+
+/**
+ *  Notify the Hub Framework that a component has stopped displaying a child component at a given index
+ *
+ *  @param component The parent component
+ *  @param childIndex The index of the child component that is no longer being displayed
+ *  @param childView The view of the child component that is no longer displayed
+ */
+- (void)component:(id<HUBComponentWithChildren>)component didStopDisplayingChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView;
 
 /**
  *  Notify the Hub Framework that a component's child component has been selected
  *
  *  @param component The parent component
  *  @param childIndex The index of the child component that was selected
+ *  @param childView The view of the child component that was selected
  *
  *  If your component has nested child components, you should call this method every time a child component was
  *  selected by the user, to enable the Hub Framework to handle the selection.
  */
-- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex;
+- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex view:(UIView *)childView;
 
 @end
 

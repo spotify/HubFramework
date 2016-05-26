@@ -1,3 +1,4 @@
+#import <UIKit/UIKit.h>
 #import "HUBHeaderMacros.h"
 
 @protocol HUBComponent;
@@ -20,20 +21,37 @@ NS_ASSUME_NONNULL_BEGIN
        createChildComponentWithModel:(id<HUBComponentModel>)model;
 
 /**
- *  Notify the delegate that the wrapped component is about to display a child component at a given index
+ *  Notify the delegate that one of the wrapped component's children is about to appear on the screen
  *
  *  @param componentWrapper The wrapper of the component in which the event occured
- *  @param childIndex The index of the child component that is about to be displayed
+ *  @param childComponentView The view of the child component that is about to appear
+ *  @param childIndex The index of the child component that is about to appear
  */
-- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper componentWillDisplayChildAtIndex:(NSUInteger)childIndex;
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+  childComponentWithView:(UIView *)childComponentView
+       willAppearAtIndex:(NSUInteger)childIndex;
+
+/**
+ *  Notify the delegate that one of the wrapped component's children disappeared from the screen
+ *
+ *  @param componentWrapper The wrapper of the component in which the event occured
+ *  @param childComponentView The view of the child component that disappared
+ *  @param childIndex The index of the child component that disappared
+ */
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+  childComponentWithView:(UIView *)childComponentView
+     didDisappearAtIndex:(NSUInteger)childIndex;
 
 /**
  *  Notify the delegate that a child component in the wrapped component was selected
  *
  *  @param componentWrapper The wrapper of the component in which the event occured
+ *  @param childComponentView The view of the child component that was selected
  *  @param childIndex The index of the child component that was selected
  */
-- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponentSelectedAtIndex:(NSUInteger)childIndex;
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+  childComponentWithView:(UIView *)childComponentView
+         selectedAtIndex:(NSUInteger)childIndex;
 
 @end
 

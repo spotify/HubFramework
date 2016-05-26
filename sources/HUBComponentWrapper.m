@@ -54,22 +54,31 @@ NS_ASSUME_NONNULL_BEGIN
     return childComponent;
 }
 
-- (void)component:(id<HUBComponentWithChildren>)component willDisplayChildAtIndex:(NSUInteger)childIndex
+- (void)component:(id<HUBComponentWithChildren>)component willDisplayChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView
 {
     if (self.component != component) {
         return;
     }
     
-    [self.delegate componentWrapper:self componentWillDisplayChildAtIndex:childIndex];
+    [self.delegate componentWrapper:self childComponentWithView:childView willAppearAtIndex:childIndex];
 }
 
-- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex
+- (void)component:(id<HUBComponentWithChildren>)component didStopDisplayingChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView
 {
     if (self.component != component) {
         return;
     }
     
-    [self.delegate componentWrapper:self childComponentSelectedAtIndex:childIndex];
+    [self.delegate componentWrapper:self childComponentWithView:childView didDisappearAtIndex:childIndex];
+}
+
+- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex view:(UIView *)childView
+{
+    if (self.component != component) {
+        return;
+    }
+    
+    [self.delegate componentWrapper:self childComponentWithView:childView selectedAtIndex:childIndex];
 }
 
 @end

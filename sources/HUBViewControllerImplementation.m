@@ -237,12 +237,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentWrapperDelegate
 
-- (__kindof id<HUBComponent>)componentWrapper:(HUBComponentWrapper *)componentWrapper createChildComponentWithModel:(id<HUBComponentModel>)model
+- (__kindof id<HUBComponent>)componentWrapper:(HUBComponentWrapper *)componentWrapper
+                createChildComponentWithModel:(id<HUBComponentModel>)model
 {
     return [self.componentRegistry createComponentForModel:model];
 }
 
-- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper componentWillDisplayChildAtIndex:(NSUInteger)childIndex
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+  childComponentWithView:(UIView *)childComponentView
+       willAppearAtIndex:(NSUInteger)childIndex
 {
     id<HUBComponentModel> const componentModel = componentWrapper.currentModel;
     
@@ -256,9 +259,13 @@ NS_ASSUME_NONNULL_BEGIN
                            model:childComponentModel
                wrapperIdentifier:componentWrapper.identifier
                       childIndex:@(childIndex)];
+    
+    [self.delegate viewController:self componentWithModel:childComponentModel willAppearInView:childComponentView];
 }
 
-- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponentSelectedAtIndex:(NSUInteger)childIndex
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+  childComponentWithView:(UIView *)childComponentView
+     didDisappearAtIndex:(NSUInteger)childIndex
 {
     id<HUBComponentModel> const componentModel = componentWrapper.currentModel;
     
@@ -267,7 +274,21 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     id<HUBComponentModel> const childComponentModel = componentModel.childComponentModels[childIndex];
-    [self handleSelectionForComponentWithModel:childComponentModel];
+    [self.delegate viewController:self componentWithModel:childComponentModel didDisappearFromView:childComponentView];
+}
+
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+  childComponentWithView:(UIView *)childComponentView
+         selectedAtIndex:(NSUInteger)childIndex
+{
+    id<HUBComponentModel> const componentModel = componentWrapper.currentModel;
+    
+    if (childIndex >= componentModel.childComponentModels.count) {
+        return;
+    }
+    
+    id<HUBComponentModel> const childComponentModel = componentModel.childComponentModels[childIndex];
+    [self handleSelectionForComponentWithModel:childComponentModel view:childComponentView];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -334,12 +355,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
-    [self handleSelectionForComponentWithModel:componentModel];
+    UICollectionViewCell * const cell = [collectionView cellForItemAtIndexPath:indexPath];
+    [self handleSelectionForComponentWithModel:componentModel view:cell];
 }
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView
+       willDisplayCell:(UICollectionViewCell *)cell
+    forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [self collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView
+  didEndDisplayingCell:(UICollectionViewCell *)cell
+    forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
+    [self.delegate viewController:self componentWithModel:componentModel didDisappearFromView:cell];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -491,7 +523,7 @@ NS_ASSUME_NONNULL_BEGIN
         [(id<HUBComponentViewObserver>)component viewWillAppear];
     }
     
-    [self.delegate viewController:self componentWillAppearWithModel:model];
+    [self.delegate viewController:self componentWithModel:model willAppearInView:cell];
 }
 
 - (void)headerAndOverlayComponentViewsWillAppear
@@ -656,7 +688,7 @@ NS_ASSUME_NONNULL_BEGIN
     [component updateViewForLoadedImage:image fromData:imageData model:componentModel animated:!loadedFromCache];
 }
 
-- (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel
+- (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel view:(UIView *)view
 {
     NSURL * const targetURL = componentModel.targetURL;
     id<HUBViewModel> const targetInitialViewModel = componentModel.targetInitialViewModel;
@@ -671,7 +703,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     [[UIApplication sharedApplication] openURL:targetURL];
     
-    [self.delegate viewController:self componentSelectedWithModel:componentModel];
+    [self.delegate viewController:self componentWithModel:componentModel selectedInView:view];
 }
 
 @end
