@@ -90,6 +90,11 @@ NS_ASSUME_NONNULL_BEGIN
     return [self getOrCreateBuilderForHeaderComponentModelWithIdentifier:nil];
 }
 
+- (BOOL)headerComponentModelBuilderExists
+{
+    return self.headerComponentModelBuilderImplementation != nil;
+}
+
 - (BOOL)builderExistsForBodyComponentModelWithIdentifier:(NSString *)identifier
 {
     return self.bodyComponentModelBuilders[identifier] != nil;

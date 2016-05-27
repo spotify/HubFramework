@@ -76,10 +76,19 @@ NS_ASSUME_NONNULL_BEGIN
  *  be added to the view. If this property is never accessed, a `UINavigationBar`-based header will be used instead.
  *
  *  To remove this view model builder's header component builder, use `-removeHeaderComponentModelBuilder`.
+ *  To check whether a header component model builder currently exists, use `headerComponentModelBuilderExists`.
  *
  *  In case no identifier is explicity defined for the returned builder, it will use "header" as the default.
  */
 @property (nonatomic, strong, readonly) id<HUBComponentModelBuilder> headerComponentModelBuilder;
+
+/**
+ *  Whether a builder for a model for the view's header component currently exists
+ *
+ *  Since accessing `headerCompoentModelBuilder` lazily creates a builder, you can use this property to check for the
+ *  existance of a builder.
+ */
+@property (nonatomic, readonly) BOOL headerComponentModelBuilderExists;
 
 #pragma mark - Metadata
 

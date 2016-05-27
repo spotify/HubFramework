@@ -201,6 +201,10 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
+    if (!self.builder.headerComponentModelBuilderExists && self.builder.navigationBarTitle == nil) {
+        self.builder.navigationBarTitle = self.featureInfo.title;
+    }
+    
     id<HUBViewModel> const viewModel = [self.builder build];
     [delegate viewModelLoader:self didLoadViewModel:viewModel];
 }

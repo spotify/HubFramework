@@ -70,6 +70,13 @@
     XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.componentCategory, self.componentDefaults.componentCategory);
 }
 
+- (void)testHeaderComponentBuilderExists
+{
+    XCTAssertFalse(self.builder.headerComponentModelBuilderExists);
+    self.builder.headerComponentModelBuilder.title = @"Header";
+    XCTAssertTrue(self.builder.headerComponentModelBuilderExists);
+}
+
 - (void)testRemovingHeaderComponentBuilder
 {
     id<HUBComponentModelBuilder> const builder = self.builder.headerComponentModelBuilder;
