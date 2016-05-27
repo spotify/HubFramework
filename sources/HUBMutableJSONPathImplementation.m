@@ -129,6 +129,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBJSONURLPath>)URLPath
 {
     HUBJSONParsingOperation * const formattingOperation = [[HUBJSONParsingOperation alloc] initWithBlock:^NSArray<NSObject *> * _Nullable (NSObject *input) {
+        if ([input isKindOfClass:[NSURL class]]) {
+            return @[input];
+        }
+        
         if (![input isKindOfClass:[NSString class]]) {
             return nil;
         }
