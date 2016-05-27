@@ -44,7 +44,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize targetURL = _targetURL;
 @synthesize customData = _customData;
 @synthesize loggingData = _loggingData;
-@synthesize date = _date;
 
 #pragma mark - Class methods
 
@@ -306,12 +305,6 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
-    NSDate * const date = [componentModelSchema.datePath dateFromJSONDictionary:dictionary];
-    
-    if (date != nil) {
-        self.date = date;
-    }
-    
     NSDictionary * const customData = [componentModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
     
     if (customData != nil) {
@@ -392,7 +385,6 @@ NS_ASSUME_NONNULL_BEGIN
     copy.targetInitialViewModelBuilderImplementation = [self.targetInitialViewModelBuilderImplementation copy];
     copy.customData = self.customData;
     copy.loggingData = self.loggingData;
-    copy.date = self.date;
     
     for (NSString * const customImageIdentifier in self.customImageDataBuilders) {
         copy.customImageDataBuilders[customImageIdentifier] = [self.customImageDataBuilders[customImageIdentifier] copy];
@@ -453,7 +445,6 @@ NS_ASSUME_NONNULL_BEGIN
                                                 targetInitialViewModel:targetInitialViewModel
                                                             customData:self.customData
                                                            loggingData:self.loggingData
-                                                                  date:self.date
                                                   childComponentModels:childComponentModels];
 }
 

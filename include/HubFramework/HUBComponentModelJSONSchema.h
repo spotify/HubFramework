@@ -89,9 +89,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// The path to follow to extract any logging data for a component. Maps to `loggingData`.
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> loggingDataPath;
 
-/// The path to follow to extract a date. Maps to `date`.
-@property (nonatomic, strong) id<HUBJSONDatePath> datePath;
-
 /**
  *  The path to follow to extract dictionaries to create child component models from. Maps to `childComponentModels`.
  *

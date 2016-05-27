@@ -27,7 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize targetInitialViewModel = _targetInitialViewModel;
 @synthesize customData = _customData;
 @synthesize loggingData = _loggingData;
-@synthesize date = _date;
 @synthesize childComponentModels = _childComponentModels;
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
@@ -46,7 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
             targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
                        loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
-                              date:(nullable NSDate *)date
               childComponentModels:(nullable NSArray<id<HUBComponentModel>> *)childComponentModels
 {
     NSParameterAssert(identifier != nil);
@@ -70,7 +68,6 @@ NS_ASSUME_NONNULL_BEGIN
         _targetInitialViewModel = targetInitialViewModel;
         _customData = customData;
         _loggingData = loggingData;
-        _date = date;
         _childComponentModels = childComponentModels;
     }
     
@@ -160,7 +157,6 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyCustom] = self.customData;
     serialization[HUBJSONKeyLogging] = self.loggingData;
-    serialization[HUBJSONKeyDate] = [self encodedDate];
     
     if (serialization.count == 0) {
         return nil;
@@ -184,17 +180,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return [serializedModels copy];
-}
-
-- (nullable NSString *)encodedDate
-{
-    NSDate * const date = self.date;
-    
-    if (date == nil) {
-        return nil;
-    }
-    
-    return [HUBDateFormatterCreateWithDefaultFormat() stringFromDate:date];
 }
 
 @end

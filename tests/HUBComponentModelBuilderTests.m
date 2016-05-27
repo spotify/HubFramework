@@ -63,7 +63,6 @@
     self.builder.targetURL = [NSURL URLWithString:@"spotify:hub"];
     self.builder.customData = @{@"key": @"value"};
     self.builder.loggingData = @{@"logging": @"data"};
-    self.builder.date = [NSDate date];
     
     NSUInteger const modelIndex = 5;
     HUBComponentModelImplementation * const model = [self.builder buildForIndex:modelIndex];
@@ -81,7 +80,6 @@
     XCTAssertEqualObjects(model.targetURL, self.builder.targetURL);
     XCTAssertEqualObjects(model.customData, self.builder.customData);
     XCTAssertEqualObjects(model.loggingData, self.builder.loggingData);
-    XCTAssertEqualObjects(model.date, self.builder.date);
 }
 
 - (void)testOverridingDefaultComponentNameNamespaceAndCategory
@@ -315,8 +313,7 @@
         },
         @"metadata": @{
             @"custom": customData,
-            @"logging": loggingData,
-            @"date": @"2016-10-17"
+            @"logging": loggingData
         },
         @"children": @[
             @{
@@ -354,12 +351,6 @@
     XCTAssertEqualObjects(model.customData, customData);
     XCTAssertEqualObjects(model.loggingData, loggingData);
     
-    NSDateComponents * const expectedDateComponents = [NSDateComponents new];
-    expectedDateComponents.year = 2016;
-    expectedDateComponents.month = 10;
-    expectedDateComponents.day = 17;
-    XCTAssertEqualObjects(model.date, [[NSCalendar currentCalendar] dateFromComponents:expectedDateComponents]);
-    
     id<HUBComponentModel> const childModel1 = model.childComponentModels[0];
     XCTAssertEqualObjects(childModel1.identifier, child1ModelIdentifier);
     XCTAssertEqualObjects(childModel1.componentIdentifier, child1ComponentIdentifier);
@@ -376,8 +367,6 @@
 
 - (void)testAddingJSONDataNotRemovingExistingData
 {
-    NSDate * const currentDate = [NSDate date];
-    
     self.builder.componentNamespace = @"namespace";
     self.builder.componentName = @"name";
     self.builder.preferredIndex = @(33);
@@ -387,7 +376,6 @@
     self.builder.descriptionText = @"description text";
     self.builder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
     self.builder.loggingData = @{@"logging": @"data"};
-    self.builder.date = currentDate;
     self.builder.customData = @{@"custom": @"data"};
     
     [self.builder addDataFromJSONDictionary:@{}];
@@ -401,7 +389,6 @@
     XCTAssertEqualObjects(self.builder.descriptionText, @"description text");
     XCTAssertEqualObjects(self.builder.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
     XCTAssertEqualObjects(self.builder.loggingData, @{@"logging": @"data"});
-    XCTAssertEqualObjects(self.builder.date, currentDate);
     XCTAssertEqualObjects(self.builder.customData, @{@"custom": @"data"});
 }
 
@@ -451,8 +438,6 @@
 
 - (void)testCopying
 {
-    NSDate * const currentDate = [NSDate date];
-    
     self.builder.componentNamespace = @"namespace for copying";
     self.builder.componentName = @"name for copying";
     self.builder.componentCategory = @"category for copying";
@@ -463,7 +448,6 @@
     self.builder.descriptionText = @"description text";
     self.builder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
     self.builder.loggingData = @{@"logging": @"data"};
-    self.builder.date = currentDate;
     self.builder.customData = @{@"custom": @"data"};
     
     self.builder.mainImageDataBuilder.placeholderIconIdentifier = @"mainPlaceholder";
@@ -484,7 +468,6 @@
     XCTAssertEqualObjects(builderCopy.descriptionText, @"description text");
     XCTAssertEqualObjects(builderCopy.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
     XCTAssertEqualObjects(builderCopy.loggingData, @{@"logging": @"data"});
-    XCTAssertEqualObjects(builderCopy.date, currentDate);
     XCTAssertEqualObjects(builderCopy.customData, @{@"custom": @"data"});
     
     XCTAssertNotEqual(self.builder.mainImageDataBuilder, builderCopy.mainImageDataBuilder);

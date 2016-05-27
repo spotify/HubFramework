@@ -145,30 +145,6 @@ NS_ASSUME_NONNULL_BEGIN
     return [self destinationPathWithFinalParsingOperation:formattingOperation];
 }
 
-- (id<HUBJSONDatePath>)datePath
-{
-    return [self datePathWithFormatter:HUBDateFormatterCreateWithDefaultFormat()];
-}
-
-- (id<HUBJSONDatePath>)datePathWithFormatter:(NSDateFormatter *)dateFormatter
-{
-    HUBJSONParsingOperation * const formattingOperation = [[HUBJSONParsingOperation alloc] initWithBlock:^NSArray<NSObject *> * _Nullable (NSObject *input) {
-        if (![input isKindOfClass:[NSString class]]) {
-            return nil;
-        }
-        
-        NSDate * const date = [dateFormatter dateFromString:(NSString *)input];
-        
-        if (date == nil) {
-            return nil;
-        }
-        
-        return @[date];
-    }];
-    
-    return [self destinationPathWithFinalParsingOperation:formattingOperation];
-}
-
 - (id<HUBJSONDictionaryPath>)dictionaryPath
 {
     return [self destinationPathWithExpectedType:[NSDictionary class]];

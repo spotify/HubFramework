@@ -135,22 +135,6 @@ typedef NSObject * _Nullable(^HUBMutableJSONPathBlock)(NSObject *input);
 - (id<HUBJSONURLPath>)URLPath;
 
 /**
- *  Turn this path into an immutable path that expects the destination value to be an `NSString` that can be parsed
- *  into an `NSDate` using a default "yyyy-MM-dd" format.
- *
- *  Use `-datePathWithFormat:` to be able to use a custom date format.
- */
-- (id<HUBJSONDatePath>)datePath;
-
-/**
- *  Turn this path into an immutable path that expects the destination value to be an `NSString` that can be parsed
- *  into an `NSDate` using a custom date formatter.
- *
- *  @param dateFormatter The date formatter to use to parse a found `NSSring` into an `NSDate`.
- */
-- (id<HUBJSONDatePath>)datePathWithFormatter:(NSDateFormatter *)dateFormatter;
-
-/**
  *  Turn this path into an immutable path that expects the destination value to be an `NSDictionary`
  */
 - (id<HUBJSONDictionaryPath>)dictionaryPath;

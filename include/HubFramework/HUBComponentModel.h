@@ -173,14 +173,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *loggingData;
 
-/**
- *  Any date that is associated with the component
- *
- *  Some components may use this data to render some form of UI that illustrates the date, and external data API users might use it
- *  to take decisions based it.
- */
-@property (nonatomic, strong, nullable, readonly) NSDate *date;
-
 #pragma mark - Child models
 
 /**

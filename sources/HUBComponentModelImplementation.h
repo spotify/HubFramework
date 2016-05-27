@@ -28,7 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param targetInitialViewModel Any pre-computed view model that a view that is the target of `targetURL` should use
  *  @param customData Any custom data that the component should use
  *  @param loggingData Any data that should be logged alongside interactions or impressions for the component
- *  @param date Any date that is associated with the item
  *  @param childComponentModels Any component models that are children of this model
  *
  *  For more information about these parameters and their corresponding properties, see their
@@ -50,7 +49,6 @@ NS_ASSUME_NONNULL_BEGIN
             targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
                        loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
-                              date:(nullable NSDate *)date
               childComponentModels:(nullable NSArray<id<HUBComponentModel>> *)childComponentModels HUB_DESIGNATED_INITIALIZER;
 
 @end

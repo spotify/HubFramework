@@ -150,7 +150,6 @@ static NSString * const DefaultNamespace = @"default";
                                                 targetInitialViewModel:nil
                                                             customData:nil
                                                            loggingData:nil
-                                                                  date:nil
                                                   childComponentModels:nil];
 }
 

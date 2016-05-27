@@ -20,7 +20,6 @@
 @synthesize targetInitialViewModelDictionaryPath = _targetInitialViewModelDictionaryPath;
 @synthesize customDataPath = _customDataPath;
 @synthesize loggingDataPath = _loggingDataPath;
-@synthesize datePath = _datePath;
 @synthesize childComponentModelDictionariesPath = _childComponentModelDictionariesPath;
 
 - (instancetype)init
@@ -46,7 +45,6 @@
    targetInitialViewModelDictionaryPath:[[targetDictionaryPath goTo:HUBJSONKeyView] dictionaryPath]
                          customDataPath:[[metadataDictionaryPath goTo:HUBJSONKeyCustom] dictionaryPath]
                         loggingDataPath:[[metadataDictionaryPath goTo:HUBJSONKeyLogging] dictionaryPath]
-                               datePath:[[metadataDictionaryPath goTo:HUBJSONKeyDate] datePath]
     childComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyChildren] forEach] dictionaryPath]];
 }
 
@@ -65,7 +63,6 @@
   targetInitialViewModelDictionaryPath:(id<HUBJSONDictionaryPath>)targetInitialViewModelDictionaryPath
                         customDataPath:(id<HUBJSONDictionaryPath>)customDataPath
                        loggingDataPath:(id<HUBJSONDictionaryPath>)loggingDataPath
-                              datePath:(id<HUBJSONDatePath>)datePath
    childComponentModelDictionariesPath:(id<HUBJSONDictionaryPath>)childComponentModelDictionariesPath
 {
     self = [super init];
@@ -86,7 +83,6 @@
         _targetInitialViewModelDictionaryPath = targetInitialViewModelDictionaryPath;
         _customDataPath = customDataPath;
         _loggingDataPath = loggingDataPath;
-        _datePath = datePath;
         _childComponentModelDictionariesPath = childComponentModelDictionariesPath;
     }
     
@@ -112,7 +108,6 @@
                                                 targetInitialViewModelDictionaryPath:self.targetInitialViewModelDictionaryPath
                                                                       customDataPath:self.customDataPath
                                                                      loggingDataPath:self.loggingDataPath
-                                                                            datePath:self.datePath
                                                  childComponentModelDictionariesPath:self.childComponentModelDictionariesPath];
 }
 
