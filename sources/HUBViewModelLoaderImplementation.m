@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewModelLoaderImplementation () <HUBContentOperationWrapperDelegate>
+@interface HUBViewModelLoaderImplementation () <HUBContentOperationWrapperDelegate, HUBConnectivityStateResolverObserver>
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, strong, readonly) id<HUBFeatureInfo> featureInfo;
@@ -64,6 +64,8 @@ NS_ASSUME_NONNULL_BEGIN
         _connectivityState = [_connectivityStateResolver resolveConnectivityState];
         _iconImageResolver = iconImageResolver;
         _cachedInitialViewModel = initialViewModel;
+        
+        [connectivityStateResolver addObserver:self];
     }
     
     return self;
@@ -99,7 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self scheduleContentOperationsFromIndex:0];
 }
 
-#pragma mark - HUBContentOperationDelegate
+#pragma mark - HUBContentOperationWrapperDelegate
 
 - (void)contentOperationWrapperDidFinish:(HUBContentOperationWrapper *)operationWrapper
 {
@@ -116,6 +118,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)contentOperationWrapperRequiresRescheduling:(HUBContentOperationWrapper *)operationWrapper
 {
     [self scheduleContentOperationsFromIndex:operationWrapper.index];
+}
+
+#pragma mark - HUBConnectivityStateResolverObserver
+
+- (void)connectivityStateResolverStateDidChange:(id<HUBConnectivityStateResolver>)resolver
+{
+    HUBConnectivityState previousConnectivityState = self.connectivityState;
+    self.connectivityState = [self.connectivityStateResolver resolveConnectivityState];
+    
+    if (self.connectivityState != previousConnectivityState) {
+        [self scheduleContentOperationsFromIndex:0];
+    }
 }
 
 #pragma mark - Private utilities

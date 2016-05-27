@@ -416,6 +416,54 @@
     XCTAssertEqual(contentOperationB.connectivityState, HUBConnectivityStateOnline);
 }
 
+- (void)testConnectivityStateChangeReschedulesAllOperations
+{
+    self.connectivityStateResolver.state = HUBConnectivityStateOnline;
+    
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
+    
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    
+    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)1);
+    
+    self.connectivityStateResolver.state = HUBConnectivityStateOffline;
+    [self.connectivityStateResolver callObservers];
+    
+    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)2);
+    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)2);
+}
+
+- (void)testIncorrectlyIndicatedConnectivityChangeIgnored
+{
+    self.connectivityStateResolver.state = HUBConnectivityStateOnline;
+    
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
+    
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    
+    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)1);
+    
+    [self.connectivityStateResolver callObservers];
+    [self.connectivityStateResolver callObservers];
+    [self.connectivityStateResolver callObservers];
+    [self.connectivityStateResolver callObservers];
+    
+    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)1);
+}
+
 - (void)testCorrectFeatureInfoSentToContentOperations
 {
     HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
