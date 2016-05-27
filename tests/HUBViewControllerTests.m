@@ -527,6 +527,32 @@
     XCTAssertEqual(componentB.numberOfReuses, (NSUInteger)1);
 }
 
+- (void)testUnusedOverlayComponentsRemovedFromView
+{
+    __block BOOL isFirstLoad = YES;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        NSString * const overlayIdentifier = @"overlay";
+        
+        if (isFirstLoad) {
+            [viewModelBuilder builderForOverlayComponentModelWithIdentifier:overlayIdentifier].title = @"Title";
+        } else {
+            [viewModelBuilder removeBuilderForOverlayComponentModelWithIdentifier:overlayIdentifier];
+        }
+        
+        isFirstLoad = NO;
+        
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertNotNil(self.component.view.superview);
+    
+    [self.contentOperation.delegate contentOperationRequiresRescheduling:self.contentOperation];
+    [self.viewController viewDidLayoutSubviews];
+    XCTAssertNil(self.component.view.superview);
+}
+
 - (void)testOverlayComponentsNotifiedOfViewWillAppear
 {
     self.component.isViewObserver = YES;

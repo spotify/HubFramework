@@ -436,14 +436,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)configureOverlayComponents
 {
-    NSArray * const currentOverlayComponentWrappers = [self.overlayComponentWrappers copy];
+    NSMutableArray * const currentOverlayComponentWrappers = [self.overlayComponentWrappers mutableCopy];
     [self.overlayComponentWrappers removeAllObjects];
     
     for (id<HUBComponentModel> const componentModel in self.viewModel.overlayComponentModels) {
         HUBComponentWrapper *componentWrapper = nil;
         
         if (self.overlayComponentWrappers.count < currentOverlayComponentWrappers.count) {
-            componentWrapper = currentOverlayComponentWrappers[self.overlayComponentWrappers.count];
+            NSUInteger const componentIndex = self.overlayComponentWrappers.count;
+            componentWrapper = currentOverlayComponentWrappers[componentIndex];
+            [currentOverlayComponentWrappers removeObjectAtIndex:componentIndex];
         }
         
         componentWrapper = [self configureHeaderOrOverlayComponentWrapperWithModel:componentModel
@@ -452,6 +454,10 @@ NS_ASSUME_NONNULL_BEGIN
         [self.overlayComponentWrappers addObject:componentWrapper];
         
         componentWrapper.component.view.center = self.collectionView.center;
+    }
+    
+    for (HUBComponentWrapper * const unusedOverlayComponentWrapper in currentOverlayComponentWrappers) {
+        [unusedOverlayComponentWrapper.component.view removeFromSuperview];
     }
 }
 
