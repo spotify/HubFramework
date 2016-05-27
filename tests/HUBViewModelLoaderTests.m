@@ -430,6 +430,21 @@
     XCTAssertEqual(contentOperation.featureInfo, self.featureInfo);
 }
 
+- (void)testFeatureTitleAssignedAsViewTitleIfNil
+{
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    
+    XCTAssertNotNil(self.viewModelFromSuccessDelegateMethod.navigationBarTitle);
+    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle,
+                          self.featureInfo.title);
+}
+
 #pragma mark - HUBViewModelLoaderDelegate
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel
