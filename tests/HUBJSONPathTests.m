@@ -46,7 +46,7 @@
     NSURL * const URL = [NSURL URLWithString:URLString];
     
     XCTAssertEqualObjects([path URLFromJSONDictionary:@{@"url": URLString}], URL);
-    XCTAssertEqualObjects([path URLFromJSONDictionary:@{@"url": URLString}], URL);
+    XCTAssertEqualObjects([path URLFromJSONDictionary:@{@"url": URL}], URL);
     XCTAssertNil([path URLFromJSONDictionary:@{@"url": @"é"}]);
     XCTAssertNil([path URLFromJSONDictionary:@{@"url": @(15)}]);
     XCTAssertNil([path URLFromJSONDictionary:@{}]);

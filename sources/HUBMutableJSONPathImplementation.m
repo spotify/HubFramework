@@ -130,6 +130,10 @@ NS_ASSUME_NONNULL_BEGIN
 {
     HUBJSONParsingOperation * const formattingOperation = [[HUBJSONParsingOperation alloc] initWithBlock:^NSArray<NSObject *> * _Nullable (NSObject *input) {
         if (![input isKindOfClass:[NSString class]]) {
+            if ([input isKindOfClass:[NSURL class]]) {
+                return @[input];
+            }
+            
             return nil;
         }
         
