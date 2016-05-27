@@ -52,41 +52,6 @@
     XCTAssertNil([path URLFromJSONDictionary:@{}]);
 }
 
-- (void)testDatePath
-{
-    id<HUBJSONDatePath> const path = [[[HUBMutableJSONPathImplementation path] goTo:@"date"] datePath];
-    
-    NSDateComponents * const dateComponents = [NSDateComponents new];
-    dateComponents.year = 2016;
-    dateComponents.month = 10;
-    dateComponents.day = 17;
-    
-    NSDate * const date = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
-    
-    XCTAssertEqualObjects([path dateFromJSONDictionary:@{@"date": @"2016-10-17"}], date);
-    XCTAssertNil([path dateFromJSONDictionary:@{@"date": @"notADate"}]);
-    XCTAssertNil([path dateFromJSONDictionary:@{@"date": @(15)}]);
-    XCTAssertNil([path dateFromJSONDictionary:@{}]);
-}
-
-- (void)testDatePathWithCustomFormatter
-{
-    NSDateFormatter * const formatter = [NSDateFormatter new];
-    formatter.dateFormat = @"yy-MM";
-    id<HUBJSONDatePath> const path = [[[HUBMutableJSONPathImplementation path] goTo:@"date"] datePathWithFormatter:formatter];
-    
-    NSDateComponents * const dateComponents = [NSDateComponents new];
-    dateComponents.year = 2016;
-    dateComponents.month = 11;
-    
-    NSDate * const date = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
-    
-    XCTAssertEqualObjects([path dateFromJSONDictionary:@{@"date": @"16-11"}], date);
-    XCTAssertNil([path dateFromJSONDictionary:@{@"date": @"notADate"}]);
-    XCTAssertNil([path dateFromJSONDictionary:@{@"date": @(15)}]);
-    XCTAssertNil([path dateFromJSONDictionary:@{}]);
-}
-
 - (void)testArrayPath
 {
     id<HUBJSONStringPath> const path = [[[[HUBMutableJSONPathImplementation path] goTo:@"array"] forEach] stringPath];

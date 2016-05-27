@@ -83,14 +83,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> targetInitialViewModelDictionaryPath;
 
-/// The path to follow to extract any custom data for a component. Maps to `customData`.
-@property (nonatomic, strong) id<HUBJSONDictionaryPath> customDataPath;
+/// The path to follow to extract any metadata for the component model. Maps to `metadata`.
+@property (nonatomic, strong) id<HUBJSONDictionaryPath> metadataPath;
 
 /// The path to follow to extract any logging data for a component. Maps to `loggingData`.
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> loggingDataPath;
 
-/// The path to follow to extract a date. Maps to `date`.
-@property (nonatomic, strong) id<HUBJSONDatePath> datePath;
+/// The path to follow to extract any custom data for a component. Maps to `customData`.
+@property (nonatomic, strong) id<HUBJSONDictionaryPath> customDataPath;
 
 /**
  *  The path to follow to extract dictionaries to create child component models from. Maps to `childComponentModels`.

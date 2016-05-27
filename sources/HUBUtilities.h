@@ -63,13 +63,4 @@ static inline UIView *HUBComponentLoadViewIfNeeded(id<HUBComponent> component) {
     return view;
 }
 
-/**
- *  Create a date formatter using the default format used in the Hub Framework
- */
-static inline NSDateFormatter *HUBDateFormatterCreateWithDefaultFormat() {
-    NSDateFormatter * const formatter = [NSDateFormatter new];
-    formatter.dateFormat = @"yyyy-MM-dd";
-    return formatter;
-}
-
 NS_ASSUME_NONNULL_END

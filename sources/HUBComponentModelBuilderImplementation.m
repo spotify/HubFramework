@@ -42,9 +42,9 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize descriptionText = _descriptionText;
 @synthesize iconIdentifier = _iconIdentifier;
 @synthesize targetURL = _targetURL;
-@synthesize customData = _customData;
+@synthesize metadata = _metadata;
 @synthesize loggingData = _loggingData;
-@synthesize date = _date;
+@synthesize customData = _customData;
 
 #pragma mark - Class methods
 
@@ -292,6 +292,20 @@ NS_ASSUME_NONNULL_BEGIN
         [[self getOrCreateBuilderForTargetInitialViewModel] addDataFromJSONDictionary:targetInitialViewModelDictionary];
     }
     
+    NSDictionary * const metadata = [componentModelSchema.metadataPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (metadata != nil) {
+        NSDictionary * const existingMetadata = self.metadata;
+        
+        if (existingMetadata != nil) {
+            NSMutableDictionary * const mutableMetadata = [existingMetadata mutableCopy];
+            [mutableMetadata addEntriesFromDictionary:metadata];
+            self.metadata = [mutableMetadata copy];
+        } else {
+            self.metadata = metadata;
+        }
+    }
+    
     NSDictionary * const loggingData = [componentModelSchema.loggingDataPath dictionaryFromJSONDictionary:dictionary];
     
     if (loggingData != nil) {
@@ -304,12 +318,6 @@ NS_ASSUME_NONNULL_BEGIN
         } else {
             self.loggingData = loggingData;
         }
-    }
-    
-    NSDate * const date = [componentModelSchema.datePath dateFromJSONDictionary:dictionary];
-    
-    if (date != nil) {
-        self.date = date;
     }
     
     NSDictionary * const customData = [componentModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
@@ -392,7 +400,6 @@ NS_ASSUME_NONNULL_BEGIN
     copy.targetInitialViewModelBuilderImplementation = [self.targetInitialViewModelBuilderImplementation copy];
     copy.customData = self.customData;
     copy.loggingData = self.loggingData;
-    copy.date = self.date;
     
     for (NSString * const customImageIdentifier in self.customImageDataBuilders) {
         copy.customImageDataBuilders[customImageIdentifier] = [self.customImageDataBuilders[customImageIdentifier] copy];
@@ -451,9 +458,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                   icon:icon
                                                              targetURL:self.targetURL
                                                 targetInitialViewModel:targetInitialViewModel
-                                                            customData:self.customData
+                                                              metadata:self.metadata
                                                            loggingData:self.loggingData
-                                                                  date:self.date
+                                                            customData:self.customData
                                                   childComponentModels:childComponentModels];
 }
 

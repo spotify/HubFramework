@@ -18,18 +18,18 @@
 @synthesize iconIdentifierPath = _iconIdentifierPath;
 @synthesize targetURLPath = _targetURLPath;
 @synthesize targetInitialViewModelDictionaryPath = _targetInitialViewModelDictionaryPath;
-@synthesize customDataPath = _customDataPath;
+@synthesize metadataPath = _metadataPath;
 @synthesize loggingDataPath = _loggingDataPath;
-@synthesize datePath = _datePath;
+@synthesize customDataPath = _customDataPath;
 @synthesize childComponentModelDictionariesPath = _childComponentModelDictionariesPath;
 
 - (instancetype)init
 {
-    id<HUBMutableJSONPath> const componentDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyComponent];
-    id<HUBMutableJSONPath> const textDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyText];
-    id<HUBMutableJSONPath> const imagesDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyImages];
-    id<HUBMutableJSONPath> const targetDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyTarget];
-    id<HUBMutableJSONPath> const metadataDictionaryPath = [[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyMetadata];
+    id<HUBMutableJSONPath> const basePath = [HUBMutableJSONPathImplementation path];
+    id<HUBMutableJSONPath> const componentDictionaryPath = [basePath goTo:HUBJSONKeyComponent];
+    id<HUBMutableJSONPath> const textDictionaryPath = [basePath goTo:HUBJSONKeyText];
+    id<HUBMutableJSONPath> const imagesDictionaryPath = [basePath goTo:HUBJSONKeyImages];
+    id<HUBMutableJSONPath> const targetDictionaryPath = [basePath goTo:HUBJSONKeyTarget];
     
     return [self initWithIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyIdentifier] stringPath]
                 componentIdentifierPath:[[componentDictionaryPath goTo:HUBJSONKeyIdentifier] stringPath]
@@ -44,9 +44,9 @@
                      iconIdentifierPath:[[imagesDictionaryPath goTo:HUBJSONKeyIcon] stringPath]
                           targetURLPath:[[targetDictionaryPath goTo:HUBJSONKeyURI] URLPath]
    targetInitialViewModelDictionaryPath:[[targetDictionaryPath goTo:HUBJSONKeyView] dictionaryPath]
-                         customDataPath:[[metadataDictionaryPath goTo:HUBJSONKeyCustom] dictionaryPath]
-                        loggingDataPath:[[metadataDictionaryPath goTo:HUBJSONKeyLogging] dictionaryPath]
-                               datePath:[[metadataDictionaryPath goTo:HUBJSONKeyDate] datePath]
+                           metadataPath:[[basePath goTo:HUBJSONKeyMetadata] dictionaryPath]
+                        loggingDataPath:[[basePath goTo:HUBJSONKeyLogging] dictionaryPath]
+                         customDataPath:[[basePath goTo:HUBJSONKeyCustom] dictionaryPath]
     childComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyChildren] forEach] dictionaryPath]];
 }
 
@@ -63,9 +63,9 @@
                     iconIdentifierPath:(id<HUBJSONStringPath>)iconIdentifierPath
                          targetURLPath:(id<HUBJSONURLPath>)targetURLPath
   targetInitialViewModelDictionaryPath:(id<HUBJSONDictionaryPath>)targetInitialViewModelDictionaryPath
-                        customDataPath:(id<HUBJSONDictionaryPath>)customDataPath
+                          metadataPath:(id<HUBJSONDictionaryPath>)metadataPath
                        loggingDataPath:(id<HUBJSONDictionaryPath>)loggingDataPath
-                              datePath:(id<HUBJSONDatePath>)datePath
+                        customDataPath:(id<HUBJSONDictionaryPath>)customDataPath
    childComponentModelDictionariesPath:(id<HUBJSONDictionaryPath>)childComponentModelDictionariesPath
 {
     self = [super init];
@@ -84,9 +84,9 @@
         _iconIdentifierPath = iconIdentifierPath;
         _targetURLPath = targetURLPath;
         _targetInitialViewModelDictionaryPath = targetInitialViewModelDictionaryPath;
-        _customDataPath = customDataPath;
+        _metadataPath = metadataPath;
         _loggingDataPath = loggingDataPath;
-        _datePath = datePath;
+        _customDataPath = customDataPath;
         _childComponentModelDictionariesPath = childComponentModelDictionariesPath;
     }
     
@@ -110,9 +110,9 @@
                                                                   iconIdentifierPath:self.iconIdentifierPath
                                                                        targetURLPath:self.targetURLPath
                                                 targetInitialViewModelDictionaryPath:self.targetInitialViewModelDictionaryPath
-                                                                      customDataPath:self.customDataPath
+                                                                        metadataPath:self.metadataPath
                                                                      loggingDataPath:self.loggingDataPath
-                                                                            datePath:self.datePath
+                                                                      customDataPath:self.customDataPath
                                                  childComponentModelDictionariesPath:self.childComponentModelDictionariesPath];
 }
 

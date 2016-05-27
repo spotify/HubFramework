@@ -63,7 +63,6 @@
     self.builder.targetURL = [NSURL URLWithString:@"spotify:hub"];
     self.builder.customData = @{@"key": @"value"};
     self.builder.loggingData = @{@"logging": @"data"};
-    self.builder.date = [NSDate date];
     
     NSUInteger const modelIndex = 5;
     HUBComponentModelImplementation * const model = [self.builder buildForIndex:modelIndex];
@@ -81,7 +80,6 @@
     XCTAssertEqualObjects(model.targetURL, self.builder.targetURL);
     XCTAssertEqualObjects(model.customData, self.builder.customData);
     XCTAssertEqualObjects(model.loggingData, self.builder.loggingData);
-    XCTAssertEqualObjects(model.date, self.builder.date);
 }
 
 - (void)testOverridingDefaultComponentNameNamespaceAndCategory
@@ -269,8 +267,9 @@
     NSURL * const targetURL = [NSURL URLWithString:@"spotify:hub:target"];
     NSString * const targetTitle = @"Target title";
     NSString * const targetViewIdentifier = @"identifier";
-    NSDictionary * const customData = @{@"custom": @"data"};
+    NSDictionary * const metadata = @{@"meta": @"data"};
     NSDictionary * const loggingData = @{@"logging": @"data"};
+    NSDictionary * const customData = @{@"custom": @"data"};
     NSString * const child1ModelIdentifier = @"ChildComponent1";
     HUBComponentIdentifier * const child1ComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"child" name:@"component1"];
     NSString * const child2ModelIdentifier = @"ChildComponent2";
@@ -313,11 +312,9 @@
                 @"title": targetTitle
             }
         },
-        @"metadata": @{
-            @"custom": customData,
-            @"logging": loggingData,
-            @"date": @"2016-10-17"
-        },
+        @"metadata": metadata,
+        @"logging": loggingData,
+        @"custom": customData,
         @"children": @[
             @{
                 @"id": child1ModelIdentifier,
@@ -351,14 +348,9 @@
     XCTAssertEqualObjects(model.icon.identifier, iconIdentifier);
     XCTAssertEqualObjects(model.targetURL, targetURL);
     XCTAssertEqualObjects(model.targetInitialViewModel.navigationBarTitle, targetTitle);
-    XCTAssertEqualObjects(model.customData, customData);
+    XCTAssertEqualObjects(model.metadata, metadata);
     XCTAssertEqualObjects(model.loggingData, loggingData);
-    
-    NSDateComponents * const expectedDateComponents = [NSDateComponents new];
-    expectedDateComponents.year = 2016;
-    expectedDateComponents.month = 10;
-    expectedDateComponents.day = 17;
-    XCTAssertEqualObjects(model.date, [[NSCalendar currentCalendar] dateFromComponents:expectedDateComponents]);
+    XCTAssertEqualObjects(model.customData, customData);
     
     id<HUBComponentModel> const childModel1 = model.childComponentModels[0];
     XCTAssertEqualObjects(childModel1.identifier, child1ModelIdentifier);
@@ -376,8 +368,6 @@
 
 - (void)testAddingJSONDataNotRemovingExistingData
 {
-    NSDate * const currentDate = [NSDate date];
-    
     self.builder.componentNamespace = @"namespace";
     self.builder.componentName = @"name";
     self.builder.preferredIndex = @(33);
@@ -387,7 +377,6 @@
     self.builder.descriptionText = @"description text";
     self.builder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
     self.builder.loggingData = @{@"logging": @"data"};
-    self.builder.date = currentDate;
     self.builder.customData = @{@"custom": @"data"};
     
     [self.builder addDataFromJSONDictionary:@{}];
@@ -401,8 +390,27 @@
     XCTAssertEqualObjects(self.builder.descriptionText, @"description text");
     XCTAssertEqualObjects(self.builder.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
     XCTAssertEqualObjects(self.builder.loggingData, @{@"logging": @"data"});
-    XCTAssertEqualObjects(self.builder.date, currentDate);
     XCTAssertEqualObjects(self.builder.customData, @{@"custom": @"data"});
+}
+
+- (void)testMetadataFromJSONAddedToExistingMetadata
+{
+    self.builder.metadata = @{@"meta": @"data"};
+    
+    NSDictionary * const JSONDictionary = @{
+        @"metadata": @{
+            @"another": @"value"
+        }
+    };
+    
+    [self.builder addDataFromJSONDictionary:JSONDictionary];
+    
+    NSDictionary * const expectedMetadata = @{
+        @"meta": @"data",
+        @"another": @"value"
+    };
+    
+    XCTAssertEqualObjects(self.builder.metadata, expectedMetadata);
 }
 
 - (void)testLoggingDataFromJSONAddedToExistingLoggingData
@@ -410,10 +418,8 @@
     self.builder.loggingData = @{@"logging": @"data"};
     
     NSDictionary * const JSONDictionary = @{
-        @"metadata": @{
-            @"logging": @{
-                @"another": @"value"
-            }
+        @"logging": @{
+            @"another": @"value"
         }
     };
     
@@ -432,10 +438,8 @@
     self.builder.customData = @{@"custom": @"data"};
     
     NSDictionary * const JSONDictionary = @{
-        @"metadata": @{
-            @"custom": @{
-                @"another": @"value"
-            }
+        @"custom": @{
+            @"another": @"value"
         }
     };
     
@@ -451,8 +455,6 @@
 
 - (void)testCopying
 {
-    NSDate * const currentDate = [NSDate date];
-    
     self.builder.componentNamespace = @"namespace for copying";
     self.builder.componentName = @"name for copying";
     self.builder.componentCategory = @"category for copying";
@@ -463,7 +465,6 @@
     self.builder.descriptionText = @"description text";
     self.builder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
     self.builder.loggingData = @{@"logging": @"data"};
-    self.builder.date = currentDate;
     self.builder.customData = @{@"custom": @"data"};
     
     self.builder.mainImageDataBuilder.placeholderIconIdentifier = @"mainPlaceholder";
@@ -484,7 +485,6 @@
     XCTAssertEqualObjects(builderCopy.descriptionText, @"description text");
     XCTAssertEqualObjects(builderCopy.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
     XCTAssertEqualObjects(builderCopy.loggingData, @{@"logging": @"data"});
-    XCTAssertEqualObjects(builderCopy.date, currentDate);
     XCTAssertEqualObjects(builderCopy.customData, @{@"custom": @"data"});
     
     XCTAssertNotEqual(self.builder.mainImageDataBuilder, builderCopy.mainImageDataBuilder);

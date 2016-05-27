@@ -148,9 +148,9 @@ static NSString * const DefaultNamespace = @"default";
                                                                   icon:nil
                                                              targetURL:nil
                                                 targetInitialViewModel:nil
-                                                            customData:nil
+                                                              metadata:nil
                                                            loggingData:nil
-                                                                  date:nil
+                                                            customData:nil
                                                   childComponentModels:nil];
 }
 

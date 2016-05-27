@@ -25,9 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize icon = _icon;
 @synthesize targetURL = _targetURL;
 @synthesize targetInitialViewModel = _targetInitialViewModel;
-@synthesize customData = _customData;
+@synthesize metadata = _metadata;
 @synthesize loggingData = _loggingData;
-@synthesize date = _date;
+@synthesize customData = _customData;
 @synthesize childComponentModels = _childComponentModels;
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
@@ -44,12 +44,15 @@ NS_ASSUME_NONNULL_BEGIN
                               icon:(nullable id<HUBIcon>)icon
                          targetURL:(nullable NSURL *)targetURL
             targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
-                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
+                          metadata:(nullable NSDictionary<NSString *, NSObject *> *)metadata
                        loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
-                              date:(nullable NSDate *)date
+                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
               childComponentModels:(nullable NSArray<id<HUBComponentModel>> *)childComponentModels
 {
     NSParameterAssert(identifier != nil);
+    NSParameterAssert(componentIdentifier != nil);
+    NSParameterAssert(componentCategory != nil);
+    NSParameterAssert(customImageData != nil);
     
     self = [super init];
     
@@ -68,9 +71,9 @@ NS_ASSUME_NONNULL_BEGIN
         _icon = icon;
         _targetURL = [targetURL copy];
         _targetInitialViewModel = targetInitialViewModel;
-        _customData = customData;
+        _metadata = metadata;
         _loggingData = loggingData;
-        _date = date;
+        _customData = customData;
         _childComponentModels = childComponentModels;
     }
     
@@ -87,7 +90,9 @@ NS_ASSUME_NONNULL_BEGIN
     serialization[HUBJSONKeyText] = [self serializedTextData];
     serialization[HUBJSONKeyImages] = [self serializedImageData];
     serialization[HUBJSONKeyTarget] = [self serializedTargetData];
-    serialization[HUBJSONKeyMetadata] = [self serializedMetadata];
+    serialization[HUBJSONKeyMetadata] = self.metadata;
+    serialization[HUBJSONKeyLogging] = self.loggingData;
+    serialization[HUBJSONKeyCustom] = self.customData;
     serialization[HUBJSONKeyChildren] = [self serializedChildComponentModels];
     
     return [serialization copy];
@@ -155,20 +160,6 @@ NS_ASSUME_NONNULL_BEGIN
     return [serialization copy];
 }
 
-- (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedMetadata
-{
-    NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
-    serialization[HUBJSONKeyCustom] = self.customData;
-    serialization[HUBJSONKeyLogging] = self.loggingData;
-    serialization[HUBJSONKeyDate] = [self encodedDate];
-    
-    if (serialization.count == 0) {
-        return nil;
-    }
-    
-    return [serialization copy];
-}
-
 - (nullable NSArray<NSDictionary<NSString *, NSObject<NSCoding> *> *> *)serializedChildComponentModels
 {
     NSArray<id<HUBComponentModel>> * const childComponentModels = self.childComponentModels;
@@ -184,17 +175,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return [serializedModels copy];
-}
-
-- (nullable NSString *)encodedDate
-{
-    NSDate * const date = self.date;
-    
-    if (date == nil) {
-        return nil;
-    }
-    
-    return [HUBDateFormatterCreateWithDefaultFormat() stringFromDate:date];
 }
 
 @end
