@@ -90,7 +90,9 @@ NS_ASSUME_NONNULL_BEGIN
     serialization[HUBJSONKeyText] = [self serializedTextData];
     serialization[HUBJSONKeyImages] = [self serializedImageData];
     serialization[HUBJSONKeyTarget] = [self serializedTargetData];
-    serialization[HUBJSONKeyMetadata] = [self serializedMetadata];
+    serialization[HUBJSONKeyMetadata] = self.metadata;
+    serialization[HUBJSONKeyLogging] = self.loggingData;
+    serialization[HUBJSONKeyCustom] = self.customData;
     serialization[HUBJSONKeyChildren] = [self serializedChildComponentModels];
     
     return [serialization copy];
@@ -155,19 +157,6 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
                   
-    return [serialization copy];
-}
-
-- (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedMetadata
-{
-    NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
-    serialization[HUBJSONKeyCustom] = self.customData;
-    serialization[HUBJSONKeyLogging] = self.loggingData;
-    
-    if (serialization.count == 0) {
-        return nil;
-    }
-    
     return [serialization copy];
 }
 

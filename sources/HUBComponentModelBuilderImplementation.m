@@ -292,6 +292,20 @@ NS_ASSUME_NONNULL_BEGIN
         [[self getOrCreateBuilderForTargetInitialViewModel] addDataFromJSONDictionary:targetInitialViewModelDictionary];
     }
     
+    NSDictionary * const metadata = [componentModelSchema.metadataPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (metadata != nil) {
+        NSDictionary * const existingMetadata = self.metadata;
+        
+        if (existingMetadata != nil) {
+            NSMutableDictionary * const mutableMetadata = [existingMetadata mutableCopy];
+            [mutableMetadata addEntriesFromDictionary:metadata];
+            self.metadata = [mutableMetadata copy];
+        } else {
+            self.metadata = metadata;
+        }
+    }
+    
     NSDictionary * const loggingData = [componentModelSchema.loggingDataPath dictionaryFromJSONDictionary:dictionary];
     
     if (loggingData != nil) {
