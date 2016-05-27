@@ -155,15 +155,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy, nullable, readonly) id<HUBViewModel> targetInitialViewModel;
 
-#pragma mark - Metadata
+#pragma mark - Metadata & Customization
 
 /**
- *  Any custom data that the component should use
+ *  Any application-specific metadata that should be associated with the component
  *
- *  If a component has some specific customizability options they can be specified here. This is also a good place for additional
- *  metadata or properties that are not covered by his protocol, so that new data may be added without changing the framework itself.
+ *  Use this for any metadata that is not consumed by the component itself, such as model metadata (music metadata for a music player,
+ *  photo metadata for a photo editor, for example). For component customization options; use the `customData` dictionary instead.
  */
-@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *customData;
+@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *metadata;
 
 /**
  *  Any data that should be logged alongside interactions or impressions for the component
@@ -172,6 +172,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  it only contains serializable values.
  */
 @property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *loggingData;
+
+/**
+ *  Any custom data that the component should use
+ *
+ *  If a component has some specific customizability options they can be specified here. See the documentation for each `HUBComponent`
+ *  implementation for what keys are supported, and for what options. For other types of metadata, such as application-specific model
+ *  data (music metadata for a music player, photo metadata for a photo editor, for example), that don't relate to the component itself,
+ *  use the `metadata` dictionary.
+ */
+@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *customData;
 
 #pragma mark - Child models
 

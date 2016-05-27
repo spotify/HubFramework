@@ -25,8 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize icon = _icon;
 @synthesize targetURL = _targetURL;
 @synthesize targetInitialViewModel = _targetInitialViewModel;
-@synthesize customData = _customData;
+@synthesize metadata = _metadata;
 @synthesize loggingData = _loggingData;
+@synthesize customData = _customData;
 @synthesize childComponentModels = _childComponentModels;
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
@@ -43,11 +44,15 @@ NS_ASSUME_NONNULL_BEGIN
                               icon:(nullable id<HUBIcon>)icon
                          targetURL:(nullable NSURL *)targetURL
             targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
-                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
+                          metadata:(nullable NSDictionary<NSString *, NSObject *> *)metadata
                        loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
+                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
               childComponentModels:(nullable NSArray<id<HUBComponentModel>> *)childComponentModels
 {
     NSParameterAssert(identifier != nil);
+    NSParameterAssert(componentIdentifier != nil);
+    NSParameterAssert(componentCategory != nil);
+    NSParameterAssert(customImageData != nil);
     
     self = [super init];
     
@@ -66,8 +71,9 @@ NS_ASSUME_NONNULL_BEGIN
         _icon = icon;
         _targetURL = [targetURL copy];
         _targetInitialViewModel = targetInitialViewModel;
-        _customData = customData;
+        _metadata = metadata;
         _loggingData = loggingData;
+        _customData = customData;
         _childComponentModels = childComponentModels;
     }
     

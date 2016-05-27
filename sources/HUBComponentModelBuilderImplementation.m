@@ -42,8 +42,9 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize descriptionText = _descriptionText;
 @synthesize iconIdentifier = _iconIdentifier;
 @synthesize targetURL = _targetURL;
-@synthesize customData = _customData;
+@synthesize metadata = _metadata;
 @synthesize loggingData = _loggingData;
+@synthesize customData = _customData;
 
 #pragma mark - Class methods
 
@@ -443,8 +444,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                   icon:icon
                                                              targetURL:self.targetURL
                                                 targetInitialViewModel:targetInitialViewModel
-                                                            customData:self.customData
+                                                              metadata:self.metadata
                                                            loggingData:self.loggingData
+                                                            customData:self.customData
                                                   childComponentModels:childComponentModels];
 }
 

@@ -26,8 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param icon Any icon that the component should render
  *  @param targetURL The URL that is the target of a user interaction with the component
  *  @param targetInitialViewModel Any pre-computed view model that a view that is the target of `targetURL` should use
- *  @param customData Any custom data that the component should use
+ *  @param metadata Any metadata that should be associated with the component
  *  @param loggingData Any data that should be logged alongside interactions or impressions for the component
+ *  @param customData Any custom data that the component should use
  *  @param childComponentModels Any component models that are children of this model
  *
  *  For more information about these parameters and their corresponding properties, see their
@@ -47,8 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
                               icon:(nullable id<HUBIcon>)icon
                          targetURL:(nullable NSURL *)targetURL
             targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
-                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
+                          metadata:(nullable NSDictionary<NSString *, NSObject *> *)metadata
                        loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
+                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
               childComponentModels:(nullable NSArray<id<HUBComponentModel>> *)childComponentModels HUB_DESIGNATED_INITIALIZER;
 
 @end
