@@ -378,6 +378,8 @@
     self.builder.featureIdentifier = @"feature";
     self.builder.entityIdentifier = @"entity";
     self.builder.navigationBarTitle = @"title";
+    self.builder.extensionURL = [NSURL URLWithString:@"https://spotify.extension.com"];
+    self.builder.customData = @{@"custom": @"data"};
     self.builder.headerComponentModelBuilder.title = @"headerTitle";
     
     id<HUBComponentModelBuilder> const bodyComponentModelBuilder = [self.builder builderForBodyComponentModelWithIdentifier:@"body"];
@@ -390,6 +392,8 @@
     XCTAssertEqualObjects(builderCopy.featureIdentifier, @"feature");
     XCTAssertEqualObjects(builderCopy.entityIdentifier, @"entity");
     XCTAssertEqualObjects(builderCopy.navigationBarTitle, @"title");
+    XCTAssertEqualObjects(builderCopy.extensionURL, [NSURL URLWithString:@"https://spotify.extension.com"]);
+    XCTAssertEqualObjects(builderCopy.customData, @{@"custom": @"data"});
     
     XCTAssertNotEqual(builderCopy.headerComponentModelBuilder, self.builder.headerComponentModelBuilder);
     XCTAssertEqualObjects(builderCopy.headerComponentModelBuilder.title, @"headerTitle");
