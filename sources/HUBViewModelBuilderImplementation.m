@@ -268,6 +268,8 @@ NS_ASSUME_NONNULL_BEGIN
     copy.viewIdentifier = self.viewIdentifier;
     copy.entityIdentifier = self.entityIdentifier;
     copy.navigationBarTitle = self.navigationBarTitle;
+    copy.extensionURL = self.extensionURL;
+    copy.customData = self.customData;
     copy.headerComponentModelBuilderImplementation = [self.headerComponentModelBuilderImplementation copy];
     
     for (NSString * const builderIdentifier in self.bodyComponentModelBuilders) {
