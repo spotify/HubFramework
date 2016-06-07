@@ -234,6 +234,17 @@
     XCTAssertEqual(model.childComponentModels[0].index, (NSUInteger)0);
 }
 
+- (void)testRemovingChildComponentModel
+{
+    NSString * const childIdentifier = @"child";
+    
+    [self.builder builderForChildComponentModelWithIdentifier:childIdentifier].componentName = @"component";
+    XCTAssertTrue([self.builder builderExistsForChildComponentModelWithIdentifier:childIdentifier]);
+    
+    [self.builder removeBuilderForChildComponentModelWithIdentifier:childIdentifier];
+    XCTAssertFalse([self.builder builderExistsForChildComponentModelWithIdentifier:childIdentifier]);
+}
+
 - (void)testRemovingAllChildComponentModels
 {
     self.builder.componentName = @"component";

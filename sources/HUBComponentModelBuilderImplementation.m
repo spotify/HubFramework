@@ -225,6 +225,11 @@ NS_ASSUME_NONNULL_BEGIN
     return [self getOrCreateBuilderForChildComponentModelWithIdentifier:modelIdentifier];
 }
 
+- (void)removeBuilderForChildComponentModelWithIdentifier:(NSString *)identifier
+{
+    self.childComponentModelBuilders[identifier] = nil;
+}
+
 - (void)removeAllChildComponentModelBuilders
 {
     [self.childComponentModelBuilders removeAllObjects];
