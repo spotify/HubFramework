@@ -160,6 +160,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBComponentModelBuilder>)builderForChildComponentModelWithIdentifier:(NSString *)identifier;
 
 /**
+ *  Remove a builder for a child component model with a certain identifier
+ *
+ *  @param identifier The identifier of the child component model builder to remove
+ */
+- (void)removeBuilderForChildComponentModelWithIdentifier:(NSString *)identifier;
+
+/**
  *  Remove all builders for child component models contained within this builder
  */
 - (void)removeAllChildComponentModelBuilders;
