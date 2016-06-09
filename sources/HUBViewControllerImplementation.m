@@ -240,7 +240,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (__kindof id<HUBComponent>)componentWrapper:(HUBComponentWrapper *)componentWrapper
                 createChildComponentWithModel:(id<HUBComponentModel>)model
 {
-    return [self.componentRegistry createComponentForModel:model viewURI:self.viewURI];
+    return [self.componentRegistry createComponentForModel:model];
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
@@ -316,7 +316,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                             forIndexPath:indexPath];
     
     if (cell.componentWrapper == nil) {
-        id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel viewURI:self.viewURI];
+        id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
         
         HUBComponentWrapper * const componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:component
                                                                                   componentIdentifier:componentModel.componentIdentifier];
@@ -477,7 +477,7 @@ NS_ASSUME_NONNULL_BEGIN
             self.componentWrappersByIdentifier[previousComponentWrapperIdentifier] = nil;
         }
         
-        id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel viewURI:self.viewURI];
+        id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
         
         componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:component
                                                       componentIdentifier:componentModel.componentIdentifier];
