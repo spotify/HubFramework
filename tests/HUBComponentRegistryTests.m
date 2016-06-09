@@ -41,8 +41,7 @@ static NSString * const DefaultNamespace = @"default";
     
     [self.registry registerComponentFactory:factory forNamespace:componentIdentifier.componentNamespace];
 
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    XCTAssertEqual([self.registry createComponentForModel:componentModel viewURI:viewURI], component);
+    XCTAssertEqual([self.registry createComponentForModel:componentModel], component);
 }
 
 - (void)testRegisteringAlreadyRegisteredFactoryThrows
@@ -55,7 +54,7 @@ static NSString * const DefaultNamespace = @"default";
 
     XCTAssertThrows([self.registry registerComponentFactory:factory forNamespace:@"namespace"]);
 
-    // Registering the same component factory but under a different namespace should work
+    // Registering the same component but under a different namespace should work
     [self.registry registerComponentFactory:factory forNamespace:@"other_namespace"];
 }
 
@@ -71,21 +70,6 @@ static NSString * const DefaultNamespace = @"default";
     XCTAssertNoThrow([self.registry registerComponentFactory:factory forNamespace:namespace]);
 }
 
-- (void)testCorrectViewURISentToComponentFactory
-{
-    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
-    id<HUBComponentModel> const componentModel = [self mockedComponentModelWithComponentIdentifier:componentIdentifier componentCategory:@"category"];
-    HUBComponentMock * const component = [HUBComponentMock new];
-    HUBComponentFactoryMock * const factory = [[HUBComponentFactoryMock alloc] initWithComponents:@{componentIdentifier.componentName: component}];
-    
-    [self.registry registerComponentFactory:factory forNamespace:componentIdentifier.componentNamespace];
-    
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    [self.registry createComponentForModel:componentModel viewURI:viewURI];
-    
-    XCTAssertEqualObjects(factory.viewURIsForComponentNames[componentIdentifier.componentName], viewURI);
-}
-
 - (void)testFallbackComponentCreatedForUnknownNamespace
 {
     NSString * const componentCategory = @"category";
@@ -96,8 +80,7 @@ static NSString * const DefaultNamespace = @"default";
     id<HUBComponentModel> const componentModel = [self mockedComponentModelWithComponentIdentifier:unknownNamespaceIdentifier
                                                                                  componentCategory:componentCategory];
     
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    XCTAssertEqual([self.registry createComponentForModel:componentModel viewURI:viewURI], fallbackComponent);
+    XCTAssertEqual([self.registry createComponentForModel:componentModel], fallbackComponent);
 }
 
 - (void)testFallbackComponentCreatedWhenFactoryReturnsNil
@@ -114,9 +97,7 @@ static NSString * const DefaultNamespace = @"default";
     id<HUBComponentModel> const componentModel = [self mockedComponentModelWithComponentIdentifier:unknownNameIdentifier
                                                                                  componentCategory:componentCategory];
     
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    XCTAssertEqual([self.registry createComponentForModel:componentModel viewURI:viewURI], fallbackComponent);
-    XCTAssertEqualObjects(self.componentFallbackHandler.viewURIsForComponentCategories[componentCategory], viewURI);
+    XCTAssertEqual([self.registry createComponentForModel:componentModel], fallbackComponent);
 }
 
 - (void)testFallbackComponentsForDifferentCategories
@@ -142,9 +123,8 @@ static NSString * const DefaultNamespace = @"default";
     id<HUBComponentModel> const componentModelB = [self mockedComponentModelWithComponentIdentifier:unknownNameIdentifier
                                                                                   componentCategory:componentCategoryB];
     
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    XCTAssertEqual([self.registry createComponentForModel:componentModelA viewURI:viewURI], fallbackComponentA);
-    XCTAssertEqual([self.registry createComponentForModel:componentModelB viewURI:viewURI], fallbackComponentB);
+    XCTAssertEqual([self.registry createComponentForModel:componentModelA], fallbackComponentA);
+    XCTAssertEqual([self.registry createComponentForModel:componentModelB], fallbackComponentB);
 }
 
 #pragma mark - Utilities

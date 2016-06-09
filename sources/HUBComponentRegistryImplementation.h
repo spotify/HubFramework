@@ -21,14 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  Create a new component instance for a model
  *
  *  @param model The model to create a component for
- *  @param viewURI The URI of the view that the component will be used in
  *
  *  @return A newly created component that is ready to use. The component registry will first attempt
  *          to resolve a component factory for the model's `componentNamespace`, and ask it to create
  *          a component. However, if this fails, the registry will use its fallback handler to create
  *          a fallback component for the model's `componentCategory`.
  */
-- (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model viewURI:(NSURL *)viewURI;
+- (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model;
 
 @end
 

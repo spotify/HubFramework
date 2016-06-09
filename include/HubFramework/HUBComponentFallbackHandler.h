@@ -38,13 +38,11 @@
  *  Create a fallback component to use for a certain category
  *
  *  @param componentCategory The category to return a fallback component for
- *  @param viewURI The URI that the fallback component will be used in
  *
  *  The Hub Framework will call this method in case no component could be resolved using any registered
  *  `HUBComponentFactory`. The fallback handler must always return a component from this method, and can
  *  optionally use the provided component category to adjust which type of component to return.
  */
-- (id<HUBComponent>)createFallbackComponentForCategory:(HUBComponentCategory *)componentCategory
-                                               viewURI:(NSURL *)viewURI;
+- (id<HUBComponent>)createFallbackComponentForCategory:(HUBComponentCategory *)componentCategory;
 
 @end
