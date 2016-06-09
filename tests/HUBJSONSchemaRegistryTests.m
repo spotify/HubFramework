@@ -3,6 +3,10 @@
 #import "HUBJSONSchemaRegistryImplementation.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBIconImageResolverMock.h"
+#import "HUBJSONSchema.h"
+#import "HUBViewModelJSONSchema.h"
+#import "HUBMutableJSONPath.h"
+#import "HUBViewModel.h"
 
 @interface HUBJSONSchemaRegistryTests : XCTestCase
 
@@ -46,6 +50,41 @@
     NSString * const customSchemaIdentifier = @"custom";
     [self.registry registerCustomSchema:customSchema forIdentifier:customSchemaIdentifier];
     XCTAssertThrows([self.registry registerCustomSchema:customSchema forIdentifier:customSchemaIdentifier]);
+}
+
+- (void)testCopyingSchema
+{
+    id<HUBJSONSchema> const originalSchema = [self.registry createNewSchema];
+    originalSchema.viewModelSchema.navigationBarTitlePath = [[[originalSchema createNewPath] goTo:@"customTitle"] stringPath];
+    
+    NSString * const schemaIdentifier = @"custom";
+    [self.registry registerCustomSchema:originalSchema forIdentifier:schemaIdentifier];
+    
+    id<HUBJSONSchema> const copiedSchema = [self.registry copySchemaWithIdentifier:schemaIdentifier];
+    
+    // Make sure the copied schema is not the same instance as the original
+    XCTAssertNotEqual(originalSchema, copiedSchema);
+    
+    // Test schema equality by JSON parsing
+    NSString * const title = @"Hub it up!";
+    
+    NSDictionary * const dictionary = @{
+        @"customTitle": title
+    };
+    
+    NSString * const featureIdentifier = @"feature";
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    
+    id<HUBViewModel> const originalViewModel = [originalSchema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier viewURI:viewURI];
+    id<HUBViewModel> const copiedViewModel = [copiedSchema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier viewURI:viewURI];
+    
+    XCTAssertEqual(originalViewModel.navigationBarTitle, title);
+    XCTAssertEqual(originalViewModel.navigationBarTitle, copiedViewModel.navigationBarTitle);
+}
+
+- (void)testCopyingUknownSchemaReturningNil
+{
+    XCTAssertNil([self.registry copySchemaWithIdentifier:@"unknown"]);
 }
 
 @end

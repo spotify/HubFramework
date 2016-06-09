@@ -27,6 +27,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBJSONSchema>)createNewSchema;
 
 /**
+ *  Create a new JSON schema that is a copy of any previously registed schema
+ *
+ *  @param identifier The identifier of the schema to copy
+ *
+ *  @return A copied schema, or nil if a schema wasn't found for the given identifier
+ */
+- (nullable id<HUBJSONSchema>)copySchemaWithIdentifier:(NSString *)identifier;
+
+/**
  *  Register a custom JSON schema for use with the Hub Framework
  *
  *  @param schema The schema to register
