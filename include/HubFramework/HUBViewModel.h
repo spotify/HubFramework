@@ -37,15 +37,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
 
 /**
- *  The identifier of any entity that the view represents
+ *  The URI of the view
  *
- *  The value of this property doesn't have any specific format or constraints, and is up to the API user to define
- *  according to the context of the application.
- *
- *  An example of an entity identifier is some form of identifier for consumable media (in the context of the Spotify
- *  app, it could be the URI of an album or artist, for example).
+ *  The value of this property is assigned automatically by the Hub Framework based on the URI that was used to open
+ *  the view that this view model is being used in.
  */
-@property (nonatomic, copy, readonly, nullable) NSString *entityIdentifier;
+@property (nonatomic, copy, readonly) NSURL *viewURI;
 
 #pragma mark - Navigation bar title
 
