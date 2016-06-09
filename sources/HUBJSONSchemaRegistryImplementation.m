@@ -41,6 +41,11 @@ NS_ASSUME_NONNULL_BEGIN
     return [self.defaultSchema copy];
 }
 
+- (nullable id<HUBJSONSchema>)copySchemaWithIdentifier:(NSString *)identifier
+{
+    return [self.customSchemasByIdentifier[identifier] copy];
+}
+
 - (void)registerCustomSchema:(id<HUBJSONSchema>)schema forIdentifier:(NSString *)identifier
 {
     NSAssert(self.customSchemasByIdentifier[identifier] == nil,
