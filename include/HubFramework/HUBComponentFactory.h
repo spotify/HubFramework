@@ -17,10 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Create a new component matching a name
  *
  *  @param name The name of the component to create
+ *  @param viewURI The URI of the view that the component will be used in
  *
  *  Returning `nil` from this method will cause a fallback component to be used
  */
-- (nullable id<HUBComponent>)createComponentForName:(NSString *)name;
+- (nullable id<HUBComponent>)createComponentForName:(NSString *)name viewURI:(NSURL *)viewURI;
 
 @end
 

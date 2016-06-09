@@ -8,6 +8,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Mocked component fallback handler, for use in tests only
 @interface HUBComponentFallbackHandlerMock : NSObject <HUBComponentFallbackHandler>
 
+/// The view URIs that were passed to this fallback handler when creating fallback components for certain categories
+@property (nonatomic, strong, readonly) NSDictionary<HUBComponentCategory *, NSURL *> *viewURIsForComponentCategories;
+
 /**
  *  Initialize an instance of this class with a set of component defaults
  *

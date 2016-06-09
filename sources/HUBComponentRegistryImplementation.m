@@ -31,16 +31,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model
+- (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model viewURI:(NSURL *)viewURI
 {
     id<HUBComponentFactory> const factory = self.componentFactories[model.componentIdentifier.componentNamespace];
-    id<HUBComponent> const component = [factory createComponentForName:model.componentIdentifier.componentName];
+    id<HUBComponent> const component = [factory createComponentForName:model.componentIdentifier.componentName viewURI:viewURI];
     
     if (component != nil) {
         return component;
     }
     
-    return [self.fallbackHandler createFallbackComponentForCategory:model.componentCategory];
+    return [self.fallbackHandler createFallbackComponentForCategory:model.componentCategory viewURI:viewURI];
 }
 
 #pragma mark - HUBComponentRegistry

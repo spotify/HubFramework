@@ -161,7 +161,7 @@ NS_ASSUME_NONNULL_BEGIN
         return cachedComponent;
     }
     
-    id<HUBComponent> const newComponent = [self.componentRegistry createComponentForModel:model];
+    id<HUBComponent> const newComponent = [self.componentRegistry createComponentForModel:model viewURI:self.viewModel.viewURI];
     self.componentCache[model.componentIdentifier] = newComponent;
     return newComponent;
 }
