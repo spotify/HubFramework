@@ -595,6 +595,7 @@
     
     id<HUBViewModel> const targetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:targetViewURI];
     XCTAssertEqualObjects(targetInitialViewModel.identifier, initialViewModelIdentifier);
+    XCTAssertEqualObjects(targetInitialViewModel.viewURI, targetViewURI);
 }
 
 - (void)testComponentDeselectedOnViewWillDisappear

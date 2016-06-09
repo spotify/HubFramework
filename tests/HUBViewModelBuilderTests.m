@@ -47,16 +47,16 @@
     
     self.builder.viewIdentifier = @"view";
     self.builder.featureIdentifier = @"another feature";
-    self.builder.entityIdentifier = @"entity";
     self.builder.navigationBarTitle = @"nav title";
     self.builder.extensionURL = [NSURL URLWithString:@"www.spotify.com"];
     self.builder.customData = @{@"custom": @"data"};
     
-    HUBViewModelImplementation * const model = [self.builder build];
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
     
     XCTAssertEqualObjects(model.identifier, self.builder.viewIdentifier);
     XCTAssertEqualObjects(model.featureIdentifier, self.builder.featureIdentifier);
-    XCTAssertEqualObjects(model.entityIdentifier, self.builder.entityIdentifier);
+    XCTAssertEqualObjects(model.viewURI, viewURI);
     XCTAssertEqualObjects(model.navigationBarTitle, self.builder.navigationBarTitle);
     XCTAssertEqualObjects(model.extensionURL, self.builder.extensionURL);
     XCTAssertEqualObjects(model.customData, self.builder.customData);
@@ -140,7 +140,9 @@
     componentBuilderB.preferredIndex = @0;
     componentBuilderB.componentName = @"component";
     
-    HUBViewModelImplementation * const model = [self.builder build];
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
+    
     XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifierB);
     XCTAssertEqual(model.bodyComponentModels[0].index, (NSUInteger)0);
@@ -155,7 +157,9 @@
     componentBuilder.preferredIndex = @99;
     componentBuilder.componentName = @"component";
     
-    HUBViewModelImplementation * const model = [self.builder build];
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
+    
     XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifier);
     XCTAssertEqual(model.bodyComponentModels[0].index, (NSUInteger)0);
@@ -178,7 +182,8 @@
     [self.builder builderForOverlayComponentModelWithIdentifier:@"componentA"].preferredIndex = @1;
     [self.builder builderForOverlayComponentModelWithIdentifier:@"componentB"].preferredIndex = @0;
     
-    HUBViewModelImplementation * const model = [self.builder build];
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
     
     XCTAssertEqual(model.overlayComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.overlayComponentModels[0].identifier, @"componentB");
@@ -190,7 +195,9 @@
 - (void)testOverlayComponentOutOfBoundsPreferredIndexHandled
 {
     [self.builder builderForOverlayComponentModelWithIdentifier:@"overlay"].preferredIndex = @99;
-    HUBViewModelImplementation * const model = [self.builder build];
+    
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
     
     XCTAssertEqual(model.overlayComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.overlayComponentModels[0].identifier, @"overlay");
@@ -206,7 +213,6 @@
 {
     NSString * const viewIdentifier = @"identifier";
     NSString * const featureIdentifier = @"feature";
-    NSString * const entityIdentifier = @"entity";
     NSString * const navigationBarTitle = @"nav bar title";
     NSString * const headerComponentModelIdentifier = @"header model";
     HUBComponentIdentifier * const headerComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"header" name:@"component"];
@@ -219,7 +225,6 @@
     NSDictionary * const dictionary = @{
         @"id": viewIdentifier,
         @"feature": featureIdentifier,
-        @"entity": entityIdentifier,
         @"title": navigationBarTitle,
         @"header": @{
             @"id": headerComponentModelIdentifier,
@@ -253,11 +258,12 @@
     NSData * const data = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
     [self.builder addJSONData:data];
     
-    HUBViewModelImplementation * const model = [self.builder build];
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
     
     XCTAssertEqualObjects(model.identifier, viewIdentifier);
     XCTAssertEqualObjects(model.featureIdentifier, featureIdentifier);
-    XCTAssertEqualObjects(model.entityIdentifier, entityIdentifier);
+    XCTAssertEqualObjects(model.viewURI, viewURI);
     XCTAssertEqualObjects(model.navigationBarTitle, navigationBarTitle);
     XCTAssertEqualObjects(model.headerComponentModel.componentIdentifier, headerComponentIdentifier);
     XCTAssertEqualObjects(model.headerComponentModel.componentCategory, @"headerCategory");
@@ -293,7 +299,9 @@
     NSData * const data = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:nil];
     [self.builder addJSONData:data];
     
-    HUBViewModelImplementation * const model = [self.builder build];
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
+    
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, firstComponentIdentifier);
     XCTAssertEqualObjects([model.bodyComponentModels lastObject].componentIdentifier, lastComponentIdentifier);
 }
@@ -308,7 +316,6 @@
 {
     self.builder.viewIdentifier = @"view";
     self.builder.featureIdentifier = @"feature";
-    self.builder.entityIdentifier = @"entity";
     self.builder.navigationBarTitle = @"title";
     self.builder.headerComponentModelBuilder.title = @"header title";
     self.builder.extensionURL = [NSURL URLWithString:@"http://spotify.extension.com"];
@@ -320,7 +327,6 @@
     
     XCTAssertEqualObjects(self.builder.viewIdentifier, @"view");
     XCTAssertEqualObjects(self.builder.featureIdentifier, @"feature");
-    XCTAssertEqualObjects(self.builder.entityIdentifier, @"entity");
     XCTAssertEqualObjects(self.builder.navigationBarTitle, @"title");
     XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.title, @"header title");
     XCTAssertEqualObjects(self.builder.extensionURL, [NSURL URLWithString:@"http://spotify.extension.com"]);
@@ -376,7 +382,6 @@
 {
     self.builder.viewIdentifier = @"id";
     self.builder.featureIdentifier = @"feature";
-    self.builder.entityIdentifier = @"entity";
     self.builder.navigationBarTitle = @"title";
     self.builder.extensionURL = [NSURL URLWithString:@"https://spotify.extension.com"];
     self.builder.customData = @{@"custom": @"data"};
@@ -390,7 +395,6 @@
     
     XCTAssertEqualObjects(builderCopy.viewIdentifier, @"id");
     XCTAssertEqualObjects(builderCopy.featureIdentifier, @"feature");
-    XCTAssertEqualObjects(builderCopy.entityIdentifier, @"entity");
     XCTAssertEqualObjects(builderCopy.navigationBarTitle, @"title");
     XCTAssertEqualObjects(builderCopy.extensionURL, [NSURL URLWithString:@"https://spotify.extension.com"]);
     XCTAssertEqualObjects(builderCopy.customData, @{@"custom": @"data"});

@@ -74,7 +74,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                       iconImageResolver:self.iconImageResolver];
 }
 
-- (id<HUBViewModel>)viewModelFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary featureIdentifier:(NSString *)featureIdentifier
+- (id<HUBViewModel>)viewModelFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
+                              featureIdentifier:(NSString *)featureIdentifier
+                                        viewURI:(NSURL *)viewURI
 {
     HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:featureIdentifier
                                                                                                                   JSONSchema:self
@@ -82,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                            iconImageResolver:self.iconImageResolver];
     
     [builder addDataFromJSONDictionary:dictionary];
-    return [builder build];
+    return [builder buildForViewURI:viewURI];
 }
 
 @end

@@ -7,7 +7,6 @@
 
 @synthesize identifierPath = _identifierPath;
 @synthesize featureIdentifierPath = _featureIdentifierPath;
-@synthesize entityIdentifierPath = _entityIdentifierPath;
 @synthesize navigationBarTitlePath = _navigationBarTitlePath;
 @synthesize headerComponentModelDictionaryPath = _headerComponentModelDictionaryPath;
 @synthesize bodyComponentModelDictionariesPath = _bodyComponentModelDictionariesPath;
@@ -21,7 +20,6 @@
 {
     return [self initWithIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyIdentifier] stringPath]
                   featureIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyFeature] stringPath]
-                   entityIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyEntity] stringPath]
                  navigationBarTitlePath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyTitle] stringPath]
      headerComponentModelDictionaryPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyHeader] dictionaryPath]
      bodyComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyBody] forEach] dictionaryPath]
@@ -32,7 +30,6 @@
 
 - (instancetype)initWithIdentifierPath:(id<HUBJSONStringPath>)identifierPath
                  featureIdentifierPath:(id<HUBJSONStringPath>)featureIdentifierPath
-                  entityIdentifierPath:(id<HUBJSONStringPath>)entityIdentifierPath
                 navigationBarTitlePath:(id<HUBJSONStringPath>)navigationBarTitlePath
     headerComponentModelDictionaryPath:(id<HUBJSONDictionaryPath>)headerComponentModelDictionaryPath
     bodyComponentModelDictionariesPath:(id<HUBJSONDictionaryPath>)bodyComponentModelDictionariesPath
@@ -45,7 +42,6 @@
     if (self) {
         _identifierPath = identifierPath;
         _featureIdentifierPath = featureIdentifierPath;
-        _entityIdentifierPath = entityIdentifierPath;
         _navigationBarTitlePath = navigationBarTitlePath;
         _headerComponentModelDictionaryPath = headerComponentModelDictionaryPath;
         _bodyComponentModelDictionariesPath = bodyComponentModelDictionariesPath;
@@ -63,7 +59,6 @@
 {
     return [[HUBViewModelJSONSchemaImplementation alloc] initWithIdentifierPath:self.identifierPath
                                                           featureIdentifierPath:self.featureIdentifierPath
-                                                           entityIdentifierPath:self.entityIdentifierPath
                                                          navigationBarTitlePath:self.navigationBarTitlePath
                                              headerComponentModelDictionaryPath:self.headerComponentModelDictionaryPath
                                              bodyComponentModelDictionariesPath:self.bodyComponentModelDictionariesPath

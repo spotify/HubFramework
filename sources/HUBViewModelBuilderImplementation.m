@@ -30,7 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize viewIdentifier = _viewIdentifier;
 @synthesize featureIdentifier = _featureIdentifier;
-@synthesize entityIdentifier = _entityIdentifier;
 @synthesize navigationBarTitle = _navigationBarTitle;
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
@@ -162,7 +161,7 @@ NS_ASSUME_NONNULL_BEGIN
     return YES;
 }
 
-- (HUBViewModelImplementation *)build
+- (HUBViewModelImplementation *)buildForViewURI:(NSURL *)viewURI
 {
     HUBComponentModelImplementation * const headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0];
     
@@ -174,7 +173,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     return [[HUBViewModelImplementation alloc] initWithIdentifier:self.viewIdentifier
                                                 featureIdentifier:self.featureIdentifier
-                                                 entityIdentifier:self.entityIdentifier
+                                                          viewURI:viewURI
                                                navigationBarTitle:self.navigationBarTitle
                                              headerComponentModel:headerComponentModel
                                               bodyComponentModels:bodyComponentModels
@@ -199,12 +198,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (featureIdentifier != nil) {
         self.featureIdentifier = featureIdentifier;
-    }
-    
-    NSString * const entityIdentifier = [viewModelSchema.entityIdentifierPath stringFromJSONDictionary:dictionary];
-    
-    if (entityIdentifier != nil) {
-        self.entityIdentifier = entityIdentifier;
     }
     
     NSString * const navigationBarTitle = [viewModelSchema.navigationBarTitlePath stringFromJSONDictionary:dictionary];
@@ -266,7 +259,6 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                         iconImageResolver:self.iconImageResolver];
     
     copy.viewIdentifier = self.viewIdentifier;
-    copy.entityIdentifier = self.entityIdentifier;
     copy.navigationBarTitle = self.navigationBarTitle;
     copy.extensionURL = self.extensionURL;
     copy.customData = self.customData;

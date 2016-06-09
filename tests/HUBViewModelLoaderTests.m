@@ -88,7 +88,9 @@
                                                                                                                     iconImageResolver:iconImageResolver];
     
     viewModelBuilder.navigationBarTitle = @"Pre-computed title";
-    id<HUBViewModel> const initialViewModel = [viewModelBuilder build];
+    
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    id<HUBViewModel> const initialViewModel = [viewModelBuilder buildForViewURI:viewURI];
     
     __block BOOL contentOperationCalled = NO;
     

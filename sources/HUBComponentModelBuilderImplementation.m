@@ -444,7 +444,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     id<HUBIcon> const icon = [self buildIconForPlaceholder:NO];
-    id<HUBViewModel> const targetInitialViewModel = [self.targetInitialViewModelBuilderImplementation build];
+    id<HUBViewModel> const targetInitialViewModel = [self buildTargetInitialViewModel];
     
     NSArray * const childComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.childComponentModelBuilders
                                                                                                      identifierOrder:self.childComponentIdentifierOrder];
@@ -539,6 +539,16 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return [[HUBIconImplementation alloc] initWithIdentifier:iconIdentifier imageResolver:iconImageResolver isPlaceholder:forPlaceholder];
+}
+
+- (nullable id<HUBViewModel>)buildTargetInitialViewModel
+{
+    if (self.targetURL == nil) {
+        return nil;
+    }
+    
+    NSURL * const targetURL = self.targetURL;
+    return [self.targetInitialViewModelBuilderImplementation buildForViewURI:targetURL];
 }
 
 @end

@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize identifier = _identifier;
 @synthesize featureIdentifier = _featureIdentifier;
-@synthesize entityIdentifier = _entityIdentifier;
+@synthesize viewURI = _viewURI;
 @synthesize navigationBarTitle = _navigationBarTitle;
 @synthesize headerComponentModel = _headerComponentModel;
 @synthesize bodyComponentModels = _bodyComponentModels;
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
                  featureIdentifier:(NSString *)featureIdentifier
-                  entityIdentifier:(nullable NSString *)entityIdentifier
+                           viewURI:(NSURL *)viewURI
                 navigationBarTitle:(nullable NSString *)navigationBarTitle
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (self) {
         _identifier = [identifier copy];
         _featureIdentifier = [featureIdentifier copy];
-        _entityIdentifier = [entityIdentifier copy];
+        _viewURI = [viewURI copy];
         _navigationBarTitle = [navigationBarTitle copy];
         _headerComponentModel = headerComponentModel;
         _bodyComponentModels = bodyComponentModels;
@@ -53,7 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyIdentifier] = self.identifier;
     serialization[HUBJSONKeyFeature] = self.featureIdentifier;
-    serialization[HUBJSONKeyEntity] = self.entityIdentifier;
     serialization[HUBJSONKeyTitle] = self.navigationBarTitle;
     serialization[HUBJSONKeyHeader] = [self.headerComponentModel serialize];
     serialization[HUBJSONKeyBody] = [self serializeComponentModels:self.bodyComponentModels];

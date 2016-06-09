@@ -32,9 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// The path to follow to extract a feature identifier. Maps to `featureIdentifier`.
 @property (nonatomic, strong) id<HUBJSONStringPath> featureIdentifierPath;
 
-/// The path to follow to extract an entity identifier. Maps to `entityIdentifier`.
-@property (nonatomic, strong) id<HUBJSONStringPath> entityIdentifierPath;
-
 /// The path to follow to extract a navigation bar title. Maps to `navigationBarTitle`.
 @property (nonatomic, strong) id<HUBJSONStringPath> navigationBarTitlePath;
 

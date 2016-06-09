@@ -48,17 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy) NSString *featureIdentifier;
 
-/**
- *  The identifier of any entity that the view will represent
- *
- *  The value of this property doesn't have any specific format or constraints, and is mainly used for logging and
- *  UI instrumentation.
- *
- *  An example of an entity identifier is some form of identifier for consumable media (in the context of the
- *  Spotify app, it could be the URI of an album or artist, for example).
- */
-@property (nonatomic, copy, nullable) NSString *entityIdentifier;
-
 #pragma mark - Navigation bar & header
 
 /**

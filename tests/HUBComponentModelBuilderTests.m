@@ -166,12 +166,22 @@
 
 - (void)testTargetInitialViewModelBuilderLazyInit
 {
-    self.builder.componentName = @"component";
-    
     XCTAssertNil([self.builder buildForIndex:0].targetInitialViewModel);
     
     self.builder.targetInitialViewModelBuilder.navigationBarTitle = @"hello";
-    XCTAssertEqualObjects([self.builder buildForIndex:0].targetInitialViewModel.featureIdentifier, self.featureIdentifier);
+    
+    NSURL * const targetURL = [NSURL URLWithString:@"spotify:hub:target"];
+    self.builder.targetURL = targetURL;
+    
+    id<HUBViewModel> const targetInitialViewModel = [self.builder buildForIndex:0].targetInitialViewModel;
+    XCTAssertEqualObjects(targetInitialViewModel.featureIdentifier, self.featureIdentifier);
+    XCTAssertEqualObjects(targetInitialViewModel.viewURI, targetURL);
+}
+
+- (void)testNoTargetInitialViewModelBuiltWithoutTargetURL
+{
+     self.builder.targetInitialViewModelBuilder.navigationBarTitle = @"hello";
+    XCTAssertNil([self.builder buildForIndex:0].targetInitialViewModel);
 }
 
 - (void)testCreatingChildComponentModel
