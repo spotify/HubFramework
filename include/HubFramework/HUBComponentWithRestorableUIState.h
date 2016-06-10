@@ -11,8 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  The Hub Framework automatically manages the state for you, and will ask the component
  *  to provide its current UI state, and to restore a previously saved state whenever
  *  appropriate. UI states are always stored based on `HUBComponentModel` identifiers, so the
- *  same UI state will never be reused for diffrent models, although it might be reused
- *  for different component implementations. UI state is never shared across different views.
+ *  same UI state will never be reused for different models, although it might be reused
+ *  for different component implementations
+ *
+ *  UI state is never shared across different views, and it's not persisted across multiple
+ *  launches of the application.
  *
  *  For more information, see `HUBComponent`.
  */
