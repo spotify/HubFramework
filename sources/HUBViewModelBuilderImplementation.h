@@ -27,10 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Build an instance of `HUBViewModelImplementation` from the data contained in this builder
- *
- *  @param viewURI The URI of the view that the resulting model will be used for
  */
-- (HUBViewModelImplementation *)buildForViewURI:(NSURL *)viewURI;
+- (HUBViewModelImplementation *)build;
 
 @end
 

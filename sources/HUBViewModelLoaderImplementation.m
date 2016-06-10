@@ -87,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
         [operation addInitialContentForViewURI:self.viewURI toViewModelBuilder:builder];
     }
     
-    id<HUBViewModel> const initialViewModel = [builder buildForViewURI:self.viewURI];
+    id<HUBViewModel> const initialViewModel = [builder build];
     self.cachedInitialViewModel = initialViewModel;
     return initialViewModel;
 }
@@ -219,7 +219,7 @@ NS_ASSUME_NONNULL_BEGIN
         self.builder.navigationBarTitle = self.featureInfo.title;
     }
     
-    id<HUBViewModel> const viewModel = [self.builder buildForViewURI:self.viewURI];
+    id<HUBViewModel> const viewModel = [self.builder build];
     [delegate viewModelLoader:self didLoadViewModel:viewModel];
 }
 

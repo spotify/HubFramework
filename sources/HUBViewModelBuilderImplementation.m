@@ -161,7 +161,7 @@ NS_ASSUME_NONNULL_BEGIN
     return YES;
 }
 
-- (HUBViewModelImplementation *)buildForViewURI:(NSURL *)viewURI
+- (HUBViewModelImplementation *)build
 {
     HUBComponentModelImplementation * const headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0];
     
@@ -173,7 +173,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     return [[HUBViewModelImplementation alloc] initWithIdentifier:self.viewIdentifier
                                                 featureIdentifier:self.featureIdentifier
-                                                          viewURI:viewURI
                                                navigationBarTitle:self.navigationBarTitle
                                              headerComponentModel:headerComponentModel
                                               bodyComponentModels:bodyComponentModels

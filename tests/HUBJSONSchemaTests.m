@@ -38,12 +38,10 @@
     
     [builder addDataFromJSONDictionary:dictionary];
     
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    id<HUBViewModel> const viewModelFromSchema = [schema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier viewURI:viewURI];
-    id<HUBViewModel> const viewModelFromBuilder = [builder buildForViewURI:viewURI];
+    id<HUBViewModel> const viewModelFromSchema = [schema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier];
+    id<HUBViewModel> const viewModelFromBuilder = [builder build];
     
     XCTAssertEqualObjects(viewModelFromSchema.featureIdentifier, viewModelFromBuilder.featureIdentifier);
-    XCTAssertEqualObjects(viewModelFromSchema.viewURI, viewModelFromBuilder.viewURI);
     XCTAssertEqual(viewModelFromSchema.bodyComponentModels.count, viewModelFromBuilder.bodyComponentModels.count);
     XCTAssertEqualObjects([viewModelFromSchema.bodyComponentModels firstObject].title, [viewModelFromBuilder.bodyComponentModels firstObject].title);
 }

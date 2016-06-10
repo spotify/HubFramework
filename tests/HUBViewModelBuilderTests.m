@@ -51,12 +51,10 @@
     self.builder.extensionURL = [NSURL URLWithString:@"www.spotify.com"];
     self.builder.customData = @{@"custom": @"data"};
     
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
+    HUBViewModelImplementation * const model = [self.builder build];
     
     XCTAssertEqualObjects(model.identifier, self.builder.viewIdentifier);
     XCTAssertEqualObjects(model.featureIdentifier, self.builder.featureIdentifier);
-    XCTAssertEqualObjects(model.viewURI, viewURI);
     XCTAssertEqualObjects(model.navigationBarTitle, self.builder.navigationBarTitle);
     XCTAssertEqualObjects(model.extensionURL, self.builder.extensionURL);
     XCTAssertEqualObjects(model.customData, self.builder.customData);
@@ -139,9 +137,8 @@
     id<HUBComponentModelBuilder> const componentBuilderB = [self.builder builderForBodyComponentModelWithIdentifier:componentIdentifierB];
     componentBuilderB.preferredIndex = @0;
     componentBuilderB.componentName = @"component";
-    
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
+
+    HUBViewModelImplementation * const model = [self.builder build];
     
     XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifierB);
@@ -157,8 +154,7 @@
     componentBuilder.preferredIndex = @99;
     componentBuilder.componentName = @"component";
     
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
+    HUBViewModelImplementation * const model = [self.builder build];
     
     XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifier);
@@ -182,8 +178,7 @@
     [self.builder builderForOverlayComponentModelWithIdentifier:@"componentA"].preferredIndex = @1;
     [self.builder builderForOverlayComponentModelWithIdentifier:@"componentB"].preferredIndex = @0;
     
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
+    HUBViewModelImplementation * const model = [self.builder build];
     
     XCTAssertEqual(model.overlayComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.overlayComponentModels[0].identifier, @"componentB");
@@ -195,9 +190,8 @@
 - (void)testOverlayComponentOutOfBoundsPreferredIndexHandled
 {
     [self.builder builderForOverlayComponentModelWithIdentifier:@"overlay"].preferredIndex = @99;
-    
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
+
+    HUBViewModelImplementation * const model = [self.builder build];
     
     XCTAssertEqual(model.overlayComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.overlayComponentModels[0].identifier, @"overlay");
@@ -258,12 +252,10 @@
     NSData * const data = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
     [self.builder addJSONData:data];
     
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
+    HUBViewModelImplementation * const model = [self.builder build];
     
     XCTAssertEqualObjects(model.identifier, viewIdentifier);
     XCTAssertEqualObjects(model.featureIdentifier, featureIdentifier);
-    XCTAssertEqualObjects(model.viewURI, viewURI);
     XCTAssertEqualObjects(model.navigationBarTitle, navigationBarTitle);
     XCTAssertEqualObjects(model.headerComponentModel.componentIdentifier, headerComponentIdentifier);
     XCTAssertEqualObjects(model.headerComponentModel.componentCategory, @"headerCategory");
@@ -299,8 +291,7 @@
     NSData * const data = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:nil];
     [self.builder addJSONData:data];
     
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    HUBViewModelImplementation * const model = [self.builder buildForViewURI:viewURI];
+    HUBViewModelImplementation * const model = [self.builder build];
     
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, firstComponentIdentifier);
     XCTAssertEqualObjects([model.bodyComponentModels lastObject].componentIdentifier, lastComponentIdentifier);

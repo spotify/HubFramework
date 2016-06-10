@@ -73,10 +73,9 @@
     };
     
     NSString * const featureIdentifier = @"feature";
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     
-    id<HUBViewModel> const originalViewModel = [originalSchema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier viewURI:viewURI];
-    id<HUBViewModel> const copiedViewModel = [copiedSchema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier viewURI:viewURI];
+    id<HUBViewModel> const originalViewModel = [originalSchema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier];
+    id<HUBViewModel> const copiedViewModel = [copiedSchema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier];
     
     XCTAssertEqual(originalViewModel.navigationBarTitle, title);
     XCTAssertEqual(originalViewModel.navigationBarTitle, copiedViewModel.navigationBarTitle);

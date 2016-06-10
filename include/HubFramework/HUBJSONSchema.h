@@ -54,15 +54,13 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param dictionary The JSON dictionary to extract data from
  *  @param featureIdentifier The feature identifier that the returned view model is for
- *  @param viewURI The URI of the view that the returned view model is for
  *
  *  In production code, you normally don't have to use this API, since the Hub Framework will take care of building
  *  view models from both JSON and local content operation code for you. However, this API is very useful in tests,
  *  when you want to assert that any custom schema that you're using acts the way you expect it to.
  */
 - (id<HUBViewModel>)viewModelFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
-                              featureIdentifier:(NSString *)featureIdentifier
-                                        viewURI:(NSURL *)viewURI;
+                              featureIdentifier:(NSString *)featureIdentifier;
 
 @end
 
