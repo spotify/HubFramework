@@ -175,7 +175,6 @@
     
     id<HUBViewModel> const targetInitialViewModel = [self.builder buildForIndex:0].targetInitialViewModel;
     XCTAssertEqualObjects(targetInitialViewModel.featureIdentifier, self.featureIdentifier);
-    XCTAssertEqualObjects(targetInitialViewModel.viewURI, targetURL);
 }
 
 - (void)testNoTargetInitialViewModelBuiltWithoutTargetURL

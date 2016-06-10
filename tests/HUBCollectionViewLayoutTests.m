@@ -189,8 +189,7 @@
 
 - (HUBCollectionViewLayout *)computeLayout
 {
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    id<HUBViewModel> const viewModel = [self.viewModelBuilder buildForViewURI:viewURI];
+    id<HUBViewModel> const viewModel = [self.viewModelBuilder build];
     HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
                                                                               componentRegistry:self.componentRegistry
                                                                          componentLayoutManager:self.componentLayoutManager];

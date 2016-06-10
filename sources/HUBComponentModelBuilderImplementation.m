@@ -547,8 +547,7 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    NSURL * const targetURL = self.targetURL;
-    return [self.targetInitialViewModelBuilderImplementation buildForViewURI:targetURL];
+    return [self.targetInitialViewModelBuilderImplementation build];
 }
 
 @end

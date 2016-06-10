@@ -36,14 +36,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
 
-/**
- *  The URI of the view
- *
- *  The value of this property is assigned automatically by the Hub Framework based on the URI that was used to open
- *  the view that this view model is being used in.
- */
-@property (nonatomic, copy, readonly) NSURL *viewURI;
-
 #pragma mark - Navigation bar title
 
 /**
