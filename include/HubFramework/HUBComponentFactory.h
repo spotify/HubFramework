@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The registry will lookup the factory based on the namespace and query the factory for
  *  component instances based on a component name.
  */
-@protocol HUBComponentFactory
+@protocol HUBComponentFactory <NSObject>
 
 /**
  *  Create a new component matching a name
