@@ -7,6 +7,7 @@
 @property (nonatomic, readwrite) NSUInteger numberOfResizes;
 @property (nonatomic, readwrite) NSUInteger numberOfAppearances;
 @property (nonatomic, readwrite) NSUInteger numberOfReuses;
+@property (nonatomic, strong, readonly) NSMutableArray<id> *mutableRestoredUIStates;
 
 @end
 
@@ -22,6 +23,7 @@
     if (self) {
         _layoutTraits = [NSMutableSet new];
         _canHandleImages = YES;
+        _mutableRestoredUIStates = [NSMutableArray new];
     }
     
     return self;
@@ -68,6 +70,14 @@
     }
 }
 
+#pragma mark - HUBComponentWithRestorableUIState
+
+- (void)restoreUIState:(id)state
+{
+    self.currentUIState = state;
+    [self.mutableRestoredUIStates addObject:state];
+}
+
 #pragma mark - HUBComponentViewObserver
 
 - (void)viewDidResize
@@ -80,12 +90,23 @@
     self.numberOfAppearances++;
 }
 
+#pragma mark - Property overrides
+
+- (NSArray<id> *)restoredUIStates
+{
+    return [self.mutableRestoredUIStates copy];
+}
+
 #pragma mark - Mocking tools
 
 - (BOOL)conformsToProtocol:(Protocol *)protocol
 {
     if (protocol == @protocol(HUBComponentWithImageHandling)) {
         return self.canHandleImages;
+    }
+    
+    if (protocol == @protocol(HUBComponentWithRestorableUIState)) {
+        return self.supportsRestorableUIState;
     }
     
     if (protocol == @protocol(HUBComponentViewObserver)) {

@@ -4,6 +4,8 @@
 #import "HUBComponentWrapper.h"
 #import "HUBComponentMock.h"
 #import "HUBComponentIdentifier.h"
+#import "HUBComponentModelImplementation.h"
+#import "HUBComponentUIStateManager.h"
 
 @interface HUBCollectionViewCellTests : XCTestCase
 
@@ -24,7 +26,28 @@
     self.component = [HUBComponentMock new];
     
     HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
-    self.componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:self.component componentIdentifier:componentIdentifier];
+    id<HUBComponentModel> const model = [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
+                                                                                              index:0
+                                                                                componentIdentifier:componentIdentifier
+                                                                                  componentCategory:HUBComponentCategoryRow
+                                                                                              title:nil
+                                                                                           subtitle:nil
+                                                                                     accessoryTitle:nil
+                                                                                    descriptionText:nil
+                                                                                      mainImageData:nil
+                                                                                backgroundImageData:nil
+                                                                                    customImageData:@{}
+                                                                                               icon:nil
+                                                                                          targetURL:nil
+                                                                             targetInitialViewModel:nil
+                                                                                           metadata:nil
+                                                                                        loggingData:nil
+                                                                                         customData:nil
+                                                                               childComponentModels:nil];
+    
+    HUBComponentUIStateManager * const UIStateManager = [HUBComponentUIStateManager new];
+    
+    self.componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:self.component model:model UIStateManager:UIStateManager];
     
     self.cell = [[HUBComponentCollectionViewCell alloc] initWithFrame:CGRectZero];
     self.cell.componentWrapper = self.componentWrapper;

@@ -34,6 +34,7 @@
 #import "HUBComponent.h"
 #import "HUBComponentWithChildren.h"
 #import "HUBComponentWithImageHandling.h"
+#import "HUBComponentWithRestorableUIState.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentFactory.h"

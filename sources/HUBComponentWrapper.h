@@ -5,6 +5,7 @@
 @protocol HUBComponentModel;
 @class HUBComponentWrapper;
 @class HUBComponentIdentifier;
+@class HUBComponentUIStateManager;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -71,16 +72,22 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) HUBComponentIdentifier *componentIdentifier;
 
 /// The current model that the wrapped component is representing
-@property (nonatomic, strong, nullable) id<HUBComponentModel> currentModel;
+@property (nonatomic, strong) id<HUBComponentModel> currentModel;
 
 /**
  *  Initialize an instance of this class with a component to wrap and its identifier
  *
  *  @param component The component to wrap
- *  @param componentIdentifier The identifier that the component was resolved using
  */
 - (instancetype)initWithComponent:(id<HUBComponent>)component
-              componentIdentifier:(HUBComponentIdentifier *)componentIdentifier HUB_DESIGNATED_INITIALIZER;
+                            model:(id<HUBComponentModel>)model
+                   UIStateManager:(HUBComponentUIStateManager *)UIStateManager HUB_DESIGNATED_INITIALIZER;
+
+/// Save the current UI state of the wrapped component, if the component supports it
+- (void)saveComponentUIState;
+
+/// Restore a previously saved UI state for the wrapped component, if the component supports it
+- (void)restoreComponentUIState;
 
 @end
 
