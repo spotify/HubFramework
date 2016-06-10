@@ -219,7 +219,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didFailLoadingWithError:(NSError *)error
 {
-    // Add glorious error handling here
+    [self.delegate viewController:self didFailToUpdateWithError:error];
 }
 
 #pragma mark - HUBImageLoaderDelegate

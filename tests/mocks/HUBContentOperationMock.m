@@ -37,7 +37,10 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBContentOperationDelegate> const delegate = self.delegate;
     
-    if (self.contentLoadingBlock != nil) {
+    if (self.error != nil) {
+        NSError * const error = self.error;
+        [delegate contentOperation:self didFailWithError:error];
+    } else if (self.contentLoadingBlock != nil) {
         BOOL const shouldCallDelegate = self.contentLoadingBlock(viewModelBuilder);
         
         if (shouldCallDelegate) {

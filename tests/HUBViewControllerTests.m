@@ -42,6 +42,7 @@
 @property (nonatomic, strong) HUBDeviceMock *device;
 @property (nonatomic, strong) HUBViewControllerImplementation *viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
+@property (nonatomic, strong) NSError *errorFromDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromAppearanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromDisapperanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromSelectionDelegateMethod;
@@ -151,6 +152,16 @@
     [self.viewController viewWillAppear:YES];
     
     XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleB);
+}
+
+- (void)testDelegateNotifiedOfViewModelUpdateError
+{
+    NSError * const error = [NSError errorWithDomain:@"hubFramework" code:4 userInfo:nil];
+    self.contentOperation.error = error;
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqual(self.errorFromDelegateMethod, error);
 }
 
 - (void)testReloadPolicyPreventingReload
@@ -973,6 +984,12 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
 {
     XCTAssertEqual(viewController, self.viewController);
     self.viewModelFromDelegateMethod = viewModel;
+}
+
+- (void)viewController:(UIViewController<HUBViewController> *)viewController didFailToUpdateWithError:(NSError *)error
+{
+    XCTAssertEqual(viewController, self.viewController);
+    self.errorFromDelegateMethod = error;
 }
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController

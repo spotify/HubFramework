@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Any previous content operation error that was passed to this content operation
 @property (nonatomic, strong, readonly, nullable) NSError *previousContentOperationError;
 
+/// Any error that the content operation should always produce
+@property (nonatomic, strong, nullable) NSError *error;
+
 @end
 
 NS_ASSUME_NONNULL_END
