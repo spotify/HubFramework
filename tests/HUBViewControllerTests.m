@@ -876,6 +876,92 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
 }
 
+- (void)testSavingAndRestoringHeaderComponentUIState
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        __typeof(self) strongSelf = weakSelf;
+        viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id state = @"State!";
+    self.component.currentUIState = state;
+    self.component.supportsRestorableUIState = YES;
+    
+    self.contentReloadPolicy.shouldReload = YES;
+    
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    
+    XCTAssertEqualObjects(self.component.restoredUIStates, @[state]);
+}
+
+- (void)testSavingAndRestoringOverlayComponentUIState
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        __typeof(self) strongSelf = weakSelf;
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"id"].componentName = strongSelf.componentIdentifier.componentName;
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id state = @"State!";
+    self.component.currentUIState = state;
+    self.component.supportsRestorableUIState = YES;
+    
+    self.contentReloadPolicy.shouldReload = YES;
+    
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    
+    XCTAssertEqualObjects(self.component.restoredUIStates, @[state]);
+}
+
+- (void)testSavingAndRestoringBodyComponentUIState
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        __typeof(self) strongSelf = weakSelf;
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].componentName = strongSelf.componentIdentifier.componentName;
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"two"].componentName = strongSelf.componentIdentifier.componentName;
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+    
+    NSIndexPath * const firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cell = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:firstIndexPath];
+    
+    id state = @"State!";
+    self.component.currentUIState = state;
+    self.component.supportsRestorableUIState = YES;
+    
+    [cell prepareForReuse];
+    [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:firstIndexPath];
+    
+    XCTAssertEqualObjects(self.component.restoredUIStates, @[state]);
+    
+    // Make sure that UI states don't get reused between models
+    [cell prepareForReuse];
+    NSIndexPath * const secondIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
+    [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:secondIndexPath];
+    
+    XCTAssertEqualObjects(self.component.restoredUIStates, @[state]);
+    
+    // Make sure that the component was actually reused
+    XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
+}
+
 - (void)testSettingBackgroundColorOfViewAlsoUpdatesCollectionView
 {
     self.viewController.view.backgroundColor = [UIColor redColor];

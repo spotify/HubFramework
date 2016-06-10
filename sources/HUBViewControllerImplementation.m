@@ -19,6 +19,7 @@
 #import "HUBContainerView.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBContentReloadPolicy.h"
+#import "HUBComponentUIStateManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -40,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) HUBComponentWrapper *headerComponentWrapper;
 @property (nonatomic, strong, readonly) NSMutableArray<HUBComponentWrapper *> *overlayComponentWrappers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
+@property (nonatomic, strong, readonly) HUBComponentUIStateManager *componentUIStateManager;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic) BOOL viewModelIsInitial;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
@@ -83,6 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
     _contentOffsetObservingComponents = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     _overlayComponentWrappers = [NSMutableArray new];
     _componentWrappersByIdentifier = [NSMutableDictionary new];
+    _componentUIStateManager = [HUBComponentUIStateManager new];
     
     _viewModelLoader.delegate = self;
     _imageLoader.delegate = self;
@@ -319,7 +322,8 @@ NS_ASSUME_NONNULL_BEGIN
         id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
         
         HUBComponentWrapper * const componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:component
-                                                                                  componentIdentifier:componentModel.componentIdentifier];
+                                                                                                model:componentModel
+                                                                                       UIStateManager:self.componentUIStateManager];
         
         componentWrapper.delegate = self;
         cell.componentWrapper = componentWrapper;
@@ -329,6 +333,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentWrapper * const componentWrapper = cell.componentWrapper;
     componentWrapper.currentModel = componentModel;
     [componentWrapper.component configureViewWithModel:componentModel];
+    [componentWrapper restoreComponentUIState];
     
     [self loadImagesForComponent:componentWrapper.component
                            model:componentModel
@@ -468,6 +473,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentWrapper *componentWrapper;
     
     if (shouldReuseCurrentComponent) {
+        [previousComponentWrapper saveComponentUIState];
         [previousComponentWrapper.component prepareViewForReuse];
         componentWrapper = previousComponentWrapper;
     } else {
@@ -480,7 +486,8 @@ NS_ASSUME_NONNULL_BEGIN
         id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
         
         componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:component
-                                                      componentIdentifier:componentModel.componentIdentifier];
+                                                                    model:componentModel
+                                                           UIStateManager:self.componentUIStateManager];
         
         componentWrapper.delegate = self;
         self.componentWrappersByIdentifier[componentWrapper.identifier] = componentWrapper;
@@ -492,6 +499,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     [componentWrapper.component configureViewWithModel:componentModel];
     componentWrapper.currentModel = componentModel;
+    [componentWrapper restoreComponentUIState];
     
     [self loadImagesForComponent:componentWrapper.component
                            model:componentModel

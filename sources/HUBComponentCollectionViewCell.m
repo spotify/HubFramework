@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)prepareForReuse
 {
+    [self.componentWrapper saveComponentUIState];
     [self.componentWrapper.component prepareViewForReuse];
 }
 
