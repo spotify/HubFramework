@@ -26,6 +26,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewController:(UIViewController<HUBViewController> *)viewController didUpdateWithViewModel:(id<HUBViewModel>)viewModel;
 
 /**
+ *  Sent to a Hub Framework view controller's delegate when it failed to be updated because of an error
+ *
+ *  @param viewController The view controller that failed to update
+ *  @param error The error that was encountered
+ *
+ *  You can use this method to perform any custom UI operations to visualize that an error occured. Any previously
+ *  loaded view model will still be used even if an error was encountered.
+ *
+ *  Note that you can also use content operations (`HUBContentOperation`) to react to errors, and adjust the UI.
+ */
+- (void)viewController:(UIViewController<HUBViewController> *)viewController didFailToUpdateWithError:(NSError *)error;
+
+/**
  *  Sent to a Hub Framework view controller's delegate when a component is about to appear on the screen
  *
  *  @param viewController The view controller in which a component is about to appear
