@@ -29,6 +29,8 @@
 #pragma mark - HUBComponentSelectionHandler
 
 - (BOOL)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel
+                              viewController:(UIViewController *)viewController
+                                     viewURI:(NSURL *)viewURI
 {
     if (!self.handlesSelection) {
         return NO;

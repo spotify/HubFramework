@@ -708,7 +708,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel view:(UIView *)view
 {
-    BOOL const selectionHandled = [self.componentSelectionHandler handleSelectionForComponentWithModel:componentModel];
+    BOOL const selectionHandled = [self.componentSelectionHandler handleSelectionForComponentWithModel:componentModel
+                                                                                        viewController:self
+                                                                                               viewURI:self.viewURI];
     
     if (!selectionHandled) {
         NSURL * const targetURL = componentModel.targetURL;
