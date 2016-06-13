@@ -58,7 +58,8 @@
                                                           title:@"Title"
                                       contentOperationFactories:@[contentOperationFactory]
                                             contentReloadPolicy:nil
-                                     customJSONSchemaIdentifier:nil];
+                                     customJSONSchemaIdentifier:nil
+                                      componentSelectionHandler:nil];
     
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
     XCTAssertNotNil([self.manager.viewControllerFactory createViewControllerForViewURI:viewURI]);
@@ -83,7 +84,8 @@
                                                           title:@"Title"
                                       contentOperationFactories:@[contentOperationFactory]
                                             contentReloadPolicy:nil
-                                     customJSONSchemaIdentifier:nil];
+                                     customJSONSchemaIdentifier:nil
+                                      componentSelectionHandler:nil];
     
     UIViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
     [viewController viewWillAppear:YES];

@@ -5,6 +5,7 @@
 @protocol HUBImageLoader;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
+@protocol HUBComponentSelectionHandler;
 @protocol HUBViewModel;
 @class HUBCollectionViewFactory;
 @class HUBComponentRegistryImplementation;
@@ -33,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+      componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler
        initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
                          device:(UIDevice *)device
             contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy

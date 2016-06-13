@@ -36,14 +36,16 @@
                                            title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
-                      customJSONSchemaIdentifier:nil];
+                      customJSONSchemaIdentifier:nil
+                       componentSelectionHandler:nil];
     
     XCTAssertThrows([self.registry registerFeatureWithIdentifier:identifier
                                                 viewURIPredicate:viewURIPredicate
                                                            title:@"Title"
                                        contentOperationFactories:@[contentOperationFactory]
                                              contentReloadPolicy:nil
-                                      customJSONSchemaIdentifier:nil]);
+                                      customJSONSchemaIdentifier:nil
+                                       componentSelectionHandler:nil]);
 }
 
 - (void)testRegistrationPropertyAssignment
@@ -59,7 +61,8 @@
                                            title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
-                      customJSONSchemaIdentifier:customJSONSchemaIdentifier];
+                      customJSONSchemaIdentifier:customJSONSchemaIdentifier
+                       componentSelectionHandler:nil];
     
     HUBFeatureRegistration * const registration = [self.registry featureRegistrationForViewURI:rootViewURI];
     XCTAssertEqualObjects(registration.featureIdentifier, featureIdentifier);
@@ -82,7 +85,8 @@
                                            title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
-                      customJSONSchemaIdentifier:nil];
+                      customJSONSchemaIdentifier:nil
+                       componentSelectionHandler:nil];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     XCTAssertNil([self.registry featureRegistrationForViewURI:viewURI]);
@@ -101,14 +105,16 @@
                                            title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
-                      customJSONSchemaIdentifier:nil];
+                      customJSONSchemaIdentifier:nil
+                       componentSelectionHandler:nil];
     
     [self.registry registerFeatureWithIdentifier:@"featureB"
                                 viewURIPredicate:viewURIPredicate
                                            title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
-                      customJSONSchemaIdentifier:nil];
+                      customJSONSchemaIdentifier:nil
+                       componentSelectionHandler:nil];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     XCTAssertEqualObjects([self.registry featureRegistrationForViewURI:viewURI].featureIdentifier, @"featureA");
@@ -126,7 +132,8 @@
                                            title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
-                      customJSONSchemaIdentifier:nil];
+                      customJSONSchemaIdentifier:nil
+                       componentSelectionHandler:nil];
     
     [self.registry unregisterFeatureWithIdentifier:identifier];
     
@@ -136,7 +143,8 @@
                                            title:@"Title"
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
-                      customJSONSchemaIdentifier:nil];
+                      customJSONSchemaIdentifier:nil
+                       componentSelectionHandler:nil];
 }
 
 @end

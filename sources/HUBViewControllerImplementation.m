@@ -20,6 +20,7 @@
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBContentReloadPolicy.h"
 #import "HUBComponentUIStateManager.h"
+#import "HUBComponentSelectionHandler.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -30,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
+@property (nonatomic, strong, nullable, readonly) id<HUBComponentSelectionHandler> componentSelectionHandler;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, weak, nullable) UIDevice *device;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
@@ -59,6 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+      componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler
        initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
                          device:(UIDevice *)device
             contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
@@ -74,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
     _collectionViewFactory = collectionViewFactory;
     _componentRegistry = componentRegistry;
     _componentLayoutManager = componentLayoutManager;
+    _componentSelectionHandler = componentSelectionHandler;
     _initialViewModelRegistry = initialViewModelRegistry;
     _device = device;
     _contentReloadPolicy = contentReloadPolicy;
@@ -704,18 +708,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel view:(UIView *)view
 {
-    NSURL * const targetURL = componentModel.targetURL;
-    id<HUBViewModel> const targetInitialViewModel = componentModel.targetInitialViewModel;
+    BOOL const selectionHandled = [self.componentSelectionHandler handleSelectionForComponentWithModel:componentModel];
     
-    if (targetURL == nil) {
-        return;
+    if (!selectionHandled) {
+        NSURL * const targetURL = componentModel.targetURL;
+        id<HUBViewModel> const targetInitialViewModel = componentModel.targetInitialViewModel;
+        
+        if (targetURL == nil) {
+            return;
+        }
+        
+        if (targetInitialViewModel != nil) {
+            [self.initialViewModelRegistry registerInitialViewModel:targetInitialViewModel forViewURI:targetURL];
+        }
+        
+        [[UIApplication sharedApplication] openURL:targetURL];
     }
-    
-    if (targetInitialViewModel != nil) {
-        [self.initialViewModelRegistry registerInitialViewModel:targetInitialViewModel forViewURI:targetURL];
-    }
-    
-    [[UIApplication sharedApplication] openURL:targetURL];
     
     [self.delegate viewController:self componentWithModel:componentModel selectedInView:view];
 }

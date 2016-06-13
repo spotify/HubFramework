@@ -63,7 +63,8 @@
                                                   title:@"Title"
                               contentOperationFactories:@[contentOperationFactory]
                                     contentReloadPolicy:nil
-                             customJSONSchemaIdentifier:nil];
+                             customJSONSchemaIdentifier:nil
+                              componentSelectionHandler:nil];
     
     XCTAssertTrue([self.viewModelLoaderFactory canCreateViewModelLoaderForViewURI:viewURI]);
     XCTAssertNotNil([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
@@ -87,7 +88,8 @@
                                                   title:@"Title"
                               contentOperationFactories:@[contentOperationFactory]
                                     contentReloadPolicy:nil
-                             customJSONSchemaIdentifier:nil];
+                             customJSONSchemaIdentifier:nil
+                              componentSelectionHandler:nil];
     
     XCTAssertThrows([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
 }
@@ -104,7 +106,8 @@
                                                   title:@"Title"
                               contentOperationFactories:@[contentOperationFactory]
                                     contentReloadPolicy:nil
-                             customJSONSchemaIdentifier:nil];
+                             customJSONSchemaIdentifier:nil
+                              componentSelectionHandler:nil];
     
     HUBContentOperationMock * const prependedOperation = [HUBContentOperationMock new];
     self.prependedContentOperationFactory.contentOperations = @[prependedOperation];

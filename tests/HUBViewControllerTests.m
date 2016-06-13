@@ -17,6 +17,7 @@
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
 #import "HUBComponentLayoutManagerMock.h"
+#import "HUBComponentSelectionHandlerMock.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBViewModel.h"
 #import "HUBContentReloadPolicyMock.h"
@@ -36,6 +37,7 @@
 @property (nonatomic, strong) HUBCollectionViewMock *collectionView;
 @property (nonatomic, strong) HUBCollectionViewFactoryMock *collectionViewFactory;
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
+@property (nonatomic, strong) HUBComponentSelectionHandlerMock *componentSelectionHandler;
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
 @property (nonatomic, strong) HUBInitialViewModelRegistry *initialViewModelRegistry;
@@ -65,6 +67,7 @@
     self.contentReloadPolicy = [HUBContentReloadPolicyMock new];
     self.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentDefaults.componentNamespace name:componentDefaults.componentName];
     self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler];
+    self.componentSelectionHandler = [HUBComponentSelectionHandlerMock new];
     self.component = [HUBComponentMock new];
     
     self.collectionView = [HUBCollectionViewMock new];
@@ -100,6 +103,7 @@
                                                              collectionViewFactory:self.collectionViewFactory
                                                                  componentRegistry:self.componentRegistry
                                                             componentLayoutManager:componentLayoutManager
+                                                         componentSelectionHandler:self.componentSelectionHandler
                                                           initialViewModelRegistry:self.initialViewModelRegistry
                                                                             device:self.device
                                                                contentReloadPolicy:self.contentReloadPolicy
@@ -199,6 +203,7 @@
                                                              collectionViewFactory:self.collectionViewFactory
                                                                  componentRegistry:self.componentRegistry
                                                             componentLayoutManager:componentLayoutManager
+                                                         componentSelectionHandler:self.componentSelectionHandler
                                                           initialViewModelRegistry:self.initialViewModelRegistry
                                                                             device:self.device
                                                                contentReloadPolicy:nil
@@ -716,6 +721,12 @@
     [collectionViewDelegate collectionView:self.collectionView didSelectItemAtIndexPath:selectableIndexPath];
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
+    
+    // Test custom selection handling
+    self.componentSelectionHandler.handlesSelection = YES;
+    [collectionViewDelegate collectionView:self.collectionView didSelectItemAtIndexPath:selectableIndexPath];
+    XCTAssertEqual(self.componentSelectionHandler.selectedComponentModels.count, (NSUInteger)1);
+    XCTAssertEqualObjects(self.componentSelectionHandler.selectedComponentModels[0].targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
 }
 
 - (void)testSelectionForChildComponent
@@ -765,6 +776,12 @@
     
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].targetURL, childComponentTargetURL);
+    
+    // Test custom selection handling
+    self.componentSelectionHandler.handlesSelection = YES;
+    [childDelegate component:component childSelectedAtIndex:0 view:[UIView new]];
+    XCTAssertEqual(self.componentSelectionHandler.selectedComponentModels.count, (NSUInteger)1);
+    XCTAssertEqualObjects(self.componentSelectionHandler.selectedComponentModels[0].targetURL, childComponentTargetURL);
 }
 
 - (void)testComponentNotifiedOfResize
