@@ -81,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
                                               collectionViewFactory:collectionViewFactory
                                                   componentRegistry:self.componentRegistry
                                              componentLayoutManager:self.componentLayoutManager
+                                          componentSelectionHandler:featureRegistration.componentSelectionHandler
                                            initialViewModelRegistry:self.initialViewModelRegistry
                                                              device:[UIDevice currentDevice]
                                                 contentReloadPolicy:contentReloadPolicy

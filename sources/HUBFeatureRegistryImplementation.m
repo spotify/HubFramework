@@ -50,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
             contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                   contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
+            componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(viewURIPredicate != nil);
@@ -68,7 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                            viewURIPredicate:viewURIPredicate
                                                                                   contentOperationFactories:contentOperationFactories
                                                                                         contentReloadPolicy:contentReloadPolicy
-                                                                                 customJSONSchemaIdentifier:customJSONSchemaIdentifier];
+                                                                                 customJSONSchemaIdentifier:customJSONSchemaIdentifier
+                                                                                  componentSelectionHandler:componentSelectionHandler];
     
     self.registrationsByIdentifier[registration.featureIdentifier] = registration;
     [self.registrationIdentifierOrder addObject:registration.featureIdentifier];

@@ -2,6 +2,7 @@
 
 @protocol HUBContentOperationFactory;
 @protocol HUBContentReloadPolicy;
+@protocol HUBComponentSelectionHandler;
 @class HUBViewURIPredicate;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -27,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The identifier of any custom JSON schema that the feature is using
 @property (nonatomic, copy, nullable, readonly) NSString *customJSONSchemaIdentifier;
 
+/// Any custom component selection handler that the feature is using
+@property (nonatomic, strong, nullable, readonly) id<HUBComponentSelectionHandler> componentSelectionHandler;
+
 /**
  *  Initialize an instance of this class with its possible values
  *
@@ -36,13 +40,15 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param contentOperationFactories The content operation factories that the feature will use
  *  @param contentReloadPolicy Any custom content reload policy that the feature will use
  *  @param customJSONSchemaIdentifier The identifier of any custom JSON schema the feature will use
+ *  @param componentSelectionHandler Any custom component selection handler that the feature will use
  */
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                                     title:(NSString *)featureTitle
                          viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
                 contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                       contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
-               customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier HUB_DESIGNATED_INITIALIZER;
+               customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
+                componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler HUB_DESIGNATED_INITIALIZER;
 
 @end
 

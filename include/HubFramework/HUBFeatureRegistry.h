@@ -2,6 +2,7 @@
 
 @protocol HUBContentOperationFactory;
 @protocol HUBContentReloadPolicy;
+@protocol HUBComponentSelectionHandler;
 @class HUBViewURIPredicate;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -30,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
  *         policy for this instance of the Hub Framework will be used. See `HUBContentReloadPolicy` for more information.
  *  @param customJSONSchemaIdentifier Any identifier of a custom schema to use to parse JSON data. If `nil`, the default
  *         schema will be used. Register your custom schema using `HUBJSONSchemaRegistry`. See `HUBJSONSchema` for more info.
+ *  @param componentSelectionHandler Any custom selection handler to use to handle component selection events. This can be
+ *         used to override the default "open target URL" selection handling. See `HUBComponentSelectionHandler` for more info.
  *
  *  Registering a feature with the same identifier as one that is already registered is considered a severe error and will
  *  trigger an assert.
@@ -39,7 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
                                 title:(NSString *)title
             contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                   contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
-           customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier;
+           customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
+            componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler;
 
 /**
  *  Unregister a feature from the Hub Framework

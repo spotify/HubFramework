@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
                 contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                       contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
+                componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(featureTitle != nil);
@@ -27,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
         _contentOperationFactories = [contentOperationFactories copy];
         _contentReloadPolicy = contentReloadPolicy;
         _customJSONSchemaIdentifier = [customJSONSchemaIdentifier copy];
+        _componentSelectionHandler = componentSelectionHandler;
     }
     
     return self;
