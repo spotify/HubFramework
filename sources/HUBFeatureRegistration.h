@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param contentOperationFactories The content operation factories that the feature will use
  *  @param contentReloadPolicy Any custom content reload policy that the feature will use
  *  @param customJSONSchemaIdentifier The identifier of any custom JSON schema the feature will use
- *  @param componentselectionHandler Any custom component selection handler that the feature will use
+ *  @param componentSelectionHandler Any custom component selection handler that the feature will use
  */
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                                     title:(NSString *)featureTitle
