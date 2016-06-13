@@ -67,7 +67,7 @@ To be able to lay out components in a way that looks nice & consistent, the Hub 
 
 This is achieved with layout traits. Each component can define a set of layout traits that best describes it in terms of layout.
 
-For more information; see the [Layout programming guide](Layout Programming Guide).
+For more information; see the [Layout programming guide](layout-programming-guide.md).
 
 ### Creating a component's view
 
