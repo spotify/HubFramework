@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@protocol HUBComponentModel;
+@protocol HUBComponentSelectionContext;
 
 /**
  *  Protocol used to define custom selection handlers for components
@@ -14,9 +14,7 @@
 /**
  *  Perform custom selection handling for a component
  *
- *  @param componentModel The model of the component that was selected
- *  @param viewController The view controller that the selection event occured in
- *  @param viewURI The URI of the view that the selection event occured in
+ *  @param selectionContext The context in which the selection occurred.
  *
  *  @return Whether custom selection handling was performed, which will prevent the default selection
  *  handling (opening any `targetURL` associated with the component model) from being performed.
@@ -24,8 +22,6 @@
  *  The Hub Framework will call this method on any selection handler associated with the current feature
  *  whenever a component was selected by the user.
  */
-- (BOOL)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel
-                              viewController:(UIViewController *)viewController
-                                     viewURI:(NSURL *)viewURI;
+- (BOOL)handleSelectionForComponentWithContext:(nonnull id<HUBComponentSelectionContext>)selectionContext;
 
 @end
