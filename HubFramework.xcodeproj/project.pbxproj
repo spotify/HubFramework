@@ -107,6 +107,7 @@
 		DDBCF36E1C68DE2C00693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
 		DDBCF36F1C68DE4900693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
 		DDBCF3701C68DE5000693038 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36B1C68DD2300693038 /* UIKit.framework */; };
+		F663FE7B1D10BE70003E19B6 /* HUBComponentSelectionContextImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = F663FE7A1D10BE70003E19B6 /* HUBComponentSelectionContextImplementation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -310,6 +311,9 @@
 		DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBUtilities.h; sourceTree = "<group>"; };
 		DDBCF36B1C68DD2300693038 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		F663FE791D10BE70003E19B6 /* HUBComponentSelectionContextImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentSelectionContextImplementation.h; sourceTree = "<group>"; };
+		F663FE7A1D10BE70003E19B6 /* HUBComponentSelectionContextImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentSelectionContextImplementation.m; sourceTree = "<group>"; };
+		F663FE7C1D10BECE003E19B6 /* HUBComponentSelectionContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentSelectionContext.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -537,6 +541,8 @@
 				8AFF0F311C846DA700D5535B /* HUBComponentWrapper.m */,
 				8AFD98501D09C67D00AFF898 /* HUBComponentUIStateManager.h */,
 				8AFD98511D09C67D00AFF898 /* HUBComponentUIStateManager.m */,
+				F663FE791D10BE70003E19B6 /* HUBComponentSelectionContextImplementation.h */,
+				F663FE7A1D10BE70003E19B6 /* HUBComponentSelectionContextImplementation.m */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -613,6 +619,7 @@
 				8A0568F31CBFB073007C296A /* HUBComponentCategories.h */,
 				8A5D7A6F1CBE586700B987BA /* HUBComponentFallbackHandler.h */,
 				8A0F910A1D0EE7F200C37FAE /* HUBComponentSelectionHandler.h */,
+				F663FE7C1D10BECE003E19B6 /* HUBComponentSelectionContext.h */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -785,6 +792,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A8808A01C21AD0900ADB737 /* HUBComponentRegistryImplementation.m in Sources */,
+				F663FE7B1D10BE70003E19B6 /* HUBComponentSelectionContextImplementation.m in Sources */,
 				8AA29C881C4FAB6200E972B7 /* HUBComponentImageDataImplementation.m in Sources */,
 				8A786BBE1C5A595900B2AB9E /* HUBJSONPathImplementation.m in Sources */,
 				8AA29C851C4FAA9200E972B7 /* HUBComponentModelImplementation.m in Sources */,

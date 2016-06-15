@@ -21,6 +21,7 @@
 #import "HUBContentReloadPolicy.h"
 #import "HUBComponentUIStateManager.h"
 #import "HUBComponentSelectionHandler.h"
+#import "HUBComponentSelectionContextImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -708,9 +709,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel view:(UIView *)view
 {
-    BOOL const selectionHandled = [self.componentSelectionHandler handleSelectionForComponentWithModel:componentModel
-                                                                                        viewController:self
-                                                                                               viewURI:self.viewURI];
+    // self.viewModel is specified as nullable, but we can safely assume it exists at this point.
+    id<HUBViewModel> const viewModel = self.viewModel;
+    id<HUBComponentSelectionContext> const selectionContext =
+        [[HUBComponentSelectionContextImplementation alloc] initWithViewURI:self.viewURI
+                                                                  viewModel:viewModel
+                                                             componentModel:componentModel
+                                                             viewController:self];
+    BOOL const selectionHandled = [self.componentSelectionHandler handleSelectionForComponentWithContext:selectionContext];
     
     if (!selectionHandled) {
         NSURL * const targetURL = componentModel.targetURL;

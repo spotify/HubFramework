@@ -1,8 +1,9 @@
 #import "HUBComponentSelectionHandlerMock.h"
+#import "HUBComponentSelectionContext.h"
 
 @interface HUBComponentSelectionHandlerMock ()
 
-@property (nonatomic, strong, readonly) NSMutableArray<id<HUBComponentModel>> *mutableSelectedComponentModels;
+@property (nonatomic, strong, readonly) NSMutableArray<id<HUBComponentSelectionContext>> *mutableSelectionContexts;
 
 @end
 
@@ -13,7 +14,7 @@
     self = [super init];
     
     if (self) {
-        _mutableSelectedComponentModels = [NSMutableArray new];
+        _mutableSelectionContexts = [NSMutableArray new];
     }
     
     return self;
@@ -21,22 +22,20 @@
 
 #pragma mark - Property overrides
 
-- (NSArray<id<HUBComponentModel>> *)selectedComponentModels
+- (NSArray<id<HUBComponentSelectionContext>> *)selectionContexts
 {
-    return [self.mutableSelectedComponentModels copy];
+    return [self.mutableSelectionContexts copy];
 }
 
 #pragma mark - HUBComponentSelectionHandler
 
-- (BOOL)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel
-                              viewController:(UIViewController *)viewController
-                                     viewURI:(NSURL *)viewURI
+- (BOOL)handleSelectionForComponentWithContext:(id<HUBComponentSelectionContext>)selectionContext
 {
     if (!self.handlesSelection) {
         return NO;
     }
     
-    [self.mutableSelectedComponentModels addObject:componentModel];
+    [self.mutableSelectionContexts addObject:selectionContext];
     
     return YES;
 }

@@ -48,6 +48,8 @@
 #import "HUBComponentLayoutTraits.h"
 #import "HUBComponentCategories.h"
 #import "HUBComponentFallbackHandler.h"
+#import "HUBComponentSelectionHandler.h"
+#import "HUBComponentSelectionContext.h"
 
 // Images & Icons
 #import "HUBImageLoaderFactory.h"

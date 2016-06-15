@@ -42,6 +42,7 @@
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
 @property (nonatomic, strong) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong) HUBDeviceMock *device;
+@property (nonatomic, strong) NSURL *viewURI;
 @property (nonatomic, strong) HUBViewControllerImplementation *viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromDelegateMethod;
@@ -76,13 +77,13 @@
     id<HUBComponentFactory> const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{componentDefaults.componentName: self.component}];
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentDefaults.componentNamespace];
     
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    self.viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     HUBFeatureInfoImplementation * const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
     
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults iconImageResolver:iconImageResolver];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
-    self.viewModelLoader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
+    self.viewModelLoader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:self.viewURI
                                                                          featureInfo:featureInfo
                                                                    contentOperations:@[self.contentOperation]
                                                                           JSONSchema:JSONSchema
@@ -98,7 +99,7 @@
     self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     self.device = [HUBDeviceMock new];
     
-    self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
+    self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:self.viewURI
                                                                    viewModelLoader:self.viewModelLoader
                                                              collectionViewFactory:self.collectionViewFactory
                                                                  componentRegistry:self.componentRegistry
@@ -725,8 +726,13 @@
     // Test custom selection handling
     self.componentSelectionHandler.handlesSelection = YES;
     [collectionViewDelegate collectionView:self.collectionView didSelectItemAtIndexPath:selectableIndexPath];
-    XCTAssertEqual(self.componentSelectionHandler.selectedComponentModels.count, (NSUInteger)1);
-    XCTAssertEqualObjects(self.componentSelectionHandler.selectedComponentModels[0].targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
+    XCTAssertEqual(self.componentSelectionHandler.selectionContexts.count, (NSUInteger)1);
+
+    id<HUBComponentSelectionContext> selectionContext = self.componentSelectionHandler.selectionContexts.firstObject;
+    XCTAssertEqualObjects(selectionContext.componentModel.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
+    XCTAssertEqualObjects(selectionContext.viewURI, self.viewURI);
+    XCTAssertEqualObjects(selectionContext.viewModel, self.viewModelFromDelegateMethod);
+    XCTAssertEqualObjects(selectionContext.viewController, self.viewController);
 }
 
 - (void)testSelectionForChildComponent
@@ -780,8 +786,13 @@
     // Test custom selection handling
     self.componentSelectionHandler.handlesSelection = YES;
     [childDelegate component:component childSelectedAtIndex:0 view:[UIView new]];
-    XCTAssertEqual(self.componentSelectionHandler.selectedComponentModels.count, (NSUInteger)1);
-    XCTAssertEqualObjects(self.componentSelectionHandler.selectedComponentModels[0].targetURL, childComponentTargetURL);
+    XCTAssertEqual(self.componentSelectionHandler.selectionContexts.count, (NSUInteger)1);
+
+    id<HUBComponentSelectionContext> selectionContext = self.componentSelectionHandler.selectionContexts.firstObject;
+    XCTAssertEqualObjects(selectionContext.componentModel.targetURL, childComponentTargetURL);
+    XCTAssertEqualObjects(selectionContext.viewController, self.viewController);
+    XCTAssertEqualObjects(selectionContext.viewModel, self.viewModelFromDelegateMethod);
+    XCTAssertEqualObjects(selectionContext.viewURI, self.viewURI);
 }
 
 - (void)testComponentNotifiedOfResize
