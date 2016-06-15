@@ -3,6 +3,7 @@
 Welcome to the Hub Framework layout programming guide! This guide aims to help you gain a deeper understanding of how the Hub Framework works in terms of layout.
 
 **Table of contents**
+
 - [Introduction](#introduction)
 - [Layout traits](#layout-traits)
 - [Layout manager](#layout-manager)
