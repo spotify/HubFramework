@@ -194,7 +194,7 @@ namespace :docs do
 
     # Returns the current HEAD’s git hash
     def git_head_hash(repo_dir)
-        return `git -C "#{repo_dir}" rev-parse HEAD`
+        return `git -C "#{repo_dir}" rev-parse HEAD`.gsub(/\r\n?/,"")
     end
 
     # Executes the given git commands and options (*args) in the given repo_dir
