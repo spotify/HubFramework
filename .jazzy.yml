@@ -3,16 +3,19 @@ author_url: https://hubs.spotify.net
 copyright: Copyright © 2015-2016 Spotify AB
 readme: README.md
 
+documentation: documentation/*.md
+
 module: HubFramework
 module_version: v0.0.1-HEAD
 
 output: docs/output
+theme: fullwidth
 
 github_url: https://ghe.spotify.net/iOS/HubFramework
 github_file_prefix: https://ghe.spotify.net/iOS/HubFramework/tree/master
 
 docset_icon: docs/resources/docset-icon@2x.png
-dash_url: https://hubs.spotify.net/docs/ios/dash.xml
+dash_url: https://ghe.spotify.net/pages/iOS/HubFramework/docsets/feed.xml
 
 clean: true
 objc: true
