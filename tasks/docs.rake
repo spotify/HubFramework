@@ -80,7 +80,7 @@ namespace :docs do
 
         git_clone_repo(args[:repo], args[:branch], repo_dir)
         publish_docs(tmp_dir, repo_dir, args[:branch], docs_path, git_head_hash(repo_dir))
-        #cleanup_publish_dir(repo_dir)
+        cleanup_publish_dir(tmp_dir)
 
         puts "📖  ✅   Published successfully."
     end
