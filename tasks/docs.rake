@@ -227,4 +227,4 @@ namespace :docs do
 end
 
 desc "Generate and publish the documentation"
-task :docs => 'docs:all'
+task :docs => 'docs:generate'
