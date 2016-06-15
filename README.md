@@ -1,4 +1,4 @@
-![The Hub Framework](readme-banner.jpg)
+<img alt="The Hub Framework" src="readme-banner.jpg" width="100%" max-width=1008>
 
 [![Code coverage](https://codecov.spotify.net/github_enterprise/iOS/HubFramework/coverage.svg?branch=master)](https://codecov.spotify.net/github_enterprise/iOS/HubFramework?branch=master)
 
