@@ -303,7 +303,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBFeatureRegistry</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">featureRegistry</span><span class="p">;</span></code></pre>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">featureRegistry</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -331,7 +331,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentRegistry</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">componentRegistry</span><span class="p">;</span></code></pre>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">componentRegistry</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -359,7 +359,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBJSONSchemaRegistry</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">JSONSchemaRegistry</span><span class="p">;</span></code></pre>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">JSONSchemaRegistry</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -387,7 +387,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBViewModelLoaderFactory</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">viewModelLoaderFactory</span><span class="p">;</span></code></pre>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewModelLoaderFactory.html">HUBViewModelLoaderFactory</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">viewModelLoaderFactory</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -415,7 +415,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBViewControllerFactory</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">viewControllerFactory</span><span class="p">;</span></code></pre>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewControllerFactory.html">HUBViewControllerFactory</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">viewControllerFactory</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -444,21 +444,21 @@
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span>
 <span class="nf">initWithConnectivityStateResolver</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBConnectivityStateResolver</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">connectivityStateResolver</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">connectivityStateResolver</span>
            <span class="nf">componentLayoutManager</span><span class="p">:</span>
-               <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentLayoutManager</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentLayoutManager</span>
+               <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentLayoutManager</span>
          <span class="nf">componentFallbackHandler</span><span class="p">:</span>
-             <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentFallbackHandler</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentFallbackHandler</span>
+             <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentFallbackHandler</span>
                <span class="nf">imageLoaderFactory</span><span class="p">:</span>
-                   <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBImageLoaderFactory</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">imageLoaderFactory</span>
+                   <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBImageLoaderFactory.html">HUBImageLoaderFactory</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">imageLoaderFactory</span>
                 <span class="nf">iconImageResolver</span><span class="p">:</span>
-                    <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBIconImageResolver</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">iconImageResolver</span>
+                    <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBIconImageResolver.html">HUBIconImageResolver</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">iconImageResolver</span>
        <span class="nf">defaultContentReloadPolicy</span><span class="p">:</span>
-           <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBContentReloadPolicy</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">defaultContentReloadPolicy</span>
+           <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">defaultContentReloadPolicy</span>
  <span class="nf">prependedContentOperationFactory</span><span class="p">:</span>
-     <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBContentOperationFactory</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">prependedContentOperationFactory</span>
+     <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">prependedContentOperationFactory</span>
   <span class="nf">appendedContentOperationFactory</span><span class="p">:</span>
-      <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBContentOperationFactory</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">appendedContentOperationFactory</span><span class="p">;</span></code></pre>
+      <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">appendedContentOperationFactory</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -674,7 +674,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2015-2016 Spotify AB</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
