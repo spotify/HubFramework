@@ -8,13 +8,13 @@ documentation: documentation/*.md
 module: HubFramework
 module_version: v0.0.1-HEAD
 
-output: docs/output
+output: documentation/output
 theme: fullwidth
 
 github_url: https://ghe.spotify.net/iOS/HubFramework
 github_file_prefix: https://ghe.spotify.net/iOS/HubFramework/tree/master
 
-docset_icon: docs/resources/docset-icon@2x.png
+docset_icon: documentation/resources/docset-icon@2x.png
 dash_url: https://ghe.spotify.net/pages/iOS/HubFramework/docsets/feed.xml
 
 clean: true

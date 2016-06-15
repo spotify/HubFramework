@@ -104,7 +104,7 @@ namespace :docs do
     # Private: Copies all the extra resources to the given `to_path`
     def _copy_extra_resources(to_path)
         FileUtils.cp('readme-banner.jpg', to_path)
-        FileUtils.cp_r('docs/resources', to_path)
+        FileUtils.cp_r('documentation/resources', to_path)
     end
 
     # Rebuilds the DocSet archive
