@@ -1,6 +1,5 @@
 require 'fileutils'
 require 'rake'
-require 'safe_yaml'
 require 'securerandom'
 require 'tmpdir'
 require 'yaml'
@@ -10,9 +9,6 @@ require 'yaml'
 #
 # Also see the associated Jazzy configurations file.
 #
-
-# We want to safely parse our yaml :)
-SafeYAML::OPTIONS[:default_mode] = :safe
 
 config_default = '.jazzy.yml'
 
