@@ -135,15 +135,6 @@ NS_ASSUME_NONNULL_BEGIN
     [self headerAndOverlayComponentViewsWillAppear];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    for (NSIndexPath *indexPath in self.collectionView.indexPathsForSelectedItems) {
-        [self.collectionView deselectItemAtIndexPath:indexPath animated:animated];
-    }
-}
-
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
@@ -295,7 +286,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     id<HUBComponentModel> const childComponentModel = componentModel.childComponentModels[childIndex];
-    [self handleSelectionForComponentWithModel:childComponentModel view:childComponentView];
+    [self handleSelectionForComponentWithModel:childComponentModel view:childComponentView cellIndexPath:nil];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -365,7 +356,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
     UICollectionViewCell * const cell = [collectionView cellForItemAtIndexPath:indexPath];
-    [self handleSelectionForComponentWithModel:componentModel view:cell];
+    [self handleSelectionForComponentWithModel:componentModel view:cell cellIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView
@@ -706,7 +697,7 @@ NS_ASSUME_NONNULL_BEGIN
     [component updateViewForLoadedImage:image fromData:imageData model:componentModel animated:!loadedFromCache];
 }
 
-- (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel view:(UIView *)view
+- (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel view:(UIView *)view cellIndexPath:(nullable NSIndexPath *)cellIndexPath
 {
     BOOL const selectionHandled = [self.componentSelectionHandler handleSelectionForComponentWithModel:componentModel
                                                                                         viewController:self
@@ -716,18 +707,23 @@ NS_ASSUME_NONNULL_BEGIN
         NSURL * const targetURL = componentModel.targetURL;
         id<HUBViewModel> const targetInitialViewModel = componentModel.targetInitialViewModel;
         
-        if (targetURL == nil) {
-            return;
+        if (targetURL != nil) {
+            if (targetInitialViewModel != nil) {
+                [self.initialViewModelRegistry registerInitialViewModel:targetInitialViewModel forViewURI:targetURL];
+            }
+            
+            [[UIApplication sharedApplication] openURL:targetURL];
         }
-        
-        if (targetInitialViewModel != nil) {
-            [self.initialViewModelRegistry registerInitialViewModel:targetInitialViewModel forViewURI:targetURL];
-        }
-        
-        [[UIApplication sharedApplication] openURL:targetURL];
     }
     
-    [self.delegate viewController:self componentWithModel:componentModel selectedInView:view];
+    if (cellIndexPath != nil) {
+        NSIndexPath * const indexPath = cellIndexPath;
+        [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    }
+    
+    if (selectionHandled || componentModel.targetURL != nil) {
+        [self.delegate viewController:self componentWithModel:componentModel selectedInView:view];
+    }
 }
 
 @end
