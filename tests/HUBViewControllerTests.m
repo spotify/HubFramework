@@ -614,16 +614,10 @@
     XCTAssertEqualObjects(targetInitialViewModel.identifier, initialViewModelIdentifier);
 }
 
-- (void)testComponentDeselectedOnViewWillDisappear
+- (void)testComponentDeselectedAfterDefaultSelectionHandling
 {
-    __weak __typeof(self) weakSelf = self;
-    
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        __typeof(self) strongSelf = weakSelf;
-        
-        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
-        componentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
-        
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
         return YES;
     };
     
@@ -632,12 +626,30 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionCenteredVertically];
+    [self.collectionView.delegate collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
     
     XCTAssertEqualObjects(self.collectionView.selectedIndexPaths, [NSSet setWithObject:indexPath]);
+    XCTAssertEqualObjects(self.collectionView.deselectedIndexPaths, [NSSet setWithObject:indexPath]);
+}
+
+- (void)testComponentDeselectedAfterCustomSelectionHandling
+{
+    self.componentSelectionHandler.handlesSelection = YES;
     
-    [self.viewController viewWillDisappear:NO];
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        return YES;
+    };
     
-    XCTAssertEqual(self.collectionView.selectedIndexPaths.count, (NSUInteger)0);
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionCenteredVertically];
+    [self.collectionView.delegate collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+    
+    XCTAssertEqualObjects(self.collectionView.selectedIndexPaths, [NSSet setWithObject:indexPath]);
+    XCTAssertEqualObjects(self.collectionView.deselectedIndexPaths, [NSSet setWithObject:indexPath]);
 }
 
 - (void)testCreatingChildComponent

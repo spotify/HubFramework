@@ -8,8 +8,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// The cells that the collection view will consider as being part of it
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSIndexPath *, UICollectionViewCell *> *cells;
 
-/// The index paths that are currently considered selected in the collection view
+/// The index paths that have been selected in the collection view
 @property (nonatomic, strong, readonly) NSSet<NSIndexPath *> *selectedIndexPaths;
+
+/// The index paths that have been deselected in the collection view
+@property (nonatomic, strong, readonly) NSSet<NSIndexPath *> *deselectedIndexPaths;
 
 /// The index paths of the items that the collection view should act like it's displaying
 @property (nonatomic, strong, nullable) NSArray<NSIndexPath *> *mockedIndexPathsForVisibleItems;

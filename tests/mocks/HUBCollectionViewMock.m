@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBCollectionViewMock ()
 
 @property (nonatomic, strong, readonly) NSMutableSet<NSIndexPath *> *mutableSelectedIndexPaths;
+@property (nonatomic, strong, readonly) NSMutableSet<NSIndexPath *> *mutableDeselectedIndexPaths;
 
 @end
 
@@ -21,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     _cells = [NSMutableDictionary new];
     _mutableSelectedIndexPaths = [NSMutableSet new];
+    _mutableDeselectedIndexPaths = [NSMutableSet new];
     
     return self;
 }
@@ -30,6 +32,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSSet<NSIndexPath *> *)selectedIndexPaths
 {
     return [self.mutableSelectedIndexPaths copy];
+}
+
+- (NSSet<NSIndexPath *> *)deselectedIndexPaths
+{
+    return [self.mutableDeselectedIndexPaths copy];
 }
 
 - (NSArray<NSIndexPath *> *)indexPathsForVisibleItems
@@ -63,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated
 {
     [super deselectItemAtIndexPath:indexPath animated:animated];
-    [self.mutableSelectedIndexPaths removeObject:indexPath];
+    [self.mutableDeselectedIndexPaths addObject:indexPath];
 }
 
 @end
