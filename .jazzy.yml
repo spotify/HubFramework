@@ -3,6 +3,8 @@ author_url: https://hubs.spotify.net
 copyright: Copyright © 2015-2016 Spotify AB
 readme: README.md
 
+documentation: documentation/*.md
+
 module: HubFramework
 module_version: v0.0.1-HEAD
 
