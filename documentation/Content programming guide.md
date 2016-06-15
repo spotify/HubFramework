@@ -3,6 +3,7 @@
 Welcome to the Hub Framework content programming guide! This guide aims to help you gain a deeper understanding of how to build the content that will be rendered in a Hub Framework-powered view.
 
 **Table of contents**
+
 - [Introduction](#introduction)
 - [Content hierarchy](#content-hierarchy)
 - [Using JSON](#using-json)

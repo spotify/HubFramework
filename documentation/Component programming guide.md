@@ -3,6 +3,7 @@
 Welcome to the Hub Framework component programming guide! This guide aims to help you gain a deeper understanding of how components work, how to build them and how to deal with things like data binding, image loading and layout.
 
 **Table of contents**
+
 - [Introduction](#introduction)
 - [The basics](#the-basics)
 - [Image handling](#image-handling)
