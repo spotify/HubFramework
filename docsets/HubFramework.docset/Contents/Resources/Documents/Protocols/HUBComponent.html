@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HUBComponent Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/objc/Protocol/HUBComponent" class="dashAnchor"></a>
+    <a title="HUBComponent Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">HubFramework Docs</a> (96% documented)</p>
+        <p class="header-right"><a href="https://ghe.spotify.net/iOS/HubFramework"><img src="../img/gh.png"/>View on GitHub</a></p>
+        <p class="header-right"><a href="dash-feed://https%3A%2F%2Fhubs%2Espotify%2Enet%2Fdocs%2Fios%2Fdash%2Exml"><img src="../img/dash.png"/>Install in Dash</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">HubFramework Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        HUBComponent Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HUBManager.html">HUBManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HUBViewURIPredicate.html">HUBViewURIPredicate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryBanner">HUBComponentCategoryBanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCard">HUBComponentCategoryCard</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitCompactWidth">HUBComponentLayoutTraitCompactWidth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitFullWidth">HUBComponentLayoutTraitFullWidth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitStackable">HUBComponentLayoutTraitStackable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentImageStyle.html">HUBComponentImageStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentImageType.html">HUBComponentImageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBConnectivityState.html">HUBConnectivityState</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponent.html">HUBComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentChildDelegate.html">HUBComponentChildDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentContentOffsetObserver.html">HUBComponentContentOffsetObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentFactory.html">HUBComponentFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageData.html">HUBComponentImageData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageDataBuilder.html">HUBComponentImageDataBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageDataJSONSchema.html">HUBComponentImageDataJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModelJSONSchema.html">HUBComponentModelJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentSelectionContext.html">HUBComponentSelectionContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentViewObserver.html">HUBComponentViewObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithImageHandling.html">HUBComponentWithImageHandling</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBConnectivityStateResolverObserver.html">HUBConnectivityStateResolverObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperation.html">HUBContentOperation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBFeatureInfo.html">HUBFeatureInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBIcon.html">HUBIcon</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBIconImageResolver.html">HUBIconImageResolver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoader.html">HUBImageLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoaderDelegate.html">HUBImageLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoaderFactory.html">HUBImageLoaderFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONBoolPath.html">HUBJSONBoolPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONDatePath.html">HUBJSONDatePath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONIntegerPath.html">HUBJSONIntegerPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONPath.html">HUBJSONPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONSchema.html">HUBJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONStringPath.html">HUBJSONStringPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBSerializable.html">HUBSerializable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewController.html">HUBViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewControllerDelegate.html">HUBViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewControllerFactory.html">HUBViewControllerFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModel.html">HUBViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelJSONSchema.html">HUBViewModelJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoader.html">HUBViewModelLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoaderDelegate.html">HUBViewModelLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoaderFactory.html">HUBViewModelLoaderFactory</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Type Definitions.html">Type Definitions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBComponentCategories.h@T@HUBComponentCategory">HUBComponentCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBMutableJSONPath.h@T@HUBMutableJSONPathBlock">HUBMutableJSONPathBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>HUBComponent</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponent</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                </div>
+              </div>
+            <p>Protocol implemented by objects that manage a Hub Framework component</p>
+
+<p>A component acts as a controller between a <code><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></code> and a <code>UIView</code> that should be added
+  to the screen by the Hub Framework. Its responsibilities include model-&gt;view data binding, event
+  handling and rendering.</p>
+
+<p>You are free to implement your component in whatever way you desire, and register it for use with
+  the Hub Framework using a <code><a href="../Protocols/HUBComponentFactory.html">HUBComponentFactory</a></code> implementation registered with <code><a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a></code>.</p>
+
+<p>Ideally, components should hold as little state as possible, and instead react to any model changes
+  through <code>-configureViewWithModel:</code>.</p>
+
+<p>This is the base protocol that all components must conform to. For extensions that adds additional
+  functionality see:</p>
+
+<p><code><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></code>: For components that can contain nested child components</p>
+
+<p><code><a href="../Protocols/HUBComponentWithImageHandling.html">HUBComponentWithImageHandling</a></code>: For handling downloaded images.</p>
+
+<p><code><a href="../Protocols/HUBComponentContentOffsetObserver.html">HUBComponentContentOffsetObserver</a></code>: For components that react to the view&rsquo;s content offset.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Configuring%20the%20Component&#39;s%20layout"></a>
+                <a name="//apple_ref/objc/Section/Configuring the Component&#39;s layout" class="dashAnchor"></a>
+                <a href="#/Configuring%20the%20Component&#39;s%20layout">
+                  <h3 class="section-name">Configuring the Component&#39;s layout</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponent(py)layoutTraits"></a>
+                    <a name="//apple_ref/objc/Property/layoutTraits" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponent(py)layoutTraits">layoutTraits</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The set of layout traits that should be used to compute a layout for the component</p>
+
+<p>The Hub Framework will use these layout traits together with its current <code><a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a></code>
+  to compute the margins that an instance of this component will have to other components within the
+  same view, or to the content edge of that view.</p>
+
+<p>Please note that the layout traits this property contains may be used for another instance of the same
+  class, so they need to be consistent across instances of the same component class.</p>
+
+<p>For more information, see <code><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">NSSet</span><span class="o">&lt;</span><span class="n">HUBComponentLayoutTrait</span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">layoutTraits</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Managing%20the%20View"></a>
+                <a name="//apple_ref/objc/Section/Managing the View" class="dashAnchor"></a>
+                <a href="#/Managing%20the%20View">
+                  <h3 class="section-name">Managing the View</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponent(py)view"></a>
+                    <a name="//apple_ref/objc/Property/view" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponent(py)view">view</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The view that the component uses to render its content</p>
+
+<p>This property should start out as <code>nil</code>, and when the Hub Framework will call <code><a href="../Protocols/HUBComponent.html#/c:objc(pl)HUBComponent(im)loadView">-loadView</a></code>
+  on the component, the view should be loaded and this property assigned. This pattern works
+  similar to the view loading mechanism of <code>UIViewController</code>.</p>
+
+<p>The view will be resized by the Hub Framework, taking the size returned from the component&rsquo;s
+  <code>-preferredViewSizeForDisplayingModel:containedInViewWithSize:</code> method into account.</p>
+
+<p>A component has a 1:1 relationship with its view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">__kindof</span> <span class="n">UIView</span> <span class="o">*</span><span class="n">view</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponent(im)loadView"></a>
+                    <a name="//apple_ref/objc/Method/-loadView" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponent(im)loadView">-loadView</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Load the component&rsquo;s view</p>
+
+<p>The Hub Framework will send this message to a component when a new instance of it is about
+  to be displayed. The component should at this point create its view, and assign it to its
+  <code><a href="../Protocols/HUBComponent.html#/c:objc(pl)HUBComponent(py)view">view</a></code> property. When this method returns, the <code><a href="../Protocols/HUBComponent.html#/c:objc(pl)HUBComponent(py)view">view</a></code> property of the component must not
+  be <code>nil</code>.</p>
+
+<p>You don&rsquo;t have to set any particular frame for the view, since it will be resized and
+  repositioned by the Hub Framework.</p>
+
+<p>See the documentation for <code><a href="../Protocols/HUBComponent.html#/c:objc(pl)HUBComponent(py)view">view</a></code> for more information.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">loadView</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponent(im)preferredViewSizeForDisplayingModel:containerViewSize:"></a>
+                    <a name="//apple_ref/objc/Method/-preferredViewSizeForDisplayingModel:containerViewSize:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponent(im)preferredViewSizeForDisplayingModel:containerViewSize:">-preferredViewSizeForDisplayingModel:containerViewSize:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return the size that the component prefers that it view gets resized to when used for a certain model</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="nf">preferredViewSizeForDisplayingModel</span><span class="p">:</span>
+              <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentModel</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">model</span>
+                            <span class="nf">containerViewSize</span><span class="p">:(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">containerViewSize</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>model</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The model that the view should reflect</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>containerViewSize</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The size of the container in which the view will be displayed</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Reusing%20Views"></a>
+                <a name="//apple_ref/objc/Section/Reusing Views" class="dashAnchor"></a>
+                <a href="#/Reusing%20Views">
+                  <h3 class="section-name">Reusing Views</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponent(im)prepareViewForReuse"></a>
+                    <a name="//apple_ref/objc/Method/-prepareViewForReuse" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponent(im)prepareViewForReuse">-prepareViewForReuse</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Prepare the component’s view for reuse</p>
+
+<p>The Hub Framework will send this message to your component when it’s about to be reused for
+  displaying another model. This is the point in time where any state held in the components view
+  (such as highlighting) should be reset.</p>
+
+<p>Once the view has been prepared for reuse, the Hub Framework will send your component the
+  <code>-configureViewForModel:</code> message, which should be used for data binding.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">prepareViewForReuse</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponent(im)configureViewWithModel:"></a>
+                    <a name="//apple_ref/objc/Method/-configureViewWithModel:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponent(im)configureViewWithModel:">-configureViewWithModel:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Configure the component’s view for displaying data from a model</p>
+
+<p>This message will also be sent to your component the very first time that is used. Once
+  this method returns the Hub Framework expects the component to be ready to be displayed
+  with suitable placeholders used for any remote images that are about to be downloaded.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">configureViewWithModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentModel</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">model</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>model</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new model that the view should reflect</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2015-2016 Spotify AB</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

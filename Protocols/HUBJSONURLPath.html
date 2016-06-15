@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HUBJSONURLPath Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/objc/Protocol/HUBJSONURLPath" class="dashAnchor"></a>
+    <a title="HUBJSONURLPath Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">HubFramework Docs</a> (96% documented)</p>
+        <p class="header-right"><a href="https://ghe.spotify.net/iOS/HubFramework"><img src="../img/gh.png"/>View on GitHub</a></p>
+        <p class="header-right"><a href="dash-feed://https%3A%2F%2Fhubs%2Espotify%2Enet%2Fdocs%2Fios%2Fdash%2Exml"><img src="../img/dash.png"/>Install in Dash</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">HubFramework Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        HUBJSONURLPath Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HUBManager.html">HUBManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HUBViewURIPredicate.html">HUBViewURIPredicate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryBanner">HUBComponentCategoryBanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCard">HUBComponentCategoryCard</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitCompactWidth">HUBComponentLayoutTraitCompactWidth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitFullWidth">HUBComponentLayoutTraitFullWidth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitStackable">HUBComponentLayoutTraitStackable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentImageStyle.html">HUBComponentImageStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentImageType.html">HUBComponentImageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBConnectivityState.html">HUBConnectivityState</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponent.html">HUBComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentChildDelegate.html">HUBComponentChildDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentContentOffsetObserver.html">HUBComponentContentOffsetObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentFactory.html">HUBComponentFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageData.html">HUBComponentImageData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageDataBuilder.html">HUBComponentImageDataBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageDataJSONSchema.html">HUBComponentImageDataJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModelJSONSchema.html">HUBComponentModelJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentSelectionContext.html">HUBComponentSelectionContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentViewObserver.html">HUBComponentViewObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithImageHandling.html">HUBComponentWithImageHandling</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBConnectivityStateResolverObserver.html">HUBConnectivityStateResolverObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperation.html">HUBContentOperation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBFeatureInfo.html">HUBFeatureInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBIcon.html">HUBIcon</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBIconImageResolver.html">HUBIconImageResolver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoader.html">HUBImageLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoaderDelegate.html">HUBImageLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoaderFactory.html">HUBImageLoaderFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONBoolPath.html">HUBJSONBoolPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONDatePath.html">HUBJSONDatePath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONIntegerPath.html">HUBJSONIntegerPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONPath.html">HUBJSONPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONSchema.html">HUBJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONStringPath.html">HUBJSONStringPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBSerializable.html">HUBSerializable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewController.html">HUBViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewControllerDelegate.html">HUBViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewControllerFactory.html">HUBViewControllerFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModel.html">HUBViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelJSONSchema.html">HUBViewModelJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoader.html">HUBViewModelLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoaderDelegate.html">HUBViewModelLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoaderFactory.html">HUBViewModelLoaderFactory</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Type Definitions.html">Type Definitions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBComponentCategories.h@T@HUBComponentCategory">HUBComponentCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBMutableJSONPath.h@T@HUBMutableJSONPathBlock">HUBMutableJSONPathBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>HUBJSONURLPath</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBJSONURLPath</span> <span class="o">&lt;</span><span class="n">HUBJSONPath</span><span class="o">&gt;</span></code></pre>
+
+                </div>
+              </div>
+            <p>Protocol defining the API of a JSON path that points to an <code>NSURL</code> value</p>
+
+<p>See <code><a href="../Protocols/HUBJSONPath.html">HUBJSONPath</a></code> and <code><a href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a></code> for more information on how JSON paths work.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBJSONURLPath(im)URLFromJSONDictionary:"></a>
+                    <a name="//apple_ref/objc/Method/-URLFromJSONDictionary:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBJSONURLPath(im)URLFromJSONDictionary:">-URLFromJSONDictionary:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return an <code>NSURL</code> value by following this path in a JSON dictionary</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nullable</span> <span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nf">URLFromJSONDictionary</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*</span><span class="p">,</span> <span class="n">NSObject</span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">dictionary</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>dictionary</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The JSON dictionary to apply the path on</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code>NSURL</code> instance parsed from an <code>NSString</code> value found by following the path, or <code>nil</code> as the default in
+ case an operation in the path failed, or if the found value wasn&rsquo;t an <code>NSString</code> or couldn&rsquo;t be parsed into an <code>NSURL</code>.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2015-2016 Spotify AB</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

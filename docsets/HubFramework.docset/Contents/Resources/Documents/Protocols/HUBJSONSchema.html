@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HUBJSONSchema Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/objc/Protocol/HUBJSONSchema" class="dashAnchor"></a>
+    <a title="HUBJSONSchema Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">HubFramework Docs</a> (96% documented)</p>
+        <p class="header-right"><a href="https://ghe.spotify.net/iOS/HubFramework"><img src="../img/gh.png"/>View on GitHub</a></p>
+        <p class="header-right"><a href="dash-feed://https%3A%2F%2Fhubs%2Espotify%2Enet%2Fdocs%2Fios%2Fdash%2Exml"><img src="../img/dash.png"/>Install in Dash</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">HubFramework Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        HUBJSONSchema Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HUBManager.html">HUBManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HUBViewURIPredicate.html">HUBViewURIPredicate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryBanner">HUBComponentCategoryBanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCard">HUBComponentCategoryCard</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitCompactWidth">HUBComponentLayoutTraitCompactWidth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitFullWidth">HUBComponentLayoutTraitFullWidth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitStackable">HUBComponentLayoutTraitStackable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentImageStyle.html">HUBComponentImageStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentImageType.html">HUBComponentImageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBConnectivityState.html">HUBConnectivityState</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponent.html">HUBComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentChildDelegate.html">HUBComponentChildDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentContentOffsetObserver.html">HUBComponentContentOffsetObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentFactory.html">HUBComponentFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageData.html">HUBComponentImageData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageDataBuilder.html">HUBComponentImageDataBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageDataJSONSchema.html">HUBComponentImageDataJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModelJSONSchema.html">HUBComponentModelJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentSelectionContext.html">HUBComponentSelectionContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentViewObserver.html">HUBComponentViewObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithImageHandling.html">HUBComponentWithImageHandling</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBConnectivityStateResolverObserver.html">HUBConnectivityStateResolverObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperation.html">HUBContentOperation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBFeatureInfo.html">HUBFeatureInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBIcon.html">HUBIcon</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBIconImageResolver.html">HUBIconImageResolver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoader.html">HUBImageLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoaderDelegate.html">HUBImageLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoaderFactory.html">HUBImageLoaderFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONBoolPath.html">HUBJSONBoolPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONDatePath.html">HUBJSONDatePath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONIntegerPath.html">HUBJSONIntegerPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONPath.html">HUBJSONPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONSchema.html">HUBJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONStringPath.html">HUBJSONStringPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBSerializable.html">HUBSerializable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewController.html">HUBViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewControllerDelegate.html">HUBViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewControllerFactory.html">HUBViewControllerFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModel.html">HUBViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelJSONSchema.html">HUBViewModelJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoader.html">HUBViewModelLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoaderDelegate.html">HUBViewModelLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoaderFactory.html">HUBViewModelLoaderFactory</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Type Definitions.html">Type Definitions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBComponentCategories.h@T@HUBComponentCategory">HUBComponentCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBMutableJSONPath.h@T@HUBMutableJSONPathBlock">HUBMutableJSONPathBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>HUBJSONSchema</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBJSONSchema</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                </div>
+              </div>
+            <p>Protocol defining the public API of an object describing a JSON schema for use in the Hub Framework</p>
+
+<p>You don&rsquo;t conform to this protocol yourself, instead you retrieve an instance conforming to it from
+  the <code><a href="../Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a></code> used by the application&rsquo;s <code><a href="../Classes/HUBManager.html">HUBManager</a></code>. A <code>HUBJSONSchema</code> comes setup
+  according to the default Hub Framework JSON schema, but you&rsquo;re free to change &amp; extend it to fit
+  any schema that you expect your JSON data to conform to.</p>
+
+<p>A <code>HUBJSONSchema</code> consists of several sub-schemas, one for each model. The schemas may be individually
+  customized. See their respective documentation for more info on how to customize them.</p>
+
+<p>The Hub Framework uses a path-based approach to JSON parsing, that enables the API user to describe how to
+  retrieve data from a JSON structure using paths - sequences of operations that each perform a JSON parsing task,
+  such as going to a key in a dictionary, or iterating over an array. To customize a path, you can either change
+  it directly, or replace it with a new one created from this schema&rsquo;s  <code>-createNewPath</code> method.</p>
+
+<p>For a more in-depth description on how paths work, see the documentation for <code><a href="../Protocols/HUBJSONPath.html">HUBJSONPath</a></code> and <code><a href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a></code>.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBJSONSchema(py)viewModelSchema"></a>
+                    <a name="//apple_ref/objc/Property/viewModelSchema" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBJSONSchema(py)viewModelSchema">viewModelSchema</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The schema used to retrieve data for <code><a href="../Protocols/HUBViewModel.html">HUBViewModel</a></code> objects</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBViewModelJSONSchema</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">viewModelSchema</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBJSONSchema(py)componentModelSchema"></a>
+                    <a name="//apple_ref/objc/Property/componentModelSchema" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBJSONSchema(py)componentModelSchema">componentModelSchema</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The schema used to retrieve data for <code><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></code> objects</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentModelJSONSchema</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">componentModelSchema</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBJSONSchema(py)componentImageDataSchema"></a>
+                    <a name="//apple_ref/objc/Property/componentImageDataSchema" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBJSONSchema(py)componentImageDataSchema">componentImageDataSchema</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The schema used to retrieve data for <code><a href="../Protocols/HUBComponentImageData.html">HUBComponentImageData</a></code> objects</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentImageDataJSONSchema</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">componentImageDataSchema</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBJSONSchema(im)createNewPath"></a>
+                    <a name="//apple_ref/objc/Method/-createNewPath" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBJSONSchema(im)createNewPath">-createNewPath</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a new, blank, mutable JSON path that can be used to describe how to retrieve data for a certain property</p>
+
+<p>See <code><a href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a></code> for more information</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBMutableJSONPath</span><span class="o">&gt;</span><span class="p">)</span><span class="n">createNewPath</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBJSONSchema(im)copy"></a>
+                    <a name="//apple_ref/objc/Method/-copy" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBJSONSchema(im)copy">-copy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Perform a deep copy of this schema, returning a new instance that has the exact same paths as this one</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBJSONSchema</span><span class="o">&gt;</span><span class="p">)</span><span class="n">copy</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBJSONSchema(im)viewModelFromJSONDictionary:featureIdentifier:"></a>
+                    <a name="//apple_ref/objc/Method/-viewModelFromJSONDictionary:featureIdentifier:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBJSONSchema(im)viewModelFromJSONDictionary:featureIdentifier:">-viewModelFromJSONDictionary:featureIdentifier:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return a view model created by extracting data from a given JSON dictionary, using this schema</p>
+
+<p>In production code, you normally don&rsquo;t have to use this API, since the Hub Framework will take care of building
+  view models from both JSON and local content operation code for you. However, this API is very useful in tests,
+  when you want to assert that any custom schema that you&rsquo;re using acts the way you expect it to.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBViewModel</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="nf">viewModelFromJSONDictionary</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*</span><span class="p">,</span> <span class="n">NSObject</span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">dictionary</span>
+          <span class="nf">featureIdentifier</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">featureIdentifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>dictionary</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The JSON dictionary to extract data from</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>featureIdentifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The feature identifier that the returned view model is for</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2015-2016 Spotify AB</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

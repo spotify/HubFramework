@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HUBViewModelBuilder Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/objc/Protocol/HUBViewModelBuilder" class="dashAnchor"></a>
+    <a title="HUBViewModelBuilder Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">HubFramework Docs</a> (96% documented)</p>
+        <p class="header-right"><a href="https://ghe.spotify.net/iOS/HubFramework"><img src="../img/gh.png"/>View on GitHub</a></p>
+        <p class="header-right"><a href="dash-feed://https%3A%2F%2Fhubs%2Espotify%2Enet%2Fdocs%2Fios%2Fdash%2Exml"><img src="../img/dash.png"/>Install in Dash</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">HubFramework Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        HUBViewModelBuilder Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HUBManager.html">HUBManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HUBViewURIPredicate.html">HUBViewURIPredicate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryBanner">HUBComponentCategoryBanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCard">HUBComponentCategoryCard</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitCompactWidth">HUBComponentLayoutTraitCompactWidth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitFullWidth">HUBComponentLayoutTraitFullWidth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitStackable">HUBComponentLayoutTraitStackable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentImageStyle.html">HUBComponentImageStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentImageType.html">HUBComponentImageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBConnectivityState.html">HUBConnectivityState</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponent.html">HUBComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentChildDelegate.html">HUBComponentChildDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentContentOffsetObserver.html">HUBComponentContentOffsetObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentFactory.html">HUBComponentFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageData.html">HUBComponentImageData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageDataBuilder.html">HUBComponentImageDataBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageDataJSONSchema.html">HUBComponentImageDataJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModelJSONSchema.html">HUBComponentModelJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentSelectionContext.html">HUBComponentSelectionContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentViewObserver.html">HUBComponentViewObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithImageHandling.html">HUBComponentWithImageHandling</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBConnectivityStateResolverObserver.html">HUBConnectivityStateResolverObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperation.html">HUBContentOperation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBFeatureInfo.html">HUBFeatureInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBIcon.html">HUBIcon</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBIconImageResolver.html">HUBIconImageResolver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoader.html">HUBImageLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoaderDelegate.html">HUBImageLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoaderFactory.html">HUBImageLoaderFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONBoolPath.html">HUBJSONBoolPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONDatePath.html">HUBJSONDatePath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONIntegerPath.html">HUBJSONIntegerPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONPath.html">HUBJSONPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONSchema.html">HUBJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONStringPath.html">HUBJSONStringPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBSerializable.html">HUBSerializable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewController.html">HUBViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewControllerDelegate.html">HUBViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewControllerFactory.html">HUBViewControllerFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModel.html">HUBViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelJSONSchema.html">HUBViewModelJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoader.html">HUBViewModelLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoaderDelegate.html">HUBViewModelLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoaderFactory.html">HUBViewModelLoaderFactory</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Type Definitions.html">Type Definitions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBComponentCategories.h@T@HUBComponentCategory">HUBComponentCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBMutableJSONPath.h@T@HUBMutableJSONPathBlock">HUBMutableJSONPathBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>HUBViewModelBuilder</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBViewModelBuilder</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                </div>
+              </div>
+            <p>Protocol defining the public API of a builder that builds view model objects</p>
+
+<p>This builder acts like a mutable model counterpart for <code><a href="../Protocols/HUBViewModel.html">HUBViewModel</a></code>, with the key difference that they
+  are not related by inheritance.</p>
+
+<p>For more information regarding the properties that this builder enables you to set, see the documentation
+  for <code><a href="../Protocols/HUBViewModel.html">HUBViewModel</a></code>.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/The%20status%20of%20the%20builder"></a>
+                <a name="//apple_ref/objc/Section/The status of the builder" class="dashAnchor"></a>
+                <a href="#/The%20status%20of%20the%20builder">
+                  <h3 class="section-name">The status of the builder</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(py)isEmpty"></a>
+                    <a name="//apple_ref/objc/Property/isEmpty" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(py)isEmpty">isEmpty</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether this builder is currently empty, and does not contain any content</p>
+
+<p>As soon as any header or body component model has been added to this builder, it is no longer considered empty</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">isEmpty</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Identifiers"></a>
+                <a name="//apple_ref/objc/Section/Identifiers" class="dashAnchor"></a>
+                <a href="#/Identifiers">
+                  <h3 class="section-name">Identifiers</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(py)viewIdentifier"></a>
+                    <a name="//apple_ref/objc/Property/viewIdentifier" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(py)viewIdentifier">viewIdentifier</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The identifier that the view should have</p>
+
+<p>The value of this property doesn&rsquo;t have any specific format or constraints and doesn&rsquo;t explicitly need to be
+  unique - but for logging, UI instrumentation and identification purposes, it&rsquo;s definitely recommended.</p>
+
+<p>The default value of this property is either a view identifier derived from remote content JSON data, or the
+  <code>UUIDString</code> of a new <code>NSUUID</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">viewIdentifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(py)featureIdentifier"></a>
+                    <a name="//apple_ref/objc/Property/featureIdentifier" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(py)featureIdentifier">featureIdentifier</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The identifier of the feature that the view should logically belong to</p>
+
+<p>This property can be used to group views together, to be able to reason about them as a feature. It can
+  optionally be used for logging and UI instrumentation.</p>
+
+<p>The default value of this property is the identifier of the Hub Framework feature that the view will belong
+  to, or any explicit value that any remote content JSON data contained.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">featureIdentifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Navigation%20bar%20&amp;%20header"></a>
+                <a name="//apple_ref/objc/Section/Navigation bar &amp; header" class="dashAnchor"></a>
+                <a href="#/Navigation%20bar%20&amp;%20header">
+                  <h3 class="section-name">Navigation bar &amp; header</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(py)navigationBarTitle"></a>
+                    <a name="//apple_ref/objc/Property/navigationBarTitle" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(py)navigationBarTitle">navigationBarTitle</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The title that the view should have in the navigation bar</p>
+
+<p>In case the view has a component-based header, the value of this property is ignored by the framework.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">navigationBarTitle</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(py)headerComponentModelBuilder"></a>
+                    <a name="//apple_ref/objc/Property/headerComponentModelBuilder" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(py)headerComponentModelBuilder">headerComponentModelBuilder</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The builder to use to build a model for the view&rsquo;s header component</p>
+
+<p>If you plan to add a header to your view, you use this builder to setup the component that will make up the header.
+  This builder gets lazily created the first time you access this property, and will cause a component-based header to
+  be added to the view. If this property is never accessed, a <code>UINavigationBar</code>-based header will be used instead.</p>
+
+<p>To remove this view model builder&rsquo;s header component builder, use <code><a href="../Protocols/HUBViewModelBuilder.html#/c:objc(pl)HUBViewModelBuilder(im)removeHeaderComponentModelBuilder">-removeHeaderComponentModelBuilder</a></code>.
+  To check whether a header component model builder currently exists, use <code><a href="../Protocols/HUBViewModelBuilder.html#/c:objc(pl)HUBViewModelBuilder(py)headerComponentModelBuilderExists">headerComponentModelBuilderExists</a></code>.</p>
+
+<p>In case no identifier is explicity defined for the returned builder, it will use <q>header</q> as the default.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentModelBuilder</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">headerComponentModelBuilder</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(py)headerComponentModelBuilderExists"></a>
+                    <a name="//apple_ref/objc/Property/headerComponentModelBuilderExists" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(py)headerComponentModelBuilderExists">headerComponentModelBuilderExists</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether a builder for a model for the view&rsquo;s header component currently exists</p>
+
+<p>Since accessing <code>headerCompoentModelBuilder</code> lazily creates a builder, you can use this property to check for the
+  existance of a builder.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">headerComponentModelBuilderExists</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Metadata"></a>
+                <a name="//apple_ref/objc/Section/Metadata" class="dashAnchor"></a>
+                <a href="#/Metadata">
+                  <h3 class="section-name">Metadata</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(py)extensionURL"></a>
+                    <a name="//apple_ref/objc/Property/extensionURL" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(py)extensionURL">extensionURL</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Any HTTP URL from which data can be downloaded to extend the view model</p>
+
+<p>You can use this property to implement pagination for your view&rsquo;s content. When the user has scrolled to the bottom
+  of a view, and that view model&rsquo;s extension URL != nil, the Hub Framework will automatically ask its content operations
+  to extend the view model with data from this URL.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSURL</span> <span class="o">*</span><span class="n">extensionURL</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(py)customData"></a>
+                    <a name="//apple_ref/objc/Property/customData" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(py)customData">customData</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Any custom data that should be associated with the view model</p>
+
+<p>You can use this property to pass any information along in the content loading process, into the view model itself.
+  That data may later be used to make decisions in a view&rsquo;s delegate. It&rsquo;s useful for simple customization, but for
+  extended use consider making a contribution to the main <code><a href="../Protocols/HUBViewModel.html">HUBViewModel</a></code> API instead, if it&rsquo;s some piece of data that
+  is considered useful for other API users as well.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span>
+    <span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*</span><span class="p">,</span> <span class="n">NSObject</span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">customData</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Adding%20JSON%20data%20to%20the%20builder"></a>
+                <a name="//apple_ref/objc/Section/Adding JSON data to the builder" class="dashAnchor"></a>
+                <a href="#/Adding%20JSON%20data%20to%20the%20builder">
+                  <h3 class="section-name">Adding JSON data to the builder</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)addJSONData:"></a>
+                    <a name="//apple_ref/objc/Method/-addJSONData:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)addJSONData:">-addJSONData:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add content from JSON data to this builder</p>
+
+<p>The builder will use it&rsquo;s feature&rsquo;s <code><a href="../Protocols/HUBJSONSchema.html">HUBJSONSchema</a></code> to parse the data that was added, and return any error that
+  occured while doing so, or nil if the operation was completed successfully.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nullable</span> <span class="n">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nf">addJSONData</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">JSONData</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>JSONData</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The JSON data to add</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Checking%20if%20component%20model%20builders%20exist"></a>
+                <a name="//apple_ref/objc/Section/Checking if component model builders exist" class="dashAnchor"></a>
+                <a href="#/Checking%20if%20component%20model%20builders%20exist">
+                  <h3 class="section-name">Checking if component model builders exist</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)builderExistsForBodyComponentModelWithIdentifier:"></a>
+                    <a name="//apple_ref/objc/Method/-builderExistsForBodyComponentModelWithIdentifier:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)builderExistsForBodyComponentModelWithIdentifier:">-builderExistsForBodyComponentModelWithIdentifier:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return whether this builder contains a builder for a body component model with a certain identifier</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">builderExistsForBodyComponentModelWithIdentifier</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier to look for</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)builderExistsForOverlayComponentModelWithIdentifier:"></a>
+                    <a name="//apple_ref/objc/Method/-builderExistsForOverlayComponentModelWithIdentifier:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)builderExistsForOverlayComponentModelWithIdentifier:">-builderExistsForOverlayComponentModelWithIdentifier:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return whether this builder contains a builder for an overlay component model with a certain identifier</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">builderExistsForOverlayComponentModelWithIdentifier</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier to look for</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Retrieving%20component%20model%20builders%20by%20identifier"></a>
+                <a name="//apple_ref/objc/Section/Retrieving component model builders by identifier" class="dashAnchor"></a>
+                <a href="#/Retrieving%20component%20model%20builders%20by%20identifier">
+                  <h3 class="section-name">Retrieving component model builders by identifier</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)builderForBodyComponentModelWithIdentifier:"></a>
+                    <a name="//apple_ref/objc/Method/-builderForBodyComponentModelWithIdentifier:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)builderForBodyComponentModelWithIdentifier:">-builderForBodyComponentModelWithIdentifier:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get or create a builder for a body component model with a certain identifier</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentModelBuilder</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="nf">builderForBodyComponentModelWithIdentifier</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier that the component model should have</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>If a body component model builder already exists for the supplied identifier, then it&rsquo;s returned. Otherwise a
+ new builder is created, which can be used to build a body component model. Since this method lazily creates a builder
+ in case one doesn&rsquo;t already exist, use the <code><a href="../Protocols/HUBViewModelBuilder.html#/c:objc(pl)HUBViewModelBuilder(im)builderExistsForBodyComponentModelWithIdentifier:">-builderExistsForBodyComponentModelWithIdentifier:</a></code> API instead if you
+ simply wish to check for the existance of a builder. See <code><a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></code> for more information.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)builderForOverlayComponentModelWithIdentifier:"></a>
+                    <a name="//apple_ref/objc/Method/-builderForOverlayComponentModelWithIdentifier:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)builderForOverlayComponentModelWithIdentifier:">-builderForOverlayComponentModelWithIdentifier:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get or create a builder for an overlay component model with a certain identifier</p>
+
+<p>Use overlay component model builders to setup any components that will be rendered as overlays for the view, on top of the
+  rest of the view&rsquo;s content. This can be used to display loading indicators, popups, or other overlay content. Overlays are
+  always rendered at the center of their container view, stacked on top of each other on the z axis. The components indexes
+  (can be controlled by setting <code>preferredIndex</code> on their component model builders) determines the rendering order.</p>
+
+<p>See <code><a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></code> for more information.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentModelBuilder</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="nf">builderForOverlayComponentModelWithIdentifier</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier that the component model should have</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>If an overlay component model builder already exists for the supplied identifier, then it&rsquo;s returned. Otherwise a
+ new builder is created, which can be used to build an overlay component model. Since this method lazily creates a builder
+ in case one doesn&rsquo;t already exist, use the <code><a href="../Protocols/HUBViewModelBuilder.html#/c:objc(pl)HUBViewModelBuilder(im)builderExistsForOverlayComponentModelWithIdentifier:">-builderExistsForOverlayComponentModelWithIdentifier:</a></code> API instead if you
+ simply wish to check for the existance of a builder.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Removing%20component%20model%20builders"></a>
+                <a name="//apple_ref/objc/Section/Removing component model builders" class="dashAnchor"></a>
+                <a href="#/Removing%20component%20model%20builders">
+                  <h3 class="section-name">Removing component model builders</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)removeHeaderComponentModelBuilder"></a>
+                    <a name="//apple_ref/objc/Method/-removeHeaderComponentModelBuilder" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)removeHeaderComponentModelBuilder">-removeHeaderComponentModelBuilder</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Remove any previously created header component model builder</p>
+
+<p>Removing the header component model builder will cause the view to use a <code>UINavigationBar</code>-based header instead.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">removeHeaderComponentModelBuilder</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)removeBuilderForBodyComponentModelWithIdentifier:"></a>
+                    <a name="//apple_ref/objc/Method/-removeBuilderForBodyComponentModelWithIdentifier:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)removeBuilderForBodyComponentModelWithIdentifier:">-removeBuilderForBodyComponentModelWithIdentifier:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Remove a builder for a body component with a certain identifier</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">removeBuilderForBodyComponentModelWithIdentifier</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier of the component model builder to remove</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)removeBuilderForOverlayComponentModelWithIdentifier:"></a>
+                    <a name="//apple_ref/objc/Method/-removeBuilderForOverlayComponentModelWithIdentifier:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)removeBuilderForOverlayComponentModelWithIdentifier:">-removeBuilderForOverlayComponentModelWithIdentifier:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Remove a builder for an overlay component with a certain identifier</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">removeBuilderForOverlayComponentModelWithIdentifier</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier of the component model builder to remove</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)removeAllComponentModelBuilders"></a>
+                    <a name="//apple_ref/objc/Method/-removeAllComponentModelBuilders" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)removeAllComponentModelBuilders">-removeAllComponentModelBuilders</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Remove all component model builders that this builder contains</p>
+
+<p>All body component model builders, as well as any header component model builder, will be removed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">removeAllComponentModelBuilders</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2015-2016 Spotify AB</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

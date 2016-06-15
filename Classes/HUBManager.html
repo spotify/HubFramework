@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HUBManager Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/objc/Class/HUBManager" class="dashAnchor"></a>
+    <a title="HUBManager Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">HubFramework Docs</a> (96% documented)</p>
+        <p class="header-right"><a href="https://ghe.spotify.net/iOS/HubFramework"><img src="../img/gh.png"/>View on GitHub</a></p>
+        <p class="header-right"><a href="dash-feed://https%3A%2F%2Fhubs%2Espotify%2Enet%2Fdocs%2Fios%2Fdash%2Exml"><img src="../img/dash.png"/>Install in Dash</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">HubFramework Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        HUBManager Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HUBManager.html">HUBManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HUBViewURIPredicate.html">HUBViewURIPredicate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryBanner">HUBComponentCategoryBanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCard">HUBComponentCategoryCard</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitCompactWidth">HUBComponentLayoutTraitCompactWidth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitFullWidth">HUBComponentLayoutTraitFullWidth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitStackable">HUBComponentLayoutTraitStackable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentImageStyle.html">HUBComponentImageStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentImageType.html">HUBComponentImageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HUBConnectivityState.html">HUBConnectivityState</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponent.html">HUBComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentChildDelegate.html">HUBComponentChildDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentContentOffsetObserver.html">HUBComponentContentOffsetObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentFactory.html">HUBComponentFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageData.html">HUBComponentImageData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageDataBuilder.html">HUBComponentImageDataBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentImageDataJSONSchema.html">HUBComponentImageDataJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentModelJSONSchema.html">HUBComponentModelJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentSelectionContext.html">HUBComponentSelectionContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentViewObserver.html">HUBComponentViewObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithImageHandling.html">HUBComponentWithImageHandling</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBConnectivityStateResolverObserver.html">HUBConnectivityStateResolverObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperation.html">HUBContentOperation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBFeatureInfo.html">HUBFeatureInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBIcon.html">HUBIcon</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBIconImageResolver.html">HUBIconImageResolver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoader.html">HUBImageLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoaderDelegate.html">HUBImageLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBImageLoaderFactory.html">HUBImageLoaderFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONBoolPath.html">HUBJSONBoolPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONDatePath.html">HUBJSONDatePath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONIntegerPath.html">HUBJSONIntegerPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONPath.html">HUBJSONPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONSchema.html">HUBJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONStringPath.html">HUBJSONStringPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBSerializable.html">HUBSerializable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewController.html">HUBViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewControllerDelegate.html">HUBViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewControllerFactory.html">HUBViewControllerFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModel.html">HUBViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelJSONSchema.html">HUBViewModelJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoader.html">HUBViewModelLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoaderDelegate.html">HUBViewModelLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HUBViewModelLoaderFactory.html">HUBViewModelLoaderFactory</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Type Definitions.html">Type Definitions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBComponentCategories.h@T@HUBComponentCategory">HUBComponentCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:HUBMutableJSONPath.h@T@HUBMutableJSONPathBlock">HUBMutableJSONPathBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>HUBManager</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="k">@interface</span> <span class="nc">HUBManager</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>This class is the main entry point into the Hub Framework</p>
+
+<p>An application using the Hub Framework should create an instance of this class,
+  and retain it in a central location (such as its App Delegate)</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBManager(py)featureRegistry"></a>
+                    <a name="//apple_ref/objc/Property/featureRegistry" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(py)featureRegistry">featureRegistry</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The feature registry used by this Hub Manager. See the documentation for <code><a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a></code> for more info.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBFeatureRegistry</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">featureRegistry</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBManager(py)componentRegistry"></a>
+                    <a name="//apple_ref/objc/Property/componentRegistry" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(py)componentRegistry">componentRegistry</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The component registry used by this Hub Manager. See the documentation for <code><a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a></code> for more info.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentRegistry</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">componentRegistry</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBManager(py)JSONSchemaRegistry"></a>
+                    <a name="//apple_ref/objc/Property/JSONSchemaRegistry" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(py)JSONSchemaRegistry">JSONSchemaRegistry</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The JSON schema registry used by this Hub Manager. See the documentation for <code><a href="../Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a></code> for more info.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBJSONSchemaRegistry</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">JSONSchemaRegistry</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBManager(py)viewModelLoaderFactory"></a>
+                    <a name="//apple_ref/objc/Property/viewModelLoaderFactory" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(py)viewModelLoaderFactory">viewModelLoaderFactory</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The factory used to create view model loaders. See <code><a href="../Protocols/HUBViewModelLoaderFactory.html">HUBViewModelLoaderFactory</a></code> for more info.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBViewModelLoaderFactory</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">viewModelLoaderFactory</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBManager(py)viewControllerFactory"></a>
+                    <a name="//apple_ref/objc/Property/viewControllerFactory" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(py)viewControllerFactory">viewControllerFactory</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The factory used to create view controllers. See <code><a href="../Protocols/HUBViewControllerFactory.html">HUBViewControllerFactory</a></code> for more info.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBViewControllerFactory</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">viewControllerFactory</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBManager(im)initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:"></a>
+                    <a name="//apple_ref/objc/Method/-initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(im)initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:">-initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initialize an instance of this class with a component fallback handler</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span>
+<span class="nf">initWithConnectivityStateResolver</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBConnectivityStateResolver</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">connectivityStateResolver</span>
+           <span class="nf">componentLayoutManager</span><span class="p">:</span>
+               <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentLayoutManager</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentLayoutManager</span>
+         <span class="nf">componentFallbackHandler</span><span class="p">:</span>
+             <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentFallbackHandler</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentFallbackHandler</span>
+               <span class="nf">imageLoaderFactory</span><span class="p">:</span>
+                   <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBImageLoaderFactory</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">imageLoaderFactory</span>
+                <span class="nf">iconImageResolver</span><span class="p">:</span>
+                    <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBIconImageResolver</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">iconImageResolver</span>
+       <span class="nf">defaultContentReloadPolicy</span><span class="p">:</span>
+           <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBContentReloadPolicy</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">defaultContentReloadPolicy</span>
+ <span class="nf">prependedContentOperationFactory</span><span class="p">:</span>
+     <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBContentOperationFactory</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">prependedContentOperationFactory</span>
+  <span class="nf">appendedContentOperationFactory</span><span class="p">:</span>
+      <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBContentOperationFactory</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">appendedContentOperationFactory</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>connectivityStateResolver</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An object responsible for determining the current connectivity state of the application.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>componentLayoutManager</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The object to use to manage layout for components, computing margins using layout traits.
+        See <code>HUBComponentLayoutManager</code> for more information.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>componentFallbackHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The object to use to fall back to default components in case a component could not be
+        resolved using the standard mechanism. See <code>HUBComponentFallbackHandler</code> for more information.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>imageLoaderFactory</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any factory that creates image loaders that are used to load remote images for components.
+        If nil, this instance of the Hub Framework won&rsquo;t support remote images. See <code>HUBImageLoaderFactory</code> for more info.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>iconImageResolver</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any object responsible for converting icons into renderable images. If nil, this instance of
+        the Hub Framework won&rsquo;t support icons. See <code>HUBIconImageResolver</code> for more information.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultContentReloadPolicy</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any default content reload policy to use for features that do not define their own.
+        A content reload policy determines whenever a view belonging to the feature should have its content reloaded.
+        If nil, any feature not defining its own reload policy will always be reloaded whenever a view that belongs to
+        it re-appears. See <code>HUBContentReloadPolicy</code> for more information.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>prependedContentOperationFactory</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any content operation factory that should be prepended to the chain of content
+        operation factories for all views. The operations that this factory produces will therefore always be prepended
+        to the content loading chain of any view.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>appendedContentOperationFactory</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any content operation factory that should be appended to the chain of content
+        operation factories for all views. The operations that this factory produces will therefore always be appended
+        to the content loading chain of any view.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBManager(cm)new"></a>
+                    <a name="//apple_ref/objc/Method/+new" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(cm)new">+new</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@interface</span> <span class="nc">HUBManager</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBManager(im)init"></a>
+                    <a name="//apple_ref/objc/Method/-init" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(im)init">-init</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@interface</span> <span class="nc">HUBManager</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBManager(im)initWithCoder:"></a>
+                    <a name="//apple_ref/objc/Method/-initWithCoder:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(im)initWithCoder:">-initWithCoder:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@interface</span> <span class="nc">HUBManager</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2015-2016 Spotify AB</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
