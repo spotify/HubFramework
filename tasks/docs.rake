@@ -31,6 +31,7 @@ namespace :docs do
 
         config = YAML.load_file(config_path)
         copy_extra_resources(config)
+        rebuild_docset_archive(config) # We need to rebuild the DocSet archive since we’ve copied more resources into it.
 
         puts "📖  ✅   Generated successfully."
     end
@@ -58,6 +59,34 @@ namespace :docs do
     def _copy_extra_resources(to_path)
         FileUtils.cp('readme-banner.jpg', to_path)
         FileUtils.cp_r('docs/resources', to_path)
+    end
+
+    # Rebuilds the DocSet archive
+    def rebuild_docset_archive(config)
+        docset_path = docset_path(config)
+        if not File.directory?(docset_path)
+            return
+        end
+
+        docsets_path = docsets_path(config)
+        docset_name = docset_name(config)
+
+        full_archive_name = docset_name + ".tgz"
+        archive_path =  File.join(docsets_path, full_archive_name)
+
+        # Remove the existing archive
+        File.file?(archive_path) and FileUtils.rm(archive_path)
+
+        # Create a new archive in the same location
+        Dir.chdir(docsets_path) do
+            system(
+                'tar',
+                '--exclude=\'.DS_Store\'',
+                '-czf',
+                full_archive_name,
+                full_docset_name(config)
+            )
+        end
     end
 
     # Returns the location where DocSets are placed
