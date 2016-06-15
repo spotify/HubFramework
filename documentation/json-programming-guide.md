@@ -17,11 +17,11 @@ The Hub Framework enables content for views to be defined through JSON. This can
 
 Any JSON schema can be used with the Hub Framework, and each feature using the framework has the ability to define its own. This enables you to start using the Hub Framework without modifying any server-side system that produces the JSON that you're consuming, and also enables multiple teams working on the same application to potentially use different JSON schemas.
 
-For convenience; the Hub Framework ships with a default JSON schema, that is guaranteed to be synced across both iOS & Android.
+For convenience, the Hub Framework ships with a default JSON schema that is guaranteed to be synced across both iOS & Android.
 
 ## JSON schema hierarchy
 
-To match the content models that JSON data feeds into; each JSON schema that is used with the Hub Framework contains 3 **sub-schemas**.
+To match the content models that JSON data feeds into, each JSON schema that is used with the Hub Framework contains 3 **sub-schemas**.
 
 - `HUBViewModelJSONSchema` - for `HUBViewModel`.
 - `HUBComponentModelJSONSchema` - for `HUBComponentModel`.
@@ -31,7 +31,7 @@ JSON data can either be supplied with a root dictionary (in the form of a serial
 
 ## Default JSON schema
 
-To use the default JSON schema, no additional action is required. Every feature that **don't** declare a custom JSON schema automatically use the default one.
+To use the default JSON schema, no additional action is required. Every feature that **doesn't** declare a custom JSON schema automatically uses the default one.
 
 Here is a reference for the default JSON schema:
 
@@ -96,7 +96,7 @@ Custom JSON schemas can be used to easily use existing server side data with the
 
 In order to support the level of flexibility required to be able to parse virtually any JSON schema, the Hub Framework uses a path-based approach to JSON parsing. Each piece of data that should be retrieved is associated with a path, that is then followed into a JSON structure to retrieve that data.
 
-For example; let's say we want to retrieve the `title` string that is nested within the `text` dictionary, as below:
+For example, let's say we want to retrieve the `title` string that is nested within the `text` dictionary, as below:
 
 ```
 {
