@@ -1,6 +1,6 @@
 <img alt="The Hub Framework" src="readme-banner.jpg" width="100%" max-width=1008>
 
-[![Code coverage](https://codecov.spotify.net/github_enterprise/iOS/HubFramework/coverage.svg?branch=master)](https://codecov.spotify.net/github_enterprise/iOS/HubFramework?branch=master)
+[![Code coverage](https://codecov.spotify.net/github_enterprise/iOS/HubFramework/coverage.svg?branch=master)](https://codecov.spotify.net/github_enterprise/iOS/HubFramework?branch=master) [![Documentation](https://img.shields.io/badge/-Documentation-blue.svg)](https://ghe.spotify.net/pages/iOS/HubFramework)
 
 Welcome to the Hub Framework - a toolkit for building native, component-driven UIs. It replaces the long and hard process of building, tweaking and shipping a new UI from scratch with **Components** & **Content Operations**.
 
@@ -12,7 +12,7 @@ Components can be reused and rearranged in any way, and render any model. They e
 
 The good news is that you don't have to rewrite your existing `UIViews` to start using the Hub Framework, instead, the architecture of the framework is completely protocol oriented, making it easy to add compatibility to existing UI.
 
-To learn more about components, check out the [Component programming guide](documentation/component-programming-guide.md).
+To learn more about components, check out the [Component programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html).
 
 ## Content Operations
 
@@ -20,16 +20,16 @@ To match the highly dynamic component-driven UIs, content operations define what
 
 Each feature of an application can define its own content operations, and put them together to from a **content loading chain**. Each operation can perform an atomic mutation of the UI state, enabling easy implementation of things like A/B testing or providing system-wide functionality like caching or loading indicators.
 
-To learn more about content operations, check out the [Content programming guide](documentation/content-programming-guide.md).
+To learn more about content operations, check out the [Content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html).
 
 ## Getting started
 
 To enable you to quickly get started using the Hub Framework, we've created a series of **programming guides** that each introduce you to different aspects of the framework.
 
-- [Component programming guide](documentation/component-programming-guide.md)
-- [Content programming guide](documentation/content-programming-guide.md)
-- [Layout programming guide](documentation/layout-programming-guide.md)
-- [JSON programming guide](documentation/json-programming-guide.md)
+- [Component programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html)
+- [Content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html)
+- [Layout programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html)
+- [JSON programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/json-programming-guide.html)
 
 ## Xcode file templates
 
