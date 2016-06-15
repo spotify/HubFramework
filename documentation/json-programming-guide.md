@@ -37,37 +37,16 @@ Here is a reference for the default JSON schema:
 
 ### View model schema
 
-`id` : `String`
-
-The identifier of the view model. Can be used for logging, or to identify the view in various delegate methods & handlers. Maps to `identifier`.
-
-`feature` : `String`
-
-The identifier of the feature that the view belongs to (if other than what has been defined client side). Can be used for logging, or to identifier the view's feature in various delegate methods & handlers. Maps to `featureIdentifier`.
-
-`title` : `String`
-
-The title to use for the view's navigation bar. Maps to `navigationBarTitle`.
-
-`header` : `Dictionary -> ComponentModel`
-
-Dictionary for a component model that should be used as the view's header component. Will be parsed using the schema for component models. Maps to `headerComponentModel`.
-
-`body` : `[Dictionary] -> [ComponentModel]`
-
-An array of dictionaries for the component models that should be used for the view's body components. Will be parsed using the schema for component models. Maps to `bodyComponentModels`.
-
-`overlays` : `[Dictionary] -> [ComponentModel]`
-
-An array of dictionaries for the component models that should be used for the view's overlay components. Will be parsed using the schema for component models. Maps to `overlayComponentModels`.
-
-`extension` : `String -> URL`
-
-Any URI to use to extend this view model. This can be used to easily implement content pagination. Maps to `extensionURL`.
-
-`custom` : `Dictionary`
-
-Any custom (free-form) data to associate with the view model. Maps to `customData`.
+| Key | Type | Description | Maps to |
+| --- | ---- | ----------- | ------- |
+| `id` | `String` | The identifier of the view model. Can be used for logging, or to identify the view in various delegate methods & handlers. | `identifier` |
+| `feature` | `String` | The identifier of the feature that the view belongs to (if other than what has been defined client side). Can be used for logging, or to identifier the view's feature in various delegate methods & handlers. | `featureIdentifier` |
+| `title` | `String` | The title to use for the view's navigation bar. | `navigationBarTitle` |
+| `header` | `Dictionary -> ComponentModel` | Dictionary for a component model that should be used as the view's header component. Will be parsed using the schema for component models. | `headerComponentModel` |
+| `body` | `[Dictionary] -> [ComponentModel]` | An array of dictionaries for the component models that should be used for the view's body components. Will be parsed using the schema for component models. | `bodyComponentModels` |
+| `overlays` | `[Dictionary] -> [ComponentModel]` | An array of dictionaries for the component models that should be used for the view's overlay components. Will be parsed using the schema for component models. | `overlayComponentModels` |
+| `extension` | `String -> URL` | Any URI to use to extend this view model. This can be used to easily implement content pagination. | `extensionURL` |
+| `custom` | `Dictionary` | Any custom (free-form) data to associate with the view model. | `customData` |
 
 ### Component model schema
 
@@ -81,85 +60,33 @@ Any custom (free-form) data to associate with the view model. Maps to `customDat
 }
 ```
 
-`id` : `String`
-
-The identifier of the component model. Can be used for logging, or to identify the model in other content operations, various delegate methods, handlers, etc. Maps to `identifier`.
-
-`component.id` : `String`
-
-The identifier (`namespace:name`) of the component to use to render the model. Maps to `componentNamespace` and `componentName`.
-
-`component.category` : `String`
-
-`text.title` : `String`
-
-The title that the component should display. Maps to `title`.
-
-`text.subtitle` : `String`
-
-The subtitle that the component should display. Maps to `subtitle`.
-
-`text.accessory` : `String`
-
-Any accessory title for the component. Usually used to render some form of metadata or accessory information with less prominence. Maps to `accessoryTitle`.
-
-`text.description` : `String`
-
-Any longer body of text that should be displayed in the component. Maps to `descriptionText`.
-
-`images.icon` : `String`
-
-Any icon that should be displayed in the component. Will be resolved using the application's `HUBIconImageResolver`. Maps to `icon`.
-
-`images.main` : `Dictionary -> ComponentImageData`
-
-The data for the component's main image, that will be displayed in the foreground of the component. Will be parsed using the schema for component image data. Maps to `mainImageData`.
-
-`images.background` : `Dictionary -> ComponentImageData`
-
-The data for the component's background image. Will be parsed using the schema for component image data. Maps to `backgroundImageData`.
-
-`images.custom` : `{String : Dictionary -> ComponentImageData}`
-
-A dictionary containing dictionaries for custom image data that the component may use. Each nested dictionary will be parsed using the schema for component image data. Maps to `customImageData`.
-
-`target.uri` : `String -> URL`
-
-Any URI that should be opened when the user interacts with the component. Maps to `targetURL`.
-
-`target.view` : `Dictionary -> ViewModel`
-
-Any pre-loaded view model that should be used for a Hub Framework-powered view that is the destination for `targetURL`. Will be parsed using the schema for view models. Maps to `targetInitialViewModel`.
-
-`metadata` : `Dictionary`
-
-Any application-specific metadata to associate with the component. Typically this data is not consumed by the component itself, but by application-wide systems such as playback for a media app, or photo metadata for a photo app, etc. Maps to `metadata`.
-
-`logging` : `Dictionary`
-
-Logging information that can be used to log events that occur for the component. Each application should define what keys that are used in this dictionary. Maps to `loggingData`.
-
-`custom` : `Dictionary`
-
-Dictionary used to provide an extension point for component authors. Each component can define which keys that it wants to use from this dictionary, enabling customization of properties that are not included as first-class properties in the component model schema. Maps to `customData`.
-
-`children` : `[Dictionary] -> [ComponentModel]`
-
-An array of dictionaries for the component models that should be used for the component's children. Will be parsed using the schema for component models. Maps to `childComponentModels`.
+| Key | Type | Description | Maps to |
+| --- | ---- | ----------- | ------- |
+| `id` | `String` | The identifier of the component model. Can be used for logging, or to identify the model in other content operations, various delegate methods, handlers, etc. | `identifier` |
+| `component.id` | `String` | The identifier (`namespace:name`) of the component to use to render the model. | `componentNamespace` and `componentName` |
+| `component.category` | `String` | The category of the component. Used to perform sensible fallbacks for older versions of the application that might not support the requested component. See [component categories](../include/HubFramework/HUBComponentCategories.h) for possible values. | `componentCategory` |
+| `text.title` | `String` | The title that the component should display. | `title` |
+| `text.subtitle` | `String` | The subtitle that the component should display. | `subtitle` |
+| `text.accessory` | `String` | Any accessory title for the component. Usually used to render some form of metadata or accessory information with less prominence. | `accessoryTitle` |
+| `text.description` | `String` | Any longer body of text that should be displayed in the component. | `descriptionText` |
+| `images.icon` | `String` | Any icon that should be displayed in the component. Will be resolved using the application's `HUBIconImageResolver`. | `icon` |
+| `images.main` | `Dictionary -> ComponentImageData` | The data for the component's main image, that will be displayed in the foreground of the component. Will be parsed using the schema for component image data. | `mainImageData` |
+| `images.background` | `Dictionary -> ComponentImageData` | The data for the component's background image. Will be parsed using the schema for component image data. | `backgroundImageData` |
+| `images.custom` | `{String : Dictionary -> ComponentImageData}` | A dictionary containing dictionaries for custom image data that the component may use. Each nested dictionary will be parsed using the schema for component image data. | `customImageData`. |
+| `target.uri` | `String -> URL` | Any URI that should be opened when the user interacts with the component. | `targetURL` |
+| `target.view` | `Dictionary -> ViewModel` | Any pre-loaded view model that should be used for a Hub Framework-powered view that is the destination for `targetURL`. Will be parsed using the schema for view models. | `targetInitialViewModel` |
+| `metadata` | `Dictionary` | Any application-specific metadata to associate with the component. Typically this data is not consumed by the component itself, but by application-wide systems such as playback for a media app, or photo metadata for a photo app, etc. | `metadata` |
+| `logging` | `Dictionary` | Logging information that can be used to log events that occur for the component. Each application should define what keys that are used in this dictionary. | `loggingData` |
+| `custom` | `Dictionary` | Dictionary used to provide an extension point for component authors. Each component can define which keys that it wants to use from this dictionary, enabling customization of properties that are not included as first-class properties in the component model schema. | `customData` |
+| `children` | `[Dictionary] -> [ComponentModel]` | An array of dictionaries for the component models that should be used for the component's children. Will be parsed using the schema for component models. | `childComponentModels` |
 
 ### Component image data schema
 
-`style` : `String`
-
-The style of the image. Possible values are `rectangular` (default), `circular` and `none`. Maps to `style`.
-
-`uri` : `String`
-
-The URI of the image. Used to download a remote image using the application's `HUBImageLoader(Factory)`. Maps to `URL`.
-
-`placeholder` : `String`
-
-Any icon to use as a placeholder until a remote image has been downloaded. Will be resolved using the application's `HUBIconImageResolver`. Maps to `placeholderIcon`.
+| Key | Type | Description | Maps to |
+| --- | ---- | ----------- | ------- |
+| `style` | `String` | The style of the image. Possible values are `rectangular` (default), `circular` and `none`. | `style` |
+| `uri` | `String` | The URI of the image. Used to download a remote image using the application's `HUBImageLoader(Factory)`. | `URL` |
+| `placeholder` | `String` | Any icon to use as a placeholder until a remote image has been downloaded. Will be resolved using the application's `HUBIconImageResolver`. | `placeholderIcon` |
 
 ## Using custom JSON schemas
 
