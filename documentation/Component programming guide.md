@@ -205,7 +205,7 @@ If you encounter a piece of data that is common across multiple components & app
 
 #### Document how your component behaves
 
-Components have built-in reusability - so it's recommended that you prepare them for reuse - not only for different models - but for different developers as well. It's recommended to thoroughly document what `HUBComponentModel` data that your component uses, and how it behaves in terms of interactions, animations, etc.
+Components have built-in reusability, so it's recommended that you prepare them for reuse - not only for different models - but for different developers as well. It's recommended to thoroughly document what `HUBComponentModel` data your component uses, and how it behaves in terms of interactions, animations, etc.
 
 #### Use the framework for as many events as you can
 
