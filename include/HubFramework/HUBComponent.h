@@ -26,7 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  `HUBComponentWithImageHandling`: For handling downloaded images.
  *
+ *  `HUBComponentWithRestorableUIState`: For saving & restoring the UI state of a component.
+ *
  *  `HUBComponentContentOffsetObserver`: For components that react to the view's content offset.
+ *
+ *  `HUBComponentViewObserver`: For components that observe their view for various events.
  */
 @protocol HUBComponent <NSObject>
 
