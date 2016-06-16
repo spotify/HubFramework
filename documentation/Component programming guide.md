@@ -68,7 +68,7 @@ To be able to lay out components in a way that looks nice & consistent, the Hub 
 
 This is achieved with layout traits. Each component can define a set of layout traits that best describes it in terms of layout.
 
-For more information; see the [Layout programming guide](layout-programming-guide.md).
+For more information; see the [Layout programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html).
 
 ### Creating a component's view
 
@@ -152,7 +152,7 @@ You register a factory with `HUBComponentRegistry`, available on the application
 
 A factory is responsible for creating new component instances for a given `name`, or returning `nil` if the supplied `name` is not supported by the factory.
 
-*(For more information about component `namespaces` and `names`, see the [Content programming guide](Content Programming Guide)).*
+*(For more information about component `namespaces` and `names`, see the [Content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html)).*
 
 To create a factory implementation, add a new `class` and make it conform to `HUBComponentFactory`:
 
