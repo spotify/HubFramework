@@ -19,6 +19,7 @@
 // Content
 #import "HUBContentOperationFactory.h"
 #import "HUBContentOperation.h"
+#import "HUBContentOperationWithInitialContent.h"
 #import "HUBContentReloadPolicy.h"
 
 // View

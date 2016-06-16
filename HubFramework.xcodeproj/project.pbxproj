@@ -454,8 +454,8 @@
 			isa = PBXGroup;
 			children = (
 				8A40B12F1CAAAF8F00EBDDE2 /* HUBContentOperationFactory.h */,
-				8AF82D831D12EEFA00D1B933 /* HUBContentOperationWithInitialContent.h */,
 				8A40B12D1CAAA71500EBDDE2 /* HUBContentOperation.h */,
+				8AF82D831D12EEFA00D1B933 /* HUBContentOperationWithInitialContent.h */,
 				8A5D7A471CB7D2DB00B987BA /* HUBContentReloadPolicy.h */,
 			);
 			name = Content;
