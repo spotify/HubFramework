@@ -10,6 +10,7 @@ Welcome to the Hub Framework component programming guide! This guide aims to hel
 - [Managing child components](#managing-child-components)
 - [Saving and restoring UI state](#saving-and-restoring-ui-state)
 - [Integrating a component with the framework](#integrating-a-component-with-the-framework)
+- [Best practices](#best-practices)
 
 ## Introduction
 
@@ -183,3 +184,31 @@ To create a factory implementation, add a new `class` and make it conform to `HU
 
 @end
 ```
+
+## Best practices
+
+Components and their corresponding models (`HUBComponentModel`) are very free-form by design. We didn't want to strictly enforce how data is bound to views, or which `UIView` types that are usable for components, since that won't scale for new UI ideas and large teams. We want component authors to be able to move really fast, without a lot of restrictions.
+
+However, there are some best practices that are recommended to follow when building new components, so that they become intuitive and easy to use for other developers. Here are some things to keep in mind:
+
+#### Use the properties on `HUBComponentModel` as documented
+
+All the properties that are available as first-class citizens on `HUBComponentModel` have documentation detailing their recommended usage. For example, use `title` for the most prominent piece of text in your component, then `subtitle` etc. That way your component will have a predicatable behavior when used with various models.
+
+#### Use `customData` only when customization is needed
+
+Both `HUBComponentModel` and `HUBViewModel` have a `customData` property that enables you to set custom keys & values that can be used by your feature & components. This is an essential part of the API as it provides an easy way to extend the models for new ideas & concepts that we didn't consider when designing the models.
+
+With that being said, if there is a way to use the properties already available on `HUBComponentModel`, that is definetly preferred. Using the properties, you'll get things like automatic type checking and compatibility with other components.
+
+If you encounter a piece of data that is common across multiple components & applications, and should be included in `HUBComponentModel` as a first-class property, feel free to open an issue or send a PR!
+
+#### Document how your component behaves
+
+Components have built-in reusability - so it's recommended that you prepare them for reuse - not only for different models - but for different developers as well. It's recommended to thoroughly document what `HUBComponentModel` data that your component uses, and how it behaves in terms of interactions, animations, etc.
+
+#### Use the framework for as many events as you can
+
+The Hub Framework provides a lot of built-in functionality to handle events (like selection, appearance, etc) - and rather than building your own functionality for those kind of events - it's recommended to leverage the framework. That way you'll get a consistent behavior with other components, and reduce code duplication.
+
+If there's some functionality that you need but doesn't exist yet - considering opening an issue for it - or implement it and send a PR!
