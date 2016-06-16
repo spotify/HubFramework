@@ -74,7 +74,7 @@ Whether you're using JSON or calling builders in code, the composition of all co
 Each application or feature using the Hub Framework defines its own content operations through the `HUBContentOperation` protocol, and enables the framework to create instances of them through the use of `HUBContentOperationFactories`. An array of content operation factories are registered when each feature sets itself up with the Hub Framework.
 
 Content operations are called when either of the following 3 events happen:
-- The view is about to appear, and the content operations are asked to add initial (pre-loaded) content to the view.
+- The view is about to appear, and the content operations are asked to add initial (pre-loaded) content to the view. *This only happens if the content operation conforms to `HUBContentOperationWithInitialContent`.*
 - The view has appeared, and the content operations are asked to load the main content for the view.
 - A content operation has been rescheduled, for example because of an underlying model change, or because of a UI event. See [Rescheduling content operations](#rescheduling-content-operations) for more information.
 

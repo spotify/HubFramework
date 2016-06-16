@@ -70,27 +70,15 @@ NS_ASSUME_NONNULL_BEGIN
  *  When a new view is about to be displayed by the Hub Framework, the framework will call the content operations
  *  associated with that view. The content that these content operations add to the used `HUBViewModelBuilder` will
  *  then be used to create a view model for the view.
+ *
+ *  If your content operation also has some initial content that can be synchronously added to the view, before the
+ *  main content loading chain is started - it can conform to `HUBContentOperationWithInitialContent` to be able to
+ *  do so.
  */
 @protocol HUBContentOperation <NSObject>
 
 /// The content operation's delegate. Don't assign this property yourself, it will be set by the Hub Framework.
 @property (nonatomic, weak, nullable) id<HUBContentOperationDelegate> delegate;
-
-/**
- *  Add any initial content for a view with a certain view URI, using a view model builder
- *
- *  @param viewURI The URI of the view that initial content should be added for
- *  @param viewModelBuilder The builder that can be used to add initial content
- *
- *  Initial content is always loaded synchronously, and is displayed for the user before the "real" view model of
- *  a view is loaded. It can be used to display a "skeleton" version of the final User Interface, or to add placeholder
- *  content. The key for this method is speed - it shouldn't be used to perform expensive operations or to load any
- *  final content.
- *
- *  In case no relevant content can be added by the content operation, it can just implement this method as a no-op.
- */
-- (void)addInitialContentForViewURI:(NSURL *)viewURI
-                 toViewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder;
 
 
 /**
