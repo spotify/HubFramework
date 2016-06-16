@@ -17,13 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBContentOperation
 
-- (void)addInitialContentForViewURI:(NSURL *)viewURI toViewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
-{
-    if (self.initialContentLoadingBlock != nil) {
-        self.initialContentLoadingBlock(viewModelBuilder);
-    }
-}
-
 - (void)performForViewURI:(NSURL *)viewURI
               featureInfo:(id<HUBFeatureInfo>)featureInfo
         connectivityState:(HUBConnectivityState)connectivityState
@@ -49,6 +42,26 @@ NS_ASSUME_NONNULL_BEGIN
     } else {
         [delegate contentOperationDidFinish:self];
     }
+}
+
+#pragma mark - HUBContentOperationWithInitialContent
+
+- (void)addInitialContentForViewURI:(NSURL *)viewURI toViewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
+{
+    if (self.initialContentLoadingBlock != nil) {
+        self.initialContentLoadingBlock(viewModelBuilder);
+    }
+}
+
+#pragma mark - NSObject
+
+- (BOOL)conformsToProtocol:(Protocol *)protocol
+{
+    if (protocol == @protocol(HUBContentOperationWithInitialContent)) {
+        return (self.initialContentLoadingBlock != nil);
+    }
+    
+    return [super conformsToProtocol:protocol];
 }
 
 @end

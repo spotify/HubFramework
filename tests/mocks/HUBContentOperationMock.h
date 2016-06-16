@@ -1,9 +1,9 @@
-#import "HUBContentOperation.h"
+#import "HUBContentOperationWithInitialContent.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Mocked content operation, for use in tests only
-@interface HUBContentOperationMock : NSObject <HUBContentOperation>
+@interface HUBContentOperationMock : NSObject <HUBContentOperationWithInitialContent>
 
 /// A block that gets called whenever the content operation is asked to add initial content to a view model builder.
 @property (nonatomic, copy, nullable) void(^initialContentLoadingBlock)(id<HUBViewModelBuilder> builder);

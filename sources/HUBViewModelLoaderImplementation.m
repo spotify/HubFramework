@@ -2,7 +2,7 @@
 
 #import "HUBFeatureInfo.h"
 #import "HUBConnectivityStateResolver.h"
-#import "HUBContentOperation.h"
+#import "HUBContentOperationWithInitialContent.h"
 #import "HUBJSONSchema.h"
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBViewModelImplementation.h"
@@ -84,7 +84,10 @@ NS_ASSUME_NONNULL_BEGIN
     HUBViewModelBuilderImplementation * const builder = [self createBuilder];
     
     for (id<HUBContentOperation> const operation in self.contentOperations) {
-        [operation addInitialContentForViewURI:self.viewURI toViewModelBuilder:builder];
+        if ([operation conformsToProtocol:@protocol(HUBContentOperationWithInitialContent)]) {
+            id<HUBContentOperationWithInitialContent> const initialContentOperation = (id<HUBContentOperationWithInitialContent>)operation;
+            [initialContentOperation addInitialContentForViewURI:self.viewURI toViewModelBuilder:builder];
+        }
     }
     
     id<HUBViewModel> const initialViewModel = [builder build];
