@@ -196,6 +196,9 @@
                 <a class="nav-group-task-link" href="Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBContentOperationWithInitialContent.html">HUBContentOperationWithInitialContent</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a>
               </li>
               <li class="nav-group-task">
@@ -343,7 +346,11 @@
 
 <p><code><a href="Protocols/HUBComponentWithImageHandling.html">HUBComponentWithImageHandling</a></code>: For handling downloaded images.</p>
 
+<p><code><a href="Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a></code>: For saving &amp; restoring the UI state of a component.</p>
+
 <p><code><a href="Protocols/HUBComponentContentOffsetObserver.html">HUBComponentContentOffsetObserver</a></code>: For components that react to the view&rsquo;s content offset.</p>
+
+<p><code><a href="Protocols/HUBComponentViewObserver.html">HUBComponentViewObserver</a></code>: For components that observe their view for various events.</p>
 
                         <a href="Protocols/HUBComponent.html" class="slightly-smaller">See more</a>
                       </div>
@@ -1303,6 +1310,10 @@ them both.</p>
   associated with that view. The content that these content operations add to the used <code><a href="Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a></code> will
   then be used to create a view model for the view.</p>
 
+<p>If your content operation also has some initial content that can be synchronously added to the view, before the
+  main content loading chain is started - it can conform to <code><a href="Protocols/HUBContentOperationWithInitialContent.html">HUBContentOperationWithInitialContent</a></code> to be able to
+  do so.</p>
+
                         <a href="Protocols/HUBContentOperation.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
@@ -1358,6 +1369,48 @@ them both.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBContentOperationFactory</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBContentOperationWithInitialContent"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBContentOperationWithInitialContent" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBContentOperationWithInitialContent">HUBContentOperationWithInitialContent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Extended Hub content operation protocol that adds the ability to add initial content to a view</p>
+
+<p>Use this protocol whenever your content operation is able to add pre-loaded content to a view,
+  that is rendered before the main content loading chain is started.</p>
+
+<p>See <code><a href="Protocols/HUBContentOperation.html">HUBContentOperation</a></code> for more information.</p>
+
+                        <a href="Protocols/HUBContentOperationWithInitialContent.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBContentOperationWithInitialContent</span> <span class="o">&lt;</span><span class="n"><a href="Protocols/HUBContentOperation.html">HUBContentOperation</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBContentOperationWithInitialContent</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBContentOperation.html">HUBContentOperation</a></span></code></pre>
 
                         </div>
                       </div>

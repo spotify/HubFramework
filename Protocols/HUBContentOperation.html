@@ -197,6 +197,9 @@
                 <a class="nav-group-task-link" href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBContentOperationWithInitialContent.html">HUBContentOperationWithInitialContent</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a>
               </li>
               <li class="nav-group-task">
@@ -320,6 +323,10 @@
   associated with that view. The content that these content operations add to the used <code><a href="../Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a></code> will
   then be used to create a view model for the view.</p>
 
+<p>If your content operation also has some initial content that can be synchronously added to the view, before the
+  main content loading chain is started - it can conform to <code><a href="../Protocols/HUBContentOperationWithInitialContent.html">HUBContentOperationWithInitialContent</a></code> to be able to
+  do so.</p>
+
           </div>
         </section>
 
@@ -356,75 +363,6 @@
                           <pre class="highlight"><code><span class="k">weak</span> <span class="k">var</span> <span class="nv">delegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBContentOperation(im)addInitialContentForViewURI:toViewModelBuilder:"></a>
-                    <a name="//apple_ref/objc/Method/-addInitialContentForViewURI:toViewModelBuilder:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBContentOperation(im)addInitialContentForViewURI:toViewModelBuilder:">-addInitialContentForViewURI:toViewModelBuilder:</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Add any initial content for a view with a certain view URI, using a view model builder</p>
-
-<p>Initial content is always loaded synchronously, and is displayed for the user before the <q>real</q> view model of
-  a view is loaded. It can be used to display a <q>skeleton</q> version of the final User Interface, or to add placeholder
-  content. The key for this method is speed - it shouldn&rsquo;t be used to perform expensive operations or to load any
-  final content.</p>
-
-<p>In case no relevant content can be added by the content operation, it can just implement this method as a no-op.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addInitialContentForViewURI</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewURI</span>
-                 <span class="nf">toViewModelBuilder</span><span class="p">:</span>
-                     <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">viewModelBuilder</span><span class="p">;</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>viewURI</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The URI of the view that initial content should be added for</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>viewModelBuilder</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The builder that can be used to add initial content</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>

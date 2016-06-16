@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>HUBComponentFallbackHandler Protocol Reference</title>
+    <title>HUBContentOperationWithInitialContent Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Protocol/HUBComponentFallbackHandler" class="dashAnchor"></a>
+    <a name="//apple_ref/objc/Protocol/HUBContentOperationWithInitialContent" class="dashAnchor"></a>
 
-    <a title="HUBComponentFallbackHandler Protocol Reference"></a>
+    <a title="HUBContentOperationWithInitialContent Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -41,7 +41,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">HubFramework Reference</a>
       <img class="carat" src="../img/carat.png" />
-      HUBComponentFallbackHandler Protocol Reference
+      HUBContentOperationWithInitialContent Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -305,20 +305,19 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>HUBComponentFallbackHandler</h1>
+            <h1>HUBContentOperationWithInitialContent</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentFallbackHandler</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBContentOperationWithInitialContent</span> <span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentOperation.html">HUBContentOperation</a></span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
-            <p>Protocol implemented by an object that handles fallback behavior for Hub Framework components</p>
+            <p>Extended Hub content operation protocol that adds the ability to add initial content to a view</p>
 
-<p>You implement this protocol in a single custom object and inject it when setting up the application&rsquo;s
-  <code><a href="../Classes/HUBManager.html">HUBManager</a></code>. The fallback handler helps the Hub Framework assure that a component is always created, 
-  even if a component model&rsquo;s namespace/name combination couldn&rsquo;t be resolved to a component. The information
-  provided by a fallback handler is used to set up all component model builders with default values, and
-  the fallback handler also acts as a last line of defence for backwards compatibility.</p>
+<p>Use this protocol whenever your content operation is able to add pre-loaded content to a view,
+  that is rendered before the main content loading chain is started.</p>
+
+<p>See <code><a href="../Protocols/HUBContentOperation.html">HUBContentOperation</a></code> for more information.</p>
 
           </div>
         </section>
@@ -330,9 +329,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentFallbackHandler(py)defaultComponentNamespace"></a>
-                    <a name="//apple_ref/objc/Property/defaultComponentNamespace" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentFallbackHandler(py)defaultComponentNamespace">defaultComponentNamespace</a>
+                    <a name="/c:objc(pl)HUBContentOperationWithInitialContent(im)addInitialContentForViewURI:toViewModelBuilder:"></a>
+                    <a name="//apple_ref/objc/Method/-addInitialContentForViewURI:toViewModelBuilder:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBContentOperationWithInitialContent(im)addInitialContentForViewURI:toViewModelBuilder:">-addInitialContentForViewURI:toViewModelBuilder:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -340,122 +339,22 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The default component namespace, that all component model builders should have when created</p>
+                        <p>Add any initial content for a view with a certain view URI, using a view model builder</p>
 
-<p>This property is read only once by the Hub Framework (when initializing <code><a href="../Classes/HUBManager.html">HUBManager</a></code>)</p>
+<p>Initial content is always loaded synchronously, and is displayed for the user before the <q>real</q> view model of
+  a view is loaded. It can be used to display a <q>skeleton</q> version of the final User Interface, or to add placeholder
+  content. The key for this method is speed - it shouldn&rsquo;t be used to perform expensive operations or to load any
+  final content.</p>
 
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">defaultComponentNamespace</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">defaultComponentNamespace</span><span class="p">:</span> <span class="kt">String</span><span class="o">!</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBComponentFallbackHandler(py)defaultComponentName"></a>
-                    <a name="//apple_ref/objc/Property/defaultComponentName" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentFallbackHandler(py)defaultComponentName">defaultComponentName</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The default component name, that all component model builders should have when created</p>
-
-<p>This property is read only once by the Hub Framework (when initializing <code><a href="../Classes/HUBManager.html">HUBManager</a></code>)</p>
+<p>In case no relevant content can be added by the content operation, it can just implement this method as a no-op.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">defaultComponentName</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">defaultComponentName</span><span class="p">:</span> <span class="kt">String</span><span class="o">!</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBComponentFallbackHandler(py)defaultComponentCategory"></a>
-                    <a name="//apple_ref/objc/Property/defaultComponentCategory" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentFallbackHandler(py)defaultComponentCategory">defaultComponentCategory</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The default component category, that all component model builders should have when created</p>
-
-<p>This property is read only once by the Hub Framework (when initializing <code><a href="../Classes/HUBManager.html">HUBManager</a></code>)</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n"><a href="../Type Definitions.html#/c:HUBComponentCategories.h@T@HUBComponentCategory">HUBComponentCategory</a></span> <span class="o">*</span><span class="n">defaultComponentCategory</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">@NSCopying</span> <span class="k">var</span> <span class="nv">defaultComponentCategory</span><span class="p">:</span> <span class="kd">protocol</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBComponentFallbackHandler(im)createFallbackComponentForCategory:"></a>
-                    <a name="//apple_ref/objc/Method/-createFallbackComponentForCategory:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentFallbackHandler(im)createFallbackComponentForCategory:">-createFallbackComponentForCategory:</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Create a fallback component to use for a certain category</p>
-
-<p>The Hub Framework will call this method in case no component could be resolved using any registered
-  <code><a href="../Protocols/HUBComponentFactory.html">HUBComponentFactory</a></code>. The fallback handler must always return a component from this method, and can
-  optionally use the provided component category to adjust which type of component to return.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponent.html">HUBComponent</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nf">createFallbackComponentForCategory</span><span class="p">:</span>
-    <span class="p">(</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentCategories.h@T@HUBComponentCategory">HUBComponentCategory</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">componentCategory</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addInitialContentForViewURI</span><span class="p">:(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewURI</span>
+                 <span class="nf">toViewModelBuilder</span><span class="p">:(</span><span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">viewModelBuilder</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -466,12 +365,25 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>componentCategory</em>
+                                <em>viewURI</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The category to return a fallback component for</p>
+                                  <p>The URI of the view that initial content should be added for</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewModelBuilder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The builder that can be used to add initial content</p>
 
                                 </div>
                               </td>

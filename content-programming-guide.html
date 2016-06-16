@@ -196,6 +196,9 @@
                 <a class="nav-group-task-link" href="Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBContentOperationWithInitialContent.html">HUBContentOperationWithInitialContent</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a>
               </li>
               <li class="nav-group-task">
@@ -372,7 +375,7 @@
 <p>Each application or feature using the Hub Framework defines its own content operations through the <code>HUBContentOperation</code> protocol, and enables the framework to create instances of them through the use of <code>HUBContentOperationFactories</code>. An array of content operation factories are registered when each feature sets itself up with the Hub Framework.</p>
 
 <p>Content operations are called when either of the following 3 events happen:
-- The view is about to appear, and the content operations are asked to add initial (pre-loaded) content to the view.
+- The view is about to appear, and the content operations are asked to add initial (pre-loaded) content to the view. <em>This only happens if the content operation conforms to <code>HUBContentOperationWithInitialContent</code>.</em>
 - The view has appeared, and the content operations are asked to load the main content for the view.
 - A content operation has been rescheduled, for example because of an underlying model change, or because of a UI event. See <a href="#rescheduling-content-operations">Rescheduling content operations</a> for more information.</p>
 <a href='#content-loading-chain' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='content-loading-chain'>Content loading chain</h2>
