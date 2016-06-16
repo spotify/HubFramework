@@ -324,7 +324,7 @@
 
 <p>The way this works is through the use of <strong>view models</strong> and <strong>component models</strong> that each encapsulates content on either the view level, or the component level. Components are the visual buildings blocks of a Hub Framework-powered view, and are used to render the content defined by a component model.</p>
 
-<p><em>(For more information about components, see the <a href="component-programming-guide.md">Component programming guide</a>)</em></p>
+<p><em>(For more information about components, see the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html">Component programming guide</a>)</em></p>
 <a href='#content-hierarchy' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='content-hierarchy'>Content hierarchy</h2>
 
 <p>The content of a Hub Framework-powered view is described using a hierarchy of models, consisting of <code>HUBViewModel</code>, <code>HUBComponentModel</code> and <code>HUBComponentImageData</code> objects.</p>
@@ -337,7 +337,7 @@
 
 <p>A <strong>Header component</strong> is rendered at the top of a view. Each view can only have a single header component, although that component can have children nested within it. It will always remain on top of the view, and does not scroll with the rest of the view&rsquo;s content.</p>
 
-<p><strong>Body components</strong> make up all the standard visual content that is part of the view. They automatically support scrolling when there&rsquo;s an overflow of components outside of the view&rsquo;s bounds, and are laid out next to each other according to their <em>Layout traits</em> (for more information see the <a href="layout-programming-guide.md">Layout programming guide</a>).</p>
+<p><strong>Body components</strong> make up all the standard visual content that is part of the view. They automatically support scrolling when there&rsquo;s an overflow of components outside of the view&rsquo;s bounds, and are laid out next to each other according to their <em>Layout traits</em> (for more information see the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html">Layout programming guide</a>).</p>
 
 <p><strong>Overlay components</strong> are rendered on top of the rest of the view&rsquo;s content, making them suitable for overlays such as loading indicators, popups, notifications, etc. They are always rendered at the center of the screen, stacked on top of each other.</p>
 <a href='#component-models-define-a-generic-data-model-for-all-components' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='component-models-define-a-generic-data-model-for-all-components'>Component models define a generic data model for all components</h3>
@@ -346,14 +346,14 @@
 
 <p>They contain textual content, like <code>title</code>, <code>subtitle</code> &amp; <code>descriptionText</code>, as well as image data, metadata &amp; the ability for component authors to support <code>customData</code> key/value combinations.</p>
 
-<p>For each component model; a <code>HUBComponent</code> implementation will be used for rendering. Which implementation to use is determined by the model&rsquo;s <code>componentNamespace</code> and <code>componentName</code>. For more information about how namespaces and names are resolved; see the <a href="component-programming-guide.md">Component programming guide</a>.</p>
+<p>For each component model; a <code>HUBComponent</code> implementation will be used for rendering. Which implementation to use is determined by the model&rsquo;s <code>componentNamespace</code> and <code>componentName</code>. For more information about how namespaces and names are resolved; see the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html">Component programming guide</a>.</p>
 
-<p><em>For a full list of supported properties, see <a href="../include/HubFramework/HUBComponentModel.h"><code>HUBComponentModel</code></a>.</em></p>
+<p><em>For a full list of supported properties, see <a href="https://ghe.spotify.net/pages/iOS/HubFramework/Protocols/HUBComponent.html"><code>HUBComponentModel</code></a>.</em></p>
 <a href='#using-json' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='using-json'>Using JSON</h2>
 
 <p>One way of adding content to a Hub Framework-powered view is through JSON, which can be used to define a serialized view model. Using the JSON API to define your content means that you can dynamically update a view from a server-side system - fully decoupling your application from the content that is being rendered in it. It could potentially reduce iteration times, and enabling you to release whenever you want - instead of always having to make changes in the client-side code.</p>
 
-<p>The Hub Framework can be used with any JSON schema, but does provide a default one for convenience. For more information; see the <a href="json-programming-guide.md">JSON programming guide</a>.</p>
+<p>The Hub Framework can be used with any JSON schema, but does provide a default one for convenience. For more information; see the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/json-programming-guide.html">JSON programming guide</a>.</p>
 <a href='#using-builders' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='using-builders'>Using builders</h2>
 
 <p>Builders are used to manipulate the content of a view in code. <a href="https://en.wikipedia.org/wiki/Builder_pattern">The builder pattern</a> is used to reduce the need to keep state, and to avoid mutable models.</p>
