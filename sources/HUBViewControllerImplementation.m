@@ -724,6 +724,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (cellIndexPath != nil) {
         NSIndexPath * const indexPath = cellIndexPath;
+        [self.collectionView cellForItemAtIndexPath:indexPath].highlighted = NO;
         [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
     }
     
