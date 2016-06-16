@@ -8,6 +8,7 @@ Welcome to the Hub Framework component programming guide! This guide aims to hel
 - [The basics](#the-basics)
 - [Image handling](#image-handling)
 - [Managing child components](#managing-child-components)
+- [Saving and restoring UI state](#saving-and-restoring-ui-state)
 - [Integrating a component with the framework](#integrating-a-component-with-the-framework)
 
 ## Introduction
@@ -143,6 +144,18 @@ This can sometimes be the preferred approach for providing lightweight support f
 To make a component that can render any child component; use nested `HUBComponent` implementations. You can easily create such child components using the `component:createChildComponentAtIndex:` method on your component's `childDelegate`.
 
 The component returned from this method will have a loaded view and be resized to its default size - but it's up to each component implementation to manage its child components.
+
+## Saving and restoring UI state
+
+Some components have specific UI states that ideally should be preserved between reuses when the same model is rendered. For example, if a component is scrollable horizontally you might want to retain the scroll position per model, so that state isn't lost when the component is reused.
+
+To do that, make your component conform to `HUBComponentWithRestorableUIState`. This will make the Hub Framework call `currentUIState` on your component before each reuse takes place - giving you a chance to return a UI state that should be saved.
+
+You can use any type to model your UI state. For example, in the case of a scroll position an `NSValue` containing a `CGPoint` is probably a good choice.
+
+Once your component has started to render a model for which a UI state was previously saved, the framework will call `restoreUIState:` on your component with the saved state, allowing the component to restore it.
+
+Thanks to this API, you can hide the fact that components are reused for your users, as from their perpsective it will look like the component was there all along.
 
 ## Integrating a component with the framework
 
