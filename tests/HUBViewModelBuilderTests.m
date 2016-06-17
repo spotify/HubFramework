@@ -85,7 +85,7 @@
 
 - (void)testAllBodyComponentBuilders
 {
-    NSMutableArray *arrayOfBodyComponentModelBuilders = [NSMutableArray new];
+    NSMutableArray * const arrayOfBodyComponentModelBuilders = [NSMutableArray new];
     [arrayOfBodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"body4"]];
     [arrayOfBodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"body3"]];
     [arrayOfBodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"body2"]];

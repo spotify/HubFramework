@@ -106,7 +106,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray<id<HUBComponentModelBuilder>> *)allBodyComponentModelBuilders
 {
-    return self.bodyComponentModelBuilders.allValues;
+    NSMutableArray<id<HUBComponentModelBuilder>> * const builders = [NSMutableArray new];
+    
+    for (NSString * const identifier in self.bodyComponentIdentifierOrder) {
+        id<HUBComponentModelBuilder> const builder = self.bodyComponentModelBuilders[identifier];
+        [builders addObject:builder];
+    }
+    
+    return [builders copy];
 }
 
 - (id<HUBComponentModelBuilder>)builderForBodyComponentModelWithIdentifier:(NSString *)identifier
