@@ -91,6 +91,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryHeader">HUBComponentCategoryHeader</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
               </li>
               <li class="nav-group-task">
@@ -312,11 +315,11 @@
 
                 </div>
               </div>
-            <p>Protocol representing a context in which a selection occurred.</p>
+            <p>Protocol representing a context in which a selection occurred</p>
 
-<p>Contains the models for both the view and the component
-which was selected, as well as the view controller used to present
-them both.</p>
+<p>The Hub Framework will send an object conforming to this protocol to any
+ <code><a href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a></code> registered for the feature in which a
+ selection occured.</p>
 
           </div>
         </section>
@@ -370,7 +373,7 @@ them both.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The model of the view which the selection event occured in.</p>
+                        <p>The model of the view in which the selection event occured.</p>
 
                       </div>
                       <div class="declaration">
@@ -397,7 +400,7 @@ them both.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The model of the component which was selected.</p>
+                        <p>The model of the component that was selected.</p>
 
                       </div>
                       <div class="declaration">

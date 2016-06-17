@@ -90,6 +90,9 @@
                 <a class="nav-group-task-link" href="Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryHeader">HUBComponentCategoryHeader</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
               </li>
               <li class="nav-group-task">
@@ -327,10 +330,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A component identifier consists of a namespace and a name, or just a name (with an inferred namespace). Identifiers
-  can be constructed either programmatically or through a string.</p>
+                        <p>A component identifier is used to match a <code><a href="Protocols/HUBComponentModel.html">HUBComponentModel</a></code> to a <code><a href="Protocols/HUBComponent.html">HUBComponent</a></code> implementation</p>
 
-<p>The Hub Framework uses component identifiers to map a certain <code><a href="Protocols/HUBComponentModel.html">HUBComponentModel</a></code> to a <code><a href="Protocols/HUBComponent.html">HUBComponent</a></code> implementation.</p>
+<p>Component identifiers have two components; a <code>namespace</code> and a <code>name</code>. The namespace is used to
+  resolve which <code><a href="Protocols/HUBComponentFactory.html">HUBComponentFactory</a></code> to use to create a component for a model, and the name is
+  then passed to that factory when it&rsquo;s asked to create a component.</p>
+
+<p>You can create component identifiers programmatically, or supply string representations when
+  using JSON data using the <code>namespace:name</code> format.</p>
 
                         <a href="Classes/HUBComponentIdentifier.html" class="slightly-smaller">See more</a>
                       </div>
@@ -369,8 +376,9 @@
                       <div class="abstract">
                         <p>This class is the main entry point into the Hub Framework</p>
 
-<p>An application using the Hub Framework should create an instance of this class,
-  and retain it in a central location (such as its App Delegate)</p>
+<p>An application using the Hub Framework should create a single instance of this class and retain it in a central
+  location (such as its App Delegate). This class exposes the public API of the Hub Framework in a modular fashion,
+  with each part of the API encapsulated in either a registry or a factory.</p>
 
                         <a href="Classes/HUBManager.html" class="slightly-smaller">See more</a>
                       </div>

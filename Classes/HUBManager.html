@@ -91,6 +91,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryHeader">HUBComponentCategoryHeader</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
               </li>
               <li class="nav-group-task">
@@ -314,8 +317,9 @@
               </div>
             <p>This class is the main entry point into the Hub Framework</p>
 
-<p>An application using the Hub Framework should create an instance of this class,
-  and retain it in a central location (such as its App Delegate)</p>
+<p>An application using the Hub Framework should create a single instance of this class and retain it in a central
+  location (such as its App Delegate). This class exposes the public API of the Hub Framework in a modular fashion,
+  with each part of the API encapsulated in either a registry or a factory.</p>
 
           </div>
         </section>
@@ -337,7 +341,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The feature registry used by this Hub Manager. See the documentation for <code><a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a></code> for more info.</p>
+                        <p>The registry used to register features with the framework. See the documentation for <code><a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a></code> for more info.</p>
 
                       </div>
                       <div class="declaration">
@@ -365,7 +369,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The component registry used by this Hub Manager. See the documentation for <code><a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a></code> for more info.</p>
+                        <p>The registry used to register components with the framework. See the documentation for <code><a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a></code> for more info.</p>
 
                       </div>
                       <div class="declaration">
@@ -393,7 +397,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The JSON schema registry used by this Hub Manager. See the documentation for <code><a href="../Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a></code> for more info.</p>
+                        <p>The registry used to register custom JSON schemas. See the documentation for <code><a href="../Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a></code> for more info.</p>
 
                       </div>
                       <div class="declaration">
@@ -477,7 +481,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Initialize an instance of this class with a component fallback handler</p>
+                        <p>Initialize an instance of this class with its required dependencies</p>
 
                       </div>
                       <div class="declaration">
@@ -543,7 +547,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The object to use to fall back to default components in case a component could not be
+                                  <p>The object to use to fall back to default components in case a component couldn&rsquo;t be
         resolved using the standard mechanism. See <code>HUBComponentFallbackHandler</code> for more information.</p>
 
                                 </div>

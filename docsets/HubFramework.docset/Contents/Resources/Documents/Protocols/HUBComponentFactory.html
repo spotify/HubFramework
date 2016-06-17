@@ -91,6 +91,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryHeader">HUBComponentCategoryHeader</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
               </li>
               <li class="nav-group-task">
@@ -314,9 +317,9 @@
               </div>
             <p>Protocol implemented by objects that create Hub Framework components</p>
 
-<p>A component factory is registered for a specific namespace in the <code><a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a></code>.
-  The registry will lookup the factory based on the namespace and query the factory for
-  component instances based on a component name.</p>
+<p>You implement a component factory to be able to integrate your component(s) with the framework.
+  Each factory is registered with <code><a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a></code> for a certain namespace, and will be used
+  whenever a component model declares that namespace as part of its component identifier.</p>
 
           </div>
         </section>
@@ -340,7 +343,8 @@
                       <div class="abstract">
                         <p>Create a new component matching a name</p>
 
-<p>Returning <code>nil</code> from this method will cause a fallback component to be used</p>
+<p>Returning <code>nil</code> from this method will cause a fallback component to be used, using the application&rsquo;s
+  <code><a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a></code> and the component model&rsquo;s <code><a href="../Type Definitions.html#/c:HUBComponentCategories.h@T@HUBComponentCategory">HUBComponentCategory</a></code>.</p>
 
                       </div>
                       <div class="declaration">

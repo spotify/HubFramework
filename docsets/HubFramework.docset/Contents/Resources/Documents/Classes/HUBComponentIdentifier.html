@@ -91,6 +91,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryHeader">HUBComponentCategoryHeader</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
               </li>
               <li class="nav-group-task">
@@ -312,10 +315,14 @@
 
                 </div>
               </div>
-            <p>A component identifier consists of a namespace and a name, or just a name (with an inferred namespace). Identifiers
-  can be constructed either programmatically or through a string.</p>
+            <p>A component identifier is used to match a <code><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></code> to a <code><a href="../Protocols/HUBComponent.html">HUBComponent</a></code> implementation</p>
 
-<p>The Hub Framework uses component identifiers to map a certain <code><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></code> to a <code><a href="../Protocols/HUBComponent.html">HUBComponent</a></code> implementation.</p>
+<p>Component identifiers have two components; a <code>namespace</code> and a <code>name</code>. The namespace is used to
+  resolve which <code><a href="../Protocols/HUBComponentFactory.html">HUBComponentFactory</a></code> to use to create a component for a model, and the name is
+  then passed to that factory when it&rsquo;s asked to create a component.</p>
+
+<p>You can create component identifiers programmatically, or supply string representations when
+  using JSON data using the <code>namespace:name</code> format.</p>
 
           </div>
         </section>
@@ -337,7 +344,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The namespace of the component to use, or <code>nil</code> if the Hub Framework should infer a namespace</p>
+                        <p>The namespace of the component to use. Will me used to resolve a registered <code><a href="../Protocols/HUBComponentFactory.html">HUBComponentFactory</a></code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -369,7 +376,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The name of the component to use</p>
+                        <p>The name of the component to use. Will be sent to the component factory that will create a component.</p>
 
                       </div>
                       <div class="declaration">
@@ -401,7 +408,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A string representation of the component identifier, <code>namespace:name</code> or <code>name</code>.</p>
+                        <p>A string representation of the component identifier, in the <code>namespace:name</code> format.</p>
 
                       </div>
                       <div class="declaration">
@@ -435,6 +442,8 @@
                       <div class="abstract">
                         <p>Initialize a component identifier</p>
 
+<p>See the documentation for the properties that match the paramaters for more information.</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -462,7 +471,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The namespace part of the identifier (or nil if an inferred namespace should be used)</p>
+                                  <p>The namespace part of the identifier</p>
 
                                 </div>
                               </td>

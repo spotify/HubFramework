@@ -91,6 +91,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryHeader">HUBComponentCategoryHeader</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
               </li>
               <li class="nav-group-task">
@@ -315,8 +318,9 @@
             <p>Protocol implemented by objects that can resolve an application&rsquo;s current connectivity state</p>
 
 <p>You conform to this protocol in a custom object and supply it when setting up your application&rsquo;s
-  <code><a href="../Classes/HUBManager.html">HUBManager</a></code>. The Hub Framework uses the information provided by its connectivity state resolver
-  to determine whether remote content should be loaded or not at a given time.</p>
+  <code><a href="../Classes/HUBManager.html">HUBManager</a></code>. The Hub Framework passes the information provided by its connectivity state resolver
+  to content operations when they are performed, enabling them to make decisions on whether to attempt
+  to load remote content or not.</p>
 
 <p>The resolver should also support observations; to enable the Hub Framework to react to changes
   in connectivity state. Whenever the resolver detected a change, it should call its observers.</p>
@@ -344,7 +348,8 @@
                         <p>Resolve the current connectivity state of the application</p>
 
 <p>The Hub Framework will call this method on your connectivity state resolver every time it&rsquo;s about
-  to load content. If <code>HUBConnectivityStateOffline</code> is returned, no remote content will be loaded.</p>
+  to load content. It will be called once per content loading chain, ensuring connectivity state
+  consistency within the chain.</p>
 
                       </div>
                       <div class="declaration">

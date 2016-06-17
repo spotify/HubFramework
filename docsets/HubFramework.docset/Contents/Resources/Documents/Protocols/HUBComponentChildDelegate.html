@@ -91,6 +91,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryHeader">HUBComponentCategoryHeader</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
               </li>
               <li class="nav-group-task">
@@ -312,11 +315,14 @@
 
                 </div>
               </div>
-            <p>Delegate protocol used to communicate back to the Hub Framework from a component implementation</p>
+            <p>Delegate protocol used to send events related to a component&rsquo;s children back to the Hub Framework</p>
 
 <p>You don&rsquo;t implement this protocol yourself. Instead, you @synthesize your component&rsquo;s <code>childDelegate</code>
   property, and may choose to send any of these methods to it to notify it of events, as well as creating
   child component instances.</p>
+
+<p>It&rsquo;s definitely recommended to use this protocol as much as possible when using child components, since
+  you can leverage the framework&rsquo;s built-in capabilities for selection, image loading &amp; other events.</p>
 
           </div>
         </section>

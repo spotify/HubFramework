@@ -90,6 +90,9 @@
                 <a class="nav-group-task-link" href="Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryHeader">HUBComponentCategoryHeader</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
               </li>
               <li class="nav-group-task">
@@ -337,7 +340,9 @@
   the Hub Framework using a <code><a href="Protocols/HUBComponentFactory.html">HUBComponentFactory</a></code> implementation registered with <code><a href="Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a></code>.</p>
 
 <p>Ideally, components should hold as little state as possible, and instead react to any model changes
-  through <code>-configureViewWithModel:</code>.</p>
+  through <code>-configureViewWithModel:</code>. Components of the same class are also reused as much as possible,
+  so a component can never assume a 1:1 relationship with a certain model, rather it needs to be able to
+  render any <code><a href="Protocols/HUBComponentModel.html">HUBComponentModel</a></code>.</p>
 
 <p>This is the base protocol that all components must conform to. For extensions that adds additional
   functionality see:</p>
@@ -429,9 +434,9 @@
                       <div class="abstract">
                         <p>Protocol implemented by objects that create Hub Framework components</p>
 
-<p>A component factory is registered for a specific namespace in the <code><a href="Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a></code>.
-  The registry will lookup the factory based on the namespace and query the factory for
-  component instances based on a component name.</p>
+<p>You implement a component factory to be able to integrate your component(s) with the framework.
+  Each factory is registered with <code><a href="Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a></code> for a certain namespace, and will be used
+  whenever a component model declares that namespace as part of its component identifier.</p>
 
                         <a href="Protocols/HUBComponentFactory.html" class="slightly-smaller">See more</a>
                       </div>
@@ -514,7 +519,7 @@
                         <p>Protocol defining the public API of an object that describes image data for a Component in the Hub Framework</p>
 
 <p>You don&rsquo;t conform to this protocol yourself, instead the Hub Framework will create implementations of it for you
-  based on the data supplied to a <code><a href="Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></code> or through JSON data.</p>
+  based on the data supplied to a <code><a href="Protocols/HUBComponentImageDataBuilder.html">HUBComponentImageDataBuilder</a></code> or through JSON data.</p>
 
                         <a href="Protocols/HUBComponentImageData.html" class="slightly-smaller">See more</a>
                       </div>
@@ -604,10 +609,10 @@
   come attached to a <code><a href="Protocols/HUBJSONSchema.html">HUBJSONSchema</a></code>. You are free to customize a schema in whatever way you want, but you must
   do so before registering it with the <code><a href="Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a></code>.</p>
 
-<p>The Hub Framework uses a path-based approach to JSON parsing, that enables the API user to describe how to
-  retrieve data from a JSON structure using paths - sequences of operations that each perform a JSON parsing task,
-  such as going to a key in a dictionary, or iterating over an array. For more information about how to construct
-  paths, see the documentation for <code><a href="Protocols/HUBJSONPath.html">HUBJSONPath</a></code> and <code><a href="Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a></code>.</p>
+<p>The Hub Framework uses a path-based approach to JSON parsing, that enables you to describe how to retrieve data
+  from a JSON structure using paths - sequences of operations that each perform a JSON parsing task, such as going
+  to a key in a dictionary, or iterating over an array. For more information about how to construct paths, see the
+  documentation for <code><a href="Protocols/HUBJSONPath.html">HUBJSONPath</a></code> and <code><a href="Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a></code>.</p>
 
 <p>All paths in this schema are relative to a dictionary containing image data for a component.</p>
 
@@ -836,8 +841,12 @@
                       <div class="abstract">
                         <p>Protocol defining the public API of a Hub component registry</p>
 
-<p>A component registry is an object that keeps track of the components registered
-  with an instance of the Hub Framework.</p>
+<p>A component registry manages a series of registered <code><a href="Protocols/HUBComponentFactory.html">HUBComponentFactory</a></code> implementations,
+  that are used to create components for Hub Framework-powered views. To integrate a component
+  with the framework - implement a <code><a href="Protocols/HUBComponentFactory.html">HUBComponentFactory</a></code> and register it with the registry.</p>
+
+<p>You don&rsquo;t conform to this protocol yourself, instead the application&rsquo;s <code><a href="Classes/HUBManager.html">HUBManager</a></code> comes
+  setup with a registry that you can use.</p>
 
                         <a href="Protocols/HUBComponentRegistry.html" class="slightly-smaller">See more</a>
                       </div>
@@ -874,11 +883,11 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Protocol representing a context in which a selection occurred.</p>
+                        <p>Protocol representing a context in which a selection occurred</p>
 
-<p>Contains the models for both the view and the component
-which was selected, as well as the view controller used to present
-them both.</p>
+<p>The Hub Framework will send an object conforming to this protocol to any
+ <code><a href="Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a></code> registered for the feature in which a
+ selection occured.</p>
 
                         <a href="Protocols/HUBComponentSelectionContext.html" class="slightly-smaller">See more</a>
                       </div>
@@ -998,11 +1007,14 @@ them both.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Delegate protocol used to communicate back to the Hub Framework from a component implementation</p>
+                        <p>Delegate protocol used to send events related to a component&rsquo;s children back to the Hub Framework</p>
 
 <p>You don&rsquo;t implement this protocol yourself. Instead, you @synthesize your component&rsquo;s <code>childDelegate</code>
   property, and may choose to send any of these methods to it to notify it of events, as well as creating
   child component instances.</p>
+
+<p>It&rsquo;s definitely recommended to use this protocol as much as possible when using child components, since
+  you can leverage the framework&rsquo;s built-in capabilities for selection, image loading &amp; other events.</p>
 
                         <a href="Protocols/HUBComponentChildDelegate.html" class="slightly-smaller">See more</a>
                       </div>
@@ -1203,8 +1215,9 @@ them both.</p>
                         <p>Protocol implemented by objects that can resolve an application&rsquo;s current connectivity state</p>
 
 <p>You conform to this protocol in a custom object and supply it when setting up your application&rsquo;s
-  <code><a href="Classes/HUBManager.html">HUBManager</a></code>. The Hub Framework uses the information provided by its connectivity state resolver
-  to determine whether remote content should be loaded or not at a given time.</p>
+  <code><a href="Classes/HUBManager.html">HUBManager</a></code>. The Hub Framework passes the information provided by its connectivity state resolver
+  to content operations when they are performed, enabling them to make decisions on whether to attempt
+  to load remote content or not.</p>
 
 <p>The resolver should also support observations; to enable the Hub Framework to react to changes
   in connectivity state. Whenever the resolver detected a change, it should call its observers.</p>

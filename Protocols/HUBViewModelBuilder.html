@@ -91,6 +91,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryCarousel">HUBComponentCategoryCarousel</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryHeader">HUBComponentCategoryHeader</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
               </li>
               <li class="nav-group-task">
@@ -481,7 +484,7 @@
                       <div class="abstract">
                         <p>The title that the view should have in the navigation bar</p>
 
-<p>In case the view has a component-based header, the value of this property is ignored by the framework.</p>
+<p>The value of this property will be assigned to the view controller&rsquo;s title property</p>
 
                       </div>
                       <div class="declaration">
@@ -844,13 +847,53 @@
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Retrieving%20component%20model%20builders%20by%20identifier"></a>
-                <a name="//apple_ref/objc/Section/Retrieving component model builders by identifier" class="dashAnchor"></a>
-                <a href="#/Retrieving%20component%20model%20builders%20by%20identifier">
-                  <h3 class="section-name">Retrieving component model builders by identifier</h3>
+                <a name="/Retrieving%20component%20model%20builders"></a>
+                <a name="//apple_ref/objc/Section/Retrieving component model builders" class="dashAnchor"></a>
+                <a href="#/Retrieving%20component%20model%20builders">
+                  <h3 class="section-name">Retrieving component model builders</h3>
                 </a>
               </div>
               <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)allBodyComponentModelBuilders"></a>
+                    <a name="//apple_ref/objc/Method/-allBodyComponentModelBuilders" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)allBodyComponentModelBuilders">-allBodyComponentModelBuilders</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return all current body component model builders</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></span><span class="o">&gt;&gt;</span> <span class="o">*</span><span class="p">)</span>
+    <span class="n">allBodyComponentModelBuilders</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">allBodyComponentModelBuilders</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">AnyObject</span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>All the existing body component model builders, in the order that they were created. Note that
+ any <code>preferredIndex</code> set by the component model builders hasn&rsquo;t been resolved at this point, so those
+ are not taken into account.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
