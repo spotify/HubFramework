@@ -5,9 +5,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  A component identifier is used to match a `HUBComponentModel` to a `HUBComponent` implementation
  *
- *  Component identifiers have two components; a `namespace` and a `name`. The namespace is used to
- *  resolve which `HUBComponentFactory` to use to create a component for a model, and the name is
- *  then passed to that factory when it's asked to create a component.
+ *  Component identifiers have two parts; a `namespace` and a `name`. The namespace is used to resolve
+ *  which `HUBComponentFactory` to use to create a component for a model, and the name is then passed
+ *  to that factory when it's asked to create a component.
  *
  *  You can create component identifiers programmatically, or supply string representations when
  *  using JSON data using the `namespace:name` format.
