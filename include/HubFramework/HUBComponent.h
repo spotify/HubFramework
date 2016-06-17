@@ -17,7 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  the Hub Framework using a `HUBComponentFactory` implementation registered with `HUBComponentRegistry`.
  *
  *  Ideally, components should hold as little state as possible, and instead react to any model changes
- *  through `-configureViewWithModel:`.
+ *  through `-configureViewWithModel:`. Components of the same class are also reused as much as possible,
+ *  so a component can never assume a 1:1 relationship with a certain model, rather it needs to be able to
+ *  render any `HUBComponentModel`.
  *
  *  This is the base protocol that all components must conform to. For extensions that adds additional
  *  functionality see:
@@ -86,6 +88,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param model The model that the view should reflect
  *  @param containerViewSize The size of the container in which the view will be displayed
+ *
+ *  The Hub Framework will use the size returned from this method into account when computing the final
+ *  frame for the component's view. In most scenarios the size is fully respected, but might be adjusted
+ *  depending on the component's `layoutTraits`.
+ *
+ *  To get notified when the component's view was resized, conform to `HUBComponentViewObserver`.
  */
 - (CGSize)preferredViewSizeForDisplayingModel:(id<HUBComponentModel>)model
                             containerViewSize:(CGSize)containerViewSize;

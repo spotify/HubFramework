@@ -19,18 +19,19 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  This class is the main entry point into the Hub Framework
  *
- *  An application using the Hub Framework should create an instance of this class,
- *  and retain it in a central location (such as its App Delegate)
+ *  An application using the Hub Framework should create a single instance of this class and retain it in a central
+ *  location (such as its App Delegate). This class exposes the public API of the Hub Framework in a modular fashion,
+ *  with each part of the API encapsulated in either a registry or a factory.
  */
 @interface HUBManager : NSObject
 
-/// The feature registry used by this Hub Manager. See the documentation for `HUBFeatureRegistry` for more info.
+/// The registry used to register features with the framework. See the documentation for `HUBFeatureRegistry` for more info.
 @property (nonatomic, strong, readonly) id<HUBFeatureRegistry> featureRegistry;
 
-/// The component registry used by this Hub Manager. See the documentation for `HUBComponentRegistry` for more info.
+/// The registry used to register components with the framework. See the documentation for `HUBComponentRegistry` for more info.
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
 
-/// The JSON schema registry used by this Hub Manager. See the documentation for `HUBJSONSchemaRegistry` for more info.
+/// The registry used to register custom JSON schemas. See the documentation for `HUBJSONSchemaRegistry` for more info.
 @property (nonatomic, strong, readonly) id<HUBJSONSchemaRegistry> JSONSchemaRegistry;
 
 /// The factory used to create view model loaders. See `HUBViewModelLoaderFactory` for more info.
@@ -40,12 +41,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBViewControllerFactory> viewControllerFactory;
 
 /**
- *  Initialize an instance of this class with a component fallback handler
+ *  Initialize an instance of this class with its required dependencies
  *
  *  @param connectivityStateResolver An object responsible for determining the current connectivity state of the application.
  *  @param componentLayoutManager The object to use to manage layout for components, computing margins using layout traits.
  *         See `HUBComponentLayoutManager` for more information.
- *  @param componentFallbackHandler The object to use to fall back to default components in case a component could not be
+ *  @param componentFallbackHandler The object to use to fall back to default components in case a component couldn't be
  *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
  *  @param imageLoaderFactory Any factory that creates image loaders that are used to load remote images for components.
  *         If nil, this instance of the Hub Framework won't support remote images. See `HUBImageLoaderFactory` for more info.

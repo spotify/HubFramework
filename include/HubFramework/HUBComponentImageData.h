@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, HUBComponentImageType) {
  *  Protocol defining the public API of an object that describes image data for a Component in the Hub Framework
  *
  *  You don't conform to this protocol yourself, instead the Hub Framework will create implementations of it for you
- *  based on the data supplied to a `HUBComponentModelBuilder` or through JSON data.
+ *  based on the data supplied to a `HUBComponentImageDataBuilder` or through JSON data.
  */
 @protocol HUBComponentImageData <HUBSerializable>
 
@@ -52,9 +52,9 @@ typedef NS_ENUM(NSInteger, HUBComponentImageType) {
 /**
  *  The style that the image should be rendered in
  *
- *  If HUBComponentImageStyleNone, that indicates to a component that no image should actually be rendered. This might
- *  be the case of the API user wishes to use the image for another purpose than rendering in a component (such as
- *  providing it to an external data API user). See `HUBComponentImageStyle` for more information.
+ *  If `HUBComponentImageStyleNone`, that indicates to a component that no image should actually be rendered. This might
+ *  be the case when you want to use an image for another purpose than rendering in a component (such as providing it to an
+ *  external data API user). See `HUBComponentImageStyle` for more information.
  */
 @property (nonatomic, readonly) HUBComponentImageStyle style;
 
