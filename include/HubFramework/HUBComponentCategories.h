@@ -12,6 +12,9 @@
  */
 typedef NSObject<NSCopying, NSCoding> HUBComponentCategory;
 
+/// Category for components that have a header-like appearance, usually used for header components
+static HUBComponentCategory * const HUBComponentCategoryHeader = @"header";
+
 /// Category for components that have a row-like appearance, with a full screen width and a compact height
 static HUBComponentCategory * const HUBComponentCategoryRow = @"row";
 
