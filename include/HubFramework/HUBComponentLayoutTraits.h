@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  of `HUBComponent`.
  *
  *  An application using the Hub Framework may declare additional traits using this type, as its up to the implementation
- *  of `HUBComponentLayoutManager` (conrolled by the application) to determine how to map traits to absolute margins.
+ *  of `HUBComponentLayoutManager` (controlled by the application) to determine how to map traits to absolute margins.
  *
  *  Ideally, a layout trait should be generic enough to apply to a broad range of components, but still contain enough
  *  information for a `HUBComponentLayoutManager` to make correct decisions based on them.

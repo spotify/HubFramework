@@ -8,8 +8,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Protocol defining the public API of a Hub component registry
  *
- *  A component registry is an object that keeps track of the components registered
- *  with an instance of the Hub Framework.
+ *  A component registry manages a series of registered `HUBComponentFactory` implementations,
+ *  that are used to create components for Hub Framework-powered views. To integrate a component
+ *  with the framework - implement a `HUBComponentFactory` and register it with the registry.
+ *
+ *  You don't conform to this protocol yourself, instead the application's `HUBManager` comes
+ *  setup with a registry that you can use.
  */
 @protocol HUBComponentRegistry <NSObject>
 
@@ -18,9 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param componentFactory The factory instance that will serve components matching `componentNamespace`.
  *
- *  The components will be identifiable using the namespace and component identifier
- *  in combination, separated by a colon (:), like this: `namespace:component`. This mechanism helps
- *  prevent collisions between components registered from different parts of the app.
+ *  The registered factory will be used to create components whenever a component model declared
+ *  the given component namespace as part of its `componentIdentifier`.
  */
 - (void)registerComponentFactory:(id<HUBComponentFactory>)componentFactory
                     forNamespace:(NSString *)componentNamespace;

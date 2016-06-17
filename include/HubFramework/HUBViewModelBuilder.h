@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The title that the view should have in the navigation bar
  *
- *  In case the view has a component-based header, the value of this property is ignored by the framework.
+ *  The value of this property will be assigned to the view controller's title property
  */
 @property (nonatomic, copy, nullable) NSString *navigationBarTitle;
 

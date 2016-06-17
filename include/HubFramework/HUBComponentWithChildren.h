@@ -5,11 +5,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Delegate protocol used to communicate back to the Hub Framework from a component implementation
+ *  Delegate protocol used to send events related to a component's children back to the Hub Framework
  *
  *  You don't implement this protocol yourself. Instead, you @synthesize your component's `childDelegate`
  *  property, and may choose to send any of these methods to it to notify it of events, as well as creating
  *  child component instances.
+ *
+ *  It's definitely recommended to use this protocol as much as possible when using child components, since
+ *  you can leverage the framework's built-in capabilities for selection, image loading & other events.
  */
 @protocol HUBComponentChildDelegate <NSObject>
 
