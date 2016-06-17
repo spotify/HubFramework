@@ -104,6 +104,11 @@ NS_ASSUME_NONNULL_BEGIN
     return self.overlayComponentModelBuilders[identifier] != nil;
 }
 
+- (NSArray<id<HUBComponentModelBuilder>> *)allBodyComponentModelBuilders
+{
+    return self.bodyComponentModelBuilders.allValues;
+}
+
 - (id<HUBComponentModelBuilder>)builderForBodyComponentModelWithIdentifier:(NSString *)identifier
 {
     return [self getOrCreateBuilderForBodyComponentModelWithIdentifier:identifier];
