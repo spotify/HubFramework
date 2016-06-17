@@ -128,16 +128,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)builderExistsForOverlayComponentModelWithIdentifier:(NSString *)identifier;
 
-#pragma mark - Retrieving all body component model builders
+#pragma mark - Retrieving component model builders
 
 /**
- *  Get all body component model builders
+ *  Return all current body component model builders
  *
- *  @return All the existing body component model builders of the viewModelBuilder in NSArray
+ *  @return All the existing body component model builders, in the order that they were created. Note that
+ *  any `preferredIndex` set by the component model builders hasn't been resolved at this point, so those
+ *  are not taken into account.
  */
 - (NSArray<id<HUBComponentModelBuilder>> *)allBodyComponentModelBuilders;
-
-#pragma mark - Retrieving component model builders by identifier
 
 /**
  *  Get or create a builder for a body component model with a certain identifier
