@@ -83,6 +83,18 @@
     XCTAssertNil(self.builder.headerComponentModelBuilder.title);
 }
 
+- (void)testAllBodyComponentBuilders
+{
+    NSMutableArray *arrayOfBodyComponentModelBuilders = [NSMutableArray new];
+    [arrayOfBodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"body4"]];
+    [arrayOfBodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"body3"]];
+    [arrayOfBodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"body2"]];
+    [arrayOfBodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"body1"]];
+    
+    NSArray<id<HUBComponentModelBuilder>> * const allBodyComponentModelBuilders = [self.builder allBodyComponentModelBuilders];
+    XCTAssert([allBodyComponentModelBuilders isEqualToArray:arrayOfBodyComponentModelBuilders]);
+}
+
 - (void)testBodyComponentBuilders
 {
     NSString * const componentModelIdentifier = @"identifier";

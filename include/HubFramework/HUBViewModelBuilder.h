@@ -128,6 +128,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)builderExistsForOverlayComponentModelWithIdentifier:(NSString *)identifier;
 
+#pragma mark - Retrieving all body component model builders
+
+/**
+ *  Get all body component model builders
+ *
+ *  @return All the existing body component model builders of the viewModelBuilder in NSArray
+ */
+- (NSArray<id<HUBComponentModelBuilder>> *)allBodyComponentModelBuilders;
+
 #pragma mark - Retrieving component model builders by identifier
 
 /**
