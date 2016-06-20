@@ -160,7 +160,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     if (![JSONObject isKindOfClass:[NSDictionary class]]) {
-        return [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil];;
+        return [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil];
     }
     
     [self addDataFromJSONDictionary:(NSDictionary *)JSONObject];

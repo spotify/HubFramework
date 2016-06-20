@@ -476,9 +476,11 @@
 
 - (void)testAddingNonDictionaryJSONDataReturnsError
 {
-    NSData * const data = [@"Not a dictionary" dataUsingEncoding:NSUTF8StringEncoding];
-    NSError * const error = [self.builder addJSONData:data];
-    XCTAssertNotNil(error);
+    NSData * const stringData = [@"Not a dictionary" dataUsingEncoding:NSUTF8StringEncoding];
+    XCTAssertNotNil([self.builder addJSONData:stringData]);
+    
+    NSData * const arrayData = [NSJSONSerialization dataWithJSONObject:@[] options:(NSJSONWritingOptions)0 error:nil];
+    XCTAssertNotNil([self.builder addJSONData:arrayData]);
 }
 
 - (void)testCopying
