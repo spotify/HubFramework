@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize customData = _customData;
 @synthesize buildDate = _buildDate;
 
-- (instancetype)initWithIdentifier:(NSString *)identifier
+- (instancetype)initWithIdentifier:(nullable NSString *)identifier
                  featureIdentifier:(NSString *)featureIdentifier
                 navigationBarTitle:(nullable NSString *)navigationBarTitle
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
@@ -48,9 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSDictionary<NSString *, NSObject<NSCoding> *> *)serialize
 {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
-    if (self.identifier != nil) {
-        serialization[HUBJSONKeyIdentifier] = self.identifier;
-    }
+    serialization[HUBJSONKeyIdentifier] = self.identifier;
     serialization[HUBJSONKeyFeature] = self.featureIdentifier;
     serialization[HUBJSONKeyTitle] = self.navigationBarTitle;
     serialization[HUBJSONKeyHeader] = [self.headerComponentModel serialize];

@@ -42,7 +42,7 @@
 
 - (void)testPropertyAssignment
 {
-    XCTAssertNotNil(self.builder.viewIdentifier);
+    XCTAssertNil(self.builder.viewIdentifier);
     XCTAssertEqualObjects(self.builder.featureIdentifier, self.featureIdentifier);
     
     self.builder.viewIdentifier = @"view";
