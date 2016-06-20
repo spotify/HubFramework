@@ -124,7 +124,7 @@ namespace :docs do
             "#{docset_name}.tgz"
         )
 
-        feed_path = File.join(config["output"], "docsets", "feed.xml")
+        feed_path = File.join(config["output"], "docsets", "#{docset_name}.xml")
 
         DashFeed.create(feed_path, module_version, docset_url)
     end
