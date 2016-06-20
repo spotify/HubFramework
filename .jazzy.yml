@@ -6,7 +6,7 @@ readme: README.md
 documentation: documentation/*.md
 
 module: HubFramework
-module_version: v0.0.1-HEAD
+module_version: v1.0.0
 
 output: documentation/output
 theme: fullwidth
@@ -14,8 +14,9 @@ theme: fullwidth
 github_url: https://ghe.spotify.net/iOS/HubFramework
 github_file_prefix: https://ghe.spotify.net/iOS/HubFramework/tree/master
 
+root_url: https://ghe.spotify.net/pages/iOS/HubFramework
 docset_icon: documentation/resources/docset-icon@2x.png
-dash_url: https://ghe.spotify.net/pages/iOS/HubFramework/docsets/feed.xml
+dash_url: https://ghe.spotify.net/pages/iOS/HubFramework/docsets/HubFramework.xml
 
 clean: true
 objc: true

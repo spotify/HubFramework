@@ -1,3 +1,4 @@
+require 'dash_feed'
 require 'fileutils'
 require 'rake'
 require 'securerandom'
@@ -10,10 +11,11 @@ require 'yaml'
 # Also see the associated Jazzy configurations file.
 #
 
-config_default = '.jazzy.yml'
+# The default path for the Jazzy config file
+CONFIG_PATH_DEFAULT = '.jazzy.yml'
 
-publish_git_repo_default = 'git@ghe.spotify.net:iOS/HubFramework.git'
-publish_git_branch_default = 'gh-pages'
+# The default branch of the repo to which we publish documentation
+PUBLISH_REPO_BRANCH_DEFAULT = 'gh-pages'
 
 namespace :docs do
 
@@ -26,7 +28,7 @@ namespace :docs do
     desc "Install dependencies"
     task :deps do
         puts "📖  👉   Installing dependencies…"
-        system('bundle', 'install', '--quiet') or abort('bundle install failed, make sure you have installed bundler (`[sudo] gem install bundler`)')
+        system('bundle', 'install', '--quiet') or abort("📖  ❗️  bundle install failed, make sure you have installed bundler (`[sudo] gem install bundler`)")
         puts "📖  ✅   Dependencies installed successfully."
     end
 
@@ -34,17 +36,23 @@ namespace :docs do
     # Generating documentation
 
     desc "Generate the documentation"
-    task :generate, [:config] => [:deps] do |t, args|
+    task :generate do
         puts "📖  👉   Generating documentation…"
 
-        args.with_defaults(:config => config_default)
-        config_path = args[:config]
-
-        execute_jazzy('--config', config_path) or abort("📖  ❗️  Failed to generate documentation, aborting.")
-
+        config_path = get_config_path()
         config = YAML.load_file(config_path)
+
+        module_version = module_version(".", config, get_build_number())
+
+        execute_jazzy(
+            '--config', config_path,
+            '--module-version', module_version
+        ) or abort("📖  ❗️  Failed to generate documentation, aborting.")
+
         copy_extra_resources(config)
         rebuild_docset_archive(config) # We need to rebuild the DocSet archive since we’ve copied more resources into it.
+
+        create_dash_feed(config, module_version)
 
         puts "📖  ✅   Generated successfully."
     end
@@ -53,11 +61,10 @@ namespace :docs do
     # Publishing the documentation
 
     desc "Publish the documentation to gh-pages"
-    task :publish, [:repo, :branch] do |t, args|
+    task :publish do
         puts "📖  👉   Publishing documentation…"
 
-        # TODO: Figure out how to get the jazzy config if someone provides :generate a custom one
-        config = YAML.load_file(config_default) or abort("📖  ❗️  Failed to read jazzy config, aborting.")
+        config = YAML.load_file(get_config_path()) or abort("📖  ❗️  Failed to read jazzy config, aborting.")
         docs_path = config["output"] 
 
         if not File.directory?(docs_path)
@@ -65,17 +72,20 @@ namespace :docs do
             exit!(1)
         end
 
-        args.with_defaults(:repo => publish_git_repo_default)
-        args.with_defaults(:branch => publish_git_branch_default)
+        repo = get_publish_repo(".")
+        branch = get_publish_branch()
 
         tmp_dir = publish_tmp_dir_path()
+
         repo_name = "docs-repo"
         repo_dir = File.join(tmp_dir, repo_name)
 
+        puts "📖  💁️   Creating temporary publishing directory at:"
+        puts "📖   ️     \"#{tmp_dir}\""
         prepare_publish_dir(tmp_dir)
 
-        git_clone_repo(args[:repo], args[:branch], repo_dir)
-        publish_docs(tmp_dir, repo_dir, args[:branch], docs_path, git_head_hash(repo_dir))
+        git_clone_repo(repo, branch, repo_dir)
+        publish_docs(tmp_dir, repo_dir, branch, docs_path, git_head_hash(repo_dir))
         cleanup_publish_dir(tmp_dir)
 
         puts "📖  ✅   Published successfully."
@@ -83,11 +93,40 @@ namespace :docs do
 
 
     #
-    # Helper functions
+    # Generating documentation helper functions
 
     # Run jazzy with the given arguments
     def execute_jazzy(*args)
         system('bundle', 'exec', 'jazzy', *args)
+    end
+
+    # Returns the string that should be used as the module version
+    def module_version(repo_dir, config, build)
+        version = config["module_version"] || git_current_branch(repo_dir) || "unknown"
+        
+        if (not build.nil?) && build.length > 0
+            return version + "-" + build
+        else
+            return version
+        end
+    end
+
+    # Create a Dash feed XML file
+    def create_dash_feed(config, module_version)
+        root_url = config["root_url"]
+        if root_url.nil?
+            return
+        end
+
+        docset_name = docset_name(config)
+        docset_url = root_url + "/" + File.join(
+            "docsets",
+            "#{docset_name}.tgz"
+        )
+
+        feed_path = File.join(config["output"], "docsets", "#{docset_name}.xml")
+
+        DashFeed.create(feed_path, module_version, docset_url)
     end
 
     # Copy all extra resources
@@ -135,9 +174,26 @@ namespace :docs do
         end
     end
 
+
+    #
+    # Publishing helper functions
+
     # The path to the temp directory used for publishing
     def publish_tmp_dir_path()
-        return File.join(Dir.tmpdir(), "com.spotify.HubFramework", "docs", SecureRandom.uuid)
+        user_tmp_dir_container = ENV['DOCS_TMP_DIR_CONTAINER']
+        if (not user_tmp_dir_container.nil?) && user_tmp_dir_container.length > 0
+            subdir = File.join(
+                user_tmp_dir_container,
+                SecureRandom.uuid
+            )
+        else
+            subdir = SecureRandom.uuid
+        end
+
+        return File.join(
+            Dir.tmpdir(),
+            subdir
+        )
     end
 
     # Prepare the temporary directory used for publishing
@@ -170,6 +226,10 @@ namespace :docs do
         execute_git(repo_dir, 'push', '--quiet', 'origin', branch)
     end
 
+
+    #
+    # Dealing with git
+
     # Create a commit message for a given commit
     def create_commit_msg(commit_msg_path, for_commit)
         File.open(commit_msg_path, 'w') do |file|
@@ -183,20 +243,36 @@ namespace :docs do
         system('git', 'clone', '--quiet', '-b', branch, repo, destination)
     end
 
-    # Whether the given repo contains changes
-    def git_repo_has_changes(repo_dir)
-        return true
+    # Returns the URL of the origin rmeote
+    def git_origin_remote_url(repo_dir)
+        # Attempt to use the upstream reference if it exists, otherwise use origin.
+        return (
+            `git -C "#{repo_dir}" config --get remote.upstream.url` ||
+            `git -C "#{repo_dir}" config --get remote.origin.url`
+        ).strip
     end
 
     # Returns the current HEAD’s git hash
     def git_head_hash(repo_dir)
-        return `git -C "#{repo_dir}" rev-parse HEAD`.gsub(/\r\n?/,"")
+        return `git -C "#{repo_dir}" rev-parse HEAD`.strip
+    end
+
+    def git_current_branch(repo_dir)
+        if repo_dir.nil?
+            return nil
+        end
+
+        return `git -C "#{repo_dir}" rev-parse --abbrev-ref HEAD`.strip
     end
 
     # Executes the given git commands and options (*args) in the given repo_dir
     def execute_git(repo_dir, *args)
         system('git', '-C', repo_dir, *args)
     end
+
+
+    #
+    # DocSet information
 
     # Returns the location where DocSets are placed
     def docsets_path(config)
@@ -222,6 +298,30 @@ namespace :docs do
     # Returns the path to the DocSet’s resources directory
     def docset_resources_path(config)
         return File.join(docset_path(config), "Contents", "Resources", "Documents")
+    end
+
+
+    #
+    # Environment configuration options
+
+    # Returns the path to the docs generator config
+    def get_config_path()
+        return ENV['DOCS_CONFIG_PATH'] || CONFIG_PATH_DEFAULT
+    end
+
+    # Returns the current build number, or HEAD if not available
+    def get_build_number()
+        return ENV['DOCS_BUILD_NUMBER'] || "HEAD"
+    end
+
+    # Returns the URL of the repo to which we publish, or the origin URL for the repo at repo_dir.
+    def get_publish_repo(repo_dir)
+        return ENV['DOCS_PUBLISH_REPO_URL'] || git_origin_remote_url(repo_dir)
+    end
+
+    # Returns the branch which should be used in publish repo.
+    def get_publish_branch()
+        return ENV['DOCS_PUBLISH_REPO_BRANCH'] || PUBLISH_REPO_BRANCH_DEFAULT
     end
 
 end
