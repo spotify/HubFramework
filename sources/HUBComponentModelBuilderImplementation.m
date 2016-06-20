@@ -153,7 +153,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSError *)addJSONData:(NSData *)JSONData
 {
     NSError *error;
-    NSObject *JSONObject = [NSJSONSerialization JSONObjectWithData:JSONData options:0 error:&error];
+    NSObject *JSONObject = [NSJSONSerialization JSONObjectWithData:JSONData options:(NSJSONReadingOptions)0 error:&error];
     
     if (error != nil || JSONObject == nil) {
         return error;

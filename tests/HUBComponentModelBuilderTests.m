@@ -399,7 +399,7 @@
     self.builder.loggingData = @{@"logging": @"data"};
     self.builder.customData = @{@"custom": @"data"};
     
-    NSData * const data = [NSJSONSerialization dataWithJSONObject:@{} options:0 error:nil];
+    NSData * const data = [NSJSONSerialization dataWithJSONObject:@{} options:(NSJSONWritingOptions)0 error:nil];
     [self.builder addJSONData:data];
     
     XCTAssertEqualObjects(self.builder.componentNamespace, @"namespace");
