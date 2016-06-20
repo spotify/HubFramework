@@ -166,6 +166,26 @@ static NSString * const DefaultNamespace = @"default";
     }
 }
 
+- (void)testShowcaseComponentSnapshotting
+{
+    HUBComponentMock * const component = [HUBComponentMock new];
+    component.view = [[UIView alloc] initWithFrame:CGRectZero];
+    component.preferredViewSize = CGSizeMake(200, 200);
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        @"name": component
+    }];
+    
+    [self.registry registerComponentFactory:componentFactory forNamespace:@"namespace"];
+    
+    id<HUBComponentModelBuilder, HUBComponentShowcaseSnapshotGenerator> const componentModelBuilder = [self.registry createShowcaseSnapshotComponentModelBuilder];
+    componentModelBuilder.componentNamespace = @"namespace";
+    componentModelBuilder.componentName = @"name";
+    
+    UIImage * const snapshotImage = [componentModelBuilder generateShowcaseSnapshotForContainerViewSize:CGSizeZero];
+    XCTAssertTrue(CGSizeEqualToSize(snapshotImage.size, CGSizeMake(200, 200)));
+}
+
 #pragma mark - Utilities
 
 - (id<HUBComponentModel>)mockedComponentModelWithComponentIdentifier:(HUBComponentIdentifier *)componentIdentifier
