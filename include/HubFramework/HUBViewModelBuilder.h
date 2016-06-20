@@ -32,10 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  The value of this property doesn't have any specific format or constraints and doesn't explicitly need to be
  *  unique - but for logging, UI instrumentation and identification purposes, it's definitely recommended.
  *
- *  The default value of this property is either a view identifier derived from remote content JSON data, or the
- *  `UUIDString` of a new `NSUUID`.
+ *  The default value of this property is either a view identifier derived from remote content JSON data or nil.
  */
-@property (nonatomic, copy) NSString *viewIdentifier;
+@property (nonatomic, copy, nullable) NSString *viewIdentifier;
 
 /**
  *  The identifier of the feature that the view should logically belong to

@@ -22,11 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  The value of this property doesn't have any specific format or constraints, and is up to the API user to define
  *  according to the context of the application. Doesn't explicitly need to be unique, but for logging and identification
  *  purposes, it's definitely recommended.
- *
- *  In case the value of this property hasn't been explicitly set by the API user, it defaults to the `UUIDString` of a
- *  new `NSUUID`.
  */
-@property (nonatomic, copy, readonly) NSString *identifier;
+@property (nonatomic, copy, readonly, nullable) NSString *identifier;
 
 /**
  *  The identifier of the feature that the view belongs to

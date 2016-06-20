@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param extensionURL Any HTTP URL from which data can be downloaded to extend this view model
  *  @param customData Any custom data that should be associated with the view
  */
-- (instancetype)initWithIdentifier:(NSString *)identifier
+- (instancetype)initWithIdentifier:(nullable NSString *)identifier
                  featureIdentifier:(NSString *)featureIdentifier
                 navigationBarTitle:(nullable NSString *)navigationBarTitle
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel

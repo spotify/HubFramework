@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize customData = _customData;
 @synthesize buildDate = _buildDate;
 
-- (instancetype)initWithIdentifier:(NSString *)identifier
+- (instancetype)initWithIdentifier:(nullable NSString *)identifier
                  featureIdentifier:(NSString *)featureIdentifier
                 navigationBarTitle:(nullable NSString *)navigationBarTitle
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
