@@ -10,10 +10,13 @@ require 'yaml'
 # Also see the associated Jazzy configurations file.
 #
 
-config_default = '.jazzy.yml'
+# The default path for the Jazzy config file
+CONFIG_PATH_DEFAULT = '.jazzy.yml'
 
-publish_git_repo_default = 'git@ghe.spotify.net:iOS/HubFramework.git'
-publish_git_branch_default = 'gh-pages'
+# The default repo to which we publish documentation
+DOCS_PUBLISH_REPO_URL_DEFAULT = 'git@ghe.spotify.net:iOS/HubFramework.git'
+# The default branch of the repo to which we publish documentation
+DOCS_PUBLISH_REPO_BRANCH_DEFAULT = 'gh-pages'
 
 namespace :docs do
 
@@ -34,11 +37,10 @@ namespace :docs do
     # Generating documentation
 
     desc "Generate the documentation"
-    task :generate, [:config] => [:deps] do |t, args|
+    task :generate do
         puts "📖  👉   Generating documentation…"
 
-        args.with_defaults(:config => config_default)
-        config_path = args[:config]
+        config_path = get_config_path()
 
         execute_jazzy('--config', config_path) or abort("📖  ❗️  Failed to generate documentation, aborting.")
 
@@ -53,11 +55,10 @@ namespace :docs do
     # Publishing the documentation
 
     desc "Publish the documentation to gh-pages"
-    task :publish, [:repo, :branch] do |t, args|
+    task :publish do
         puts "📖  👉   Publishing documentation…"
 
-        # TODO: Figure out how to get the jazzy config if someone provides :generate a custom one
-        config = YAML.load_file(config_default) or abort("📖  ❗️  Failed to read jazzy config, aborting.")
+        config = YAML.load_file(get_config_path()) or abort("📖  ❗️  Failed to read jazzy config, aborting.")
         docs_path = config["output"] 
 
         if not File.directory?(docs_path)
@@ -65,8 +66,8 @@ namespace :docs do
             exit!(1)
         end
 
-        args.with_defaults(:repo => publish_git_repo_default)
-        args.with_defaults(:branch => publish_git_branch_default)
+        repo = get_publish_repo()
+        branch = get_publish_branch()
 
         tmp_dir = publish_tmp_dir_path()
         repo_name = "docs-repo"
@@ -74,8 +75,8 @@ namespace :docs do
 
         prepare_publish_dir(tmp_dir)
 
-        git_clone_repo(args[:repo], args[:branch], repo_dir)
-        publish_docs(tmp_dir, repo_dir, args[:branch], docs_path, git_head_hash(repo_dir))
+        git_clone_repo(repo, branch, repo_dir)
+        publish_docs(tmp_dir, repo_dir, branch, docs_path, git_head_hash(repo_dir))
         cleanup_publish_dir(tmp_dir)
 
         puts "📖  ✅   Published successfully."
@@ -83,7 +84,7 @@ namespace :docs do
 
 
     #
-    # Helper functions
+    # Generating documentation helper functions
 
     # Run jazzy with the given arguments
     def execute_jazzy(*args)
@@ -135,6 +136,10 @@ namespace :docs do
         end
     end
 
+
+    #
+    # Publishing helper functions
+
     # The path to the temp directory used for publishing
     def publish_tmp_dir_path()
         return File.join(Dir.tmpdir(), "com.spotify.HubFramework", "docs", SecureRandom.uuid)
@@ -170,6 +175,10 @@ namespace :docs do
         execute_git(repo_dir, 'push', '--quiet', 'origin', branch)
     end
 
+
+    #
+    # Dealing with git
+
     # Create a commit message for a given commit
     def create_commit_msg(commit_msg_path, for_commit)
         File.open(commit_msg_path, 'w') do |file|
@@ -198,6 +207,10 @@ namespace :docs do
         system('git', '-C', repo_dir, *args)
     end
 
+
+    #
+    # DocSet information
+
     # Returns the location where DocSets are placed
     def docsets_path(config)
         return File.join(config["output"], "docsets")
@@ -222,6 +235,25 @@ namespace :docs do
     # Returns the path to the DocSet’s resources directory
     def docset_resources_path(config)
         return File.join(docset_path(config), "Contents", "Resources", "Documents")
+    end
+
+
+    #
+    # Environment configuration options
+
+    # Returns the path to the docs generator config
+    def get_config_path()
+        return ENV['DOCS_CONFIG_PATH'] || CONFIG_PATH_DEFAULT
+    end
+
+    # Returns the URL of the repo to which we publish.
+    def get_publish_repo()
+        return ENV['DOCS_PUBLISH_REPO_URL'] || DOCS_PUBLISH_REPO_URL_DEFAULT
+    end
+
+    # Returns the branch which should be used in publish repo.
+    def get_publish_branch()
+        return ENV['DOCS_PUBLISH_REPO_BRANCH'] || DOCS_PUBLISH_REPO_BRANCH_DEFAULT
     end
 
 end
