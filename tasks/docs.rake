@@ -13,10 +13,8 @@ require 'yaml'
 # The default path for the Jazzy config file
 CONFIG_PATH_DEFAULT = '.jazzy.yml'
 
-# The default repo to which we publish documentation
-DOCS_PUBLISH_REPO_URL_DEFAULT = 'git@ghe.spotify.net:iOS/HubFramework.git'
 # The default branch of the repo to which we publish documentation
-DOCS_PUBLISH_REPO_BRANCH_DEFAULT = 'gh-pages'
+PUBLISH_REPO_BRANCH_DEFAULT = 'gh-pages'
 
 namespace :docs do
 
@@ -66,13 +64,16 @@ namespace :docs do
             exit!(1)
         end
 
-        repo = get_publish_repo()
+        repo = get_publish_repo(".")
         branch = get_publish_branch()
 
         tmp_dir = publish_tmp_dir_path()
+
         repo_name = "docs-repo"
         repo_dir = File.join(tmp_dir, repo_name)
 
+        puts "📖  💁️   Creating temporary publishing directory at:"
+        puts "📖   ️     \"#{tmp_dir}\""
         prepare_publish_dir(tmp_dir)
 
         git_clone_repo(repo, branch, repo_dir)
@@ -142,7 +143,20 @@ namespace :docs do
 
     # The path to the temp directory used for publishing
     def publish_tmp_dir_path()
-        return File.join(Dir.tmpdir(), "com.spotify.HubFramework", "docs", SecureRandom.uuid)
+        user_tmp_dir_container = ENV['DOCS_TMP_DIR_CONTAINER']
+        if (not user_tmp_dir_container.nil?) && user_tmp_dir_container.length > 0
+            subdir = File.join(
+                user_tmp_dir_container,
+                SecureRandom.uuid
+            )
+        else
+            subdir = SecureRandom.uuid
+        end
+
+        return File.join(
+            Dir.tmpdir(),
+            subdir
+        )
     end
 
     # Prepare the temporary directory used for publishing
@@ -192,9 +206,13 @@ namespace :docs do
         system('git', 'clone', '--quiet', '-b', branch, repo, destination)
     end
 
-    # Whether the given repo contains changes
-    def git_repo_has_changes(repo_dir)
-        return true
+    # Returns the URL of the origin rmeote
+    def git_origin_remote_url(repo_dir)
+        # Attempt to use the upstream reference if it exists, otherwise use origin.
+        return (
+            `git -C "#{repo_dir}" config --get remote.upstream.url` ||
+            `git -C "#{repo_dir}" config --get remote.origin.url`
+        ).strip
     end
 
     # Returns the current HEAD’s git hash
@@ -246,14 +264,14 @@ namespace :docs do
         return ENV['DOCS_CONFIG_PATH'] || CONFIG_PATH_DEFAULT
     end
 
-    # Returns the URL of the repo to which we publish.
-    def get_publish_repo()
-        return ENV['DOCS_PUBLISH_REPO_URL'] || DOCS_PUBLISH_REPO_URL_DEFAULT
+    # Returns the URL of the repo to which we publish, or the origin URL for the repo at repo_dir.
+    def get_publish_repo(repo_dir)
+        return ENV['DOCS_PUBLISH_REPO_URL'] || git_origin_remote_url(repo_dir)
     end
 
     # Returns the branch which should be used in publish repo.
     def get_publish_branch()
-        return ENV['DOCS_PUBLISH_REPO_BRANCH'] || DOCS_PUBLISH_REPO_BRANCH_DEFAULT
+        return ENV['DOCS_PUBLISH_REPO_BRANCH'] || PUBLISH_REPO_BRANCH_DEFAULT
     end
 
 end
