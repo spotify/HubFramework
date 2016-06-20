@@ -9,6 +9,7 @@
 #import "HUBComponentMock.h"
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentModelBuilder.h"
+#import "HUBJSONSchemaRegistryImplementation.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBComponentDefaults.h"
 #import "HUBComponentFallbackHandlerMock.h"
@@ -61,7 +62,14 @@
                                                                                             componentCategory:@"category"];
     
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
-    self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler];
+    HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                                                                          iconImageResolver:nil];
+    
+    self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler
+                                                                               componentDefaults:componentDefaults
+                                                                              JSONSchemaRegistry:JSONSchemaRegistry
+                                                                               iconImageResolver:nil];
+    
     [self.componentRegistry registerComponentFactory:self.componentFactory forNamespace:componentNamespace];
     
     self.componentLayoutManager = [HUBComponentLayoutManagerMock new];

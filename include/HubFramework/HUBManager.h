@@ -5,6 +5,7 @@
 @protocol HUBJSONSchemaRegistry;
 @protocol HUBViewModelLoaderFactory;
 @protocol HUBViewControllerFactory;
+@protocol HUBComponentShowcaseManager;
 @protocol HUBConnectivityStateResolver;
 @protocol HUBDataLoaderFactory;
 @protocol HUBImageLoaderFactory;
@@ -39,6 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The factory used to create view controllers. See `HUBViewControllerFactory` for more info.
 @property (nonatomic, strong, readonly) id<HUBViewControllerFactory> viewControllerFactory;
+
+/// The manager used to create component showcases. See `HUBComponentShowcaseManager` for more info.
+@property (nonatomic, strong, readonly) id<HUBComponentShowcaseManager> componentShowcaseManager;
 
 /**
  *  Initialize an instance of this class with its required dependencies

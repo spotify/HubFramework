@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                   identifierOrder:(NSArray<NSString *> *)identifierOrder;
 
 /**
- *  Initialize an instance of this class with a component model identifier
+ *  Initialize an instance of this class with its required dependencies
  *
  *  @param modelIdentifier The identifier of the model to be built. If `nil`, an `NSUUID`-based identifier will be used.
  *  @param featureIdentifier The identifier of the feature that the component will be presented in

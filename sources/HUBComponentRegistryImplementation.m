@@ -6,12 +6,17 @@
 #import "HUBComponentFactoryShowcaseNameProvider.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentFallbackHandler.h"
+#import "HUBComponentModelBuilderShowcaseSnapshotGenerator.h"
+#import "HUBJSONSchemaRegistryImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBComponentRegistryImplementation ()
 
 @property (nonatomic, strong, readonly) id<HUBComponentFallbackHandler> fallbackHandler;
+@property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
+@property (nonatomic, strong, readonly) HUBJSONSchemaRegistryImplementation *JSONSchemaRegistry;
+@property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id<HUBComponentFactory>> *componentFactories;
 
 @end
@@ -19,11 +24,21 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentRegistryImplementation
 
 - (instancetype)initWithFallbackHandler:(id<HUBComponentFallbackHandler>)fallbackHandler
+                      componentDefaults:(HUBComponentDefaults *)componentDefaults
+                     JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
+                      iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
 {
+    NSParameterAssert(fallbackHandler != nil);
+    NSParameterAssert(componentDefaults != nil);
+    NSParameterAssert(JSONSchemaRegistry != nil);
+    
     self = [super init];
     
     if (self) {
         _fallbackHandler = fallbackHandler;
+        _componentDefaults = componentDefaults;
+        _JSONSchemaRegistry = JSONSchemaRegistry;
+        _iconImageResolver = iconImageResolver;
         _componentFactories = [NSMutableDictionary new];
     }
     
@@ -31,6 +46,35 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - API
+
+- (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model
+{
+    id<HUBComponent> const component = [self createComponentForIdentifier:model.componentIdentifier];
+    
+    if (component != nil) {
+        return component;
+    }
+    
+    return [self.fallbackHandler createFallbackComponentForCategory:model.componentCategory];
+}
+
+#pragma mark - HUBComponentRegistry
+
+- (void)registerComponentFactory:(id<HUBComponentFactory>)componentFactory forNamespace:(NSString *)componentNamespace
+{
+    NSAssert(self.componentFactories[componentNamespace] == nil,
+             @"Attempted to register a component factory for a namespace that is already registered: %@",
+             componentNamespace);
+
+    self.componentFactories[componentNamespace] = componentFactory;
+}
+
+- (void)unregisterComponentFactoryForNamespace:(NSString *)componentNamespace
+{
+    self.componentFactories[componentNamespace] = nil;
+}
+
+#pragma mark - HUBComponentShowcaseManager
 
 - (NSArray<HUBComponentIdentifier *> *)showcaseableComponentIdentifiers
 {
@@ -54,32 +98,24 @@ NS_ASSUME_NONNULL_BEGIN
     return [componentIdentifiers copy];
 }
 
-- (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model
+- (id<HUBComponentModelBuilder, HUBComponentShowcaseSnapshotGenerator>)createShowcaseSnapshotComponentModelBuilder
 {
-    id<HUBComponentFactory> const factory = self.componentFactories[model.componentIdentifier.componentNamespace];
-    id<HUBComponent> const component = [factory createComponentForName:model.componentIdentifier.componentName];
-    
-    if (component != nil) {
-        return component;
-    }
-    
-    return [self.fallbackHandler createFallbackComponentForCategory:model.componentCategory];
+    return [[HUBComponentModelBuilderShowcaseSnapshotGenerator alloc] initWithModelIdentifier:nil
+                                                                            featureIdentifier:@"com.hubFramework.showcase.shapShotGenerator"
+                                                                                   JSONSchema:self.JSONSchemaRegistry.defaultSchema
+                                                                            componentRegistry:self
+                                                                            componentDefaults:self.componentDefaults
+                                                                            iconImageResolver:self.iconImageResolver
+                                                                         mainImageDataBuilder:nil
+                                                                   backgroundImageDataBuilder:nil];
 }
 
-#pragma mark - HUBComponentRegistry
+#pragma mark - Private utilities
 
-- (void)registerComponentFactory:(id<HUBComponentFactory>)componentFactory forNamespace:(NSString *)componentNamespace
+- (nullable id<HUBComponent>)createComponentForIdentifier:(HUBComponentIdentifier *)componentIdentifier
 {
-    NSAssert(self.componentFactories[componentNamespace] == nil,
-             @"Attempted to register a component factory for a namespace that is already registered: %@",
-             componentNamespace);
-
-    self.componentFactories[componentNamespace] = componentFactory;
-}
-
-- (void)unregisterComponentFactoryForNamespace:(NSString *)componentNamespace
-{
-    self.componentFactories[componentNamespace] = nil;
+    id<HUBComponentFactory> const factory = self.componentFactories[componentIdentifier.componentNamespace];
+    return [factory createComponentForName:componentIdentifier.componentName];
 }
 
 @end

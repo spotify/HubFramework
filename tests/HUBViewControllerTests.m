@@ -5,6 +5,7 @@
 #import "HUBContentOperationMock.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponentIdentifier.h"
+#import "HUBJSONSChemaRegistryImplementation.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBImageLoaderMock.h"
@@ -63,11 +64,18 @@
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
     id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
+    HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                                                                          iconImageResolver:iconImageResolver];
     
     self.contentOperation = [HUBContentOperationMock new];
     self.contentReloadPolicy = [HUBContentReloadPolicyMock new];
     self.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentDefaults.componentNamespace name:componentDefaults.componentName];
-    self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler];
+    
+    self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler
+                                                                               componentDefaults:componentDefaults
+                                                                              JSONSchemaRegistry:JSONSchemaRegistry
+                                                                               iconImageResolver:iconImageResolver];
+    
     self.componentSelectionHandler = [HUBComponentSelectionHandlerMock new];
     self.component = [HUBComponentMock new];
     

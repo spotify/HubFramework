@@ -7,6 +7,9 @@
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBComponentDefaults+Testing.h"
+#import "HUBComponentModelBuilder.h"
+#import "HUBComponentShowcaseShapshotGenerator.h"
+#import "HUBJSONSchemaRegistryImplementation.h"
 
 static NSString * const DefaultNamespace = @"default";
 
@@ -27,7 +30,14 @@ static NSString * const DefaultNamespace = @"default";
     
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     self.componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
-    self.registry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:self.componentFallbackHandler];
+    
+    HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                                                                          iconImageResolver:nil];
+    
+    self.registry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:self.componentFallbackHandler
+                                                                      componentDefaults:componentDefaults
+                                                                     JSONSchemaRegistry:JSONSchemaRegistry
+                                                                      iconImageResolver:nil];
 }
 
 #pragma mark - Tests
