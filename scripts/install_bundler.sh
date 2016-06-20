@@ -17,5 +17,5 @@ if [ $? -eq 0 ]; then
     echo "Bundler already installed at \"$(which bundle)\""
 else
     echo "No existing Bundler installation found, installing…"
-    gem install bundler
+    gem install bundler --no-doc
 fi
