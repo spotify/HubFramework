@@ -29,7 +29,7 @@ namespace :docs do
     desc "Install dependencies"
     task :deps do
         puts "📖  👉   Installing dependencies…"
-        system('bundle', 'install', '--quiet') or abort('bundle install failed, make sure you have installed bundler (`[sudo] gem install bundler`)')
+        system('bundle', 'install', '--quiet') or abort("📖  ❗️  bundle install failed, make sure you have installed bundler (`[sudo] gem install bundler`)")
         puts "📖  ✅   Dependencies installed successfully."
     end
 
