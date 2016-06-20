@@ -26,6 +26,17 @@ NS_ASSUME_NONNULL_BEGIN
     return self.components[name];
 }
 
+#pragma mark - NSObject
+
+- (BOOL)conformsToProtocol:(Protocol *)protocol
+{
+    if (protocol == @protocol(HUBComponentFactoryShowcaseNameProvider)) {
+        return self.showcaseableComponentNames != nil;
+    }
+    
+    return [super conformsToProtocol:protocol];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
