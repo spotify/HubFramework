@@ -51,7 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
         _JSONSchema = JSONSchema;
         _componentDefaults = componentDefaults;
         _iconImageResolver = iconImageResolver;
-        _viewIdentifier = [NSUUID UUID].UUIDString;
         _featureIdentifier = [featureIdentifier copy];
         _bodyComponentModelBuilders = [NSMutableDictionary new];
         _overlayComponentModelBuilders = [NSMutableDictionary new];

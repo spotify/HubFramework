@@ -48,7 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSDictionary<NSString *, NSObject<NSCoding> *> *)serialize
 {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
-    serialization[HUBJSONKeyIdentifier] = self.identifier;
+    if (self.identifier != nil) {
+        serialization[HUBJSONKeyIdentifier] = self.identifier;
+    }
     serialization[HUBJSONKeyFeature] = self.featureIdentifier;
     serialization[HUBJSONKeyTitle] = self.navigationBarTitle;
     serialization[HUBJSONKeyHeader] = [self.headerComponentModel serialize];
