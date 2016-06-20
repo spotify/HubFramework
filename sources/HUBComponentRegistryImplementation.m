@@ -49,7 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model
 {
-    id<HUBComponent> const component = [self createComponentForIdentifier:model.componentIdentifier];
+    id<HUBComponentFactory> const factory = self.componentFactories[model.componentIdentifier.componentNamespace];
+    id<HUBComponent> const component = [factory createComponentForName:model.componentIdentifier.componentName];
     
     if (component != nil) {
         return component;
@@ -108,14 +109,6 @@ NS_ASSUME_NONNULL_BEGIN
                                                                             iconImageResolver:self.iconImageResolver
                                                                          mainImageDataBuilder:nil
                                                                    backgroundImageDataBuilder:nil];
-}
-
-#pragma mark - Private utilities
-
-- (nullable id<HUBComponent>)createComponentForIdentifier:(HUBComponentIdentifier *)componentIdentifier
-{
-    id<HUBComponentFactory> const factory = self.componentFactories[componentIdentifier.componentNamespace];
-    return [factory createComponentForName:componentIdentifier.componentName];
 }
 
 @end
