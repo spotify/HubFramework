@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           HubFramework Docs
         </a>
-         (96% documented)
+         (97% documented)
       </p>
     
         <p class="header-col header-col--secondary">
@@ -331,6 +331,47 @@
           <div class="section-content">
             <div class="task-group">
               <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentRegistry(py)showcaseableComponentIdentifiers"></a>
+                    <a name="//apple_ref/objc/Property/showcaseableComponentIdentifiers" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentRegistry(py)showcaseableComponentIdentifiers">showcaseableComponentIdentifiers</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The component identifiers that have been declared as showcaseable</p>
+
+<p>It&rsquo;s up to each component factory that has been registered with this registry to (optionally) declare
+  an array of showcaseable component names (by conforming to <code>HUBComponentFactoryShowcaseNameProvider</code>),
+  which will then be used to construct the component identifiers returned from this property.</p>
+
+<p>The Hub Framework does not provide any built-in functionality for showcases, besides providing the
+  component identifiers that have been declared as showcasable. Instead, it&rsquo;s up to each API user to build
+  showcase functionality on top of this API.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSArray</span><span class="o">&lt;</span>
+    <span class="n"><a href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">showcaseableComponentIdentifiers</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">showcaseableComponentIdentifiers</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
