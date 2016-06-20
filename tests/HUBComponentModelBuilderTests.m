@@ -399,7 +399,8 @@
     self.builder.loggingData = @{@"logging": @"data"};
     self.builder.customData = @{@"custom": @"data"};
     
-    [self.builder addDataFromJSONDictionary:@{}];
+    NSData * const data = [NSJSONSerialization dataWithJSONObject:@{} options:0 error:nil];
+    [self.builder addJSONData:data];
     
     XCTAssertEqualObjects(self.builder.componentNamespace, @"namespace");
     XCTAssertEqualObjects(self.builder.componentName, @"name");
@@ -471,6 +472,13 @@
     };
     
     XCTAssertEqualObjects(self.builder.customData, expectedCustomData);
+}
+
+- (void)testAddingNonDictionaryJSONDataReturnsError
+{
+    NSData * const data = [@"Not a dictionary" dataUsingEncoding:NSUTF8StringEncoding];
+    NSError * const error = [self.builder addJSONData:data];
+    XCTAssertNotNil(error);
 }
 
 - (void)testCopying

@@ -150,6 +150,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentModelBuilder
 
+- (nullable NSError *)addJSONData:(NSData *)JSONData
+{
+    NSError *error;
+    NSObject *JSONObject = [NSJSONSerialization JSONObjectWithData:JSONData options:0 error:&error];
+    
+    if (error != nil || JSONObject == nil) {
+        return error;
+    }
+    
+    if (![JSONObject isKindOfClass:[NSDictionary class]]) {
+        return [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil];;
+    }
+    
+    [self addDataFromJSONDictionary:(NSDictionary *)JSONObject];
+    
+    return nil;
+}
+
 - (id<HUBComponentImageDataBuilder>)mainImageDataBuilder
 {
     return self.mainImageDataBuilderImplementation;
