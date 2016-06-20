@@ -127,6 +127,35 @@ static NSString * const DefaultNamespace = @"default";
     XCTAssertEqual([self.registry createComponentForModel:componentModelB], fallbackComponentB);
 }
 
+- (void)testShowcaseableComponentIdentifiers
+{
+    HUBComponentFactoryMock * const showcaseFactoryA = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    showcaseFactoryA.showcaseableComponentNames = @[@"name1", @"name2"];
+    [self.registry registerComponentFactory:showcaseFactoryA forNamespace:@"namespaceA"];
+    
+    HUBComponentFactoryMock * const showcaseFactoryB = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    showcaseFactoryB.showcaseableComponentNames = @[@"name3", @"name4"];
+    [self.registry registerComponentFactory:showcaseFactoryB forNamespace:@"namespaceB"];
+    
+    HUBComponentFactoryMock * const noShowcaseFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    [self.registry registerComponentFactory:noShowcaseFactory forNamespace:@"namespaceC"];
+    
+    NSArray * const componentIdentifiers = self.registry.showcaseableComponentIdentifiers;
+    
+    NSArray * const expectedComponentIdentifers = @[
+        [[HUBComponentIdentifier alloc] initWithNamespace:@"namespaceA" name:@"name1"],
+        [[HUBComponentIdentifier alloc] initWithNamespace:@"namespaceA" name:@"name2"],
+        [[HUBComponentIdentifier alloc] initWithNamespace:@"namespaceB" name:@"name3"],
+        [[HUBComponentIdentifier alloc] initWithNamespace:@"namespaceB" name:@"name4"]
+    ];
+    
+    XCTAssertEqual(componentIdentifiers.count, expectedComponentIdentifers.count);
+    
+    for (HUBComponentIdentifier * const identifier in expectedComponentIdentifers) {
+        XCTAssertTrue([componentIdentifiers containsObject:identifier]);
+    }
+}
+
 #pragma mark - Utilities
 
 - (id<HUBComponentModel>)mockedComponentModelWithComponentIdentifier:(HUBComponentIdentifier *)componentIdentifier

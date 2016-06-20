@@ -3,6 +3,7 @@
 #import "HUBComponent.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentFactory.h"
+#import "HUBComponentFactoryShowcaseNameProvider.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentFallbackHandler.h"
 
@@ -30,6 +31,28 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - API
+
+- (NSArray<HUBComponentIdentifier *> *)showcaseableComponentIdentifiers
+{
+    NSMutableArray<HUBComponentIdentifier *> * const componentIdentifiers = [NSMutableArray new];
+    
+    for (NSString * const namespace in self.componentFactories) {
+        id<HUBComponentFactory> const factory = self.componentFactories[namespace];
+        
+        if (![factory conformsToProtocol:@protocol(HUBComponentFactoryShowcaseNameProvider)]) {
+            continue;
+        }
+        
+        NSArray<NSString *> * const names = ((id<HUBComponentFactoryShowcaseNameProvider>)factory).showcaseableComponentNames;
+        
+        for (NSString * const name in names) {
+            HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithNamespace:namespace name:name];
+            [componentIdentifiers addObject:identifier];
+        }
+    }
+    
+    return [componentIdentifiers copy];
+}
 
 - (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model
 {

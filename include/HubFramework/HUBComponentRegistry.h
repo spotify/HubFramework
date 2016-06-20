@@ -2,6 +2,7 @@
 
 @protocol HUBComponent;
 @protocol HUBComponentFactory;
+@class HUBComponentIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +17,19 @@ NS_ASSUME_NONNULL_BEGIN
  *  setup with a registry that you can use.
  */
 @protocol HUBComponentRegistry <NSObject>
+
+/**
+ *  The component identifiers that have been declared as showcaseable
+ *
+ *  It's up to each component factory that has been registered with this registry to (optionally) declare
+ *  an array of showcaseable component names (by conforming to `HUBComponentFactoryShowcaseNameProvider`),
+ *  which will then be used to construct the component identifiers returned from this property.
+ *
+ *  The Hub Framework does not provide any built-in functionality for showcases, besides providing the
+ *  component identifiers that have been declared as showcasable. Instead, it's up to each API user to build
+ *  showcase functionality on top of this API.
+ */
+@property (nonatomic, strong, readonly) NSArray<HUBComponentIdentifier *> *showcaseableComponentIdentifiers;
 
 /**
  *  Register a component factory with the Hub Framework
