@@ -129,13 +129,16 @@ static NSString * const DefaultNamespace = @"default";
 
 - (void)testShowcaseableComponentIdentifiers
 {
-    HUBComponentFactoryMock * const factoryA = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
-    factoryA.showcaseableComponentNames = @[@"name1", @"name2"];
-    [self.registry registerComponentFactory:factoryA forNamespace:@"namespaceA"];
+    HUBComponentFactoryMock * const showcaseFactoryA = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    showcaseFactoryA.showcaseableComponentNames = @[@"name1", @"name2"];
+    [self.registry registerComponentFactory:showcaseFactoryA forNamespace:@"namespaceA"];
     
-    HUBComponentFactoryMock * const factoryB = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
-    factoryB.showcaseableComponentNames = @[@"name3", @"name4"];
-    [self.registry registerComponentFactory:factoryB forNamespace:@"namespaceB"];
+    HUBComponentFactoryMock * const showcaseFactoryB = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    showcaseFactoryB.showcaseableComponentNames = @[@"name3", @"name4"];
+    [self.registry registerComponentFactory:showcaseFactoryB forNamespace:@"namespaceB"];
+    
+    HUBComponentFactoryMock * const noShowcaseFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    [self.registry registerComponentFactory:noShowcaseFactory forNamespace:@"namespaceC"];
     
     NSArray * const componentIdentifiers = self.registry.showcaseableComponentIdentifiers;
     
