@@ -78,6 +78,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with a component to wrap and its identifier
  *
  *  @param component The component to wrap
+ *  @param model The initial model used by the component
+ *  @param UIStateManager The manager to use to save & restore UI states for the component
  */
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
