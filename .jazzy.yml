@@ -6,7 +6,7 @@ readme: README.md
 documentation: documentation/*.md
 
 module: HubFramework
-module_version: v0.0.1-HEAD
+module_version: v1.0.0
 
 output: documentation/output
 theme: fullwidth
