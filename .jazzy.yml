@@ -16,7 +16,7 @@ github_file_prefix: https://ghe.spotify.net/iOS/HubFramework/tree/master
 
 root_url: https://ghe.spotify.net/pages/iOS/HubFramework
 docset_icon: documentation/resources/docset-icon@2x.png
-dash_url: https://ghe.spotify.net/pages/iOS/HubFramework/docsets/feed.xml
+dash_url: https://ghe.spotify.net/pages/iOS/HubFramework/docsets/HubFramework.xml
 
 clean: true
 objc: true
