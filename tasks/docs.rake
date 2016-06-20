@@ -1,3 +1,4 @@
+require 'dash_feed'
 require 'fileutils'
 require 'rake'
 require 'securerandom'
@@ -50,6 +51,8 @@ namespace :docs do
 
         copy_extra_resources(config)
         rebuild_docset_archive(config) # We need to rebuild the DocSet archive since we’ve copied more resources into it.
+
+        create_dash_feed(config, module_version)
 
         puts "📖  ✅   Generated successfully."
     end
@@ -106,6 +109,24 @@ namespace :docs do
         else
             return version
         end
+    end
+
+    # Create a Dash feed XML file
+    def create_dash_feed(config, module_version)
+        root_url = config["root_url"]
+        if root_url.nil?
+            return
+        end
+
+        docset_name = docset_name(config)
+        docset_url = root_url + "/" + File.join(
+            "docsets",
+            "#{docset_name}.tgz"
+        )
+
+        feed_path = File.join(config["output"], "docsets", "feed.xml")
+
+        DashFeed.create(feed_path, module_version, docset_url)
     end
 
     # Copy all extra resources
