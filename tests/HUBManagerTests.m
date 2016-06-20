@@ -49,4 +49,9 @@
     XCTAssertNotNil(self.manager.viewControllerFactory);
 }
 
+- (void)testComponentShowcaseManagerCreated
+{
+    XCTAssertNotNil(self.manager.componentShowcaseManager);
+}
+
 @end
