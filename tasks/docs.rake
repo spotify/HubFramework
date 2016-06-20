@@ -39,10 +39,15 @@ namespace :docs do
         puts "📖  👉   Generating documentation…"
 
         config_path = get_config_path()
-
-        execute_jazzy('--config', config_path) or abort("📖  ❗️  Failed to generate documentation, aborting.")
-
         config = YAML.load_file(config_path)
+
+        module_version = module_version(".", config, get_build_number())
+
+        execute_jazzy(
+            '--config', config_path,
+            '--module-version', module_version
+        ) or abort("📖  ❗️  Failed to generate documentation, aborting.")
+
         copy_extra_resources(config)
         rebuild_docset_archive(config) # We need to rebuild the DocSet archive since we’ve copied more resources into it.
 
@@ -90,6 +95,17 @@ namespace :docs do
     # Run jazzy with the given arguments
     def execute_jazzy(*args)
         system('bundle', 'exec', 'jazzy', *args)
+    end
+
+    # Returns the string that should be used as the module version
+    def module_version(repo_dir, config, build)
+        version = config["module_version"] || git_current_branch(repo_dir) || "unknown"
+        
+        if (not build.nil?) && build.length > 0
+            return version + "-" + build
+        else
+            return version
+        end
     end
 
     # Copy all extra resources
@@ -217,7 +233,15 @@ namespace :docs do
 
     # Returns the current HEAD’s git hash
     def git_head_hash(repo_dir)
-        return `git -C "#{repo_dir}" rev-parse HEAD`.gsub(/\r\n?/,"")
+        return `git -C "#{repo_dir}" rev-parse HEAD`.strip
+    end
+
+    def git_current_branch(repo_dir)
+        if repo_dir.nil?
+            return nil
+        end
+
+        return `git -C "#{repo_dir}" rev-parse --abbrev-ref HEAD`.strip
     end
 
     # Executes the given git commands and options (*args) in the given repo_dir
@@ -262,6 +286,11 @@ namespace :docs do
     # Returns the path to the docs generator config
     def get_config_path()
         return ENV['DOCS_CONFIG_PATH'] || CONFIG_PATH_DEFAULT
+    end
+
+    # Returns the current build number, or HEAD if not available
+    def get_build_number()
+        return ENV['DOCS_BUILD_NUMBER'] || "HEAD"
     end
 
     # Returns the URL of the repo to which we publish, or the origin URL for the repo at repo_dir.
