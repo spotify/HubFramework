@@ -102,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBComponentModelBuilder, HUBComponentShowcaseSnapshotGenerator>)createShowcaseSnapshotComponentModelBuilder
 {
     return [[HUBComponentModelBuilderShowcaseSnapshotGenerator alloc] initWithModelIdentifier:nil
-                                                                            featureIdentifier:@"com.hubFramework.showcase.shapShotGenerator"
+                                                                            featureIdentifier:@"com.hubframework.showcase.snapshot-generator"
                                                                                    JSONSchema:self.JSONSchemaRegistry.defaultSchema
                                                                             componentRegistry:self
                                                                             componentDefaults:self.componentDefaults
