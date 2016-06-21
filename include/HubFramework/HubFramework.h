@@ -39,6 +39,7 @@
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentFactory.h"
+#import "HUBComponentFactoryShowcaseNameProvider.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentModelBuilder.h"
@@ -51,6 +52,8 @@
 #import "HUBComponentFallbackHandler.h"
 #import "HUBComponentSelectionHandler.h"
 #import "HUBComponentSelectionContext.h"
+#import "HUBComponentShowcaseManager.h"
+#import "HUBComponentShowcaseShapshotGenerator.h"
 
 // Images & Icons
 #import "HUBImageLoaderFactory.h"

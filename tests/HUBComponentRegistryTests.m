@@ -7,6 +7,9 @@
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBComponentDefaults+Testing.h"
+#import "HUBComponentModelBuilder.h"
+#import "HUBComponentShowcaseShapshotGenerator.h"
+#import "HUBJSONSchemaRegistryImplementation.h"
 
 static NSString * const DefaultNamespace = @"default";
 
@@ -27,7 +30,14 @@ static NSString * const DefaultNamespace = @"default";
     
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     self.componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
-    self.registry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:self.componentFallbackHandler];
+    
+    HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                                                                          iconImageResolver:nil];
+    
+    self.registry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:self.componentFallbackHandler
+                                                                      componentDefaults:componentDefaults
+                                                                     JSONSchemaRegistry:JSONSchemaRegistry
+                                                                      iconImageResolver:nil];
 }
 
 #pragma mark - Tests
@@ -154,6 +164,26 @@ static NSString * const DefaultNamespace = @"default";
     for (HUBComponentIdentifier * const identifier in expectedComponentIdentifers) {
         XCTAssertTrue([componentIdentifiers containsObject:identifier]);
     }
+}
+
+- (void)testShowcaseComponentSnapshotting
+{
+    HUBComponentMock * const component = [HUBComponentMock new];
+    component.view = [[UIView alloc] initWithFrame:CGRectZero];
+    component.preferredViewSize = CGSizeMake(200, 200);
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        @"name": component
+    }];
+    
+    [self.registry registerComponentFactory:componentFactory forNamespace:@"namespace"];
+    
+    id<HUBComponentModelBuilder, HUBComponentShowcaseSnapshotGenerator> const componentModelBuilder = [self.registry createShowcaseSnapshotComponentModelBuilder];
+    componentModelBuilder.componentNamespace = @"namespace";
+    componentModelBuilder.componentName = @"name";
+    
+    UIImage * const snapshotImage = [componentModelBuilder generateShowcaseSnapshotForContainerViewSize:CGSizeZero];
+    XCTAssertTrue(CGSizeEqualToSize(snapshotImage.size, CGSizeMake(200, 200)));
 }
 
 #pragma mark - Utilities

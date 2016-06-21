@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
+@property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistryImplementation;
 
 @end
 
@@ -42,29 +43,50 @@ NS_ASSUME_NONNULL_BEGIN
         
         _connectivityStateResolver = connectivityStateResolver;
         _initialViewModelRegistry = [HUBInitialViewModelRegistry new];
-        _featureRegistry = [HUBFeatureRegistryImplementation new];
-        _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler];
-        _JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults iconImageResolver:iconImageResolver];
         
-        _viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:_featureRegistry
-                                                                                        JSONSchemaRegistry:_JSONSchemaRegistry
-                                                                                  initialViewModelRegistry:_initialViewModelRegistry
-                                                                                         componentDefaults:componentDefaults
-                                                                                 connectivityStateResolver:_connectivityStateResolver
-                                                                                         iconImageResolver:iconImageResolver
-                                                                          prependedContentOperationFactory:prependedContentOperationFactory
-                                                                           appendedContentOperationFactory:appendedContentOperationFactory];
+        HUBFeatureRegistryImplementation * const featureRegistry = [HUBFeatureRegistryImplementation new];
         
-        _viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:_viewModelLoaderFactory
-                                                                                                featureRegistry:_featureRegistry
-                                                                                              componentRegistry:_componentRegistry
-                                                                                       initialViewModelRegistry:_initialViewModelRegistry
-                                                                                         componentLayoutManager:componentLayoutManager
-                                                                                     defaultContentReloadPolicy:defaultContentReloadPolicy
-                                                                                             imageLoaderFactory:imageLoaderFactory];
+        HUBJSONSchemaRegistryImplementation * const JSONSchemaRegistry = [[HUBJSONSchemaRegistryImplementation alloc] initWithComponentDefaults:componentDefaults
+                                                                                                                              iconImageResolver:iconImageResolver];
+        
+        HUBComponentRegistryImplementation * const componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler
+                                                                                                                         componentDefaults:componentDefaults
+                                                                                                                        JSONSchemaRegistry:JSONSchemaRegistry
+                                                                                                                         iconImageResolver:iconImageResolver];
+        
+        HUBViewModelLoaderFactoryImplementation * const viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:featureRegistry
+                                                                                                                                       JSONSchemaRegistry:JSONSchemaRegistry
+                                                                                                                                 initialViewModelRegistry:_initialViewModelRegistry
+                                                                                                                                        componentDefaults:componentDefaults
+                                                                                                                                connectivityStateResolver:_connectivityStateResolver
+                                                                                                                                        iconImageResolver:iconImageResolver
+                                                                                                                         prependedContentOperationFactory:prependedContentOperationFactory
+                                                                                                                          appendedContentOperationFactory:appendedContentOperationFactory];
+        
+        HUBViewControllerFactoryImplementation * const viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:viewModelLoaderFactory
+                                                                                                                                              featureRegistry:featureRegistry
+                                                                                                                                            componentRegistry:componentRegistry
+                                                                                                                                     initialViewModelRegistry:_initialViewModelRegistry
+                                                                                                                                       componentLayoutManager:componentLayoutManager
+                                                                                                                                   defaultContentReloadPolicy:defaultContentReloadPolicy
+                                                                                                                                           imageLoaderFactory:imageLoaderFactory];
+        
+        _featureRegistry = featureRegistry;
+        _componentRegistry = componentRegistry;
+        _componentRegistryImplementation = componentRegistry;
+        _JSONSchemaRegistry = JSONSchemaRegistry;
+        _viewModelLoaderFactory = viewModelLoaderFactory;
+        _viewControllerFactory = viewControllerFactory;
     }
     
     return self;
+}
+
+#pragma mark - Accessor overrides
+
+- (id<HUBComponentShowcaseManager>)componentShowcaseManager
+{
+    return self.componentRegistryImplementation;
 }
 
 @end

@@ -106,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param JSONData The JSON data to add
  *
- *  The builder will use it's feature's `HUBJSONSchema` to parse the data that was added, and return any error that
+ *  The builder will use its feature's `HUBJSONSchema` to parse the data that was added, and return any error that
  *  occured while doing so, or nil if the operation was completed successfully.
  */
 - (nullable NSError *)addJSONData:(NSData *)JSONData;

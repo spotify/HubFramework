@@ -6,12 +6,17 @@
 #import "HUBComponentFactoryShowcaseNameProvider.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentFallbackHandler.h"
+#import "HUBComponentModelBuilderShowcaseSnapshotGenerator.h"
+#import "HUBJSONSchemaRegistryImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBComponentRegistryImplementation ()
 
 @property (nonatomic, strong, readonly) id<HUBComponentFallbackHandler> fallbackHandler;
+@property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
+@property (nonatomic, strong, readonly) HUBJSONSchemaRegistryImplementation *JSONSchemaRegistry;
+@property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id<HUBComponentFactory>> *componentFactories;
 
 @end
@@ -19,11 +24,21 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentRegistryImplementation
 
 - (instancetype)initWithFallbackHandler:(id<HUBComponentFallbackHandler>)fallbackHandler
+                      componentDefaults:(HUBComponentDefaults *)componentDefaults
+                     JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
+                      iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
 {
+    NSParameterAssert(fallbackHandler != nil);
+    NSParameterAssert(componentDefaults != nil);
+    NSParameterAssert(JSONSchemaRegistry != nil);
+    
     self = [super init];
     
     if (self) {
         _fallbackHandler = fallbackHandler;
+        _componentDefaults = componentDefaults;
+        _JSONSchemaRegistry = JSONSchemaRegistry;
+        _iconImageResolver = iconImageResolver;
         _componentFactories = [NSMutableDictionary new];
     }
     
@@ -31,28 +46,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - API
-
-- (NSArray<HUBComponentIdentifier *> *)showcaseableComponentIdentifiers
-{
-    NSMutableArray<HUBComponentIdentifier *> * const componentIdentifiers = [NSMutableArray new];
-    
-    for (NSString * const namespace in self.componentFactories) {
-        id<HUBComponentFactory> const factory = self.componentFactories[namespace];
-        
-        if (![factory conformsToProtocol:@protocol(HUBComponentFactoryShowcaseNameProvider)]) {
-            continue;
-        }
-        
-        NSArray<NSString *> * const names = ((id<HUBComponentFactoryShowcaseNameProvider>)factory).showcaseableComponentNames;
-        
-        for (NSString * const name in names) {
-            HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithNamespace:namespace name:name];
-            [componentIdentifiers addObject:identifier];
-        }
-    }
-    
-    return [componentIdentifiers copy];
-}
 
 - (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model
 {
@@ -80,6 +73,42 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)unregisterComponentFactoryForNamespace:(NSString *)componentNamespace
 {
     self.componentFactories[componentNamespace] = nil;
+}
+
+#pragma mark - HUBComponentShowcaseManager
+
+- (NSArray<HUBComponentIdentifier *> *)showcaseableComponentIdentifiers
+{
+    NSMutableArray<HUBComponentIdentifier *> * const componentIdentifiers = [NSMutableArray new];
+    
+    for (NSString * const namespace in self.componentFactories) {
+        id<HUBComponentFactory> const factory = self.componentFactories[namespace];
+        
+        if (![factory conformsToProtocol:@protocol(HUBComponentFactoryShowcaseNameProvider)]) {
+            continue;
+        }
+        
+        NSArray<NSString *> * const names = ((id<HUBComponentFactoryShowcaseNameProvider>)factory).showcaseableComponentNames;
+        
+        for (NSString * const name in names) {
+            HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithNamespace:namespace name:name];
+            [componentIdentifiers addObject:identifier];
+        }
+    }
+    
+    return [componentIdentifiers copy];
+}
+
+- (id<HUBComponentModelBuilder, HUBComponentShowcaseSnapshotGenerator>)createShowcaseSnapshotComponentModelBuilder
+{
+    return [[HUBComponentModelBuilderShowcaseSnapshotGenerator alloc] initWithModelIdentifier:nil
+                                                                            featureIdentifier:@"com.hubframework.showcase.snapshot-generator"
+                                                                                   JSONSchema:self.JSONSchemaRegistry.defaultSchema
+                                                                            componentRegistry:self
+                                                                            componentDefaults:self.componentDefaults
+                                                                            iconImageResolver:self.iconImageResolver
+                                                                         mainImageDataBuilder:nil
+                                                                   backgroundImageDataBuilder:nil];
 }
 
 @end
