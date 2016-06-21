@@ -140,6 +140,9 @@
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentFactory.html">HUBComponentFactory</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBComponentFactoryShowcaseNameProvider.html">HUBComponentFactoryShowcaseNameProvider</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a>
               </li>
               <li class="nav-group-task">
@@ -171,6 +174,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBComponentShowcaseManager.html">HUBComponentShowcaseManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBComponentShowcaseSnapshotGenerator.html">HUBComponentShowcaseSnapshotGenerator</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentViewObserver.html">HUBComponentViewObserver</a>
@@ -331,47 +340,6 @@
           <div class="section-content">
             <div class="task-group">
               <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBComponentRegistry(py)showcaseableComponentIdentifiers"></a>
-                    <a name="//apple_ref/objc/Property/showcaseableComponentIdentifiers" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentRegistry(py)showcaseableComponentIdentifiers">showcaseableComponentIdentifiers</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The component identifiers that have been declared as showcaseable</p>
-
-<p>It&rsquo;s up to each component factory that has been registered with this registry to (optionally) declare
-  an array of showcaseable component names (by conforming to <code>HUBComponentFactoryShowcaseNameProvider</code>),
-  which will then be used to construct the component identifiers returned from this property.</p>
-
-<p>The Hub Framework does not provide any built-in functionality for showcases, besides providing the
-  component identifiers that have been declared as showcasable. Instead, it&rsquo;s up to each API user to build
-  showcase functionality on top of this API.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSArray</span><span class="o">&lt;</span>
-    <span class="n"><a href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">showcaseableComponentIdentifiers</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">showcaseableComponentIdentifiers</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
                 <li class="item">
                   <div>
                     <code>

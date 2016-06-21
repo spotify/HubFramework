@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>HUBViewControllerFactory Protocol Reference</title>
+    <title>HUBComponentShowcaseManager Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Protocol/HUBViewControllerFactory" class="dashAnchor"></a>
+    <a name="//apple_ref/objc/Protocol/HUBComponentShowcaseManager" class="dashAnchor"></a>
 
-    <a title="HUBViewControllerFactory Protocol Reference"></a>
+    <a title="HUBComponentShowcaseManager Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -41,7 +41,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">HubFramework Reference</a>
       <img class="carat" src="../img/carat.png" />
-      HUBViewControllerFactory Protocol Reference
+      HUBComponentShowcaseManager Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -317,20 +317,25 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>HUBViewControllerFactory</h1>
+            <h1>HUBComponentShowcaseManager</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBViewControllerFactory</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentShowcaseManager</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
-            <p>Protocol defining the public API of a factory that creates view controllers</p>
+            <p>Protocol defining the public API of a Hub Framework component showcase manager</p>
 
-<p>You don’t conform to this protocol yourself. Instead, access this API through the application’s
-  <code><a href="../Classes/HUBManager.html">HUBManager</a></code>. You use this API to create view controllers that are powered by the Hub Framework,
-  somewhere in your navigation code, where new view controllers should be pushed. Since the Hub
-  Framework uses URL-based navigation (per default), a recommended place to create view controllers
-  using this factory, would be when you are responding to opening URLs, for example in your App Delegate.</p>
+<p>You interact with this API to build showcase functionality for available components in this instance of the
+  Hub Framework. Normally, you don&rsquo;t call it from production code (although there is no harm in doing so), but
+  rather use it to build tooling on top of the framework.</p>
+
+<p>The Hub Framework does not provide any built-in functionality for showcases, besides providing the component
+  identifiers that have been declared as showcasable, and the ability to create snapshot images of a component
+  instance, for showcase purposes.</p>
+
+<p>You don&rsquo;t conform to this protocol yourself, instead the application&rsquo;s <code><a href="../Classes/HUBManager.html">HUBManager</a></code> comes setup with a
+  showcase manager that you can use.</p>
 
           </div>
         </section>
@@ -342,9 +347,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBViewControllerFactory(im)canCreateViewControllerForViewURI:"></a>
-                    <a name="//apple_ref/objc/Method/-canCreateViewControllerForViewURI:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBViewControllerFactory(im)canCreateViewControllerForViewURI:">-canCreateViewControllerForViewURI:</a>
+                    <a name="/c:objc(pl)HUBComponentShowcaseManager(py)showcaseableComponentIdentifiers"></a>
+                    <a name="//apple_ref/objc/Property/showcaseableComponentIdentifiers" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentShowcaseManager(py)showcaseableComponentIdentifiers">showcaseableComponentIdentifiers</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -352,43 +357,21 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Return whether the factory is able to create a view controller for a given view URI</p>
+                        <p>The component identifiers that have been declared as showcaseable</p>
 
-<p>You can use this API to validate view URIs before starting to create a view controller for them.</p>
+<p>It&rsquo;s up to each component factory that has been registered with <code><a href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a></code> to (optionally) declare
+  an array of showcaseable component names (by conforming to <code><a href="../Protocols/HUBComponentFactoryShowcaseNameProvider.html">HUBComponentFactoryShowcaseNameProvider</a></code>), which
+  will then be used to construct the component identifiers returned from this property.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">canCreateViewControllerForViewURI</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewURI</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSArray</span><span class="o">&lt;</span>
+    <span class="n"><a href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">showcaseableComponentIdentifiers</span><span class="p">;</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">canCreateViewControllerForViewURI</span><span class="p">(</span><span class="nv">viewURI</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyObject</span><span class="o">!</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>viewURI</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The view URI to check if a view controller can be created for</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -396,9 +379,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBViewControllerFactory(im)createViewControllerForViewURI:"></a>
-                    <a name="//apple_ref/objc/Method/-createViewControllerForViewURI:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBViewControllerFactory(im)createViewControllerForViewURI:">-createViewControllerForViewURI:</a>
+                    <a name="/c:objc(pl)HUBComponentShowcaseManager(im)createShowcaseSnapshotComponentModelBuilder"></a>
+                    <a name="//apple_ref/objc/Method/-createShowcaseSnapshotComponentModelBuilder" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentShowcaseManager(im)createShowcaseSnapshotComponentModelBuilder">-createShowcaseSnapshotComponentModelBuilder</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -406,50 +389,21 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Create a view controller for a certain view URI</p>
+                        <p>Create a new component model builder that is also able to generate showcase snapshots</p>
+
+<p>You can mutate the returned builder to reflect what kind of component &amp; content you wish to generate a snapshot
+  with, then ask the builder to generate a snapshot. Snapshots can be used when implementing showcases for components
+  or in tooling associated with the Hub Framework.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nullable</span> <span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span>
-    <span class="nf">createViewControllerForViewURI</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewURI</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></span><span class="p">,</span> <span class="n"><a href="../Protocols/HUBComponentShowcaseSnapshotGenerator.html">HUBComponentShowcaseSnapshotGenerator</a></span><span class="o">&gt;</span><span class="p">)</span>
+        <span class="n">createShowcaseSnapshotComponentModelBuilder</span><span class="p">;</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">createViewControllerForViewURI</span><span class="p">(</span><span class="nv">viewURI</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyObject</span><span class="o">!</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>viewURI</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The view URI to create a view controller for</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>A Hub Framework-powered view controller used for rendering content provided by a feature’s
- content operations, using a User Interface consisting of <code><a href="../Protocols/HUBComponent.html">HUBComponent</a></code> views. If a view controller
- could not be created for the supplied viewURI (because a feature registration could not be resolved
- for it), this method returns <code>nil</code>.</p>
-
                       </div>
                     </section>
                   </div>
