@@ -54,12 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
     UIView * const componentView = component.view;
     componentView.frame = CGRectMake(0, 0, preferredViewSize.width, preferredViewSize.height);
     
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    
-    if (window == nil) {
-        window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, containerViewSize.width, containerViewSize.height)];
-    }
-    
+    UIWindow * const window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, containerViewSize.width, containerViewSize.height)];
     [window addSubview:componentView];
     
     UIGraphicsBeginImageContextWithOptions(componentView.bounds.size, NO, 0);
