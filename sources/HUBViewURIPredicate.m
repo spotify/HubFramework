@@ -31,7 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
             return NO;
         }
         
-        return [evaluatedViewURI.absoluteString hasPrefix:rootViewURI.absoluteString];
+        NSString * const rootViewURIAbsoluteString = rootViewURI.absoluteString;
+        return [evaluatedViewURI.absoluteString hasPrefix:rootViewURIAbsoluteString];
     }];
 }
 
