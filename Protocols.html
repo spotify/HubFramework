@@ -238,6 +238,9 @@
                 <a class="nav-group-task-link" href="Protocols/HUBJSONBoolPath.html">HUBJSONBoolPath</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBJSONCompatibleBuilder.html">HUBJSONCompatibleBuilder</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBJSONDatePath.html">HUBJSONDatePath</a>
               </li>
               <li class="nav-group-task">
@@ -629,12 +632,12 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentImageDataBuilder</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentImageDataBuilder</span> <span class="o">&lt;</span><span class="n"><a href="Protocols/HUBJSONCompatibleBuilder.html">HUBJSONCompatibleBuilder</a></span><span class="o">&gt;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentImageDataBuilder</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentImageDataBuilder</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBJSONCompatibleBuilder.html">HUBJSONCompatibleBuilder</a></span></code></pre>
 
                         </div>
                       </div>
@@ -813,12 +816,12 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentModelBuilder</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentModelBuilder</span> <span class="o">&lt;</span><span class="n"><a href="Protocols/HUBJSONCompatibleBuilder.html">HUBJSONCompatibleBuilder</a></span><span class="o">&gt;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentModelBuilder</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentModelBuilder</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBJSONCompatibleBuilder.html">HUBJSONCompatibleBuilder</a></span></code></pre>
 
                         </div>
                       </div>
@@ -1907,6 +1910,47 @@
               </ul>
             </div>
             <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBJSONCompatibleBuilder"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBJSONCompatibleBuilder" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBJSONCompatibleBuilder">HUBJSONCompatibleBuilder</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Protocol defining the public API for adding JSON data to a Hub Framework model builder</p>
+
+<p>Builders that support JSON data will conform to this protocol. Most builders only support Dictionary-based
+  JSON, except for <code><a href="Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a></code> that supports Array-based JSON for defining an array of body
+  component models.</p>
+
+                        <a href="Protocols/HUBJSONCompatibleBuilder.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBJSONCompatibleBuilder</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBJSONCompatibleBuilder</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
               <div class="task-name-container">
                 <a name="/HUBDictionaryPath"></a>
                 <a name="//apple_ref/objc/Section/HUBDictionaryPath" class="dashAnchor"></a>
@@ -2620,12 +2664,12 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBViewModelBuilder</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBViewModelBuilder</span> <span class="o">&lt;</span><span class="n"><a href="Protocols/HUBJSONCompatibleBuilder.html">HUBJSONCompatibleBuilder</a></span><span class="o">&gt;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBViewModelBuilder</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBViewModelBuilder</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBJSONCompatibleBuilder.html">HUBJSONCompatibleBuilder</a></span></code></pre>
 
                         </div>
                       </div>
