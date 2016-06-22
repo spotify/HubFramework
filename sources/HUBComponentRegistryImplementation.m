@@ -99,6 +99,18 @@ NS_ASSUME_NONNULL_BEGIN
     return [componentIdentifiers copy];
 }
 
+- (nullable NSString *)showcaseNameForComponentIdentifier:(HUBComponentIdentifier *)componentIdentifier
+{
+    id<HUBComponentFactory> const factory = self.componentFactories[componentIdentifier.componentNamespace];
+    
+    if (![factory conformsToProtocol:@protocol(HUBComponentFactoryShowcaseNameProvider)]) {
+        return nil;
+    }
+    
+    id<HUBComponentFactoryShowcaseNameProvider> const showcaseNameProvider = (id<HUBComponentFactoryShowcaseNameProvider>)factory;
+    return [showcaseNameProvider showcaseNameForComponentName:componentIdentifier.componentName];
+}
+
 - (id<HUBComponentModelBuilder, HUBComponentShowcaseSnapshotGenerator>)createShowcaseSnapshotComponentModelBuilder
 {
     return [[HUBComponentModelBuilderShowcaseSnapshotGenerator alloc] initWithModelIdentifier:nil

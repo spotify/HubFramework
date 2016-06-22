@@ -1,5 +1,7 @@
 #import "HUBComponentFactory.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Extended `HUBComponentFactory` protocol that adds the ability to provide component names to a showcase
  *
@@ -17,4 +19,16 @@
 /// An array of component names that should be included in a component showcase
 @property (nonatomic, strong, readonly) NSArray<NSString *> *showcaseableComponentNames;
 
+/**
+ *  Return a human readable name for a component that can be displayed in a showcase
+ *
+ *  @param componentName The name of the component to return a showcase name for
+ *
+ *  @return A component name that can be displayed in a showcase UI, or nil if the
+ *          name was unrecognized by this component factory.
+ */
+- (nullable NSString *)showcaseNameForComponentName:(NSString *)componentName;
+
 @end
+
+NS_ASSUME_NONNULL_END

@@ -166,6 +166,29 @@ static NSString * const DefaultNamespace = @"default";
     }
 }
 
+- (void)testShowcaseNameForComponentIdentifier
+{
+    HUBComponentFactoryMock * const showcaseFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    showcaseFactory.showcaseNamesForComponentNames = @{
+        @"a": @"Component A",
+        @"b": @"Component B"
+    };
+    
+    [self.registry registerComponentFactory:showcaseFactory forNamespace:@"showcase"];
+    
+    HUBComponentFactoryMock * const noShowcaseFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{}];
+    [self.registry registerComponentFactory:noShowcaseFactory forNamespace:@"noShowcase"];
+    
+    HUBComponentIdentifier * const componentIdentifierA = [[HUBComponentIdentifier alloc] initWithNamespace:@"showcase" name:@"a"];
+    XCTAssertEqualObjects([self.registry showcaseNameForComponentIdentifier:componentIdentifierA], @"Component A");
+    
+    HUBComponentIdentifier * const componentIdentifierB = [[HUBComponentIdentifier alloc] initWithNamespace:@"showcase" name:@"b"];
+    XCTAssertEqualObjects([self.registry showcaseNameForComponentIdentifier:componentIdentifierB], @"Component B");
+    
+    HUBComponentIdentifier * const noShowcaseComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"noShowcase" name:@"name"];
+    XCTAssertNil([self.registry showcaseNameForComponentIdentifier:noShowcaseComponentIdentifier]);
+}
+
 - (void)testShowcaseComponentSnapshotting
 {
     HUBComponentMock * const component = [HUBComponentMock new];
