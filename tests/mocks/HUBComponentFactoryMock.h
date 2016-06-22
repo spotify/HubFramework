@@ -9,6 +9,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The component names that the factory should declare as showcaseable
 @property (nonatomic, strong, nullable) NSArray<NSString *> *showcaseableComponentNames;
 
+/// A map between component names & human readable names that the factory should use to resolve showcasable names
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSString *> *showcaseNamesForComponentNames;
+
 /// Initialize an instance of this class with a name:component dictionary of components to create
 - (instancetype)initWithComponents:(NSDictionary<NSString *, id<HUBComponent>> *)components HUB_DESIGNATED_INITIALIZER;
 

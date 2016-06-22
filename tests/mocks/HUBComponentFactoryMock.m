@@ -21,9 +21,18 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
+#pragma mark - HUBComponentFactory
+
 - (nullable id<HUBComponent>)createComponentForName:(NSString *)name
 {
     return self.components[name];
+}
+
+#pragma mark - HUBComponentFactoryShowcaseNameProvider
+
+- (nullable NSString *)showcaseNameForComponentName:(NSString *)componentName
+{
+    return self.showcaseNamesForComponentNames[componentName];
 }
 
 #pragma mark - NSObject
@@ -31,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)conformsToProtocol:(Protocol *)protocol
 {
     if (protocol == @protocol(HUBComponentFactoryShowcaseNameProvider)) {
-        return self.showcaseableComponentNames != nil;
+        return (self.showcaseableComponentNames != nil || self.showcaseNamesForComponentNames != nil);
     }
     
     return [super conformsToProtocol:protocol];

@@ -32,6 +32,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSArray<HUBComponentIdentifier *> *showcaseableComponentIdentifiers;
 
 /**
+ *  Return a human readable name for a component that can be displayed in a showcase
+ *
+ *  @param componentIdentifier The identifier of the component to return a showcase name for
+ *
+ *  @return A component name that can be displayed in a showcase UI, or nil if the identifier wasn't recognized
+ *          by any component factory.
+ */
+- (nullable NSString *)showcaseNameForComponentIdentifier:(HUBComponentIdentifier *)componentIdentifier;
+
+/**
  *  Create a new component model builder that is also able to generate showcase snapshots
  *
  *  You can mutate the returned builder to reflect what kind of component & content you wish to generate a snapshot
