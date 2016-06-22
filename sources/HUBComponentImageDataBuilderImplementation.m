@@ -4,6 +4,7 @@
 #import "HUBJSONSchema.h"
 #import "HUBComponentImageDataJSONSchema.h"
 #import "HUBIconImplementation.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -36,6 +37,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - HUBJSONCompatibleBuilder
+
+- (nullable NSError *)addJSONData:(NSData *)JSONData
+{
+    return HUBAddJSONDataToBuilder(JSONData, self);
+}
 
 - (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {

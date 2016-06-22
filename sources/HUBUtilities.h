@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
+
 #import "HUBComponent.h"
+#import "HUBJSONCompatibleBuilder.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -61,6 +63,32 @@ static inline UIView *HUBComponentLoadViewIfNeeded(id<HUBComponent> component) {
     UIView * const view = component.view;
     NSCAssert(view, @"All components are required to load a view in -loadView");
     return view;
+}
+
+/**
+ *  Add binary JSON data to a JSON compatible builder
+ *
+ *  @param data The binary data to add to the builder. Must contain dictionary-based JSON.
+ *  @param builder The builder to add the data to
+ *
+ *  @return Any error that was encountered when parsing the supplied JSON data, or nil if the operation
+ *          was successfully completed.
+ */
+static inline NSError * _Nullable HUBAddJSONDataToBuilder(NSData *data, id<HUBJSONCompatibleBuilder> builder) {
+    NSError *error;
+    NSObject *JSONObject = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:&error];
+    
+    if (error != nil || JSONObject == nil) {
+        return error;
+    }
+    
+    if (![JSONObject isKindOfClass:[NSDictionary class]]) {
+        return [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil];
+    }
+    
+    [builder addDataFromJSONDictionary:(NSDictionary *)JSONObject];
+    
+    return nil;
 }
 
 NS_ASSUME_NONNULL_END

@@ -11,6 +11,7 @@
 #import "HUBJSONPath.h"
 #import "HUBComponentDefaults.h"
 #import "HUBIconImplementation.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -150,24 +151,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentModelBuilder
 
-- (nullable NSError *)addJSONData:(NSData *)JSONData
-{
-    NSError *error;
-    NSObject *JSONObject = [NSJSONSerialization JSONObjectWithData:JSONData options:(NSJSONReadingOptions)0 error:&error];
-    
-    if (error != nil || JSONObject == nil) {
-        return error;
-    }
-    
-    if (![JSONObject isKindOfClass:[NSDictionary class]]) {
-        return [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil];
-    }
-    
-    [self addDataFromJSONDictionary:(NSDictionary *)JSONObject];
-    
-    return nil;
-}
-
 - (id<HUBComponentImageDataBuilder>)mainImageDataBuilder
 {
     return self.mainImageDataBuilderImplementation;
@@ -255,6 +238,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - HUBJSONCompatibleBuilder
+
+- (nullable NSError *)addJSONData:(NSData *)JSONData
+{
+    return HUBAddJSONDataToBuilder(JSONData, self);
+}
 
 - (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {

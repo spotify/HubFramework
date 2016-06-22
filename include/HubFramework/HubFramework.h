@@ -8,6 +8,7 @@
 #import "HUBViewModelJSONSchema.h"
 #import "HUBComponentModelJSONSchema.h"
 #import "HUBComponentImageDataJSONSchema.h"
+#import "HUBJSONCompatibleBuilder.h"
 #import "HUBJSONSchemaRegistry.h"
 #import "HUBJSONPath.h"
 #import "HUBMutableJSONPath.h"

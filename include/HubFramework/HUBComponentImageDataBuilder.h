@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 
+#import "HUBJSONCompatibleBuilder.h"
 #import "HUBComponentImageData.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  In order to successfully build an image data object (and not return nil), the builder must
  *  have either have a non-nil `URL`, `placeholderIconIdentifier` or `localImage` property.
  */
-@protocol HUBComponentImageDataBuilder <NSObject>
+@protocol HUBComponentImageDataBuilder <HUBJSONCompatibleBuilder>
 
 /// The style that the image should be rendered in
 @property (nonatomic) HUBComponentImageStyle style;
