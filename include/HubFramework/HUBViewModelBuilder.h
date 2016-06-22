@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBJSONCompatibleBuilder.h"
 
 @protocol HUBComponentModelBuilder;
 
@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  For more information regarding the properties that this builder enables you to set, see the documentation
  *  for `HUBViewModel`.
  */
-@protocol HUBViewModelBuilder <NSObject>
+@protocol HUBViewModelBuilder <HUBJSONCompatibleBuilder>
 
 #pragma mark - The status of the builder
 
@@ -98,18 +98,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  is considered useful for other API users as well.
  */
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
-
-#pragma mark - Adding JSON data to the builder
-
-/**
- *  Add content from JSON data to this builder
- *
- *  @param JSONData The JSON data to add
- *
- *  The builder will use its feature's `HUBJSONSchema` to parse the data that was added, and return any error that
- *  occured while doing so, or nil if the operation was completed successfully.
- */
-- (nullable NSError *)addJSONData:(NSData *)JSONData;
 
 #pragma mark - Checking if component model builders exist
 

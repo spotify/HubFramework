@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
     if ([JSONObject isKindOfClass:[NSDictionary class]]) {
         [self addDataFromJSONDictionary:(NSDictionary *)JSONObject];
     } else if ([JSONObject isKindOfClass:[NSArray class]]) {
-        [self addDataFromJSONArray:(NSArray *)JSONObject usingSchema:self.JSONSchema];
+        [self addDataFromJSONArray:(NSArray *)JSONObject];
     } else {
         return [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil];
     }
@@ -285,7 +285,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Private utilities
 
-- (void)addDataFromJSONArray:(NSArray<NSObject *> *)array usingSchema:(id<HUBJSONSchema>)schema
+- (void)addDataFromJSONArray:(NSArray<NSObject *> *)array
 {
     for (NSObject * const object in array) {
         if ([object isKindOfClass:[NSDictionary class]]) {
