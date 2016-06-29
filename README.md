@@ -31,6 +31,8 @@ To enable you to quickly get started using the Hub Framework, we've created a se
 - [Content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html)
 - [Layout programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html)
 - [JSON programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/json-programming-guide.html)
+
+There’s also a short [“Hello World” video](https://www.dropbox.com/s/jhzabbfoeectdv4/hub-2.0-hello-world.mov?dl=0) _[12 minutes, 1.03 GB]_ which will guide you to creating your first HubFramework driven view.
  
 ### Documentation
 
