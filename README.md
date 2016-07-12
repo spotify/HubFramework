@@ -19,7 +19,7 @@ To learn more about components, check out the [Component programming guide](http
 
 To match the highly dynamic component-driven UIs, content operations define what content to render in a declarative fashion. Content can either be defined in code, running locally in the application, or through JSON that is provided by a server-side system. This enables you to easily aggregate data from multiple sources, and to release new features directly from the backend.
 
-Each feature of an application can define its own content operations, and put them together to from a **content loading chain**. Each operation can perform an atomic mutation of the UI state, enabling easy implementation of things like A/B testing or providing system-wide functionality like caching or loading indicators.
+Each feature of an application can define its own content operations, and put them together to form a **content loading chain**. Each operation can perform an atomic mutation of the UI state, enabling easy implementation of things like A/B testing or providing system-wide functionality like caching or loading indicators.
 
 To learn more about content operations, check out the [Content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html).
 
