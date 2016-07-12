@@ -79,6 +79,27 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
 - (CGFloat)verticalMarginForComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
                        precedingComponentLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)precedingComponentLayoutTraits;
 
+/**
+ *  Checks if two components could be horizontally adjacent
+ *
+ *  @param layoutTraits                   The layout traits for the component that should (or not) be placed next to its preceding one
+ *  @param precedingComponentLayoutTraits The layout traits for the component that precedes the current one horizontally
+ *
+ *  @return Whether a component the provided layoutTraits should (or not) be placed next to preceding component 
+ *          with the provided precedingComponentLayoutTraits
+ */
+- (BOOL)shouldLayoutComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
+  horizontallyNextToComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> * _Nullable)precedingComponentLayoutTraits;
+
+/**
+ *  Checks if component could be part of a layout that requires centering of adjacent components
+ *
+ *  @param layoutTraits The layout traits for the component that should (or not) be centered
+ *
+ *  @return Whether a component the provided layout traits should (or not) be centered
+ */
+- (BOOL)shouldCenterHorizontallyComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits;
+
 @end
 
 NS_ASSUME_NONNULL_END

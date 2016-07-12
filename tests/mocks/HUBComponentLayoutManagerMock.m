@@ -40,4 +40,20 @@
     return [self.verticalComponentMarginsForLayoutTraits[layoutTraits] doubleValue];
 }
 
+- (BOOL)shouldCenterHorizontallyComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
+{
+    return [layoutTraits containsObject:HUBComponentLayoutTraitCentered];
+}
+
+- (BOOL)shouldLayoutComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
+  horizontallyNextToComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> * _Nullable)precedingComponentLayoutTraits
+{
+    if (precedingComponentLayoutTraits == nil) {
+        return YES;
+    }
+
+    return [self shouldCenterHorizontallyComponentWithLayoutTraits:layoutTraits] ==
+           [self shouldCenterHorizontallyComponentWithLayoutTraits:precedingComponentLayoutTraits];
+}
+
 @end
