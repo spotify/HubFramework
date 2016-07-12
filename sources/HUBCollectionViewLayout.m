@@ -51,8 +51,8 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableArray<id<HUBComponent>> * const componentsOnCurrentRow = [NSMutableArray new];
     CGFloat currentRowHeight = 0;
     CGPoint currentPoint = CGPointZero;
-    CGPoint firstComponentOnCurrentRowOrigin;
-    NSInteger allComponentsCount = self.viewModel.bodyComponentModels.count;
+    CGPoint firstComponentOnCurrentRowOrigin = CGPointZero;
+    NSUInteger allComponentsCount = self.viewModel.bodyComponentModels.count;
     
     for (NSUInteger componentIndex = 0; componentIndex < allComponentsCount; componentIndex++) {
         id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[componentIndex];
@@ -305,7 +305,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Centering
 
 - (void)centerHorizontallyIfNeededComponents:(NSArray *)components
-                          lastComponentIndex:(NSInteger)lastComponentIndex
+                          lastComponentIndex:(NSUInteger)lastComponentIndex
                              firstComponentX:(CGFloat)minX
                               lastComponentX:(CGFloat)maxX
                                     rowWidth:(CGFloat)rowWidth
@@ -326,15 +326,17 @@ NS_ASSUME_NONNULL_BEGIN
     return horizontalAdjustment;
 }
 
-- (void)adjustHorizontallyComponents:(NSArray *)components adjustment:(CGFloat)horizontalAdjustment lastComponentIndex:(NSInteger)lastComponentIndex
+- (void)adjustHorizontallyComponents:(NSArray *)components
+                          adjustment:(CGFloat)horizontalAdjustment
+                  lastComponentIndex:(NSUInteger)lastComponentIndex
 {
     if (horizontalAdjustment == 0.0) {
         return;
     }
 
-    NSInteger indexOfFirstComponentOnTheRow = lastComponentIndex - components.count + 1;
-    for (NSInteger index = indexOfFirstComponentOnTheRow; index <= lastComponentIndex; index++) {
-        NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    NSUInteger indexOfFirstComponentOnTheRow = lastComponentIndex - components.count + 1;
+    for (NSUInteger index = indexOfFirstComponentOnTheRow; index <= lastComponentIndex; index++) {
+        NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
         UICollectionViewLayoutAttributes * const layoutAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
         CGRect adjustedFrame = layoutAttributes.frame;
         adjustedFrame.origin.x += horizontalAdjustment;

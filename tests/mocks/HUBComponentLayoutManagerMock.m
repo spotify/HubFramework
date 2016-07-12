@@ -53,7 +53,7 @@
     }
 
     return [self shouldCenterHorizontallyComponentWithLayoutTraits:layoutTraits] ==
-           [self shouldCenterHorizontallyComponentWithLayoutTraits:precedingComponentLayoutTraits];
+           [self shouldCenterHorizontallyComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> * _Nonnull)precedingComponentLayoutTraits];
 }
 
 @end
