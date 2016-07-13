@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
     CGFloat currentRowHeight = 0;
     CGPoint currentPoint = CGPointZero;
     CGPoint firstComponentOnCurrentRowOrigin = CGPointZero;
-    NSUInteger allComponentsCount = self.viewModel.bodyComponentModels.count;
+    NSUInteger const allComponentsCount = self.viewModel.bodyComponentModels.count;
     
     for (NSUInteger componentIndex = 0; componentIndex < allComponentsCount; componentIndex++) {
         id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[componentIndex];
@@ -70,11 +70,17 @@ NS_ASSUME_NONNULL_BEGIN
                                                     collectionViewSize:collectionViewSize];
 
         BOOL couldFitOnTheRow = CGRectGetMaxX(componentViewFrame) <= collectionViewSize.width;
-        BOOL isCompatibleWithPreviousOneOnTheRow = [self.componentLayoutManager shouldLayoutComponentWithLayoutTraits:componentLayoutTraits
-                                                                          horizontallyNextToComponentWithLayoutTraits:[componentsOnCurrentRow lastObject].layoutTraits];
-        BOOL shouldLayoutOnTheSameRow = couldFitOnTheRow && isCompatibleWithPreviousOneOnTheRow;
+        BOOL isCompatibleWithPreviousOneOnTheRow = YES;
+
+        NSSet<HUBComponentLayoutTrait *> *precedingComponentLayoutTraits = [componentsOnCurrentRow lastObject].layoutTraits;
+        if (precedingComponentLayoutTraits) {
+            isCompatibleWithPreviousOneOnTheRow = [self.componentLayoutManager shouldLayoutComponentWithLayoutTraits:componentLayoutTraits
+                                                                         horizontallyNextToComponentWithLayoutTraits:precedingComponentLayoutTraits];
+        }
+
+        BOOL shouldPlaceOnTheSameRow = couldFitOnTheRow && isCompatibleWithPreviousOneOnTheRow;
         
-        if (shouldLayoutOnTheSameRow == NO) {
+        if (shouldPlaceOnTheSameRow == NO) {
             [self centerHorizontallyIfNeededComponents:componentsOnCurrentRow
                                     lastComponentIndex:componentIndex - 1
                                        firstComponentX:firstComponentOnCurrentRowOrigin.x
@@ -311,7 +317,7 @@ NS_ASSUME_NONNULL_BEGIN
                                     rowWidth:(CGFloat)rowWidth
 {
     id<HUBComponent> const lastComponentOnTheRow = [components lastObject];
-    if ([self.componentLayoutManager shouldCenterHorizontallyComponentWithLayoutTraits:lastComponentOnTheRow.layoutTraits]) {
+    if ([self.componentLayoutManager shouldHorizontallyCenterComponentWithLayoutTraits:lastComponentOnTheRow.layoutTraits]) {
         CGFloat adjustment = [self horizontalAdjustmentForMinX:minX maxX:maxX rowWidth:rowWidth];
         [self adjustHorizontallyComponents:components adjustment:adjustment lastComponentIndex:lastComponentIndex];
     }

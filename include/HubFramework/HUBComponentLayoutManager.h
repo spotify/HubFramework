@@ -80,25 +80,25 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
                        precedingComponentLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)precedingComponentLayoutTraits;
 
 /**
- *  Checks if two components could be horizontally adjacent
+ *  Checks if two components should be horizontally adjacent
  *
- *  @param layoutTraits                   The layout traits for the component that should (or not) be placed next to its preceding one
+ *  @param layoutTraits The layout traits for the component that should be placed next to its preceding one
  *  @param precedingComponentLayoutTraits The layout traits for the component that precedes the current one horizontally
  *
- *  @return Whether a component the provided layoutTraits should (or not) be placed next to preceding component 
+ *  @return Whether a component with the provided layoutTraits should be placed next to preceding component
  *          with the provided precedingComponentLayoutTraits
  */
 - (BOOL)shouldLayoutComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
   horizontallyNextToComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> * _Nullable)precedingComponentLayoutTraits;
 
 /**
- *  Checks if component could be part of a layout that requires centering of adjacent components
+ *  Checks if component should be part of a layout that requires centering of adjacent components
  *
- *  @param layoutTraits The layout traits for the component that should (or not) be centered
+ *  @param layoutTraits The layout traits for the component that should be centered
  *
- *  @return Whether a component the provided layout traits should (or not) be centered
+ *  @return Whether a component with the provided layout traits should be centered
  */
-- (BOOL)shouldCenterHorizontallyComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits;
+- (BOOL)shouldHorizontallyCenterComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits;
 
 @end
 
