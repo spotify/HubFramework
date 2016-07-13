@@ -80,26 +80,18 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
                        precedingComponentLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)precedingComponentLayoutTraits;
 
 /**
- *  Checks if two components should be horizontally adjacent
+ *  Calculates the horizontal offset for the provided components represented by their layout traits
+ *  Makes decicion based on the layout traits and the horizontal positions of the first and the last components
  *
- *  @param layoutTraits The layout traits for the component that should be placed next to its preceding one
- *  @param precedingComponentLayoutTraits The layout traits for the component that precedes the current one horizontally
+ *  @param componentsTraits An array of the sets of layout traits for all components for which the horizontal adjustment should be calculated
+ *  @param firstComponentLeadingOffsetX The leading horizontal offset of the first component in the sequence
+ *  @param lastComponentTrailingOffsetX The trailing horizontal offset of the last component in the sequence
  *
- *  @return Whether a component with the provided layoutTraits should be placed next to preceding component
- *          with the provided precedingComponentLayoutTraits
+ *  @return The value by which the horizontal origins of all components should be adjusted
  */
-- (BOOL)shouldLayoutComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
-  horizontallyNextToComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> * _Nullable)precedingComponentLayoutTraits;
-
-/**
- *  Checks if component should be part of a layout that requires centering of adjacent components
- *
- *  @param layoutTraits The layout traits for the component that should be centered
- *
- *  @return Whether a component with the provided layout traits should be centered
- */
-- (BOOL)shouldHorizontallyCenterComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits;
-
+- (CGFloat)horizontalOffsetForComponentsWithLayoutTraits:(NSArray<NSSet<HUBComponentLayoutTrait *> *> *)componentsTraits
+                   firstComponentLeadingHorizontalOffset:(CGFloat)firstComponentLeadingOffsetX
+                   lastComponentTrailingHorizontalOffset:(CGFloat)lastComponentTrailingOffsetX;
 @end
 
 NS_ASSUME_NONNULL_END

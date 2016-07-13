@@ -200,10 +200,9 @@
     XCTAssertTrue(CGRectEqualToRect(componentViewFrame, expectedComponentViewFrame));
 }
 
-- (void)testComponentMovedToNewRowIfItIsNotCenteredAndPreviousOneIs
+- (void)testComponentMovedToNewRowIfItsHorizontalMarginIsBiggerThanCollectionWidth
 {
     [self addBodyComponentWithIdentifier:self.centeredComponentIdentifier];
-    [self addBodyComponentWithIdentifier:self.compactComponentIdentifier];
     [self addBodyComponentWithIdentifier:self.compactComponentIdentifier];
 
     CGFloat const componentVerticalMargin = 20;
@@ -211,7 +210,7 @@
     CGSize const centeredComponentSize = self.centeredComponent.preferredViewSize;
 
     self.componentLayoutManager.verticalComponentMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(componentVerticalMargin);
-    self.componentLayoutManager.verticalComponentMarginsForLayoutTraits[self.centeredComponent.layoutTraits] = @(componentVerticalMargin);
+    self.componentLayoutManager.horizontalComponentMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(CGFLOAT_MAX);
 
     HUBCollectionViewLayout * const layout = [self computeLayout];
 
@@ -220,64 +219,29 @@
     CGRect const secondComponentViewFrame = [layout layoutAttributesForItemAtIndexPath:secondComponentIndexPath].frame;
     CGRect const expectedFrameForSecondComponent = CGRectMake(0, centeredComponentSize.height + componentVerticalMargin, compactComponentSize.width, compactComponentSize.height);
     XCTAssertTrue(CGRectEqualToRect(secondComponentViewFrame, expectedFrameForSecondComponent));
-
-    // Check that the third component is on the same row as the second one because they both are compact
-    NSIndexPath * const thirdComponentIndexPath = [NSIndexPath indexPathForItem:2 inSection:0];
-    CGRect const thirdComponentViewFrame = [layout layoutAttributesForItemAtIndexPath:thirdComponentIndexPath].frame;
-    XCTAssertEqualWithAccuracy(secondComponentViewFrame.origin.y, thirdComponentViewFrame.origin.y, 0.01);
-}
-
-- (void)testComponentMovedToNewRowIfItIsCenteredAndPreviousOneIsNot
-{
-    [self addBodyComponentWithIdentifier:self.compactComponentIdentifier];
-    [self addBodyComponentWithIdentifier:self.centeredComponentIdentifier];
-    [self addBodyComponentWithIdentifier:self.centeredComponentIdentifier];
-
-    CGFloat const componentVerticalMargin = 20;
-    CGSize const compactComponentSize = self.compactComponent.preferredViewSize;
-
-    self.componentLayoutManager.verticalComponentMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(componentVerticalMargin);
-    self.componentLayoutManager.verticalComponentMarginsForLayoutTraits[self.centeredComponent.layoutTraits] = @(componentVerticalMargin);
-
-    HUBCollectionViewLayout * const layout = [self computeLayout];
-
-    // Check that the second component is on new row because it is centered and the first one is not
-    NSIndexPath * const secondComponentIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
-    CGRect const secondComponentViewFrame = [layout layoutAttributesForItemAtIndexPath:secondComponentIndexPath].frame;
-    CGFloat expectedOriginYForSecondComponent = compactComponentSize.height + componentVerticalMargin;
-    XCTAssertEqualWithAccuracy(secondComponentViewFrame.origin.y, expectedOriginYForSecondComponent, 0.001);
-
-    // Check that the third component is on the same row as the second one because they both are centered
-    NSIndexPath * const thirdComponentIndexPath = [NSIndexPath indexPathForItem:2 inSection:0];
-    CGRect const thirdComponentViewFrame = [layout layoutAttributesForItemAtIndexPath:thirdComponentIndexPath].frame;
-    XCTAssertEqualWithAccuracy(secondComponentViewFrame.origin.y, thirdComponentViewFrame.origin.y, 0.001);
 }
 
 - (void)testComponentsOrigins
 {
-    [self addBodyComponentWithIdentifier:self.compactComponentIdentifier];
     [self addBodyComponentWithIdentifier:self.centeredComponentIdentifier];
     [self addBodyComponentWithIdentifier:self.centeredComponentIdentifier];
 
     CGFloat const componentVerticalMargin = 20;
-    CGSize const centeredComponentSize = self.centeredComponent.preferredViewSize;
 
     self.componentLayoutManager.verticalComponentMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(componentVerticalMargin);
     self.componentLayoutManager.verticalComponentMarginsForLayoutTraits[self.centeredComponent.layoutTraits] = @(componentVerticalMargin);
+    NSArray *componentsLayoutTraits = @[self.centeredComponent.layoutTraits, self.centeredComponent.layoutTraits];
+    self.componentLayoutManager.horizontalComponentOffsetsForArrayOfLayoutTraits[componentsLayoutTraits] = @(110);
 
     HUBCollectionViewLayout * const layout = [self computeLayout];
 
-    NSIndexPath * const secondComponentIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
-    CGRect const secondComponentViewFrame = [layout layoutAttributesForItemAtIndexPath:secondComponentIndexPath].frame;
-    CGFloat const expectedOriginXForSecondComponent = (self.collectionViewSize.width - 2 * centeredComponentSize.width) / 2;
-    XCTAssertEqualWithAccuracy(expectedOriginXForSecondComponent, 110, 0.001);
-    XCTAssertEqualWithAccuracy(secondComponentViewFrame.origin.x, expectedOriginXForSecondComponent, 0.001);
+    NSIndexPath * const componentIndexPath1 = [NSIndexPath indexPathForItem:0 inSection:0];
+    CGRect const componentViewFrame1 = [layout layoutAttributesForItemAtIndexPath:componentIndexPath1].frame;
+    XCTAssertEqualWithAccuracy(componentViewFrame1.origin.x, 110, 0.001);
 
-    NSIndexPath * const thirdComponentIndexPath = [NSIndexPath indexPathForItem:2 inSection:0];
-    CGRect const thirdComponentViewFrame = [layout layoutAttributesForItemAtIndexPath:thirdComponentIndexPath].frame;
-    CGFloat const expectedOriginXForThirdComponent = expectedOriginXForSecondComponent + centeredComponentSize.width;
-    XCTAssertEqualWithAccuracy(expectedOriginXForThirdComponent, 160, 0.001);
-    XCTAssertEqualWithAccuracy(thirdComponentViewFrame.origin.x, expectedOriginXForThirdComponent, 0.001);
+    NSIndexPath * const componentIndexPath2 = [NSIndexPath indexPathForItem:1 inSection:0];
+    CGRect const componentViewFrame2 = [layout layoutAttributesForItemAtIndexPath:componentIndexPath2].frame;
+    XCTAssertEqualWithAccuracy(componentViewFrame2.origin.x, 160, 0.001);
 }
 
 #pragma mark - Utilities

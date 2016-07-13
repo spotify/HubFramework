@@ -11,6 +11,7 @@
         _headerMarginsForLayoutTraits = [NSMutableDictionary new];
         _horizontalComponentMarginsForLayoutTraits = [NSMutableDictionary new];
         _verticalComponentMarginsForLayoutTraits = [NSMutableDictionary new];
+        _horizontalComponentOffsetsForArrayOfLayoutTraits = [NSMutableDictionary new];
     }
     
     return self;
@@ -40,20 +41,11 @@
     return [self.verticalComponentMarginsForLayoutTraits[layoutTraits] doubleValue];
 }
 
-- (BOOL)shouldHorizontallyCenterComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
+- (CGFloat)horizontalOffsetForComponentsWithLayoutTraits:(NSArray<NSSet<HUBComponentLayoutTrait *> *> *)componentsTraits
+                   firstComponentLeadingHorizontalOffset:(CGFloat)firstComponentLeadingOffsetX
+                   lastComponentTrailingHorizontalOffset:(CGFloat)lastComponentTrailingOffsetX
 {
-    return [layoutTraits containsObject:HUBComponentLayoutTraitCentered];
-}
-
-- (BOOL)shouldLayoutComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
-  horizontallyNextToComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> * _Nullable)precedingComponentLayoutTraits
-{
-    if (precedingComponentLayoutTraits == nil) {
-        return YES;
-    }
-
-    return [self shouldHorizontallyCenterComponentWithLayoutTraits:layoutTraits] ==
-           [self shouldHorizontallyCenterComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> * _Nonnull)precedingComponentLayoutTraits];
+    return [self.horizontalComponentOffsetsForArrayOfLayoutTraits[componentsTraits] doubleValue];
 }
 
 @end

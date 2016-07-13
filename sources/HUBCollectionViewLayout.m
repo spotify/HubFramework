@@ -70,17 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                     collectionViewSize:collectionViewSize];
 
         BOOL couldFitOnTheRow = CGRectGetMaxX(componentViewFrame) <= collectionViewSize.width;
-        BOOL isCompatibleWithPreviousOneOnTheRow = YES;
-
-        NSSet<HUBComponentLayoutTrait *> *precedingComponentLayoutTraits = [componentsOnCurrentRow lastObject].layoutTraits;
-        if (precedingComponentLayoutTraits) {
-            isCompatibleWithPreviousOneOnTheRow = [self.componentLayoutManager shouldLayoutComponentWithLayoutTraits:componentLayoutTraits
-                                                                         horizontallyNextToComponentWithLayoutTraits:precedingComponentLayoutTraits];
-        }
-
-        BOOL shouldPlaceOnTheSameRow = couldFitOnTheRow && isCompatibleWithPreviousOneOnTheRow;
         
-        if (shouldPlaceOnTheSameRow == NO) {
+        if (couldFitOnTheRow == NO) {
             [self centerComponentsHorizontallyIfNeeded:componentsOnCurrentRow
                                     lastComponentIndex:componentIndex - 1
                                        firstComponentX:firstComponentOnCurrentRowOrigin.x
@@ -316,12 +307,11 @@ NS_ASSUME_NONNULL_BEGIN
                               lastComponentX:(CGFloat)maxX
                                     rowWidth:(CGFloat)rowWidth
 {
-    id<HUBComponent> const lastComponentOnTheRow = [components lastObject];
-
-    if ([self.componentLayoutManager shouldHorizontallyCenterComponentWithLayoutTraits:lastComponentOnTheRow.layoutTraits]) {
-        CGFloat adjustment = (minX + rowWidth - maxX) / 2 - minX;
-        [self updateLayoutAttributesForComponents:components originXAdjustment:adjustment lastComponentIndex:lastComponentIndex];
-    }
+    NSArray<NSSet<HUBComponentLayoutTrait *> *> *componentsTraits = [components valueForKey:NSStringFromSelector(@selector(layoutTraits))];
+    CGFloat adjustment = [self.componentLayoutManager horizontalOffsetForComponentsWithLayoutTraits:componentsTraits
+                                                              firstComponentLeadingHorizontalOffset:minX
+                                                              lastComponentTrailingHorizontalOffset:rowWidth - maxX];
+    [self updateLayoutAttributesForComponents:components originXAdjustment:adjustment lastComponentIndex:lastComponentIndex];
 }
 
 - (void)updateLayoutAttributesForComponents:(NSArray *)components
