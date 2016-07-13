@@ -11,6 +11,7 @@
         _headerMarginsForLayoutTraits = [NSMutableDictionary new];
         _horizontalComponentMarginsForLayoutTraits = [NSMutableDictionary new];
         _verticalComponentMarginsForLayoutTraits = [NSMutableDictionary new];
+        _horizontalComponentOffsetsForArrayOfLayoutTraits = [NSMutableDictionary new];
     }
     
     return self;
@@ -38,6 +39,13 @@
                        precedingComponentLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)precedingComponentLayoutTraits
 {
     return [self.verticalComponentMarginsForLayoutTraits[layoutTraits] doubleValue];
+}
+
+- (CGFloat)horizontalOffsetForComponentsWithLayoutTraits:(NSArray<NSSet<HUBComponentLayoutTrait *> *> *)componentsTraits
+                   firstComponentLeadingHorizontalOffset:(CGFloat)firstComponentLeadingOffsetX
+                   lastComponentTrailingHorizontalOffset:(CGFloat)lastComponentTrailingOffsetX
+{
+    return [self.horizontalComponentOffsetsForArrayOfLayoutTraits[componentsTraits] doubleValue];
 }
 
 @end

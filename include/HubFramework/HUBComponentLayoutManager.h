@@ -79,6 +79,18 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
 - (CGFloat)verticalMarginForComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
                        precedingComponentLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)precedingComponentLayoutTraits;
 
+/**
+ *  Calculate the horizontal offset for the provided components represented by their layout traits
+ *
+ *  @param componentsTraits An array of the sets of layout traits for all components for which the horizontal adjustment should be calculated
+ *  @param firstComponentLeadingOffsetX The leading horizontal offset of the first component in the sequence
+ *  @param lastComponentTrailingOffsetX The trailing horizontal offset of the last component in the sequence
+ *
+ *  @return The value by which the horizontal origins of all components should be adjusted
+ */
+- (CGFloat)horizontalOffsetForComponentsWithLayoutTraits:(NSArray<NSSet<HUBComponentLayoutTrait *> *> *)componentsTraits
+                   firstComponentLeadingHorizontalOffset:(CGFloat)firstComponentLeadingOffsetX
+                   lastComponentTrailingHorizontalOffset:(CGFloat)lastComponentTrailingOffsetX;
 @end
 
 NS_ASSUME_NONNULL_END

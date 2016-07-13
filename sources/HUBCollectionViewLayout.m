@@ -51,8 +51,10 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableArray<id<HUBComponent>> * const componentsOnCurrentRow = [NSMutableArray new];
     CGFloat currentRowHeight = 0;
     CGPoint currentPoint = CGPointZero;
+    CGPoint firstComponentOnCurrentRowOrigin = CGPointZero;
+    NSUInteger const allComponentsCount = self.viewModel.bodyComponentModels.count;
     
-    for (NSUInteger componentIndex = 0; componentIndex < self.viewModel.bodyComponentModels.count; componentIndex++) {
+    for (NSUInteger componentIndex = 0; componentIndex < allComponentsCount; componentIndex++) {
         id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[componentIndex];
         id<HUBComponent> const component = [self componentForModel:componentModel];
         NSSet<HUBComponentLayoutTrait *> * const componentLayoutTraits = component.layoutTraits;
@@ -66,8 +68,16 @@ NS_ASSUME_NONNULL_BEGIN
                                                                margins:margins
                                                           currentPoint:currentPoint
                                                     collectionViewSize:collectionViewSize];
+
+        BOOL couldFitOnTheRow = CGRectGetMaxX(componentViewFrame) <= collectionViewSize.width;
         
-        if (CGRectGetMaxX(componentViewFrame) > collectionViewSize.width) {
+        if (couldFitOnTheRow == NO) {
+            [self updateLayoutAttributesForComponentsIfNeeded:componentsOnCurrentRow
+                                           lastComponentIndex:componentIndex - 1
+                                              firstComponentX:firstComponentOnCurrentRowOrigin.x
+                                               lastComponentX:currentPoint.x
+                                                     rowWidth:collectionViewSize.width];
+
             if (componentsOnCurrentRow.count > 0) {
                 componentViewFrame.origin.y += currentRowHeight;
                 margins.top = 0;
@@ -110,8 +120,24 @@ NS_ASSUME_NONNULL_BEGIN
         
         contentHeight = currentPoint.y + currentRowHeight;
         [componentsOnCurrentRow addObject:component];
+
+        if (componentsOnCurrentRow.count == 1) {
+            firstComponentOnCurrentRowOrigin = componentViewFrame.origin;
+        }
+
+        BOOL isLastComponent = (componentIndex == allComponentsCount - 1);
+        // We center components if needed when we go to a new row. If it is the last row we need to center it here
+        if (isLastComponent) {
+            [self updateLayoutAttributesForComponentsIfNeeded:componentsOnCurrentRow
+                                           lastComponentIndex:componentIndex
+                                              firstComponentX:firstComponentOnCurrentRowOrigin.x
+                                               lastComponentX:currentPoint.x
+                                                     rowWidth:collectionViewSize.width];
+        }
+
+
     }
-    
+
     self.contentSize = [self contentSizeForContentHeight:contentHeight
                                      bottomRowComponents:componentsOnCurrentRow
                                       collectionViewSize:collectionViewSize];
@@ -271,6 +297,40 @@ NS_ASSUME_NONNULL_BEGIN
     contentHeight += viewBottomMargin;
     
     return CGSizeMake(collectionViewSize.width, contentHeight);
+}
+
+#pragma mark Centering
+
+- (void)updateLayoutAttributesForComponentsIfNeeded:(NSArray<id<HUBComponent>> *)components
+                                 lastComponentIndex:(NSUInteger)lastComponentIndex
+                                    firstComponentX:(CGFloat)firstComponentX
+                                     lastComponentX:(CGFloat)lastComponentX
+                                           rowWidth:(CGFloat)rowWidth
+{
+    NSArray<NSSet<HUBComponentLayoutTrait *> *> *componentsTraits = [components valueForKey:NSStringFromSelector(@selector(layoutTraits))];
+    CGFloat adjustment = [self.componentLayoutManager horizontalOffsetForComponentsWithLayoutTraits:componentsTraits
+                                                              firstComponentLeadingHorizontalOffset:firstComponentX
+                                                              lastComponentTrailingHorizontalOffset:rowWidth - lastComponentX];
+    [self updateLayoutAttributesForComponents:components horizontalAdjustment:adjustment lastComponentIndex:lastComponentIndex];
+}
+
+- (void)updateLayoutAttributesForComponents:(NSArray<id<HUBComponent>> *)components
+                       horizontalAdjustment:(CGFloat)horizontalAdjustment
+                         lastComponentIndex:(NSUInteger)lastComponentIndex
+{
+    if (horizontalAdjustment == 0.0) {
+        return;
+    }
+
+    NSUInteger indexOfFirstComponentOnTheRow = lastComponentIndex - components.count + 1;
+    for (NSUInteger index = indexOfFirstComponentOnTheRow; index <= lastComponentIndex; index++) {
+        NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
+        UICollectionViewLayoutAttributes * const layoutAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
+        CGRect adjustedFrame = layoutAttributes.frame;
+        adjustedFrame.origin.x += horizontalAdjustment;
+
+        [self registerComponentViewFrame:adjustedFrame forIndex:index];
+    }
 }
 
 @end
