@@ -97,6 +97,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentCategories.h@HUBComponentCategoryRow">HUBComponentCategoryRow</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitCentered">HUBComponentLayoutTraitCentered</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitCompactWidth">HUBComponentLayoutTraitCompactWidth</a>
               </li>
               <li class="nav-group-task">
@@ -625,6 +628,95 @@
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentLayoutManager(im)horizontalOffsetForComponentsWithLayoutTraits:firstComponentLeadingHorizontalOffset:lastComponentTrailingHorizontalOffset:"></a>
+                    <a name="//apple_ref/objc/Method/-horizontalOffsetForComponentsWithLayoutTraits:firstComponentLeadingHorizontalOffset:lastComponentTrailingHorizontalOffset:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentLayoutManager(im)horizontalOffsetForComponentsWithLayoutTraits:firstComponentLeadingHorizontalOffset:lastComponentTrailingHorizontalOffset:">-horizontalOffsetForComponentsWithLayoutTraits:firstComponentLeadingHorizontalOffset:lastComponentTrailingHorizontalOffset:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Calculate the horizontal offset for the provided components represented by their layout traits</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">horizontalOffsetForComponentsWithLayoutTraits</span><span class="p">:</span>
+               <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">NSSet</span><span class="o">&lt;</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></span> <span class="o">*&gt;</span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span>
+                   <span class="n">componentsTraits</span>
+                   <span class="n">firstComponentLeadingHorizontalOffset</span><span class="o">:</span>
+                       <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">firstComponentLeadingOffsetX</span>
+                   <span class="n">lastComponentTrailingHorizontalOffset</span><span class="o">:</span>
+                       <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">lastComponentTrailingOffsetX</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">horizontalOffsetForComponentsWithLayoutTraits</span><span class="p">(</span><span class="nv">componentsTraits</span><span class="p">:</span> <span class="p">[</span><span class="kt">Set</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>componentsTraits</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of the sets of layout traits for all components for which the horizontal adjustment should be calculated</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>firstComponentLeadingOffsetX</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The leading horizontal offset of the first component in the sequence</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lastComponentTrailingOffsetX</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The trailing horizontal offset of the last component in the sequence</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The value by which the horizontal origins of all components should be adjusted</p>
+
                       </div>
                     </section>
                   </div>
