@@ -80,8 +80,7 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
                        precedingComponentLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)precedingComponentLayoutTraits;
 
 /**
- *  Calculates the horizontal offset for the provided components represented by their layout traits
- *  Makes decicion based on the layout traits and the horizontal positions of the first and the last components
+ *  Calculate the horizontal offset for the provided components represented by their layout traits
  *
  *  @param componentsTraits An array of the sets of layout traits for all components for which the horizontal adjustment should be calculated
  *  @param firstComponentLeadingOffsetX The leading horizontal offset of the first component in the sequence

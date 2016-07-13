@@ -200,7 +200,7 @@
     XCTAssertTrue(CGRectEqualToRect(componentViewFrame, expectedComponentViewFrame));
 }
 
-- (void)testComponentMovedToNewRowIfItsHorizontalMarginIsBiggerThanCollectionWidth
+- (void)testComponentMovedToNewRowIfItsHorizontalMarginIsBiggerThanCollectionViewWidth
 {
     [self addBodyComponentWithIdentifier:self.centeredComponentIdentifier];
     [self addBodyComponentWithIdentifier:self.compactComponentIdentifier];
@@ -221,7 +221,7 @@
     XCTAssertTrue(CGRectEqualToRect(secondComponentViewFrame, expectedFrameForSecondComponent));
 }
 
-- (void)testComponentsOrigins
+- (void)testComponentOrigins
 {
     [self addBodyComponentWithIdentifier:self.centeredComponentIdentifier];
     [self addBodyComponentWithIdentifier:self.centeredComponentIdentifier];
