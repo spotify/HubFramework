@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
         BOOL shouldPlaceOnTheSameRow = couldFitOnTheRow && isCompatibleWithPreviousOneOnTheRow;
         
         if (shouldPlaceOnTheSameRow == NO) {
-            [self centerHorizontallyIfNeededComponents:componentsOnCurrentRow
+            [self centerComponentsHorizontallyIfNeeded:componentsOnCurrentRow
                                     lastComponentIndex:componentIndex - 1
                                        firstComponentX:firstComponentOnCurrentRowOrigin.x
                                         lastComponentX:currentPoint.x
@@ -134,10 +134,10 @@ NS_ASSUME_NONNULL_BEGIN
             firstComponentOnCurrentRowOrigin = componentViewFrame.origin;
         }
 
-        BOOL isLastComponent = componentIndex == allComponentsCount - 1;
+        BOOL isLastComponent = (componentIndex == allComponentsCount - 1);
         // We center components if needed when we go to a new row. If it is the last row we need to center it here
         if (isLastComponent) {
-            [self centerHorizontallyIfNeededComponents:componentsOnCurrentRow
+            [self centerComponentsHorizontallyIfNeeded:componentsOnCurrentRow
                                     lastComponentIndex:componentIndex
                                        firstComponentX:firstComponentOnCurrentRowOrigin.x
                                         lastComponentX:currentPoint.x
@@ -310,31 +310,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark Centering
 
-- (void)centerHorizontallyIfNeededComponents:(NSArray *)components
+- (void)centerComponentsHorizontallyIfNeeded:(NSArray *)components
                           lastComponentIndex:(NSUInteger)lastComponentIndex
                              firstComponentX:(CGFloat)minX
                               lastComponentX:(CGFloat)maxX
                                     rowWidth:(CGFloat)rowWidth
 {
     id<HUBComponent> const lastComponentOnTheRow = [components lastObject];
+
     if ([self.componentLayoutManager shouldHorizontallyCenterComponentWithLayoutTraits:lastComponentOnTheRow.layoutTraits]) {
-        CGFloat adjustment = [self horizontalAdjustmentForMinX:minX maxX:maxX rowWidth:rowWidth];
-        [self adjustHorizontallyComponents:components adjustment:adjustment lastComponentIndex:lastComponentIndex];
+        CGFloat adjustment = (minX + rowWidth - maxX) / 2 - minX;
+        [self updateLayoutAttributesForComponents:components originXAdjustment:adjustment lastComponentIndex:lastComponentIndex];
     }
 }
 
-- (CGFloat)horizontalAdjustmentForMinX:(CGFloat)minX maxX:(CGFloat)maxX rowWidth:(CGFloat)rowWidth
-{
-    CGFloat leftRowMargin = minX;
-    CGFloat rightRowMargin = rowWidth - maxX;
-    CGFloat horizontalAdjustment = (leftRowMargin + rightRowMargin) / 2 - leftRowMargin;
-
-    return horizontalAdjustment;
-}
-
-- (void)adjustHorizontallyComponents:(NSArray *)components
-                          adjustment:(CGFloat)horizontalAdjustment
-                  lastComponentIndex:(NSUInteger)lastComponentIndex
+- (void)updateLayoutAttributesForComponents:(NSArray *)components
+                          originXAdjustment:(CGFloat)horizontalAdjustment
+                         lastComponentIndex:(NSUInteger)lastComponentIndex
 {
     if (horizontalAdjustment == 0.0) {
         return;
