@@ -1,6 +1,6 @@
 <img alt="The Hub Framework" src="readme-banner.jpg" width="100%" max-width=1008>
 
-[![Code coverage](https://codecov.spotify.net/github_enterprise/iOS/HubFramework/coverage.svg?branch=master)](https://codecov.spotify.net/github_enterprise/iOS/HubFramework?branch=master) [![Documentation website](https://img.shields.io/badge/Documentation-Website-blue.svg)](https://ghe.spotify.net/pages/iOS/HubFramework)
+[![codecov](https://codecov.spotify.net/ghe/iOS/HubFramework/branch/master/graph/badge.svg)](https://codecov.spotify.net/ghe/iOS/HubFramework) [![Documentation website](https://img.shields.io/badge/Documentation-Website-blue.svg)](https://ghe.spotify.net/pages/iOS/HubFramework)
 [![Dash docset feed](https://img.shields.io/badge/Documentation-Dash%20docset%20feed-blue.svg)](dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml)
 
 Welcome to the Hub Framework - a toolkit for building native, component-driven UIs. It replaces the long and hard process of building, tweaking and shipping a new UI from scratch with **Components** & **Content Operations**.

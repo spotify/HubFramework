@@ -1,4 +1,3 @@
-require 'profdata'
 require 'set'
 require 'shellwords'
 require 'tc_util'
@@ -51,40 +50,26 @@ namespace :ci do
 
     desc 'Calculate code coverage from the derived data folder.'
     task :coverage do
-        TCUtil.block('Code Coverage') do
-            # Calculate coverage
-            pd = Profdata.from_derived_data(DERIVED_DATA_PATH)
-            pd.reject_paths! { |path| path =~ /^tests\// }
-
-            # Report to TeamCity
-            total, covered = pd.stats
-            TCUtil.stat('CodeCoverageAbsLCovered', covered)
-            TCUtil.stat('CodeCoverageAbsLCovered', total)
-            TCUtil.stat('CodeCoverageAbsLPerMille', (covered.to_f / total) * 1000)
-
-            # Report to codecov
-            if ENV['CODECOV_TOKEN'] && ENV['CODECOV_URL']
-                # Create JSON file
-                pd.write_codecov_file('build/codecov.json')
-                info = TCUtil.info
-
-                # Skip CodeCov adjustments since we do them ourself
-                command = ['./scripts/codecov.sh', '-v', '-X', 'fix']
-                {
-                    '-u' => ENV['CODECOV_URL'],
-                    '-t' => ENV['CODECOV_TOKEN'],
-                    '-f' => 'build/codecov.json',
-                    '-C' => info[:commit],
-                    '-B' => info[:branch],
-                    '-P' => info[:pr],
-                    '-b' => info[:build_id]
-                }.each{|k,v| command.push(k.to_s, v) if v }
-
-                # Run command
-                env = { 'GIT_BRANCH' => info[:branch], 'GIT_COMMIT' => info[:commit] }
-                system(env, *command) or abort("CodeCov POST Failed!: #{$?}")
-            end
+        token = ENV['CODECOV_TOKEN']
+        host = ENV['CODECOV_HOST']
+        url = ENV['CODECOV_URL'] || (host ? "https://#{host}" : nil)
+        unless token && url
+          puts "Codecov info missing. Not posting coverage."
+          next
         end
+
+        command = ['./scripts/codecov.sh', '-v', '-X', 'gcov', '-X', 'coveragepy']
+        command << '-d' if ENV['CODECOV_DRYRUN'] == '1'
+        {
+          '-u' => url,
+          '-t' => token,
+          '-D' => DERIVED_DATA_PATH,
+        }.each{|k,v| command.push(k.to_s, v) if v }
+
+        # Run command
+        full_cmd = Shellwords.shelljoin(command)
+        puts full_cmd
+        system(full_cmd) or abort("CodeCov POST Failed!: #{$?}")
     end
 
     desc 'Run the CI bound tasks (build, test, upload code coverage)'
