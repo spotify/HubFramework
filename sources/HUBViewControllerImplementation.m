@@ -239,7 +239,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (__kindof id<HUBComponent>)componentWrapper:(HUBComponentWrapper *)componentWrapper
                 createChildComponentWithModel:(id<HUBComponentModel>)model
 {
-    return [self.componentRegistry createComponentForModel:model];
+    id<HUBComponent> const childComponent = [self.componentRegistry createComponentForModel:model];
+    HUBComponentWrapper * const childComponentWrapper = [self wrapComponent:childComponent withModel:model];
+    
+    UIView * const componentView = HUBComponentLoadViewIfNeeded(componentWrapper.component);
+    UIView * const childComponentView = HUBComponentLoadViewIfNeeded(childComponent);
+    
+    CGSize const preferredViewSize = [childComponentWrapper.component preferredViewSizeForDisplayingModel:model containerViewSize:componentView.frame.size];
+    childComponentView.frame = CGRectMake(0, 0, preferredViewSize.width, preferredViewSize.height);
+    
+    [childComponentWrapper.component configureViewWithModel:model];
+    return childComponent;
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
@@ -316,14 +326,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (cell.componentWrapper == nil) {
         id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
-        
-        HUBComponentWrapper * const componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:component
-                                                                                                model:componentModel
-                                                                                       UIStateManager:self.componentUIStateManager];
-        
-        componentWrapper.delegate = self;
-        cell.componentWrapper = componentWrapper;
-        self.componentWrappersByIdentifier[componentWrapper.identifier] = componentWrapper;
+        cell.componentWrapper = [self wrapComponent:component withModel:componentModel];
     }
     
     HUBComponentWrapper * const componentWrapper = cell.componentWrapper;
@@ -403,6 +406,17 @@ NS_ASSUME_NONNULL_BEGIN
     [self.viewModelLoader loadViewModel];
 }
 
+- (HUBComponentWrapper *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
+{
+    HUBComponentWrapper * const wrapper = [[HUBComponentWrapper alloc] initWithComponent:component
+                                                                                   model:model
+                                                                          UIStateManager:self.componentUIStateManager];
+    
+    wrapper.delegate = self;
+    self.componentWrappersByIdentifier[wrapper.identifier] = wrapper;
+    return wrapper;
+}
+
 - (void)configureHeaderComponent
 {
     id<HUBComponentModel> const componentModel = self.viewModel.headerComponentModel;
@@ -480,13 +494,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
         
         id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
-        
-        componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:component
-                                                                    model:componentModel
-                                                           UIStateManager:self.componentUIStateManager];
-        
-        componentWrapper.delegate = self;
-        self.componentWrappersByIdentifier[componentWrapper.identifier] = componentWrapper;
+        componentWrapper = [self wrapComponent:component withModel:componentModel];
     }
     
     CGSize const componentViewSize = [componentWrapper.component preferredViewSizeForDisplayingModel:componentModel containerViewSize:self.view.frame.size];

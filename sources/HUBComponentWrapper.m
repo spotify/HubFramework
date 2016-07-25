@@ -79,17 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     id<HUBComponentModel> const childModel = childComponentModels[childIndex];
-    id<HUBComponent> const childComponent = [self.delegate componentWrapper:self createChildComponentWithModel:childModel];
-    
-    UIView * const componentView = HUBComponentLoadViewIfNeeded(component);
-    UIView * const childComponentView = HUBComponentLoadViewIfNeeded(childComponent);
-    
-    CGSize const preferredViewSize = [childComponent preferredViewSizeForDisplayingModel:childModel containerViewSize:componentView.frame.size];
-    childComponentView.frame = CGRectMake(0, 0, preferredViewSize.width, preferredViewSize.height);
-    
-    [childComponent configureViewWithModel:childModel];
-    
-    return childComponent;
+    return [self.delegate componentWrapper:self createChildComponentWithModel:childModel];
 }
 
 - (void)component:(id<HUBComponentWithChildren>)component willDisplayChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView
