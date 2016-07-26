@@ -2,6 +2,7 @@
 
 #import "HUBComponent.h"
 #import "HUBJSONCompatibleBuilder.h"
+#import "HUBSerializable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -89,6 +90,24 @@ static inline NSError * _Nullable HUBAddJSONDataToBuilder(NSData *data, id<HUBJS
     [builder addDataFromJSONDictionary:(NSDictionary *)JSONObject];
     
     return nil;
+}
+
+/**
+ *  Return a serialized string representation of a serializable object
+ *
+ *  @param object The object to return a serialized string for
+ *
+ *  @return A string containing a serialized representation of the object (JSON), or nil if the operation failed
+ */
+static inline NSString * _Nullable HUBSerializeToString(id<HUBSerializable> object) {
+    NSDictionary * const serialization = [object serialize];
+    NSData * const jsonData = [NSJSONSerialization dataWithJSONObject:serialization options:NSJSONWritingPrettyPrinted error:nil];
+    
+    if (jsonData == nil) {
+        return nil;
+    }
+    
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
 NS_ASSUME_NONNULL_END

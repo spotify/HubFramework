@@ -383,6 +383,14 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+#pragma mark - NSObject
+
+- (NSString *)debugDescription
+{
+    return [NSString stringWithFormat:@"HUBComponentModelBuilder with contents: %@",
+            HUBSerializeToString([self buildForIndex:self.preferredIndex.unsignedIntegerValue])];
+}
+
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(nullable NSZone *)zone

@@ -8,8 +8,7 @@
 #import "HUBViewModelJSONSchema.h"
 #import "HUBComponentModelJSONSchema.h"
 #import "HUBJSONPath.h"
-
-#import "HUBContentOperation.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -257,6 +256,13 @@ NS_ASSUME_NONNULL_BEGIN
         HUBComponentModelBuilderImplementation * const componentModelBuilder = [self getOrCreateBuilderForOverlayComponentModelWithIdentifier:componentIdentifier];
         [componentModelBuilder addDataFromJSONDictionary:componentModelDictionary];
     }
+}
+
+#pragma mark - NSObject
+
+- (NSString *)debugDescription
+{
+    return [NSString stringWithFormat:@"HUBViewModelBuilder with contents: %@", HUBSerializeToString([self build])];
 }
 
 #pragma mark - NSCopying
