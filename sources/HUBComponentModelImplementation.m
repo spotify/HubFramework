@@ -80,6 +80,13 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
+#pragma mark - NSObject
+
+- (NSString *)debugDescription
+{
+    return [NSString stringWithFormat:@"HUBComponentModel with contents: %@", HUBSerializeToString(self)];
+}
+
 #pragma mark - HUBSerializable
 
 - (NSDictionary<NSString *, NSObject<NSCoding> *> *)serialize

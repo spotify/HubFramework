@@ -2,6 +2,7 @@
 
 #import "HUBJSONKeys.h"
 #import "HUBComponentModel.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -43,6 +44,13 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
+#pragma mark - NSObject
+
+- (NSString *)debugDescription
+{
+    return [NSString stringWithFormat:@"HUBViewModel with contents: %@", HUBSerializeToString(self)];
+}
+
 #pragma mark - HUBSerializable
 
 - (NSDictionary<NSString *, NSObject<NSCoding> *> *)serialize
@@ -59,6 +67,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     return [serialization copy];
 }
+
+#pragma mark - Private utilities
 
 - (nullable NSArray<NSDictionary<NSString *, NSObject *> *> *)serializeComponentModels:(NSArray<id<HUBComponentModel>> *)componentModels
 {
