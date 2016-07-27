@@ -105,6 +105,17 @@ NS_ASSUME_NONNULL_BEGIN
     return [serialization copy];
 }
 
+#pragma mark - HUBComponentModel
+
+- (nullable id<HUBComponentModel>)childComponentModelAtIndex:(NSUInteger)childIndex
+{
+    if (childIndex >= self.childComponentModels.count) {
+        return nil;
+    }
+    
+    return self.childComponentModels[childIndex];
+}
+
 #pragma mark - Private utilities
 
 - (NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedComponentData

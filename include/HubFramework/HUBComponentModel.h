@@ -194,6 +194,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable, readonly) NSArray<id<HUBComponentModel>> *childComponentModels;
 
+/**
+ *  Return a child component model for a given index, or `nil` if an invalid index was supplied
+ *
+ *  @param childIndex The index to return a child component model for
+ *
+ *  This method is a convenience API for accessing child component models directly using the `childComponentModels` property, since
+ *  it's fine to call this method with an index that is not known to be valid (since it will fail gracefully and return `nil`).
+ */
+- (nullable id<HUBComponentModel>)childComponentModelAtIndex:(NSUInteger)childIndex;
+
 @end
 
 NS_ASSUME_NONNULL_END
