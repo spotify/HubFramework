@@ -3,6 +3,7 @@
 
 @interface HUBComponentMock ()
 
+@property (nonatomic, strong, readwrite, nullable) id<HUBComponentModel> model;
 @property (nonatomic, strong, readwrite, nullable) id<HUBComponentImageData> mainImageData;
 @property (nonatomic, readwrite) NSUInteger numberOfResizes;
 @property (nonatomic, readwrite) NSUInteger numberOfAppearances;
@@ -48,7 +49,7 @@
 
 - (void)configureViewWithModel:(id<HUBComponentModel>)model
 {
-    // No-op
+    self.model = model;
 }
 
 #pragma mark - HUBComponentWithImageHandling

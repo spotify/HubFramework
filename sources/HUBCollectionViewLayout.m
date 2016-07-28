@@ -4,12 +4,14 @@
 #import "HUBComponentModel.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponent.h"
+#import "HUBComponentWithChildren.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentLayoutManager.h"
+#import "HUBComponentLayoutWrapper.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBCollectionViewLayout ()
+@interface HUBCollectionViewLayout () <HUBComponentChildDelegate>
 
 @property (nonatomic, strong, readonly) id<HUBViewModel> viewModel;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
@@ -143,6 +145,29 @@ NS_ASSUME_NONNULL_BEGIN
                                       collectionViewSize:collectionViewSize];
 }
 
+#pragma mark - HUBComponentChildDelegate
+
+- (id<HUBComponentWrapper>)component:(id<HUBComponentWithChildren>)component childComponentForModel:(id<HUBComponentModel>)childComponentModel
+{
+    id<HUBComponent> const childComponent = [self componentForModel:childComponentModel];
+    return [[HUBComponentLayoutWrapper alloc] initWithComponent:childComponent model:childComponentModel];
+}
+
+- (void)component:(id<HUBComponentWithChildren>)component willDisplayChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView
+{
+    // No-op
+}
+
+- (void)component:(id<HUBComponentWithChildren>)component didStopDisplayingChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView
+{
+    // No-op
+}
+
+- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex view:(UIView *)childView
+{
+    // No-op
+}
+
 #pragma mark - UICollectionViewLayout
 
 - (nullable NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect
@@ -189,6 +214,11 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBComponent> const newComponent = [self.componentRegistry createComponentForModel:model];
     self.componentCache[model.componentIdentifier] = newComponent;
+    
+    if ([newComponent conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
+        ((id<HUBComponentWithChildren>)newComponent).childDelegate = self;
+    }
+    
     return newComponent;
 }
 
@@ -298,8 +328,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     return CGSizeMake(collectionViewSize.width, contentHeight);
 }
-
-#pragma mark Centering
 
 - (void)updateLayoutAttributesForComponentsIfNeeded:(NSArray<id<HUBComponent>> *)components
                                  lastComponentIndex:(NSUInteger)lastComponentIndex

@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 
 #import "HUBComponentCollectionViewCell.h"
-#import "HUBComponentWrapper.h"
+#import "HUBComponentWrapperImplementation.h"
 #import "HUBComponentMock.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentModelImplementation.h"
@@ -10,7 +10,7 @@
 @interface HUBCollectionViewCellTests : XCTestCase
 
 @property (nonatomic, strong) HUBComponentMock *component;
-@property (nonatomic, strong) HUBComponentWrapper *componentWrapper;
+@property (nonatomic, strong) HUBComponentWrapperImplementation *componentWrapper;
 @property (nonatomic, strong) HUBComponentCollectionViewCell *cell;
 
 @end
@@ -47,10 +47,13 @@
     
     HUBComponentUIStateManager * const UIStateManager = [HUBComponentUIStateManager new];
     
-    self.componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:self.component model:model UIStateManager:UIStateManager];
+    self.componentWrapper = [[HUBComponentWrapperImplementation alloc] initWithComponent:self.component
+                                                                                   model:model
+                                                                          UIStateManager:UIStateManager
+                                                                         isRootComponent:YES];
     
     self.cell = [[HUBComponentCollectionViewCell alloc] initWithFrame:CGRectZero];
-    self.cell.componentWrapper = self.componentWrapper;
+    self.cell.component = self.componentWrapper;
 }
 
 #pragma mark - Tests

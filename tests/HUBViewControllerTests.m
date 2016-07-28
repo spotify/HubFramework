@@ -15,6 +15,7 @@
 #import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentMock.h"
+#import "HUBComponentWrapper.h"
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
 #import "HUBComponentLayoutManagerMock.h"
@@ -660,7 +661,7 @@
     XCTAssertEqualObjects(self.collectionView.deselectedIndexPaths, [NSSet setWithObject:indexPath]);
 }
 
-- (void)testCreatingChildComponent
+- (void)testCreatingAndReusingChildComponent
 {
     NSString * const componentNamespace = @"childComponentSelection";
     NSString * const componentName = @"component";
@@ -681,9 +682,13 @@
         componentModelBuilder.componentNamespace = componentNamespace;
         componentModelBuilder.componentName = componentName;
         
-        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"];
-        childComponentModelBuilder.componentNamespace = componentNamespace;
-        childComponentModelBuilder.componentName = childComponentName;
+        id<HUBComponentModelBuilder> const childComponentModelBuilderA = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"childA"];
+        childComponentModelBuilderA.componentNamespace = componentNamespace;
+        childComponentModelBuilderA.componentName = childComponentName;
+        
+        id<HUBComponentModelBuilder> const childComponentModelBuilderB = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"childB"];
+        childComponentModelBuilderB.componentNamespace = componentNamespace;
+        childComponentModelBuilderB.componentName = childComponentName;
         
         return YES;
     };
@@ -695,10 +700,21 @@
     
     id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
     
-    XCTAssertEqual([childDelegate component:component createChildComponentAtIndex:0], childComponent);
+    id<HUBComponentModel> const childComponentModelA = [component.model childComponentModelAtIndex:0];
+    XCTAssertNotNil(childComponentModelA);
+    
+    id<HUBComponentWrapper> const childComponentWrapper = [childDelegate component:component childComponentForModel:childComponentModelA];
+    XCTAssertEqual(childComponentWrapper.view, childComponent.view);
     XCTAssertTrue(CGSizeEqualToSize(childComponent.view.frame.size, childComponent.preferredViewSize));
     
-    XCTAssertNil([childDelegate component:component createChildComponentAtIndex:5]);
+    [childComponentWrapper prepareForReuse];
+    
+    id<HUBComponentModel> const childComponentModelB = [component.model childComponentModelAtIndex:1];
+    XCTAssertNotNil(childComponentModelB);
+    
+    id<HUBComponentWrapper> const reusedChildComponentWrapper = [childDelegate component:component childComponentForModel:childComponentModelB];
+    XCTAssertEqual(childComponentWrapper, reusedChildComponentWrapper);
+    XCTAssertEqual(reusedChildComponentWrapper.model, childComponentModelB);
 }
 
 - (void)testSelectionForRootComponent
@@ -834,17 +850,17 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     cell.frame = CGRectMake(0, 0, 300, 200);
-    [cell layoutSubviews];
+    [self simulateLayoutForViewHierarchyStartingWithView:cell];
     XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)1);
     
     // Subsequent layout passes should not notify the component, unless the size has changed
-    [cell layoutSubviews];
-    [cell layoutSubviews];
-    [cell layoutSubviews];
+    [self simulateLayoutForViewHierarchyStartingWithView:cell];
+    [self simulateLayoutForViewHierarchyStartingWithView:cell];
+    [self simulateLayoutForViewHierarchyStartingWithView:cell];
     XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)1);
     
     cell.frame = CGRectMake(0, 0, 300, 100);
-    [cell layoutSubviews];
+    [self simulateLayoutForViewHierarchyStartingWithView:cell];
     XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)2);
 }
 
@@ -998,22 +1014,19 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
     
     NSIndexPath * const firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+     NSIndexPath * const secondIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
     UICollectionViewCell * const cell = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:firstIndexPath];
+    self.collectionView.cells[firstIndexPath] = cell;
+    self.collectionView.cells[secondIndexPath] = cell;
     
     id state = @"State!";
     self.component.currentUIState = state;
     self.component.supportsRestorableUIState = YES;
     
     [cell prepareForReuse];
-    [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:firstIndexPath];
-    
-    XCTAssertEqualObjects(self.component.restoredUIStates, @[state]);
-    
-    // Make sure that UI states don't get reused between models
-    [cell prepareForReuse];
-    NSIndexPath * const secondIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
     [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:secondIndexPath];
-    
+    [cell prepareForReuse];
+    [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:firstIndexPath];
     XCTAssertEqualObjects(self.component.restoredUIStates, @[state]);
     
     // Make sure that the component was actually reused
@@ -1073,6 +1086,15 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     [self.viewController viewWillAppear:YES];
     self.viewController.view.frame = CGRectMake(0, 0, 320, 400);
     [self.viewController viewDidLayoutSubviews];
+}
+
+- (void)simulateLayoutForViewHierarchyStartingWithView:(UIView *)rootView
+{
+    [rootView layoutSubviews];
+    
+    for (UIView * const subviews in rootView.subviews) {
+        [self simulateLayoutForViewHierarchyStartingWithView:subviews];
+    }
 }
 
 - (void)performAsynchronousTestWithBlock:(void(^)(void))block

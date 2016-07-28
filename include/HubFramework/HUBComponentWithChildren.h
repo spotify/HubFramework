@@ -1,5 +1,6 @@
 #import "HUBComponent.h"
 
+@protocol HUBComponentWrapper;
 @protocol HUBComponentWithChildren;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,23 +18,25 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HUBComponentChildDelegate <NSObject>
 
 /**
- *  Create a component for a child model at a given index
+ *  Return a child component for a given model
  *
  *  @param component The parent component
- *  @param childIndex The index of the child component to be created
+ *  @param childComponentModel The model to return a child component for
  *
- *  You may choose to use this method to create components to use to represent any child models that you
+ *  You may choose to use this method to create components to use to represent any child component models that you
  *  wish to render in your component. Note that it is not required to use this method to create views or other
  *  visual representation for child components, but it's a convenient way - especially for components that wish
  *  to be truly dynamic with which child components they support.
  *
- *  @return A component that has its view loaded, is resized and ready to use. Nil is returned if an out-of-
- *  bounds index was supplied as `childIndex`. The Hub Framework will not manage the created component further,
- *  nor will it retain it, so it's up to you to add it to your component's view, position it, and do any other
- *  setup work required.
+ *  Components created this way are retained and managed by the Hub Framework, and reused whenever they are sent the
+ *  `prepareForReuse` message.
+ *
+ *  @return A wrapper for a component that was either newly created, or reused - if an inactive component of the same
+ *          type was available. The component will have its view loaded and resized according to its parent and the
+ *          component's `preferredViewSize`, and will be configured according to the passed `childComponentModel`.
  */
-- (nullable id<HUBComponent>)component:(id<HUBComponentWithChildren>)component
-           createChildComponentAtIndex:(NSUInteger)childIndex;
+- (id<HUBComponentWrapper>)component:(id<HUBComponentWithChildren>)component
+              childComponentForModel:(id<HUBComponentModel>)childComponentModel;
 
 /**
  *  Notify the Hub Framework that a component is about to display a child component at a given index

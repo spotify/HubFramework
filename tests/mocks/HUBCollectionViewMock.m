@@ -52,6 +52,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - UICollectionView
 
+- (UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell * const mockedCell = self.cells[indexPath];
+    
+    if (mockedCell != nil) {
+        return mockedCell;
+    }
+    
+    return [super dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+}
+
 - (nullable UICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     return self.cells[indexPath];

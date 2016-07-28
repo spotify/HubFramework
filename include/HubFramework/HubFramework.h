@@ -39,6 +39,8 @@
 #import "HUBComponentWithRestorableUIState.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
+#import "HUBComponentWrapper.h"
+#import "HUBComponentCollectionViewCell.h"
 #import "HUBComponentFactory.h"
 #import "HUBComponentFactoryShowcaseNameProvider.h"
 #import "HUBComponentIdentifier.h"

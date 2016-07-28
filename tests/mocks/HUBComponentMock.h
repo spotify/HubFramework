@@ -30,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The UI states that have been passed to this component when restored
 @property (nonatomic, strong, readonly) NSArray<id> *restoredUIStates;
 
+/// The model that the component is currently configured with
+@property (nonatomic, strong, readonly, nullable) id<HUBComponentModel> model;
+
 /// The main image the component is currently displaying
 @property (nonatomic, strong, readonly, nullable) id<HUBComponentImageData> mainImageData;
 
