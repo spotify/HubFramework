@@ -429,10 +429,15 @@ NS_ASSUME_NONNULL_BEGIN
     self.componentWrappersByIdentifier[wrapper.identifier] = wrapper;
 }
 
-- (HUBComponentWrapperImplementation *)componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell
+- (nullable HUBComponentWrapperImplementation *)componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell
 {
-    HUBComponentWrapperImplementation * const wrapper = self.componentWrappersByIdentifier[cell.component.identifier];
-    return wrapper;
+    NSUUID * const wrapperIdentifier = cell.component.identifier;
+    
+    if (wrapperIdentifier == nil) {
+        return nil;
+    }
+    
+    return self.componentWrappersByIdentifier[wrapperIdentifier];
 }
 
 - (void)configureHeaderComponent
@@ -545,8 +550,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell
 {
     HUBComponentWrapperImplementation * const wrapper = [self componentWrapperFromCell:cell];
+    
+    if (wrapper == nil) {
+        return;
+    }
+    
     [wrapper viewWillAppear];
-    [self.delegate viewController:self componentWithModel:cell.component.model willAppearInView:cell];
+    [self.delegate viewController:self componentWithModel:wrapper.model willAppearInView:cell];
 }
 
 - (void)headerAndOverlayComponentViewsWillAppear

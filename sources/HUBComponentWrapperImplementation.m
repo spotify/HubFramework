@@ -146,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponentWrapper>)component:(id<HUBComponentWithChildren>)component childComponentForModel:(id<HUBComponentModel>)childComponentModel
 {
-    return [self.delegate componentWrapper:self childComponentForModel:childComponentModel];
+    return (id<HUBComponentWrapper>)[self.delegate componentWrapper:self childComponentForModel:childComponentModel];
 }
 
 - (void)component:(id<HUBComponentWithChildren>)component willDisplayChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView
