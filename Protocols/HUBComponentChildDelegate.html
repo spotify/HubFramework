@@ -68,6 +68,9 @@
             <a class="nav-group-name-link" href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HUBComponentCollectionViewCell.html">HUBComponentCollectionViewCell</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a>
               </li>
               <li class="nav-group-task">
@@ -195,6 +198,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBComponentWrapper.html">HUBComponentWrapper</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
@@ -349,9 +355,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentChildDelegate(im)component:createChildComponentAtIndex:"></a>
-                    <a name="//apple_ref/objc/Method/-component:createChildComponentAtIndex:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentChildDelegate(im)component:createChildComponentAtIndex:">-component:createChildComponentAtIndex:</a>
+                    <a name="/c:objc(pl)HUBComponentChildDelegate(im)component:childComponentForModel:"></a>
+                    <a name="//apple_ref/objc/Method/-component:childComponentForModel:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentChildDelegate(im)component:childComponentForModel:">-component:childComponentForModel:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -359,26 +365,24 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Create a component for a child model at a given index</p>
+                        <p>Return a child component for a given model</p>
 
-<p>You may choose to use this method to create components to use to represent any child models that you
+<p>You may choose to use this method to create components to use to represent any child component models that you
   wish to render in your component. Note that it is not required to use this method to create views or other
   visual representation for child components, but it&rsquo;s a convenient way - especially for components that wish
   to be truly dynamic with which child components they support.</p>
+
+<p>Components created this way are retained and managed by the Hub Framework, and reused whenever they are sent the
+  <code>prepareForReuse</code> message.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponent.html">HUBComponent</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nf">component</span><span class="p">:</span>
-                                 <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">component</span>
-           <span class="nf">createChildComponentAtIndex</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">childIndex</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">component</span><span class="p">(</span><span class="nv">component</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="p">,</span> <span class="n">createChildComponentAtIndex</span> <span class="nv">childIndex</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/HUBComponent.html">HUBComponent</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentWrapper.html">HUBComponentWrapper</a></span><span class="o">&gt;</span><span class="p">)</span>
+                 <span class="nf">component</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">component</span>
+    <span class="nf">childComponentForModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">childComponentModel</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -402,12 +406,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>childIndex</em>
+                                <em>childComponentModel</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The index of the child component to be created</p>
+                                  <p>The model to return a child component for</p>
 
                                 </div>
                               </td>
@@ -417,10 +421,9 @@
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A component that has its view loaded, is resized and ready to use. Nil is returned if an out-of-
- bounds index was supplied as <code>childIndex</code>. The Hub Framework will not manage the created component further,
- nor will it retain it, so it&rsquo;s up to you to add it to your component&rsquo;s view, position it, and do any other
- setup work required.</p>
+                        <p>A wrapper for a component that was either newly created, or reused - if an inactive component of the same
+         type was available. The component will have its view loaded and resized according to its parent and the
+         component&rsquo;s <code>preferredViewSize</code>, and will be configured according to the passed <code>childComponentModel</code>.</p>
 
                       </div>
                     </section>

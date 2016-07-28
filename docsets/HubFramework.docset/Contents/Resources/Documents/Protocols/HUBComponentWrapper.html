@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>HUBConnectivityStateResolverObserver Protocol Reference</title>
+    <title>HUBComponentWrapper Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Protocol/HUBConnectivityStateResolverObserver" class="dashAnchor"></a>
+    <a name="//apple_ref/objc/Protocol/HUBComponentWrapper" class="dashAnchor"></a>
 
-    <a title="HUBConnectivityStateResolverObserver Protocol Reference"></a>
+    <a title="HUBComponentWrapper Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -41,7 +41,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">HubFramework Reference</a>
       <img class="carat" src="../img/carat.png" />
-      HUBConnectivityStateResolverObserver Protocol Reference
+      HUBComponentWrapper Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -329,14 +329,21 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>HUBConnectivityStateResolverObserver</h1>
+            <h1>HUBComponentWrapper</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBConnectivityStateResolverObserver</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentWrapper</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
-            <p>Protocol used to observe a connectivity state resolver for changes in connectivity state</p>
+            <p>Protocol defining the public API for a component that has been wrapped by the Hub Framework</p>
+
+<p>The Hub Framework wraps all components that are supplied into it by various <code><a href="../Protocols/HUBComponentFactory.html">HUBComponentFactory</a></code> implementations,
+  giving you access to the current model that the component is using, and a tailored set of APIs suitable for managing
+  component instances outside of the framework.</p>
+
+<p>You don&rsquo;t conform to this protocol yourself, instead components created through a component&rsquo;s <code>childDelegate</code> will
+  automatically be wrapped according to this protocol.</p>
 
           </div>
         </section>
@@ -348,9 +355,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBConnectivityStateResolverObserver(im)connectivityStateResolverStateDidChange:"></a>
-                    <a name="//apple_ref/objc/Method/-connectivityStateResolverStateDidChange:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBConnectivityStateResolverObserver(im)connectivityStateResolverStateDidChange:">-connectivityStateResolverStateDidChange:</a>
+                    <a name="/c:objc(pl)HUBComponentWrapper(py)identifier"></a>
+                    <a name="//apple_ref/objc/Property/identifier" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentWrapper(py)identifier">identifier</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -358,24 +365,104 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Notifiy an observer that the application&rsquo;s connectivity state changed</p>
-
-<p>A connectivity state resolver should send this to all of its observers once it detected
-  a change in connectivity state. The Hub Framework will react to this, and reschedule a
-  reload of any visible view&rsquo;s content.</p>
+                        <p>The identifier of this component instance. Can be used to track it accross various operations.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">connectivityStateResolverStateDidChange</span><span class="p">:</span>
-        <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">resolver</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSUUID</span> <span class="o">*</span><span class="n">identifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentWrapper(py)view"></a>
+                    <a name="//apple_ref/objc/Property/view" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentWrapper(py)view">view</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The view that the component is using. The wrapper guarantees that the view is always loaded when accessed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">UIView</span> <span class="o">*</span><span class="n">view</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentWrapper(py)model"></a>
+                    <a name="//apple_ref/objc/Property/model" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentWrapper(py)model">model</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The current model that the component is using. Changed whenever the component is reused.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span> <span class="n">model</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentWrapper(im)preferredViewSizeForContainerViewSize:"></a>
+                    <a name="//apple_ref/objc/Method/-preferredViewSizeForContainerViewSize:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentWrapper(im)preferredViewSizeForContainerViewSize:">-preferredViewSizeForContainerViewSize:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return the component&rsquo;s preferred view size when displayed in a container with a given size</p>
+
+<p>You can use this API to adjust the component view&rsquo;s frame according to a value that both fits the container and the
+  preference of the component. No components should make an assumption that the value returned from this method is final,
+  so you are free to tweak it to satisfy other layout rules.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="nf">preferredViewSizeForContainerViewSize</span><span class="p">:(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">containerViewSize</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">connectivityStateResolverStateDidChange</span><span class="p">(</span><span class="nv">resolver</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">preferredViewSizeForContainerViewSize</span><span class="p">(</span><span class="nv">containerViewSize</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyObject</span><span class="o">!</span></code></pre>
 
                         </div>
                       </div>
@@ -386,18 +473,57 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>resolver</em>
+                                <em>containerViewSize</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The resolver that detected the change</p>
+                                  <p>The size of the container, typically the component view&rsquo;s superview</p>
 
                                 </div>
                               </td>
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentWrapper(im)prepareForReuse"></a>
+                    <a name="//apple_ref/objc/Method/-prepareForReuse" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentWrapper(im)prepareForReuse">-prepareForReuse</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Preprare the component for reuse, resigning control over it and returning it to the framework reuse pool</p>
+
+<p>Call this method whenever you are done with a component instance, and wish to return it to the Hub Framework for reuse.
+  Once called, the framework assumes that you will no longer perform any operations on this instance, until it is requested
+  again, so make sure to reset any references made to it.</p>
+
+<p>If you are using a <code>UICollectionView</code>-based UI to manage components, you can use <code><a href="../Classes/HUBComponentCollectionViewCell.html">HUBComponentCollectionViewCell</a></code> to
+  automatically have your components be reused whenever collection view cells are reused.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">prepareForReuse</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">prepareForReuse</span><span class="p">()</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

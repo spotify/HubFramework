@@ -67,6 +67,9 @@
             <a class="nav-group-name-link" href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/HUBComponentCollectionViewCell.html">HUBComponentCollectionViewCell</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a>
               </li>
               <li class="nav-group-task">
@@ -194,6 +197,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBComponentWrapper.html">HUBComponentWrapper</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
@@ -1309,6 +1315,50 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentWithRestorableUIState</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBComponent.html">HUBComponent</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentWrapper"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBComponentWrapper" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentWrapper">HUBComponentWrapper</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Protocol defining the public API for a component that has been wrapped by the Hub Framework</p>
+
+<p>The Hub Framework wraps all components that are supplied into it by various <code><a href="Protocols/HUBComponentFactory.html">HUBComponentFactory</a></code> implementations,
+  giving you access to the current model that the component is using, and a tailored set of APIs suitable for managing
+  component instances outside of the framework.</p>
+
+<p>You don&rsquo;t conform to this protocol yourself, instead components created through a component&rsquo;s <code>childDelegate</code> will
+  automatically be wrapped according to this protocol.</p>
+
+                        <a href="Protocols/HUBComponentWrapper.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentWrapper</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentWrapper</span></code></pre>
 
                         </div>
                       </div>
