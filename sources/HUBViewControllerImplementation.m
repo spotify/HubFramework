@@ -7,7 +7,7 @@
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
-#import "HUBComponentWrapper.h"
+#import "HUBComponentWrapperImplementation.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBComponentIdentifier.h"
@@ -22,6 +22,7 @@
 #import "HUBComponentUIStateManager.h"
 #import "HUBComponentSelectionHandler.h"
 #import "HUBComponentSelectionContextImplementation.h"
+#import "HUBComponentReusePool.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -40,11 +41,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
-@property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponents;
-@property (nonatomic, strong, nullable) HUBComponentWrapper *headerComponentWrapper;
-@property (nonatomic, strong, readonly) NSMutableArray<HUBComponentWrapper *> *overlayComponentWrappers;
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
+@property (nonatomic, strong, readonly) NSHashTable<HUBComponentWrapperImplementation *> *contentOffsetObservingComponentWrappers;
+@property (nonatomic, strong, nullable) HUBComponentWrapperImplementation *headerComponentWrapper;
+@property (nonatomic, strong, readonly) NSMutableArray<HUBComponentWrapperImplementation *> *overlayComponentWrappers;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapperImplementation *> *componentWrappersByIdentifier;
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *componentUIStateManager;
+@property (nonatomic, strong, readonly) HUBComponentReusePool *childComponentReusePool;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic) BOOL viewModelIsInitial;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
@@ -87,10 +89,12 @@ NS_ASSUME_NONNULL_BEGIN
     _viewModelIsInitial = YES;
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     _componentImageLoadingContexts = [NSMutableDictionary new];
-    _contentOffsetObservingComponents = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
+    _contentOffsetObservingComponentWrappers = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     _overlayComponentWrappers = [NSMutableArray new];
     _componentWrappersByIdentifier = [NSMutableDictionary new];
     _componentUIStateManager = [HUBComponentUIStateManager new];
+    _childComponentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:_componentRegistry
+                                                                         UIStateManager:_componentUIStateManager];
     
     _viewModelLoader.delegate = self;
     _imageLoader.delegate = self;
@@ -236,47 +240,44 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentWrapperDelegate
 
-- (__kindof id<HUBComponent>)componentWrapper:(HUBComponentWrapper *)componentWrapper
-                createChildComponentWithModel:(id<HUBComponentModel>)model
+- (id<HUBComponentWrapper>)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+                     childComponentForModel:(id<HUBComponentModel>)model
 {
-    id<HUBComponent> const childComponent = [self.componentRegistry createComponentForModel:model];
-    HUBComponentWrapper * const childComponentWrapper = [self wrapComponent:childComponent withModel:model];
+    HUBComponentWrapperImplementation * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model];
+    childComponentWrapper.model = model;
+    [self didAddComponentWrapper:childComponentWrapper];
     
-    UIView * const componentView = HUBComponentLoadViewIfNeeded(componentWrapper.component);
-    UIView * const childComponentView = HUBComponentLoadViewIfNeeded(childComponent);
+    UIView * const componentView = componentWrapper.view;
+    UIView * const childComponentView = childComponentWrapper.view;
     
-    CGSize const preferredViewSize = [childComponentWrapper.component preferredViewSizeForDisplayingModel:model containerViewSize:componentView.frame.size];
+    CGSize const preferredViewSize = [childComponentWrapper preferredViewSizeForContainerViewSize:componentView.frame.size];
     childComponentView.frame = CGRectMake(0, 0, preferredViewSize.width, preferredViewSize.height);
     
-    [childComponentWrapper.component configureViewWithModel:model];
-    return childComponent;
+    [self loadImagesForComponentWrapper:childComponentWrapper childIndex:nil];
+    
+    return childComponentWrapper;
 }
 
-- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
   childComponentWithView:(UIView *)childComponentView
        willAppearAtIndex:(NSUInteger)childIndex
 {
-    id<HUBComponentModel> const componentModel = componentWrapper.currentModel;
+    id<HUBComponentModel> const componentModel = componentWrapper.model;
     
     if (childIndex >= componentModel.childComponentModels.count) {
         return;
     }
     
     id<HUBComponentModel> const childComponentModel = componentModel.childComponentModels[childIndex];
-    
-    [self loadImagesForComponent:componentWrapper.component
-                           model:childComponentModel
-               wrapperIdentifier:componentWrapper.identifier
-                      childIndex:@(childIndex)];
-    
+    [self loadImagesForComponentWrapper:componentWrapper childIndex:@(childIndex)];
     [self.delegate viewController:self componentWithModel:childComponentModel willAppearInView:childComponentView];
 }
 
-- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
   childComponentWithView:(UIView *)childComponentView
      didDisappearAtIndex:(NSUInteger)childIndex
 {
-    id<HUBComponentModel> const componentModel = componentWrapper.currentModel;
+    id<HUBComponentModel> const componentModel = componentWrapper.model;
     
     if (childIndex >= componentModel.childComponentModels.count) {
         return;
@@ -286,11 +287,11 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate viewController:self componentWithModel:childComponentModel didDisappearFromView:childComponentView];
 }
 
-- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
   childComponentWithView:(UIView *)childComponentView
          selectedAtIndex:(NSUInteger)childIndex
 {
-    id<HUBComponentModel> const componentModel = componentWrapper.currentModel;
+    id<HUBComponentModel> const componentModel = componentWrapper.model;
     
     if (childIndex >= componentModel.childComponentModels.count) {
         return;
@@ -298,6 +299,15 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBComponentModel> const childComponentModel = componentModel.childComponentModels[childIndex];
     [self handleSelectionForComponentWithModel:childComponentModel view:childComponentView cellIndexPath:nil];
+}
+
+- (void)sendComponentWrapperToReusePool:(HUBComponentWrapperImplementation *)componentWrapper
+{
+    if (componentWrapper.isRootComponent) {
+        return;
+    }
+    
+    [self.childComponentReusePool addComponentWrappper:componentWrapper];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -324,23 +334,19 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentCollectionViewCell * const cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier
                                                                                             forIndexPath:indexPath];
     
-    if (cell.componentWrapper == nil) {
+    if (cell.component == nil) {
         id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
-        cell.componentWrapper = [self wrapComponent:component withModel:componentModel];
+        cell.component = [self wrapComponent:component withModel:componentModel];
     }
     
-    HUBComponentWrapper * const componentWrapper = cell.componentWrapper;
-    componentWrapper.currentModel = componentModel;
-    [componentWrapper.component configureViewWithModel:componentModel];
-    [componentWrapper restoreComponentUIState];
+    HUBComponentWrapperImplementation * const componentWrapper = [self componentWrapperFromCell:cell];
+    componentWrapper.model = componentModel;
     
-    [self loadImagesForComponent:componentWrapper.component
-                           model:componentModel
-               wrapperIdentifier:componentWrapper.identifier
-                      childIndex:nil];
+    [self loadImagesForComponentWrapper:componentWrapper
+                             childIndex:nil];
     
-    if ([componentWrapper.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
-        [self.contentOffsetObservingComponents addObject:(id<HUBComponentContentOffsetObserver>)componentWrapper.component];
+    if (componentWrapper.isContentOffsetObserver) {
+        [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
     }
     
     UIDevice * const device = self.device;
@@ -382,8 +388,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    for (id<HUBComponentContentOffsetObserver> const component in self.contentOffsetObservingComponents) {
-        [component updateViewForChangedContentOffset:scrollView.contentOffset];
+    for (HUBComponentWrapperImplementation * const componentWrapper in self.contentOffsetObservingComponentWrappers) {
+        [componentWrapper contentOffsetDidChange:scrollView.contentOffset];
     }
 }
 
@@ -406,15 +412,32 @@ NS_ASSUME_NONNULL_BEGIN
     [self.viewModelLoader loadViewModel];
 }
 
-- (HUBComponentWrapper *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
+- (HUBComponentWrapperImplementation *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
 {
-    HUBComponentWrapper * const wrapper = [[HUBComponentWrapper alloc] initWithComponent:component
-                                                                                   model:model
-                                                                          UIStateManager:self.componentUIStateManager];
+    HUBComponentWrapperImplementation * const wrapper = [[HUBComponentWrapperImplementation alloc] initWithComponent:component
+                                                                                                               model:model
+                                                                                                      UIStateManager:self.componentUIStateManager
+                                                                                                     isRootComponent:YES];
     
+    [self didAddComponentWrapper:wrapper];
+    return wrapper;
+}
+
+- (void)didAddComponentWrapper:(HUBComponentWrapperImplementation *)wrapper
+{
     wrapper.delegate = self;
     self.componentWrappersByIdentifier[wrapper.identifier] = wrapper;
-    return wrapper;
+}
+
+- (nullable HUBComponentWrapperImplementation *)componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell
+{
+    NSUUID * const wrapperIdentifier = cell.component.identifier;
+    
+    if (wrapperIdentifier == nil) {
+        return nil;
+    }
+    
+    return self.componentWrappersByIdentifier[wrapperIdentifier];
 }
 
 - (void)configureHeaderComponent
@@ -422,9 +445,7 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBComponentModel> const componentModel = self.viewModel.headerComponentModel;
     
     if (componentModel == nil) {
-        if (self.headerComponentWrapper.componentIdentifier != nil) {
-            [self removeHeaderComponent];
-        }
+        [self removeHeaderComponent];
         
         CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
         CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
@@ -439,13 +460,13 @@ NS_ASSUME_NONNULL_BEGIN
     self.headerComponentWrapper = [self configureHeaderOrOverlayComponentWrapperWithModel:componentModel
                                                                  previousComponentWrapper:self.headerComponentWrapper];
     
-    CGFloat const headerViewHeight = CGRectGetHeight(self.headerComponentWrapper.component.view.frame);
+    CGFloat const headerViewHeight = CGRectGetHeight(self.headerComponentWrapper.view.frame);
     [self adjustCollectionViewContentInsetWithTopValue:headerViewHeight];
 }
 
 - (void)removeHeaderComponent
 {
-    [self.headerComponentWrapper.component.view removeFromSuperview];
+    [self.headerComponentWrapper.view removeFromSuperview];
     self.headerComponentWrapper = nil;
 }
 
@@ -455,7 +476,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.overlayComponentWrappers removeAllObjects];
     
     for (id<HUBComponentModel> const componentModel in self.viewModel.overlayComponentModels) {
-        HUBComponentWrapper *componentWrapper = nil;
+        HUBComponentWrapperImplementation *componentWrapper = nil;
         
         if (self.overlayComponentWrappers.count < currentOverlayComponentWrappers.count) {
             NSUInteger const componentIndex = self.overlayComponentWrappers.count;
@@ -468,23 +489,22 @@ NS_ASSUME_NONNULL_BEGIN
         
         [self.overlayComponentWrappers addObject:componentWrapper];
         
-        componentWrapper.component.view.center = self.collectionView.center;
+        componentWrapper.view.center = self.collectionView.center;
     }
     
-    for (HUBComponentWrapper * const unusedOverlayComponentWrapper in currentOverlayComponentWrappers) {
-        [unusedOverlayComponentWrapper.component.view removeFromSuperview];
+    for (HUBComponentWrapperImplementation * const unusedOverlayComponentWrapper in currentOverlayComponentWrappers) {
+        [unusedOverlayComponentWrapper.view removeFromSuperview];
     }
 }
 
-- (HUBComponentWrapper *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
-                                                  previousComponentWrapper:(nullable HUBComponentWrapper *)previousComponentWrapper
+- (HUBComponentWrapperImplementation *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
+                                                                previousComponentWrapper:(nullable HUBComponentWrapperImplementation *)previousComponentWrapper
 {
-    BOOL const shouldReuseCurrentComponent = [previousComponentWrapper.componentIdentifier isEqual:componentModel.componentIdentifier];
-    HUBComponentWrapper *componentWrapper;
+    BOOL const shouldReuseCurrentComponent = [previousComponentWrapper.model.componentIdentifier isEqual:componentModel.componentIdentifier];
+    HUBComponentWrapperImplementation *componentWrapper;
     
     if (shouldReuseCurrentComponent) {
-        [previousComponentWrapper saveComponentUIState];
-        [previousComponentWrapper.component prepareViewForReuse];
+        [previousComponentWrapper prepareForReuse];
         componentWrapper = previousComponentWrapper;
     } else {
         NSUUID * const previousComponentWrapperIdentifier = previousComponentWrapper.identifier;
@@ -497,25 +517,20 @@ NS_ASSUME_NONNULL_BEGIN
         componentWrapper = [self wrapComponent:component withModel:componentModel];
     }
     
-    CGSize const componentViewSize = [componentWrapper.component preferredViewSizeForDisplayingModel:componentModel containerViewSize:self.view.frame.size];
-    UIView * const componentView = HUBComponentLoadViewIfNeeded(componentWrapper.component);
-    componentView.frame = CGRectMake(0, 0, componentViewSize.width, componentViewSize.height);
+    componentWrapper.model = componentModel;
     
-    [componentWrapper.component configureViewWithModel:componentModel];
-    componentWrapper.currentModel = componentModel;
-    [componentWrapper restoreComponentUIState];
+    CGSize const componentViewSize = [componentWrapper preferredViewSizeForContainerViewSize:self.view.frame.size];
+    componentWrapper.view.frame = CGRectMake(0, 0, componentViewSize.width, componentViewSize.height);
     
-    [self loadImagesForComponent:componentWrapper.component
-                           model:componentModel
-               wrapperIdentifier:componentWrapper.identifier
-                      childIndex:0];
+    [self loadImagesForComponentWrapper:componentWrapper
+                             childIndex:nil];
     
     if (!shouldReuseCurrentComponent) {
-        [self.view addSubview:componentView];
+        [self.view addSubview:componentWrapper.view];
     }
     
-    if ([componentWrapper.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
-        [self.contentOffsetObservingComponents addObject:(id<HUBComponentContentOffsetObserver>)componentWrapper.component];
+    if (componentWrapper.isContentOffsetObserver) {
+        [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
     }
     
     return componentWrapper;
@@ -534,79 +549,75 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell
 {
-    id<HUBComponent> const component = cell.componentWrapper.component;
-    id<HUBComponentModel> const model = cell.componentWrapper.currentModel;
+    HUBComponentWrapperImplementation * const wrapper = [self componentWrapperFromCell:cell];
     
-    if ([component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
-        [(id<HUBComponentViewObserver>)component viewWillAppear];
+    if (wrapper == nil) {
+        return;
     }
     
-    [self.delegate viewController:self componentWithModel:model willAppearInView:cell];
+    [wrapper viewWillAppear];
+    [self.delegate viewController:self componentWithModel:wrapper.model willAppearInView:cell];
 }
 
 - (void)headerAndOverlayComponentViewsWillAppear
 {
-    id<HUBComponent> const headerComponent = self.headerComponentWrapper.component;
+    [self.headerComponentWrapper viewWillAppear];
     
-    if (headerComponent != nil) {
-        if ([headerComponent conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
-            [(id<HUBComponentViewObserver>)headerComponent viewWillAppear];
-        }
-    }
-    
-    for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
-        if ([overlayComponentWrapper.component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
-            [(id<HUBComponentViewObserver>)overlayComponentWrapper.component viewWillAppear];
-        }
+    for (HUBComponentWrapperImplementation * const overlayComponentWrapper in self.overlayComponentWrappers) {
+        [overlayComponentWrapper viewWillAppear];
     }
 }
 
-- (void)loadImagesForComponent:(id<HUBComponent>)component
-                         model:(id<HUBComponentModel>)model
-             wrapperIdentifier:(NSUUID *)wrapperIdentifier
-                    childIndex:(nullable NSNumber *)childIndex
+- (void)loadImagesForComponentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+                           childIndex:(nullable NSNumber *)childIndex
 {
     if (self.imageLoader == nil) {
         return;
     }
     
-    if (![component conformsToProtocol:@protocol(HUBComponentWithImageHandling)]) {
+    if (!componentWrapper.handlesImages) {
         return;
     }
     
-    id<HUBComponentWithImageHandling> const imageHandlingComponent = (id<HUBComponentWithImageHandling>)component;
-    id<HUBComponentImageData> const mainImageData = model.mainImageData;
-    id<HUBComponentImageData> const backgroundImageData = model.backgroundImageData;
+    id<HUBComponentModel> componentModel = componentWrapper.model;
+    
+    if (childIndex != nil) {
+        componentModel = [self childModelAtIndex:childIndex.unsignedIntegerValue
+                            fromComponentWrapper:componentWrapper];
+    }
+    
+    if (componentModel == nil) {
+        return;
+    }
+    
+    id<HUBComponentImageData> const mainImageData = componentModel.mainImageData;
+    id<HUBComponentImageData> const backgroundImageData = componentModel.backgroundImageData;
     
     if (mainImageData != nil) {
         [self loadImageFromData:mainImageData
-                      component:imageHandlingComponent
-                          model:model
-              wrapperIdentifier:wrapperIdentifier
+                          model:componentModel
+               componentWrapper:componentWrapper
                      childIndex:childIndex];
     }
     
     if (backgroundImageData != nil) {
         [self loadImageFromData:backgroundImageData
-                      component:imageHandlingComponent
-                          model:model
-              wrapperIdentifier:wrapperIdentifier
+                          model:componentModel
+               componentWrapper:componentWrapper
                      childIndex:childIndex];
     }
     
-    for (id<HUBComponentImageData> const customImageData in model.customImageData.allValues) {
+    for (id<HUBComponentImageData> const customImageData in componentModel.customImageData.allValues) {
         [self loadImageFromData:customImageData
-                      component:imageHandlingComponent
-                          model:model
-              wrapperIdentifier:wrapperIdentifier
+                          model:componentModel
+               componentWrapper:componentWrapper
                      childIndex:childIndex];
     }
 }
 
 - (void)loadImageFromData:(id<HUBComponentImageData>)imageData
-                component:(id<HUBComponentWithImageHandling>)component
                     model:(id<HUBComponentModel>)model
-        wrapperIdentifier:(NSUUID *)wrapperIdentifier
+         componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
                childIndex:(nullable NSNumber *)childIndex
 {
     if (self.imageLoader == nil) {
@@ -619,9 +630,9 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    CGSize const preferredSize = [component preferredSizeForImageFromData:imageData
-                                                                    model:model
-                                                        containerViewSize:self.collectionView.frame.size];
+    CGSize const preferredSize = [componentWrapper preferredSizeForImageFromData:imageData
+                                                                           model:model
+                                                               containerViewSize:self.view.frame.size];
     
     if (CGSizeEqualToSize(preferredSize, CGSizeZero)) {
         return;
@@ -629,7 +640,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     HUBComponentImageLoadingContext * const context = [[HUBComponentImageLoadingContext alloc] initWithImageType:imageData.type
                                                                                                  imageIdentifier:imageData.identifier
-                                                                                               wrapperIdentifier:wrapperIdentifier
+                                                                                               wrapperIdentifier:componentWrapper.identifier
                                                                                                       childIndex:childIndex];
     
     NSMutableArray *contextsForURL = self.componentImageLoadingContexts[imageURL];
@@ -654,25 +665,13 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    HUBComponentWrapper * const componentWrapper = self.componentWrappersByIdentifier[context.wrapperIdentifier];
-    
-    if (![componentWrapper.component conformsToProtocol:@protocol(HUBComponentWithImageHandling)]) {
-        return;
-    }
-    
-    id<HUBComponentWithImageHandling> const component = (id<HUBComponentWithImageHandling>)componentWrapper.component;
-    id<HUBComponentModel> componentModel = componentWrapper.currentModel;
-    
+    HUBComponentWrapperImplementation * const componentWrapper = self.componentWrappersByIdentifier[context.wrapperIdentifier];
+    id<HUBComponentModel> componentModel = componentWrapper.model;
     NSNumber * const childIndex = context.childIndex;
     
     if (childIndex != nil) {
-        NSUInteger const decodedChildIndex = childIndex.unsignedIntegerValue;
-        
-        if (decodedChildIndex < componentModel.childComponentModels.count) {
-            componentModel = componentModel.childComponentModels[decodedChildIndex];
-        } else {
-            componentModel = nil;
-        }
+        componentModel = [self childModelAtIndex:childIndex.unsignedIntegerValue
+                            fromComponentWrapper:componentWrapper];
     }
     
     if (componentModel == nil) {
@@ -703,7 +702,10 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    [component updateViewForLoadedImage:image fromData:imageData model:componentModel animated:!loadedFromCache];
+    [componentWrapper updateViewForLoadedImage:image
+                                      fromData:imageData
+                                         model:componentModel
+                                      animated:!loadedFromCache];
 }
 
 - (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel view:(UIView *)view cellIndexPath:(nullable NSIndexPath *)cellIndexPath
@@ -739,6 +741,17 @@ NS_ASSUME_NONNULL_BEGIN
     if (selectionHandled || componentModel.targetURL != nil) {
         [self.delegate viewController:self componentWithModel:componentModel selectedInView:view];
     }
+}
+
+- (nullable id<HUBComponentModel>)childModelAtIndex:(NSUInteger)childIndex fromComponentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+{
+    id<HUBComponentModel> parentModel = componentWrapper.model;
+    
+    if (childIndex >= parentModel.childComponentModels.count) {
+        return nil;
+    }
+    
+    return parentModel.childComponentModels[childIndex];
 }
 
 @end

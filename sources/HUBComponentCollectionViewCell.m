@@ -11,42 +11,40 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Property overrides
 
-- (void)setComponentWrapper:(nullable HUBComponentWrapper *)componentWrapper
+- (void)setComponent:(nullable id<HUBComponentWrapper>)component
 {
-    if (_componentWrapper == componentWrapper) {
+    if (_component == component) {
         return;
     }
     
-    [_componentWrapper.component.view removeFromSuperview];
-    _componentWrapper = componentWrapper;
+    [_component.view removeFromSuperview];
+    _component = component;
     
-    if (componentWrapper == nil) {
+    if (component == nil) {
         return;
     }
     
-    HUBComponentWrapper * const nonNilComponentWrapper = componentWrapper;
-    UIView * const view = HUBComponentLoadViewIfNeeded(nonNilComponentWrapper.component);
+    id<HUBComponentWrapper> const nonNilComponent = component;
     
-    if ([view isKindOfClass:[UICollectionViewCell class]]) {
-        view.userInteractionEnabled = NO;
+    if ([nonNilComponent.view isKindOfClass:[UICollectionViewCell class]]) {
+        nonNilComponent.view.userInteractionEnabled = NO;
     }
     
-    [self.contentView addSubview:view];
+    [self.contentView addSubview:nonNilComponent.view];
 }
 
 #pragma mark - UICollectionViewCell
 
 - (void)prepareForReuse
 {
-    [self.componentWrapper saveComponentUIState];
-    [self.componentWrapper.component prepareViewForReuse];
+    [self.component prepareForReuse];
 }
 
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
     
-    UIView * const componentView = self.componentWrapper.component.view;
+    UIView * const componentView = self.component.view;
     
     if ([componentView isKindOfClass:[UICollectionViewCell class]]) {
         ((UICollectionViewCell *)componentView).selected = selected;
@@ -57,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super setHighlighted:highlighted];
     
-    UIView * const componentView = self.componentWrapper.component.view;
+    UIView * const componentView = self.component.view;
     
     if ([componentView isKindOfClass:[UICollectionViewCell class]]) {
         ((UICollectionViewCell *)componentView).highlighted = highlighted;
@@ -68,18 +66,9 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super layoutSubviews];
     
-    id<HUBComponent> const component = self.componentWrapper.component;
-    UIView * const componentView = component.view;
-    CGSize previousComponentViewSize = componentView.frame.size;
-    
+    UIView * const componentView = self.component.view;
     componentView.bounds = self.contentView.bounds;
     componentView.center = self.contentView.center;
-    
-    if (!CGSizeEqualToSize(previousComponentViewSize, componentView.bounds.size)) {
-        if ([component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
-            [(id<HUBComponentViewObserver>)component viewDidResize];
-        }
-    }
 }
 
 @end
