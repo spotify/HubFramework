@@ -125,6 +125,11 @@ NS_ASSUME_NONNULL_BEGIN
     return [self.component conformsToProtocol:@protocol(HUBComponentWithImageHandling)];
 }
 
+- (BOOL)isContentOffsetObserver
+{
+    return [self.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)];
+}
+
 #pragma mark - HUBComponentWrapper
 
 - (UIView *)view
