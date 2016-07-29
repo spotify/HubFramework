@@ -48,10 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
     [self.layoutAttributesByIndexPath removeAllObjects];
     [self.indexPathsByVerticalGroup removeAllObjects];
     
-    CGFloat contentHeight = 0;
     BOOL componentIsInTopRow = YES;
     NSMutableArray<id<HUBComponent>> * const componentsOnCurrentRow = [NSMutableArray new];
-    CGFloat currentRowHeight = 0;
+    CGFloat currentRowMaxY = 0;
     CGPoint currentPoint = CGPointZero;
     CGPoint firstComponentOnCurrentRowOrigin = CGPointZero;
     NSUInteger const allComponentsCount = self.viewModel.bodyComponentModels.count;
@@ -81,7 +80,6 @@ NS_ASSUME_NONNULL_BEGIN
                                                      rowWidth:collectionViewSize.width];
 
             if (componentsOnCurrentRow.count > 0) {
-                componentViewFrame.origin.y += currentRowHeight;
                 margins.top = 0;
                 
                 for (id<HUBComponent> const verticallyPrecedingComponent in componentsOnCurrentRow) {
@@ -102,11 +100,11 @@ NS_ASSUME_NONNULL_BEGIN
             componentViewFrame.origin.x = [self.componentLayoutManager marginBetweenComponentWithLayoutTraits:componentLayoutTraits
                                                                                                andContentEdge:HUBComponentLayoutContentEdgeLeft];
             
-            componentViewFrame.origin.y = currentPoint.y + currentRowHeight + margins.top;
+            componentViewFrame.origin.y = currentRowMaxY + margins.top;
             componentIsInTopRow = NO;
             [componentsOnCurrentRow removeAllObjects];
             currentPoint.y = CGRectGetMinY(componentViewFrame);
-            currentRowHeight = CGRectGetHeight(componentViewFrame);
+            currentRowMaxY = CGRectGetMaxY(componentViewFrame);
         } else {
             componentViewFrame.origin.y = currentPoint.y + margins.top;
         }
@@ -116,11 +114,10 @@ NS_ASSUME_NONNULL_BEGIN
                                                                 margins:margins];
         
         currentPoint.x = CGRectGetMaxX(componentViewFrame);
-        currentRowHeight = MAX(currentRowHeight, CGRectGetHeight(componentViewFrame));
+        currentRowMaxY = MAX(currentRowMaxY, CGRectGetMaxY(componentViewFrame));
         
         [self registerComponentViewFrame:componentViewFrame forIndex:componentIndex];
         
-        contentHeight = currentPoint.y + currentRowHeight;
         [componentsOnCurrentRow addObject:component];
 
         if (componentsOnCurrentRow.count == 1) {
@@ -140,7 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     }
 
-    self.contentSize = [self contentSizeForContentHeight:contentHeight
+    self.contentSize = [self contentSizeForContentHeight:currentRowMaxY
                                      bottomRowComponents:componentsOnCurrentRow
                                       collectionViewSize:collectionViewSize];
 }
