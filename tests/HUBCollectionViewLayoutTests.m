@@ -185,17 +185,24 @@
     [self addBodyComponentWithIdentifier:self.compactComponentIdentifier];
     [self addBodyComponentWithIdentifier:self.compactComponentIdentifier];
     [self addBodyComponentWithIdentifier:self.compactComponentIdentifier];
-    [self addBodyComponentWithIdentifier:self.compactComponentIdentifier];
 
     CGFloat const componentVerticalMargin = 20;
+    CGFloat const componentContentEdgeMargin = 15;
     CGSize const componentSize = self.compactComponent.preferredViewSize;
     self.componentLayoutManager.verticalComponentMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(componentVerticalMargin);
+    self.componentLayoutManager.contentEdgeMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(componentContentEdgeMargin);
 
     HUBCollectionViewLayout * const layout = [self computeLayout];
 
-    NSIndexPath * const componentIndexPath = [NSIndexPath indexPathForItem:3 inSection:0];
+    // H:|-15-[c1(100)][c2(100)][c3(100)]-15-|
+    // but total width (330) > collectionView width (320) so component 3 have to be moved to a new row
+
+    NSIndexPath * const componentIndexPath = [NSIndexPath indexPathForItem:2 inSection:0];
     CGRect const componentViewFrame = [layout layoutAttributesForItemAtIndexPath:componentIndexPath].frame;
-    CGRect const expectedComponentViewFrame = CGRectMake(0, componentSize.height + componentVerticalMargin, componentSize.width, componentSize.height);
+    CGRect const expectedComponentViewFrame = CGRectMake(componentContentEdgeMargin,
+                                                         componentContentEdgeMargin + componentSize.height + componentVerticalMargin,
+                                                         componentSize.width,
+                                                         componentSize.height);
 
     XCTAssertTrue(CGRectEqualToRect(componentViewFrame, expectedComponentViewFrame));
 }

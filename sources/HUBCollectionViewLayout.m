@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                           currentPoint:currentPoint
                                                     collectionViewSize:collectionViewSize];
 
-        BOOL couldFitOnTheRow = CGRectGetMaxX(componentViewFrame) <= collectionViewSize.width;
+        BOOL couldFitOnTheRow = CGRectGetMaxX(componentViewFrame) + margins.right <= collectionViewSize.width;
         
         if (couldFitOnTheRow == NO) {
             [self updateLayoutAttributesForComponentsIfNeeded:componentsOnCurrentRow
