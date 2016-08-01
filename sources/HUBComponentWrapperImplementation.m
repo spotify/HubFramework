@@ -104,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setModel:(id<HUBComponentModel>)model
 {
-    if (_model == model) {
+    if (_model == model && !self.preparedForReuse) {
         return;
     }
     
