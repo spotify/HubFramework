@@ -198,6 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
+    [self.collectionView removeFromSuperview];
     self.collectionView = nil;
     self.viewModel = nil;
 }
