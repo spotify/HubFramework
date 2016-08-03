@@ -115,21 +115,19 @@ NS_ASSUME_NONNULL_BEGIN
     self.view = [[HUBContainerView alloc] initWithFrame:CGRectZero];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    UICollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
-    self.collectionView = collectionView;
-    self.collectionView.dataSource = self;
-    self.collectionView.delegate = self;
-
-    [self.view addSubview:collectionView];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    if (self.collectionView == nil) {
+        UICollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
+        self.collectionView = collectionView;
+        collectionView.dataSource = self;
+        collectionView.delegate = self;
+
+        [self.view addSubview:collectionView];
+    }
+
     [self loadViewModelIfNeeded];
     
     for (NSIndexPath * const indexPath in self.collectionView.indexPathsForVisibleItems) {
@@ -200,7 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
-    self.view = nil;
+    [self.collectionView removeFromSuperview];
     self.collectionView = nil;
     self.viewModel = nil;
 }

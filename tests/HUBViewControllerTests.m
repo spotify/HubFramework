@@ -1036,6 +1036,7 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
 - (void)testSettingBackgroundColorOfViewAlsoUpdatesCollectionView
 {
     self.viewController.view.backgroundColor = [UIColor redColor];
+    [self.viewController viewWillAppear:NO];
     XCTAssertEqualObjects(self.collectionView.backgroundColor, [UIColor redColor]);
 }
 
