@@ -51,7 +51,7 @@ static const CGFloat SPTDrivingModeVelocitySnappingThreshold = 0.5;
     CGFloat relativeDelta = (currentOffset.y - previousOffset.y) / CGRectGetHeight(collectionView.frame);
     CGFloat directionalVelocity = velocity.y;
 
-    NSUInteger numberOfItems = [collectionView numberOfItemsInSection:startIndexPath.section];
+    NSInteger numberOfItems = [collectionView numberOfItemsInSection:startIndexPath.section];
     // Offset is outside bounds, bounce back to where scrolling started
     if (currentOffset.y < 0.0) {
         targetIndexPath = startIndexPath;

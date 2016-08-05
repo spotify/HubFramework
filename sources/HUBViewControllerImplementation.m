@@ -130,7 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
         collectionView.delegate = self;
 
         self.scrollBehavior = [[HUBScrollBehaviorWrapper alloc] initWithUnderlyingBehavior:[self selectScrollBehavior]];
-        [self.scrollBehavior configureCollectionView:self.collectionView viewController:self];
+        [self.scrollBehavior configureCollectionView:collectionView viewController:self];
 
         [self.view addSubview:collectionView];
     }
@@ -166,11 +166,12 @@ NS_ASSUME_NONNULL_BEGIN
     [self configureHeaderComponent];
     [self configureOverlayComponents];
     [self headerAndOverlayComponentViewsWillAppear];
-    
+
+    HUBScrollBehaviorWrapper *scrollBehavior = self.scrollBehavior;
     HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
                                                                               componentRegistry:self.componentRegistry
                                                                          componentLayoutManager:self.componentLayoutManager
-                                                                                 scrollBehavior:self.scrollBehavior];
+                                                                                 scrollBehavior:scrollBehavior];
     
     [layout computeForCollectionViewSize:self.collectionView.frame.size];
     self.collectionView.collectionViewLayout = layout;
@@ -402,16 +403,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    NSParameterAssert(scrollView == self.collectionView);
-    [self.scrollBehavior collectionViewWillBeginDragging:self.collectionView];
+    UICollectionView *collectionView = (UICollectionView *)scrollView;
+    NSParameterAssert(collectionView != nil && collectionView == self.collectionView);
+    [self.scrollBehavior collectionViewWillBeginDragging:collectionView];
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
                      withVelocity:(CGPoint)velocity
               targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    NSParameterAssert(scrollView == self.collectionView);
-    [self.scrollBehavior collectionViewWillEndDragging:self.collectionView
+    UICollectionView *collectionView = (UICollectionView *)scrollView;
+    NSParameterAssert(collectionView != nil && collectionView == self.collectionView);
+    [self.scrollBehavior collectionViewWillEndDragging:collectionView
                                           withVelocity:velocity
                                    targetContentOffset:targetContentOffset];
 }
@@ -477,8 +480,7 @@ NS_ASSUME_NONNULL_BEGIN
 
         CGFloat const navigationBarDimension = MIN(navigationBarWidth, navigationBarHeight);
         CGFloat totalAdjustment = 0.0;
-        if (navigationBarDimension > 0 ||
-            [self.scrollBehavior collectionViewShouldAdjustContentOffsetForStatusBarOnly:self.collectionView]) {
+        if (navigationBarDimension > 0 || [self shouldAdjustContentOffsetForStatusBarOnly]) {
             totalAdjustment = navigationBarDimension + MIN(statusBarWidth, statusBarHeight);
         }
         
@@ -492,6 +494,12 @@ NS_ASSUME_NONNULL_BEGIN
     
     CGFloat const headerViewHeight = CGRectGetHeight(self.headerComponentWrapper.view.frame);
     [self adjustCollectionViewContentInsetWithTopValue:headerViewHeight];
+}
+
+- (BOOL)shouldAdjustContentOffsetForStatusBarOnly
+{
+    UICollectionView *collectionView = self.collectionView;
+    return [self.scrollBehavior collectionViewShouldAdjustContentOffsetForStatusBarOnly:collectionView];
 }
 
 - (void)removeHeaderComponent
@@ -784,7 +792,7 @@ NS_ASSUME_NONNULL_BEGIN
     return parentModel.childComponentModels[childIndex];
 }
 
-- (id<HUBScrollBehavior>)selectScrollBehavior
+- (nullable id<HUBScrollBehavior>)selectScrollBehavior
 {
     switch (self.scrollMode) {
         case HUBViewControllerScrollModeDefault:
