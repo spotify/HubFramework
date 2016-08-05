@@ -23,6 +23,8 @@
 #import "HUBComponentSelectionHandler.h"
 #import "HUBComponentSelectionContextImplementation.h"
 #import "HUBComponentReusePool.h"
+#import "HUBVerticalPagingScrollBehavior.h"
+#import "HUBScrollBehaviorWrapper.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, nullable, readonly) id<HUBImageLoader> imageLoader;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
+@property (nonatomic, strong, nullable) HUBScrollBehaviorWrapper *scrollBehavior;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, readonly) NSHashTable<HUBComponentWrapperImplementation *> *contentOffsetObservingComponentWrappers;
@@ -56,6 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBViewControllerImplementation
 
 @synthesize delegate = _delegate;
+@synthesize scrollMode = _scrollMode;
 
 #pragma mark - Lifecycle
 
@@ -125,6 +129,9 @@ NS_ASSUME_NONNULL_BEGIN
         collectionView.dataSource = self;
         collectionView.delegate = self;
 
+        self.scrollBehavior = [[HUBScrollBehaviorWrapper alloc] initWithUnderlyingBehavior:[self selectScrollBehavior]];
+        [self.scrollBehavior configureCollectionView:self.collectionView viewController:self];
+
         [self.view addSubview:collectionView];
     }
 
@@ -162,7 +169,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
                                                                               componentRegistry:self.componentRegistry
-                                                                         componentLayoutManager:self.componentLayoutManager];
+                                                                         componentLayoutManager:self.componentLayoutManager
+                                                                                 scrollBehavior:self.scrollBehavior];
     
     [layout computeForCollectionViewSize:self.collectionView.frame.size];
     self.collectionView.collectionViewLayout = layout;
@@ -200,6 +208,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     [self.collectionView removeFromSuperview];
     self.collectionView = nil;
+    self.scrollBehavior = nil;
     self.viewModel = nil;
 }
 
@@ -391,6 +400,22 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    NSParameterAssert(scrollView == self.collectionView);
+    [self.scrollBehavior collectionViewWillBeginDragging:self.collectionView];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
+                     withVelocity:(CGPoint)velocity
+              targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    NSParameterAssert(scrollView == self.collectionView);
+    [self.scrollBehavior collectionViewWillEndDragging:self.collectionView
+                                          withVelocity:velocity
+                                   targetContentOffset:targetContentOffset];
+}
+
 #pragma mark - Private utilities
 
 - (void)loadViewModelIfNeeded
@@ -449,8 +474,15 @@ NS_ASSUME_NONNULL_BEGIN
         CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
         CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
         CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
+
+        CGFloat const navigationBarDimension = MIN(navigationBarWidth, navigationBarHeight);
+        CGFloat totalAdjustment = 0.0;
+        if (navigationBarDimension > 0 ||
+            [self.scrollBehavior collectionViewShouldAdjustContentOffsetForStatusBarOnly:self.collectionView]) {
+            totalAdjustment = navigationBarDimension + MIN(statusBarWidth, statusBarHeight);
+        }
         
-        [self adjustCollectionViewContentInsetWithTopValue:MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight)];
+        [self adjustCollectionViewContentInsetWithTopValue:totalAdjustment];
         
         return;
     }
@@ -750,6 +782,18 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return parentModel.childComponentModels[childIndex];
+}
+
+- (id<HUBScrollBehavior>)selectScrollBehavior
+{
+    switch (self.scrollMode) {
+        case HUBViewControllerScrollModeDefault:
+            return nil;
+        case HUBViewControllerScrollModeVerticalPaging:
+            return [HUBVerticalPagingScrollBehavior new];
+    }
+
+    return nil;
 }
 
 @end
