@@ -57,7 +57,7 @@ static const CGFloat SPTDrivingModeVelocitySnappingThreshold = 0.5;
         targetIndexPath = startIndexPath;
     // Scrolling is done in a forward direction, snap to the next item
     } else if (relativeDelta >= SPTDrivingModeDeltaSnappingThreshold || directionalVelocity > SPTDrivingModeVelocitySnappingThreshold) {
-        if (startIndexPath.item < numberOfItems) {
+        if ((startIndexPath.item + 1) < numberOfItems) {
             targetIndexPath = [NSIndexPath indexPathForItem:startIndexPath.item + 1 inSection:startIndexPath.section];
         }
     // Scrolling is done in a backward direction, snap to the previous item
