@@ -5,6 +5,17 @@
 @protocol HUBComponent;
 @protocol HUBComponentModel;
 
+/**
+ * Enum defining scrolling behaviors of a `HUBViewController`.
+ *
+ * HUBViewControllerScrollModeDefault: no special behavior.
+ * HUBViewControllerScrollModeVerticalPaging: the Hub view keeps one row centered in the view.
+ */
+typedef NS_ENUM(NSUInteger, HUBViewControllerScrollMode) {
+    HUBViewControllerScrollModeDefault,
+    HUBViewControllerScrollModeVerticalPaging,
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -83,6 +94,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The view controller's delegate. See `HUBViewControllerDelegate` for more information.
 @property (nonatomic, weak, nullable) id<HUBViewControllerDelegate> delegate;
+
+/**
+ * The scrolling mode of the view controller's view.
+ *
+ * The scrolling behavior is locked down once the view is created, so scrollMode should be set before the view
+ * controller is added to a view hierarchy.
+ */
+@property (nonatomic) HUBViewControllerScrollMode scrollMode;
 
 @end
 
