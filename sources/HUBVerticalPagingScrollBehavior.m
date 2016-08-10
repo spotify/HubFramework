@@ -7,8 +7,8 @@
 
 @end
 
-static const CGFloat SPTDrivingModeDeltaSnappingThreshold = 0.3;
-static const CGFloat SPTDrivingModeVelocitySnappingThreshold = 0.5;
+static const CGFloat HUBVerticalPagingDeltaSnappingThreshold = 0.3f;
+static const CGFloat HUBVerticalPagingVelocitySnappingThreshold = 0.5f;
 
 @implementation HUBVerticalPagingScrollBehavior
 
@@ -44,8 +44,8 @@ static const CGFloat SPTDrivingModeVelocitySnappingThreshold = 0.5;
 
     UICollectionViewLayoutAttributes *startAttributes = [collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:startIndexPath];
     CGPoint previousOffset = CGPointMake(
-        startAttributes.center.x - CGRectGetWidth(collectionView.frame) / 2.0,
-        startAttributes.center.y - CGRectGetHeight(collectionView.frame) / 2.0
+        startAttributes.center.x - CGRectGetWidth(collectionView.frame) / 2.0f,
+        startAttributes.center.y - CGRectGetHeight(collectionView.frame) / 2.0f
     );
 
     CGFloat relativeDelta = (currentOffset.y - previousOffset.y) / CGRectGetHeight(collectionView.frame);
@@ -56,12 +56,12 @@ static const CGFloat SPTDrivingModeVelocitySnappingThreshold = 0.5;
     if (currentOffset.y < 0.0) {
         targetIndexPath = startIndexPath;
     // Scrolling is done in a forward direction, snap to the next item
-    } else if (relativeDelta >= SPTDrivingModeDeltaSnappingThreshold || directionalVelocity > SPTDrivingModeVelocitySnappingThreshold) {
+    } else if (relativeDelta >= HUBVerticalPagingDeltaSnappingThreshold || directionalVelocity > HUBVerticalPagingVelocitySnappingThreshold) {
         if ((startIndexPath.item + 1) < numberOfItems) {
             targetIndexPath = [NSIndexPath indexPathForItem:startIndexPath.item + 1 inSection:startIndexPath.section];
         }
     // Scrolling is done in a backward direction, snap to the previous item
-    } else if (relativeDelta <= -SPTDrivingModeDeltaSnappingThreshold || directionalVelocity < -SPTDrivingModeVelocitySnappingThreshold) {
+    } else if (relativeDelta <= -HUBVerticalPagingDeltaSnappingThreshold || directionalVelocity < -HUBVerticalPagingVelocitySnappingThreshold) {
         if (startIndexPath.item > 0) {
             targetIndexPath = [NSIndexPath indexPathForItem:startIndexPath.item - 1 inSection:startIndexPath.section];
         }
@@ -77,7 +77,7 @@ static const CGFloat SPTDrivingModeVelocitySnappingThreshold = 0.5;
 {
     UICollectionViewLayoutAttributes *attributes = [collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
 
-    const CGFloat center = CGRectGetHeight(collectionView.frame) / 2.0;
+    const CGFloat center = CGRectGetHeight(collectionView.frame) / 2.0f;
     const CGFloat offset = floor(attributes.center.y - center);
     const CGPoint targetOffset = CGPointMake(collectionView.contentOffset.x, offset);
     return targetOffset;
@@ -91,9 +91,9 @@ static const CGFloat SPTDrivingModeVelocitySnappingThreshold = 0.5;
       isLastComponent:(BOOL)isLastComponent
 {
     if (isInTopRow) {
-        margins->top = (collectionViewSize.height - componentSize.height) / 2.0;
+        margins->top = (collectionViewSize.height - componentSize.height) / 2.0f;
     } else if (isLastComponent) {
-        margins->bottom = (collectionViewSize.height - componentSize.height) / 2.0;
+        margins->bottom = (collectionViewSize.height - componentSize.height) / 2.0f;
     }
 }
 
