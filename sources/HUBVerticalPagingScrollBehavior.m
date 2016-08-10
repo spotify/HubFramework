@@ -78,7 +78,7 @@ static const CGFloat HUBVerticalPagingVelocitySnappingThreshold = 0.5f;
     UICollectionViewLayoutAttributes *attributes = [collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
 
     const CGFloat center = CGRectGetHeight(collectionView.frame) / 2.0f;
-    const CGFloat offset = floor(attributes.center.y - center);
+    const CGFloat offset = (CGFloat)floor(attributes.center.y - center);
     const CGPoint targetOffset = CGPointMake(collectionView.contentOffset.x, offset);
     return targetOffset;
 }
