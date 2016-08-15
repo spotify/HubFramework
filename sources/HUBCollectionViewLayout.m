@@ -8,6 +8,7 @@
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentLayoutManager.h"
 #import "HUBComponentLayoutWrapper.h"
+#import "HUBScrollBehaviorWrapper.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBViewModel> viewModel;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
+@property (nonatomic, strong, readonly) HUBScrollBehaviorWrapper *scrollBehavior;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBComponentIdentifier *, id<HUBComponent>> *componentCache;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *layoutAttributesByIndexPath;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, NSMutableSet<NSIndexPath *> *> *indexPathsByVerticalGroup;
@@ -28,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewModel:(id<HUBViewModel>)viewModel
                 componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                   scrollBehavior:(HUBScrollBehaviorWrapper *)scrollBehavior
 {
     self = [super init];
     
@@ -35,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
         _viewModel = viewModel;
         _componentRegistry = componentRegistry;
         _componentLayoutManager = componentLayoutManager;
+        _scrollBehavior = scrollBehavior;
         _componentCache = [NSMutableDictionary new];
         _layoutAttributesByIndexPath = [NSMutableDictionary new];
         _indexPathsByVerticalGroup = [NSMutableDictionary new];
@@ -54,23 +58,34 @@ NS_ASSUME_NONNULL_BEGIN
     CGPoint currentPoint = CGPointZero;
     CGPoint firstComponentOnCurrentRowOrigin = CGPointZero;
     NSUInteger const allComponentsCount = self.viewModel.bodyComponentModels.count;
+    CGFloat maxBottomRowComponentHeight = 0;
+    CGFloat maxBottomRowHeightWithMargins = 0;
     
     for (NSUInteger componentIndex = 0; componentIndex < allComponentsCount; componentIndex++) {
         id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[componentIndex];
         id<HUBComponent> const component = [self componentForModel:componentModel];
         NSSet<HUBComponentLayoutTrait *> * const componentLayoutTraits = component.layoutTraits;
-        
-        UIEdgeInsets margins = [self defaultMarginsForComponent:component
-                                                     isInTopRow:componentIsInTopRow
-                                         componentsOnCurrentRow:componentsOnCurrentRow];
-        
+        BOOL isLastComponent = (componentIndex == allComponentsCount - 1);
+
         CGRect componentViewFrame = [self defaultViewFrameForComponent:component
                                                                  model:componentModel
-                                                               margins:margins
                                                           currentPoint:currentPoint
                                                     collectionViewSize:collectionViewSize];
 
-        BOOL couldFitOnTheRow = CGRectGetMaxX(componentViewFrame) <= collectionViewSize.width;
+        UIEdgeInsets margins = [self defaultMarginsForComponent:component
+                                                     isInTopRow:componentIsInTopRow
+                                         componentsOnCurrentRow:componentsOnCurrentRow];
+
+        [self.scrollBehavior adjustMargins:&margins
+                              forComponent:component
+                             componentSize:componentViewFrame.size
+                        collectionViewSize:collectionViewSize
+                                isInTopRow:componentIsInTopRow
+                           isLastComponent:isLastComponent];
+
+        componentViewFrame.origin.x = currentPoint.x + margins.left;
+
+        BOOL couldFitOnTheRow = CGRectGetMaxX(componentViewFrame) + margins.right <= collectionViewSize.width;
         
         if (couldFitOnTheRow == NO) {
             [self updateLayoutAttributesForComponentsIfNeeded:componentsOnCurrentRow
@@ -124,21 +139,25 @@ NS_ASSUME_NONNULL_BEGIN
             firstComponentOnCurrentRowOrigin = componentViewFrame.origin;
         }
 
-        BOOL isLastComponent = (componentIndex == allComponentsCount - 1);
-        // We center components if needed when we go to a new row. If it is the last row we need to center it here
         if (isLastComponent) {
+            // We center components if needed when we go to a new row. If it is the last row we need to center it here
             [self updateLayoutAttributesForComponentsIfNeeded:componentsOnCurrentRow
                                            lastComponentIndex:componentIndex
                                               firstComponentX:firstComponentOnCurrentRowOrigin.x
                                                lastComponentX:currentPoint.x
                                                      rowWidth:collectionViewSize.width];
+
+            /* If we're on the last row, accumulate height + bottom margin so we can respect bottom margins for all
+             * cards in the row.
+             */
+            maxBottomRowComponentHeight = currentRowHeight;
+            maxBottomRowHeightWithMargins = MAX(maxBottomRowHeightWithMargins, componentHeight + margins.bottom);
         }
-
-
     }
 
     self.contentSize = [self contentSizeForContentHeight:currentRowMaxY
                                      bottomRowComponents:componentsOnCurrentRow
+                                     minimumBottomMargin:maxBottomRowHeightWithMargins - maxBottomRowComponentHeight
                                       collectionViewSize:collectionViewSize];
 }
 
@@ -268,12 +287,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGRect)defaultViewFrameForComponent:(id<HUBComponent>)component
                                  model:(id<HUBComponentModel>)componentModel
-                               margins:(UIEdgeInsets)componentMargins
                           currentPoint:(CGPoint)currentPoint
                     collectionViewSize:(CGSize)collectionViewSize
 {
     CGRect componentViewFrame = CGRectZero;
-    componentViewFrame.origin.x = currentPoint.x + componentMargins.left;
     componentViewFrame.size = [component preferredViewSizeForDisplayingModel:componentModel containerViewSize:collectionViewSize];
     componentViewFrame.size.width = MIN(CGRectGetWidth(componentViewFrame), collectionViewSize.width);
     return componentViewFrame;
@@ -310,7 +327,10 @@ NS_ASSUME_NONNULL_BEGIN
     }];
 }
 
-- (CGSize)contentSizeForContentHeight:(CGFloat)contentHeight bottomRowComponents:(NSArray<id<HUBComponent>> *)bottomRowComponents collectionViewSize:(CGSize)collectionViewSize
+- (CGSize)contentSizeForContentHeight:(CGFloat)contentHeight
+                  bottomRowComponents:(NSArray<id<HUBComponent>> *)bottomRowComponents
+                  minimumBottomMargin:(CGFloat)minimumBottomMargin
+                   collectionViewSize:(CGSize)collectionViewSize
 {
     CGFloat viewBottomMargin = 0;
     
@@ -321,7 +341,7 @@ NS_ASSUME_NONNULL_BEGIN
         viewBottomMargin = MAX(viewBottomMargin, componentBottomMargin);
     }
     
-    contentHeight += viewBottomMargin;
+    contentHeight += MAX(viewBottomMargin, minimumBottomMargin);
     
     return CGSizeMake(collectionViewSize.width, contentHeight);
 }

@@ -64,7 +64,8 @@ namespace :ci do
           '-u' => url,
           '-t' => token,
           '-D' => DERIVED_DATA_PATH,
-        }.each{|k,v| command.push(k.to_s, v) if v }
+          '-P' => ENV.fetch('TEAMCITY_BUILD_BRANCH', '').scan(/pull\/(\d+)/).flatten.first,
+        }.each{|k,v| command.push(k.to_s, v.to_s) if v }
 
         # Run command
         full_cmd = Shellwords.shelljoin(command)
