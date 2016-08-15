@@ -146,12 +146,6 @@ NS_ASSUME_NONNULL_BEGIN
                                               firstComponentX:firstComponentOnCurrentRowOrigin.x
                                                lastComponentX:currentPoint.x
                                                      rowWidth:collectionViewSize.width];
-
-            /* If we're on the last row, accumulate height + bottom margin so we can respect bottom margins for all
-             * cards in the row.
-             */
-            maxBottomRowComponentHeight = currentRowHeight;
-            maxBottomRowHeightWithMargins = MAX(maxBottomRowHeightWithMargins, componentHeight + margins.bottom);
         }
     }
 
