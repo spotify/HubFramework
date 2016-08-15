@@ -98,13 +98,8 @@ NS_ASSUME_NONNULL_BEGIN
                 margins.top = 0;
                 
                 for (id<HUBComponent> const verticallyPrecedingComponent in componentsOnCurrentRow) {
-                    CGFloat marginToComponent = [self.componentLayoutManager verticalMarginForComponentWithLayoutTraits:componentLayoutTraits
-                                                                                         precedingComponentLayoutTraits:verticallyPrecedingComponent.layoutTraits];
-                    
-                    if (componentIsInTopRow) {
-                        marginToComponent += [self.componentLayoutManager marginBetweenComponentWithLayoutTraits:verticallyPrecedingComponent.layoutTraits
-                                                                                                  andContentEdge:HUBComponentLayoutContentEdgeTop];
-                    }
+                    CGFloat const marginToComponent = [self.componentLayoutManager verticalMarginForComponentWithLayoutTraits:componentLayoutTraits
+                                                                                               precedingComponentLayoutTraits:verticallyPrecedingComponent.layoutTraits];
                     
                     if (marginToComponent > margins.top) {
                         margins.top = marginToComponent;
