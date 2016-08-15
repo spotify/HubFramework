@@ -27,7 +27,7 @@
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBIconImageResolverMock.h"
 #import "HUBDeviceMock.h"
-#import "HUBUtilities.h"
+#import "HUBImplementationMacros.h"
 #import "HUBFeatureInfoImplementation.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
@@ -463,6 +463,7 @@
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
         viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        viewModelBuilder.headerComponentModelBuilder.title = [NSUUID UUID].UUIDString;
         return YES;
     };
     
@@ -957,6 +958,7 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
         viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        viewModelBuilder.headerComponentModelBuilder.title = [NSUUID UUID].UUIDString;
         return YES;
     };
     

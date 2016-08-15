@@ -1,4 +1,5 @@
 #import "HUBComponentImageDataBuilder.h"
+#import "HUBModifiable.h"
 #import "HUBHeaderMacros.h"
 
 @protocol HUBComponentImageDataJSONSchema;
@@ -8,7 +9,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBComponentImageDataBuilder` API
-@interface HUBComponentImageDataBuilderImplementation : NSObject <HUBComponentImageDataBuilder, NSCopying>
+@interface HUBComponentImageDataBuilderImplementation : NSObject <HUBComponentImageDataBuilder, HUBModifiable, NSCopying>
 
 /**
  *  Initialize an instance of this class with a JSON schema

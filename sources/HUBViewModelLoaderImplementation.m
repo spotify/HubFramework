@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewModelLoaderImplementation () <HUBContentOperationWrapperDelegate, HUBConnectivityStateResolverObserver>
+@interface HUBViewModelLoaderImplementation () <HUBContentOperationWrapperDelegate, HUBConnectivityStateResolverObserver, HUBModificationDelegate>
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, strong, readonly) id<HUBFeatureInfo> featureInfo;
@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable) id<HUBViewModel> cachedInitialViewModel;
 @property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *builder;
+@property (nonatomic) BOOL builderModified;
+@property (nonatomic, strong, nullable) id<HUBViewModel> previouslyLoadedViewModel;
 @property (nonatomic, strong, nullable) NSError *encounteredError;
 
 @end
@@ -135,6 +137,13 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+#pragma mark - HUBModificationDelegate
+
+- (void)modifiableWasModified:(id<HUBModifiable>)modifiable
+{
+    self.builderModified = YES;
+}
+
 #pragma mark - Private utilities
 
 - (HUBViewModelBuilderImplementation *)createOrCopyBuilder
@@ -142,18 +151,26 @@ NS_ASSUME_NONNULL_BEGIN
     HUBViewModelBuilderImplementation * const existingBuilder = self.builder;
     
     if (existingBuilder != nil) {
-        return [existingBuilder copy];
+        HUBViewModelBuilderImplementation * const copiedBuilder = [existingBuilder copy];
+        copiedBuilder.modificationDelegate = self;
+        existingBuilder.modificationDelegate = nil;
+        return copiedBuilder;
     }
     
-    return [self createBuilder];
+    HUBViewModelBuilderImplementation * const newBuilder = [self createBuilder];
+    newBuilder.modificationDelegate = self;
+    return newBuilder;
 }
                                              
 - (HUBViewModelBuilderImplementation *)createBuilder
 {
-    return [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureInfo.identifier
-                                                                     JSONSchema:self.JSONSchema
-                                                              componentDefaults:self.componentDefaults
-                                                              iconImageResolver:self.iconImageResolver];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureInfo.identifier
+                                                                                                                  JSONSchema:self.JSONSchema
+                                                                                                           componentDefaults:self.componentDefaults
+                                                                                                           iconImageResolver:self.iconImageResolver];
+    
+    builder.modificationDelegate = self;
+    return builder;
 }
 
 - (void)scheduleContentOperationsFromIndex:(NSUInteger)startIndex
@@ -222,7 +239,19 @@ NS_ASSUME_NONNULL_BEGIN
         self.builder.navigationBarTitle = self.featureInfo.title;
     }
     
+    if (!self.builderModified) {
+        id<HUBViewModel> const previouslyLoadedViewModel = self.previouslyLoadedViewModel;
+        
+        if (previouslyLoadedViewModel != nil) {
+            [delegate viewModelLoader:self didLoadViewModel:previouslyLoadedViewModel];
+            return;
+        }
+    }
+    
     id<HUBViewModel> const viewModel = [self.builder build];
+    self.previouslyLoadedViewModel = viewModel;
+    self.builderModified = NO;
+    
     [delegate viewModelLoader:self didLoadViewModel:viewModel];
 }
 
