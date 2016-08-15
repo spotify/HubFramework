@@ -43,11 +43,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param nullability The nullability of the property (either `nullable` or `nonnull`)
  */
 #define HUB_TRACK_MODIFICATIONS(ivarName, setterSelector, nullability) \
+    _Pragma("clang diagnostic push") \
+    _Pragma("clang diagnostic ignored \"-Wdirect-ivar-access\"") \
     - (void)setterSelector(nullability id)newValue { \
         if (![ivarName isEqual:newValue]) { \
             ivarName = newValue; \
             [self.modificationDelegate modifiableWasModified:self]; \
         } \
-    }
+    } \
+    _Pragma("clang diagnostic pop")
 
 NS_ASSUME_NONNULL_END
