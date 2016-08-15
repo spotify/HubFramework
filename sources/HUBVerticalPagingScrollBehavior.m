@@ -7,8 +7,8 @@
 
 @end
 
-static const CGFloat HUBVerticalPagingDeltaSnappingThreshold = 0.3f;
-static const CGFloat HUBVerticalPagingVelocitySnappingThreshold = 0.5f;
+static const CGFloat HUBVerticalPagingDeltaSnappingThreshold = 0.3;
+static const CGFloat HUBVerticalPagingVelocitySnappingThreshold = 0.5;
 
 @implementation HUBVerticalPagingScrollBehavior
 
@@ -44,8 +44,8 @@ static const CGFloat HUBVerticalPagingVelocitySnappingThreshold = 0.5f;
 
     UICollectionViewLayoutAttributes *startAttributes = [collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:startIndexPath];
     CGPoint previousOffset = CGPointMake(
-        startAttributes.center.x - CGRectGetWidth(collectionView.frame) / 2.0f,
-        startAttributes.center.y - CGRectGetHeight(collectionView.frame) / 2.0f
+        startAttributes.center.x - CGRectGetWidth(collectionView.frame) / 2.0,
+        startAttributes.center.y - CGRectGetHeight(collectionView.frame) / 2.0
     );
 
     CGFloat relativeDelta = (currentOffset.y - previousOffset.y) / CGRectGetHeight(collectionView.frame);
@@ -77,7 +77,7 @@ static const CGFloat HUBVerticalPagingVelocitySnappingThreshold = 0.5f;
 {
     UICollectionViewLayoutAttributes *attributes = [collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
 
-    const CGFloat center = CGRectGetHeight(collectionView.frame) / 2.0f;
+    const CGFloat center = CGRectGetHeight(collectionView.frame) / 2.0;
     const CGFloat offset = (CGFloat)floor(attributes.center.y - center);
     const CGPoint targetOffset = CGPointMake(collectionView.contentOffset.x, offset);
     return targetOffset;
@@ -91,9 +91,9 @@ static const CGFloat HUBVerticalPagingVelocitySnappingThreshold = 0.5f;
       isLastComponent:(BOOL)isLastComponent
 {
     if (isInTopRow) {
-        margins->top = (collectionViewSize.height - componentSize.height) / 2.0f;
+        margins->top = (collectionViewSize.height - componentSize.height) / 2.0;
     } else if (isLastComponent) {
-        margins->bottom = (collectionViewSize.height - componentSize.height) / 2.0f;
+        margins->bottom = (collectionViewSize.height - componentSize.height) / 2.0;
     }
 }
 
