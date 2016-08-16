@@ -51,7 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
         }
         
         HUBComponentLoadViewIfNeeded(_component);
-        [_component configureViewWithModel:model];
     }
     
     return self;
@@ -101,6 +100,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Property overrides
+
+- (void)setDelegate:(nullable id<HUBComponentWrapperDelegate>)delegate
+{
+    _delegate = delegate;
+    
+    if (delegate != nil) {
+        [self.component configureViewWithModel:self.model];
+    }
+}
 
 - (void)setModel:(id<HUBComponentModel>)model
 {
