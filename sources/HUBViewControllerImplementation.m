@@ -256,7 +256,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBComponentWrapper>)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
                      childComponentForModel:(id<HUBComponentModel>)model
 {
-    HUBComponentWrapperImplementation * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model];
+    HUBComponentWrapperImplementation * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model delegate:self];
     childComponentWrapper.model = model;
     [self didAddComponentWrapper:childComponentWrapper];
     
@@ -448,6 +448,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentWrapperImplementation * const wrapper = [[HUBComponentWrapperImplementation alloc] initWithComponent:component
                                                                                                                model:model
                                                                                                       UIStateManager:self.componentUIStateManager
+                                                                                                            delegate:self
                                                                                                      isRootComponent:YES];
     
     [self didAddComponentWrapper:wrapper];

@@ -7,7 +7,7 @@
 #import "HUBComponentModelImplementation.h"
 #import "HUBComponentUIStateManager.h"
 
-@interface HUBCollectionViewCellTests : XCTestCase
+@interface HUBCollectionViewCellTests : XCTestCase <HUBComponentWrapperDelegate>
 
 @property (nonatomic, strong) HUBComponentMock *component;
 @property (nonatomic, strong) HUBComponentWrapperImplementation *componentWrapper;
@@ -24,34 +24,7 @@
     [super setUp];
     
     self.component = [HUBComponentMock new];
-    
-    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
-    id<HUBComponentModel> const model = [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
-                                                                                              index:0
-                                                                                componentIdentifier:componentIdentifier
-                                                                                  componentCategory:HUBComponentCategoryRow
-                                                                                              title:nil
-                                                                                           subtitle:nil
-                                                                                     accessoryTitle:nil
-                                                                                    descriptionText:nil
-                                                                                      mainImageData:nil
-                                                                                backgroundImageData:nil
-                                                                                    customImageData:@{}
-                                                                                               icon:nil
-                                                                                          targetURL:nil
-                                                                             targetInitialViewModel:nil
-                                                                                           metadata:nil
-                                                                                        loggingData:nil
-                                                                                         customData:nil
-                                                                               childComponentModels:nil];
-    
-    HUBComponentUIStateManager * const UIStateManager = [HUBComponentUIStateManager new];
-    
-    self.componentWrapper = [[HUBComponentWrapperImplementation alloc] initWithComponent:self.component
-                                                                                   model:model
-                                                                          UIStateManager:UIStateManager
-                                                                         isRootComponent:YES];
-    
+    self.componentWrapper = [self createComponentWrapper];
     self.cell = [[HUBComponentCollectionViewCell alloc] initWithFrame:CGRectZero];
     self.cell.component = self.componentWrapper;
 }
@@ -89,6 +62,73 @@
     // Shouldn't generate an exception
     self.cell.selected = YES;
     self.cell.highlighted = YES;
+}
+
+#pragma mark - HUBComponentWrapperDelegate
+
+- (id<HUBComponentWrapper>)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+                     childComponentForModel:(id<HUBComponentModel>)model
+{
+    return [self createComponentWrapper];
+}
+
+- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+  childComponentWithView:(UIView *)childComponentView
+       willAppearAtIndex:(NSUInteger)childIndex
+{
+    // No-op
+}
+
+- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+  childComponentWithView:(UIView *)childComponentView
+     didDisappearAtIndex:(NSUInteger)childIndex
+{
+    // No-op
+}
+
+- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+  childComponentWithView:(UIView *)childComponentView
+         selectedAtIndex:(NSUInteger)childIndex
+{
+    // No-op
+}
+
+- (void)sendComponentWrapperToReusePool:(HUBComponentWrapperImplementation *)componentWrapper
+{
+    // No-op
+}
+
+#pragma mark - Utilities
+
+- (id<HUBComponentWrapper>)createComponentWrapper
+{
+    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+    id<HUBComponentModel> const model = [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
+                                                                                              index:0
+                                                                                componentIdentifier:componentIdentifier
+                                                                                  componentCategory:HUBComponentCategoryRow
+                                                                                              title:nil
+                                                                                           subtitle:nil
+                                                                                     accessoryTitle:nil
+                                                                                    descriptionText:nil
+                                                                                      mainImageData:nil
+                                                                                backgroundImageData:nil
+                                                                                    customImageData:@{}
+                                                                                               icon:nil
+                                                                                          targetURL:nil
+                                                                             targetInitialViewModel:nil
+                                                                                           metadata:nil
+                                                                                        loggingData:nil
+                                                                                         customData:nil
+                                                                               childComponentModels:nil];
+    
+    HUBComponentUIStateManager * const UIStateManager = [HUBComponentUIStateManager new];
+    
+    return [[HUBComponentWrapperImplementation alloc] initWithComponent:self.component
+                                                                  model:model
+                                                         UIStateManager:UIStateManager
+                                                               delegate:self
+                                                        isRootComponent:YES];
 }
 
 @end

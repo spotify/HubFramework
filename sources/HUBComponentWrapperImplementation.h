@@ -88,6 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
+                         delegate:(id<HUBComponentWrapperDelegate>)delegate
                   isRootComponent:(BOOL)isRootComponent HUB_DESIGNATED_INITIALIZER;
 
 /**
