@@ -142,9 +142,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Child component model builders
 
 /**
- *  Return all current child body component model builders
+ *  Return all current child component model builders
  *
- *  @return All the existing child body component model builders, in the order that they were created. Note that
+ *  @return All the existing child component model builders, in the order that they were created. Note that
  *  any `preferredIndex` set by the component model builders hasn't been resolved at this point, so those
  *  are not taken into account.
  */
