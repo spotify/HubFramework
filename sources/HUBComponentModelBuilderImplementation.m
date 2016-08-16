@@ -235,6 +235,18 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
     return [self getOrCreateBuilderForCustomImageDataWithIdentifier:identifier];
 }
 
+- (NSArray<id<HUBComponentModelBuilder>> *)allChildComponentModelBuilders
+{
+    NSMutableArray<id<HUBComponentModelBuilder>> * const builders = [NSMutableArray new];
+
+    for (NSString * const identifier in self.childComponentIdentifierOrder) {
+        id<HUBComponentModelBuilder> const builder = self.childComponentModelBuilders[identifier];
+        [builders addObject:builder];
+    }
+
+    return [builders copy];
+}
+
 - (BOOL)builderExistsForChildComponentModelWithIdentifier:(NSString *)identifier
 {
     return self.childComponentModelBuilders[identifier] != nil;
