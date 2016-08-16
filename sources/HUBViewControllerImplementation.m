@@ -11,6 +11,7 @@
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBComponentIdentifier.h"
+#import "HUBImplementationMacros.h"
 #import "HUBUtilities.h"
 #import "HUBImageLoader.h"
 #import "HUBComponentImageLoadingContext.h"
@@ -217,6 +218,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel
 {
+    if ([self.viewModel.buildDate isEqual:viewModel.buildDate]) {
+        return;
+    }
+    
     self.viewModel = viewModel;
     self.viewModelIsInitial = NO;
     self.viewModelHasChangedSinceLastLayoutUpdate = YES;

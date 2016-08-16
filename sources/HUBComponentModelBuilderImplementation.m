@@ -12,10 +12,11 @@
 #import "HUBComponentDefaults.h"
 #import "HUBIconImplementation.h"
 #import "HUBUtilities.h"
+#import "HUBImplementationMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBComponentModelBuilderImplementation ()
+@interface HUBComponentModelBuilderImplementation () <HUBModificationDelegate>
 
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
@@ -32,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBComponentModelBuilderImplementation
 
+#pragma mark - Property synthesization
+
 @synthesize modelIdentifier = _modelIdentifier;
 @synthesize preferredIndex = _preferredIndex;
 @synthesize componentNamespace = _componentNamespace;
@@ -46,6 +49,22 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize metadata = _metadata;
 @synthesize loggingData = _loggingData;
 @synthesize customData = _customData;
+@synthesize modificationDelegate = _modificationDelegate;
+
+#pragma mark - Modification tracking
+
+HUB_TRACK_MODIFICATIONS(_preferredIndex, setPreferredIndex:, nullable)
+HUB_TRACK_MODIFICATIONS(_componentNamespace, setComponentNamespace:, nonnull)
+HUB_TRACK_MODIFICATIONS(_componentName, setComponentName:, nonnull)
+HUB_TRACK_MODIFICATIONS(_componentCategory, setComponentCategory:, nonnull)
+HUB_TRACK_MODIFICATIONS(_title, setTitle:, nullable)
+HUB_TRACK_MODIFICATIONS(_subtitle, setSubtitle:, nullable)
+HUB_TRACK_MODIFICATIONS(_accessoryTitle, setAccessoryTitle:, nullable)
+HUB_TRACK_MODIFICATIONS(_descriptionText, setDescriptionText:, nullable)
+HUB_TRACK_MODIFICATIONS(_targetURL, setTargetURL:, nullable)
+HUB_TRACK_MODIFICATIONS(_metadata, setMetadata:, nullable)
+HUB_TRACK_MODIFICATIONS(_loggingData, setLoggingData:, nullable)
+HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
 
 #pragma mark - Class methods
 
@@ -417,20 +436,32 @@ NS_ASSUME_NONNULL_BEGIN
     copy.iconIdentifier = self.iconIdentifier;
     copy.targetURL = self.targetURL;
     copy.targetInitialViewModelBuilderImplementation = [self.targetInitialViewModelBuilderImplementation copy];
+    copy.targetInitialViewModelBuilderImplementation.modificationDelegate = copy;
     copy.customData = self.customData;
     copy.loggingData = self.loggingData;
     
     for (NSString * const customImageIdentifier in self.customImageDataBuilders) {
-        copy.customImageDataBuilders[customImageIdentifier] = [self.customImageDataBuilders[customImageIdentifier] copy];
+        HUBComponentImageDataBuilderImplementation * const builderCopy = [self.customImageDataBuilders[customImageIdentifier] copy];
+        builderCopy.modificationDelegate = copy;
+        copy.customImageDataBuilders[customImageIdentifier] = builderCopy;
     }
     
     for (NSString * const childComponentModelIdentifier in self.childComponentModelBuilders) {
-        copy.childComponentModelBuilders[childComponentModelIdentifier] = [self.childComponentModelBuilders[childComponentModelIdentifier] copy];
+        HUBComponentModelBuilderImplementation * const builderCopy = [self.childComponentModelBuilders[childComponentModelIdentifier] copy];
+        builderCopy.modificationDelegate = copy;
+        copy.childComponentModelBuilders[childComponentModelIdentifier] = builderCopy;
     }
     
     [copy.childComponentIdentifierOrder addObjectsFromArray:self.childComponentIdentifierOrder];
     
     return copy;
+}
+
+#pragma mark - HUBModificationDelegate
+
+- (void)modifiableWasModified:(id<HUBModifiable>)modifiable
+{
+    [self.modificationDelegate modifiableWasModified:self];
 }
 
 #pragma mark - API
@@ -496,7 +527,9 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentImageDataBuilderImplementation * const newBuilder = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
                                                                                                                          iconImageResolver:self.iconImageResolver];
     
+    newBuilder.modificationDelegate = self;
     [self.customImageDataBuilders setObject:newBuilder forKey:identifier];
+    
     return newBuilder;
 }
 
@@ -508,6 +541,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                      JSONSchema:self.JSONSchema
                                                                                                               componentDefaults:self.componentDefaults
                                                                                                               iconImageResolver:self.iconImageResolver];
+        
+        self.targetInitialViewModelBuilderImplementation.modificationDelegate = self;
     }
     
     return (HUBViewModelBuilderImplementation *)self.targetInitialViewModelBuilderImplementation;
@@ -532,6 +567,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                    mainImageDataBuilder:nil
                                                                                                              backgroundImageDataBuilder:nil];
     
+    newBuilder.modificationDelegate = self;
     [self.childComponentModelBuilders setObject:newBuilder forKey:newBuilder.modelIdentifier];
     [self.childComponentIdentifierOrder addObject:newBuilder.modelIdentifier];
     

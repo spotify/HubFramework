@@ -1,4 +1,5 @@
 #import "HUBViewModelBuilder.h"
+#import "HUBModifiable.h"
 #import "HUBHeaderMacros.h"
 
 @protocol HUBJSONSchema;
@@ -9,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBViewModelBuilder` API
-@interface HUBViewModelBuilderImplementation : NSObject <HUBViewModelBuilder, NSCopying>
+@interface HUBViewModelBuilderImplementation : NSObject <HUBViewModelBuilder, HUBModifiable, NSCopying>
 
 /**
  *  Initialize an instance of this class with a feature identifier

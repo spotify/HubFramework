@@ -9,10 +9,11 @@
 #import "HUBComponentModelJSONSchema.h"
 #import "HUBJSONPath.h"
 #import "HUBUtilities.h"
+#import "HUBImplementationMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewModelBuilderImplementation ()
+@interface HUBViewModelBuilderImplementation () <HUBModificationDelegate>
 
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
@@ -27,11 +28,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewModelBuilderImplementation
 
+#pragma mark - Property synthesization
+
 @synthesize viewIdentifier = _viewIdentifier;
 @synthesize featureIdentifier = _featureIdentifier;
 @synthesize navigationBarTitle = _navigationBarTitle;
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
+@synthesize modificationDelegate = _modificationDelegate;
+
+#pragma mark - Modification tracking
+
+HUB_TRACK_MODIFICATIONS(_viewIdentifier, setViewIdentifier:, nullable)
+HUB_TRACK_MODIFICATIONS(_featureIdentifier, setFeatureIdentifier:, nonnull)
+HUB_TRACK_MODIFICATIONS(_navigationBarTitle, setNavigationBarTitle:, nullable)
+HUB_TRACK_MODIFICATIONS(_extensionURL, setExtensionURL:, nullable)
+HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
 
 #pragma mark - Initializer
 
@@ -126,19 +138,34 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeHeaderComponentModelBuilder
 {
+    if (self.headerComponentModelBuilderImplementation == nil) {
+        return;
+    }
+    
     self.headerComponentModelBuilderImplementation = nil;
+    [self.modificationDelegate modifiableWasModified:self];
 }
 
 - (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier
 {
+    if (self.bodyComponentModelBuilders[identifier] == nil) {
+        return;
+    }
+    
     [self.bodyComponentModelBuilders removeObjectForKey:identifier];
     [self.bodyComponentIdentifierOrder removeObject:identifier];
+    [self.modificationDelegate modifiableWasModified:self];
 }
 
 - (void)removeBuilderForOverlayComponentModelWithIdentifier:(NSString *)identifier
 {
+    if (self.overlayComponentModelBuilders[identifier] == nil) {
+        return;
+    }
+    
     [self.overlayComponentModelBuilders removeObjectForKey:identifier];
     [self.overlayComponentIdentifierOrder removeObject:identifier];
+    [self.modificationDelegate modifiableWasModified:self];
 }
 
 - (void)removeAllComponentModelBuilders
@@ -150,6 +177,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     [self.overlayComponentModelBuilders removeAllObjects];
     [self.overlayComponentIdentifierOrder removeAllObjects];
+    
+    [self.modificationDelegate modifiableWasModified:self];
 }
 
 #pragma mark - API
@@ -258,6 +287,13 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+#pragma mark - HUBModificationDelegate
+
+- (void)modifiableWasModified:(id<HUBModifiable>)modifiable
+{
+    [self.modificationDelegate modifiableWasModified:self];
+}
+
 #pragma mark - NSObject
 
 - (NSString *)debugDescription
@@ -279,12 +315,22 @@ NS_ASSUME_NONNULL_BEGIN
     copy.extensionURL = self.extensionURL;
     copy.customData = self.customData;
     copy.headerComponentModelBuilderImplementation = [self.headerComponentModelBuilderImplementation copy];
+    copy.headerComponentModelBuilderImplementation.modificationDelegate = self;
     
     for (NSString * const builderIdentifier in self.bodyComponentModelBuilders) {
-        copy.bodyComponentModelBuilders[builderIdentifier] = [self.bodyComponentModelBuilders[builderIdentifier] copy];
+        HUBComponentModelBuilderImplementation * const builderCopy = [self.bodyComponentModelBuilders[builderIdentifier] copy];
+        builderCopy.modificationDelegate = copy;
+        copy.bodyComponentModelBuilders[builderIdentifier] = builderCopy;
+    }
+    
+    for (NSString * const builderIdentifier in self.overlayComponentModelBuilders) {
+        HUBComponentModelBuilderImplementation * const builderCopy = [self.overlayComponentModelBuilders[builderIdentifier] copy];
+        builderCopy.modificationDelegate = copy;
+        copy.overlayComponentModelBuilders[builderIdentifier] = builderCopy;
     }
     
     [copy.bodyComponentIdentifierOrder addObjectsFromArray:self.bodyComponentIdentifierOrder];
+    [copy.overlayComponentIdentifierOrder addObjectsFromArray:self.overlayComponentIdentifierOrder];
     
     return copy;
 }
@@ -371,13 +417,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HUBComponentModelBuilderImplementation *)createComponentModelBuilderWithIdentifier:(nullable NSString *)identifier
 {
-    return [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
-                                                                 featureIdentifier:self.featureIdentifier
-                                                                        JSONSchema:self.JSONSchema
-                                                                 componentDefaults:self.componentDefaults
-                                                                 iconImageResolver:self.iconImageResolver
-                                                              mainImageDataBuilder:nil
-                                                        backgroundImageDataBuilder:nil];
+    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
+                                                                                                                   featureIdentifier:self.featureIdentifier
+                                                                                                                          JSONSchema:self.JSONSchema
+                                                                                                                   componentDefaults:self.componentDefaults
+                                                                                                                   iconImageResolver:self.iconImageResolver
+                                                                                                                mainImageDataBuilder:nil
+                                                                                                          backgroundImageDataBuilder:nil];
+    
+    builder.modificationDelegate = self;
+    return builder;
 }
 
 @end

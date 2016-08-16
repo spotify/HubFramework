@@ -5,6 +5,7 @@
 #import "HUBComponentImageDataJSONSchema.h"
 #import "HUBIconImplementation.h"
 #import "HUBUtilities.h"
+#import "HUBImplementationMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,10 +18,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBComponentImageDataBuilderImplementation
 
+#pragma mark - Property synthesization
+
 @synthesize style = _style;
 @synthesize URL = _URL;
 @synthesize placeholderIconIdentifier = _placeholderIconIdentifier;
 @synthesize localImage = _localImage;
+@synthesize modificationDelegate = _modificationDelegate;
+
+#pragma mark - Modification tracking
+
+HUB_TRACK_MODIFICATIONS(_URL, setURL:, nullable)
+HUB_TRACK_MODIFICATIONS(_placeholderIconIdentifier, setPlaceholderIconIdentifier:, nullable)
+HUB_TRACK_MODIFICATIONS(_localImage, setLocalImage:, nullable)
 
 #pragma mark - Initializer
 

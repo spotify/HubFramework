@@ -1,4 +1,5 @@
 #import "HUBComponentModelBuilder.h"
+#import "HUBModifiable.h"
 #import "HUBHeaderMacros.h"
 
 @protocol HUBJSONSchema;
@@ -10,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBComponentModelBuilder` API
-@interface HUBComponentModelBuilderImplementation : NSObject <HUBComponentModelBuilder, NSCopying>
+@interface HUBComponentModelBuilderImplementation : NSObject <HUBComponentModelBuilder, HUBModifiable, NSCopying>
 
 /**
  *  Build an array of component models from a collection of builders
