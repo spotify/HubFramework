@@ -114,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
             componentIsInTopRow = NO;
             [componentsOnCurrentRow removeAllObjects];
             currentPoint.y = CGRectGetMinY(componentViewFrame);
-            currentRowMaxY = CGRectGetMaxY(componentViewFrame);
+            currentRowMaxY = CGRectGetMaxY(componentViewFrame) + margins.bottom;
         } else {
             componentViewFrame.origin.y = currentPoint.y + margins.top;
         }
