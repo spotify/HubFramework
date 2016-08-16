@@ -49,16 +49,16 @@ NS_ASSUME_NONNULL_BEGIN
         if ([_component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
             ((id<HUBComponentWithChildren>)_component).childDelegate = self;
         }
-        
+
+        UIView * const componentView = self.view;
         if ([_component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
-            UIView * const componentView = self.view;
             HUBComponentResizeObservingView * const resizeObservingView = [[HUBComponentResizeObservingView alloc] initWithFrame:componentView.bounds];
             resizeObservingView.delegate = self;
             [componentView addSubview:resizeObservingView];
         }
         
         HUBComponentLoadViewIfNeeded(_component);
-        [_component configureViewWithModel:_model];
+        [_component configureViewWithModel:_model containerViewSize:componentView.bounds.size];
     }
     
     return self;
@@ -120,8 +120,8 @@ NS_ASSUME_NONNULL_BEGIN
     if (!self.preparedForReuse) {
         [self prepareForReuseAndSendToReusePool:NO];
     }
-    
-    [self.component configureViewWithModel:model];
+     UIView * const componentView = self.view;
+    [self.component configureViewWithModel:model containerViewSize:componentView.bounds.size];
     [self restoreComponentUIState];
     
     self.preparedForReuse = NO;

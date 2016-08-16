@@ -47,7 +47,7 @@
     return self.preferredViewSize;
 }
 
-- (void)configureViewWithModel:(id<HUBComponentModel>)model
+- (void)configureViewWithModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
     self.model = model;
 }
