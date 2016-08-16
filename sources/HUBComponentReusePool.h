@@ -1,6 +1,7 @@
 #import "HUBHeaderMacros.h"
 
 @protocol HUBComponentModel;
+@protocol HUBComponentWrapperDelegate;
 @class HUBComponentRegistryImplementation;
 @class HUBComponentWrapperImplementation;
 @class HUBComponentUIStateManager;
@@ -30,10 +31,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  Retrieve a component wrapper from the pool for a given model
  *
  *  @param model The model to return a component wrapper for
+ *  @param delegate The object that will act as the component wrapper's delegate
  *
  *  This method will either return a reused wrapper, or create one if none existed in the pool.
  */
-- (HUBComponentWrapperImplementation *)componentWrapperForModel:(id<HUBComponentModel>)model;
+- (HUBComponentWrapperImplementation *)componentWrapperForModel:(id<HUBComponentModel>)model
+                                                       delegate:(id<HUBComponentWrapperDelegate>)delegate;
 
 @end
 

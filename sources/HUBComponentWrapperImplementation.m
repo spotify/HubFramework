@@ -28,8 +28,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
+                         delegate:(id<HUBComponentWrapperDelegate>)delegate
                   isRootComponent:(BOOL)isRootComponent
 {
+    NSParameterAssert(component != nil);
+    NSParameterAssert(model != nil);
+    NSParameterAssert(UIStateManager != nil);
+    NSParameterAssert(delegate != nil);
+    
     self = [super init];
     
     if (self) {
@@ -37,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
         _component = component;
         _UIStateManager = UIStateManager;
         _model = model;
+        _delegate = delegate;
         _isRootComponent = isRootComponent;
         
         if ([_component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
@@ -51,6 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
         
         HUBComponentLoadViewIfNeeded(_component);
+        [_component configureViewWithModel:_model];
     }
     
     return self;
@@ -100,15 +108,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Property overrides
-
-- (void)setDelegate:(nullable id<HUBComponentWrapperDelegate>)delegate
-{
-    _delegate = delegate;
-    
-    if (delegate != nil) {
-        [self.component configureViewWithModel:self.model];
-    }
-}
 
 - (void)setModel:(id<HUBComponentModel>)model
 {

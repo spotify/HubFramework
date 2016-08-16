@@ -47,11 +47,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (HUBComponentWrapperImplementation *)componentWrapperForModel:(id<HUBComponentModel>)model
+                                                       delegate:(id<HUBComponentWrapperDelegate>)delegate
 {
     NSMutableArray * const existingWrappers = self.componentWrappers[model.componentIdentifier];
     
     if (existingWrappers.count > 0) {
         HUBComponentWrapperImplementation * const wrapper = existingWrappers[0];
+        wrapper.delegate = delegate;
         [existingWrappers removeObjectAtIndex:0];
         return wrapper;
     }
@@ -61,6 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [[HUBComponentWrapperImplementation alloc] initWithComponent:component
                                                                   model:model
                                                          UIStateManager:self.UIStateManager
+                                                               delegate:delegate
                                                         isRootComponent:NO];
 }
 
