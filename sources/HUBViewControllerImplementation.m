@@ -133,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
         self.scrollBehavior = [[HUBScrollBehaviorWrapper alloc] initWithUnderlyingBehavior:[self selectScrollBehavior]];
         [self.scrollBehavior configureCollectionView:collectionView viewController:self];
 
-        [self.view addSubview:collectionView];
+        [self.view insertSubview:collectionView atIndex:0];
     }
 
     [self loadViewModelIfNeeded];

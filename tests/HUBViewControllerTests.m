@@ -70,6 +70,10 @@
                                                                                                                           iconImageResolver:iconImageResolver];
     
     self.contentOperation = [HUBContentOperationMock new];
+    self.contentOperation.initialContentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"loadingIndicator"];
+    };
+    
     self.contentReloadPolicy = [HUBContentReloadPolicyMock new];
     self.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentDefaults.componentNamespace name:componentDefaults.componentName];
     
@@ -1130,6 +1134,18 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     [childDelegate component:component childComponentForModel:childComponentModelA];
 
     XCTAssertTrue(CGSizeEqualToSize(childComponent.currentContainerViewSize, expectedParentFrame.size));
+}
+
+- (void)testCollectionViewNotAddedOnTopOfInitialOverlayComponent
+{
+    self.contentOperation.contentLoadingBlock = ^BOOL(id<HUBViewModelBuilder> viewModelBuilder) {
+        return NO;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSArray * const expectedSubviews = @[self.collectionView, self.component.view];
+    XCTAssertEqualObjects(self.viewController.view.subviews, expectedSubviews);
 }
 
 #pragma mark - HUBViewControllerDelegate
