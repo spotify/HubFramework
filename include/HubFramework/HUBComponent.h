@@ -116,12 +116,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  Configure the component’s view for displaying data from a model
  *
  *  @param model The new model that the view should reflect
+ *  @param containerViewSize The size of the container in which the view will be displayed
  *
  *  This message will also be sent to your component the very first time that is used. Once
  *  this method returns the Hub Framework expects the component to be ready to be displayed
  *  with suitable placeholders used for any remote images that are about to be downloaded.
  */
-- (void)configureViewWithModel:(id<HUBComponentModel>)model;
+- (void)configureViewWithModel:(id<HUBComponentModel>)model
+             containerViewSize:(CGSize)containerViewSize;
 
 @end
 

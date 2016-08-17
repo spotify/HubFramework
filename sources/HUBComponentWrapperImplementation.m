@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) id<HUBComponent> component;
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
+@property (nonatomic, weak) HUBComponentWrapperImplementation *parentComponentWrapper;
 @property (nonatomic, assign) BOOL preparedForReuse;
 
 @end
@@ -29,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
-                  isRootComponent:(BOOL)isRootComponent
+           parentComponentWrapper:(nullable HUBComponentWrapperImplementation *)parentComponentWrapper
 {
     NSParameterAssert(component != nil);
     NSParameterAssert(model != nil);
@@ -44,21 +45,22 @@ NS_ASSUME_NONNULL_BEGIN
         _UIStateManager = UIStateManager;
         _model = model;
         _delegate = delegate;
-        _isRootComponent = isRootComponent;
-        
+        _parentComponentWrapper = parentComponentWrapper;
+
         if ([_component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
             ((id<HUBComponentWithChildren>)_component).childDelegate = self;
         }
-        
+
+        UIView * const componentView = self.view;
         if ([_component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
-            UIView * const componentView = self.view;
             HUBComponentResizeObservingView * const resizeObservingView = [[HUBComponentResizeObservingView alloc] initWithFrame:componentView.bounds];
             resizeObservingView.delegate = self;
             [componentView addSubview:resizeObservingView];
         }
         
         HUBComponentLoadViewIfNeeded(_component);
-        [_component configureViewWithModel:_model];
+        const CGSize containerViewSize = [delegate containerViewSizeForComponentWrapper:self];
+        [_component configureViewWithModel:_model containerViewSize:containerViewSize];
     }
     
     return self;
@@ -120,8 +122,8 @@ NS_ASSUME_NONNULL_BEGIN
     if (!self.preparedForReuse) {
         [self prepareForReuseAndSendToReusePool:NO];
     }
-    
-    [self.component configureViewWithModel:model];
+    const CGSize containerViewSize = [self.delegate containerViewSizeForComponentWrapper:self];
+    [self.component configureViewWithModel:model containerViewSize:containerViewSize];
     [self restoreComponentUIState];
     
     self.preparedForReuse = NO;
@@ -135,6 +137,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isContentOffsetObserver
 {
     return [self.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)];
+}
+
+- (BOOL)isRootComponent
+{
+    return self.parentComponentWrapper == nil;
 }
 
 #pragma mark - HUBComponentWrapper

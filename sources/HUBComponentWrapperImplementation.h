@@ -57,6 +57,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapperImplementation *)componentWrapper;
 
+/**
+ *  Returns the size of the component wrapper's container.
+ *
+ *  @param componentWrapper The wrapper of the component in that require the container view size for
+ */
+- (CGSize)containerViewSizeForComponentWrapper:(HUBComponentWrapperImplementation *)componentWrapper;
+
 @end
 
 /// Class wrapping a `HUBComponent`, adding additional data used internally in the Hub Framework
@@ -64,6 +71,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The component wrapper's delegate. See `HUBComponentWrapperDelegate` for more info.
 @property (nonatomic, weak, nullable) id<HUBComponentWrapperDelegate> delegate;
+
+/// The components parent wrapper if it is a child component
+@property (nonatomic, readonly, weak) HUBComponentWrapperImplementation *parentComponentWrapper;
 
 /// The model that the component wrapper is currently using. Set to configure the component with a new model.
 @property (nonatomic, strong) id<HUBComponentModel> model;
@@ -83,13 +93,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param component The component to wrap
  *  @param model The initial model used by the component
  *  @param UIStateManager The manager to use to save & restore UI states for the component
- *  @param isRootComponent Whether the wrapped component is a root component, or a child of another one
+ *  @param parentComponentWrapper The parent component wrapper if this component wrapper is a child component
  */
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
-                  isRootComponent:(BOOL)isRootComponent HUB_DESIGNATED_INITIALIZER;
+           parentComponentWrapper:(nullable HUBComponentWrapperImplementation *)parentComponentWrapper HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Return the wrapped component's preferred size for an image

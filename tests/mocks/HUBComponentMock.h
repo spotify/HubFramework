@@ -33,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The model that the component is currently configured with
 @property (nonatomic, strong, readonly, nullable) id<HUBComponentModel> model;
 
+/// The current container view size that was provided when configured with model
+@property (nonatomic) CGSize currentContainerViewSize;
+
 /// The main image the component is currently displaying
 @property (nonatomic, strong, readonly, nullable) id<HUBComponentImageData> mainImageData;
 

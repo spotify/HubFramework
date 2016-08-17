@@ -48,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HUBComponentWrapperImplementation *)componentWrapperForModel:(id<HUBComponentModel>)model
                                                        delegate:(id<HUBComponentWrapperDelegate>)delegate
+                                         parentComponentWrapper:(nullable HUBComponentWrapperImplementation *)parentComponentWrapper
 {
     NSMutableArray * const existingWrappers = self.componentWrappers[model.componentIdentifier];
     
@@ -64,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                   model:model
                                                          UIStateManager:self.UIStateManager
                                                                delegate:delegate
-                                                        isRootComponent:NO];
+                                                 parentComponentWrapper:parentComponentWrapper];
 }
 
 @end

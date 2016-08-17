@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
     
     [component loadView];
-    [component configureViewWithModel:componentModel];
+    [component configureViewWithModel:componentModel containerViewSize:containerViewSize];
     
     CGSize const preferredViewSize = [component preferredViewSizeForDisplayingModel:componentModel containerViewSize:containerViewSize];
     UIView * const componentView = component.view;
