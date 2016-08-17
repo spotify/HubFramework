@@ -256,7 +256,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBComponentWrapper>)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
                      childComponentForModel:(id<HUBComponentModel>)model
 {
-    HUBComponentWrapperImplementation * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model delegate:self];
+    HUBComponentWrapperImplementation * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model delegate:self parentComponentWrapper:componentWrapper];
     childComponentWrapper.model = model;
     [self didAddComponentWrapper:childComponentWrapper];
     
@@ -321,6 +321,14 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     [self.childComponentReusePool addComponentWrappper:componentWrapper];
+}
+
+- (CGSize)containerViewSizeForComponentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+{
+    if (componentWrapper.isRootComponent) {
+        return self.collectionView.bounds.size;
+    }
+    return componentWrapper.parentComponentWrapper.view.bounds.size;
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -449,7 +457,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                model:model
                                                                                                       UIStateManager:self.componentUIStateManager
                                                                                                             delegate:self
-                                                                                                     isRootComponent:YES];
+                                                                                              parentComponentWrapper:nil];
     
     [self didAddComponentWrapper:wrapper];
     return wrapper;

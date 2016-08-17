@@ -16,6 +16,7 @@
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentMock.h"
 #import "HUBComponentWrapper.h"
+#import "HUBComponentWrapperImplementation.h"
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
 #import "HUBComponentLayoutManagerMock.h"
@@ -1040,6 +1041,95 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     self.viewController.view.backgroundColor = [UIColor redColor];
     [self.viewController viewWillAppear:NO];
     XCTAssertEqualObjects(self.collectionView.backgroundColor, [UIColor redColor]);
+}
+
+- (void)testContainerViewSizeForNonReusedRootComponentsAreSameAsCollectionViewSize
+{
+    __weak __typeof(self) weakSelf = self;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        __typeof(self) strongSelf = weakSelf;
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].componentName = strongSelf.componentIdentifier.componentName;
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+    NSIndexPath * const firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:firstIndexPath];
+
+    XCTAssertTrue(CGSizeEqualToSize(self.component.currentContainerViewSize, self.collectionView.bounds.size));
+}
+
+- (void)testContainerViewSizeForReusedRootComponentsAreSameAsCollectionViewSize
+{
+    __weak __typeof(self) weakSelf = self;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        __typeof(self) strongSelf = weakSelf;
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].componentName = strongSelf.componentIdentifier.componentName;
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+    NSIndexPath * const firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+
+    UICollectionViewCell *cell = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:firstIndexPath];
+    self.collectionView.cells[firstIndexPath] = cell;
+    [cell prepareForReuse];
+    
+    [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:firstIndexPath];
+
+    XCTAssertTrue(CGSizeEqualToSize(self.component.currentContainerViewSize, self.collectionView.bounds.size));
+}
+
+- (void)testContainerViewSizeForChildComponentsAreParerentComponentsViewSize
+{
+    NSString * const componentNamespace = @"childComponentSelection";
+    NSString * const componentName = @"component";
+    NSString * const childComponentName = @"componentB";
+    NSURL * const childComponentTargetURL = [NSURL URLWithString:@"spotify:hub:child-component"];
+    NSString * const childComponentInitialViewModelIdentifier = @"viewModel";
+    HUBComponentMock * const component = [HUBComponentMock new];
+    HUBComponentMock * const childComponent = [HUBComponentMock new];
+
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+                                                                                                             componentName: component,
+                                                                                                             childComponentName: childComponent
+                                                                                                             }];
+
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.componentNamespace = componentNamespace;
+        componentModelBuilder.componentName = componentName;
+
+        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"];
+        childComponentModelBuilder.componentNamespace = componentNamespace;
+        childComponentModelBuilder.componentName = childComponentName;
+        childComponentModelBuilder.targetURL = childComponentTargetURL;
+        childComponentModelBuilder.targetInitialViewModelBuilder.viewIdentifier = childComponentInitialViewModelIdentifier;
+
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+    const CGRect expectedParentFrame = CGRectMake(0, 0, 88, 88);
+    component.view.frame = expectedParentFrame;
+
+    id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
+
+    id<HUBComponentModel> const childComponentModelA = [component.model childComponentModelAtIndex:0];
+    XCTAssertNotNil(childComponentModelA);
+
+    [childDelegate component:component childComponentForModel:childComponentModelA];
+
+    XCTAssertTrue(CGSizeEqualToSize(childComponent.currentContainerViewSize, expectedParentFrame.size));
 }
 
 #pragma mark - HUBViewControllerDelegate
