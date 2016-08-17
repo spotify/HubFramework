@@ -632,9 +632,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponent(im)configureViewWithModel:"></a>
-                    <a name="//apple_ref/objc/Method/-configureViewWithModel:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponent(im)configureViewWithModel:">-configureViewWithModel:</a>
+                    <a name="/c:objc(pl)HUBComponent(im)configureViewWithModel:containerViewSize:"></a>
+                    <a name="//apple_ref/objc/Method/-configureViewWithModel:containerViewSize:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponent(im)configureViewWithModel:containerViewSize:">-configureViewWithModel:containerViewSize:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -653,7 +653,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">configureViewWithModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">model</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">configureViewWithModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">model</span>
+             <span class="nf">containerViewSize</span><span class="p">:(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">containerViewSize</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -670,6 +671,19 @@
                               <td>
                                 <div>
                                   <p>The new model that the view should reflect</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>containerViewSize</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The size of the container in which the view will be displayed</p>
 
                                 </div>
                               </td>
