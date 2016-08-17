@@ -49,6 +49,7 @@
 
 - (void)configureViewWithModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
+    self.currentContainerViewSize = containerViewSize;
     self.model = model;
 }
 

@@ -24,7 +24,7 @@
     [super setUp];
     
     self.component = [HUBComponentMock new];
-    self.componentWrapper = [self createComponentWrapper];
+    self.componentWrapper = [self createComponentWrapperWithParentComponentWrapper:nil];
     self.cell = [[HUBComponentCollectionViewCell alloc] initWithFrame:CGRectZero];
     self.cell.component = self.componentWrapper;
 }
@@ -69,7 +69,7 @@
 - (id<HUBComponentWrapper>)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
                      childComponentForModel:(id<HUBComponentModel>)model
 {
-    return [self createComponentWrapper];
+    return [self createComponentWrapperWithParentComponentWrapper:componentWrapper];
 }
 
 - (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
@@ -98,9 +98,14 @@
     // No-op
 }
 
+- (CGSize)containerViewSizeForComponentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+{
+    return CGSizeZero;
+}
+
 #pragma mark - Utilities
 
-- (id<HUBComponentWrapper>)createComponentWrapper
+- (id<HUBComponentWrapper>)createComponentWrapperWithParentComponentWrapper:(nullable HUBComponentWrapperImplementation *)parentWrapper
 {
     HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
     id<HUBComponentModel> const model = [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
@@ -128,7 +133,7 @@
                                                                   model:model
                                                          UIStateManager:UIStateManager
                                                                delegate:self
-                                                        isRootComponent:YES];
+                                                 parentComponentWrapper:parentWrapper];
 }
 
 @end
