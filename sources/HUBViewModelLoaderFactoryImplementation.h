@@ -44,8 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewURI The view URI to create a view model loader for
  *  @param featureRegistration The feature registration object to use to setup the view model loader
  */
-- (id<HUBViewModelLoader>)createViewModelLoaderForViewURI:(NSURL *)viewURI
-                                      featureRegistration:(HUBFeatureRegistration *)featureRegistration;
+- (nullable id<HUBViewModelLoader>)createViewModelLoaderForViewURI:(NSURL *)viewURI
+                                               featureRegistration:(HUBFeatureRegistration *)featureRegistration;
 
 @end
 
