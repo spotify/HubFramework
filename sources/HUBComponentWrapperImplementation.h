@@ -58,9 +58,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapperImplementation *)componentWrapper;
 
 /**
- *  Returns the size of the component wrappers container.
+ *  Returns the size of the component wrapper's container.
  *
- *  @param componentWrapper The wrapper of the component in which you require the size for
+ *  @param componentWrapper The wrapper of the component in that require the container view size for
  */
 - (CGSize)containerViewSizeForComponentWrapper:(HUBComponentWrapperImplementation *)componentWrapper;
 

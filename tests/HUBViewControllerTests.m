@@ -1085,7 +1085,6 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
 
 - (void)testContainerViewSizeForChildComponentsAreParerentComponentsViewSize
 {
-
     NSString * const componentNamespace = @"childComponentSelection";
     NSString * const componentName = @"component";
     NSString * const childComponentName = @"componentB";
@@ -1131,7 +1130,6 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     [childDelegate component:component childComponentForModel:childComponentModelA];
 
     XCTAssertTrue(CGSizeEqualToSize(childComponent.currentContainerViewSize, expectedParentFrame.size));
-
 }
 
 #pragma mark - HUBViewControllerDelegate

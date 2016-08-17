@@ -141,7 +141,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isRootComponent
 {
-    return !self.parentComponentWrapper;
+    return self.parentComponentWrapper == nil;
 }
 
 #pragma mark - HUBComponentWrapper
