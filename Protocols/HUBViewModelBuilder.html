@@ -971,6 +971,60 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)enumerateAllComponentModelBuildersWithBlock:"></a>
+                    <a name="//apple_ref/objc/Method/-enumerateAllComponentModelBuildersWithBlock:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)enumerateAllComponentModelBuildersWithBlock:">-enumerateAllComponentModelBuildersWithBlock:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Enumerate all component model builders contained within this builder</p>
+
+<p>The enumeration will start with any header component model builder, then move onto body component model builders and finally
+  overlay component model builders. You can use this API either to inspect all the component content of a view model builder, or
+  perform a sequence of operations on them easily.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">enumerateAllComponentModelBuildersWithBlock</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">nonnull</span> <span class="n">BOOL</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span><span class="p">))</span><span class="nv">block</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A block used for enumeration, will be passed each component model builder found as an argument, and is expected
+        to return a BOOL indicating whether the enumeration should continue or not. As soon as an enumeration block returns
+        <code>NO</code>, the enumeration will stop.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
             <div class="task-group">
