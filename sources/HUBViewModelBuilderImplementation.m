@@ -138,6 +138,8 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
 
 - (void)enumerateAllComponentModelBuildersWithBlock:(BOOL(^)(id<HUBComponentModelBuilder>))block
 {
+    NSParameterAssert(block != nil);
+    
     if (self.headerComponentModelBuilderImplementation != nil) {
         id<HUBComponentModelBuilder> const headerComponentModelBuilder = self.headerComponentModelBuilderImplementation;
         
