@@ -18,6 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewModelLoader The view model loader that loaded a view model
  *  @param viewModel The view model that was loaded
+ *
+ *  Note that this method might be called multiple times during a view model loader's lifecycle, as it will be
+ *  called whenever a view model finished loading. This might happen either as the result of calling `loadViewModel`,
+ *  whenever a content operation was rescheduled and completed, or whenever the current connectivity state was changed.
  */
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel;
 
@@ -55,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  content operations to be asked to prepare an initial view model. The initial view model will then be cached,
  *  so it's fine to access this property multiple times.
  */
-@property (nonatomic, strong, nullable, readonly) id<HUBViewModel> initialViewModel;
+@property (nonatomic, strong, readonly) id<HUBViewModel> initialViewModel;
 
 /**
  *  Load a view model using this loader
