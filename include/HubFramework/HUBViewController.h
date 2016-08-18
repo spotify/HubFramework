@@ -103,6 +103,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic) HUBViewControllerScrollMode scrollMode;
 
+/**
+ * Scroll to a desired content offset.
+ *
+ * @param contentOffset The offset which to scroll to.
+ * @param animated Defines if scrolling should be animated.
+ */
+- (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
+
 @end
 
 NS_ASSUME_NONNULL_END

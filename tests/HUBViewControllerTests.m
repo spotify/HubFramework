@@ -1148,6 +1148,25 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     XCTAssertEqualObjects(self.viewController.view.subviews, expectedSubviews);
 }
 
+- (void)testSetScrollOffsetForwrdsOffsetToCollectionView
+{
+    [self simulateViewControllerLayoutCycle];
+    const CGPoint expectedContentOffset = CGPointMake(99, 77);
+    [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
+    const CGPoint actualConentOffset = self.collectionView.appliedScrollViewOffset;
+    XCTAssertTrue(CGPointEqualToPoint(expectedContentOffset, actualConentOffset));
+}
+
+- (void)testSetScrollOffsetForwardsAnimatedFlagToCollectionView
+{
+    [self simulateViewControllerLayoutCycle];
+    const CGPoint offset = CGPointMake(99, 77);
+    [self.viewController scrollToContentOffset:offset animated:NO];
+    XCTAssertFalse(self.collectionView.appliedScrollViewOffsetAnimatedFlag);
+    [self.viewController scrollToContentOffset:offset animated:YES];
+    XCTAssertTrue(self.collectionView.appliedScrollViewOffsetAnimatedFlag);
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController didUpdateWithViewModel:(id<HUBViewModel>)viewModel
