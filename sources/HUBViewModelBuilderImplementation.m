@@ -118,10 +118,10 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
 {
     NSMutableArray<id<HUBComponentModelBuilder>> * const builders = [NSMutableArray new];
     
-    for (NSString * const identifier in self.bodyComponentIdentifierOrder) {
-        id<HUBComponentModelBuilder> const builder = self.bodyComponentModelBuilders[identifier];
+    [self enumerateBodyComponentModelBuildersWithBlock:^BOOL(id<HUBComponentModelBuilder> builder) {
         [builders addObject:builder];
-    }
+        return YES;
+    }];
     
     return [builders copy];
 }
@@ -134,6 +134,25 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
 - (id<HUBComponentModelBuilder>)builderForOverlayComponentModelWithIdentifier:(NSString *)identifier
 {
     return [self getOrCreateBuilderForOverlayComponentModelWithIdentifier:identifier];
+}
+
+- (void)enumerateAllComponentModelBuildersWithBlock:(BOOL(^)(id<HUBComponentModelBuilder>))block
+{
+    NSParameterAssert(block != nil);
+    
+    if (self.headerComponentModelBuilderImplementation != nil) {
+        id<HUBComponentModelBuilder> const headerComponentModelBuilder = self.headerComponentModelBuilderImplementation;
+        
+        if (!block(headerComponentModelBuilder)) {
+            return;
+        }
+    }
+    
+    if (![self enumerateBodyComponentModelBuildersWithBlock:block]) {
+        return;
+    }
+    
+    [self enumerateOverlayComponentModelBuildersWithBlock:block];
 }
 
 - (void)removeHeaderComponentModelBuilder
@@ -427,6 +446,35 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
     
     builder.modificationDelegate = self;
     return builder;
+}
+
+- (BOOL)enumerateBodyComponentModelBuildersWithBlock:(BOOL(^)(id<HUBComponentModelBuilder>))block
+{
+    return [self enumerateComponentModelBuilders:self.bodyComponentModelBuilders
+                                 identifierOrder:self.bodyComponentIdentifierOrder
+                                       withBlock:block];
+}
+
+- (BOOL)enumerateOverlayComponentModelBuildersWithBlock:(BOOL(^)(id<HUBComponentModelBuilder>))block
+{
+    return [self enumerateComponentModelBuilders:self.overlayComponentModelBuilders
+                                 identifierOrder:self.overlayComponentIdentifierOrder
+                                       withBlock:block];
+}
+
+- (BOOL)enumerateComponentModelBuilders:(NSDictionary<NSString *, id<HUBComponentModelBuilder>> *)builders
+                        identifierOrder:(NSArray<NSString *> *)identifierOrder
+                              withBlock:(BOOL(^)(id<HUBComponentModelBuilder>))block
+{
+    for (NSString * const identifier in identifierOrder) {
+        id<HUBComponentModelBuilder> const builder = builders[identifier];
+        
+        if (!block(builder)) {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 @end
