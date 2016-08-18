@@ -157,6 +157,19 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (id<HUBComponentModelBuilder>)builderForOverlayComponentModelWithIdentifier:(NSString *)identifier;
 
+/**
+ *  Enumerate all component model builders contained within this builder
+ *
+ *  @param block A block used for enumeration, will be passed each component model builder found as an argument, and is expected
+ *         to return a BOOL indicating whether the enumeration should continue or not. As soon as an enumeration block returns
+ *         `NO`, the enumeration will stop.
+ *
+ *  The enumeration will start with any header component model builder, then move onto body component model builders and finally
+ *  overlay component model builders. You can use this API either to inspect all the component content of a view model builder, or
+ *  perform a sequence of operations on them easily.
+ */
+- (void)enumerateAllComponentModelBuildersWithBlock:(BOOL(^)(id<HUBComponentModelBuilder>))block;
+
 #pragma mark - Removing component model builders
 
 /**

@@ -210,6 +210,49 @@
     XCTAssertEqual(model.overlayComponentModels[0].index, (NSUInteger)0);
 }
 
+- (void)testEnumeratingAllComponentModelBuilders
+{
+    id<HUBComponentModelBuilder> const headerBuilder = self.builder.headerComponentModelBuilder;
+    id<HUBComponentModelBuilder> const bodyBuilder = [self.builder builderForBodyComponentModelWithIdentifier:@"body"];
+    id<HUBComponentModelBuilder> const overlayBuilder = [self.builder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+    
+    NSMutableArray<id<HUBComponentModelBuilder>> * const enumeratedBuilders = [NSMutableArray new];
+    
+    [self.builder enumerateAllComponentModelBuildersWithBlock:^BOOL(id<HUBComponentModelBuilder> builder) {
+        [enumeratedBuilders addObject:builder];
+        return YES;
+    }];
+    
+    NSArray<id<HUBComponentModelBuilder>> * const expectedEnumeratedBuilders = @[
+        headerBuilder,
+        bodyBuilder,
+        overlayBuilder
+    ];
+    
+    XCTAssertEqualObjects(enumeratedBuilders, expectedEnumeratedBuilders);
+}
+
+- (void)testStoppingComponentModelBuilderEnumeration
+{
+    id<HUBComponentModelBuilder> const headerBuilder = self.builder.headerComponentModelBuilder;
+    id<HUBComponentModelBuilder> const bodyBuilder = [self.builder builderForBodyComponentModelWithIdentifier:@"body"];
+    [self.builder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+    
+    NSMutableArray<id<HUBComponentModelBuilder>> * const enumeratedBuilders = [NSMutableArray new];
+    
+    [self.builder enumerateAllComponentModelBuildersWithBlock:^BOOL(id<HUBComponentModelBuilder> builder) {
+        if (builder == bodyBuilder) {
+            return NO;
+        }
+        
+        [enumeratedBuilders addObject:builder];
+        return YES;
+    }];
+    
+    NSArray<id<HUBComponentModelBuilder>> * const expectedEnumeratedBuilders = @[headerBuilder];
+    XCTAssertEqualObjects(enumeratedBuilders, expectedEnumeratedBuilders);
+}
+
 - (void)testFeatureIdentifierMatchingComponentTargetInitialViewModelFeatureIdentifier
 {
     XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.targetInitialViewModelBuilder.featureIdentifier, self.builder.featureIdentifier);
