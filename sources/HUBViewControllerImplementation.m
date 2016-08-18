@@ -90,7 +90,6 @@ NS_ASSUME_NONNULL_BEGIN
     _device = device;
     _contentReloadPolicy = contentReloadPolicy;
     _imageLoader = imageLoader;
-    _viewModel = viewModelLoader.initialViewModel;
     _viewModelIsInitial = YES;
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     _componentImageLoadingContexts = [NSMutableDictionary new];
@@ -123,6 +122,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (self.viewModel == nil) {
+        self.viewModel = self.viewModelLoader.initialViewModel;
+    }
 
     if (self.collectionView == nil) {
         UICollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
