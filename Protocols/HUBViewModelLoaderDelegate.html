@@ -366,6 +366,10 @@
                       <div class="abstract">
                         <p>Sent to a view model loader&rsquo;s delegate when a view model was loaded</p>
 
+<p>Note that this method might be called multiple times during a view model loader&rsquo;s lifecycle, as it will be
+  called whenever a view model finished loading. This might happen either as the result of calling <code>loadViewModel</code>,
+  whenever a content operation was rescheduled and completed, or whenever the current connectivity state was changed.</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
