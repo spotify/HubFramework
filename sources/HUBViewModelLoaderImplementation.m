@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewModelLoader
 
-- (nullable id<HUBViewModel>)initialViewModel
+- (id<HUBViewModel>)initialViewModel
 {
     id<HUBViewModel> const cachedInitialViewModel = self.cachedInitialViewModel;
     
@@ -133,7 +133,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.connectivityState = [self.connectivityStateResolver resolveConnectivityState];
     
     if (self.connectivityState != previousConnectivityState) {
-        [self scheduleContentOperationsFromIndex:0];
+        [self.delegate viewModelLoader:self didLoadViewModel:self.initialViewModel];
+        [self loadViewModel];
     }
 }
 

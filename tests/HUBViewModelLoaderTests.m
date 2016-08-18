@@ -417,12 +417,23 @@
     XCTAssertEqual(contentOperationB.connectivityState, HUBConnectivityStateOnline);
 }
 
-- (void)testConnectivityStateChangeReschedulesAllOperations
+- (void)testConnectivityStateStartsLoadingFromBlankState
 {
     self.connectivityStateResolver.state = HUBConnectivityStateOnline;
     
+    __block NSInteger initialContentLoadingCount = 0;
+    
     HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    contentOperationA.initialContentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        initialContentLoadingCount++;
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"initial"].title = @"Initial component";
+    };
+    
     HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
+    contentOperationB.contentLoadingBlock = ^BOOL(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"final"].title = @"Final component";
+        return NO;
+    };
     
     [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
                           connectivityState:HUBConnectivityStateOnline
@@ -436,6 +447,7 @@
     self.connectivityStateResolver.state = HUBConnectivityStateOffline;
     [self.connectivityStateResolver callObservers];
     
+    XCTAssertEqual(initialContentLoadingCount, 1);
     XCTAssertEqual(contentOperationA.performCount, (NSUInteger)2);
     XCTAssertEqual(contentOperationB.performCount, (NSUInteger)2);
 }
