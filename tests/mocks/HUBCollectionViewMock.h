@@ -17,6 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// The index paths of the items that the collection view should act like it's displaying
 @property (nonatomic, strong, nullable) NSArray<NSIndexPath *> *mockedIndexPathsForVisibleItems;
 
+/// The offset that has been scrolled to
+@property (nonatomic) CGPoint appliedScrollViewOffset;
+
+/// The animated flag applied when offet is scrolled to.
+@property (nonatomic) BOOL appliedScrollViewOffsetAnimatedFlag;
+
 @end
 
 NS_ASSUME_NONNULL_END

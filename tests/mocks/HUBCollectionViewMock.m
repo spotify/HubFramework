@@ -84,6 +84,15 @@ NS_ASSUME_NONNULL_BEGIN
     [self.mutableDeselectedIndexPaths addObject:indexPath];
 }
 
+#pragma mark - UIScrollView 
+
+- (void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated
+{
+    [super setContentOffset:contentOffset animated:animated];
+    self.appliedScrollViewOffset = contentOffset;
+    self.appliedScrollViewOffsetAnimatedFlag = animated;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
