@@ -415,6 +415,13 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate viewController:self componentWithModel:componentModel didDisappearFromView:cell];
 }
 
+#pragma mark - Scroll to offset
+
+- (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated
+{
+    [self.collectionView setContentOffset:contentOffset animated:animated];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
