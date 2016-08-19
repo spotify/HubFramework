@@ -1148,6 +1148,11 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     XCTAssertEqualObjects(self.viewController.view.subviews, expectedSubviews);
 }
 
+- (void)testCollectionViewCreatedInLoadView
+{
+    XCTAssertEqual(self.viewController.view.subviews[0], self.collectionView);
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController didUpdateWithViewModel:(id<HUBViewModel>)viewModel

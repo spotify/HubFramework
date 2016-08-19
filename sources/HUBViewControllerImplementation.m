@@ -114,9 +114,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - UIViewController
 
+- (void)createCollectionViewIfNeeded
+{
+    if (self.collectionView != nil) {
+        return;
+    }
+    
+    UICollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
+    self.collectionView = collectionView;
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    
+    self.scrollBehavior = [[HUBScrollBehaviorWrapper alloc] initWithUnderlyingBehavior:[self selectScrollBehavior]];
+    [self.scrollBehavior configureCollectionView:collectionView viewController:self];
+    
+    [self.view insertSubview:collectionView atIndex:0];
+}
+
 - (void)loadView
 {
     self.view = [[HUBContainerView alloc] initWithFrame:CGRectZero];
+    [self createCollectionViewIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -127,18 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
         self.viewModel = self.viewModelLoader.initialViewModel;
     }
 
-    if (self.collectionView == nil) {
-        UICollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
-        self.collectionView = collectionView;
-        collectionView.dataSource = self;
-        collectionView.delegate = self;
-
-        self.scrollBehavior = [[HUBScrollBehaviorWrapper alloc] initWithUnderlyingBehavior:[self selectScrollBehavior]];
-        [self.scrollBehavior configureCollectionView:collectionView viewController:self];
-
-        [self.view insertSubview:collectionView atIndex:0];
-    }
-
+    [self createCollectionViewIfNeeded];
     [self loadViewModelIfNeeded];
     
     for (NSIndexPath * const indexPath in self.collectionView.indexPathsForVisibleItems) {
