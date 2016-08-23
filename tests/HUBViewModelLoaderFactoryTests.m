@@ -48,7 +48,8 @@
                                                                                  connectivityStateResolver:connectivityStateResolver
                                                                                          iconImageResolver:iconImageResolver
                                                                           prependedContentOperationFactory:self.prependedContentOperationFactory
-                                                                           appendedContentOperationFactory:self.appendedContentOperationFactory];
+                                                                           appendedContentOperationFactory:self.appendedContentOperationFactory
+                                                                                defaultContentReloadPolicy:nil];
 }
 
 - (void)testCreatingViewModelLoaderForValidViewURI

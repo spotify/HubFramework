@@ -101,6 +101,7 @@
     self.viewModelLoader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:self.viewURI
                                                                          featureInfo:featureInfo
                                                                    contentOperations:@[self.contentOperation]
+                                                                 contentReloadPolicy:self.contentReloadPolicy
                                                                           JSONSchema:JSONSchema
                                                                    componentDefaults:componentDefaults
                                                            connectivityStateResolver:connectivityStateResolver
@@ -124,7 +125,6 @@
                                                             componentLayoutManager:componentLayoutManager
                                                          componentSelectionHandler:componentSelectionHandler
                                                                             device:self.device
-                                                               contentReloadPolicy:self.contentReloadPolicy
                                                                        imageLoader:self.imageLoader];
     
     self.viewController.delegate = self;
@@ -184,63 +184,6 @@
     [self simulateViewControllerLayoutCycle];
     
     XCTAssertEqual(self.errorFromDelegateMethod, error);
-}
-
-- (void)testReloadPolicyPreventingReload
-{
-    NSString * const viewModelNavBarTitleA = @"View model A";
-    NSString * const viewModelNavBarTitleB = @"View model B";
-    
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
-        builder.navigationBarTitle = viewModelNavBarTitleA;
-        return YES;
-    };
-    
-    [self simulateViewControllerLayoutCycle];
-    
-    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleA);
-    
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
-        builder.navigationBarTitle = viewModelNavBarTitleB;
-        return YES;
-    };
-    
-    self.contentReloadPolicy.shouldReload = NO;
-    [self.viewController viewWillAppear:YES];
-    
-    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleA);
-}
-
-- (void)testNilReloadPolicyAlwaysResultingInReload
-{
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
-    
-    self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
-                                                                   viewModelLoader:self.viewModelLoader
-                                                             collectionViewFactory:self.collectionViewFactory
-                                                                 componentRegistry:self.componentRegistry
-                                                            componentLayoutManager:componentLayoutManager
-                                                         componentSelectionHandler:self.componentSelectionHandler
-                                                                            device:self.device
-                                                               contentReloadPolicy:nil
-                                                                       imageLoader:self.imageLoader];
-    
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
-        builder.navigationBarTitle = @"Hub Framework";
-        return YES;
-    };
-    
-    [self simulateViewControllerLayoutCycle];
-    
-    XCTAssertEqual(self.contentOperation.performCount, (NSUInteger)1);
-    
-    [self.viewController viewWillAppear:NO];
-    [self.viewController viewWillAppear:NO];
-    [self.viewController viewWillAppear:NO];
-    [self.viewController viewWillAppear:NO];
-    
-    XCTAssertEqual(self.contentOperation.performCount, (NSUInteger)5);
 }
 
 - (void)testHeaderComponentImageLoading

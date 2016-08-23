@@ -69,7 +69,6 @@ NS_ASSUME_NONNULL_BEGIN
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
       componentSelectionHandler:(id<HUBComponentSelectionHandler>)componentSelectionHandler
                          device:(UIDevice *)device
-            contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                     imageLoader:(nullable id<HUBImageLoader>)imageLoader
 
 {
@@ -92,7 +91,6 @@ NS_ASSUME_NONNULL_BEGIN
     _componentLayoutManager = componentLayoutManager;
     _componentSelectionHandler = componentSelectionHandler;
     _device = device;
-    _contentReloadPolicy = contentReloadPolicy;
     _imageLoader = imageLoader;
     _viewModelIsInitial = YES;
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
@@ -150,7 +148,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     [self createCollectionViewIfNeeded];
-    [self loadViewModelIfNeeded];
+    [self.viewModelLoader loadViewModel];
     
     for (NSIndexPath * const indexPath in self.collectionView.indexPathsForVisibleItems) {
         HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
@@ -454,23 +452,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Private utilities
-
-- (void)loadViewModelIfNeeded
-{
-    if (self.contentReloadPolicy != nil) {
-        if (!self.viewModelIsInitial) {
-            id<HUBViewModel> const currentViewModel = self.viewModel;
-            
-            if (currentViewModel != nil) {
-                if (![self.contentReloadPolicy shouldReloadContentForViewURI:self.viewURI currentViewModel:currentViewModel]) {
-                    return;
-                }
-            }
-        }
-    }
-    
-    [self.viewModelLoader loadViewModel];
-}
 
 - (HUBComponentWrapperImplementation *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
 {

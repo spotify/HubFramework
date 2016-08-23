@@ -61,14 +61,14 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                                 connectivityStateResolver:_connectivityStateResolver
                                                                                                                                         iconImageResolver:iconImageResolver
                                                                                                                          prependedContentOperationFactory:prependedContentOperationFactory
-                                                                                                                          appendedContentOperationFactory:appendedContentOperationFactory];
+                                                                                                                          appendedContentOperationFactory:appendedContentOperationFactory
+                                                                                                                               defaultContentReloadPolicy:defaultContentReloadPolicy];
         
         HUBViewControllerFactoryImplementation * const viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:viewModelLoaderFactory
                                                                                                                                               featureRegistry:featureRegistry
                                                                                                                                             componentRegistry:componentRegistry
                                                                                                                                      initialViewModelRegistry:_initialViewModelRegistry
                                                                                                                                        componentLayoutManager:componentLayoutManager
-                                                                                                                                   defaultContentReloadPolicy:defaultContentReloadPolicy
                                                                                                                                            imageLoaderFactory:imageLoaderFactory];
         
         _featureRegistry = featureRegistry;

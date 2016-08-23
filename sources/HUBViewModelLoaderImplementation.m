@@ -3,6 +3,7 @@
 #import "HUBFeatureInfo.h"
 #import "HUBConnectivityStateResolver.h"
 #import "HUBContentOperationWithInitialContent.h"
+#import "HUBContentReloadPolicy.h"
 #import "HUBJSONSchema.h"
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBViewModelImplementation.h"
@@ -17,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSArray<id<HUBContentOperation>> *contentOperations;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBContentOperationWrapper *> *contentOperationWrappers;
 @property (nonatomic, strong, readonly) NSMutableArray<HUBContentOperationWrapper *> *contentOperationQueue;
+@property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
@@ -39,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewURI:(NSURL *)viewURI
                     featureInfo:(id<HUBFeatureInfo>)featureInfo
               contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+            contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
               componentDefaults:(HUBComponentDefaults *)componentDefaults
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
@@ -60,6 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
         _contentOperations = [contentOperations copy];
         _contentOperationWrappers = [NSMutableDictionary new];
         _contentOperationQueue = [NSMutableArray new];
+        _contentReloadPolicy = contentReloadPolicy;
         _JSONSchema = JSONSchema;
         _componentDefaults = componentDefaults;
         _connectivityStateResolver = connectivityStateResolver;
@@ -99,6 +103,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadViewModel
 {
+    if (self.contentReloadPolicy != nil) {
+        if (self.previouslyLoadedViewModel != nil) {
+            id<HUBViewModel> const previouslyLoadedViewModel = self.previouslyLoadedViewModel;
+            
+            if (![self.contentReloadPolicy shouldReloadContentForViewURI:self.viewURI currentViewModel:previouslyLoadedViewModel]) {
+                return;
+            }
+        }
+    }
+    
     self.builder = nil;
     self.encounteredError = nil;
     
