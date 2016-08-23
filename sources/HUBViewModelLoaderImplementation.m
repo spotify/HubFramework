@@ -77,6 +77,11 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
+- (void)dealloc
+{
+    [_connectivityStateResolver removeObserver:self];
+}
+
 #pragma mark - HUBViewModelLoader
 
 - (id<HUBViewModel>)initialViewModel
