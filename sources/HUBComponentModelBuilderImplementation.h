@@ -4,8 +4,8 @@
 
 @protocol HUBJSONSchema;
 @protocol HUBIconImageResolver;
+@protocol HUBComponentModel;
 @class HUBComponentDefaults;
-@class HUBComponentModelImplementation;
 @class HUBComponentImageDataBuilderImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The `preferredIndex` property of each builder will also be taken into account, so the supplied `identifierOrder` is
  *  only used as a default order for the returned array of component models.
  */
-+ (NSArray<HUBComponentModelImplementation *> *)buildComponentModelsUsingBuilders:(NSDictionary<NSString *, HUBComponentModelBuilderImplementation *> *)builders
++ (NSArray<id<HUBComponentModel>> *)buildComponentModelsUsingBuilders:(NSDictionary<NSString *, HUBComponentModelBuilderImplementation *> *)builders
                                                                   identifierOrder:(NSArray<NSString *> *)identifierOrder;
 
 /**
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param index The index that the produced model will have, either within its parent or within the root list
  */
-- (HUBComponentModelImplementation *)buildForIndex:(NSUInteger)index;
+- (id<HUBComponentModel>)buildForIndex:(NSUInteger)index;
 
 @end
 

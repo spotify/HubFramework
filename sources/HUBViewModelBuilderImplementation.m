@@ -221,7 +221,7 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
 
 - (HUBViewModelImplementation *)build
 {
-    HUBComponentModelImplementation * const headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0];
+    id<HUBComponentModel> const headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0];
     
     NSArray * const bodyComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.bodyComponentModelBuilders
                                                                                                     identifierOrder:self.bodyComponentIdentifierOrder];
