@@ -118,11 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
-    self.builder = nil;
-    self.encounteredError = nil;
-    
-    [self.contentOperationWrappers removeAllObjects];
-    [self scheduleContentOperationsFromIndex:0];
+    [self performViewModelLoading];
 }
 
 #pragma mark - HUBContentOperationWrapperDelegate
@@ -153,7 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self.connectivityState != previousConnectivityState) {
         [self.delegate viewModelLoader:self didLoadViewModel:self.initialViewModel];
-        [self loadViewModel];
+        [self performViewModelLoading];
     }
 }
 
@@ -165,6 +161,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Private utilities
+
+- (void)performViewModelLoading
+{
+    self.builder = nil;
+    self.encounteredError = nil;
+    
+    [self.contentOperationWrappers removeAllObjects];
+    [self scheduleContentOperationsFromIndex:0];
+}
 
 - (HUBViewModelBuilderImplementation *)createOrCopyBuilder
 {

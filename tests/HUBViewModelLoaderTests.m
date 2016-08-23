@@ -424,6 +424,9 @@
 {
     self.connectivityStateResolver.state = HUBConnectivityStateOnline;
     
+    // Set reload policy to block reloads, since connectivity changes should circumvent that
+    self.contentReloadPolicy.shouldReload = NO;
+    
     __block NSInteger initialContentLoadingCount = 0;
     
     HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
