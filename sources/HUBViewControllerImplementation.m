@@ -18,7 +18,6 @@
 #import "HUBCollectionViewFactory.h"
 #import "HUBCollectionViewLayout.h"
 #import "HUBContainerView.h"
-#import "HUBInitialViewModelRegistry.h"
 #import "HUBContentReloadPolicy.h"
 #import "HUBComponentUIStateManager.h"
 #import "HUBComponentSelectionHandler.h"
@@ -36,8 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
-@property (nonatomic, strong, nullable, readonly) id<HUBComponentSelectionHandler> componentSelectionHandler;
-@property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
+@property (nonatomic, strong, readonly) id<HUBComponentSelectionHandler> componentSelectionHandler;
 @property (nonatomic, weak, nullable) UIDevice *device;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, nullable, readonly) id<HUBImageLoader> imageLoader;
@@ -69,13 +67,20 @@ NS_ASSUME_NONNULL_BEGIN
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-      componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler
-       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
+      componentSelectionHandler:(id<HUBComponentSelectionHandler>)componentSelectionHandler
                          device:(UIDevice *)device
             contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                     imageLoader:(nullable id<HUBImageLoader>)imageLoader
 
 {
+    NSParameterAssert(viewURI != nil);
+    NSParameterAssert(viewModelLoader != nil);
+    NSParameterAssert(collectionViewFactory != nil);
+    NSParameterAssert(componentRegistry != nil);
+    NSParameterAssert(componentLayoutManager != nil);
+    NSParameterAssert(componentSelectionHandler != nil);
+    NSParameterAssert(device != nil);
+    
     if (!(self = [super initWithNibName:nil bundle:nil])) {
         return nil;
     }
@@ -86,7 +91,6 @@ NS_ASSUME_NONNULL_BEGIN
     _componentRegistry = componentRegistry;
     _componentLayoutManager = componentLayoutManager;
     _componentSelectionHandler = componentSelectionHandler;
-    _initialViewModelRegistry = initialViewModelRegistry;
     _device = device;
     _contentReloadPolicy = contentReloadPolicy;
     _imageLoader = imageLoader;
@@ -781,25 +785,12 @@ NS_ASSUME_NONNULL_BEGIN
 {
     // self.viewModel is specified as nullable, but we can safely assume it exists at this point.
     id<HUBViewModel> const viewModel = self.viewModel;
-    id<HUBComponentSelectionContext> const selectionContext =
-        [[HUBComponentSelectionContextImplementation alloc] initWithViewURI:self.viewURI
-                                                                  viewModel:viewModel
-                                                             componentModel:componentModel
-                                                             viewController:self];
-    BOOL const selectionHandled = [self.componentSelectionHandler handleSelectionForComponentWithContext:selectionContext];
+    id<HUBComponentSelectionContext> const selectionContext = [[HUBComponentSelectionContextImplementation alloc] initWithViewURI:self.viewURI
+                                                                                                                        viewModel:viewModel
+                                                                                                                   componentModel:componentModel
+                                                                                                                   viewController:self];
     
-    if (!selectionHandled) {
-        NSURL * const targetURL = componentModel.targetURL;
-        id<HUBViewModel> const targetInitialViewModel = componentModel.targetInitialViewModel;
-        
-        if (targetURL != nil) {
-            if (targetInitialViewModel != nil) {
-                [self.initialViewModelRegistry registerInitialViewModel:targetInitialViewModel forViewURI:targetURL];
-            }
-            
-            [[UIApplication sharedApplication] openURL:targetURL];
-        }
-    }
+    BOOL const selectionHandled = [self.componentSelectionHandler handleSelectionForComponentWithContext:selectionContext];
     
     if (cellIndexPath != nil) {
         NSIndexPath * const indexPath = cellIndexPath;
@@ -807,7 +798,7 @@ NS_ASSUME_NONNULL_BEGIN
         [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
     }
     
-    if (selectionHandled || componentModel.targetURL != nil) {
+    if (selectionHandled) {
         [self.delegate viewController:self componentWithModel:componentModel selectedInView:view];
     }
 }

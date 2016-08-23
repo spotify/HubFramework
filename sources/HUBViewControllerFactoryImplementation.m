@@ -8,6 +8,7 @@
 #import "HUBViewControllerImplementation.h"
 #import "HUBCollectionViewFactory.h"
 #import "HUBInitialViewModelRegistry.h"
+#import "HUBComponentSelectionHandlerWrapper.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -75,14 +76,15 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
     id<HUBContentReloadPolicy> const contentReloadPolicy = featureRegistration.contentReloadPolicy ?: self.defaultContentReloadPolicy;
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
+    id<HUBComponentSelectionHandler> const componentSelectionHandler = [[HUBComponentSelectionHandlerWrapper alloc] initWithSelectionHandler:featureRegistration.componentSelectionHandler
+                                                                                                                    initialViewModelRegistry:self.initialViewModelRegistry];
     
     return [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
                                                     viewModelLoader:viewModelLoader
                                               collectionViewFactory:collectionViewFactory
                                                   componentRegistry:self.componentRegistry
                                              componentLayoutManager:self.componentLayoutManager
-                                          componentSelectionHandler:featureRegistration.componentSelectionHandler
-                                           initialViewModelRegistry:self.initialViewModelRegistry
+                                          componentSelectionHandler:componentSelectionHandler
                                                              device:[UIDevice currentDevice]
                                                 contentReloadPolicy:contentReloadPolicy
                                                         imageLoader:imageLoader];
