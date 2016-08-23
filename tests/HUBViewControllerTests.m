@@ -30,6 +30,7 @@
 #import "HUBDeviceMock.h"
 #import "HUBImplementationMacros.h"
 #import "HUBFeatureInfoImplementation.h"
+#import "HUBComponentSelectionHandlerWrapper.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -113,13 +114,15 @@
     self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     self.device = [HUBDeviceMock new];
     
+    id<HUBComponentSelectionHandler> const componentSelectionHandler = [[HUBComponentSelectionHandlerWrapper alloc] initWithSelectionHandler:self.componentSelectionHandler
+                                                                                                                    initialViewModelRegistry:self.initialViewModelRegistry];
+    
     self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:self.viewURI
                                                                    viewModelLoader:self.viewModelLoader
                                                              collectionViewFactory:self.collectionViewFactory
                                                                  componentRegistry:self.componentRegistry
                                                             componentLayoutManager:componentLayoutManager
-                                                         componentSelectionHandler:self.componentSelectionHandler
-                                                          initialViewModelRegistry:self.initialViewModelRegistry
+                                                         componentSelectionHandler:componentSelectionHandler
                                                                             device:self.device
                                                                contentReloadPolicy:self.contentReloadPolicy
                                                                        imageLoader:self.imageLoader];
@@ -219,7 +222,6 @@
                                                                  componentRegistry:self.componentRegistry
                                                             componentLayoutManager:componentLayoutManager
                                                          componentSelectionHandler:self.componentSelectionHandler
-                                                          initialViewModelRegistry:self.initialViewModelRegistry
                                                                             device:self.device
                                                                contentReloadPolicy:nil
                                                                        imageLoader:self.imageLoader];
