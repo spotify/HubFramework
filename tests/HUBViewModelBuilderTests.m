@@ -51,7 +51,7 @@
     self.builder.extensionURL = [NSURL URLWithString:@"www.spotify.com"];
     self.builder.customData = @{@"custom": @"data"};
     
-    HUBViewModelImplementation * const model = [self.builder build];
+    id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqualObjects(model.identifier, self.builder.viewIdentifier);
     XCTAssertEqualObjects(model.featureIdentifier, self.builder.featureIdentifier);
@@ -150,7 +150,7 @@
     componentBuilderB.preferredIndex = @0;
     componentBuilderB.componentName = @"component";
 
-    HUBViewModelImplementation * const model = [self.builder build];
+    id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifierB);
@@ -166,7 +166,7 @@
     componentBuilder.preferredIndex = @99;
     componentBuilder.componentName = @"component";
     
-    HUBViewModelImplementation * const model = [self.builder build];
+    id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifier);
@@ -190,7 +190,7 @@
     [self.builder builderForOverlayComponentModelWithIdentifier:@"componentA"].preferredIndex = @1;
     [self.builder builderForOverlayComponentModelWithIdentifier:@"componentB"].preferredIndex = @0;
     
-    HUBViewModelImplementation * const model = [self.builder build];
+    id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqual(model.overlayComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.overlayComponentModels[0].identifier, @"componentB");
@@ -203,7 +203,7 @@
 {
     [self.builder builderForOverlayComponentModelWithIdentifier:@"overlay"].preferredIndex = @99;
 
-    HUBViewModelImplementation * const model = [self.builder build];
+    id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqual(model.overlayComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.overlayComponentModels[0].identifier, @"overlay");
@@ -307,7 +307,7 @@
     NSData * const data = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
     [self.builder addJSONData:data];
     
-    HUBViewModelImplementation * const model = [self.builder build];
+    id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqualObjects(model.identifier, viewIdentifier);
     XCTAssertEqualObjects(model.featureIdentifier, featureIdentifier);
@@ -346,7 +346,7 @@
     NSData * const data = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:nil];
     [self.builder addJSONData:data];
     
-    HUBViewModelImplementation * const model = [self.builder build];
+    id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, firstComponentIdentifier);
     XCTAssertEqualObjects([model.bodyComponentModels lastObject].componentIdentifier, lastComponentIdentifier);
