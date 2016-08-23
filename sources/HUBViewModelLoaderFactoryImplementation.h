@@ -9,6 +9,7 @@
 @protocol HUBConnectivityStateResolver;
 @protocol HUBIconImageResolver;
 @protocol HUBContentOperationFactory;
+@protocol HUBContentReloadPolicy;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  *         views' content loading chains.
  *  @param appendedContentOperationFactory Any content operation factory which operations should be appended to all
  *         views' content loading chains.
+ *  @param defaultContentReloadPolicy The default content reload policy used by features not defining their own
  */
 - (instancetype)initWithFeatureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                      JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
@@ -36,7 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
               connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
                       iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
        prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
-        appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory HUB_DESIGNATED_INITIALIZER;
+        appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
+             defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Create a view model loader for a given view URI, using a feature registration

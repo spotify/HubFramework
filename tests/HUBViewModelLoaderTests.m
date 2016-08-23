@@ -10,6 +10,7 @@
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBContentOperationMock.h"
 #import "HUBConnectivityStateResolverMock.h"
+#import "HUBContentReloadPolicyMock.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBIconImageResolverMock.h"
 #import "HUBFeatureInfoImplementation.h"
@@ -18,6 +19,7 @@
 
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *loader;
 @property (nonatomic, strong) id<HUBFeatureInfo> featureInfo;
+@property (nonatomic, strong) HUBContentReloadPolicyMock *contentReloadPolicy;
 @property (nonatomic, strong) HUBConnectivityStateResolverMock *connectivityStateResolver;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromSuccessDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromFailureDelegateMethod;
@@ -36,6 +38,7 @@
     [super setUp];
     
     self.featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
+    self.contentReloadPolicy = [HUBContentReloadPolicyMock new];
     self.connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     self.didLoadViewModelCount = 0;
     self.didLoadViewModelErrorCount = 0;
@@ -421,6 +424,9 @@
 {
     self.connectivityStateResolver.state = HUBConnectivityStateOnline;
     
+    // Set reload policy to block reloads, since connectivity changes should circumvent that
+    self.contentReloadPolicy.shouldReload = NO;
+    
     __block NSInteger initialContentLoadingCount = 0;
     
     HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
@@ -506,6 +512,40 @@
                           self.featureInfo.title);
 }
 
+- (void)testReloadPolicyPreventingReload
+{
+    self.contentReloadPolicy.shouldReload = NO;
+    
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    [self.loader loadViewModel];
+    [self.loader loadViewModel];
+    
+    XCTAssertEqual(contentOperation.performCount, (NSUInteger)1);
+}
+
+- (void)testNilReloadPolicyAlwaysResultingInReload
+{
+    self.contentReloadPolicy = nil;
+    
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    [self.loader loadViewModel];
+    [self.loader loadViewModel];
+    
+    XCTAssertEqual(contentOperation.performCount, (NSUInteger)3);
+}
+
 #pragma mark - HUBViewModelLoaderDelegate
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel
@@ -539,6 +579,7 @@
     self.loader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
                                                                 featureInfo:self.featureInfo
                                                           contentOperations:contentOperations
+                                                        contentReloadPolicy:self.contentReloadPolicy
                                                                  JSONSchema:JSONSchema
                                                           componentDefaults:componentDefaults
                                                   connectivityStateResolver:self.connectivityStateResolver

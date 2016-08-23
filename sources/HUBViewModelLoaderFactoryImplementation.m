@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentOperationFactory> prependedContentOperationFactory;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentOperationFactory> appendedContentOperationFactory;
+@property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> defaultContentReloadPolicy;
 
 @end
 
@@ -34,7 +35,14 @@ NS_ASSUME_NONNULL_BEGIN
                       iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
        prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
         appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
+             defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
 {
+    NSParameterAssert(featureRegistry != nil);
+    NSParameterAssert(JSONSchemaRegistry != nil);
+    NSParameterAssert(initialViewModelRegistry != nil);
+    NSParameterAssert(componentDefaults != nil);
+    NSParameterAssert(connectivityStateResolver != nil);
+    
     self = [super init];
     
     if (self) {
@@ -46,6 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
         _iconImageResolver = iconImageResolver;
         _prependedContentOperationFactory = prependedContentOperationFactory;
         _appendedContentOperationFactory = appendedContentOperationFactory;
+        _defaultContentReloadPolicy = defaultContentReloadPolicy;
     }
     
     return self;
@@ -82,12 +91,14 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
+    id<HUBContentReloadPolicy> const contentReloadPolicy = featureRegistration.contentReloadPolicy ?: self.defaultContentReloadPolicy;
     id<HUBJSONSchema> const JSONSchema = [self JSONSchemaForFeatureWithRegistration:featureRegistration];
     id<HUBViewModel> const initialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:viewURI];
     
     return [[HUBViewModelLoaderImplementation alloc] initWithViewURI:viewURI
                                                          featureInfo:featureInfo
                                                    contentOperations:allContentOperations
+                                                 contentReloadPolicy:contentReloadPolicy
                                                           JSONSchema:JSONSchema
                                                    componentDefaults:self.componentDefaults
                                            connectivityStateResolver:self.connectivityStateResolver

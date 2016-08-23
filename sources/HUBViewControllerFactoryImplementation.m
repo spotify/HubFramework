@@ -19,7 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
-@property (nonatomic, strong, readonly, nullable) id<HUBContentReloadPolicy> defaultContentReloadPolicy;
 @property (nonatomic, strong, readonly, nullable) id<HUBImageLoaderFactory> imageLoaderFactory;
 
 @end
@@ -31,7 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
                              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
                         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                    defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                             imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
 {
     NSParameterAssert(viewModelLoaderFactory != nil);
@@ -47,7 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
         _featureRegistry = featureRegistry;
         _componentRegistry = componentRegistry;
         _initialViewModelRegistry = initialViewModelRegistry;
-        _defaultContentReloadPolicy = defaultContentReloadPolicy;
         _componentLayoutManager = componentLayoutManager;
         _imageLoaderFactory = imageLoaderFactory;
     }
@@ -74,7 +71,6 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                             featureRegistration:featureRegistration];
     
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
-    id<HUBContentReloadPolicy> const contentReloadPolicy = featureRegistration.contentReloadPolicy ?: self.defaultContentReloadPolicy;
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
     id<HUBComponentSelectionHandler> const componentSelectionHandler = [[HUBComponentSelectionHandlerWrapper alloc] initWithSelectionHandler:featureRegistration.componentSelectionHandler
                                                                                                                     initialViewModelRegistry:self.initialViewModelRegistry];
@@ -86,7 +82,6 @@ NS_ASSUME_NONNULL_BEGIN
                                              componentLayoutManager:self.componentLayoutManager
                                           componentSelectionHandler:componentSelectionHandler
                                                              device:[UIDevice currentDevice]
-                                                contentReloadPolicy:contentReloadPolicy
                                                         imageLoader:imageLoader];
 }
 

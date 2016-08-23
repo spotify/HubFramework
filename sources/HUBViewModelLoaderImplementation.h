@@ -4,6 +4,7 @@
 @protocol HUBFeatureInfo;
 @protocol HUBJSONSchema;
 @protocol HUBContentOperation;
+@protocol HUBContentReloadPolicy;
 @protocol HUBConnectivityStateResolver;
 @protocol HUBIconImageResolver;
 @class HUBComponentDefaults;
@@ -19,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewURI The URI of the view that this loader will load view models for
  *  @param featureInfo An object containing information about the feature that the loader will be used for
  *  @param contentOperations The content operations that will create content for loaded view models
+ *  @param contentReloadPolicy Any policy that gonverns whether content should be reloaded at a given time
  *  @param JSONSchema The JSON schema that the loader should use for parsing
  *  @param componentDefaults The default values to use for component model builders created when loading view models
  *  @param connectivityStateResolver The connectivity state resolver used by the current `HUBManager`
@@ -28,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewURI:(NSURL *)viewURI
                     featureInfo:(id<HUBFeatureInfo>)featureInfo
               contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+            contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                      JSONSchema:(id<HUBJSONSchema>)JSONSchema
               componentDefaults:(HUBComponentDefaults *)componentDefaults
       connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver

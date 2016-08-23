@@ -26,7 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentLayoutManager The object that manages layout for components in the view controller
  *  @param componentSelectionHandler The object that handles selection events for components
  *  @param device The device that the view controller will be presented using
- *  @param contentReloadPolicy The reload policy to use to determine when to load new content
  *  @param imageLoader The object to use to load images for components
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
@@ -36,7 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
       componentSelectionHandler:(id<HUBComponentSelectionHandler>)componentSelectionHandler
                          device:(UIDevice *)device
-            contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                     imageLoader:(nullable id<HUBImageLoader>)imageLoader HUB_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
