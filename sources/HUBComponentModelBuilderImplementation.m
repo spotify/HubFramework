@@ -68,7 +68,7 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
 
 #pragma mark - Class methods
 
-+ (NSArray<HUBComponentModelImplementation *> *)buildComponentModelsUsingBuilders:(NSDictionary<NSString *,HUBComponentModelBuilderImplementation *> *)builders
++ (NSArray<id<HUBComponentModel>> *)buildComponentModelsUsingBuilders:(NSDictionary<NSString *,HUBComponentModelBuilderImplementation *> *)builders
                                                                   identifierOrder:(NSArray<NSString *> *)identifierOrder
 {
     NSMutableOrderedSet<HUBComponentModelBuilderImplementation *> * const sortedBuilders = [NSMutableOrderedSet new];
@@ -478,7 +478,7 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
 
 #pragma mark - API
 
-- (HUBComponentModelImplementation *)buildForIndex:(NSUInteger)index
+- (id<HUBComponentModel>)buildForIndex:(NSUInteger)index
 {
     HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:self.componentNamespace
                                                                                                       name:self.componentName];

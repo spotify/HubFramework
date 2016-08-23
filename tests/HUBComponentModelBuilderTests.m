@@ -65,7 +65,7 @@
     self.builder.loggingData = @{@"logging": @"data"};
     
     NSUInteger const modelIndex = 5;
-    HUBComponentModelImplementation * const model = [self.builder buildForIndex:modelIndex];
+    id<HUBComponentModel> const model = [self.builder buildForIndex:modelIndex];
     
     XCTAssertEqualObjects(model.componentIdentifier.componentNamespace, @"namespace");
     XCTAssertEqualObjects(model.componentIdentifier.componentName, @"name");
@@ -99,7 +99,7 @@
     self.builder.componentName = @"component";
     self.builder.mainImageDataBuilder.placeholderIconIdentifier = @"placeholder";
     self.builder.backgroundImageDataBuilder.placeholderIconIdentifier = @"placeholder";
-    HUBComponentModelImplementation * const model = [self.builder buildForIndex:0];
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
     
     XCTAssertEqual(model.mainImageData.type, HUBComponentImageTypeMain);
     XCTAssertEqual(model.backgroundImageData.type, HUBComponentImageTypeBackground);
@@ -134,7 +134,7 @@
     NSString * const emptyCustomImageBuilderIdentifier = @"empty";
     [self.builder builderForCustomImageDataWithIdentifier:emptyCustomImageBuilderIdentifier];
     
-    HUBComponentModelImplementation * const componentModel = [self.builder buildForIndex:0];
+    id<HUBComponentModel> const componentModel = [self.builder buildForIndex:0];
     id<HUBComponentImageData> const customImageData = componentModel.customImageData[customImageIdentifier];
     
     XCTAssertEqualObjects(customImageData.identifier, customImageIdentifier);
@@ -220,7 +220,7 @@
     childBuilderB.preferredIndex = @0;
     childBuilderB.componentName = @"component";
     
-    HUBComponentModelImplementation * const model = [self.builder buildForIndex:0];
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
     XCTAssertEqual(model.childComponentModels.count, (NSUInteger)2);
     XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifierB);
     XCTAssertEqual(model.childComponentModels[0].index, (NSUInteger)0);
@@ -237,7 +237,7 @@
     childBuilder.componentName = @"component";
     childBuilder.preferredIndex = @99;
     
-    HUBComponentModelImplementation * const model = [self.builder buildForIndex:0];
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
     XCTAssertEqual(model.childComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifier);
     XCTAssertEqual(model.childComponentModels[0].index, (NSUInteger)0);
@@ -354,7 +354,7 @@
     };
     
     [self.builder addDataFromJSONDictionary:dictionary];
-    HUBComponentModelImplementation * const model = [self.builder buildForIndex:0];
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
     
     XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
     XCTAssertEqualObjects(model.componentCategory, @"mainCategory");
