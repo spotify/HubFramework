@@ -4,8 +4,8 @@
 
 @protocol HUBJSONSchema;
 @protocol HUBIconImageResolver;
+@protocol HUBViewModel;
 @class HUBComponentDefaults;
-@class HUBViewModelImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,9 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
                         iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
 
 /**
- *  Build an instance of `HUBViewModelImplementation` from the data contained in this builder
+ *  Build a view model instance from the data contained in this builder
  */
-- (HUBViewModelImplementation *)build;
+- (id<HUBViewModel>)build;
 
 @end
 

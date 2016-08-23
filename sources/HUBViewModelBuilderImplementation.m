@@ -219,7 +219,7 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
     return YES;
 }
 
-- (HUBViewModelImplementation *)build
+- (id<HUBViewModel>)build
 {
     HUBComponentModelImplementation * const headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0];
     
