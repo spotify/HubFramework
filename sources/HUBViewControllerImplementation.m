@@ -421,7 +421,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated
 {
-    [self.collectionView setContentOffset:contentOffset animated:animated];
+    const CGFloat x = contentOffset.x;
+    const CGFloat y = contentOffset.y + self.collectionView.contentInset.top;
+
+    [self.collectionView setContentOffset:CGPointMake(x, y) animated:animated];
 }
 
 #pragma mark - UIScrollViewDelegate

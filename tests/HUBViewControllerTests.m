@@ -1102,6 +1102,22 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     XCTAssertTrue(CGPointEqualToPoint(expectedContentOffset, actualConentOffset));
 }
 
+- (void)testSetScrollOffsetIsCalculatedCorrectlyForTopInsetValue
+{
+    [self simulateViewControllerLayoutCycle];
+
+    UIEdgeInsets inset = self.collectionView.contentInset;
+    inset.top = 45.0;
+    self.collectionView.contentInset = inset;
+
+    const CGPoint contentOffset = CGPointMake(99, 77);
+    const CGPoint expectedContentOffset = CGPointMake(contentOffset.x, contentOffset.y + inset.top);
+
+    [self.viewController scrollToContentOffset:contentOffset animated:NO];
+    const CGPoint actualConentOffset = self.collectionView.appliedScrollViewOffset;
+    XCTAssertTrue(CGPointEqualToPoint(expectedContentOffset, actualConentOffset));
+}
+
 - (void)testSetScrollOffsetForwardsAnimatedFlagToCollectionView
 {
     [self simulateViewControllerLayoutCycle];
