@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@protocol HUBComponentWrapper;
+@protocol HUBComponent;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface HUBComponentCollectionViewCell : UICollectionViewCell
 
+/// A unique identifier for the cell, can be used to track this instance in various operations
+@property (nonatomic, strong, readonly) NSUUID *identifier;
+
 /**
  *  The component that the collection view is currently displaying
  *
@@ -23,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  you don't need to manually send `prepareForReuse` to the component, it will automatically be sent when the cell
  *  itself gets reused.
  */
-@property (nonatomic, strong, nullable) id<HUBComponentWrapper> component;
+@property (nonatomic, strong, nullable) id<HUBComponent> component;
 
 @end
 
