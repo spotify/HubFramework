@@ -422,7 +422,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated
 {
     const CGFloat x = contentOffset.x;
-    const CGFloat y = contentOffset.y + self.collectionView.contentInset.top;
+    const CGFloat y = contentOffset.y - self.collectionView.contentInset.top;
 
     [self.collectionView setContentOffset:CGPointMake(x, y) animated:animated];
 }

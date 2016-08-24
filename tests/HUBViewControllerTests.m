@@ -1111,7 +1111,7 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     self.collectionView.contentInset = inset;
 
     const CGPoint contentOffset = CGPointMake(99, 77);
-    const CGPoint expectedContentOffset = CGPointMake(contentOffset.x, contentOffset.y + inset.top);
+    const CGPoint expectedContentOffset = CGPointMake(contentOffset.x, contentOffset.y - inset.top);
 
     [self.viewController scrollToContentOffset:contentOffset animated:NO];
     const CGPoint actualConentOffset = self.collectionView.appliedScrollViewOffset;
