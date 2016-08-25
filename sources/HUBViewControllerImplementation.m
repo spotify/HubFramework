@@ -177,6 +177,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     self.collectionView.frame = self.view.bounds;
+    [self.collectionView reloadData];
     
     [self configureHeaderComponent];
     [self configureOverlayComponents];
@@ -190,7 +191,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     [layout computeForCollectionViewSize:self.collectionView.frame.size];
     self.collectionView.collectionViewLayout = layout;
-    [self.collectionView reloadData];
     
     self.viewModelHasChangedSinceLastLayoutUpdate = NO;
 }
@@ -412,7 +412,7 @@ NS_ASSUME_NONNULL_BEGIN
   didEndDisplayingCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
+    id<HUBComponentModel> const componentModel = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell].model;
     [self.delegate viewController:self componentWithModel:componentModel didDisappearFromView:cell];
 }
 
