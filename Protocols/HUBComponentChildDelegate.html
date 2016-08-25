@@ -203,9 +203,6 @@
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBComponentWrapper.html">HUBComponentWrapper</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
               </li>
               <li class="nav-group-task">
@@ -376,14 +373,14 @@
   to be truly dynamic with which child components they support.</p>
 
 <p>Components created this way are retained and managed by the Hub Framework, and reused whenever they are sent the
-  <code>prepareForReuse</code> message.</p>
+  <code>prepareViewForReuse</code> message.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentWrapper.html">HUBComponentWrapper</a></span><span class="o">&gt;</span><span class="p">)</span>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponent.html">HUBComponent</a></span><span class="o">&gt;</span><span class="p">)</span>
                  <span class="nf">component</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">component</span>
     <span class="nf">childComponentForModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">childComponentModel</span><span class="p">;</span></code></pre>
 
@@ -424,9 +421,9 @@
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A wrapper for a component that was either newly created, or reused - if an inactive component of the same
-         type was available. The component will have its view loaded and resized according to its parent and the
-         component&rsquo;s <code>preferredViewSize</code>, and will be configured according to the passed <code>childComponentModel</code>.</p>
+                        <p>A component that was either newly created, or reused - if an inactive component of the same type was available.
+         The component will have its view loaded and resized according to its parent and the component&rsquo;s <code>preferredViewSize</code>,
+         and will be configured according to the passed <code>childComponentModel</code>.</p>
 
                       </div>
                     </section>
