@@ -15,7 +15,6 @@
 #import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentMock.h"
-#import "HUBComponentWrapper.h"
 #import "HUBComponentWrapperImplementation.h"
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
@@ -654,18 +653,20 @@
     id<HUBComponentModel> const childComponentModelA = [component.model childComponentModelAtIndex:0];
     XCTAssertNotNil(childComponentModelA);
     
-    id<HUBComponentWrapper> const childComponentWrapper = [childDelegate component:component childComponentForModel:childComponentModelA];
+    id<HUBComponent> const childComponentWrapper = [childDelegate component:component childComponentForModel:childComponentModelA];
     XCTAssertEqual(childComponentWrapper.view, childComponent.view);
-    XCTAssertTrue(CGSizeEqualToSize(childComponent.view.frame.size, childComponent.preferredViewSize));
+    XCTAssertTrue(CGSizeEqualToSize(childComponent.view.frame.size, childComponent.preferredViewSize),
+                  @"Sizes not equal: %@ and %@",
+                  NSStringFromCGSize(childComponent.view.frame.size),
+                  NSStringFromCGSize(childComponent.preferredViewSize));
     
-    [childComponentWrapper prepareForReuse];
+    [childComponentWrapper prepareViewForReuse];
     
     id<HUBComponentModel> const childComponentModelB = [component.model childComponentModelAtIndex:1];
     XCTAssertNotNil(childComponentModelB);
     
-    id<HUBComponentWrapper> const reusedChildComponentWrapper = [childDelegate component:component childComponentForModel:childComponentModelB];
+    id<HUBComponent> const reusedChildComponentWrapper = [childDelegate component:component childComponentForModel:childComponentModelB];
     XCTAssertEqual(childComponentWrapper, reusedChildComponentWrapper);
-    XCTAssertEqual(reusedChildComponentWrapper.model, childComponentModelB);
 }
 
 - (void)testSelectionForRootComponent

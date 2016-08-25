@@ -1,6 +1,5 @@
 #import "HUBComponentCollectionViewCell.h"
 
-#import "HUBComponentWrapper.h"
 #import "HUBComponent.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBUtilities.h"
@@ -9,9 +8,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBComponentCollectionViewCell
 
+#pragma mark - Initializer
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    
+    if (self) {
+        _identifier = [NSUUID UUID];
+    }
+    
+    return self;
+}
+
 #pragma mark - Property overrides
 
-- (void)setComponent:(nullable id<HUBComponentWrapper>)component
+- (void)setComponent:(nullable id<HUBComponent>)component
 {
     if (_component == component) {
         return;
@@ -24,20 +36,21 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    id<HUBComponentWrapper> const nonNilComponent = component;
+    id<HUBComponent> const nonNilComponent = component;
+    UIView * const componentView = HUBComponentLoadViewIfNeeded(nonNilComponent);
     
-    if ([nonNilComponent.view isKindOfClass:[UICollectionViewCell class]]) {
-        nonNilComponent.view.userInteractionEnabled = NO;
+    if ([componentView isKindOfClass:[UICollectionViewCell class]]) {
+        componentView.userInteractionEnabled = NO;
     }
     
-    [self.contentView addSubview:nonNilComponent.view];
+    [self.contentView addSubview:componentView];
 }
 
 #pragma mark - UICollectionViewCell
 
 - (void)prepareForReuse
 {
-    [self.component prepareForReuse];
+    [self.component prepareViewForReuse];
 }
 
 - (void)setSelected:(BOOL)selected

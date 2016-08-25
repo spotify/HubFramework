@@ -15,16 +15,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBComponentWrapperImplementation () <HUBComponentChildDelegate, HUBComponentResizeObservingViewDelegate>
 
+@property (nonatomic, strong, readwrite) id<HUBComponentModel> model;
 @property (nonatomic, strong, readonly) id<HUBComponent> component;
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
-@property (nonatomic, weak) HUBComponentWrapperImplementation *parentComponentWrapper;
+@property (nonatomic, weak, nullable) HUBComponentWrapperImplementation *parentComponentWrapper;
 @property (nonatomic, assign) BOOL preparedForReuse;
 
 @end
 
 @implementation HUBComponentWrapperImplementation
-
-@synthesize identifier = _identifier;
 
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
@@ -41,32 +40,105 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self) {
         _identifier = [NSUUID UUID];
+        _model = model;
         _component = component;
         _UIStateManager = UIStateManager;
-        _model = model;
         _delegate = delegate;
         _parentComponentWrapper = parentComponentWrapper;
+        _preparedForReuse = YES;
 
         if ([_component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
             ((id<HUBComponentWithChildren>)_component).childDelegate = self;
         }
-
-        UIView * const componentView = self.view;
-        if ([_component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
-            HUBComponentResizeObservingView * const resizeObservingView = [[HUBComponentResizeObservingView alloc] initWithFrame:componentView.bounds];
-            resizeObservingView.delegate = self;
-            [componentView addSubview:resizeObservingView];
-        }
-        
-        HUBComponentLoadViewIfNeeded(_component);
-        const CGSize containerViewSize = [delegate containerViewSizeForComponentWrapper:self];
-        [_component configureViewWithModel:_model containerViewSize:containerViewSize];
     }
     
     return self;
 }
 
 #pragma mark - API
+
+- (void)updateViewForChangedContentOffset:(CGPoint)contentOffset
+{
+    if (![self.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
+        return;
+    }
+    
+    [(id<HUBComponentContentOffsetObserver>)self.component updateViewForChangedContentOffset:contentOffset];
+}
+
+#pragma mark - Property overrides
+
+- (BOOL)handlesImages
+{
+    return [self.component conformsToProtocol:@protocol(HUBComponentWithImageHandling)];
+}
+
+- (BOOL)isContentOffsetObserver
+{
+    return [self.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)];
+}
+
+- (BOOL)isRootComponent
+{
+    return self.parentComponentWrapper == nil;
+}
+
+#pragma mark - HUBComponent
+
+- (NSSet<HUBComponentLayoutTrait *> *)layoutTraits
+{
+    return self.component.layoutTraits;
+}
+
+- (nullable __kindof UIView *)view
+{
+    return self.component.view;
+}
+
+- (void)setView:(nullable __kindof UIView *)view
+{
+    self.component.view = view;
+}
+
+- (void)loadView
+{
+    BOOL const viewLoaded = (self.view != nil);
+    UIView * const view = HUBComponentLoadViewIfNeeded(self.component);
+    
+    if (!viewLoaded) {
+        if ([self.component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
+            HUBComponentResizeObservingView * const resizeObservingView = [[HUBComponentResizeObservingView alloc] initWithFrame:view.bounds];
+            resizeObservingView.delegate = self;
+            [view addSubview:resizeObservingView];
+        }
+    }
+}
+
+- (CGSize)preferredViewSizeForDisplayingModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
+{
+    return [self.component preferredViewSizeForDisplayingModel:model containerViewSize:containerViewSize];
+}
+
+- (void)configureViewWithModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
+{
+    self.model = model;
+    
+    if (!self.preparedForReuse) {
+        [self prepareForReuseAndSendToReusePool:NO];
+    }
+    
+    [self.component configureViewWithModel:model containerViewSize:containerViewSize];
+    [self restoreComponentUIStateForModel:model];
+    
+    self.preparedForReuse = NO;
+}
+
+- (void)prepareViewForReuse
+{
+    [self prepareForReuseAndSendToReusePool:YES];
+}
+
+#pragma mark - HUBComponentWithImageHandling
 
 - (CGSize)preferredSizeForImageFromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
@@ -91,6 +163,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                        animated:animated];
 }
 
+#pragma mark - HUBComponentViewObserver
+
 - (void)viewWillAppear
 {
     if (![self.component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
@@ -100,72 +174,21 @@ NS_ASSUME_NONNULL_BEGIN
     [(id<HUBComponentViewObserver>)self.component viewWillAppear];
 }
 
-- (void)contentOffsetDidChange:(CGPoint)contentOffset
+- (void)viewDidResize
 {
-    if (![self.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
+    if (![self.component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
         return;
     }
     
-    [(id<HUBComponentContentOffsetObserver>)self.component updateViewForChangedContentOffset:contentOffset];
-}
-
-#pragma mark - Property overrides
-
-- (void)setModel:(id<HUBComponentModel>)model
-{
-    if (_model == model && !self.preparedForReuse) {
-        return;
-    }
-    
-    _model = model;
-    
-    if (!self.preparedForReuse) {
-        [self prepareForReuseAndSendToReusePool:NO];
-    }
-    const CGSize containerViewSize = [self.delegate containerViewSizeForComponentWrapper:self];
-    [self.component configureViewWithModel:model containerViewSize:containerViewSize];
-    [self restoreComponentUIState];
-    
-    self.preparedForReuse = NO;
-}
-
-- (BOOL)handlesImages
-{
-    return [self.component conformsToProtocol:@protocol(HUBComponentWithImageHandling)];
-}
-
-- (BOOL)isContentOffsetObserver
-{
-    return [self.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)];
-}
-
-- (BOOL)isRootComponent
-{
-    return self.parentComponentWrapper == nil;
-}
-
-#pragma mark - HUBComponentWrapper
-
-- (UIView *)view
-{
-    return HUBComponentLoadViewIfNeeded(self.component);
-}
-
-- (CGSize)preferredViewSizeForContainerViewSize:(CGSize)containerViewSize
-{
-    return [self.component preferredViewSizeForDisplayingModel:self.model containerViewSize:containerViewSize];
-}
-
-- (void)prepareForReuse
-{
-    [self prepareForReuseAndSendToReusePool:YES];
+    [(id<HUBComponentViewObserver>)self.component viewDidResize];
 }
 
 #pragma mark - HUBComponentChildDelegate
 
-- (id<HUBComponentWrapper>)component:(id<HUBComponentWithChildren>)component childComponentForModel:(id<HUBComponentModel>)childComponentModel
+- (id<HUBComponent>)component:(id<HUBComponentWithChildren>)component childComponentForModel:(id<HUBComponentModel>)childComponentModel
 {
-    return (id<HUBComponentWrapper>)[self.delegate componentWrapper:self childComponentForModel:childComponentModel];
+    id<HUBComponent> const childComponent = [self.delegate componentWrapper:self childComponentForModel:childComponentModel];
+    return childComponent;
 }
 
 - (void)component:(id<HUBComponentWithChildren>)component willDisplayChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView
@@ -219,13 +242,13 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (void)restoreComponentUIState
+- (void)restoreComponentUIStateForModel:(id<HUBComponentModel>)model
 {
     if (![self.component conformsToProtocol:@protocol(HUBComponentWithRestorableUIState)]) {
         return;
     }
     
-    id restoredUIState = [self.UIStateManager restoreUIStateForComponentModel:self.model];
+    id restoredUIState = [self.UIStateManager restoreUIStateForComponentModel:model];
     
     if (restoredUIState != nil) {
         [(id<HUBComponentWithRestorableUIState>)self.component restoreUIState:restoredUIState];

@@ -29,14 +29,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  to be truly dynamic with which child components they support.
  *
  *  Components created this way are retained and managed by the Hub Framework, and reused whenever they are sent the
- *  `prepareForReuse` message.
+ *  `prepareViewForReuse` message.
  *
- *  @return A wrapper for a component that was either newly created, or reused - if an inactive component of the same
- *          type was available. The component will have its view loaded and resized according to its parent and the
- *          component's `preferredViewSize`, and will be configured according to the passed `childComponentModel`.
+ *  @return A component that was either newly created, or reused - if an inactive component of the same type was available.
+ *          The component will have its view loaded and resized according to its parent and the component's `preferredViewSize`,
+ *          and will be configured according to the passed `childComponentModel`.
  */
-- (id<HUBComponentWrapper>)component:(id<HUBComponentWithChildren>)component
-              childComponentForModel:(id<HUBComponentModel>)childComponentModel;
+- (id<HUBComponent>)component:(id<HUBComponentWithChildren>)component childComponentForModel:(id<HUBComponentModel>)childComponentModel;
 
 /**
  *  Notify the Hub Framework that a component is about to display a child component at a given index

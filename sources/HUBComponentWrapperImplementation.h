@@ -1,11 +1,12 @@
-#import "HUBComponentWrapper.h"
+#import "HUBComponentWithImageHandling.h"
+#import "HUBComponentViewObserver.h"
+#import "HUBComponentContentOffsetObserver.h"
 #import "HUBHeaderMacros.h"
 
 @protocol HUBComponent;
 @protocol HUBComponentModel;
 @protocol HUBComponentImageData;
 @class HUBComponentWrapperImplementation;
-@class HUBComponentIdentifier;
 @class HUBComponentUIStateManager;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -19,8 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentWrapper The wrapper of the parent component
  *  @param model The model that a component should be created for
  */
-- (id<HUBComponentWrapper>)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
-                     childComponentForModel:(id<HUBComponentModel>)model;
+- (id<HUBComponent>)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+              childComponentForModel:(id<HUBComponentModel>)model;
 
 /**
  *  Notify the delegate that one of the wrapped component's children is about to appear on the screen
@@ -57,26 +58,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapperImplementation *)componentWrapper;
 
-/**
- *  Returns the size of the component wrapper's container.
- *
- *  @param componentWrapper The wrapper of the component in that require the container view size for
- */
-- (CGSize)containerViewSizeForComponentWrapper:(HUBComponentWrapperImplementation *)componentWrapper;
-
 @end
 
 /// Class wrapping a `HUBComponent`, adding additional data used internally in the Hub Framework
-@interface HUBComponentWrapperImplementation : NSObject <HUBComponentWrapper>
+@interface HUBComponentWrapperImplementation : NSObject <
+    HUBComponentWithImageHandling,
+    HUBComponentViewObserver,
+    HUBComponentContentOffsetObserver
+>
+
+/// A unique identifier for this component wrapper. Can be used to track it accross various operations.
+@property (nonatomic, strong, readonly) NSUUID *identifier;
+
+/// The current model that the component wrapper is representing
+@property (nonatomic, strong, readonly) id<HUBComponentModel> model;
 
 /// The component wrapper's delegate. See `HUBComponentWrapperDelegate` for more info.
 @property (nonatomic, weak, nullable) id<HUBComponentWrapperDelegate> delegate;
 
 /// The components parent wrapper if it is a child component
-@property (nonatomic, readonly, weak) HUBComponentWrapperImplementation *parentComponentWrapper;
-
-/// The model that the component wrapper is currently using. Set to configure the component with a new model.
-@property (nonatomic, strong) id<HUBComponentModel> model;
+@property (nonatomic, readonly, weak, nullable) HUBComponentWrapperImplementation *parentComponentWrapper;
 
 /// Whether the wrapper is for a root component, or for a child component
 @property (nonatomic, readonly) BOOL isRootComponent;
@@ -91,8 +92,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with a component to wrap and its identifier
  *
  *  @param component The component to wrap
- *  @param model The initial model used by the component
+ *  @param model The model that the component wrapper will represent
  *  @param UIStateManager The manager to use to save & restore UI states for the component
+ *  @param delegate The object that will act as the component wrapper's delegate
  *  @param parentComponentWrapper The parent component wrapper if this component wrapper is a child component
  */
 - (instancetype)initWithComponent:(id<HUBComponent>)component
@@ -100,47 +102,6 @@ NS_ASSUME_NONNULL_BEGIN
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
            parentComponentWrapper:(nullable HUBComponentWrapperImplementation *)parentComponentWrapper HUB_DESIGNATED_INITIALIZER;
-
-/**
- *  Return the wrapped component's preferred size for an image
- *
- *  @param imageData The data for the image in question
- *  @param model The model that the image data is contained in. May either be the wrapper's own model, or
- *         the model of a child component.
- *  @param containerViewSize The current size of the component's container view
- *
- *  @return A size retrieved by asking any wrapped image handling component for its preferred image size, or
- *          `CGSizeZero` if `handlesImages` is `NO`.
- */
-- (CGSize)preferredSizeForImageFromData:(id<HUBComponentImageData>)imageData
-                                  model:(id<HUBComponentModel>)model
-                      containerViewSize:(CGSize)containerViewSize;
-
-/**
- *  Update the component's view after an image was downloaded
- *
- *  @param image The image that was loaded
- *  @param imageData The image data that the image was loaded using. 
- *  @param model The model that the image data is contained in. May either be the wrapper's own model, or
- *         the model of a child component.
- *  @param animated Whether the image should be rendered using an animation.
- */
-- (void)updateViewForLoadedImage:(UIImage *)image
-                        fromData:(id<HUBComponentImageData>)imageData
-                           model:(id<HUBComponentModel>)model
-                        animated:(BOOL)animated;
-
-/**
- *  Notify the component that its view is about to appear on the screen
- */
-- (void)viewWillAppear;
-
-/**
- *  Notify the component that the container view's content offset was changed
- *
- *  @param contentOffset The new content offset of the container view
- */
-- (void)contentOffsetDidChange:(CGPoint)contentOffset;
 
 @end
 

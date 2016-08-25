@@ -7,7 +7,6 @@
 #import "HUBComponentWithChildren.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentLayoutManager.h"
-#import "HUBComponentLayoutWrapper.h"
 #import "HUBScrollBehaviorWrapper.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -152,10 +151,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentChildDelegate
 
-- (id<HUBComponentWrapper>)component:(id<HUBComponentWithChildren>)component childComponentForModel:(id<HUBComponentModel>)childComponentModel
+- (id<HUBComponent>)component:(id<HUBComponentWithChildren>)component childComponentForModel:(id<HUBComponentModel>)childComponentModel
 {
-    id<HUBComponent> const childComponent = [self componentForModel:childComponentModel];
-    return [[HUBComponentLayoutWrapper alloc] initWithComponent:childComponent model:childComponentModel];
+    return [self componentForModel:childComponentModel];
 }
 
 - (void)component:(id<HUBComponentWithChildren>)component willDisplayChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView
