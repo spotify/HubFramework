@@ -15,7 +15,7 @@
 #import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentMock.h"
-#import "HUBComponentWrapperImplementation.h"
+#import "HUBComponentWrapper.h"
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
 #import "HUBComponentLayoutManagerMock.h"

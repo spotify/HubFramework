@@ -1,4 +1,4 @@
-#import "HUBComponentWrapperImplementation.h"
+#import "HUBComponentWrapper.h"
 
 #import "HUBComponentWithChildren.h"
 #import "HUBComponentWithRestorableUIState.h"
@@ -13,23 +13,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBComponentWrapperImplementation () <HUBComponentChildDelegate, HUBComponentResizeObservingViewDelegate>
+@interface HUBComponentWrapper () <HUBComponentChildDelegate, HUBComponentResizeObservingViewDelegate>
 
 @property (nonatomic, strong, readwrite) id<HUBComponentModel> model;
 @property (nonatomic, strong, readonly) id<HUBComponent> component;
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
-@property (nonatomic, weak, nullable) HUBComponentWrapperImplementation *parentComponentWrapper;
+@property (nonatomic, weak, nullable) HUBComponentWrapper *parentComponentWrapper;
 @property (nonatomic, assign) BOOL preparedForReuse;
 
 @end
 
-@implementation HUBComponentWrapperImplementation
+@implementation HUBComponentWrapper
 
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
-           parentComponentWrapper:(nullable HUBComponentWrapperImplementation *)parentComponentWrapper
+           parentComponentWrapper:(nullable HUBComponentWrapper *)parentComponentWrapper
 {
     NSParameterAssert(component != nil);
     NSParameterAssert(model != nil);
