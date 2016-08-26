@@ -543,8 +543,14 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     for (HUBComponentWrapperImplementation * const unusedOverlayComponentWrapper in currentOverlayComponentWrappers) {
-        [unusedOverlayComponentWrapper.view removeFromSuperview];
+        [self removeOverlayComponentWrapper:unusedOverlayComponentWrapper];
     }
+}
+
+- (void)removeOverlayComponentWrapper:(HUBComponentWrapperImplementation *)wrapper
+{
+    self.componentWrappersByIdentifier[wrapper.identifier] = nil;
+    [wrapper.view removeFromSuperview];
 }
 
 - (HUBComponentWrapperImplementation *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
@@ -557,10 +563,9 @@ NS_ASSUME_NONNULL_BEGIN
         [previousComponentWrapper prepareViewForReuse];
         componentWrapper = previousComponentWrapper;
     } else {
-        NSUUID * const previousComponentWrapperIdentifier = previousComponentWrapper.identifier;
-        
-        if (previousComponentWrapperIdentifier != nil) {
-            self.componentWrappersByIdentifier[previousComponentWrapperIdentifier] = nil;
+        if (previousComponentWrapper != nil) {
+            HUBComponentWrapperImplementation * const nonNilPreviousComponentWrapper = previousComponentWrapper;
+            [self removeOverlayComponentWrapper:nonNilPreviousComponentWrapper];
         }
         
         id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];

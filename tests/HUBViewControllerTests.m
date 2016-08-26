@@ -503,7 +503,7 @@
     XCTAssertEqual(componentB.numberOfReuses, (NSUInteger)1);
 }
 
-- (void)testUnusedOverlayComponentsRemovedFromView
+- (void)testRemovedOverlayComponentsRemovedFromView
 {
     __block BOOL isFirstLoad = YES;
     
@@ -526,6 +526,38 @@
     
     [self.contentOperation.delegate contentOperationRequiresRescheduling:self.contentOperation];
     [self.viewController viewDidLayoutSubviews];
+    XCTAssertNil(self.component.view.superview);
+}
+
+- (void)testUnreusedOverlayComponentsRemovedFromView
+{
+    __block BOOL isFirstLoad = YES;
+    
+    HUBComponentMock * const alternativeComponent = [HUBComponentMock new];
+    HUBComponentFactoryMock * const alternativeComponentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{@"alternative": alternativeComponent}];
+    [self.componentRegistry registerComponentFactory:alternativeComponentFactory forNamespace:@"alternative"];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+        
+        if (!isFirstLoad) {
+            componentModelBuilder.componentNamespace = @"alternative";
+            componentModelBuilder.componentName = @"alternative";
+        }
+        
+        isFirstLoad = NO;
+        
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertNotNil(self.component.view.superview);
+    XCTAssertNil(alternativeComponent.view);
+    
+    [self.contentOperation.delegate contentOperationRequiresRescheduling:self.contentOperation];
+    [self.viewController viewDidLayoutSubviews];
+    
+    XCTAssertNotNil(alternativeComponent.view.superview);
     XCTAssertNil(self.component.view.superview);
 }
 
