@@ -398,10 +398,13 @@
 
 <p>Each application or feature using the Hub Framework defines its own content operations through the <code>HUBContentOperation</code> protocol, and enables the framework to create instances of them through the use of <code>HUBContentOperationFactories</code>. An array of content operation factories are registered when each feature sets itself up with the Hub Framework.</p>
 
-<p>Content operations are called when either of the following 3 events happen:
-- The view is about to appear, and the content operations are asked to add initial (pre-loaded) content to the view. <em>This only happens if the content operation conforms to <code>HUBContentOperationWithInitialContent</code>.</em>
-- The view has appeared, and the content operations are asked to load the main content for the view.
-- A content operation has been rescheduled, for example because of an underlying model change, or because of a UI event. See <a href="#rescheduling-content-operations">Rescheduling content operations</a> for more information.</p>
+<p>Content operations are called when either of the following 3 events happen:</p>
+
+<ul>
+<li><p>The view is about to appear, and the content operations are asked to add initial (pre-loaded) content to the view. <em>This only happens if the content operation conforms to <code>HUBContentOperationWithInitialContent</code>.</em></p></li>
+<li><p>The view has appeared, and the content operations are asked to load the main content for the view.</p></li>
+<li><p>A content operation has been rescheduled, for example because of an underlying model change, or because of a UI event. See <a href="#rescheduling-content-operations">Rescheduling content operations</a> for more information.</p></li>
+</ul>
 <a href='#content-loading-chain' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='content-loading-chain'>Content loading chain</h2>
 
 <p>When you register an array of <code>HUBContentOperationFactories</code> with the Hub Framework, when setting up a feature using <code>HUBFeatureRegistry</code>, the order of that array is used to determine the order of what&rsquo;s called the <strong>content loading chain</strong>.</p>
@@ -478,6 +481,15 @@ contentOperationFactory2
 </code></pre>
 
 <p>If <code>contentOperationB</code> is rescheduled; that means that <code>contentOperationC</code> will also be rescheduled. This enables subsequent operations to always be able to rely on their preceding operations.</p>
+<a href='#view-model-builder-snapshotting' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='view-model-builder-snapshotting'>View model builder snapshotting</h3>
+
+<p>Important to note is also that when an operation is rescheduled, the view model builder that it recieves as input will be a snapshot of the builder that it recieved <strong>the last time that it was executed</strong>. This enables content operations to always have the same execution conditions, and reduces the need for them to keep state.</p>
+
+<p>For example, let&rsquo;s say we have two content operations; <code>contentOperationA</code> and <code>contentOperationB</code>. In the initial content loading chain, <code>contentOperationA</code> will add 2 body component models (<code>A</code> and <code>B</code>). <code>contentOperationB</code> will then add a third body component - <code>C</code>. So the final state of the view that will be rendered will contain 3 body component models; <code>A</code>, <code>B</code> and <code>C</code>.</p>
+
+<p>Then, we retrigger <code>contentOperationB</code>. Instead of recieving a view model builder that contains <code>A</code>, <code>B</code> and <code>C</code> - it will get one that only contains <code>A</code> and <code>B</code>. This is because it will recieve a snapshot of its previous view model builder input, rather than a builder representation of the current view model.</p>
+
+<p>So, if we only wanted to add component model <code>C</code> conditionally, we wouldn&rsquo;t have to worry about any previous states, and can simply just add it if the conditions are met. We never have to <q>clean up</q> any previous state, since we&rsquo;re always starting from the same state.</p>
 <a href='#handling-errors-in-content-operations' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='handling-errors-in-content-operations'>Handling errors in content operations</h2>
 
 <p>Content operations may also be used for error handling. Whenever an operation exited with an error (by calling <code>contentOperation:didFailWithError:</code> on its delegate) any subsequent operation will have that error passed to it as <code>previousError</code>. The subsequent operation can then chose to do one of two things:</p>
