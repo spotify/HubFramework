@@ -3,7 +3,7 @@
 @protocol HUBComponentModel;
 @protocol HUBComponentWrapperDelegate;
 @class HUBComponentRegistryImplementation;
-@class HUBComponentWrapperImplementation;
+@class HUBComponentWrapper;
 @class HUBComponentUIStateManager;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param componentWrapper The wrapper to add to the pool
  */
-- (void)addComponentWrappper:(HUBComponentWrapperImplementation *)componentWrapper;
+- (void)addComponentWrappper:(HUBComponentWrapper *)componentWrapper;
 
 /**
  *  Retrieve a component wrapper from the pool for a given model
@@ -36,9 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  This method will either return a reused wrapper, or create one if none existed in the pool.
  */
-- (HUBComponentWrapperImplementation *)componentWrapperForModel:(id<HUBComponentModel>)model
-                                                       delegate:(id<HUBComponentWrapperDelegate>)delegate
-                                         parentComponentWrapper:(nullable HUBComponentWrapperImplementation *)parentComponentWrapper;
+- (HUBComponentWrapper *)componentWrapperForModel:(id<HUBComponentModel>)model
+                                         delegate:(id<HUBComponentWrapperDelegate>)delegate
+                           parentComponentWrapper:(nullable HUBComponentWrapper *)parentComponentWrapper;
 
 @end
 

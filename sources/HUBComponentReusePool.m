@@ -1,6 +1,6 @@
 #import "HUBComponentReusePool.h"
 
-#import "HUBComponentWrapperImplementation.h"
+#import "HUBComponentWrapper.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentRegistryImplementation.h"
@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
-@property (nonatomic, strong, readonly) NSMutableDictionary<HUBComponentIdentifier *, NSMutableArray<HUBComponentWrapperImplementation *> *> *componentWrappers;
+@property (nonatomic, strong, readonly) NSMutableDictionary<HUBComponentIdentifier *, NSMutableArray<HUBComponentWrapper *> *> *componentWrappers;
 
 @end
 
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (void)addComponentWrappper:(HUBComponentWrapperImplementation *)componentWrapper
+- (void)addComponentWrappper:(HUBComponentWrapper *)componentWrapper
 {
     HUBComponentIdentifier * const componentIdentifier = componentWrapper.model.componentIdentifier;
     NSMutableArray * const existingWrappers = self.componentWrappers[componentIdentifier];
@@ -46,14 +46,14 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (HUBComponentWrapperImplementation *)componentWrapperForModel:(id<HUBComponentModel>)model
+- (HUBComponentWrapper *)componentWrapperForModel:(id<HUBComponentModel>)model
                                                        delegate:(id<HUBComponentWrapperDelegate>)delegate
-                                         parentComponentWrapper:(nullable HUBComponentWrapperImplementation *)parentComponentWrapper
+                                         parentComponentWrapper:(nullable HUBComponentWrapper *)parentComponentWrapper
 {
     NSMutableArray * const existingWrappers = self.componentWrappers[model.componentIdentifier];
     
     if (existingWrappers.count > 0) {
-        HUBComponentWrapperImplementation * const wrapper = existingWrappers[0];
+        HUBComponentWrapper * const wrapper = existingWrappers[0];
         wrapper.delegate = delegate;
         [existingWrappers removeObjectAtIndex:0];
         return wrapper;
@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBComponent> const component = [self.componentRegistry createComponentForModel:model];
     
-    return [[HUBComponentWrapperImplementation alloc] initWithComponent:component
+    return [[HUBComponentWrapper alloc] initWithComponent:component
                                                                   model:model
                                                          UIStateManager:self.UIStateManager
                                                                delegate:delegate

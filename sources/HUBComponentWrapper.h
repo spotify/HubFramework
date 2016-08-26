@@ -6,12 +6,12 @@
 @protocol HUBComponent;
 @protocol HUBComponentModel;
 @protocol HUBComponentImageData;
-@class HUBComponentWrapperImplementation;
+@class HUBComponentWrapper;
 @class HUBComponentUIStateManager;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Delegate protocol for `HUBComponentWrapperImplementation`
+/// Delegate protocol for `HUBComponentWrapper`
 @protocol HUBComponentWrapperDelegate <NSObject>
 
 /**
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentWrapper The wrapper of the parent component
  *  @param model The model that a component should be created for
  */
-- (id<HUBComponent>)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+- (id<HUBComponent>)componentWrapper:(HUBComponentWrapper *)componentWrapper
               childComponentForModel:(id<HUBComponentModel>)model;
 
 /**
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param childComponentView The view of the child component that is about to appear
  *  @param childIndex The index of the child component that is about to appear
  */
-- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
   childComponentWithView:(UIView *)childComponentView
        willAppearAtIndex:(NSUInteger)childIndex;
 
@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param childComponentView The view of the child component that disappared
  *  @param childIndex The index of the child component that disappared
  */
-- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
   childComponentWithView:(UIView *)childComponentView
      didDisappearAtIndex:(NSUInteger)childIndex;
 
@@ -52,16 +52,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param childComponentView The view of the child component that was selected
  *  @param childIndex The index of the child component that was selected
  */
-- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
   childComponentWithView:(UIView *)childComponentView
          selectedAtIndex:(NSUInteger)childIndex;
 
-- (void)sendComponentWrapperToReusePool:(HUBComponentWrapperImplementation *)componentWrapper;
+- (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper;
 
 @end
 
 /// Class wrapping a `HUBComponent`, adding additional data used internally in the Hub Framework
-@interface HUBComponentWrapperImplementation : NSObject <
+@interface HUBComponentWrapper : NSObject <
     HUBComponentWithImageHandling,
     HUBComponentViewObserver,
     HUBComponentContentOffsetObserver
@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) id<HUBComponentWrapperDelegate> delegate;
 
 /// The components parent wrapper if it is a child component
-@property (nonatomic, readonly, weak, nullable) HUBComponentWrapperImplementation *parentComponentWrapper;
+@property (nonatomic, readonly, weak, nullable) HUBComponentWrapper *parentComponentWrapper;
 
 /// Whether the wrapper is for a root component, or for a child component
 @property (nonatomic, readonly) BOOL isRootComponent;
@@ -101,7 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
-           parentComponentWrapper:(nullable HUBComponentWrapperImplementation *)parentComponentWrapper HUB_DESIGNATED_INITIALIZER;
+           parentComponentWrapper:(nullable HUBComponentWrapper *)parentComponentWrapper HUB_DESIGNATED_INITIALIZER;
 
 @end
 

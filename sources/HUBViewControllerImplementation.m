@@ -7,7 +7,7 @@
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
-#import "HUBComponentWrapperImplementation.h"
+#import "HUBComponentWrapper.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBComponentIdentifier.h"
@@ -44,10 +44,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponentWrappers;
-@property (nonatomic, strong, nullable) HUBComponentWrapperImplementation *headerComponentWrapper;
-@property (nonatomic, strong, readonly) NSMutableArray<HUBComponentWrapperImplementation *> *overlayComponentWrappers;
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapperImplementation *> *componentWrappersByIdentifier;
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapperImplementation *> *componentWrappersByCellIdentifier;
+@property (nonatomic, strong, nullable) HUBComponentWrapper *headerComponentWrapper;
+@property (nonatomic, strong, readonly) NSMutableArray<HUBComponentWrapper *> *overlayComponentWrappers;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByCellIdentifier;
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *componentUIStateManager;
 @property (nonatomic, strong, readonly) HUBComponentReusePool *childComponentReusePool;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
@@ -267,12 +267,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentWrapperDelegate
 
-- (id<HUBComponent>)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+- (id<HUBComponent>)componentWrapper:(HUBComponentWrapper *)componentWrapper
                      childComponentForModel:(id<HUBComponentModel>)model
 {
     CGSize const containerViewSize = HUBComponentLoadViewIfNeeded(componentWrapper).frame.size;
     
-    HUBComponentWrapperImplementation * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model delegate:self parentComponentWrapper:componentWrapper];
+    HUBComponentWrapper * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model delegate:self parentComponentWrapper:componentWrapper];
     [childComponentWrapper configureViewWithModel:model containerViewSize:containerViewSize];
     [self didAddComponentWrapper:childComponentWrapper];
     
@@ -288,7 +288,7 @@ NS_ASSUME_NONNULL_BEGIN
     return childComponentWrapper;
 }
 
-- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
   childComponentWithView:(UIView *)childComponentView
        willAppearAtIndex:(NSUInteger)childIndex
 {
@@ -303,7 +303,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate viewController:self componentWithModel:childComponentModel willAppearInView:childComponentView];
 }
 
-- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
   childComponentWithView:(UIView *)childComponentView
      didDisappearAtIndex:(NSUInteger)childIndex
 {
@@ -317,7 +317,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate viewController:self componentWithModel:childComponentModel didDisappearFromView:childComponentView];
 }
 
-- (void)componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
   childComponentWithView:(UIView *)childComponentView
          selectedAtIndex:(NSUInteger)childIndex
 {
@@ -331,7 +331,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self handleSelectionForComponentWithModel:childComponentModel view:childComponentView cellIndexPath:nil];
 }
 
-- (void)sendComponentWrapperToReusePool:(HUBComponentWrapperImplementation *)componentWrapper
+- (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
 {
     if (componentWrapper.isRootComponent) {
         return;
@@ -366,12 +366,12 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (cell.component == nil) {
         id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
-        HUBComponentWrapperImplementation * const componentWrapper = [self wrapComponent:component withModel:componentModel];
+        HUBComponentWrapper * const componentWrapper = [self wrapComponent:component withModel:componentModel];
         self.componentWrappersByCellIdentifier[cell.identifier] = componentWrapper;
         cell.component = componentWrapper;
     }
     
-    HUBComponentWrapperImplementation * const componentWrapper = [self componentWrapperFromCell:cell];
+    HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:cell];
     [componentWrapper configureViewWithModel:componentModel containerViewSize:collectionView.frame.size];
     
     [self loadImagesForComponentWrapper:componentWrapper
@@ -430,7 +430,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    for (HUBComponentWrapperImplementation * const componentWrapper in self.contentOffsetObservingComponentWrappers) {
+    for (HUBComponentWrapper * const componentWrapper in self.contentOffsetObservingComponentWrappers) {
         [componentWrapper updateViewForChangedContentOffset:scrollView.contentOffset];
     }
 }
@@ -455,9 +455,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Private utilities
 
-- (HUBComponentWrapperImplementation *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
+- (HUBComponentWrapper *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
 {
-    HUBComponentWrapperImplementation * const wrapper = [[HUBComponentWrapperImplementation alloc] initWithComponent:component
+    HUBComponentWrapper * const wrapper = [[HUBComponentWrapper alloc] initWithComponent:component
                                                                                                                model:model
                                                                                                       UIStateManager:self.componentUIStateManager
                                                                                                             delegate:self
@@ -467,13 +467,13 @@ NS_ASSUME_NONNULL_BEGIN
     return wrapper;
 }
 
-- (void)didAddComponentWrapper:(HUBComponentWrapperImplementation *)wrapper
+- (void)didAddComponentWrapper:(HUBComponentWrapper *)wrapper
 {
     wrapper.delegate = self;
     self.componentWrappersByIdentifier[wrapper.identifier] = wrapper;
 }
 
-- (nullable HUBComponentWrapperImplementation *)componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell
+- (nullable HUBComponentWrapper *)componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell
 {
     return self.componentWrappersByCellIdentifier[cell.identifier];
 }
@@ -526,7 +526,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.overlayComponentWrappers removeAllObjects];
     
     for (id<HUBComponentModel> const componentModel in self.viewModel.overlayComponentModels) {
-        HUBComponentWrapperImplementation *componentWrapper = nil;
+        HUBComponentWrapper *componentWrapper = nil;
         
         if (self.overlayComponentWrappers.count < currentOverlayComponentWrappers.count) {
             NSUInteger const componentIndex = self.overlayComponentWrappers.count;
@@ -542,29 +542,29 @@ NS_ASSUME_NONNULL_BEGIN
         componentWrapper.view.center = self.collectionView.center;
     }
     
-    for (HUBComponentWrapperImplementation * const unusedOverlayComponentWrapper in currentOverlayComponentWrappers) {
+    for (HUBComponentWrapper * const unusedOverlayComponentWrapper in currentOverlayComponentWrappers) {
         [self removeOverlayComponentWrapper:unusedOverlayComponentWrapper];
     }
 }
 
-- (void)removeOverlayComponentWrapper:(HUBComponentWrapperImplementation *)wrapper
+- (void)removeOverlayComponentWrapper:(HUBComponentWrapper *)wrapper
 {
     self.componentWrappersByIdentifier[wrapper.identifier] = nil;
     [wrapper.view removeFromSuperview];
 }
 
-- (HUBComponentWrapperImplementation *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
-                                                                previousComponentWrapper:(nullable HUBComponentWrapperImplementation *)previousComponentWrapper
+- (HUBComponentWrapper *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
+                                                                previousComponentWrapper:(nullable HUBComponentWrapper *)previousComponentWrapper
 {
     BOOL const shouldReuseCurrentComponent = [previousComponentWrapper.model.componentIdentifier isEqual:componentModel.componentIdentifier];
-    HUBComponentWrapperImplementation *componentWrapper;
+    HUBComponentWrapper *componentWrapper;
     
     if (shouldReuseCurrentComponent) {
         [previousComponentWrapper prepareViewForReuse];
         componentWrapper = previousComponentWrapper;
     } else {
         if (previousComponentWrapper != nil) {
-            HUBComponentWrapperImplementation * const nonNilPreviousComponentWrapper = previousComponentWrapper;
+            HUBComponentWrapper * const nonNilPreviousComponentWrapper = previousComponentWrapper;
             [self removeOverlayComponentWrapper:nonNilPreviousComponentWrapper];
         }
         
@@ -606,7 +606,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell
 {
-    HUBComponentWrapperImplementation * const wrapper = [self componentWrapperFromCell:cell];
+    HUBComponentWrapper * const wrapper = [self componentWrapperFromCell:cell];
     
     if (wrapper == nil) {
         return;
@@ -620,12 +620,12 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [self.headerComponentWrapper viewWillAppear];
     
-    for (HUBComponentWrapperImplementation * const overlayComponentWrapper in self.overlayComponentWrappers) {
+    for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
         [overlayComponentWrapper viewWillAppear];
     }
 }
 
-- (void)loadImagesForComponentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+- (void)loadImagesForComponentWrapper:(HUBComponentWrapper *)componentWrapper
                            childIndex:(nullable NSNumber *)childIndex
 {
     if (self.imageLoader == nil) {
@@ -674,7 +674,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadImageFromData:(id<HUBComponentImageData>)imageData
                     model:(id<HUBComponentModel>)model
-         componentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+         componentWrapper:(HUBComponentWrapper *)componentWrapper
                childIndex:(nullable NSNumber *)childIndex
 {
     if (self.imageLoader == nil) {
@@ -722,7 +722,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    HUBComponentWrapperImplementation * const componentWrapper = self.componentWrappersByIdentifier[context.wrapperIdentifier];
+    HUBComponentWrapper * const componentWrapper = self.componentWrappersByIdentifier[context.wrapperIdentifier];
     id<HUBComponentModel> componentModel = componentWrapper.model;
     NSNumber * const childIndex = context.childIndex;
     
@@ -787,7 +787,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (nullable id<HUBComponentModel>)childModelAtIndex:(NSUInteger)childIndex fromComponentWrapper:(HUBComponentWrapperImplementation *)componentWrapper
+- (nullable id<HUBComponentModel>)childModelAtIndex:(NSUInteger)childIndex fromComponentWrapper:(HUBComponentWrapper *)componentWrapper
 {
     id<HUBComponentModel> parentModel = componentWrapper.model;
     
