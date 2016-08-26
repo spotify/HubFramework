@@ -344,6 +344,75 @@
     XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)1);
 }
 
+- (void)testViewModelBuilderSnapshotting
+{
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    contentOperationA.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        XCTAssertTrue(builder.isEmpty);
+        
+        [builder builderForBodyComponentModelWithIdentifier:@"bodyA"].title = @"A";
+        [builder builderForOverlayComponentModelWithIdentifier:@"overlayA"].title = @"A";
+        
+        return YES;
+    };
+    
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
+    contentOperationB.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        NSString * const bodyComponentIdentifier = @"bodyB";
+        NSString * const overlayComponentIdentifier = @"overlayB";
+        
+        XCTAssertFalse([builder builderExistsForBodyComponentModelWithIdentifier:bodyComponentIdentifier]);
+        XCTAssertFalse([builder builderExistsForOverlayComponentModelWithIdentifier:overlayComponentIdentifier]);
+        
+        [builder builderForBodyComponentModelWithIdentifier:bodyComponentIdentifier].title = @"B";
+        [builder builderForOverlayComponentModelWithIdentifier:overlayComponentIdentifier].title = @"B";
+        
+        return YES;
+    };
+    
+    HUBContentOperationMock * const contentOperationC = [HUBContentOperationMock new];
+    contentOperationC.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        NSString * const bodyComponentIdentifier = @"bodyC";
+        NSString * const overlayComponentIdentifier = @"overlayC";
+        
+        XCTAssertFalse([builder builderExistsForBodyComponentModelWithIdentifier:bodyComponentIdentifier]);
+        XCTAssertFalse([builder builderExistsForOverlayComponentModelWithIdentifier:overlayComponentIdentifier]);
+        
+        [builder builderForBodyComponentModelWithIdentifier:bodyComponentIdentifier].title = @"C";
+        [builder builderForOverlayComponentModelWithIdentifier:overlayComponentIdentifier].title = @"C";
+        
+        return YES;
+    };
+    
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB, contentOperationC]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    
+    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperationC.performCount, (NSUInteger)1);
+    
+    [contentOperationA.delegate contentOperationRequiresRescheduling:contentOperationA];
+    
+    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)2);
+    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)2);
+    XCTAssertEqual(contentOperationC.performCount, (NSUInteger)2);
+    
+    [contentOperationB.delegate contentOperationRequiresRescheduling:contentOperationB];
+    
+    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)2);
+    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)3);
+    XCTAssertEqual(contentOperationC.performCount, (NSUInteger)3);
+    
+    [contentOperationC.delegate contentOperationRequiresRescheduling:contentOperationC];
+    
+    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)2);
+    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)3);
+    XCTAssertEqual(contentOperationC.performCount, (NSUInteger)4);
+}
+
 - (void)testContentOperationRescheduling
 {
     HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];

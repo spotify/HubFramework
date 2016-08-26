@@ -74,8 +74,11 @@ Whether you're using JSON or calling builders in code, the composition of all co
 Each application or feature using the Hub Framework defines its own content operations through the `HUBContentOperation` protocol, and enables the framework to create instances of them through the use of `HUBContentOperationFactories`. An array of content operation factories are registered when each feature sets itself up with the Hub Framework.
 
 Content operations are called when either of the following 3 events happen:
+
 - The view is about to appear, and the content operations are asked to add initial (pre-loaded) content to the view. *This only happens if the content operation conforms to `HUBContentOperationWithInitialContent`.*
+
 - The view has appeared, and the content operations are asked to load the main content for the view.
+
 - A content operation has been rescheduled, for example because of an underlying model change, or because of a UI event. See [Rescheduling content operations](#rescheduling-content-operations) for more information.
 
 ## Content loading chain
@@ -169,6 +172,16 @@ This will reschedule the operation for execution as soon as possible, and will a
 ```
 
 If `contentOperationB` is rescheduled; that means that `contentOperationC` will also be rescheduled. This enables subsequent operations to always be able to rely on their preceding operations.
+
+### View model builder snapshotting
+
+Important to note is also that when an operation is rescheduled, the view model builder that it recieves as input will be a snapshot of the builder that it recieved **the last time that it was executed**. This enables content operations to always have the same execution conditions, and reduces the need for them to keep state.
+
+For example, let's say we have two content operations; `contentOperationA` and `contentOperationB`. In the initial content loading chain, `contentOperationA` will add 2 body component models (`A` and `B`). `contentOperationB` will then add a third body component - `C`. So the final state of the view that will be rendered will contain 3 body component models; `A`, `B` and `C`.
+
+Then, we retrigger `contentOperationB`. Instead of recieving a view model builder that contains `A`, `B` and `C` - it will get one that only contains `A` and `B`. This is because it will recieve a snapshot of its previous view model builder input, rather than a builder representation of the current view model.
+
+So, if we only wanted to add component model `C` conditionally, we wouldn't have to worry about any previous states, and can simply just add it if the conditions are met. We never have to "clean up" any previous state, since we're always starting from the same state.
 
 ## Handling errors in content operations
 
