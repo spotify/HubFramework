@@ -273,10 +273,9 @@ NS_ASSUME_NONNULL_BEGIN
     CGSize const containerViewSize = HUBComponentLoadViewIfNeeded(componentWrapper).frame.size;
     
     HUBComponentWrapper * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model delegate:self parentComponentWrapper:componentWrapper];
+    UIView * const childComponentView = HUBComponentLoadViewIfNeeded(childComponentWrapper);
     [childComponentWrapper configureViewWithModel:model containerViewSize:containerViewSize];
     [self didAddComponentWrapper:childComponentWrapper];
-    
-    UIView * const childComponentView = HUBComponentLoadViewIfNeeded(childComponentWrapper);
     
     CGSize const preferredViewSize = [childComponentWrapper preferredViewSizeForDisplayingModel:model
                                                                               containerViewSize:containerViewSize];
@@ -576,14 +575,15 @@ NS_ASSUME_NONNULL_BEGIN
     CGSize const componentViewSize = [componentWrapper preferredViewSizeForDisplayingModel:componentModel
                                                                          containerViewSize:containerViewSize];
     
+    UIView * const componentView = HUBComponentLoadViewIfNeeded(componentWrapper);
     [componentWrapper configureViewWithModel:componentModel containerViewSize:containerViewSize];
-    componentWrapper.view.frame = CGRectMake(0, 0, componentViewSize.width, componentViewSize.height);
+    componentView.frame = CGRectMake(0, 0, componentViewSize.width, componentViewSize.height);
     
     [self loadImagesForComponentWrapper:componentWrapper
                              childIndex:nil];
     
     if (!shouldReuseCurrentComponent) {
-        [self.view addSubview:HUBComponentLoadViewIfNeeded(componentWrapper)];
+        [self.view addSubview:componentView];
     }
     
     if (componentWrapper.isContentOffsetObserver) {
