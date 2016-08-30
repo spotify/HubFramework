@@ -184,7 +184,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     HUBViewModelBuilderImplementation * const existingSnapshot = self.builderSnapshots[@(index)];
-    NSAssert(existingSnapshot != nil, @"Unexpected nil shapshot for content operation at index: %lu", index);
+    NSAssert(existingSnapshot != nil, @"Unexpected nil shapshot for content operation at index: %lu", (unsigned long)index);
     return [existingSnapshot copy];
 }
                                              
