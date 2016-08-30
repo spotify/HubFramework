@@ -49,6 +49,7 @@
 
 - (void)configureViewWithModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
+    NSAssert(self.view != nil, @"-configureViewWithModel should never be called before -loadView");
     self.currentContainerViewSize = containerViewSize;
     self.model = model;
 }
