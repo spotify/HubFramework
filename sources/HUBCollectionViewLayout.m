@@ -7,7 +7,6 @@
 #import "HUBComponentWithChildren.h"
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentLayoutManager.h"
-#import "HUBScrollBehaviorWrapper.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBViewModel> viewModel;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
-@property (nonatomic, strong, readonly) HUBScrollBehaviorWrapper *scrollBehavior;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBComponentIdentifier *, id<HUBComponent>> *componentCache;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *layoutAttributesByIndexPath;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, NSMutableSet<NSIndexPath *> *> *indexPathsByVerticalGroup;
@@ -29,7 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewModel:(id<HUBViewModel>)viewModel
                 componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
            componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                   scrollBehavior:(HUBScrollBehaviorWrapper *)scrollBehavior
 {
     self = [super init];
     
@@ -37,7 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
         _viewModel = viewModel;
         _componentRegistry = componentRegistry;
         _componentLayoutManager = componentLayoutManager;
-        _scrollBehavior = scrollBehavior;
         _componentCache = [NSMutableDictionary new];
         _layoutAttributesByIndexPath = [NSMutableDictionary new];
         _indexPathsByVerticalGroup = [NSMutableDictionary new];
@@ -74,13 +70,6 @@ NS_ASSUME_NONNULL_BEGIN
         UIEdgeInsets margins = [self defaultMarginsForComponent:component
                                                      isInTopRow:componentIsInTopRow
                                          componentsOnCurrentRow:componentsOnCurrentRow];
-
-        [self.scrollBehavior adjustMargins:&margins
-                              forComponent:component
-                             componentSize:componentViewFrame.size
-                        collectionViewSize:collectionViewSize
-                                isInTopRow:componentIsInTopRow
-                           isLastComponent:isLastComponent];
 
         componentViewFrame.origin.x = currentPoint.x + margins.left;
 

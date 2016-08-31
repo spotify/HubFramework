@@ -9,6 +9,7 @@
 #import "HUBCollectionViewFactory.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBComponentSelectionHandlerWrapper.h"
+#import "HUBViewControllerDefaultScrollHandler.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -75,12 +76,15 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBComponentSelectionHandler> const componentSelectionHandler = [[HUBComponentSelectionHandlerWrapper alloc] initWithSelectionHandler:featureRegistration.componentSelectionHandler
                                                                                                                     initialViewModelRegistry:self.initialViewModelRegistry];
     
+    id<HUBViewControllerScrollHandler> const scrollHandlerToUse = featureRegistration.viewControllerScrollHandler ?: [HUBViewControllerDefaultScrollHandler new];
+    
     return [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
                                                     viewModelLoader:viewModelLoader
                                               collectionViewFactory:collectionViewFactory
                                                   componentRegistry:self.componentRegistry
                                              componentLayoutManager:self.componentLayoutManager
                                           componentSelectionHandler:componentSelectionHandler
+                                                      scrollHandler:scrollHandlerToUse
                                                              device:[UIDevice currentDevice]
                                                         imageLoader:imageLoader];
 }

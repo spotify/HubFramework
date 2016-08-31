@@ -22,9 +22,8 @@
 #import "HUBComponentUIStateManager.h"
 #import "HUBComponentSelectionHandler.h"
 #import "HUBComponentSelectionContextImplementation.h"
+#import "HUBViewControllerScrollHandler.h"
 #import "HUBComponentReusePool.h"
-#import "HUBVerticalPagingScrollBehavior.h"
-#import "HUBScrollBehaviorWrapper.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -36,11 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) id<HUBComponentSelectionHandler> componentSelectionHandler;
+@property (nonatomic, strong, readonly) id<HUBViewControllerScrollHandler> scrollHandler;
 @property (nonatomic, weak, nullable) UIDevice *device;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, nullable, readonly) id<HUBImageLoader> imageLoader;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
-@property (nonatomic, strong, nullable) HUBScrollBehaviorWrapper *scrollBehavior;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponentWrappers;
@@ -59,7 +58,6 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBViewControllerImplementation
 
 @synthesize delegate = _delegate;
-@synthesize scrollMode = _scrollMode;
 
 #pragma mark - Lifecycle
 
@@ -69,6 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
       componentSelectionHandler:(id<HUBComponentSelectionHandler>)componentSelectionHandler
+                  scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                          device:(UIDevice *)device
                     imageLoader:(nullable id<HUBImageLoader>)imageLoader
 
@@ -79,6 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(componentRegistry != nil);
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentSelectionHandler != nil);
+    NSParameterAssert(scrollHandler != nil);
     NSParameterAssert(device != nil);
     
     if (!(self = [super initWithNibName:nil bundle:nil])) {
@@ -91,6 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
     _componentRegistry = componentRegistry;
     _componentLayoutManager = componentLayoutManager;
     _componentSelectionHandler = componentSelectionHandler;
+    _scrollHandler = scrollHandler;
     _device = device;
     _imageLoader = imageLoader;
     _viewModelIsInitial = YES;
@@ -106,6 +107,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     _viewModelLoader.delegate = self;
     _imageLoader.delegate = self;
+    
+    self.automaticallyAdjustsScrollViewInsets = [_scrollHandler shouldAutomaticallyAdjustContentInsetsInViewController:self];
     
     return self;
 }
@@ -126,11 +129,11 @@ NS_ASSUME_NONNULL_BEGIN
     
     UICollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
     self.collectionView = collectionView;
+    collectionView.showsVerticalScrollIndicator = [self.scrollHandler shouldShowScrollIndicatorsInViewController:self];
+    collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;
+    collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
     collectionView.dataSource = self;
     collectionView.delegate = self;
-    
-    self.scrollBehavior = [[HUBScrollBehaviorWrapper alloc] initWithUnderlyingBehavior:[self selectScrollBehavior]];
-    [self.scrollBehavior configureCollectionView:collectionView viewController:self];
     
     [self.view insertSubview:collectionView atIndex:0];
 }
@@ -178,19 +181,17 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.collectionView.frame = self.view.bounds;
     [self.collectionView reloadData];
+
+    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
+                                                                              componentRegistry:self.componentRegistry
+                                                                         componentLayoutManager:self.componentLayoutManager];
+    
+    [layout computeForCollectionViewSize:self.collectionView.frame.size];
+    self.collectionView.collectionViewLayout = layout;
     
     [self configureHeaderComponent];
     [self configureOverlayComponents];
     [self headerAndOverlayComponentViewsWillAppear];
-
-    HUBScrollBehaviorWrapper *scrollBehavior = self.scrollBehavior;
-    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
-                                                                              componentRegistry:self.componentRegistry
-                                                                         componentLayoutManager:self.componentLayoutManager
-                                                                                 scrollBehavior:scrollBehavior];
-    
-    [layout computeForCollectionViewSize:self.collectionView.frame.size];
-    self.collectionView.collectionViewLayout = layout;
     
     self.viewModelHasChangedSinceLastLayoutUpdate = NO;
 }
@@ -224,8 +225,30 @@ NS_ASSUME_NONNULL_BEGIN
 
     [self.collectionView removeFromSuperview];
     self.collectionView = nil;
-    self.scrollBehavior = nil;
     self.viewModel = nil;
+}
+
+#pragma mark - HUBViewController
+
+- (CGRect)frameForBodyComponentAtIndex:(NSUInteger)index
+{
+    if (index >= self.viewModel.bodyComponentModels.count) {
+        return CGRectZero;
+    }
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
+    return [self.collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
+}
+
+- (NSUInteger)indexOfBodyComponentAtPoint:(CGPoint)point
+{
+    NSIndexPath * const indexPath = [self.collectionView indexPathForItemAtPoint:point];
+    
+    if (indexPath == nil) {
+        return NSNotFound;
+    }
+    
+    return (NSUInteger)indexPath.item;
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
@@ -436,20 +459,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    UICollectionView *collectionView = (UICollectionView *)scrollView;
-    NSParameterAssert(collectionView != nil && collectionView == self.collectionView);
-    [self.scrollBehavior collectionViewWillBeginDragging:collectionView];
+    CGRect contentRect = CGRectZero;
+    contentRect.origin = scrollView.contentOffset;
+    contentRect.size = scrollView.frame.size;
+    contentRect.size.height = MIN(CGRectGetHeight(contentRect),
+                                  scrollView.contentSize.height - CGRectGetMinY(contentRect));
+    
+    [self.scrollHandler scrollingWillStartInViewController:self currentContentRect:contentRect];
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
                      withVelocity:(CGPoint)velocity
               targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    UICollectionView *collectionView = (UICollectionView *)scrollView;
-    NSParameterAssert(collectionView != nil && collectionView == self.collectionView);
-    [self.scrollBehavior collectionViewWillEndDragging:collectionView
-                                          withVelocity:velocity
-                                   targetContentOffset:targetContentOffset];
+    CGVector const velocityVector = CGVectorMake(velocity.x, velocity.y);
+    
+    *targetContentOffset = [self.scrollHandler targetContentOffsetForEndedScrollInViewController:self
+                                                                                        velocity:velocityVector
+                                                                                    contentInset:scrollView.contentInset
+                                                                            currentContentOffset:scrollView.contentOffset
+                                                                           proposedContentOffset:*targetContentOffset];
 }
 
 #pragma mark - Private utilities
@@ -457,10 +486,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (HUBComponentWrapper *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
 {
     HUBComponentWrapper * const wrapper = [[HUBComponentWrapper alloc] initWithComponent:component
-                                                                                                               model:model
-                                                                                                      UIStateManager:self.componentUIStateManager
-                                                                                                            delegate:self
-                                                                                              parentComponentWrapper:nil];
+                                                                                   model:model
+                                                                          UIStateManager:self.componentUIStateManager
+                                                                                delegate:self
+                                                                  parentComponentWrapper:nil];
     
     [self didAddComponentWrapper:wrapper];
     return wrapper;
@@ -488,14 +517,9 @@ NS_ASSUME_NONNULL_BEGIN
         CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
         CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
         CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
+        CGFloat const proposedTopInset = MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
 
-        CGFloat const navigationBarDimension = MIN(navigationBarWidth, navigationBarHeight);
-        CGFloat totalAdjustment = 0.0;
-        if (navigationBarDimension > 0 || [self shouldAdjustContentOffsetForStatusBarOnly]) {
-            totalAdjustment = navigationBarDimension + MIN(statusBarWidth, statusBarHeight);
-        }
-        
-        [self adjustCollectionViewContentInsetWithTopValue:totalAdjustment];
+        [self adjustCollectionViewContentInsetWithProposedTopValue:proposedTopInset];
         
         return;
     }
@@ -504,13 +528,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                  previousComponentWrapper:self.headerComponentWrapper];
     
     CGFloat const headerViewHeight = CGRectGetHeight(self.headerComponentWrapper.view.frame);
-    [self adjustCollectionViewContentInsetWithTopValue:headerViewHeight];
-}
-
-- (BOOL)shouldAdjustContentOffsetForStatusBarOnly
-{
-    UICollectionView *collectionView = self.collectionView;
-    return [self.scrollBehavior collectionViewShouldAdjustContentOffsetForStatusBarOnly:collectionView];
+    [self adjustCollectionViewContentInsetWithProposedTopValue:headerViewHeight];
 }
 
 - (void)removeHeaderComponent
@@ -593,15 +611,16 @@ NS_ASSUME_NONNULL_BEGIN
     return componentWrapper;
 }
 
-- (void)adjustCollectionViewContentInsetWithTopValue:(CGFloat)topContentInset
+- (void)adjustCollectionViewContentInsetWithProposedTopValue:(CGFloat)topContentInset
 {
-    UIEdgeInsets collectionViewContentInset = self.collectionView.contentInset;
-    collectionViewContentInset.top = topContentInset;
-    self.collectionView.contentInset = collectionViewContentInset;
+    UIEdgeInsets contentInsets = self.collectionView.contentInset;
+    contentInsets.top = topContentInset;
     
-    UIEdgeInsets collectionViewScrollIndicatorInsets = self.collectionView.scrollIndicatorInsets;
-    collectionViewScrollIndicatorInsets.top = topContentInset;
-    self.collectionView.scrollIndicatorInsets = collectionViewScrollIndicatorInsets;
+    contentInsets = [self.scrollHandler contentInsetsForViewController:self
+                                                 proposedContentInsets:contentInsets];
+    
+    self.collectionView.contentInset = contentInsets;
+    self.collectionView.scrollIndicatorInsets = contentInsets;
 }
 
 - (void)collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell
@@ -796,18 +815,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return parentModel.childComponentModels[childIndex];
-}
-
-- (nullable id<HUBScrollBehavior>)selectScrollBehavior
-{
-    switch (self.scrollMode) {
-        case HUBViewControllerScrollModeDefault:
-            return nil;
-        case HUBViewControllerScrollModeVerticalPaging:
-            return [HUBVerticalPagingScrollBehavior new];
-    }
-
-    return nil;
 }
 
 @end

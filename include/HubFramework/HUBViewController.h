@@ -5,17 +5,6 @@
 @protocol HUBComponent;
 @protocol HUBComponentModel;
 
-/**
- * Enum defining scrolling behaviors of a `HUBViewController`.
- *
- * HUBViewControllerScrollModeDefault: no special behavior.
- * HUBViewControllerScrollModeVerticalPaging: the Hub view keeps one row centered in the view.
- */
-typedef NS_ENUM(NSUInteger, HUBViewControllerScrollMode) {
-    HUBViewControllerScrollModeDefault,
-    HUBViewControllerScrollModeVerticalPaging,
-};
-
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -96,18 +85,37 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) id<HUBViewControllerDelegate> delegate;
 
 /**
- * The scrolling mode of the view controller's view.
+ *  The current view model that the view controller is using
  *
- * The scrolling behavior is locked down once the view is created, so scrollMode should be set before the view
- * controller is added to a view hierarchy.
+ *  To observe whenever the view model was updated, use the `-viewController:didUpdateWithViewModel:` method available
+ *  on the view controller's delegate protocol.
  */
-@property (nonatomic) HUBViewControllerScrollMode scrollMode;
+@property (nonatomic, nullable, readonly) id<HUBViewModel> viewModel;
 
 /**
- * Scroll to a desired content offset.
+ *  Return the frame used to render a body component at a given index
  *
- * @param contentOffset The offset which to scroll to.
- * @param animated Defines if scrolling should be animated.
+ *  @param index The index of the body component to get the frame for
+ *
+ *  This method guards against out of bound indexes, so it's safe to call it with whatever index. If an out-of-bounds
+ *  index was given, `CGRectZero` is returned.
+ */
+- (CGRect)frameForBodyComponentAtIndex:(NSUInteger)index;
+
+/**
+ *  Return the index of a body component being rendered at a given point
+ *
+ *  @param point The point of the body component to get the index of (in the view controller's coordinate system)
+ *
+ *  @return An index, if a body component was found at the given point, or `NSNotFound`.
+ */
+- (NSUInteger)indexOfBodyComponentAtPoint:(CGPoint)point;
+
+/**
+ *  Scroll to a desired content offset.
+ *
+ *  @param contentOffset The offset which to scroll to.
+ *  @param animated Defines if scrolling should be animated.
  */
 - (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
 

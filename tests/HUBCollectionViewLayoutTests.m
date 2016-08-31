@@ -14,7 +14,6 @@
 #import "HUBComponentDefaults.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBIconImageResolverMock.h"
-#import "HUBScrollBehaviorWrapper.h"
 
 @interface HUBCollectionViewLayoutTests : XCTestCase
 
@@ -263,11 +262,9 @@
 - (HUBCollectionViewLayout *)computeLayout
 {
     id<HUBViewModel> const viewModel = [self.viewModelBuilder build];
-    HUBScrollBehaviorWrapper * const scrollBehavior = [[HUBScrollBehaviorWrapper alloc] initWithUnderlyingBehavior:nil];
     HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
                                                                               componentRegistry:self.componentRegistry
-                                                                         componentLayoutManager:self.componentLayoutManager
-                                                                                 scrollBehavior:scrollBehavior];
+                                                                         componentLayoutManager:self.componentLayoutManager];
     
     [layout computeForCollectionViewSize:self.collectionViewSize];
     

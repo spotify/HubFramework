@@ -20,8 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithViewModel:(id<HUBViewModel>)viewModel
                 componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
-           componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                   scrollBehavior:(HUBScrollBehaviorWrapper *)scrollBehavior HUB_DESIGNATED_INITIALIZER;
+           componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Compute this layout for a given collection view size

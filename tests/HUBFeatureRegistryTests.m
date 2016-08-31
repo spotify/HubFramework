@@ -37,7 +37,8 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil];
+                       componentSelectionHandler:nil
+                     viewControllerScrollHandler:nil];
     
     XCTAssertThrows([self.registry registerFeatureWithIdentifier:identifier
                                                 viewURIPredicate:viewURIPredicate
@@ -45,7 +46,8 @@
                                        contentOperationFactories:@[contentOperationFactory]
                                              contentReloadPolicy:nil
                                       customJSONSchemaIdentifier:nil
-                                       componentSelectionHandler:nil]);
+                                       componentSelectionHandler:nil
+                                     viewControllerScrollHandler:nil]);
 }
 
 - (void)testRegistrationPropertyAssignment
@@ -62,7 +64,8 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:customJSONSchemaIdentifier
-                       componentSelectionHandler:nil];
+                       componentSelectionHandler:nil
+                     viewControllerScrollHandler:nil];
     
     HUBFeatureRegistration * const registration = [self.registry featureRegistrationForViewURI:rootViewURI];
     XCTAssertEqualObjects(registration.featureIdentifier, featureIdentifier);
@@ -86,7 +89,8 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil];
+                       componentSelectionHandler:nil
+                     viewControllerScrollHandler:nil];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     XCTAssertNil([self.registry featureRegistrationForViewURI:viewURI]);
@@ -106,7 +110,8 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil];
+                       componentSelectionHandler:nil
+                     viewControllerScrollHandler:nil];
     
     [self.registry registerFeatureWithIdentifier:@"featureB"
                                 viewURIPredicate:viewURIPredicate
@@ -114,7 +119,8 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil];
+                       componentSelectionHandler:nil
+                     viewControllerScrollHandler:nil];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     XCTAssertEqualObjects([self.registry featureRegistrationForViewURI:viewURI].featureIdentifier, @"featureA");
@@ -133,7 +139,8 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil];
+                       componentSelectionHandler:nil
+                     viewControllerScrollHandler:nil];
     
     [self.registry unregisterFeatureWithIdentifier:identifier];
     
@@ -144,7 +151,8 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil];
+                       componentSelectionHandler:nil
+                     viewControllerScrollHandler:nil];
 }
 
 @end

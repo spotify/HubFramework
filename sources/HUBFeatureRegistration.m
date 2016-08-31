@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
                       contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
                 componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler
+              viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(featureTitle != nil);
@@ -29,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
         _contentReloadPolicy = contentReloadPolicy;
         _customJSONSchemaIdentifier = [customJSONSchemaIdentifier copy];
         _componentSelectionHandler = componentSelectionHandler;
+        _viewControllerScrollHandler = viewControllerScrollHandler;
     }
     
     return self;
