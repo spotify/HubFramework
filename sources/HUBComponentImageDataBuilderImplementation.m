@@ -24,13 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize URL = _URL;
 @synthesize placeholderIconIdentifier = _placeholderIconIdentifier;
 @synthesize localImage = _localImage;
-@synthesize modificationDelegate = _modificationDelegate;
-
-#pragma mark - Modification tracking
-
-HUB_TRACK_MODIFICATIONS(_URL, setURL:, nullable)
-HUB_TRACK_MODIFICATIONS(_placeholderIconIdentifier, setPlaceholderIconIdentifier:, nullable)
-HUB_TRACK_MODIFICATIONS(_localImage, setLocalImage:, nullable)
 
 #pragma mark - Initializer
 

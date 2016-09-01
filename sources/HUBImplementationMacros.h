@@ -35,22 +35,4 @@ NS_ASSUME_NONNULL_BEGIN
     #define HUB_IGNORE_PARTIAL_AVAILABILTY_END
 #endif
 
-/**
- *  Generate a property setter override that adds modification tracking for `HUBModifiable` types
- *
- *  @param ivarName The name of the ivar to track (for example; `_title`)
- *  @param setterSelector The selector of the setter to generate (for example; `setTitle:`)
- *  @param nullability The nullability of the property (either `nullable` or `nonnull`)
- */
-#define HUB_TRACK_MODIFICATIONS(ivarName, setterSelector, nullability) \
-    _Pragma("clang diagnostic push") \
-    _Pragma("clang diagnostic ignored \"-Wdirect-ivar-access\"") \
-    - (void)setterSelector(nullability id)newValue { \
-        if (![ivarName isEqual:newValue]) { \
-            ivarName = newValue; \
-            [self.modificationDelegate modifiableWasModified:self]; \
-        } \
-    } \
-    _Pragma("clang diagnostic pop")
-
 NS_ASSUME_NONNULL_END

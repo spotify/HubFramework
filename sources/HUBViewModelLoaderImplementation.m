@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewModelLoaderImplementation () <HUBContentOperationWrapperDelegate, HUBConnectivityStateResolverObserver, HUBModificationDelegate>
+@interface HUBViewModelLoaderImplementation () <HUBContentOperationWrapperDelegate, HUBConnectivityStateResolverObserver>
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, strong, readonly) id<HUBFeatureInfo> featureInfo;
@@ -25,10 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) HUBConnectivityState connectivityState;
 @property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable) id<HUBViewModel> cachedInitialViewModel;
-@property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *currentBuilder;
-@property (nonatomic) BOOL currentBuilderModified;
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBViewModelBuilderImplementation *> *builderSnapshots;
 @property (nonatomic, strong, nullable) id<HUBViewModel> previouslyLoadedViewModel;
+@property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *currentBuilder;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBViewModelBuilderImplementation *> *builderSnapshots;
 @property (nonatomic, strong, nullable) NSError *encounteredError;
 
 @end
@@ -155,15 +154,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-#pragma mark - HUBModificationDelegate
-
-- (void)modifiableWasModified:(id<HUBModifiable>)modifiable
-{
-    if (modifiable == (id<HUBModifiable>)self.currentBuilder) {
-        self.currentBuilderModified = YES;
-    }
-}
-
 #pragma mark - Private utilities
 
 - (HUBViewModelBuilderImplementation *)builderForContentOperationAtIndex:(NSUInteger)index
@@ -240,8 +230,6 @@ NS_ASSUME_NONNULL_BEGIN
     HUBViewModelBuilderImplementation * const builder = [self builderForContentOperationAtIndex:operation.index
                                                                     previouslyExecutedOperation:finishedOperation];
     
-    builder.modificationDelegate = self;
-    self.currentBuilder.modificationDelegate = nil;
     self.currentBuilder = builder;
     
     [operation performOperationForViewURI:self.viewURI
@@ -266,19 +254,8 @@ NS_ASSUME_NONNULL_BEGIN
         self.currentBuilder.navigationBarTitle = self.featureInfo.title;
     }
     
-    if (!self.currentBuilderModified) {
-        id<HUBViewModel> const previouslyLoadedViewModel = self.previouslyLoadedViewModel;
-        
-        if (previouslyLoadedViewModel != nil) {
-            [delegate viewModelLoader:self didLoadViewModel:previouslyLoadedViewModel];
-            return;
-        }
-    }
-    
     id<HUBViewModel> const viewModel = [self.currentBuilder build];
     self.previouslyLoadedViewModel = viewModel;
-    self.currentBuilderModified = NO;
-    
     [delegate viewModelLoader:self didLoadViewModel:viewModel];
 }
 
