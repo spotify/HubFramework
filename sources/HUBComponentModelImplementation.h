@@ -1,3 +1,4 @@
+#import "HUBAutoEquatable.h"
 #import "HUBComponentModel.h"
 #import "HUBHeaderMacros.h"
 
@@ -7,7 +8,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBComponentModel` API
-@interface HUBComponentModelImplementation : NSObject <HUBComponentModel>
+@interface HUBComponentModelImplementation : HUBAutoEquatable <HUBComponentModel>
 
 /**
  *  Initialize an instance of this class with its possible values
