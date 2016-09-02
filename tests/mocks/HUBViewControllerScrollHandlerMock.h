@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The last content rect that was sent to the handler when scrolling started
 @property (nonatomic, assign, readonly) CGRect startContentRect;
 
+/// The last content rect that was sent to the handler when scrolling ended
+@property (nonatomic, assign, readonly) CGRect endContentRect;
+
 @end
 
 NS_ASSUME_NONNULL_END
