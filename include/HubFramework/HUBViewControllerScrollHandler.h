@@ -66,6 +66,15 @@
                         currentContentRect:(CGRect)currentContentRect;
 
 /**
+ *  React to that a scrolling event ended in a view controller
+ *
+ *  @param viewController The view controller in question
+ *  @param currentContentRect The rectangle of the currently visible content in the view controller's scroll view
+ */
+- (void)scrollingDidEndInViewController:(UIViewController<HUBViewController> *)viewController
+                     currentContentRect:(CGRect)currentContentRect;
+
+/**
  *  Return the target content offset for when scrolling ended in a view controller
  *
  *  @param viewController The view controller in question
