@@ -6,6 +6,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Mocked component factory, for use in tests only
 @interface HUBComponentFactoryMock : NSObject <HUBComponentFactoryShowcaseNameProvider>
 
+/// The components that this factory returns for a given name
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id<HUBComponent>> *components;
+
 /// The component names that the factory should declare as showcaseable
 @property (nonatomic, strong, nullable) NSArray<NSString *> *showcaseableComponentNames;
 

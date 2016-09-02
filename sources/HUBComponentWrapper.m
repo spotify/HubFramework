@@ -16,10 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBComponentWrapper () <HUBComponentChildDelegate, HUBComponentResizeObservingViewDelegate>
 
 @property (nonatomic, strong, readwrite) id<HUBComponentModel> model;
+@property (nonatomic, assign) BOOL viewHasAppearedSinceLastModelChange;
 @property (nonatomic, strong, readonly) id<HUBComponent> component;
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
-@property (nonatomic, weak, nullable) HUBComponentWrapper *parentComponentWrapper;
-@property (nonatomic, assign) BOOL preparedForReuse;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBComponentWrapper *> *childrenByIndex;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, UIView *> *visibleChildViewsByIndex;
+@property (nonatomic, assign) BOOL hasBeenConfigured;
 
 @end
 
@@ -29,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
-           parentComponentWrapper:(nullable HUBComponentWrapper *)parentComponentWrapper
+                           parent:(nullable HUBComponentWrapper *)parent
 {
     NSParameterAssert(component != nil);
     NSParameterAssert(model != nil);
@@ -44,8 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
         _component = component;
         _UIStateManager = UIStateManager;
         _delegate = delegate;
-        _parentComponentWrapper = parentComponentWrapper;
-        _preparedForReuse = YES;
+        _parent = parent;
+        _childrenByIndex = [NSMutableDictionary new];
+        _visibleChildViewsByIndex = [NSMutableDictionary new];
 
         if ([_component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
             ((id<HUBComponentWithChildren>)_component).childDelegate = self;
@@ -80,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isRootComponent
 {
-    return self.parentComponentWrapper == nil;
+    return self.parent == nil;
 }
 
 #pragma mark - HUBComponent
@@ -121,21 +124,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)configureViewWithModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
-    self.model = model;
-    
-    if (!self.preparedForReuse) {
-        [self prepareForReuseAndSendToReusePool:NO];
+    if (self.hasBeenConfigured) {
+        if ([self.model isEqual:model]) {
+            return;
+        }
+        
+        [self saveComponentUIState];
+        [self.component prepareViewForReuse];
     }
+    
+    self.model = model;
     
     [self.component configureViewWithModel:model containerViewSize:containerViewSize];
     [self restoreComponentUIStateForModel:model];
     
-    self.preparedForReuse = NO;
+    self.viewHasAppearedSinceLastModelChange = NO;
+    self.hasBeenConfigured = YES;
 }
 
 - (void)prepareViewForReuse
 {
-    [self prepareForReuseAndSendToReusePool:YES];
+    NSNumber * const index = @(self.model.index);
+    
+    self.parent.childrenByIndex[index] = nil;
+    self.parent.visibleChildViewsByIndex[index] = nil;
+    [self.delegate sendComponentWrapperToReusePool:self];
 }
 
 #pragma mark - HUBComponentWithImageHandling
@@ -167,11 +180,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewWillAppear
 {
-    if (![self.component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
-        return;
+    if ([self.component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
+        [(id<HUBComponentViewObserver>)self.component viewWillAppear];
     }
     
-    [(id<HUBComponentViewObserver>)self.component viewWillAppear];
+    for (NSNumber * const childIndex in self.visibleChildViewsByIndex) {
+        UIView * const childView = self.visibleChildViewsByIndex[childIndex];
+        HUBComponentWrapper * const childComponent = self.childrenByIndex[childIndex];
+        
+        if (childComponent != nil) {
+            [childComponent viewWillAppear];
+        }
+        
+        [self.delegate componentWrapper:self
+                 childComponentWithView:childView
+                      willAppearAtIndex:childIndex.unsignedIntegerValue];
+    }
+    
+    self.viewHasAppearedSinceLastModelChange = YES;
 }
 
 - (void)viewDidResize
@@ -187,7 +213,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponent>)component:(id<HUBComponentWithChildren>)component childComponentForModel:(id<HUBComponentModel>)childComponentModel
 {
-    id<HUBComponent> const childComponent = [self.delegate componentWrapper:self childComponentForModel:childComponentModel];
+    HUBComponentWrapper * const childComponent = [self.delegate componentWrapper:self childComponentForModel:childComponentModel];
+    self.childrenByIndex[@(childComponentModel.index)] = childComponent;
     return childComponent;
 }
 
@@ -197,6 +224,13 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
+    HUBComponentWrapper * const childComponent = self.childrenByIndex[@(childIndex)];
+    
+    if (childComponent != nil) {
+        [childComponent viewWillAppear];
+    }
+    
+    self.visibleChildViewsByIndex[@(childIndex)] = childView;
     [self.delegate componentWrapper:self childComponentWithView:childView willAppearAtIndex:childIndex];
 }
 
@@ -206,6 +240,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
+    self.visibleChildViewsByIndex[@(childIndex)] = nil;
     [self.delegate componentWrapper:self childComponentWithView:childView didDisappearAtIndex:childIndex];
 }
 
@@ -252,19 +287,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (restoredUIState != nil) {
         [(id<HUBComponentWithRestorableUIState>)self.component restoreUIState:restoredUIState];
-    }
-}
-
-- (void)prepareForReuseAndSendToReusePool:(BOOL)sendToReusePool
-{
-    if (!self.preparedForReuse) {
-        [self saveComponentUIState];
-        [self.component prepareViewForReuse];
-        self.preparedForReuse = YES;
-    }
-    
-    if (sendToReusePool) {
-        [self.delegate sendComponentWrapperToReusePool:self];
     }
 }
 

@@ -38,6 +38,7 @@
 @property (nonatomic, strong) HUBContentReloadPolicyMock *contentReloadPolicy;
 @property (nonatomic, strong) HUBComponentIdentifier *componentIdentifier;
 @property (nonatomic, strong) HUBComponentMock *component;
+@property (nonatomic, strong) HUBComponentFactoryMock *componentFactory;
 @property (nonatomic, strong) HUBCollectionViewMock *collectionView;
 @property (nonatomic, strong) HUBCollectionViewFactoryMock *collectionViewFactory;
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
@@ -86,13 +87,13 @@
     
     self.componentSelectionHandler = [HUBComponentSelectionHandlerMock new];
     self.scrollHandler = [HUBViewControllerScrollHandlerMock new];
+    
     self.component = [HUBComponentMock new];
+    self.componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{componentDefaults.componentName: self.component}];
+    [self.componentRegistry registerComponentFactory:self.componentFactory forNamespace:componentDefaults.componentNamespace];
     
     self.collectionView = [HUBCollectionViewMock new];
     self.collectionViewFactory = [[HUBCollectionViewFactoryMock alloc] initWithCollectionView:self.collectionView];
-    
-    id<HUBComponentFactory> const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{componentDefaults.componentName: self.component}];
-    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentDefaults.componentNamespace];
     
     self.viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     HUBFeatureInfoImplementation * const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
@@ -471,6 +472,7 @@
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const overlayComponentModelBuilder = [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"];
         overlayComponentModelBuilder.componentNamespace = componentNamespace;
+        overlayComponentModelBuilder.title = [NSUUID UUID].UUIDString;
         
         if (loadCount < 3) {
             overlayComponentModelBuilder.componentName = @"a";
@@ -888,6 +890,8 @@
     
 HUB_IGNORE_PARTIAL_AVAILABILTY_BEGIN
     [self.collectionView.delegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    [self.collectionView.delegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    [self.collectionView.delegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
 HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
@@ -900,6 +904,80 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)2);
     XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, (NSUInteger)2);
     XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod[1].title, @"title");
+}
+
+- (void)testChildComponentsNotifiedWhenParentComponentIsDisplayed
+{
+    HUBComponentMock * const childComponentA = [HUBComponentMock new];
+    HUBComponentMock * const childComponentB = [HUBComponentMock new];
+    HUBComponentMock * const childComponentC = [HUBComponentMock new];
+    
+    childComponentA.isViewObserver = YES;
+    childComponentB.isViewObserver = YES;
+    childComponentC.isViewObserver = YES;
+    
+    self.componentFactory.components[@"childA"] = childComponentA;
+    self.componentFactory.components[@"childB"] = childComponentB;
+    self.componentFactory.components[@"childC"] = childComponentC;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const parentComponentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"parent"];
+        [parentComponentModelBuilder builderForChildComponentModelWithIdentifier:@"childA"].componentName = @"childA";
+        [parentComponentModelBuilder builderForChildComponentModelWithIdentifier:@"childB"].componentName = @"childB";
+        [parentComponentModelBuilder builderForChildComponentModelWithIdentifier:@"childC"].componentName = @"childC";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    self.collectionView.cells[indexPath] = cell;
+    
+    id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
+    
+    HUB_IGNORE_PARTIAL_AVAILABILTY_BEGIN
+    [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    HUB_IGNORE_PARTIAL_AVAILABILTY_END
+    
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
+    NSArray<id<HUBComponentModel>> * const childComponentModels = componentModel.childComponentModels;
+    
+    [self.component.childDelegate component:self.component childComponentForModel:childComponentModels[0]];
+    [self.component.childDelegate component:self.component childComponentForModel:childComponentModels[1]];
+    [self.component.childDelegate component:self.component childComponentForModel:childComponentModels[2]];
+    
+    [self.component.childDelegate component:self.component willDisplayChildAtIndex:0 view:childComponentA.view];
+    [self.component.childDelegate component:self.component willDisplayChildAtIndex:1 view:childComponentB.view];
+    [self.component.childDelegate component:self.component willDisplayChildAtIndex:2 view:childComponentC.view];
+    
+    XCTAssertEqual(childComponentA.numberOfAppearances, (NSUInteger)1);
+    XCTAssertEqual(childComponentB.numberOfAppearances, (NSUInteger)1);
+    XCTAssertEqual(childComponentC.numberOfAppearances, (NSUInteger)1);
+    
+    NSArray * const expectedAppearanceComponentModels = @[
+        componentModel,
+        childComponentModels[0],
+        childComponentModels[1],
+        childComponentModels[2]
+    ];
+    
+    XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod, expectedAppearanceComponentModels);
+    
+    [collectionViewDelegate scrollViewWillBeginDragging:self.collectionView];
+    
+    HUB_IGNORE_PARTIAL_AVAILABILTY_BEGIN
+    [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    HUB_IGNORE_PARTIAL_AVAILABILTY_END
+    
+    [collectionViewDelegate scrollViewDidEndDecelerating:self.collectionView];
+    
+    XCTAssertEqual(childComponentA.numberOfAppearances, (NSUInteger)2);
+    XCTAssertEqual(childComponentB.numberOfAppearances, (NSUInteger)2);
+    XCTAssertEqual(childComponentC.numberOfAppearances, (NSUInteger)2);
+    
+    /// All children + root component should now have appeared twice: (3 + 1) * 2 = 8.
+    XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, (NSUInteger)8);
 }
 
 - (void)testDelegateNotifiedWhenRootComponentDisappeared
@@ -965,11 +1043,18 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
 
 - (void)testSavingAndRestoringOverlayComponentUIState
 {
-    __weak __typeof(self) weakSelf = self;
+    __block BOOL hasBeenLoadedBefore = 0;
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        __typeof(self) strongSelf = weakSelf;
-        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"id"].componentName = strongSelf.componentIdentifier.componentName;
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"id"];
+        
+        if (hasBeenLoadedBefore) {
+            componentModelBuilder.title = @"First title";
+        } else {
+            componentModelBuilder.title = @"Second title";
+            hasBeenLoadedBefore = YES;
+        }
+        
         return YES;
     };
     
@@ -989,12 +1074,9 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
 
 - (void)testSavingAndRestoringBodyComponentUIState
 {
-    __weak __typeof(self) weakSelf = self;
-    
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        __typeof(self) strongSelf = weakSelf;
-        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].componentName = strongSelf.componentIdentifier.componentName;
-        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"two"].componentName = strongSelf.componentIdentifier.componentName;
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].title = @"One";
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"two"].title = @"Two";
         return YES;
     };
     

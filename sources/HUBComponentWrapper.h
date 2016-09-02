@@ -20,8 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentWrapper The wrapper of the parent component
  *  @param model The model that a component should be created for
  */
-- (id<HUBComponent>)componentWrapper:(HUBComponentWrapper *)componentWrapper
-              childComponentForModel:(id<HUBComponentModel>)model;
+- (HUBComponentWrapper *)componentWrapper:(HUBComponentWrapper *)componentWrapper
+                   childComponentForModel:(id<HUBComponentModel>)model;
 
 /**
  *  Notify the delegate that one of the wrapped component's children is about to appear on the screen
@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) id<HUBComponentWrapperDelegate> delegate;
 
 /// The components parent wrapper if it is a child component
-@property (nonatomic, readonly, weak, nullable) HUBComponentWrapper *parentComponentWrapper;
+@property (nonatomic, weak, nullable, readonly) HUBComponentWrapper *parent;
 
 /// Whether the wrapper is for a root component, or for a child component
 @property (nonatomic, readonly) BOOL isRootComponent;
@@ -88,6 +88,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether the wrapped component is observing the container view's content offset
 @property (nonatomic, readonly) BOOL isContentOffsetObserver;
 
+/// Whether the wrapped component's view has appeared since the model was last changed
+@property (nonatomic, readonly) BOOL viewHasAppearedSinceLastModelChange;
+
 /**
  *  Initialize an instance of this class with a component to wrap and its identifier
  *
@@ -95,13 +98,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param model The model that the component wrapper will represent
  *  @param UIStateManager The manager to use to save & restore UI states for the component
  *  @param delegate The object that will act as the component wrapper's delegate
- *  @param parentComponentWrapper The parent component wrapper if this component wrapper is a child component
+ *  @param parent The parent component wrapper if this component wrapper is a child component
  */
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
-           parentComponentWrapper:(nullable HUBComponentWrapper *)parentComponentWrapper HUB_DESIGNATED_INITIALIZER;
+                           parent:(nullable HUBComponentWrapper *)parent HUB_DESIGNATED_INITIALIZER;
 
 @end
 

@@ -40,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, nullable, readonly) id<HUBImageLoader> imageLoader;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
+@property (nonatomic, assign) BOOL collectionViewIsScrolling;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponentWrappers;
@@ -157,7 +158,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     for (NSIndexPath * const indexPath in self.collectionView.indexPathsForVisibleItems) {
         HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-        [self collectionViewCellWillAppear:cell];
+        [self collectionViewCellWillAppear:cell ignorePreviousAppearance:YES];
     }
     
     [self headerAndOverlayComponentViewsWillAppear];
@@ -290,12 +291,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentWrapperDelegate
 
-- (id<HUBComponent>)componentWrapper:(HUBComponentWrapper *)componentWrapper
-                     childComponentForModel:(id<HUBComponentModel>)model
+- (HUBComponentWrapper *)componentWrapper:(HUBComponentWrapper *)componentWrapper
+                   childComponentForModel:(id<HUBComponentModel>)model
 {
     CGSize const containerViewSize = HUBComponentLoadViewIfNeeded(componentWrapper).frame.size;
     
-    HUBComponentWrapper * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model delegate:self parentComponentWrapper:componentWrapper];
+    HUBComponentWrapper * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model
+                                                                                                      delegate:self
+                                                                                                        parent:componentWrapper];
+    
     UIView * const childComponentView = HUBComponentLoadViewIfNeeded(childComponentWrapper);
     [childComponentWrapper configureViewWithModel:model containerViewSize:containerViewSize];
     [self didAddComponentWrapper:childComponentWrapper];
@@ -407,7 +411,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (device != nil) {
         if (!HUBDeviceIsRunningSystemVersion8OrHigher(device)) {
-            [self collectionViewCellWillAppear:cell];
+            [self collectionViewCellWillAppear:cell ignorePreviousAppearance:self.collectionViewIsScrolling];
         }
     }
     
@@ -427,7 +431,8 @@ NS_ASSUME_NONNULL_BEGIN
        willDisplayCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell];
+    [self collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell
+              ignorePreviousAppearance:self.collectionViewIsScrolling];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView
@@ -466,6 +471,7 @@ NS_ASSUME_NONNULL_BEGIN
                                   scrollView.contentSize.height - CGRectGetMinY(contentRect));
     
     [self.scrollHandler scrollingWillStartInViewController:self currentContentRect:contentRect];
+    self.collectionViewIsScrolling = YES;
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
@@ -481,6 +487,11 @@ NS_ASSUME_NONNULL_BEGIN
                                                                            proposedContentOffset:*targetContentOffset];
 }
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    self.collectionViewIsScrolling = NO;
+}
+
 #pragma mark - Private utilities
 
 - (HUBComponentWrapper *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
@@ -489,7 +500,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                    model:model
                                                                           UIStateManager:self.componentUIStateManager
                                                                                 delegate:self
-                                                                  parentComponentWrapper:nil];
+                                                                                  parent:nil];
     
     [self didAddComponentWrapper:wrapper];
     return wrapper;
@@ -624,11 +635,18 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell
+            ignorePreviousAppearance:(BOOL)ignorePreviousAppearance
 {
     HUBComponentWrapper * const wrapper = [self componentWrapperFromCell:cell];
     
     if (wrapper == nil) {
         return;
+    }
+    
+    if (wrapper.viewHasAppearedSinceLastModelChange) {
+        if (!ignorePreviousAppearance) {
+            return;
+        }
     }
     
     [wrapper viewWillAppear];

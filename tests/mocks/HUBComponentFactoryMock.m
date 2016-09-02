@@ -2,12 +2,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBComponentFactoryMock ()
-
-@property (nonatomic, strong, readonly) NSDictionary<NSString *, id<HUBComponent>> *components;
-
-@end
-
 @implementation HUBComponentFactoryMock
 
 - (instancetype)initWithComponents:(NSDictionary<NSString *, id<HUBComponent>> *)components
@@ -15,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
     self = [super init];
     
     if (self) {
-        _components = [components copy];
+        _components = [components mutableCopy];
     }
     
     return self;
