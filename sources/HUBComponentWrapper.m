@@ -146,8 +146,10 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSNumber * const index = @(self.model.index);
     
-    self.parent.childrenByIndex[index] = nil;
-    self.parent.visibleChildViewsByIndex[index] = nil;
+    HUBComponentWrapper * const parent = self.parent;
+    parent.childrenByIndex[index] = nil;
+    parent.visibleChildViewsByIndex[index] = nil;
+    
     [self.delegate sendComponentWrapperToReusePool:self];
 }
 

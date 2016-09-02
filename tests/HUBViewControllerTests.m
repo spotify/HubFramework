@@ -888,10 +888,12 @@
     UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     self.collectionView.cells[indexPath] = cell;
     
+    id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
+    
 HUB_IGNORE_PARTIAL_AVAILABILTY_BEGIN
-    [self.collectionView.delegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
-    [self.collectionView.delegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
-    [self.collectionView.delegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
 HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
@@ -942,14 +944,15 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
     NSArray<id<HUBComponentModel>> * const childComponentModels = componentModel.childComponentModels;
+    id<HUBComponentChildDelegate> const childDelegate = self.component.childDelegate;
     
-    [self.component.childDelegate component:self.component childComponentForModel:childComponentModels[0]];
-    [self.component.childDelegate component:self.component childComponentForModel:childComponentModels[1]];
-    [self.component.childDelegate component:self.component childComponentForModel:childComponentModels[2]];
+    [childDelegate component:self.component childComponentForModel:childComponentModels[0]];
+    [childDelegate component:self.component childComponentForModel:childComponentModels[1]];
+    [childDelegate component:self.component childComponentForModel:childComponentModels[2]];
     
-    [self.component.childDelegate component:self.component willDisplayChildAtIndex:0 view:childComponentA.view];
-    [self.component.childDelegate component:self.component willDisplayChildAtIndex:1 view:childComponentB.view];
-    [self.component.childDelegate component:self.component willDisplayChildAtIndex:2 view:childComponentC.view];
+    [childDelegate component:self.component willDisplayChildAtIndex:0 view:(UIView *)childComponentA.view];
+    [childDelegate component:self.component willDisplayChildAtIndex:1 view:(UIView *)childComponentB.view];
+    [childDelegate component:self.component willDisplayChildAtIndex:2 view:(UIView *)childComponentC.view];
     
     XCTAssertEqual(childComponentA.numberOfAppearances, (NSUInteger)1);
     XCTAssertEqual(childComponentB.numberOfAppearances, (NSUInteger)1);
