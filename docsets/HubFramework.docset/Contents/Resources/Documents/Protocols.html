@@ -19,7 +19,7 @@
         <a class="header-link" href="index.html">
           HubFramework Docs
         </a>
-         (96% documented)
+         (97% documented)
       </p>
     
         <p class="header-col header-col--secondary">
@@ -126,9 +126,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/HUBConnectivityState.html">HUBConnectivityState</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/HUBViewControllerScrollMode.html">HUBViewControllerScrollMode</a>
               </li>
             </ul>
           </li>
@@ -287,6 +284,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBViewControllerFactory.html">HUBViewControllerFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBViewControllerScrollHandler.html">HUBViewControllerScrollHandler</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBViewModel.html">HUBViewModel</a>
@@ -2594,6 +2594,47 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBViewControllerFactory</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewControllerScrollHandler"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBViewControllerScrollHandler" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewControllerScrollHandler">HUBViewControllerScrollHandler</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Protocol used to define custom scroll handlers for Hub Framework view controllers</p>
+
+<p>Each feature can supply a scroll handler when it&rsquo;s being registered with the Hub Framework
+  (through <code><a href="Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a></code>). This enables a feature to customize how scrolling is handled
+  for all view controllers that will be created on its behalf.</p>
+
+                        <a href="Protocols/HUBViewControllerScrollHandler.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBViewControllerScrollHandler</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBViewControllerScrollHandler</span></code></pre>
 
                         </div>
                       </div>

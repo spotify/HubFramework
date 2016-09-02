@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>HUBComponentChildDelegate Protocol Reference</title>
+    <title>HUBViewControllerScrollHandler Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Protocol/HUBComponentChildDelegate" class="dashAnchor"></a>
+    <a name="//apple_ref/objc/Protocol/HUBViewControllerScrollHandler" class="dashAnchor"></a>
 
-    <a title="HUBComponentChildDelegate Protocol Reference"></a>
+    <a title="HUBViewControllerScrollHandler Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -41,7 +41,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">HubFramework Reference</a>
       <img class="carat" src="../img/carat.png" />
-      HUBComponentChildDelegate Protocol Reference
+      HUBViewControllerScrollHandler Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -329,21 +329,18 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>HUBComponentChildDelegate</h1>
+            <h1>HUBViewControllerScrollHandler</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentChildDelegate</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBViewControllerScrollHandler</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
-            <p>Delegate protocol used to send events related to a component&rsquo;s children back to the Hub Framework</p>
+            <p>Protocol used to define custom scroll handlers for Hub Framework view controllers</p>
 
-<p>You don&rsquo;t implement this protocol yourself. Instead, you @synthesize your component&rsquo;s <code>childDelegate</code>
-  property, and may choose to send any of these methods to it to notify it of events, as well as creating
-  child component instances.</p>
-
-<p>It&rsquo;s definitely recommended to use this protocol as much as possible when using child components, since
-  you can leverage the framework&rsquo;s built-in capabilities for selection, image loading &amp; other events.</p>
+<p>Each feature can supply a scroll handler when it&rsquo;s being registered with the Hub Framework
+  (through <code><a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a></code>). This enables a feature to customize how scrolling is handled
+  for all view controllers that will be created on its behalf.</p>
 
           </div>
         </section>
@@ -355,9 +352,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentChildDelegate(im)component:childComponentForModel:"></a>
-                    <a name="//apple_ref/objc/Method/-component:childComponentForModel:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentChildDelegate(im)component:childComponentForModel:">-component:childComponentForModel:</a>
+                    <a name="/c:objc(pl)HUBViewControllerScrollHandler(im)shouldShowScrollIndicatorsInViewController:"></a>
+                    <a name="//apple_ref/objc/Method/-shouldShowScrollIndicatorsInViewController:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewControllerScrollHandler(im)shouldShowScrollIndicatorsInViewController:">-shouldShowScrollIndicatorsInViewController:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -365,101 +362,23 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Return a child component for a given model</p>
+                        <p>Return whether scroll indicators should be shown in a view controller</p>
 
-<p>You may choose to use this method to create components to use to represent any child component models that you
-  wish to render in your component. Note that it is not required to use this method to create views or other
-  visual representation for child components, but it&rsquo;s a convenient way - especially for components that wish
-  to be truly dynamic with which child components they support.</p>
-
-<p>Components created this way are retained and managed by the Hub Framework, and reused whenever they are sent the
-  <code>prepareViewForReuse</code> message.</p>
+<p>The Hub Framework will call this method when a view controller is being set up. The returned
+  value will be used for both horizontal &amp; vertical scroll indicators.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponent.html">HUBComponent</a></span><span class="o">&gt;</span><span class="p">)</span>
-                 <span class="nf">component</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">component</span>
-    <span class="nf">childComponentForModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">childComponentModel</span><span class="p">;</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>component</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The parent component</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>childComponentModel</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The model to return a child component for</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>A component that was either newly created, or reused - if an inactive component of the same type was available.
-         The component will have its view loaded and resized according to its parent and the component&rsquo;s <code>preferredViewSize</code>,
-         and will be configured according to the passed <code>childComponentModel</code>.</p>
-
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBComponentChildDelegate(im)component:willDisplayChildAtIndex:view:"></a>
-                    <a name="//apple_ref/objc/Method/-component:willDisplayChildAtIndex:view:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentChildDelegate(im)component:willDisplayChildAtIndex:view:">-component:willDisplayChildAtIndex:view:</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Notify the Hub Framework that a component is about to display a child component at a given index</p>
-
-<p>If your component has nested child components, you should call this method every time a child is about to
-  appear on the screen, to enable the Hub Framework to load images and perform other setup work for it.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">component</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">component</span>
-    <span class="nf">willDisplayChildAtIndex</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">childIndex</span>
-                       <span class="nf">view</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">childView</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">shouldShowScrollIndicatorsInViewController</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">component</span><span class="p">(</span><span class="nv">component</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="p">,</span> <span class="n">willDisplayChildAtIndex</span> <span class="nv">childIndex</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">,</span> <span class="n">view</span> <span class="nv">childView</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">shouldShowScrollIndicatorsInViewController</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyObject</span><span class="o">!</span></code></pre>
 
                         </div>
                       </div>
@@ -470,38 +389,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>component</em>
+                                <em>viewController</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The parent component</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>childIndex</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The index of the child component that is about to be displayed</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>childView</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The view of the child component that is about to be displayed</p>
+                                  <p>The view controller in question</p>
 
                                 </div>
                               </td>
@@ -515,9 +408,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentChildDelegate(im)component:didStopDisplayingChildAtIndex:view:"></a>
-                    <a name="//apple_ref/objc/Method/-component:didStopDisplayingChildAtIndex:view:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentChildDelegate(im)component:didStopDisplayingChildAtIndex:view:">-component:didStopDisplayingChildAtIndex:view:</a>
+                    <a name="/c:objc(pl)HUBViewControllerScrollHandler(im)shouldAutomaticallyAdjustContentInsetsInViewController:"></a>
+                    <a name="//apple_ref/objc/Method/-shouldAutomaticallyAdjustContentInsetsInViewController:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewControllerScrollHandler(im)shouldAutomaticallyAdjustContentInsetsInViewController:">-shouldAutomaticallyAdjustContentInsetsInViewController:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -525,21 +418,24 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Notify the Hub Framework that a component has stopped displaying a child component at a given index</p>
+                        <p>Return whether the system&rsquo;s automatic adjustment of content insets should be used for a view controller</p>
+
+<p>The Hub Framework will call this method when a view controller is being set up. The returned value will be
+  assigned to its <code>automaticallyAdjustsScrollViewInsets</code> property, so see the documentation for that property
+  on <code>UIViewController</code> for more information.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">component</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">component</span>
-    <span class="nf">didStopDisplayingChildAtIndex</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">childIndex</span>
-                             <span class="nf">view</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">childView</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">shouldAutomaticallyAdjustContentInsetsInViewController</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">component</span><span class="p">(</span><span class="nv">component</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="p">,</span> <span class="n">didStopDisplayingChildAtIndex</span> <span class="nv">childIndex</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">,</span> <span class="n">view</span> <span class="nv">childView</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">shouldAutomaticallyAdjustContentInsetsInViewController</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyObject</span><span class="o">!</span></code></pre>
 
                         </div>
                       </div>
@@ -550,38 +446,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>component</em>
+                                <em>viewController</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The parent component</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>childIndex</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The index of the child component that is no longer being displayed</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>childView</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The view of the child component that is no longer displayed</p>
+                                  <p>The view controller in question</p>
 
                                 </div>
                               </td>
@@ -595,9 +465,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentChildDelegate(im)component:childSelectedAtIndex:view:"></a>
-                    <a name="//apple_ref/objc/Method/-component:childSelectedAtIndex:view:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentChildDelegate(im)component:childSelectedAtIndex:view:">-component:childSelectedAtIndex:view:</a>
+                    <a name="/c:objc(pl)HUBViewControllerScrollHandler(im)scrollDecelerationRateForViewController:"></a>
+                    <a name="//apple_ref/objc/Method/-scrollDecelerationRateForViewController:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewControllerScrollHandler(im)scrollDecelerationRateForViewController:">-scrollDecelerationRateForViewController:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -605,24 +475,23 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Notify the Hub Framework that a component&rsquo;s child component has been selected</p>
+                        <p>Return the deceleration rate to use for scrolling in a view controller</p>
 
-<p>If your component has nested child components, you should call this method every time a child component was
-  selected by the user, to enable the Hub Framework to handle the selection.</p>
+<p>The Hub Framework will call this method when a view controller is being set up. The returned value will be
+  assied to the <code>decelerationRate</code> property of its internal scroll view.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">component</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">component</span>
-    <span class="nf">childSelectedAtIndex</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">childIndex</span>
-                    <span class="nf">view</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">childView</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">scrollDecelerationRateForViewController</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">component</span><span class="p">(</span><span class="nv">component</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="p">,</span> <span class="n">childSelectedAtIndex</span> <span class="nv">childIndex</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">,</span> <span class="n">view</span> <span class="nv">childView</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">scrollDecelerationRateForViewController</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyObject</span><span class="o">!</span></code></pre>
 
                         </div>
                       </div>
@@ -633,12 +502,71 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>component</em>
+                                <em>viewController</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The parent component</p>
+                                  <p>The view controller in question</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewControllerScrollHandler(im)contentInsetsForViewController:proposedContentInsets:"></a>
+                    <a name="//apple_ref/objc/Method/-contentInsetsForViewController:proposedContentInsets:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewControllerScrollHandler(im)contentInsetsForViewController:proposedContentInsets:">-contentInsetsForViewController:proposedContentInsets:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return the content insets to use for a view controller</p>
+
+<p>The Hub Framework will call this method every time a view controller is being laid out, which is usually in
+  response to that its view model has been changed. The returned value will be assigned to the <code>contentInset</code>
+  property of its internal scroll view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">UIEdgeInsets</span><span class="p">)</span><span class="nf">contentInsetsForViewController</span><span class="p">:</span>
+                    <span class="p">(</span><span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
+                         <span class="nf">proposedContentInsets</span><span class="p">:</span>
+                             <span class="p">(</span><span class="n">UIEdgeInsets</span><span class="p">)</span><span class="nv">proposedContentInsets</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">contentInsetsForViewController</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">,</span> <span class="nv">proposedContentInsets</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyObject</span><span class="o">!</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The view controller in question</p>
 
                                 </div>
                               </td>
@@ -646,12 +574,67 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>childIndex</em>
+                                <em>proposedContentInsets</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The index of the child component that was selected</p>
+                                  <p>The content insets that the Hub Framework is proposing will be used, which is
+        computed in regards to the view&rsquo;s current navigation bar height and the status bar height of the app.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewControllerScrollHandler(im)scrollingWillStartInViewController:currentContentRect:"></a>
+                    <a name="//apple_ref/objc/Method/-scrollingWillStartInViewController:currentContentRect:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewControllerScrollHandler(im)scrollingWillStartInViewController:currentContentRect:">-scrollingWillStartInViewController:currentContentRect:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>React to that a scrolling event started in a view controller</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">scrollingWillStartInViewController</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
+                        <span class="nf">currentContentRect</span><span class="p">:(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">currentContentRect</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">scrollingWillStartInViewController</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">,</span> <span class="nv">currentContentRect</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The view controller in question</p>
 
                                 </div>
                               </td>
@@ -659,12 +642,124 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>childView</em>
+                                <em>currentContentRect</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The view of the child component that was selected</p>
+                                  <p>The rectangle of the currently visible content in the view controller&rsquo;s scroll view</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewControllerScrollHandler(im)targetContentOffsetForEndedScrollInViewController:velocity:contentInset:currentContentOffset:proposedContentOffset:"></a>
+                    <a name="//apple_ref/objc/Method/-targetContentOffsetForEndedScrollInViewController:velocity:contentInset:currentContentOffset:proposedContentOffset:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewControllerScrollHandler(im)targetContentOffsetForEndedScrollInViewController:velocity:contentInset:currentContentOffset:proposedContentOffset:">-targetContentOffsetForEndedScrollInViewController:velocity:contentInset:currentContentOffset:proposedContentOffset:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return the target content offset for when scrolling ended in a view controller</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGPoint</span><span class="p">)</span><span class="nf">targetContentOffsetForEndedScrollInViewController</span><span class="p">:</span>
+               <span class="p">(</span><span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
+                                                    <span class="nf">velocity</span><span class="p">:(</span><span class="n">CGVector</span><span class="p">)</span><span class="nv">velocity</span>
+                                                <span class="nf">contentInset</span><span class="p">:</span>
+                                                    <span class="p">(</span><span class="n">UIEdgeInsets</span><span class="p">)</span><span class="nv">contentInset</span>
+                                        <span class="nf">currentContentOffset</span><span class="p">:</span>
+                                            <span class="p">(</span><span class="n">CGPoint</span><span class="p">)</span><span class="nv">currentContentOffset</span>
+                                       <span class="nf">proposedContentOffset</span><span class="p">:</span>
+                                           <span class="p">(</span><span class="n">CGPoint</span><span class="p">)</span><span class="nv">proposedContentOffset</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">targetContentOffsetForEndedScrollInViewController</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">,</span> <span class="nv">velocity</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">,</span> <span class="nv">contentInset</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">,</span> <span class="nv">currentContentOffset</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">,</span> <span class="nv">proposedContentOffset</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyObject</span><span class="o">!</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The view controller in question</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>velocity</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The current scrolling velocity</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>contentInset</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The current content inset of the view controller&rsquo;s scroll view</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>currentContentOffset</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The current scrolling content offset</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>proposedContentOffset</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The target content offset that the Hub Framework is proposing will be used</p>
 
                                 </div>
                               </td>
