@@ -436,7 +436,7 @@ NS_ASSUME_NONNULL_BEGIN
     copy.loggingData = self.loggingData;
     
     for (NSString * const customImageIdentifier in self.customImageDataBuilders) {
-        copy.customImageDataBuilders[customImageIdentifier] = [self.customImageDataBuilders[customImageIdentifier] copy];;
+        copy.customImageDataBuilders[customImageIdentifier] = [self.customImageDataBuilders[customImageIdentifier] copy];
     }
     
     for (NSString * const childComponentModelIdentifier in self.childComponentModelBuilders) {
