@@ -51,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
                   contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
             componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler
+          viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(viewURIPredicate != nil);
@@ -70,7 +71,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                   contentOperationFactories:contentOperationFactories
                                                                                         contentReloadPolicy:contentReloadPolicy
                                                                                  customJSONSchemaIdentifier:customJSONSchemaIdentifier
-                                                                                  componentSelectionHandler:componentSelectionHandler];
+                                                                                  componentSelectionHandler:componentSelectionHandler
+                                                                                viewControllerScrollHandler:viewControllerScrollHandler];
     
     self.registrationsByIdentifier[registration.featureIdentifier] = registration;
     [self.registrationIdentifierOrder addObject:registration.featureIdentifier];

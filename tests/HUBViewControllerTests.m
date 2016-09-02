@@ -30,6 +30,7 @@
 #import "HUBImplementationMacros.h"
 #import "HUBFeatureInfoImplementation.h"
 #import "HUBComponentSelectionHandlerWrapper.h"
+#import "HUBViewControllerScrollHandlerMock.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -41,6 +42,7 @@
 @property (nonatomic, strong) HUBCollectionViewFactoryMock *collectionViewFactory;
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong) HUBComponentSelectionHandlerMock *componentSelectionHandler;
+@property (nonatomic, strong) HUBViewControllerScrollHandlerMock *scrollHandler;
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
 @property (nonatomic, strong) HUBInitialViewModelRegistry *initialViewModelRegistry;
@@ -83,6 +85,7 @@
                                                                                iconImageResolver:iconImageResolver];
     
     self.componentSelectionHandler = [HUBComponentSelectionHandlerMock new];
+    self.scrollHandler = [HUBViewControllerScrollHandlerMock new];
     self.component = [HUBComponentMock new];
     
     self.collectionView = [HUBCollectionViewMock new];
@@ -123,6 +126,7 @@
                                                                  componentRegistry:self.componentRegistry
                                                             componentLayoutManager:componentLayoutManager
                                                          componentSelectionHandler:componentSelectionHandler
+                                                                     scrollHandler:self.scrollHandler
                                                                             device:self.device
                                                                        imageLoader:self.imageLoader];
     
@@ -1164,6 +1168,130 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
 - (void)testCollectionViewCreatedInLoadView
 {
     XCTAssertEqual(self.viewController.view.subviews[0], self.collectionView);
+}
+
+- (void)testCollectionViewSetupUsingScrollHandler
+{
+    self.scrollHandler.shouldShowScrollIndicators = YES;
+    self.scrollHandler.shouldAutomaticallyAdjustContentInsets = YES;
+    self.scrollHandler.scrollDecelerationRate = UIScrollViewDecelerationRateNormal;
+    self.scrollHandler.contentInsets = UIEdgeInsetsMake(100, 30, 40, 200);
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqual(self.collectionView.showsHorizontalScrollIndicator, YES);
+    XCTAssertEqual(self.collectionView.showsVerticalScrollIndicator, YES);
+    XCTAssertEqualWithAccuracy(self.collectionView.decelerationRate, UIScrollViewDecelerationRateNormal, 0.001);
+    XCTAssertTrue(UIEdgeInsetsEqualToEdgeInsets(self.collectionView.contentInset, UIEdgeInsetsMake(100, 30, 40, 200)));
+}
+
+- (void)testCorrectContentRectSentToScrollHandler
+{
+    [self simulateViewControllerLayoutCycle];
+    
+    self.collectionView.frame = CGRectMake(0, 0, 320, 480);
+    self.collectionView.contentOffset = CGPointMake(0, 200);
+    self.collectionView.contentSize = CGSizeMake(320, 1000);
+    
+    id<UIScrollViewDelegate> const scrollViewDelegate = self.collectionView.delegate;
+    [scrollViewDelegate scrollViewWillBeginDragging:self.collectionView];
+    
+    XCTAssertEqualWithAccuracy(CGRectGetMinX(self.scrollHandler.startContentRect), 0, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetMinY(self.scrollHandler.startContentRect), 200, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetWidth(self.scrollHandler.startContentRect), 320, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetHeight(self.scrollHandler.startContentRect), 480, 0.001);
+    
+    self.collectionView.contentOffset = CGPointMake(0, 800);
+    [scrollViewDelegate scrollViewWillBeginDragging:self.collectionView];
+    
+    XCTAssertEqualWithAccuracy(CGRectGetMinX(self.scrollHandler.startContentRect), 0, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetMinY(self.scrollHandler.startContentRect), 800, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetWidth(self.scrollHandler.startContentRect), 320, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetHeight(self.scrollHandler.startContentRect), 200, 0.001);
+}
+
+- (void)testScrollHandlerModifyingTargetContentOffset
+{
+    [self simulateViewControllerLayoutCycle];
+    
+    self.scrollHandler.targetContentOffset = CGPointMake(300, 500);
+    CGPoint targetContentOffset = CGPointZero;
+    
+    [self.collectionView.delegate scrollViewWillEndDragging:self.collectionView
+                                               withVelocity:CGPointZero
+                                        targetContentOffset:&targetContentOffset];
+    
+    XCTAssertEqualWithAccuracy(targetContentOffset.x, 300, 0.001);
+    XCTAssertEqualWithAccuracy(targetContentOffset.y, 500, 0.001);
+}
+
+- (void)testFrameForBodyComponentAtIndex
+{
+    HUBComponentMock * const componentA = [HUBComponentMock new];
+    componentA.preferredViewSize = CGSizeMake(300, 200);
+    
+    HUBComponentMock * const componentB = [HUBComponentMock new];
+    componentB.preferredViewSize = CGSizeMake(100, 300);
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{@"A": componentA, @"B": componentB}];
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:@"frameForBodyComponent"];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilderA = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"A"];
+        componentModelBuilderA.componentNamespace = @"frameForBodyComponent";
+        componentModelBuilderA.componentName = @"A";
+        
+        id<HUBComponentModelBuilder> const componentModelBuilderB = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"B"];
+        componentModelBuilderB.componentNamespace = @"frameForBodyComponent";
+        componentModelBuilderB.componentName = @"B";
+        
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    CGRect const expectedComponentAFrame = CGRectMake(0, 0, 300, 200);
+    CGRect const actualComponentAFrame = [self.viewController frameForBodyComponentAtIndex:0];
+    XCTAssertTrue(CGRectEqualToRect(expectedComponentAFrame, actualComponentAFrame));
+    
+    CGRect const expectedComponentBFrame = CGRectMake(0, 200, 100, 300);
+    CGRect const actualComponentBFrame = [self.viewController frameForBodyComponentAtIndex:1];
+    XCTAssertTrue(CGRectEqualToRect(expectedComponentBFrame, actualComponentBFrame));
+}
+
+- (void)testIndexOfBodyComponentAtPoint
+{
+    HUBComponentMock * const componentA = [HUBComponentMock new];
+    componentA.preferredViewSize = CGSizeMake(300, 200);
+    
+    HUBComponentMock * const componentB = [HUBComponentMock new];
+    componentB.preferredViewSize = CGSizeMake(100, 300);
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{@"A": componentA, @"B": componentB}];
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:@"bodyComponentAtPoint"];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilderA = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"A"];
+        componentModelBuilderA.componentNamespace = @"bodyComponentAtPoint";
+        componentModelBuilderA.componentName = @"A";
+        
+        id<HUBComponentModelBuilder> const componentModelBuilderB = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"B"];
+        componentModelBuilderB.componentNamespace = @"bodyComponentAtPoint";
+        componentModelBuilderB.componentName = @"B";
+        
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(10, 10)], (NSUInteger)0);
+    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(299, 199)], (NSUInteger)0);
+    
+    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(10, 210)], (NSUInteger)1);
+    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(99, 299)], (NSUInteger)1);
+    
+    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(-10, -10)], NSNotFound);
+    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(200, 1000)], NSNotFound);
 }
 
 #pragma mark - HUBViewControllerDelegate

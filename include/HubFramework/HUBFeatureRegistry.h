@@ -3,6 +3,7 @@
 @protocol HUBContentOperationFactory;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentSelectionHandler;
+@protocol HUBViewControllerScrollHandler;
 @class HUBViewURIPredicate;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -33,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
  *         schema will be used. Register your custom schema using `HUBJSONSchemaRegistry`. See `HUBJSONSchema` for more info.
  *  @param componentSelectionHandler Any custom selection handler to use to handle component selection events. This can be
  *         used to override the default "open target URL" selection handling. See `HUBComponentSelectionHandler` for more info.
+ *  @param viewControllerScrollHandler Any custom scroll handler to use to handle scroll events and customize scrolling behavior
+ *         of view controllers created for this feature. See `HUBViewControllerScrollHandler` for more info.
  *
  *  Registering a feature with the same identifier as one that is already registered is considered a severe error and will
  *  trigger an assert.
@@ -43,7 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
             contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                   contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
-            componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler;
+            componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler
+          viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler;
 
 /**
  *  Unregister a feature from the Hub Framework

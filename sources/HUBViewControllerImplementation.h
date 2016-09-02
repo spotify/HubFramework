@@ -6,7 +6,7 @@
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
 @protocol HUBComponentSelectionHandler;
-@protocol HUBViewModel;
+@protocol HUBViewControllerScrollHandler;
 @class HUBCollectionViewFactory;
 @class HUBComponentRegistryImplementation;
 @class HUBInitialViewModelRegistry;
@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentRegistry The registry to use to retrieve components to render
  *  @param componentLayoutManager The object that manages layout for components in the view controller
  *  @param componentSelectionHandler The object that handles selection events for components
+ *  @param scrollHandler The object that will handle scrolling for the view controller
  *  @param device The device that the view controller will be presented using
  *  @param imageLoader The object to use to load images for components
  */
@@ -34,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
       componentSelectionHandler:(id<HUBComponentSelectionHandler>)componentSelectionHandler
+                  scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                          device:(UIDevice *)device
                     imageLoader:(nullable id<HUBImageLoader>)imageLoader HUB_DESIGNATED_INITIALIZER;
 

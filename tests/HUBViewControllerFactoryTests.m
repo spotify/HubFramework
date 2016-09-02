@@ -59,7 +59,8 @@
                                       contentOperationFactories:@[contentOperationFactory]
                                             contentReloadPolicy:nil
                                      customJSONSchemaIdentifier:nil
-                                      componentSelectionHandler:nil];
+                                      componentSelectionHandler:nil
+                                    viewControllerScrollHandler:nil];
     
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
     XCTAssertNotNil([self.manager.viewControllerFactory createViewControllerForViewURI:viewURI]);
@@ -85,7 +86,8 @@
                                       contentOperationFactories:@[contentOperationFactory]
                                             contentReloadPolicy:nil
                                      customJSONSchemaIdentifier:nil
-                                      componentSelectionHandler:nil];
+                                      componentSelectionHandler:nil
+                                    viewControllerScrollHandler:nil];
     
     UIViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
     [viewController viewWillAppear:YES];

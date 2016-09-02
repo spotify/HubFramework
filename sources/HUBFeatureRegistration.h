@@ -3,6 +3,7 @@
 @protocol HUBContentOperationFactory;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentSelectionHandler;
+@protocol HUBViewControllerScrollHandler;
 @class HUBViewURIPredicate;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -31,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Any custom component selection handler that the feature is using
 @property (nonatomic, strong, nullable, readonly) id<HUBComponentSelectionHandler> componentSelectionHandler;
 
+/// Any custom view controller scroll handler that the feature is using
+@property (nonatomic, strong, nullable, readonly) id<HUBViewControllerScrollHandler> viewControllerScrollHandler;
+
 /**
  *  Initialize an instance of this class with its possible values
  *
@@ -41,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param contentReloadPolicy Any custom content reload policy that the feature will use
  *  @param customJSONSchemaIdentifier The identifier of any custom JSON schema the feature will use
  *  @param componentSelectionHandler Any custom component selection handler that the feature will use
+ *  @param viewControllerScrollHandler Any custom view controller scroll handler that the feature will use
  */
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
                                     title:(NSString *)featureTitle
@@ -48,7 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
                 contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                       contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
-                componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler HUB_DESIGNATED_INITIALIZER;
+                componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler
+              viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler HUB_DESIGNATED_INITIALIZER;
 
 @end
 

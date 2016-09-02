@@ -30,6 +30,7 @@
 #import "HUBViewModelBuilder.h"
 #import "HUBViewControllerFactory.h"
 #import "HUBViewController.h"
+#import "HUBViewControllerScrollHandler.h"
 #import "HUBViewURIPredicate.h"
 
 // Components

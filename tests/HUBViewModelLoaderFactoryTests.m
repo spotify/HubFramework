@@ -65,7 +65,8 @@
                               contentOperationFactories:@[contentOperationFactory]
                                     contentReloadPolicy:nil
                              customJSONSchemaIdentifier:nil
-                              componentSelectionHandler:nil];
+                              componentSelectionHandler:nil
+                            viewControllerScrollHandler:nil];
     
     XCTAssertTrue([self.viewModelLoaderFactory canCreateViewModelLoaderForViewURI:viewURI]);
     XCTAssertNotNil([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
@@ -90,7 +91,8 @@
                               contentOperationFactories:@[contentOperationFactory]
                                     contentReloadPolicy:nil
                              customJSONSchemaIdentifier:nil
-                              componentSelectionHandler:nil];
+                              componentSelectionHandler:nil
+                            viewControllerScrollHandler:nil];
     
     XCTAssertThrows([self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI]);
 }
@@ -108,7 +110,8 @@
                               contentOperationFactories:@[contentOperationFactory]
                                     contentReloadPolicy:nil
                              customJSONSchemaIdentifier:nil
-                              componentSelectionHandler:nil];
+                              componentSelectionHandler:nil
+                            viewControllerScrollHandler:nil];
     
     HUBContentOperationMock * const prependedOperation = [HUBContentOperationMock new];
     self.prependedContentOperationFactory.contentOperations = @[prependedOperation];
