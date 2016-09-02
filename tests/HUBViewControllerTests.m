@@ -1276,7 +1276,7 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     self.collectionView.frame = CGRectMake(0, 0, 320, 480);
     self.collectionView.contentOffset = CGPointMake(0, 200);
-    self.collectionView.contentSize = CGSizeMake(320, 1000);
+    self.collectionView.contentSize = CGSizeMake(320, 1600);
     
     id<UIScrollViewDelegate> const scrollViewDelegate = self.collectionView.delegate;
     [scrollViewDelegate scrollViewWillBeginDragging:self.collectionView];
@@ -1292,7 +1292,21 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     XCTAssertEqualWithAccuracy(CGRectGetMinX(self.scrollHandler.startContentRect), 0, 0.001);
     XCTAssertEqualWithAccuracy(CGRectGetMinY(self.scrollHandler.startContentRect), 800, 0.001);
     XCTAssertEqualWithAccuracy(CGRectGetWidth(self.scrollHandler.startContentRect), 320, 0.001);
-    XCTAssertEqualWithAccuracy(CGRectGetHeight(self.scrollHandler.startContentRect), 200, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetHeight(self.scrollHandler.startContentRect), 480, 0.001);
+
+    self.collectionView.contentOffset = CGPointMake(0, 1200);
+    [scrollViewDelegate scrollViewDidEndDragging:self.collectionView willDecelerate:NO];
+    XCTAssertEqualWithAccuracy(CGRectGetMinX(self.scrollHandler.startContentRect), 0, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetMinY(self.scrollHandler.endContentRect), 1200, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetWidth(self.scrollHandler.endContentRect), 320, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetHeight(self.scrollHandler.endContentRect), 400, 0.001);
+
+    self.collectionView.contentOffset = CGPointMake(0, 1240);
+    [scrollViewDelegate scrollViewDidEndDecelerating:self.collectionView];
+    XCTAssertEqualWithAccuracy(CGRectGetMinX(self.scrollHandler.endContentRect), 0, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetMinY(self.scrollHandler.endContentRect), 1240, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetWidth(self.scrollHandler.endContentRect), 320, 0.001);
+    XCTAssertEqualWithAccuracy(CGRectGetHeight(self.scrollHandler.endContentRect), 360, 0.001);
 }
 
 - (void)testScrollHandlerModifyingTargetContentOffset

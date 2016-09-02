@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readwrite) UIEdgeInsets proposedContentInsets;
 @property (nonatomic, assign, readwrite) CGRect startContentRect;
+@property (nonatomic, assign, readwrite) CGRect endContentRect;
 
 @end
 
@@ -36,6 +37,12 @@ NS_ASSUME_NONNULL_BEGIN
                         currentContentRect:(CGRect)currentContentRect
 {
     self.startContentRect = currentContentRect;
+}
+
+- (void)scrollingDidEndInViewController:(UIViewController<HUBViewController> *)viewController
+                     currentContentRect:(CGRect)currentContentRect
+{
+    self.endContentRect = currentContentRect;
 }
 
 - (CGPoint)targetContentOffsetForEndedScrollInViewController:(UIViewController<HUBViewController> *)viewController

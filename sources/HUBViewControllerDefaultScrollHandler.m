@@ -33,6 +33,11 @@ NS_ASSUME_NONNULL_BEGIN
     // No-op
 }
 
+- (void)scrollingDidEndInViewController:(UIViewController<HUBViewController> *)viewController currentContentRect:(CGRect)currentContentRect
+{
+    // No-op
+}
+
 - (CGPoint)targetContentOffsetForEndedScrollInViewController:(UIViewController<HUBViewController> *)viewController
                                                     velocity:(CGVector)velocity
                                                 contentInset:(UIEdgeInsets)contentInset

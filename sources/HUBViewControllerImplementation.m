@@ -464,12 +464,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    CGRect contentRect = CGRectZero;
-    contentRect.origin = scrollView.contentOffset;
-    contentRect.size = scrollView.frame.size;
-    contentRect.size.height = MIN(CGRectGetHeight(contentRect),
-                                  scrollView.contentSize.height - CGRectGetMinY(contentRect));
-    
+    CGRect const contentRect = [self contentRectForScrollView:scrollView];
     [self.scrollHandler scrollingWillStartInViewController:self currentContentRect:contentRect];
     self.collectionViewIsScrolling = YES;
 }
@@ -489,7 +484,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    self.collectionViewIsScrolling = NO;
+	self.collectionViewIsScrolling = NO;
+    [self notifyScrollingDidEndInScrollView:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate) {
+        [self notifyScrollingDidEndInScrollView:scrollView];
+    }
+}
+
+- (void)notifyScrollingDidEndInScrollView:(UIScrollView *)scrollView
+{
+    CGRect const contentRect = [self contentRectForScrollView:scrollView];
+    [self.scrollHandler scrollingDidEndInViewController:self currentContentRect:contentRect];
+}
+
+- (CGRect)contentRectForScrollView:(UIScrollView *)scrollView
+{
+    CGRect contentRect = CGRectZero;
+    contentRect.origin = scrollView.contentOffset;
+    contentRect.size = scrollView.frame.size;
+    contentRect.size.height = MIN(CGRectGetHeight(contentRect),
+                                  scrollView.contentSize.height - CGRectGetMinY(contentRect));
+    return contentRect;
 }
 
 #pragma mark - Private utilities
