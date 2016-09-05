@@ -10,6 +10,7 @@
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentShowcaseShapshotGenerator.h"
 #import "HUBJSONSchemaRegistryImplementation.h"
+#import "HUBComponentTargetImplementation.h"
 
 static NSString * const DefaultNamespace = @"default";
 
@@ -215,6 +216,9 @@ static NSString * const DefaultNamespace = @"default";
                                                   componentCategory:(NSString *)componentCategory
 {
     NSString * const identifier = [NSUUID UUID].UUIDString;
+    HUBComponentTargetImplementation * const target = [[HUBComponentTargetImplementation alloc] initWithURI:nil
+                                                                                           initialViewModel:nil
+                                                                                                 customData:nil];
 
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
                                                                  index:0
@@ -228,8 +232,7 @@ static NSString * const DefaultNamespace = @"default";
                                                    backgroundImageData:nil
                                                        customImageData:@{}
                                                                   icon:nil
-                                                             targetURL:nil
-                                                targetInitialViewModel:nil
+                                                                target:target
                                                               metadata:nil
                                                            loggingData:nil
                                                             customData:nil

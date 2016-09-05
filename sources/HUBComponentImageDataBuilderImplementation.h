@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBComponentImageDataBuilderImplementation : NSObject <HUBComponentImageDataBuilder, NSCopying>
 
 /**
- *  Initialize an instance of this class with a JSON schema
+ *  Initialize an instance of this class with its required dependencies
  *
  *  @param JSONSchema The schema to use to parse data from any added JSON object
  *  @param iconImageResolver The resolver to use to convert icons into renderable images

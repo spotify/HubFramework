@@ -73,15 +73,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// The path to follow to extract an icon identifier for the component. Maps to `iconIdentifier`.
 @property (nonatomic, strong) id<HUBJSONStringPath> iconIdentifierPath;
 
-/// The path to follow to extract a target URL. Maps to `targetURL`.
-@property (nonatomic, strong) id<HUBJSONURLPath> targetURLPath;
-
 /**
- *  The path to follow to extract a dictionary for a target view's initial view model. Maps to `targetInitialViewModel`.
+ *  The path to follow to extract a dictionary to use to construct a target for the component. Maps to `target`.
  *
- *  The dictionary extracted by following this path will then be parsed using `HUBViewModelJSONSchema`.
+ *  The dictionary extracted by following this path will then be parsed using `HUBComponentTargetJSONSchema`.
  */
-@property (nonatomic, strong) id<HUBJSONDictionaryPath> targetInitialViewModelDictionaryPath;
+@property (nonatomic, strong) id<HUBJSONDictionaryPath> targetDictionaryPath;
 
 /// The path to follow to extract any metadata for the component model. Maps to `metadata`.
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> metadataPath;

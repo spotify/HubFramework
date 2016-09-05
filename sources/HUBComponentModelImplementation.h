@@ -4,6 +4,7 @@
 
 @class HUBComponentIdentifier;
 @protocol HUBIcon;
+@protocol HUBComponentTarget;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,8 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param backgroundImageData Any image data for the component's background image
  *  @param customImageData Any image data objects describing layout properties for custom images for the component
  *  @param icon Any icon that the component should render
- *  @param targetURL The URL that is the target of a user interaction with the component
- *  @param targetInitialViewModel Any pre-computed view model that a view that is the target of `targetURL` should use
+ *  @param target Any target of user interactions with the component
  *  @param metadata Any metadata that should be associated with the component
  *  @param loggingData Any data that should be logged alongside interactions or impressions for the component
  *  @param customData Any custom data that the component should use
@@ -47,8 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
                backgroundImageData:(nullable id<HUBComponentImageData>)backgroundImageData
                    customImageData:(NSDictionary<NSString *, id<HUBComponentImageData>> *)customImageData
                               icon:(nullable id<HUBIcon>)icon
-                         targetURL:(nullable NSURL *)targetURL
-            targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
+                            target:(nullable id<HUBComponentTarget>)target
                           metadata:(nullable NSDictionary<NSString *, NSObject *> *)metadata
                        loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData

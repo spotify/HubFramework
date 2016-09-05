@@ -5,7 +5,7 @@
 
 @class HUBComponentIdentifier;
 @protocol HUBComponentImageDataBuilder;
-@protocol HUBViewModelBuilder;
+@protocol HUBComponentTargetBuilder;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -101,11 +101,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Target
 
-/// Any URL that is the target of a user interaction with the component
-@property (nonatomic, copy, nullable) NSURL *targetURL;
-
-/// A builder that can be used to construct a pre-computed view model for a view that is the target of `targetURL`
-@property (nonatomic, strong, readonly) id<HUBViewModelBuilder> targetInitialViewModelBuilder;
+/// A builder that can be used to construct target data for the component
+@property (nonatomic, strong, readonly) id<HUBComponentTargetBuilder> targetBuilder;
 
 #pragma mark - Metadata
 

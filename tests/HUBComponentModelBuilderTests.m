@@ -5,6 +5,8 @@
 #import "HUBComponentIdentifier.h"
 #import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentImageDataImplementation.h"
+#import "HUBComponentTargetBuilder.h"
+#import "HUBComponentTarget.h"
 #import "HUBViewModel.h"
 #import "HUBViewModelBuilder.h"
 #import "HUBJSONSchemaImplementation.h"
@@ -57,7 +59,7 @@
     self.builder.descriptionText = @"description";
     self.builder.mainImageDataBuilder.placeholderIconIdentifier = @"main";
     self.builder.backgroundImageDataBuilder.placeholderIconIdentifier = @"background";
-    self.builder.targetURL = [NSURL URLWithString:@"spotify:hub"];
+    self.builder.targetBuilder.URI = [NSURL URLWithString:@"spotify:hub"];
     self.builder.customData = @{@"key": @"value"};
     self.builder.loggingData = @{@"logging": @"data"};
     
@@ -74,7 +76,7 @@
     XCTAssertEqualObjects(model.descriptionText, self.builder.descriptionText);
     XCTAssertEqualObjects(model.mainImageData.placeholderIcon.identifier, @"main");
     XCTAssertEqualObjects(model.backgroundImageData.placeholderIcon.identifier, @"background");
-    XCTAssertEqualObjects(model.targetURL, self.builder.targetURL);
+    XCTAssertEqualObjects(model.target.URI, self.builder.targetBuilder.URI);
     XCTAssertEqualObjects(model.customData, self.builder.customData);
     XCTAssertEqualObjects(model.loggingData, self.builder.loggingData);
 }
@@ -158,25 +160,6 @@
     id<HUBComponentModel> const model = [self.builder buildForIndex:0];
     XCTAssertNotNil(model);
     XCTAssertNil(model.icon);
-}
-
-- (void)testTargetInitialViewModelBuilderLazyInit
-{
-    XCTAssertNil([self.builder buildForIndex:0].targetInitialViewModel);
-    
-    self.builder.targetInitialViewModelBuilder.navigationBarTitle = @"hello";
-    
-    NSURL * const targetURL = [NSURL URLWithString:@"spotify:hub:target"];
-    self.builder.targetURL = targetURL;
-    
-    id<HUBViewModel> const targetInitialViewModel = [self.builder buildForIndex:0].targetInitialViewModel;
-    XCTAssertEqualObjects(targetInitialViewModel.navigationBarTitle, @"hello");
-}
-
-- (void)testNoTargetInitialViewModelBuiltWithoutTargetURL
-{
-     self.builder.targetInitialViewModelBuilder.navigationBarTitle = @"hello";
-    XCTAssertNil([self.builder buildForIndex:0].targetInitialViewModel);
 }
 
 - (void)testCreatingChildComponentModel
@@ -355,8 +338,8 @@
     XCTAssertEqualObjects(model.backgroundImageData.placeholderIcon.identifier, backgroundImagePlaceholderIdentifier);
     XCTAssertEqualObjects(model.customImageData[customImageIdentifier].placeholderIcon.identifier, customImagePlaceholderIdentifier);
     XCTAssertEqualObjects(model.icon.identifier, iconIdentifier);
-    XCTAssertEqualObjects(model.targetURL, targetURL);
-    XCTAssertEqualObjects(model.targetInitialViewModel.navigationBarTitle, targetTitle);
+    XCTAssertEqualObjects(model.target.URI, targetURL);
+    XCTAssertEqualObjects(model.target.initialViewModel.navigationBarTitle, targetTitle);
     XCTAssertEqualObjects(model.metadata, metadata);
     XCTAssertEqualObjects(model.loggingData, loggingData);
     XCTAssertEqualObjects(model.customData, customData);
@@ -384,7 +367,7 @@
     self.builder.subtitle = @"subtitle";
     self.builder.accessoryTitle = @"accessory title";
     self.builder.descriptionText = @"description text";
-    self.builder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
+    self.builder.targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:framework"];
     self.builder.loggingData = @{@"logging": @"data"};
     self.builder.customData = @{@"custom": @"data"};
     
@@ -398,7 +381,7 @@
     XCTAssertEqualObjects(self.builder.subtitle, @"subtitle");
     XCTAssertEqualObjects(self.builder.accessoryTitle, @"accessory title");
     XCTAssertEqualObjects(self.builder.descriptionText, @"description text");
-    XCTAssertEqualObjects(self.builder.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
+    XCTAssertEqualObjects(self.builder.targetBuilder.URI, [NSURL URLWithString:@"spotify:hub:framework"]);
     XCTAssertEqualObjects(self.builder.loggingData, @{@"logging": @"data"});
     XCTAssertEqualObjects(self.builder.customData, @{@"custom": @"data"});
 }
@@ -482,7 +465,7 @@
     self.builder.subtitle = @"subtitle";
     self.builder.accessoryTitle = @"accessory title";
     self.builder.descriptionText = @"description text";
-    self.builder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
+    self.builder.targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:framework"];
     self.builder.loggingData = @{@"logging": @"data"};
     self.builder.customData = @{@"custom": @"data"};
     
@@ -502,7 +485,7 @@
     XCTAssertEqualObjects(builderCopy.subtitle, @"subtitle");
     XCTAssertEqualObjects(builderCopy.accessoryTitle, @"accessory title");
     XCTAssertEqualObjects(builderCopy.descriptionText, @"description text");
-    XCTAssertEqualObjects(builderCopy.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
+    XCTAssertEqualObjects(builderCopy.targetBuilder.URI, [NSURL URLWithString:@"spotify:hub:framework"]);
     XCTAssertEqualObjects(builderCopy.loggingData, @{@"logging": @"data"});
     XCTAssertEqualObjects(builderCopy.customData, @{@"custom": @"data"});
     

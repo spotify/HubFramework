@@ -2,8 +2,10 @@
 
 #import "HUBComponentModelImplementation.h"
 #import "HUBComponentIdentifier.h"
+#import "HUBComponentTargetImplementation.h"
 #import "HUBComponentImageDataImplementation.h"
 #import "HUBIconImplementation.h"
+#import "HUBViewModelImplementation.h"
 
 @interface HUBComponentModelTests : XCTestCase
 
@@ -30,7 +32,6 @@
 {
     id<HUBComponentModel> (^createComponentModel)() = ^() {
         HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
-        NSURL * const targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
         
         NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.com/main.jpg"];
         id<HUBComponentImageData> const mainImageData = [[HUBComponentImageDataImplementation alloc] initWithIdentifier:nil
@@ -56,6 +57,19 @@
                                                                                                           placeholderIcon:nil
                                                                                                                localImage:nil];
         
+        NSURL * const targetURI = [NSURL URLWithString:@"spotify:hub:framework"];
+        HUBViewModelImplementation * const targetInitialViewModel = [[HUBViewModelImplementation alloc] initWithIdentifier:nil
+                                                                                                        navigationBarTitle:nil
+                                                                                                      headerComponentModel:nil
+                                                                                                       bodyComponentModels:@[]
+                                                                                                    overlayComponentModels:@[]
+                                                                                                              extensionURL:nil
+                                                                                                                customData:nil];
+        
+        id<HUBComponentTarget> const target = [[HUBComponentTargetImplementation alloc] initWithURI:targetURI
+                                                                                   initialViewModel:targetInitialViewModel
+                                                                                         customData:@{@"custom": @"data"}];
+        
         return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
                                                                      index:0
                                                        componentIdentifier:componentIdentifier
@@ -68,11 +82,10 @@
                                                        backgroundImageData:backgroundImageData
                                                            customImageData:@{@"custom": customImageData}
                                                                       icon:nil
-                                                                 targetURL:targetURL
-                                                    targetInitialViewModel:nil
+                                                                    target:target
                                                                   metadata:@{@"meta": @"data"}
                                                                loggingData:@{@"logging": @"data"}
-                                                                customData:@{@"custom" : @"data"}
+                                                                customData:@{@"custom": @"data"}
                                                       childComponentModels:@[]];
     };
     
@@ -97,8 +110,7 @@
                                                        backgroundImageData:nil
                                                            customImageData:@{}
                                                                       icon:nil
-                                                                 targetURL:nil
-                                                    targetInitialViewModel:nil
+                                                                    target:nil
                                                                   metadata:nil
                                                                loggingData:nil
                                                                 customData:nil
@@ -114,6 +126,9 @@
                                                    childComponentModels:(nullable NSArray<HUBComponentModelImplementation *> *)childComponentModels
 {
     HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+    HUBComponentTargetImplementation * const target = [[HUBComponentTargetImplementation alloc] initWithURI:nil
+                                                                                           initialViewModel:nil
+                                                                                                 customData:nil];
     
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
                                                                  index:0
@@ -127,8 +142,7 @@
                                                    backgroundImageData:nil
                                                        customImageData:@{}
                                                                   icon:nil
-                                                             targetURL:nil
-                                                targetInitialViewModel:nil
+                                                                target:target
                                                               metadata:nil
                                                            loggingData:nil
                                                             customData:nil
