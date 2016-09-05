@@ -43,7 +43,7 @@
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBComponentFactory.h"
 #import "HUBComponentFactoryShowcaseNameProvider.h"
-#import "HUBComponentIdentifier.h"
+#import "HUBIdentifier.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentImageData.h"

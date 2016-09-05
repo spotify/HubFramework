@@ -1,7 +1,7 @@
 #import "HUBSerializable.h"
 #import "HUBComponentCategories.h"
 
-@class HUBComponentIdentifier;
+@class HUBIdentifier;
 @protocol HUBComponentImageData;
 @protocol HUBComponentModel;
 @protocol HUBComponentTarget;
@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The component identifier's namespace should match the namespace of a registered `HUBComponentFactory`.
  *  If no component can be resolved for this identifier, a fallback one will be used.
  */
-@property (nonatomic, copy, readonly) HUBComponentIdentifier *componentIdentifier;
+@property (nonatomic, copy, readonly) HUBIdentifier *componentIdentifier;
 
 /**
  *  The category of the component that this model should be rendered using

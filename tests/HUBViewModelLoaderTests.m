@@ -6,7 +6,6 @@
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentModel.h"
-#import "HUBComponentIdentifier.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBContentOperationMock.h"
 #import "HUBConnectivityStateResolverMock.h"

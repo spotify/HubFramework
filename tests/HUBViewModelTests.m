@@ -2,7 +2,7 @@
 
 #import "HUBViewModelImplementation.h"
 #import "HUBComponentModelImplementation.h"
-#import "HUBComponentIdentifier.h"
+#import "HUBIdentifier.h"
 #import "HUBComponentCategories.h"
 
 @interface HUBViewModelTests : XCTestCase
@@ -15,7 +15,7 @@
 {
     id<HUBViewModel>(^createViewModel)() = ^{
         id<HUBComponentModel> (^createComponentModel)() = ^{
-            HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+            HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
             
             return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
                                                                          index:0
@@ -54,7 +54,7 @@
 {
     id<HUBViewModel>(^createViewModel)() = ^{
         id<HUBComponentModel> (^createComponentModel)() = ^{
-            HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+            HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
             
             return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
                                                                          index:0

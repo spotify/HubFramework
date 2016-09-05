@@ -1,6 +1,6 @@
 #import <XCTest/XCTest.h>
 
-#import "HUBComponentIdentifier.h"
+#import "HUBIdentifier.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBCollectionViewLayout.h"
 #import "HUBViewModelBuilderImplementation.h"
@@ -19,13 +19,13 @@
 
 @property (nonatomic) CGSize collectionViewSize;
 @property (nonatomic, strong) HUBComponentMock *compactComponent;
-@property (nonatomic, strong) HUBComponentIdentifier *compactComponentIdentifier;
+@property (nonatomic, strong) HUBIdentifier *compactComponentIdentifier;
 
 @property (nonatomic, strong) HUBComponentMock *centeredComponent;
-@property (nonatomic, strong) HUBComponentIdentifier *centeredComponentIdentifier;
+@property (nonatomic, strong) HUBIdentifier *centeredComponentIdentifier;
 
 @property (nonatomic, strong) HUBComponentMock *fullWidthComponent;
-@property (nonatomic, strong) HUBComponentIdentifier *fullWidthComponentIdentifier;
+@property (nonatomic, strong) HUBIdentifier *fullWidthComponentIdentifier;
 
 @property (nonatomic, strong) HUBComponentFactoryMock *componentFactory;
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
@@ -50,22 +50,22 @@
     self.compactComponent = [HUBComponentMock new];
     [self.compactComponent.layoutTraits addObject:HUBComponentLayoutTraitCompactWidth];
     self.compactComponent.preferredViewSize = CGSizeMake(100, 100);
-    self.compactComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentNamespace name:compactComponentName];
+    self.compactComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:componentNamespace name:compactComponentName];
     
     self.fullWidthComponent = [HUBComponentMock new];
     [self.fullWidthComponent.layoutTraits addObject:HUBComponentLayoutTraitFullWidth];
     self.fullWidthComponent.preferredViewSize = CGSizeMake(self.collectionViewSize.width, 100);
-    self.fullWidthComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentNamespace name:@"fullWidth"];
+    self.fullWidthComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:componentNamespace name:@"fullWidth"];
 
     self.centeredComponent = [HUBComponentMock new];
     [self.centeredComponent.layoutTraits addObject:HUBComponentLayoutTraitCentered];
     self.centeredComponent.preferredViewSize = CGSizeMake(50, 50);
-    self.centeredComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentNamespace name:@"centered"];
+    self.centeredComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:componentNamespace name:@"centered"];
     
     self.componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
-        self.compactComponentIdentifier.componentName: self.compactComponent,
-        self.fullWidthComponentIdentifier.componentName: self.fullWidthComponent,
-        self.centeredComponentIdentifier.componentName: self.centeredComponent
+        self.compactComponentIdentifier.namePart: self.compactComponent,
+        self.fullWidthComponentIdentifier.namePart: self.fullWidthComponent,
+        self.centeredComponentIdentifier.namePart: self.centeredComponent
     }];
     
     HUBComponentDefaults * const componentDefaults = [[HUBComponentDefaults alloc] initWithComponentNamespace:componentNamespace
@@ -139,7 +139,7 @@
 
 - (void)testVerticalMarginToHeaderComponent
 {
-    self.viewModelBuilder.headerComponentModelBuilder.componentName = self.fullWidthComponentIdentifier.componentName;
+    self.viewModelBuilder.headerComponentModelBuilder.componentName = self.fullWidthComponentIdentifier.namePart;
     [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier];
     
     CGFloat const headerMargin = 30;
@@ -252,10 +252,10 @@
 
 #pragma mark - Utilities
 
-- (void)addBodyComponentWithIdentifier:(HUBComponentIdentifier *)componentIdentifier
+- (void)addBodyComponentWithIdentifier:(HUBIdentifier *)componentIdentifier
 {
     NSString * const modelIdentifier = [NSUUID UUID].UUIDString;
-    [self.viewModelBuilder builderForBodyComponentModelWithIdentifier:modelIdentifier].componentName = componentIdentifier.componentName;
+    [self.viewModelBuilder builderForBodyComponentModelWithIdentifier:modelIdentifier].componentName = componentIdentifier.namePart;
 }
 
 - (HUBCollectionViewLayout *)computeLayout

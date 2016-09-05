@@ -3,7 +3,6 @@
 #import "HUBViewModelImplementation.h"
 #import "HUBComponentModelBuilderImplementation.h"
 #import "HUBComponentModelImplementation.h"
-#import "HUBComponentIdentifier.h"
 #import "HUBJSONSchema.h"
 #import "HUBViewModelJSONSchema.h"
 #import "HUBComponentModelJSONSchema.h"

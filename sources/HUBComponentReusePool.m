@@ -1,7 +1,7 @@
 #import "HUBComponentReusePool.h"
 
 #import "HUBComponentWrapper.h"
-#import "HUBComponentIdentifier.h"
+#import "HUBIdentifier.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentRegistryImplementation.h"
 
@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
-@property (nonatomic, strong, readonly) NSMutableDictionary<HUBComponentIdentifier *, NSMutableSet<HUBComponentWrapper *> *> *componentWrappers;
+@property (nonatomic, strong, readonly) NSMutableDictionary<HUBIdentifier *, NSMutableSet<HUBComponentWrapper *> *> *componentWrappers;
 
 @end
 
@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)addComponentWrappper:(HUBComponentWrapper *)componentWrapper
 {
-    HUBComponentIdentifier * const componentIdentifier = componentWrapper.model.componentIdentifier;
+    HUBIdentifier * const componentIdentifier = componentWrapper.model.componentIdentifier;
     NSMutableSet * const existingWrappers = self.componentWrappers[componentIdentifier];
     
     if (existingWrappers != nil) {

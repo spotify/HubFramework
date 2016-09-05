@@ -1,7 +1,7 @@
 #import "HUBComponentRegistryImplementation.h"
 
 #import "HUBComponent.h"
-#import "HUBComponentIdentifier.h"
+#import "HUBIdentifier.h"
 #import "HUBComponentFactory.h"
 #import "HUBComponentFactoryShowcaseNameProvider.h"
 #import "HUBComponentModel.h"
@@ -49,8 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model
 {
-    id<HUBComponentFactory> const factory = self.componentFactories[model.componentIdentifier.componentNamespace];
-    id<HUBComponent> const component = [factory createComponentForName:model.componentIdentifier.componentName];
+    id<HUBComponentFactory> const factory = self.componentFactories[model.componentIdentifier.namespacePart];
+    id<HUBComponent> const component = [factory createComponentForName:model.componentIdentifier.namePart];
     
     if (component != nil) {
         return component;
@@ -77,9 +77,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentShowcaseManager
 
-- (NSArray<HUBComponentIdentifier *> *)showcaseableComponentIdentifiers
+- (NSArray<HUBIdentifier *> *)showcaseableComponentIdentifiers
 {
-    NSMutableArray<HUBComponentIdentifier *> * const componentIdentifiers = [NSMutableArray new];
+    NSMutableArray<HUBIdentifier *> * const componentIdentifiers = [NSMutableArray new];
     
     for (NSString * const namespace in self.componentFactories) {
         id<HUBComponentFactory> const factory = self.componentFactories[namespace];
@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
         NSArray<NSString *> * const names = ((id<HUBComponentFactoryShowcaseNameProvider>)factory).showcaseableComponentNames;
         
         for (NSString * const name in names) {
-            HUBComponentIdentifier * const identifier = [[HUBComponentIdentifier alloc] initWithNamespace:namespace name:name];
+            HUBIdentifier * const identifier = [[HUBIdentifier alloc] initWithNamespace:namespace name:name];
             [componentIdentifiers addObject:identifier];
         }
     }
@@ -99,16 +99,16 @@ NS_ASSUME_NONNULL_BEGIN
     return [componentIdentifiers copy];
 }
 
-- (nullable NSString *)showcaseNameForComponentIdentifier:(HUBComponentIdentifier *)componentIdentifier
+- (nullable NSString *)showcaseNameForComponentIdentifier:(HUBIdentifier *)componentIdentifier
 {
-    id<HUBComponentFactory> const factory = self.componentFactories[componentIdentifier.componentNamespace];
+    id<HUBComponentFactory> const factory = self.componentFactories[componentIdentifier.namespacePart];
     
     if (![factory conformsToProtocol:@protocol(HUBComponentFactoryShowcaseNameProvider)]) {
         return nil;
     }
     
     id<HUBComponentFactoryShowcaseNameProvider> const showcaseNameProvider = (id<HUBComponentFactoryShowcaseNameProvider>)factory;
-    return [showcaseNameProvider showcaseNameForComponentName:componentIdentifier.componentName];
+    return [showcaseNameProvider showcaseNameForComponentName:componentIdentifier.namePart];
 }
 
 - (id<HUBComponentModelBuilder, HUBComponentShowcaseSnapshotGenerator>)createShowcaseSnapshotComponentModelBuilder

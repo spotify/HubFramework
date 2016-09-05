@@ -2,7 +2,7 @@
 
 @protocol HUBComponentModelBuilder;
 @protocol HUBComponentShowcaseSnapshotGenerator;
-@class HUBComponentIdentifier;
+@class HUBIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  an array of showcaseable component names (by conforming to `HUBComponentFactoryShowcaseNameProvider`), which
  *  will then be used to construct the component identifiers returned from this property.
  */
-@property (nonatomic, strong, readonly) NSArray<HUBComponentIdentifier *> *showcaseableComponentIdentifiers;
+@property (nonatomic, strong, readonly) NSArray<HUBIdentifier *> *showcaseableComponentIdentifiers;
 
 /**
  *  Return a human readable name for a component that can be displayed in a showcase
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return A component name that can be displayed in a showcase UI, or nil if the identifier wasn't recognized
  *          by any component factory.
  */
-- (nullable NSString *)showcaseNameForComponentIdentifier:(HUBComponentIdentifier *)componentIdentifier;
+- (nullable NSString *)showcaseNameForComponentIdentifier:(HUBIdentifier *)componentIdentifier;
 
 /**
  *  Create a new component model builder that is also able to generate showcase snapshots

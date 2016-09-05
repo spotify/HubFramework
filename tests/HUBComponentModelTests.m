@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 
 #import "HUBComponentModelImplementation.h"
-#import "HUBComponentIdentifier.h"
+#import "HUBIdentifier.h"
 #import "HUBComponentTargetImplementation.h"
 #import "HUBComponentImageDataImplementation.h"
 #import "HUBIconImplementation.h"
@@ -31,7 +31,7 @@
 - (void)testIdenticalInstancesAreEqual
 {
     id<HUBComponentModel> (^createComponentModel)() = ^() {
-        HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+        HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
         
         NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.com/main.jpg"];
         id<HUBComponentImageData> const mainImageData = [[HUBComponentImageDataImplementation alloc] initWithIdentifier:nil
@@ -96,7 +96,7 @@
 {
     id<HUBComponentModel> (^createComponentModel)() = ^() {
         NSString * const identifier = [NSUUID UUID].UUIDString;
-        HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+        HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
         
         return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
                                                                      index:0
@@ -125,7 +125,7 @@
 - (HUBComponentModelImplementation *)createComponentModelWithIdentifier:(NSString *)identifier
                                                    childComponentModels:(nullable NSArray<HUBComponentModelImplementation *> *)childComponentModels
 {
-    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+    HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
     HUBComponentTargetImplementation * const target = [[HUBComponentTargetImplementation alloc] initWithURI:nil
                                                                                            initialViewModel:nil
                                                                                                  customData:nil];

@@ -4,7 +4,7 @@
 #import "HUBViewModelLoaderImplementation.h"
 #import "HUBContentOperationMock.h"
 #import "HUBComponentRegistryImplementation.h"
-#import "HUBComponentIdentifier.h"
+#import "HUBIdentifier.h"
 #import "HUBJSONSChemaRegistryImplementation.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBConnectivityStateResolverMock.h"
@@ -37,7 +37,7 @@
 
 @property (nonatomic, strong) HUBContentOperationMock *contentOperation;
 @property (nonatomic, strong) HUBContentReloadPolicyMock *contentReloadPolicy;
-@property (nonatomic, strong) HUBComponentIdentifier *componentIdentifier;
+@property (nonatomic, strong) HUBIdentifier *componentIdentifier;
 @property (nonatomic, strong) HUBComponentMock *component;
 @property (nonatomic, strong) HUBComponentFactoryMock *componentFactory;
 @property (nonatomic, strong) HUBCollectionViewMock *collectionView;
@@ -79,7 +79,7 @@
     };
     
     self.contentReloadPolicy = [HUBContentReloadPolicyMock new];
-    self.componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:componentDefaults.componentNamespace name:componentDefaults.componentName];
+    self.componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:componentDefaults.componentNamespace name:componentDefaults.componentName];
     
     self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler
                                                                                componentDefaults:componentDefaults
@@ -204,7 +204,7 @@
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
         __typeof(self) strongSelf = weakSelf;
         
-        builder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        builder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.namePart;
         builder.headerComponentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
         builder.headerComponentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
         [builder.headerComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
@@ -234,7 +234,7 @@
         __typeof(self) strongSelf = weakSelf;
         
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
-        componentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        componentModelBuilder.componentName = strongSelf.componentIdentifier.namePart;
         componentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
         componentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
         [componentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
@@ -268,8 +268,8 @@
         
         id<HUBComponentModelBuilder> const overlayComponentModelBuilder = [builder builderForOverlayComponentModelWithIdentifier:@"overlay"];
         
-        overlayComponentModelBuilder.componentNamespace = strongSelf.componentIdentifier.componentNamespace;
-        overlayComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        overlayComponentModelBuilder.componentNamespace = strongSelf.componentIdentifier.namespacePart;
+        overlayComponentModelBuilder.componentName = strongSelf.componentIdentifier.namePart;
         overlayComponentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
         overlayComponentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
         [overlayComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
@@ -398,7 +398,7 @@
         __typeof(self) strongSelf = weakSelf;
         
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
-        componentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        componentModelBuilder.componentName = strongSelf.componentIdentifier.namePart;
         componentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
         
         return YES;
@@ -418,7 +418,7 @@
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
-        viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.namePart;
         viewModelBuilder.headerComponentModelBuilder.title = [NSUUID UUID].UUIDString;
         return YES;
     };
@@ -597,7 +597,7 @@
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"id"];
-        componentModelBuilder.componentName = weakSelf.componentIdentifier.componentName;
+        componentModelBuilder.componentName = weakSelf.componentIdentifier.namePart;
         componentModelBuilder.targetBuilder.URI = targetViewURI;
         componentModelBuilder.targetBuilder.initialViewModelBuilder.viewIdentifier = initialViewModelIdentifier;
         
@@ -832,7 +832,7 @@
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
-        componentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        componentModelBuilder.componentName = strongSelf.componentIdentifier.namePart;
         
         return YES;
     };
@@ -1027,7 +1027,7 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
-        viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.componentName;
+        viewModelBuilder.headerComponentModelBuilder.componentName = strongSelf.componentIdentifier.namePart;
         viewModelBuilder.headerComponentModelBuilder.title = [NSUUID UUID].UUIDString;
         return YES;
     };
@@ -1122,7 +1122,7 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
 
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
-        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].componentName = strongSelf.componentIdentifier.componentName;
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].componentName = strongSelf.componentIdentifier.namePart;
         return YES;
     };
 
@@ -1139,7 +1139,7 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
 
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         __typeof(self) strongSelf = weakSelf;
-        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].componentName = strongSelf.componentIdentifier.componentName;
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].componentName = strongSelf.componentIdentifier.namePart;
         return YES;
     };
 
