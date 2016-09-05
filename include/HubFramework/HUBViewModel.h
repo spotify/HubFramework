@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBViewModel <HUBSerializable>
 
-#pragma mark - Identifiers
+#pragma mark - Identifier & Navigation bar title
 
 /**
  *  The identifier of the view
@@ -24,16 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  purposes, it's definitely recommended.
  */
 @property (nonatomic, copy, readonly, nullable) NSString *identifier;
-
-/**
- *  The identifier of the feature that the view belongs to
- *
- *  This property can be used to group views together, to be able to reason about them as a feature. Unless overriden in
- *  the content loading process, the default value is the identifier of the Hub Framework feature that this view belongs.
- */
-@property (nonatomic, copy, readonly) NSString *featureIdentifier;
-
-#pragma mark - Navigation bar title
 
 /**
  *  The title that should be displayed in the view's navigation bar

@@ -84,6 +84,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The view controller's delegate. See `HUBViewControllerDelegate` for more information.
 @property (nonatomic, weak, nullable) id<HUBViewControllerDelegate> delegate;
 
+/// The identifier of the feature that this view controller belongs to
+@property (nonatomic, copy, readonly) NSString *featureIdentifier;
+
 /**
  *  The current view model that the view controller is using
  *

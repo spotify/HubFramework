@@ -15,7 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentModelBuilderShowcaseSnapshotGenerator
 
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
-                      featureIdentifier:(NSString *)featureIdentifier
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
@@ -26,7 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(componentRegistry != nil);
     
     self = [super initWithModelIdentifier:modelIdentifier
-                        featureIdentifier:featureIdentifier
                                JSONSchema:JSONSchema
                         componentDefaults:componentDefaults
                         iconImageResolver:iconImageResolver

@@ -11,7 +11,6 @@
 
 @interface HUBViewModelBuilderTests : XCTestCase
 
-@property (nonatomic, copy) NSString *featureIdentifier;
 @property (nonatomic, strong) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong) HUBViewModelBuilderImplementation *builder;
@@ -26,16 +25,14 @@
 {
     [super setUp];
     
-    self.featureIdentifier = @"feature";
     self.componentDefaults = [HUBComponentDefaults defaultsForTesting];
     self.iconImageResolver = [HUBIconImageResolverMock new];
     
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults iconImageResolver:self.iconImageResolver];
     
-    self.builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
-                                                                             JSONSchema:JSONSchema
-                                                                      componentDefaults:self.componentDefaults
-                                                                      iconImageResolver:self.iconImageResolver];
+    self.builder = [[HUBViewModelBuilderImplementation alloc] initWithJSONSchema:JSONSchema
+                                                               componentDefaults:self.componentDefaults
+                                                               iconImageResolver:self.iconImageResolver];
 }
 
 #pragma mark - Tests
@@ -43,10 +40,8 @@
 - (void)testPropertyAssignment
 {
     XCTAssertNil(self.builder.viewIdentifier);
-    XCTAssertEqualObjects(self.builder.featureIdentifier, self.featureIdentifier);
     
     self.builder.viewIdentifier = @"view";
-    self.builder.featureIdentifier = @"another feature";
     self.builder.navigationBarTitle = @"nav title";
     self.builder.extensionURL = [NSURL URLWithString:@"www.spotify.com"];
     self.builder.customData = @{@"custom": @"data"};
@@ -54,7 +49,6 @@
     id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqualObjects(model.identifier, self.builder.viewIdentifier);
-    XCTAssertEqualObjects(model.featureIdentifier, self.builder.featureIdentifier);
     XCTAssertEqualObjects(model.navigationBarTitle, self.builder.navigationBarTitle);
     XCTAssertEqualObjects(model.extensionURL, self.builder.extensionURL);
     XCTAssertEqualObjects(model.customData, self.builder.customData);
@@ -253,15 +247,9 @@
     XCTAssertEqualObjects(enumeratedBuilders, expectedEnumeratedBuilders);
 }
 
-- (void)testFeatureIdentifierMatchingComponentTargetInitialViewModelFeatureIdentifier
-{
-    XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.targetInitialViewModelBuilder.featureIdentifier, self.builder.featureIdentifier);
-}
-
 - (void)testAddingViewModelDictionaryJSONDataAndModelSerialization
 {
     NSString * const viewIdentifier = @"identifier";
-    NSString * const featureIdentifier = @"feature";
     NSString * const navigationBarTitle = @"nav bar title";
     NSString * const headerComponentModelIdentifier = @"header model";
     HUBComponentIdentifier * const headerComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"header" name:@"component"];
@@ -273,7 +261,6 @@
     
     NSDictionary * const dictionary = @{
         @"id": viewIdentifier,
-        @"feature": featureIdentifier,
         @"title": navigationBarTitle,
         @"header": @{
             @"id": headerComponentModelIdentifier,
@@ -310,7 +297,6 @@
     id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqualObjects(model.identifier, viewIdentifier);
-    XCTAssertEqualObjects(model.featureIdentifier, featureIdentifier);
     XCTAssertEqualObjects(model.navigationBarTitle, navigationBarTitle);
     XCTAssertEqualObjects(model.headerComponentModel.componentIdentifier, headerComponentIdentifier);
     XCTAssertEqualObjects(model.headerComponentModel.componentCategory, @"headerCategory");
@@ -361,7 +347,6 @@
 - (void)testAddingJSONDataNotRemovingExistingData
 {
     self.builder.viewIdentifier = @"view";
-    self.builder.featureIdentifier = @"feature";
     self.builder.navigationBarTitle = @"title";
     self.builder.headerComponentModelBuilder.title = @"header title";
     self.builder.extensionURL = [NSURL URLWithString:@"http://spotify.extension.com"];
@@ -372,7 +357,6 @@
     [self.builder addJSONData:emptyJSONData];
     
     XCTAssertEqualObjects(self.builder.viewIdentifier, @"view");
-    XCTAssertEqualObjects(self.builder.featureIdentifier, @"feature");
     XCTAssertEqualObjects(self.builder.navigationBarTitle, @"title");
     XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.title, @"header title");
     XCTAssertEqualObjects(self.builder.extensionURL, [NSURL URLWithString:@"http://spotify.extension.com"]);
@@ -427,7 +411,6 @@
 - (void)testCopying
 {
     self.builder.viewIdentifier = @"id";
-    self.builder.featureIdentifier = @"feature";
     self.builder.navigationBarTitle = @"title";
     self.builder.extensionURL = [NSURL URLWithString:@"https://spotify.extension.com"];
     self.builder.customData = @{@"custom": @"data"};
@@ -440,7 +423,6 @@
     XCTAssertNotEqual(self.builder, builderCopy);
     
     XCTAssertEqualObjects(builderCopy.viewIdentifier, @"id");
-    XCTAssertEqualObjects(builderCopy.featureIdentifier, @"feature");
     XCTAssertEqualObjects(builderCopy.navigationBarTitle, @"title");
     XCTAssertEqualObjects(builderCopy.extensionURL, [NSURL URLWithString:@"https://spotify.extension.com"]);
     XCTAssertEqualObjects(builderCopy.customData, @{@"custom": @"data"});

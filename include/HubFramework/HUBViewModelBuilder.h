@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) BOOL isEmpty;
 
-#pragma mark - Identifiers
+#pragma mark - Identifier
 
 /**
  *  The identifier that the view should have
@@ -35,17 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  The default value of this property is either a view identifier derived from remote content JSON data or nil.
  */
 @property (nonatomic, copy, nullable) NSString *viewIdentifier;
-
-/**
- *  The identifier of the feature that the view should logically belong to
- *
- *  This property can be used to group views together, to be able to reason about them as a feature. It can
- *  optionally be used for logging and UI instrumentation.
- *
- *  The default value of this property is the identifier of the Hub Framework feature that the view will belong
- *  to, or any explicit value that any remote content JSON data contained.
- */
-@property (nonatomic, copy) NSString *featureIdentifier;
 
 #pragma mark - Navigation bar & header
 

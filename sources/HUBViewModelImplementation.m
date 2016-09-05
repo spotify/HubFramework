@@ -9,7 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBViewModelImplementation
 
 @synthesize identifier = _identifier;
-@synthesize featureIdentifier = _featureIdentifier;
 @synthesize navigationBarTitle = _navigationBarTitle;
 @synthesize headerComponentModel = _headerComponentModel;
 @synthesize bodyComponentModels = _bodyComponentModels;
@@ -19,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize buildDate = _buildDate;
 
 - (instancetype)initWithIdentifier:(nullable NSString *)identifier
-                 featureIdentifier:(NSString *)featureIdentifier
                 navigationBarTitle:(nullable NSString *)navigationBarTitle
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
@@ -31,7 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self) {
         _identifier = [identifier copy];
-        _featureIdentifier = [featureIdentifier copy];
         _navigationBarTitle = [navigationBarTitle copy];
         _headerComponentModel = headerComponentModel;
         _bodyComponentModels = bodyComponentModels;
@@ -57,7 +54,6 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyIdentifier] = self.identifier;
-    serialization[HUBJSONKeyFeature] = self.featureIdentifier;
     serialization[HUBJSONKeyTitle] = self.navigationBarTitle;
     serialization[HUBJSONKeyHeader] = [self.headerComponentModel serialize];
     serialization[HUBJSONKeyBody] = [self serializeComponentModels:self.bodyComponentModels];

@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its required dependencies
  *
  *  @param viewURI The view URI that this view controller is for
+ *  @param featureIdentifier The identifier of the feature that this view controller is for
  *  @param viewModelLoader The object to use to load view models for the view controller
  *  @param collectionViewFactory The factory to use to create collection views
  *  @param componentRegistry The registry to use to retrieve components to render
@@ -30,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param imageLoader The object to use to load images for components
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
+              featureIdentifier:(NSString *)featureIdentifier
                 viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry

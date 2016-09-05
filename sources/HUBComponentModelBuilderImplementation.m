@@ -18,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBComponentModelBuilderImplementation ()
 
-@property (nonatomic, copy, readonly) NSString *featureIdentifier;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
@@ -53,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Class methods
 
 + (NSArray<id<HUBComponentModel>> *)buildComponentModelsUsingBuilders:(NSDictionary<NSString *,HUBComponentModelBuilderImplementation *> *)builders
-                                                                  identifierOrder:(NSArray<NSString *> *)identifierOrder
+                                                      identifierOrder:(NSArray<NSString *> *)identifierOrder
 {
     NSMutableOrderedSet<HUBComponentModelBuilderImplementation *> * const sortedBuilders = [NSMutableOrderedSet new];
     NSMutableDictionary<NSNumber *, HUBComponentModelBuilderImplementation *> * const buildersByPreferredIndex = [NSMutableDictionary new];
@@ -100,14 +99,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Initializer
 
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
-                      featureIdentifier:(NSString *)featureIdentifier
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
                       iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
                    mainImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)mainImageDataBuilder
              backgroundImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)backgroundImageDataBuilder
 {
-    NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(componentDefaults != nil);
     
@@ -126,7 +123,6 @@ NS_ASSUME_NONNULL_BEGIN
         _componentNamespace = [componentDefaults.componentNamespace copy];
         _componentName = [componentDefaults.componentName copy];
         _componentCategory = [componentDefaults.componentCategory copy];
-        _featureIdentifier = [featureIdentifier copy];
         
         if (mainImageDataBuilder != nil) {
             HUBComponentImageDataBuilderImplementation * const nonNilMainImageDataBuilder = mainImageDataBuilder;
@@ -414,7 +410,6 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentImageDataBuilderImplementation * const backgroundImageDataBuilder = [self.backgroundImageDataBuilderImplementation copy];
     
     HUBComponentModelBuilderImplementation * const copy = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:self.modelIdentifier
-                                                                                                                featureIdentifier:self.featureIdentifier
                                                                                                                        JSONSchema:self.JSONSchema
                                                                                                                 componentDefaults:self.componentDefaults
                                                                                                                 iconImageResolver:self.iconImageResolver
@@ -520,10 +515,9 @@ NS_ASSUME_NONNULL_BEGIN
 {
     // Lazily computed to avoid infinite recursion
     if (self.targetInitialViewModelBuilderImplementation == nil) {
-        self.targetInitialViewModelBuilderImplementation = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
-                                                                                                                     JSONSchema:self.JSONSchema
-                                                                                                              componentDefaults:self.componentDefaults
-                                                                                                              iconImageResolver:self.iconImageResolver];
+        self.targetInitialViewModelBuilderImplementation = [[HUBViewModelBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
+                                                                                                       componentDefaults:self.componentDefaults
+                                                                                                       iconImageResolver:self.iconImageResolver];
     }
     
     return (HUBViewModelBuilderImplementation *)self.targetInitialViewModelBuilderImplementation;
@@ -541,7 +535,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
-                                                                                                                      featureIdentifier:self.featureIdentifier
                                                                                                                              JSONSchema:self.JSONSchema
                                                                                                                       componentDefaults:self.componentDefaults
                                                                                                                       iconImageResolver:self.iconImageResolver

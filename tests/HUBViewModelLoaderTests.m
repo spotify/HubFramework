@@ -85,10 +85,9 @@
     id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults iconImageResolver:iconImageResolver];
     
-    HUBViewModelBuilderImplementation * const viewModelBuilder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
-                                                                                                                           JSONSchema:JSONSchema
-                                                                                                                    componentDefaults:componentDefaults
-                                                                                                                    iconImageResolver:iconImageResolver];
+    HUBViewModelBuilderImplementation * const viewModelBuilder = [[HUBViewModelBuilderImplementation alloc] initWithJSONSchema:JSONSchema
+                                                                                                             componentDefaults:componentDefaults
+                                                                                                             iconImageResolver:iconImageResolver];
     
     viewModelBuilder.navigationBarTitle = @"Pre-computed title";
     

@@ -6,7 +6,6 @@
 @implementation HUBViewModelJSONSchemaImplementation
 
 @synthesize identifierPath = _identifierPath;
-@synthesize featureIdentifierPath = _featureIdentifierPath;
 @synthesize navigationBarTitlePath = _navigationBarTitlePath;
 @synthesize headerComponentModelDictionaryPath = _headerComponentModelDictionaryPath;
 @synthesize bodyComponentModelDictionariesPath = _bodyComponentModelDictionariesPath;
@@ -19,7 +18,6 @@
 - (instancetype)init
 {
     return [self initWithIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyIdentifier] stringPath]
-                  featureIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyFeature] stringPath]
                  navigationBarTitlePath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyTitle] stringPath]
      headerComponentModelDictionaryPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyHeader] dictionaryPath]
      bodyComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyBody] forEach] dictionaryPath]
@@ -29,7 +27,6 @@
 }
 
 - (instancetype)initWithIdentifierPath:(id<HUBJSONStringPath>)identifierPath
-                 featureIdentifierPath:(id<HUBJSONStringPath>)featureIdentifierPath
                 navigationBarTitlePath:(id<HUBJSONStringPath>)navigationBarTitlePath
     headerComponentModelDictionaryPath:(id<HUBJSONDictionaryPath>)headerComponentModelDictionaryPath
     bodyComponentModelDictionariesPath:(id<HUBJSONDictionaryPath>)bodyComponentModelDictionariesPath
@@ -41,7 +38,6 @@
     
     if (self) {
         _identifierPath = identifierPath;
-        _featureIdentifierPath = featureIdentifierPath;
         _navigationBarTitlePath = navigationBarTitlePath;
         _headerComponentModelDictionaryPath = headerComponentModelDictionaryPath;
         _bodyComponentModelDictionariesPath = bodyComponentModelDictionariesPath;
@@ -58,7 +54,6 @@
 - (id)copy
 {
     return [[HUBViewModelJSONSchemaImplementation alloc] initWithIdentifierPath:self.identifierPath
-                                                          featureIdentifierPath:self.featureIdentifierPath
                                                          navigationBarTitlePath:self.navigationBarTitlePath
                                              headerComponentModelDictionaryPath:self.headerComponentModelDictionaryPath
                                              bodyComponentModelDictionariesPath:self.bodyComponentModelDictionariesPath

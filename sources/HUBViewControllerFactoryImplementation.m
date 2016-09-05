@@ -79,6 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBViewControllerScrollHandler> const scrollHandlerToUse = featureRegistration.viewControllerScrollHandler ?: [HUBViewControllerDefaultScrollHandler new];
     
     return [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
+                                                  featureIdentifier:featureRegistration.featureIdentifier
                                                     viewModelLoader:viewModelLoader
                                               collectionViewFactory:collectionViewFactory
                                                   componentRegistry:self.componentRegistry

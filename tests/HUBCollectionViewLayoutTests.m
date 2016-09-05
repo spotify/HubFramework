@@ -90,10 +90,9 @@
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults
                                                                                       iconImageResolver:iconImageResolver];
     
-    self.viewModelBuilder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:@"feature"
-                                                                                      JSONSchema:JSONSchema
-                                                                               componentDefaults:componentDefaults
-                                                                               iconImageResolver:iconImageResolver];
+    self.viewModelBuilder = [[HUBViewModelBuilderImplementation alloc] initWithJSONSchema:JSONSchema
+                                                                        componentDefaults:componentDefaults
+                                                                        iconImageResolver:iconImageResolver];
 }
 
 #pragma mark - Tests

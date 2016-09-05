@@ -15,7 +15,6 @@
 @interface HUBComponentModelBuilderTests : XCTestCase
 
 @property (nonatomic, copy) NSString *modelIdentifier;
-@property (nonatomic, copy) NSString *featureIdentifier;
 @property (nonatomic, strong) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong) HUBComponentModelBuilderImplementation *builder;
 
@@ -30,14 +29,12 @@
     [super setUp];
     
     self.modelIdentifier = @"model";
-    self.featureIdentifier = @"feature";
     self.componentDefaults = [HUBComponentDefaults defaultsForTesting];
     
     id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults iconImageResolver:iconImageResolver];
     
     self.builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:self.modelIdentifier
-                                                                         featureIdentifier:self.featureIdentifier
                                                                                 JSONSchema:JSONSchema
                                                                          componentDefaults:self.componentDefaults
                                                                          iconImageResolver:iconImageResolver
@@ -150,7 +147,6 @@
                                                                                       iconImageResolver:nil];
     
     self.builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:self.modelIdentifier
-                                                                         featureIdentifier:self.featureIdentifier
                                                                                 JSONSchema:JSONSchema
                                                                          componentDefaults:self.componentDefaults
                                                                          iconImageResolver:nil
@@ -174,7 +170,7 @@
     self.builder.targetURL = targetURL;
     
     id<HUBViewModel> const targetInitialViewModel = [self.builder buildForIndex:0].targetInitialViewModel;
-    XCTAssertEqualObjects(targetInitialViewModel.featureIdentifier, self.featureIdentifier);
+    XCTAssertEqualObjects(targetInitialViewModel.navigationBarTitle, @"hello");
 }
 
 - (void)testNoTargetInitialViewModelBuiltWithoutTargetURL
@@ -198,12 +194,6 @@
     id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
     
     XCTAssertEqual([self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier], childBuilder);
-}
-
-- (void)testChildComponentModelFeatureIdentifierSameAsParent
-{
-    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildComponentModelWithIdentifier:@"identifier"];
-    XCTAssertEqualObjects(childBuilder.targetInitialViewModelBuilder.featureIdentifier, self.featureIdentifier);
 }
 
 - (void)testChildComponentModelPreferredIndexRespected
@@ -271,8 +261,6 @@
 
 - (void)testAddingJSONDataAndModelSerialization
 {
-    NSString * const featureIdentifier = @"feature";
-    
     NSString * const modelIdentifier = @"model";
     HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"component"];
     NSString * const title = @"A title";
@@ -328,7 +316,6 @@
             @"uri": targetURL.absoluteString,
             @"view": @{
                 @"id": targetViewIdentifier,
-                @"feature": featureIdentifier,
                 @"title": targetTitle
             }
         },

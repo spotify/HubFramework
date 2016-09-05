@@ -10,7 +10,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its possible values
  *
  *  @param identifier The identifier of the view
- *  @param featureIdentifier The identifier of the feature that the view belongs to
  *  @param navigationBarTitle The title that the view should have in the navigation bar
  *  @param headerComponentModel The model for any component that make up the view's header
  *  @param bodyComponentModels The models for the components that make up the view's body
@@ -19,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param customData Any custom data that should be associated with the view
  */
 - (instancetype)initWithIdentifier:(nullable NSString *)identifier
-                 featureIdentifier:(NSString *)featureIdentifier
                 navigationBarTitle:(nullable NSString *)navigationBarTitle
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
