@@ -240,6 +240,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeBuilderForChildComponentModelWithIdentifier:(NSString *)identifier
 {
     self.childComponentModelBuilders[identifier] = nil;
+    [self.childComponentIdentifierOrder removeObject:identifier];
 }
 
 - (void)removeAllChildComponentModelBuilders

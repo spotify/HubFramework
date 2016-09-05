@@ -226,7 +226,7 @@
     id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildComponentModelWithIdentifier:childIdentifier];
     childBuilder.componentName = @"component";
     childBuilder.preferredIndex = @99;
-    
+
     id<HUBComponentModel> const model = [self.builder buildForIndex:0];
     XCTAssertEqual(model.childComponentModels.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifier);
@@ -239,9 +239,11 @@
     
     [self.builder builderForChildComponentModelWithIdentifier:childIdentifier].componentName = @"component";
     XCTAssertTrue([self.builder builderExistsForChildComponentModelWithIdentifier:childIdentifier]);
-    
+
+    NSUInteger childBuilderCountBefore = [self.builder allChildComponentModelBuilders].count;
     [self.builder removeBuilderForChildComponentModelWithIdentifier:childIdentifier];
     XCTAssertFalse([self.builder builderExistsForChildComponentModelWithIdentifier:childIdentifier]);
+    XCTAssertEqual([self.builder allChildComponentModelBuilders].count, childBuilderCountBefore - 1);
 }
 
 - (void)testRemovingAllChildComponentModels
