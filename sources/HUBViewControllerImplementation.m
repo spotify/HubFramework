@@ -484,7 +484,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-	self.collectionViewIsScrolling = NO;
+    self.collectionViewIsScrolling = NO;
     [self notifyScrollingDidEndInScrollView:scrollView];
 }
 
