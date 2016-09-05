@@ -82,6 +82,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - NSObject
 
+- (nullable id)valueForKey:(NSString *)key
+{
+    // For some reason KVC won't work with this property name, so this workaround is required
+    if ([key isEqualToString:@"componentCategory"]) {
+        return self.componentCategory;
+    }
+    
+    return [super valueForKey:key];
+}
+
 - (NSString *)debugDescription
 {
     return [NSString stringWithFormat:@"HUBComponentModel with contents: %@", HUBSerializeToString(self)];

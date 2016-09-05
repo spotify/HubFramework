@@ -32,13 +32,13 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param model The model to return a component wrapper for
  *  @param delegate The object that will act as the component wrapper's delegate
- *  @param parentComponentWrapper The parent wrapper if creating a child component
+ *  @param parent The parent wrapper if creating a child component
  *
  *  This method will either return a reused wrapper, or create one if none existed in the pool.
  */
 - (HUBComponentWrapper *)componentWrapperForModel:(id<HUBComponentModel>)model
                                          delegate:(id<HUBComponentWrapperDelegate>)delegate
-                           parentComponentWrapper:(nullable HUBComponentWrapper *)parentComponentWrapper;
+                                           parent:(nullable HUBComponentWrapper *)parent;
 
 @end
 

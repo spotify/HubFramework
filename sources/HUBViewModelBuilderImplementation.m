@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewModelBuilderImplementation () <HUBModificationDelegate>
+@interface HUBViewModelBuilderImplementation ()
 
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
@@ -35,15 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize navigationBarTitle = _navigationBarTitle;
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
-@synthesize modificationDelegate = _modificationDelegate;
-
-#pragma mark - Modification tracking
-
-HUB_TRACK_MODIFICATIONS(_viewIdentifier, setViewIdentifier:, nullable)
-HUB_TRACK_MODIFICATIONS(_featureIdentifier, setFeatureIdentifier:, nonnull)
-HUB_TRACK_MODIFICATIONS(_navigationBarTitle, setNavigationBarTitle:, nullable)
-HUB_TRACK_MODIFICATIONS(_extensionURL, setExtensionURL:, nullable)
-HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
 
 #pragma mark - Initializer
 
@@ -162,7 +153,6 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
     }
     
     self.headerComponentModelBuilderImplementation = nil;
-    [self.modificationDelegate modifiableWasModified:self];
 }
 
 - (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier
@@ -173,7 +163,6 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
     
     [self.bodyComponentModelBuilders removeObjectForKey:identifier];
     [self.bodyComponentIdentifierOrder removeObject:identifier];
-    [self.modificationDelegate modifiableWasModified:self];
 }
 
 - (void)removeBuilderForOverlayComponentModelWithIdentifier:(NSString *)identifier
@@ -184,7 +173,6 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
     
     [self.overlayComponentModelBuilders removeObjectForKey:identifier];
     [self.overlayComponentIdentifierOrder removeObject:identifier];
-    [self.modificationDelegate modifiableWasModified:self];
 }
 
 - (void)removeAllComponentModelBuilders
@@ -196,8 +184,6 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
     
     [self.overlayComponentModelBuilders removeAllObjects];
     [self.overlayComponentIdentifierOrder removeAllObjects];
-    
-    [self.modificationDelegate modifiableWasModified:self];
 }
 
 #pragma mark - API
@@ -306,13 +292,6 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
     }
 }
 
-#pragma mark - HUBModificationDelegate
-
-- (void)modifiableWasModified:(id<HUBModifiable>)modifiable
-{
-    [self.modificationDelegate modifiableWasModified:self];
-}
-
 #pragma mark - NSObject
 
 - (NSString *)debugDescription
@@ -334,17 +313,14 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
     copy.extensionURL = self.extensionURL;
     copy.customData = self.customData;
     copy.headerComponentModelBuilderImplementation = [self.headerComponentModelBuilderImplementation copy];
-    copy.headerComponentModelBuilderImplementation.modificationDelegate = self;
     
     for (NSString * const builderIdentifier in self.bodyComponentModelBuilders) {
         HUBComponentModelBuilderImplementation * const builderCopy = [self.bodyComponentModelBuilders[builderIdentifier] copy];
-        builderCopy.modificationDelegate = copy;
         copy.bodyComponentModelBuilders[builderIdentifier] = builderCopy;
     }
     
     for (NSString * const builderIdentifier in self.overlayComponentModelBuilders) {
         HUBComponentModelBuilderImplementation * const builderCopy = [self.overlayComponentModelBuilders[builderIdentifier] copy];
-        builderCopy.modificationDelegate = copy;
         copy.overlayComponentModelBuilders[builderIdentifier] = builderCopy;
     }
     
@@ -436,16 +412,13 @@ HUB_TRACK_MODIFICATIONS(_customData, setCustomData:, nullable)
 
 - (HUBComponentModelBuilderImplementation *)createComponentModelBuilderWithIdentifier:(nullable NSString *)identifier
 {
-    HUBComponentModelBuilderImplementation * const builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
-                                                                                                                   featureIdentifier:self.featureIdentifier
-                                                                                                                          JSONSchema:self.JSONSchema
-                                                                                                                   componentDefaults:self.componentDefaults
-                                                                                                                   iconImageResolver:self.iconImageResolver
-                                                                                                                mainImageDataBuilder:nil
-                                                                                                          backgroundImageDataBuilder:nil];
-    
-    builder.modificationDelegate = self;
-    return builder;
+    return [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
+                                                                 featureIdentifier:self.featureIdentifier
+                                                                        JSONSchema:self.JSONSchema
+                                                                 componentDefaults:self.componentDefaults
+                                                                 iconImageResolver:self.iconImageResolver
+                                                              mainImageDataBuilder:nil
+                                                        backgroundImageDataBuilder:nil];
 }
 
 - (BOOL)enumerateBodyComponentModelBuildersWithBlock:(BOOL(^)(id<HUBComponentModelBuilder>))block

@@ -1,3 +1,4 @@
+#import "HUBAutoEquatable.h"
 #import "HUBComponentImageData.h"
 #import "HUBHeaderMacros.h"
 
@@ -13,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle style);
 
 /// Concrete implementation of the `HUBComponentImageData` API
-@interface HUBComponentImageDataImplementation : NSObject <HUBComponentImageData>
+@interface HUBComponentImageDataImplementation : HUBAutoEquatable <HUBComponentImageData>
 
 /**
  *  Initialize an instance of this class with its possible values
