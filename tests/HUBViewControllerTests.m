@@ -1046,7 +1046,7 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
 
 - (void)testSavingAndRestoringOverlayComponentUIState
 {
-    __block BOOL hasBeenLoadedBefore = 0;
+    __block BOOL hasBeenLoadedBefore = NO;
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"id"];
