@@ -396,10 +396,10 @@
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Identifiers"></a>
-                <a name="//apple_ref/objc/Section/Identifiers" class="dashAnchor"></a>
-                <a href="#/Identifiers">
-                  <h3 class="section-name">Identifiers</h3>
+                <a name="/Identifier"></a>
+                <a name="//apple_ref/objc/Section/Identifier" class="dashAnchor"></a>
+                <a href="#/Identifier">
+                  <h3 class="section-name">Identifier</h3>
                 </a>
               </div>
               <ul class="item-container">
@@ -434,44 +434,6 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="k">var</span> <span class="nv">viewIdentifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBViewModelBuilder(py)featureIdentifier"></a>
-                    <a name="//apple_ref/objc/Property/featureIdentifier" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(py)featureIdentifier">featureIdentifier</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The identifier of the feature that the view should logically belong to</p>
-
-<p>This property can be used to group views together, to be able to reason about them as a feature. It can
-  optionally be used for logging and UI instrumentation.</p>
-
-<p>The default value of this property is the identifier of the Hub Framework feature that the view will belong
-  to, or any explicit value that any remote content JSON data contained.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">featureIdentifier</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">featureIdentifier</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -712,7 +674,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">builderExistsForBodyComponentModelWithIdentifier</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+        <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
@@ -765,7 +727,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">builderExistsForOverlayComponentModelWithIdentifier</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+        <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
@@ -829,7 +791,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></span><span class="o">&gt;&gt;</span> <span class="o">*</span><span class="p">)</span>
-    <span class="n">allBodyComponentModelBuilders</span><span class="p">;</span></code></pre>
+        <span class="n">allBodyComponentModelBuilders</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
@@ -869,7 +831,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></span><span class="o">&gt;</span><span class="p">)</span>
-<span class="nf">builderForBodyComponentModelWithIdentifier</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+    <span class="nf">builderForBodyComponentModelWithIdentifier</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -932,7 +894,8 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></span><span class="o">&gt;</span><span class="p">)</span>
-<span class="nf">builderForOverlayComponentModelWithIdentifier</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+    <span class="nf">builderForOverlayComponentModelWithIdentifier</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -992,7 +955,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">enumerateAllComponentModelBuildersWithBlock</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">nonnull</span> <span class="n">BOOL</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span><span class="p">))</span><span class="nv">block</span><span class="p">;</span></code></pre>
+        <span class="p">(</span><span class="n">nonnull</span> <span class="n">BOOL</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span><span class="p">))</span><span class="nv">block</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -1087,7 +1050,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">removeBuilderForBodyComponentModelWithIdentifier</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+        <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
@@ -1140,7 +1103,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">removeBuilderForOverlayComponentModelWithIdentifier</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+        <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
