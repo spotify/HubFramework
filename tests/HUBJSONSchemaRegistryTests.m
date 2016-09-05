@@ -72,10 +72,8 @@
         @"customTitle": title
     };
     
-    NSString * const featureIdentifier = @"feature";
-    
-    id<HUBViewModel> const originalViewModel = [originalSchema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier];
-    id<HUBViewModel> const copiedViewModel = [copiedSchema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier];
+    id<HUBViewModel> const originalViewModel = [originalSchema viewModelFromJSONDictionary:dictionary];
+    id<HUBViewModel> const copiedViewModel = [copiedSchema viewModelFromJSONDictionary:dictionary];
     
     XCTAssertEqual(originalViewModel.navigationBarTitle, title);
     XCTAssertEqual(originalViewModel.navigationBarTitle, copiedViewModel.navigationBarTitle);

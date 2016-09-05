@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its required dependencies
  *
  *  @param modelIdentifier The identifier of the model to be built. If `nil`, an `NSUUID`-based identifier will be used.
- *  @param featureIdentifier The identifier of the feature that the component will be presented in
  *  @param JSONSchema The schema to use to parse data from any added JSON object
  *  @param componentRegistry The component registry used in this instance of the Hub Framework
  *  @param componentDefaults The default component values that should be used as initial values for this builder
@@ -21,7 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param backgroundImageDataBuilder Any specific image data builder that the object should use for its background image.
  */
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
-                      featureIdentifier:(NSString *)featureIdentifier
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                       componentDefaults:(HUBComponentDefaults *)componentDefaults

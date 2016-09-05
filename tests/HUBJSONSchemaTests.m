@@ -17,15 +17,13 @@
 {
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
-    NSString * const featureIdentifier = @"feature";
     
     HUBJSONSchemaImplementation * const schema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults
                                                                                               iconImageResolver:iconImageResolver];
     
-    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:featureIdentifier
-                                                                                                                  JSONSchema:schema
-                                                                                                           componentDefaults:componentDefaults
-                                                                                                           iconImageResolver:iconImageResolver];
+    HUBViewModelBuilderImplementation * const builder = [[HUBViewModelBuilderImplementation alloc] initWithJSONSchema:schema
+                                                                                                    componentDefaults:componentDefaults
+                                                                                                    iconImageResolver:iconImageResolver];
     
     NSDictionary * const dictionary = @{
         @"body": @[
@@ -38,10 +36,9 @@
     
     [builder addDataFromJSONDictionary:dictionary];
     
-    id<HUBViewModel> const viewModelFromSchema = [schema viewModelFromJSONDictionary:dictionary featureIdentifier:featureIdentifier];
+    id<HUBViewModel> const viewModelFromSchema = [schema viewModelFromJSONDictionary:dictionary];
     id<HUBViewModel> const viewModelFromBuilder = [builder build];
     
-    XCTAssertEqualObjects(viewModelFromSchema.featureIdentifier, viewModelFromBuilder.featureIdentifier);
     XCTAssertEqual(viewModelFromSchema.bodyComponentModels.count, viewModelFromBuilder.bodyComponentModels.count);
     XCTAssertEqualObjects([viewModelFromSchema.bodyComponentModels firstObject].title, [viewModelFromBuilder.bodyComponentModels firstObject].title);
 }

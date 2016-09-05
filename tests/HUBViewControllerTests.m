@@ -122,6 +122,7 @@
                                                                                                                     initialViewModelRegistry:self.initialViewModelRegistry];
     
     self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:self.viewURI
+                                                                 featureIdentifier:featureInfo.identifier
                                                                    viewModelLoader:self.viewModelLoader
                                                              collectionViewFactory:self.collectionViewFactory
                                                                  componentRegistry:self.componentRegistry

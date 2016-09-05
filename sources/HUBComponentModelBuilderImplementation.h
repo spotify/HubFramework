@@ -22,13 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  only used as a default order for the returned array of component models.
  */
 + (NSArray<id<HUBComponentModel>> *)buildComponentModelsUsingBuilders:(NSDictionary<NSString *, HUBComponentModelBuilderImplementation *> *)builders
-                                                                  identifierOrder:(NSArray<NSString *> *)identifierOrder;
+                                                      identifierOrder:(NSArray<NSString *> *)identifierOrder;
 
 /**
  *  Initialize an instance of this class with its required dependencies
  *
  *  @param modelIdentifier The identifier of the model to be built. If `nil`, an `NSUUID`-based identifier will be used.
- *  @param featureIdentifier The identifier of the feature that the component will be presented in
  *  @param JSONSchema The schema to use to parse data from any added JSON object
  *  @param componentDefaults The default component values that should be used as initial values for this builder
  *  @param iconImageResolver The resolver to use to convert icons into renderable images
@@ -36,7 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param backgroundImageDataBuilder Any specific image data builder that the object should use for its background image.
  */
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
-                      featureIdentifier:(NSString *)featureIdentifier
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
                       iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver

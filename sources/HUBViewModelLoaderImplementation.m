@@ -180,10 +180,9 @@ NS_ASSUME_NONNULL_BEGIN
                                              
 - (HUBViewModelBuilderImplementation *)createBuilder
 {
-    return [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureInfo.identifier
-                                                                     JSONSchema:self.JSONSchema
-                                                              componentDefaults:self.componentDefaults
-                                                              iconImageResolver:self.iconImageResolver];
+    return [[HUBViewModelBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
+                                                       componentDefaults:self.componentDefaults
+                                                       iconImageResolver:self.iconImageResolver];
 }
 
 - (void)scheduleContentOperationsFromIndex:(NSUInteger)startIndex

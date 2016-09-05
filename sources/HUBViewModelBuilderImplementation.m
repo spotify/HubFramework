@@ -31,19 +31,16 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Property synthesization
 
 @synthesize viewIdentifier = _viewIdentifier;
-@synthesize featureIdentifier = _featureIdentifier;
 @synthesize navigationBarTitle = _navigationBarTitle;
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
 
 #pragma mark - Initializer
 
-- (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
-                               JSONSchema:(id<HUBJSONSchema>)JSONSchema
-                        componentDefaults:(HUBComponentDefaults *)componentDefaults
-                        iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
+- (instancetype)initWithJSONSchema:(id<HUBJSONSchema>)JSONSchema
+                 componentDefaults:(HUBComponentDefaults *)componentDefaults
+                 iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
 {
-    NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(componentDefaults != nil);
     
@@ -53,7 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
         _JSONSchema = JSONSchema;
         _componentDefaults = componentDefaults;
         _iconImageResolver = iconImageResolver;
-        _featureIdentifier = [featureIdentifier copy];
         _bodyComponentModelBuilders = [NSMutableDictionary new];
         _overlayComponentModelBuilders = [NSMutableDictionary new];
         _bodyComponentIdentifierOrder = [NSMutableArray new];
@@ -216,7 +212,6 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                        identifierOrder:self.overlayComponentIdentifierOrder];
     
     return [[HUBViewModelImplementation alloc] initWithIdentifier:self.viewIdentifier
-                                                featureIdentifier:self.featureIdentifier
                                                navigationBarTitle:self.navigationBarTitle
                                              headerComponentModel:headerComponentModel
                                               bodyComponentModels:bodyComponentModels
@@ -235,12 +230,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (viewIdentifier != nil) {
         self.viewIdentifier = viewIdentifier;
-    }
-    
-    NSString * const featureIdentifier = [viewModelSchema.featureIdentifierPath stringFromJSONDictionary:dictionary];
-    
-    if (featureIdentifier != nil) {
-        self.featureIdentifier = featureIdentifier;
     }
     
     NSString * const navigationBarTitle = [viewModelSchema.navigationBarTitlePath stringFromJSONDictionary:dictionary];
@@ -303,10 +292,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id)copyWithZone:(nullable NSZone *)zone
 {
-    HUBViewModelBuilderImplementation * const copy = [[HUBViewModelBuilderImplementation alloc] initWithFeatureIdentifier:self.featureIdentifier
-                                                                                                               JSONSchema:self.JSONSchema
-                                                                                                        componentDefaults:self.componentDefaults
-                                                                                                        iconImageResolver:self.iconImageResolver];
+    HUBViewModelBuilderImplementation * const copy = [[HUBViewModelBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
+                                                                                                 componentDefaults:self.componentDefaults
+                                                                                                 iconImageResolver:self.iconImageResolver];
     
     copy.viewIdentifier = self.viewIdentifier;
     copy.navigationBarTitle = self.navigationBarTitle;
@@ -413,7 +401,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (HUBComponentModelBuilderImplementation *)createComponentModelBuilderWithIdentifier:(nullable NSString *)identifier
 {
     return [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
-                                                                 featureIdentifier:self.featureIdentifier
                                                                         JSONSchema:self.JSONSchema
                                                                  componentDefaults:self.componentDefaults
                                                                  iconImageResolver:self.iconImageResolver

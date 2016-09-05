@@ -59,10 +59,12 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBViewControllerImplementation
 
 @synthesize delegate = _delegate;
+@synthesize featureIdentifier = _featureIdentifier;
 
 #pragma mark - Lifecycle
 
 - (instancetype)initWithViewURI:(NSURL *)viewURI
+              featureIdentifier:(NSString *)featureIdentifier
                 viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
@@ -74,6 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 {
     NSParameterAssert(viewURI != nil);
+    NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(viewModelLoader != nil);
     NSParameterAssert(collectionViewFactory != nil);
     NSParameterAssert(componentRegistry != nil);
@@ -87,6 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     _viewURI = [viewURI copy];
+    _featureIdentifier = [featureIdentifier copy];
     _viewModelLoader = viewModelLoader;
     _collectionViewFactory = collectionViewFactory;
     _componentRegistry = componentRegistry;
