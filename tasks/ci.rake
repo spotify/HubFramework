@@ -1,14 +1,18 @@
 require 'set'
 require 'shellwords'
+require 'simulator_ci'
 require 'tc_util'
-
-SIM_DEVICE_DEFAULT='iPhone 6s'
-SIM_OS_DEFAULT='9.2'
 
 DERIVED_DATA_PATH='build/DerivedData'
 
 # Task which builds and tests the
 namespace :ci do
+
+    def simulator_kill_reset
+        Simulator.kill_all!
+        Simulator.ci_device.shutdown!
+        Simulator.ci_device.erase!
+    end
 
     desc 'Prepare the build directory for a new build'
     task :prepare_build_dir do
@@ -16,11 +20,18 @@ namespace :ci do
         system('mkdir', '-p', 'build')
     end
 
+    desc 'Prepare environment for running simulator'
+    task :prepare_simulator do
+        simulator_kill_reset
+    end
+
+    desc 'Perform simulator cleanup'
+    task :cleanup_simulator do
+        simulator_kill_reset
+    end
+
     desc 'Builds and runs all the tests'
     task :build_and_test do
-        sim_device = ENV['SIM_DEVICE'] || SIM_DEVICE_DEFAULT
-        sim_os = ENV['SIM_OS'] || SIM_OS_DEFAULT
-
         build_commands = [
             'clean',
             'build',
@@ -32,8 +43,6 @@ namespace :ci do
             'HubFramework.xcodeproj',
             'HubFramework',
             'Debug',
-            sim_device,
-            sim_os,
             true,
             build_commands
         )
@@ -74,9 +83,16 @@ namespace :ci do
     end
 
     desc 'Run the CI bound tasks (build, test, upload code coverage)'
-    task :run => [:prepare_build_dir, :build_and_test, :coverage]
+    task :run => [:prepare_build_dir, :prepare_simulator, :build_and_test, :coverage, :cleanup_simulator]
 
-    def build_cmd(project, scheme, configuration, sim_device, sim_os, generate_coverage, commands)
+    def build_cmd(project, scheme, configuration, generate_coverage, commands)
+        device = Simulator.ci_device
+
+        # pre-launch the device if testing
+        if commands.include?('test')
+            device.launch_fresh!
+        end
+
         cmd = ['xcodebuild']
         cmd.push(*commands)
         cmd.push('-project', project)
@@ -84,7 +100,7 @@ namespace :ci do
         cmd.push('-scheme', scheme)
         cmd.push('-sdk', 'iphonesimulator')
         cmd.push('-derivedDataPath', DERIVED_DATA_PATH)
-        cmd.push('-destination', "platform=iOS Simulator,name=#{sim_device},OS=#{sim_os}")
+        cmd.push('-destination', Simulator.ci_device.destination)
         cmd.push('-enableCodeCoverage', 'YES') if generate_coverage
 
         Shellwords.shelljoin(cmd)
