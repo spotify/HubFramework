@@ -264,14 +264,15 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    [self.delegate viewController:self willUpdateWithViewModel:viewModel];
+    id<HUBViewControllerDelegate> const delegate = self.delegate;
+    [delegate viewController:self willUpdateWithViewModel:viewModel];
     
     self.viewModel = viewModel;
     self.viewModelIsInitial = NO;
     self.viewModelHasChangedSinceLastLayoutUpdate = YES;
     [self.view setNeedsLayout];
     
-    [self.delegate viewControllerDidUpdate:self];
+    [delegate viewControllerDidUpdate:self];
 }
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didFailLoadingWithError:(NSError *)error
