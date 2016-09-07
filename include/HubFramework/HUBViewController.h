@@ -15,15 +15,25 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HUBViewControllerDelegate <NSObject>
 
 /**
+ *  Sent to a Hub Framework view controller's delegate when it is about to be updated with a new view model
+ *
+ *  @param viewController The view controller that will be updated
+ *  @param viewModel The view model that the view controller will be updated with
+ *
+ *  You can use this method to perform any custom UI operations on the whole view controller right before
+ *  a new model will be rendered.
+ */
+- (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel;
+
+/**
  *  Sent to a Hub Framework view controller's delegate when it was updated with a new view model
  *
  *  @param viewController The view controller that was updated
- *  @param viewModel The view model that the view controller was updated with
  *
- *  You can use this method to perform any custom UI operations on the whole view controller after a new view model
- *  was constructed and started to being used.
+ *  You can use this method to perform any custom UI operations on the whole view controller when a new
+ *  view model has been rendered.
  */
-- (void)viewController:(UIViewController<HUBViewController> *)viewController didUpdateWithViewModel:(id<HUBViewModel>)viewModel;
+- (void)viewControllerDidUpdate:(UIViewController<HUBViewController> *)viewController;
 
 /**
  *  Sent to a Hub Framework view controller's delegate when it failed to be updated because of an error
@@ -90,8 +100,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The current view model that the view controller is using
  *
- *  To observe whenever the view model was updated, use the `-viewController:didUpdateWithViewModel:` method available
- *  on the view controller's delegate protocol.
+ *  To observe whenever the view model will be updated, use the `-viewController:willUpdateWithViewModel:` delegate
+ *  method. You can also use `-viewControllerDidUpdate`, which gets called once a new view model has been assigned.
  */
 @property (nonatomic, nullable, readonly) id<HUBViewModel> viewModel;
 

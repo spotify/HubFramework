@@ -15,7 +15,6 @@
 #import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentMock.h"
-#import "HUBComponentWrapper.h"
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
 #import "HUBComponentLayoutManagerMock.h"
@@ -1396,10 +1395,16 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
 
 #pragma mark - HUBViewControllerDelegate
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController didUpdateWithViewModel:(id<HUBViewModel>)viewModel
+- (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
 {
     XCTAssertEqual(viewController, self.viewController);
     self.viewModelFromDelegateMethod = viewModel;
+}
+
+- (void)viewControllerDidUpdate:(UIViewController<HUBViewController> *)viewController
+{
+    XCTAssertEqual(viewController, self.viewController);
+    XCTAssertEqual(self.viewModelFromDelegateMethod, viewController.viewModel);
 }
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController didFailToUpdateWithError:(NSError *)error
