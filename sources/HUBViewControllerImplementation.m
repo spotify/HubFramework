@@ -235,6 +235,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewController
 
+- (NSDictionary<NSNumber *, UIView *> *)visibleBodyComponentViews
+{
+    NSMutableDictionary<NSNumber *, UIView *> * const visibleViews = [NSMutableDictionary new];
+    
+    for (HUBComponentCollectionViewCell * const cell in self.collectionView.visibleCells) {
+        HUBComponentWrapper * const wrapper = [self componentWrapperFromCell:cell];
+        visibleViews[@(wrapper.model.index)] = HUBComponentLoadViewIfNeeded(wrapper);
+    }
+    
+    return [visibleViews copy];
+}
+
 - (CGRect)frameForBodyComponentAtIndex:(NSUInteger)index
 {
     if (index >= self.viewModel.bodyComponentModels.count) {
@@ -254,6 +266,14 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return (NSUInteger)indexPath.item;
+}
+
+- (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated
+{
+    const CGFloat x = contentOffset.x;
+    const CGFloat y = contentOffset.y - self.collectionView.contentInset.top;
+    
+    [self.collectionView setContentOffset:CGPointMake(x, y) animated:animated];
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
@@ -448,16 +468,6 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentModel> const componentModel = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell].model;
     [self.delegate viewController:self componentWithModel:componentModel didDisappearFromView:cell];
-}
-
-#pragma mark - Scroll to offset
-
-- (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated
-{
-    const CGFloat x = contentOffset.x;
-    const CGFloat y = contentOffset.y - self.collectionView.contentInset.top;
-
-    [self.collectionView setContentOffset:CGPointMake(x, y) animated:animated];
 }
 
 #pragma mark - UIScrollViewDelegate

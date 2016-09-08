@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The index paths of the items that the collection view should act like it's displaying
 @property (nonatomic, strong, nullable) NSArray<NSIndexPath *> *mockedIndexPathsForVisibleItems;
 
+/// Any cells that the collection view should act like it's displaying
+@property (nonatomic, strong, nullable) NSArray<UICollectionViewCell *> *mockedVisibleCells;
+
 /// The offset that has been scrolled to
 @property (nonatomic) CGPoint appliedScrollViewOffset;
 

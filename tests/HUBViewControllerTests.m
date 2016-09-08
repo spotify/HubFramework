@@ -1393,6 +1393,50 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(200, 1000)], NSNotFound);
 }
 
+- (void)testVisibleBodyComponents
+{
+    HUBComponentMock * const componentA = [HUBComponentMock new];
+    componentA.view = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    HUBComponentMock * const componentB = [HUBComponentMock new];
+    componentB.view = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    HUBComponentMock * const componentC = [HUBComponentMock new];
+    componentC.view = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    self.componentFactory.components[@"A"] = componentA;
+    self.componentFactory.components[@"B"] = componentB;
+    self.componentFactory.components[@"C"] = componentC;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"A"].componentName = @"A";
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"B"].componentName = @"B";
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"C"].componentName = @"C";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+    
+    NSIndexPath * const indexPathA = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cellA = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
+    
+    NSIndexPath * const indexPathB = [NSIndexPath indexPathForItem:1 inSection:0];
+    UICollectionViewCell * const cellB = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
+    
+    NSIndexPath * const indexPathC = [NSIndexPath indexPathForItem:2 inSection:0];
+    UICollectionViewCell * const cellC = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathC];
+    
+    self.collectionView.mockedVisibleCells = @[cellA, cellB, cellC];
+    
+    NSDictionary<NSNumber *, UIView *> * const visibleViews = self.viewController.visibleBodyComponentViews;
+    XCTAssertEqual(visibleViews.count, (NSUInteger)3);
+    XCTAssertEqual(visibleViews[@0], componentA.view);
+    XCTAssertEqual(visibleViews[@1], componentB.view);
+    XCTAssertEqual(visibleViews[@2], componentC.view);
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
