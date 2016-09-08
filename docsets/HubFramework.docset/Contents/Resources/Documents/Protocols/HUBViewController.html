@@ -423,8 +423,8 @@
                       <div class="abstract">
                         <p>The current view model that the view controller is using</p>
 
-<p>To observe whenever the view model was updated, use the <code>-viewController:didUpdateWithViewModel:</code> method available
-  on the view controller&rsquo;s delegate protocol.</p>
+<p>To observe whenever the view model will be updated, use the <code>-viewController:willUpdateWithViewModel:</code> delegate
+  method. You can also use <code>-viewControllerDidUpdate</code>, which gets called once a new view model has been assigned.</p>
 
                       </div>
                       <div class="declaration">
