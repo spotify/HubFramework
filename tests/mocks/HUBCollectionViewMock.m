@@ -50,6 +50,16 @@ NS_ASSUME_NONNULL_BEGIN
     return [super indexPathsForVisibleItems];
 }
 
+- (NSArray<UICollectionViewCell *> *)visibleCells
+{
+    if (self.mockedVisibleCells != nil) {
+        NSArray<UICollectionViewCell *> * const visibleCells = self.mockedVisibleCells;
+        return visibleCells;
+    }
+    
+    return [super visibleCells];
+}
+
 #pragma mark - UICollectionView
 
 - (UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath
