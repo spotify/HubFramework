@@ -2,13 +2,13 @@
   "teamcity": {
     "pull_request": {
       "ids": [
-        "Hub_HubIOS"
+        "Hub_IOS_BuildAndTest"
       ],
       "personal": true
     },
     "push": {
       "refs/heads/master": [
-        "Hub_HubIOS",
+        "Hub_IOS_BuildAndTest",
         "Hub_IOS_UpdateDocumentation"
       ]
     }
