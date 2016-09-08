@@ -1430,11 +1430,11 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     self.collectionView.mockedVisibleCells = @[cellA, cellB, cellC];
     
-    NSDictionary<NSNumber *, id<HUBComponent>> * const visibleBodyComponents = self.viewController.visibleBodyComponents;
-    XCTAssertEqual(visibleBodyComponents.count, (NSUInteger)3);
-    XCTAssertEqual(visibleBodyComponents[@0].view, componentA.view);
-    XCTAssertEqual(visibleBodyComponents[@1].view, componentB.view);
-    XCTAssertEqual(visibleBodyComponents[@2].view, componentC.view);
+    NSDictionary<NSNumber *, UIView *> * const visibleViews = self.viewController.visibleBodyComponentViews;
+    XCTAssertEqual(visibleViews.count, (NSUInteger)3);
+    XCTAssertEqual(visibleViews[@0], componentA.view);
+    XCTAssertEqual(visibleViews[@1], componentB.view);
+    XCTAssertEqual(visibleViews[@2], componentC.view);
 }
 
 #pragma mark - HUBViewControllerDelegate

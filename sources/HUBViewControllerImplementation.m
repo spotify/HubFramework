@@ -235,16 +235,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewController
 
-- (NSDictionary<NSNumber *, id<HUBComponent>> *)visibleBodyComponents
+- (NSDictionary<NSNumber *, UIView *> *)visibleBodyComponentViews
 {
-    NSMutableDictionary<NSNumber *, id<HUBComponent>> * const visibleBodyComponents = [NSMutableDictionary new];
+    NSMutableDictionary<NSNumber *, UIView *> * const visibleViews = [NSMutableDictionary new];
     
     for (HUBComponentCollectionViewCell * const cell in self.collectionView.visibleCells) {
         HUBComponentWrapper * const wrapper = [self componentWrapperFromCell:cell];
-        visibleBodyComponents[@(wrapper.model.index)] = wrapper;
+        visibleViews[@(wrapper.model.index)] = HUBComponentLoadViewIfNeeded(wrapper);
     }
     
-    return [visibleBodyComponents copy];
+    return [visibleViews copy];
 }
 
 - (CGRect)frameForBodyComponentAtIndex:(NSUInteger)index
