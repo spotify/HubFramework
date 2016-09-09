@@ -823,9 +823,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentModel(py)targetURL"></a>
-                    <a name="//apple_ref/objc/Property/targetURL" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentModel(py)targetURL">targetURL</a>
+                    <a name="/c:objc(pl)HUBComponentModel(py)target"></a>
+                    <a name="//apple_ref/objc/Property/target" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentModel(py)target">target</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -833,59 +833,18 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Any URL that is the target of a user interaction with the component</p>
+                        <p>Any target of a user interaction with the component</p>
 
-<p>When the user interacts with the component, the Hub Framework will attempt to open this URL through the application&rsquo;s
-  standard <q>open URL</q> mechanism. The URL might point to an internal or external page, resource or trigger some form of
-  action.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSURL</span> <span class="o">*</span><span class="n">targetURL</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">@NSCopying</span> <span class="k">var</span> <span class="nv">targetURL</span><span class="p">:</span> <span class="kt">NSURL</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBComponentModel(py)targetInitialViewModel"></a>
-                    <a name="//apple_ref/objc/Property/targetInitialViewModel" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentModel(py)targetInitialViewModel">targetInitialViewModel</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Any pre-computed model for a Hub view that is the target of <code><a href="../Protocols/HUBComponentModel.html#/c:objc(pl)HUBComponentModel(py)targetURL">targetURL</a></code></p>
-
-<p>This property can be used to setup several views up-front, either partially or completely. In case this property is not nil,
-  and the target view is a Hub Framework-powered view as well, the framework will automatically setup that view using this view
-  model. Using this property might lead to a better user experience, since the user will be able to see a <q>skeleton</q> version of
-  new views before the their content is loaded, rather than just seing a blank screen.</p>
-
-<p>Once either remote or local content has been loaded for the target view, a new view model created from that content will replace
-  this initial one.</p>
+<p>A component&rsquo;s target contains information about what should happen when a user interacts with it. For example, any URI
+  that should be opened, or any initial view model that should be used for the target view. See <code>HUBComponentTarget</code> for
+  more information.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewModel.html">HUBViewModel</a></span><span class="o">&gt;</span> <span class="n">targetInitialViewModel</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentTarget</span><span class="o">&gt;</span> <span class="n">target</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>

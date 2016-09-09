@@ -678,9 +678,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentModelJSONSchema(py)targetURLPath"></a>
-                    <a name="//apple_ref/objc/Property/targetURLPath" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentModelJSONSchema(py)targetURLPath">targetURLPath</a>
+                    <a name="/c:objc(pl)HUBComponentModelJSONSchema(py)targetDictionaryPath"></a>
+                    <a name="//apple_ref/objc/Property/targetDictionaryPath" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentModelJSONSchema(py)targetDictionaryPath">targetDictionaryPath</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -688,7 +688,9 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The path to follow to extract a target URL. Maps to <code>targetURL</code>.</p>
+                        <p>The path to follow to extract a dictionary to use to construct a target for the component. Maps to <code>target</code>.</p>
+
+<p>The dictionary extracted by following this path will then be parsed using <code>HUBComponentTargetJSONSchema</code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -696,37 +698,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">targetURLPath</span><span class="p">;</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBComponentModelJSONSchema(py)targetInitialViewModelDictionaryPath"></a>
-                    <a name="//apple_ref/objc/Property/targetInitialViewModelDictionaryPath" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentModelJSONSchema(py)targetInitialViewModelDictionaryPath">targetInitialViewModelDictionaryPath</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The path to follow to extract a dictionary for a target view&rsquo;s initial view model. Maps to <code>targetInitialViewModel</code>.</p>
-
-<p>The dictionary extracted by following this path will then be parsed using <code><a href="../Protocols/HUBViewModelJSONSchema.html">HUBViewModelJSONSchema</a></code>.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">targetInitialViewModelDictionaryPath</span><span class="p">;</span></code></pre>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">targetDictionaryPath</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
