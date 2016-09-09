@@ -3,6 +3,7 @@
 @protocol HUBViewModelJSONSchema;
 @protocol HUBComponentModelJSONSchema;
 @protocol HUBComponentImageDataJSONSchema;
+@protocol HUBComponentTargetJSONSchema;
 @protocol HUBMutableJSONPath;
 @protocol HUBViewModel;
 
@@ -36,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The schema used to retrieve data for `HUBComponentImageData` objects
 @property (nonatomic, strong, readonly) id<HUBComponentImageDataJSONSchema> componentImageDataSchema;
+
+/// The schema used to retrieve data for `HUBComponentTarget` objects
+@property (nonatomic, strong, readonly) id<HUBComponentTargetJSONSchema> componentTargetSchema;
 
 /**
  *  Create a new, blank, mutable JSON path that can be used to describe how to retrieve data for a certain property

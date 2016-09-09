@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
              backgroundImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)backgroundImageDataBuilder HUB_DESIGNATED_INITIALIZER;
 
 /**
- *  Build an instance of `HUBComponentModelImplementation` from the data contained in this builder
+ *  Build a component model instance from the data contained in this builder
  *
  *  @param index The index that the produced model will have, either within its parent or within the root list
  */

@@ -4,6 +4,7 @@
 @class HUBComponentIdentifier;
 @protocol HUBComponentImageData;
 @protocol HUBComponentModel;
+@protocol HUBComponentTarget;
 @protocol HUBViewModel;
 @protocol HUBIcon;
 
@@ -134,26 +135,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Target
 
 /**
- *  Any URL that is the target of a user interaction with the component
+ *  Any target of a user interaction with the component
  *
- *  When the user interacts with the component, the Hub Framework will attempt to open this URL through the application's
- *  standard "open URL" mechanism. The URL might point to an internal or external page, resource or trigger some form of
- *  action.
+ *  A component's target contains information about what should happen when a user interacts with it. For example, any URI
+ *  that should be opened, or any initial view model that should be used for the target view. See `HUBComponentTarget` for
+ *  more information.
  */
-@property (nonatomic, copy, nullable, readonly) NSURL *targetURL;
-
-/**
- *  Any pre-computed model for a Hub view that is the target of `targetURL`
- *
- *  This property can be used to setup several views up-front, either partially or completely. In case this property is not nil,
- *  and the target view is a Hub Framework-powered view as well, the framework will automatically setup that view using this view
- *  model. Using this property might lead to a better user experience, since the user will be able to see a "skeleton" version of
- *  new views before the their content is loaded, rather than just seing a blank screen.
- *
- *  Once either remote or local content has been loaded for the target view, a new view model created from that content will replace
- *  this initial one.
- */
-@property (nonatomic, copy, nullable, readonly) id<HUBViewModel> targetInitialViewModel;
+@property (nonatomic, strong, nullable, readonly) id<HUBComponentTarget> target;
 
 #pragma mark - Metadata & Customization
 

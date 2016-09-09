@@ -1,7 +1,8 @@
 #import "HUBComponentModelImplementation.h"
 
 #import "HUBComponentIdentifier.h"
-#import "HUBComponentImageDataImplementation.h"
+#import "HUBComponentImageData.h"
+#import "HUBComponentTarget.h"
 #import "HUBJSONKeys.h"
 #import "HUBViewModel.h"
 #import "HUBUtilities.h"
@@ -23,8 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize backgroundImageData = _backgroundImageData;
 @synthesize customImageData = _customImageData;
 @synthesize icon = _icon;
-@synthesize targetURL = _targetURL;
-@synthesize targetInitialViewModel = _targetInitialViewModel;
+@synthesize target = _target;
 @synthesize metadata = _metadata;
 @synthesize loggingData = _loggingData;
 @synthesize customData = _customData;
@@ -42,8 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
                backgroundImageData:(nullable id<HUBComponentImageData>)backgroundImageData
                    customImageData:(NSDictionary<NSString *, id<HUBComponentImageData>> *)customImageData
                               icon:(nullable id<HUBIcon>)icon
-                         targetURL:(nullable NSURL *)targetURL
-            targetInitialViewModel:(nullable id<HUBViewModel>)targetInitialViewModel
+                            target:(nullable id<HUBComponentTarget>)target
                           metadata:(nullable NSDictionary<NSString *, NSObject *> *)metadata
                        loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
@@ -69,8 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
         _backgroundImageData = backgroundImageData;
         _customImageData = customImageData;
         _icon = icon;
-        _targetURL = [targetURL copy];
-        _targetInitialViewModel = targetInitialViewModel;
+        _target = target;
         _metadata = metadata;
         _loggingData = loggingData;
         _customData = customData;
@@ -106,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
     serialization[HUBJSONKeyComponent] = [self serializedComponentData];
     serialization[HUBJSONKeyText] = [self serializedTextData];
     serialization[HUBJSONKeyImages] = [self serializedImageData];
-    serialization[HUBJSONKeyTarget] = [self serializedTargetData];
+    serialization[HUBJSONKeyTarget] = [self.target serialize];
     serialization[HUBJSONKeyMetadata] = self.metadata;
     serialization[HUBJSONKeyLogging] = self.loggingData;
     serialization[HUBJSONKeyCustom] = self.customData;
@@ -172,19 +170,6 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    return [serialization copy];
-}
-
-- (nullable NSDictionary<NSString *, NSObject<NSCoding> *> *)serializedTargetData
-{
-    NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
-    serialization[HUBJSONKeyURI] = self.targetURL.absoluteString;
-    serialization[HUBJSONKeyView] = [self.targetInitialViewModel serialize];
-    
-    if (serialization.count == 0) {
-        return nil;
-    }
-                  
     return [serialization copy];
 }
 

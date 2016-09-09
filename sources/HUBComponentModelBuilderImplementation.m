@@ -4,8 +4,8 @@
 #import "HUBComponentModelImplementation.h"
 #import "HUBComponentImageDataBuilderImplementation.h"
 #import "HUBComponentImageDataImplementation.h"
-#import "HUBViewModelBuilderImplementation.h"
-#import "HUBViewModelImplementation.h"
+#import "HUBComponentTargetBuilderImplementation.h"
+#import "HUBComponentTargetImplementation.h"
 #import "HUBJSONSchema.h"
 #import "HUBComponentModelJSONSchema.h"
 #import "HUBJSONPath.h"
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *mainImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) HUBComponentImageDataBuilderImplementation *backgroundImageDataBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentImageDataBuilderImplementation *> *customImageDataBuilders;
-@property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *targetInitialViewModelBuilderImplementation;
+@property (nonatomic, strong, nullable) HUBComponentTargetBuilderImplementation *targetBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *childComponentModelBuilders;
 @property (nonatomic, strong, readonly) NSMutableArray<NSString *> *childComponentIdentifierOrder;
 
@@ -44,7 +44,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize accessoryTitle = _accessoryTitle;
 @synthesize descriptionText = _descriptionText;
 @synthesize iconIdentifier = _iconIdentifier;
-@synthesize targetURL = _targetURL;
 @synthesize metadata = _metadata;
 @synthesize loggingData = _loggingData;
 @synthesize customData = _customData;
@@ -180,9 +179,9 @@ NS_ASSUME_NONNULL_BEGIN
     return self.backgroundImageDataBuilderImplementation;
 }
 
-- (id<HUBViewModelBuilder>)targetInitialViewModelBuilder
+- (id<HUBComponentTargetBuilder>)targetBuilder
 {
-    return [self getOrCreateBuilderForTargetInitialViewModel];
+    return [self getOrCreateTargetBuilder];
 }
 
 - (nullable NSURL *)backgroundImageURL
@@ -303,16 +302,10 @@ NS_ASSUME_NONNULL_BEGIN
         self.descriptionText = descriptionText;
     }
     
-    NSURL * const targetURL = [componentModelSchema.targetURLPath URLFromJSONDictionary:dictionary];
+    NSDictionary * const targetDictionary = [componentModelSchema.targetDictionaryPath dictionaryFromJSONDictionary:dictionary];
     
-    if (targetURL != nil) {
-        self.targetURL = targetURL;
-    }
-    
-    NSDictionary * const targetInitialViewModelDictionary = [componentModelSchema.targetInitialViewModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
-    
-    if (targetInitialViewModelDictionary != nil) {
-        [[self getOrCreateBuilderForTargetInitialViewModel] addDataFromJSONDictionary:targetInitialViewModelDictionary];
+    if (targetDictionary != nil) {
+        [[self getOrCreateTargetBuilder] addDataFromJSONDictionary:targetDictionary];
     }
     
     NSDictionary * const metadata = [componentModelSchema.metadataPath dictionaryFromJSONDictionary:dictionary];
@@ -426,8 +419,7 @@ NS_ASSUME_NONNULL_BEGIN
     copy.accessoryTitle = self.accessoryTitle;
     copy.descriptionText = self.descriptionText;
     copy.iconIdentifier = self.iconIdentifier;
-    copy.targetURL = self.targetURL;
-    copy.targetInitialViewModelBuilderImplementation = [self.targetInitialViewModelBuilderImplementation copy];
+    copy.targetBuilderImplementation = [self.targetBuilderImplementation copy];
     copy.customData = self.customData;
     copy.loggingData = self.loggingData;
     
@@ -469,7 +461,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     id<HUBIcon> const icon = [self buildIconForPlaceholder:NO];
-    id<HUBViewModel> const targetInitialViewModel = [self buildTargetInitialViewModel];
+    id<HUBComponentTarget> const target = [self.targetBuilderImplementation build];
     
     NSArray * const childComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.childComponentModelBuilders
                                                                                                      identifierOrder:self.childComponentIdentifierOrder];
@@ -486,8 +478,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                    backgroundImageData:backgroundImageData
                                                        customImageData:customImageData
                                                                   icon:icon
-                                                             targetURL:self.targetURL
-                                                targetInitialViewModel:targetInitialViewModel
+                                                                target:target
                                                               metadata:self.metadata
                                                            loggingData:self.loggingData
                                                             customData:self.customData
@@ -495,6 +486,18 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Private utilities
+
+- (HUBComponentTargetBuilderImplementation *)getOrCreateTargetBuilder
+{
+    if (self.targetBuilderImplementation == nil) {
+        self.targetBuilderImplementation = [[HUBComponentTargetBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
+                                                                                             componentDefaults:self.componentDefaults
+                                                                                             iconImageResolver:self.iconImageResolver];
+    }
+    
+    HUBComponentTargetBuilderImplementation * const targetBuilder = self.targetBuilderImplementation;
+    return targetBuilder;
+}
 
 - (HUBComponentImageDataBuilderImplementation *)getOrCreateBuilderForCustomImageDataWithIdentifier:(NSString *)identifier
 {
@@ -510,18 +513,6 @@ NS_ASSUME_NONNULL_BEGIN
     [self.customImageDataBuilders setObject:newBuilder forKey:identifier];
     
     return newBuilder;
-}
-
-- (HUBViewModelBuilderImplementation *)getOrCreateBuilderForTargetInitialViewModel
-{
-    // Lazily computed to avoid infinite recursion
-    if (self.targetInitialViewModelBuilderImplementation == nil) {
-        self.targetInitialViewModelBuilderImplementation = [[HUBViewModelBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
-                                                                                                       componentDefaults:self.componentDefaults
-                                                                                                       iconImageResolver:self.iconImageResolver];
-    }
-    
-    return (HUBViewModelBuilderImplementation *)self.targetInitialViewModelBuilderImplementation;
 }
 
 - (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForChildComponentModelWithIdentifier:(nullable NSString *)identifier
@@ -563,15 +554,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return [[HUBIconImplementation alloc] initWithIdentifier:iconIdentifier imageResolver:iconImageResolver isPlaceholder:forPlaceholder];
-}
-
-- (nullable id<HUBViewModel>)buildTargetInitialViewModel
-{
-    if (self.targetURL == nil) {
-        return nil;
-    }
-    
-    return [self.targetInitialViewModelBuilderImplementation build];
 }
 
 @end

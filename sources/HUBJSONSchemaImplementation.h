@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewModelSchema The schema to use for view models
  *  @param componentModelSchema The schema to use for component models
  *  @param componentImageDataSchema The schema to use for component image data
+ *  @param componentTargetSchema The schema to use for component targets
  *  @param componentDefaults The default component values to use when parsing JSON
  *  @param iconImageResolver The resolver to use to convert icons into renderable images
  *
@@ -32,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewModelSchema:(id<HUBViewModelJSONSchema>)viewModelSchema
                    componentModelSchema:(id<HUBComponentModelJSONSchema>)componentModelSchema
                componentImageDataSchema:(id<HUBComponentImageDataJSONSchema>)componentImageDataSchema
+                  componentTargetSchema:(id<HUBComponentTargetJSONSchema>)componentTargetSchema
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
                       iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
 

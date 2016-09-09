@@ -2,6 +2,7 @@
 
 #import "HUBComponentSelectionContext.h"
 #import "HUBComponentModel.h"
+#import "HUBComponentTarget.h"
 #import "HUBInitialViewModelRegistry.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -40,8 +41,9 @@ NS_ASSUME_NONNULL_BEGIN
         return YES;
     }
     
-    NSURL * const targetURL = selectionContext.componentModel.targetURL;
-    id<HUBViewModel> const targetInitialViewModel = selectionContext.componentModel.targetInitialViewModel;
+    id<HUBComponentTarget> const target = selectionContext.componentModel.target;
+    NSURL * const targetURL = target.URI;
+    id<HUBViewModel> const targetInitialViewModel = target.initialViewModel;
     
     if (targetURL == nil) {
         return NO;

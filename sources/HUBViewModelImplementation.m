@@ -17,6 +17,15 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize customData = _customData;
 @synthesize buildDate = _buildDate;
 
+#pragma mark - HUBAutoEquatable
+
++ (nullable NSSet<NSString *> *)ignoredAutoEquatablePropertyNames
+{
+    return [NSSet setWithObject:NSStringFromSelector(@selector(buildDate))];
+}
+
+#pragma mark - Initializer
+
 - (instancetype)initWithIdentifier:(nullable NSString *)identifier
                 navigationBarTitle:(nullable NSString *)navigationBarTitle
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel

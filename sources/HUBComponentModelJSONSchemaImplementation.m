@@ -16,8 +16,7 @@
 @synthesize backgroundImageDataDictionaryPath = _backgroundImageDataDictionaryPath;
 @synthesize customImageDataDictionaryPath = _customImageDataDictionaryPath;
 @synthesize iconIdentifierPath = _iconIdentifierPath;
-@synthesize targetURLPath = _targetURLPath;
-@synthesize targetInitialViewModelDictionaryPath = _targetInitialViewModelDictionaryPath;
+@synthesize targetDictionaryPath = _targetDictionaryPath;
 @synthesize metadataPath = _metadataPath;
 @synthesize loggingDataPath = _loggingDataPath;
 @synthesize customDataPath = _customDataPath;
@@ -29,7 +28,6 @@
     id<HUBMutableJSONPath> const componentDictionaryPath = [basePath goTo:HUBJSONKeyComponent];
     id<HUBMutableJSONPath> const textDictionaryPath = [basePath goTo:HUBJSONKeyText];
     id<HUBMutableJSONPath> const imagesDictionaryPath = [basePath goTo:HUBJSONKeyImages];
-    id<HUBMutableJSONPath> const targetDictionaryPath = [basePath goTo:HUBJSONKeyTarget];
     
     return [self initWithIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyIdentifier] stringPath]
                 componentIdentifierPath:[[componentDictionaryPath goTo:HUBJSONKeyIdentifier] stringPath]
@@ -42,8 +40,7 @@
       backgroundImageDataDictionaryPath:[[imagesDictionaryPath goTo:HUBJSONKeyBackground] dictionaryPath]
           customImageDataDictionaryPath:[[imagesDictionaryPath goTo:HUBJSONKeyCustom] dictionaryPath]
                      iconIdentifierPath:[[imagesDictionaryPath goTo:HUBJSONKeyIcon] stringPath]
-                          targetURLPath:[[targetDictionaryPath goTo:HUBJSONKeyURI] URLPath]
-   targetInitialViewModelDictionaryPath:[[targetDictionaryPath goTo:HUBJSONKeyView] dictionaryPath]
+                   targetDictionaryPath:[[basePath goTo:HUBJSONKeyTarget] dictionaryPath]
                            metadataPath:[[basePath goTo:HUBJSONKeyMetadata] dictionaryPath]
                         loggingDataPath:[[basePath goTo:HUBJSONKeyLogging] dictionaryPath]
                          customDataPath:[[basePath goTo:HUBJSONKeyCustom] dictionaryPath]
@@ -61,8 +58,7 @@
      backgroundImageDataDictionaryPath:(id<HUBJSONDictionaryPath>)backgroundImageDataDictionaryPath
          customImageDataDictionaryPath:(id<HUBJSONDictionaryPath>)customImageDataDictionaryPath
                     iconIdentifierPath:(id<HUBJSONStringPath>)iconIdentifierPath
-                         targetURLPath:(id<HUBJSONURLPath>)targetURLPath
-  targetInitialViewModelDictionaryPath:(id<HUBJSONDictionaryPath>)targetInitialViewModelDictionaryPath
+                  targetDictionaryPath:(id<HUBJSONDictionaryPath>)targetDictionaryPath
                           metadataPath:(id<HUBJSONDictionaryPath>)metadataPath
                        loggingDataPath:(id<HUBJSONDictionaryPath>)loggingDataPath
                         customDataPath:(id<HUBJSONDictionaryPath>)customDataPath
@@ -82,8 +78,7 @@
         _backgroundImageDataDictionaryPath = backgroundImageDataDictionaryPath;
         _customImageDataDictionaryPath = customImageDataDictionaryPath;
         _iconIdentifierPath = iconIdentifierPath;
-        _targetURLPath = targetURLPath;
-        _targetInitialViewModelDictionaryPath = targetInitialViewModelDictionaryPath;
+        _targetDictionaryPath = targetDictionaryPath;
         _metadataPath = metadataPath;
         _loggingDataPath = loggingDataPath;
         _customDataPath = customDataPath;
@@ -108,8 +103,7 @@
                                                    backgroundImageDataDictionaryPath:self.backgroundImageDataDictionaryPath
                                                        customImageDataDictionaryPath:self.customImageDataDictionaryPath
                                                                   iconIdentifierPath:self.iconIdentifierPath
-                                                                       targetURLPath:self.targetURLPath
-                                                targetInitialViewModelDictionaryPath:self.targetInitialViewModelDictionaryPath
+                                                                targetDictionaryPath:self.targetDictionaryPath
                                                                         metadataPath:self.metadataPath
                                                                      loggingDataPath:self.loggingDataPath
                                                                       customDataPath:self.customDataPath

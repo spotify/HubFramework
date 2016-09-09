@@ -10,6 +10,15 @@ typedef NSMutableDictionary<NSString *, HUBAutoEquatableComparisonBlock> HUBAuto
 
 @implementation HUBAutoEquatable
 
+#pragma mark - Class methods
+
++ (nullable NSSet<NSString *> *)ignoredAutoEquatablePropertyNames
+{
+    return nil;
+}
+
+#pragma mark - NSObject
+
 - (BOOL)isEqual:(id)object
 {
     if (![object isKindOfClass:[self class]]) {
@@ -27,6 +36,8 @@ typedef NSMutableDictionary<NSString *, HUBAutoEquatableComparisonBlock> HUBAuto
     return YES;
 }
 
+#pragma mark - Private utilities
+
 - (HUBAutoEquatableComparisonMap *)getOrCreateComparisonMap
 {
     static NSMutableDictionary<NSString *, HUBAutoEquatableComparisonMap *> *comparisonMapsForClassNames = nil;
@@ -40,6 +51,7 @@ typedef NSMutableDictionary<NSString *, HUBAutoEquatableComparisonBlock> HUBAuto
     HUBAutoEquatableComparisonMap *comparisonMap = comparisonMapsForClassNames[className];
     
     if (comparisonMap == nil) {
+        NSSet<NSString *> * const ignoredPropertyNames = [[self class] ignoredAutoEquatablePropertyNames];
         HUBAutoEquatableMutableComparisonMap * const mutableComparisonMap = [HUBAutoEquatableMutableComparisonMap new];
         
         unsigned int propertyCount;
@@ -51,6 +63,10 @@ typedef NSMutableDictionary<NSString *, HUBAutoEquatableComparisonBlock> HUBAuto
             NSString * const propertyName = [NSString stringWithUTF8String:propertyNameCString];
             
             if (protocol_getProperty(@protocol(NSObject), propertyNameCString, YES, YES) != NULL) {
+                continue;
+            }
+            
+            if ([ignoredPropertyNames containsObject:propertyName]) {
                 continue;
             }
             

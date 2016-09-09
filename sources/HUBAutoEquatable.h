@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Abstract base class for types that are automatically checked for equality
  *
@@ -15,4 +17,14 @@
  */
 @interface HUBAutoEquatable : NSObject
 
+/**
+ *  Return any property names that are ignored when performing automatic equality checks
+ *
+ *  The default implementation of this method returns `nil`. Override in subclasses that
+ *  wish to ignore certain properties from being automatically checked for equality.
+ */
++ (nullable NSSet<NSString *> *)ignoredAutoEquatablePropertyNames;
+
 @end
+
+NS_ASSUME_NONNULL_END

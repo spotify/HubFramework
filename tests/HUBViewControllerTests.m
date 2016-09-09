@@ -12,6 +12,8 @@
 #import "HUBViewModelBuilder.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentModel.h"
+#import "HUBComponentTargetBuilder.h"
+#import "HUBComponentTarget.h"
 #import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentMock.h"
@@ -596,8 +598,8 @@
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"id"];
         componentModelBuilder.componentName = weakSelf.componentIdentifier.componentName;
-        componentModelBuilder.targetURL = targetViewURI;
-        componentModelBuilder.targetInitialViewModelBuilder.viewIdentifier = initialViewModelIdentifier;
+        componentModelBuilder.targetBuilder.URI = targetViewURI;
+        componentModelBuilder.targetBuilder.initialViewModelBuilder.viewIdentifier = initialViewModelIdentifier;
         
         return YES;
     };
@@ -731,7 +733,7 @@
         id<HUBComponentModelBuilder> const selectableBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:selectableIdentifier];
         selectableBuilder.componentNamespace = componentNamespace;
         selectableBuilder.componentName = selectableIdentifier;
-        selectableBuilder.targetURL = [NSURL URLWithString:@"spotify:hub:framework"];
+        selectableBuilder.targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:framework"];
         
         return YES;
     };
@@ -747,7 +749,7 @@
     NSIndexPath * const selectableIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
     [collectionViewDelegate collectionView:self.collectionView didSelectItemAtIndexPath:selectableIndexPath];
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
-    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
+    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].target.URI, [NSURL URLWithString:@"spotify:hub:framework"]);
     
     // Test custom selection handling
     self.componentSelectionHandler.handlesSelection = YES;
@@ -755,7 +757,7 @@
     XCTAssertEqual(self.componentSelectionHandler.selectionContexts.count, (NSUInteger)1);
 
     id<HUBComponentSelectionContext> selectionContext = self.componentSelectionHandler.selectionContexts.firstObject;
-    XCTAssertEqualObjects(selectionContext.componentModel.targetURL, [NSURL URLWithString:@"spotify:hub:framework"]);
+    XCTAssertEqualObjects(selectionContext.componentModel.target.URI, [NSURL URLWithString:@"spotify:hub:framework"]);
     XCTAssertEqualObjects(selectionContext.viewURI, self.viewURI);
     XCTAssertEqualObjects(selectionContext.viewModel, self.viewModelFromDelegateMethod);
     XCTAssertEqualObjects(selectionContext.viewController, self.viewController);
@@ -786,8 +788,8 @@
         id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"];
         childComponentModelBuilder.componentNamespace = componentNamespace;
         childComponentModelBuilder.componentName = childComponentName;
-        childComponentModelBuilder.targetURL = childComponentTargetURL;
-        childComponentModelBuilder.targetInitialViewModelBuilder.viewIdentifier = childComponentInitialViewModelIdentifier;
+        childComponentModelBuilder.targetBuilder.URI = childComponentTargetURL;
+        childComponentModelBuilder.targetBuilder.initialViewModelBuilder.viewIdentifier = childComponentInitialViewModelIdentifier;
         
         return YES;
     };
@@ -807,7 +809,7 @@
     [childDelegate component:component willDisplayChildAtIndex:99 view:[UIView new]];
     
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
-    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].targetURL, childComponentTargetURL);
+    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].target.URI, childComponentTargetURL);
     
     // Test custom selection handling
     self.componentSelectionHandler.handlesSelection = YES;
@@ -815,7 +817,7 @@
     XCTAssertEqual(self.componentSelectionHandler.selectionContexts.count, (NSUInteger)1);
 
     id<HUBComponentSelectionContext> selectionContext = self.componentSelectionHandler.selectionContexts.firstObject;
-    XCTAssertEqualObjects(selectionContext.componentModel.targetURL, childComponentTargetURL);
+    XCTAssertEqualObjects(selectionContext.componentModel.target.URI, childComponentTargetURL);
     XCTAssertEqualObjects(selectionContext.viewController, self.viewController);
     XCTAssertEqualObjects(selectionContext.viewModel, self.viewModelFromDelegateMethod);
     XCTAssertEqualObjects(selectionContext.viewURI, self.viewURI);
@@ -1159,8 +1161,6 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     NSString * const componentNamespace = @"childComponentSelection";
     NSString * const componentName = @"component";
     NSString * const childComponentName = @"componentB";
-    NSURL * const childComponentTargetURL = [NSURL URLWithString:@"spotify:hub:child-component"];
-    NSString * const childComponentInitialViewModelIdentifier = @"viewModel";
     HUBComponentMock * const component = [HUBComponentMock new];
     HUBComponentMock * const childComponent = [HUBComponentMock new];
 
@@ -1179,8 +1179,6 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
         id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"];
         childComponentModelBuilder.componentNamespace = componentNamespace;
         childComponentModelBuilder.componentName = childComponentName;
-        childComponentModelBuilder.targetURL = childComponentTargetURL;
-        childComponentModelBuilder.targetInitialViewModelBuilder.viewIdentifier = childComponentInitialViewModelIdentifier;
 
         return YES;
     };

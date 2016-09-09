@@ -1,10 +1,11 @@
+#import "HUBAutoEquatable.h"
 #import "HUBViewModel.h"
 #import "HUBHeaderMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBViewModel` API
-@interface HUBViewModelImplementation : NSObject <HUBViewModel>
+@interface HUBViewModelImplementation : HUBAutoEquatable <HUBViewModel>
 
 /**
  *  Initialize an instance of this class with its possible values
