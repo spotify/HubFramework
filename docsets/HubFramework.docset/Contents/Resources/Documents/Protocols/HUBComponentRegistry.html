@@ -71,7 +71,7 @@
                 <a class="nav-group-task-link" href="../Classes/HUBComponentCollectionViewCell.html">HUBComponentCollectionViewCell</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/HUBComponentIdentifier.html">HUBComponentIdentifier</a>
+                <a class="nav-group-task-link" href="../Classes/HUBIdentifier.html">HUBIdentifier</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/HUBManager.html">HUBManager</a>
@@ -393,7 +393,20 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The factory instance that will serve components matching <code>componentNamespace</code>.</p>
+                                  <p>The factory to register</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>componentNamespace</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The namespace to register the factory for</p>
 
                                 </div>
                               </td>
@@ -420,7 +433,7 @@
                         <p>Unregister a component factory from the Hub Framework</p>
 
 <p>After this method has been called, the Hub Framework will remove any factory found for the given namespace,
-  opening it up to be registered again with another factory. If the given identifier does not exist, this
+  opening it up to be registered again with another factory. If the given namespace does not exist, this
   method does nothing.</p>
 
                       </div>
@@ -429,7 +442,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">unregisterComponentFactoryForNamespace</span><span class="p">:</span>
-        <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">componentNamespace</span><span class="p">;</span></code></pre>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">componentNamespace</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
