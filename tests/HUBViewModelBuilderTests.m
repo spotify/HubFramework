@@ -4,7 +4,7 @@
 #import "HUBViewModelImplementation.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentModel.h"
-#import "HUBComponentIdentifier.h"
+#import "HUBIdentifier.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBIconImageResolverMock.h"
@@ -252,10 +252,10 @@
     NSString * const viewIdentifier = @"identifier";
     NSString * const navigationBarTitle = @"nav bar title";
     NSString * const headerComponentModelIdentifier = @"header model";
-    HUBComponentIdentifier * const headerComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"header" name:@"component"];
+    HUBIdentifier * const headerComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"header" name:@"component"];
     NSString * const bodyComponentModelIdentifier = @"body model";
-    HUBComponentIdentifier * const bodyComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"body" name:@"component"];
-    HUBComponentIdentifier * const overlayComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"overlay" name:@"component"];
+    HUBIdentifier * const bodyComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"body" name:@"component"];
+    HUBIdentifier * const overlayComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"overlay" name:@"component"];
     NSURL * const extensionURL = [NSURL URLWithString:@"https://spotify.com/extension"];
     NSDictionary * const customData = @{@"custom": @"data"};
     
@@ -313,8 +313,8 @@
 
 - (void)testAddingComponentModelArrayJSONData
 {
-    HUBComponentIdentifier * const firstComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"component1"];
-    HUBComponentIdentifier * const lastComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"component2"];
+    HUBIdentifier * const firstComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"component1"];
+    HUBIdentifier * const lastComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"component2"];
     
     NSArray * const array = @[
         @{

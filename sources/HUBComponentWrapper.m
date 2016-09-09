@@ -5,7 +5,6 @@
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentContentOffsetObserver.h"
-#import "HUBComponentIdentifier.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentUIStateManager.h"
 #import "HUBComponentResizeObservingView.h"

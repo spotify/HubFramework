@@ -2,7 +2,7 @@
 
 #import "HUBComponentModelBuilderImplementation.h"
 #import "HUBComponentModelImplementation.h"
-#import "HUBComponentIdentifier.h"
+#import "HUBIdentifier.h"
 #import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentImageDataImplementation.h"
 #import "HUBComponentTargetBuilder.h"
@@ -66,8 +66,8 @@
     NSUInteger const modelIndex = 5;
     id<HUBComponentModel> const model = [self.builder buildForIndex:modelIndex];
     
-    XCTAssertEqualObjects(model.componentIdentifier.componentNamespace, @"namespace");
-    XCTAssertEqualObjects(model.componentIdentifier.componentName, @"name");
+    XCTAssertEqualObjects(model.componentIdentifier.namespacePart, @"namespace");
+    XCTAssertEqualObjects(model.componentIdentifier.namePart, @"name");
     XCTAssertEqualObjects(model.componentCategory, @"category");
     XCTAssertEqual(model.index, modelIndex);
     XCTAssertEqualObjects(model.title, self.builder.title);
@@ -88,14 +88,14 @@
     self.builder.componentCategory = @"category-override";
     
     id<HUBComponentModel> const model = [self.builder buildForIndex:0];
-    XCTAssertEqualObjects(model.componentIdentifier.componentNamespace, @"namespace-override");
-    XCTAssertEqualObjects(model.componentIdentifier.componentName, @"name-override");
+    XCTAssertEqualObjects(model.componentIdentifier.namespacePart, @"namespace-override");
+    XCTAssertEqualObjects(model.componentIdentifier.namePart, @"name-override");
     XCTAssertEqualObjects(model.componentCategory, @"category-override");
 }
 
 - (void)testDefaultImageTypes
 {
-    self.builder.componentName = @"component";
+    self.builder.componentNamespace = @"component";
     self.builder.mainImageDataBuilder.placeholderIconIdentifier = @"placeholder";
     self.builder.backgroundImageDataBuilder.placeholderIconIdentifier = @"placeholder";
     id<HUBComponentModel> const model = [self.builder buildForIndex:0];
@@ -247,7 +247,7 @@
 - (void)testAddingJSONDataAndModelSerialization
 {
     NSString * const modelIdentifier = @"model";
-    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"namespace" name:@"component"];
+    HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"component"];
     NSString * const title = @"A title";
     NSString * const subtitle = @"A subtitle";
     NSString * const accessoryTitle = @"An accessory title";
@@ -264,9 +264,9 @@
     NSDictionary * const loggingData = @{@"logging": @"data"};
     NSDictionary * const customData = @{@"custom": @"data"};
     NSString * const child1ModelIdentifier = @"ChildComponent1";
-    HUBComponentIdentifier * const child1ComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"child" name:@"component1"];
+    HUBIdentifier * const child1ComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"child" name:@"component1"];
     NSString * const child2ModelIdentifier = @"ChildComponent2";
-    HUBComponentIdentifier * const child2ComponentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:@"child" name:@"component2"];
+    HUBIdentifier * const child2ComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"child" name:@"component2"];
     
     NSDictionary * const dictionary = @{
         @"id": modelIdentifier,

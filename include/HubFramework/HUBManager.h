@@ -2,6 +2,7 @@
 
 @protocol HUBFeatureRegistry;
 @protocol HUBComponentRegistry;
+@protocol HUBActionRegistry;
 @protocol HUBJSONSchemaRegistry;
 @protocol HUBViewModelLoaderFactory;
 @protocol HUBViewControllerFactory;
@@ -31,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The registry used to register components with the framework. See the documentation for `HUBComponentRegistry` for more info.
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
+
+/// The registry used to register actions with the framework. See the documentation for `HUBActionRegistry` for more info.
+@property (nonatomic, strong, readonly) id<HUBActionRegistry> actionRegistry;
 
 /// The registry used to register custom JSON schemas. See the documentation for `HUBJSONSchemaRegistry` for more info.
 @property (nonatomic, strong, readonly) id<HUBJSONSchemaRegistry> JSONSchemaRegistry;

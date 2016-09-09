@@ -1,6 +1,6 @@
 #import "HUBComponentModelBuilderImplementation.h"
 
-#import "HUBComponentIdentifier.h"
+#import "HUBIdentifier.h"
 #import "HUBComponentModelImplementation.h"
 #import "HUBComponentImageDataBuilderImplementation.h"
 #import "HUBComponentImageDataImplementation.h"
@@ -440,8 +440,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponentModel>)buildForIndex:(NSUInteger)index
 {
-    HUBComponentIdentifier * const componentIdentifier = [[HUBComponentIdentifier alloc] initWithNamespace:self.componentNamespace
-                                                                                                      name:self.componentName];
+    HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:self.componentNamespace
+                                                                                    name:self.componentName];
     
     id<HUBComponentImageData> const mainImageData = [self.mainImageDataBuilderImplementation buildWithIdentifier:nil
                                                                                                             type:HUBComponentImageTypeMain];

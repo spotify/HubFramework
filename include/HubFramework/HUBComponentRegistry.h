@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@protocol HUBComponent;
 @protocol HUBComponentFactory;
-@class HUBComponentIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,7 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Register a component factory with the Hub Framework
  *
- *  @param componentFactory The factory instance that will serve components matching `componentNamespace`.
+ *  @param componentFactory The factory to register
+ *  @param componentNamespace The namespace to register the factory for
  *
  *  The registered factory will be used to create components whenever a component model declared
  *  the given component namespace as part of its `componentIdentifier`.
@@ -35,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentNamespace The namespace of the factory to unregister
  *
  *  After this method has been called, the Hub Framework will remove any factory found for the given namespace,
- *  opening it up to be registered again with another factory. If the given identifier does not exist, this
+ *  opening it up to be registered again with another factory. If the given namespace does not exist, this
  *  method does nothing.
  */
 - (void)unregisterComponentFactoryForNamespace:(NSString *)componentNamespace;

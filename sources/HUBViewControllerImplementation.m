@@ -1,5 +1,6 @@
 #import "HUBViewControllerImplementation.h"
 
+#import "HUBIdentifier.h"
 #import "HUBViewModelLoader.h"
 #import "HUBViewModel.h"
 #import "HUBComponentModel.h"
@@ -10,7 +11,6 @@
 #import "HUBComponentWrapper.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponentCollectionViewCell.h"
-#import "HUBComponentIdentifier.h"
 #import "HUBImplementationMacros.h"
 #import "HUBUtilities.h"
 #import "HUBImageLoader.h"

@@ -2,7 +2,7 @@
 #import "HUBComponentModel.h"
 #import "HUBHeaderMacros.h"
 
-@class HUBComponentIdentifier;
+@class HUBIdentifier;
 @protocol HUBIcon;
 @protocol HUBComponentTarget;
 
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithIdentifier:(NSString *)identifier
                              index:(NSUInteger)index
-               componentIdentifier:(HUBComponentIdentifier *)componentIdentifier
+               componentIdentifier:(HUBIdentifier *)componentIdentifier
                  componentCategory:(HUBComponentCategory *)componentCategory
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle

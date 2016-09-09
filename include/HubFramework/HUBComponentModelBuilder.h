@@ -3,7 +3,6 @@
 #import "HUBJSONCompatibleBuilder.h"
 #import "HUBComponentCategories.h"
 
-@class HUBComponentIdentifier;
 @protocol HUBComponentImageDataBuilder;
 @protocol HUBComponentTargetBuilder;
 

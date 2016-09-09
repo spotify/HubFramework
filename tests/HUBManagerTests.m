@@ -40,6 +40,7 @@
 {
     XCTAssertNotNil(self.manager.featureRegistry);
     XCTAssertNotNil(self.manager.componentRegistry);
+    XCTAssertNotNil(self.manager.actionRegistry);
     XCTAssertNotNil(self.manager.JSONSchemaRegistry);
 }
 

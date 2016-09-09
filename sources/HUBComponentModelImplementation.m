@@ -1,6 +1,6 @@
 #import "HUBComponentModelImplementation.h"
 
-#import "HUBComponentIdentifier.h"
+#import "HUBIdentifier.h"
 #import "HUBComponentImageData.h"
 #import "HUBComponentTarget.h"
 #import "HUBJSONKeys.h"
@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
                              index:(NSUInteger)index
-               componentIdentifier:(HUBComponentIdentifier *)componentIdentifier
+               componentIdentifier:(HUBIdentifier *)componentIdentifier
                  componentCategory:(HUBComponentCategory *)componentCategory
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle
