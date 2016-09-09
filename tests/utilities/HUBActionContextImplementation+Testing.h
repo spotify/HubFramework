@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Create a context to use in tests
  *
  *  @param actionNamespace The action namespace of the context to create
- *  @param actionName The name of the action to create
+ *  @param actionName The action name of the context to create
  */
 + (instancetype)contextForTestingWithActionNamespace:(NSString *)actionNamespace
                                                 name:(NSString *)actionName;
