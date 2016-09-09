@@ -2,6 +2,7 @@
 
 #import "HUBFeatureRegistryImplementation.h"
 #import "HUBComponentRegistryImplementation.h"
+#import "HUBActionRegistryImplementation.h"
 #import "HUBJSONSchemaRegistryImplementation.h"
 #import "HUBViewModelLoaderFactoryImplementation.h"
 #import "HUBViewControllerFactoryImplementation.h"
@@ -64,6 +65,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                           appendedContentOperationFactory:appendedContentOperationFactory
                                                                                                                                defaultContentReloadPolicy:defaultContentReloadPolicy];
         
+        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation new];
+        
         HUBViewControllerFactoryImplementation * const viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:viewModelLoaderFactory
                                                                                                                                               featureRegistry:featureRegistry
                                                                                                                                             componentRegistry:componentRegistry
@@ -74,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
         _featureRegistry = featureRegistry;
         _componentRegistry = componentRegistry;
         _componentRegistryImplementation = componentRegistry;
+        _actionRegistry = actionRegistry;
         _JSONSchemaRegistry = JSONSchemaRegistry;
         _viewModelLoaderFactory = viewModelLoaderFactory;
         _viewControllerFactory = viewControllerFactory;
