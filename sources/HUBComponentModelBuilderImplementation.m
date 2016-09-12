@@ -426,6 +426,7 @@ NS_ASSUME_NONNULL_BEGIN
     copy.iconIdentifier = self.iconIdentifier;
     copy.targetBuilderImplementation = [self.targetBuilderImplementation copy];
     copy.customData = self.customData;
+    copy.metadata = self.metadata;
     copy.loggingData = self.loggingData;
     
     for (NSString * const customImageIdentifier in self.customImageDataBuilders) {
