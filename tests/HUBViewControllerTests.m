@@ -945,12 +945,12 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
-    NSArray<id<HUBComponentModel>> * const childComponentModels = componentModel.childComponentModels;
+    NSArray<id<HUBComponentModel>> * const children = componentModel.children;
     id<HUBComponentChildDelegate> const childDelegate = self.component.childDelegate;
     
-    [childDelegate component:self.component childComponentForModel:childComponentModels[0]];
-    [childDelegate component:self.component childComponentForModel:childComponentModels[1]];
-    [childDelegate component:self.component childComponentForModel:childComponentModels[2]];
+    [childDelegate component:self.component childComponentForModel:children[0]];
+    [childDelegate component:self.component childComponentForModel:children[1]];
+    [childDelegate component:self.component childComponentForModel:children[2]];
     
     [childDelegate component:self.component willDisplayChildAtIndex:0 view:(UIView *)childComponentA.view];
     [childDelegate component:self.component willDisplayChildAtIndex:1 view:(UIView *)childComponentB.view];
@@ -962,9 +962,9 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     NSArray * const expectedAppearanceComponentModels = @[
         componentModel,
-        childComponentModels[0],
-        childComponentModels[1],
-        childComponentModels[2]
+        children[0],
+        children[1],
+        children[2]
     ];
     
     XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod, expectedAppearanceComponentModels);

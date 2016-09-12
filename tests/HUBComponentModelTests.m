@@ -16,12 +16,12 @@
 - (void)testChildComponentModelAtIndex
 {
     NSArray * const childModels = @[
-        [self createComponentModelWithIdentifier:@"child1" childComponentModels:nil],
-        [self createComponentModelWithIdentifier:@"child2" childComponentModels:nil]
+        [self createComponentModelWithIdentifier:@"child1"],
+        [self createComponentModelWithIdentifier:@"child2"]
     ];
     
-    HUBComponentModelImplementation * const model = [self createComponentModelWithIdentifier:@"id"
-                                                                        childComponentModels:childModels];
+    HUBComponentModelImplementation * const model = [self createComponentModelWithIdentifier:@"id"];
+    model.children = childModels;
     
     XCTAssertEqual([model childComponentModelAtIndex:0], childModels[0]);
     XCTAssertEqual([model childComponentModelAtIndex:1], childModels[1]);
@@ -71,6 +71,7 @@
                                                                                          customData:@{@"custom": @"data"}];
         
         return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
+                                                                      type:HUBComponentTypeBody
                                                                      index:0
                                                        componentIdentifier:componentIdentifier
                                                          componentCategory:HUBComponentCategoryRow
@@ -86,7 +87,7 @@
                                                                   metadata:@{@"meta": @"data"}
                                                                loggingData:@{@"logging": @"data"}
                                                                 customData:@{@"custom": @"data"}
-                                                      childComponentModels:@[]];
+                                                                    parent:nil];
     };
     
     XCTAssertEqualObjects(createComponentModel(), createComponentModel());
@@ -99,6 +100,7 @@
         HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
         
         return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
+                                                                      type:HUBComponentTypeBody
                                                                      index:0
                                                        componentIdentifier:componentIdentifier
                                                          componentCategory:HUBComponentCategoryRow
@@ -114,7 +116,7 @@
                                                                   metadata:nil
                                                                loggingData:nil
                                                                 customData:nil
-                                                      childComponentModels:@[]];
+                                                                    parent:nil];
     };
     
     XCTAssertNotEqualObjects(createComponentModel(), createComponentModel());
@@ -123,7 +125,6 @@
 #pragma mark - Utilities
 
 - (HUBComponentModelImplementation *)createComponentModelWithIdentifier:(NSString *)identifier
-                                                   childComponentModels:(nullable NSArray<HUBComponentModelImplementation *> *)childComponentModels
 {
     HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
     HUBComponentTargetImplementation * const target = [[HUBComponentTargetImplementation alloc] initWithURI:nil
@@ -131,6 +132,7 @@
                                                                                                  customData:nil];
     
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
+                                                                  type:HUBComponentTypeBody
                                                                  index:0
                                                    componentIdentifier:componentIdentifier
                                                      componentCategory:HUBComponentCategoryRow
@@ -146,7 +148,7 @@
                                                               metadata:nil
                                                            loggingData:nil
                                                             customData:nil
-                                                  childComponentModels:childComponentModels];
+                                                                parent:nil];
 }
 
 @end

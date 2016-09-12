@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentModelImplementation
 
 @synthesize identifier = _identifier;
+@synthesize type = _type;
 @synthesize index = _index;
 @synthesize componentIdentifier = _componentIdentifier;
 @synthesize componentCategory = _componentCategory;
@@ -28,9 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize metadata = _metadata;
 @synthesize loggingData = _loggingData;
 @synthesize customData = _customData;
-@synthesize childComponentModels = _childComponentModels;
+@synthesize parent = _parent;
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
+                              type:(HUBComponentType)type
                              index:(NSUInteger)index
                componentIdentifier:(HUBIdentifier *)componentIdentifier
                  componentCategory:(HUBComponentCategory *)componentCategory
@@ -46,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
                           metadata:(nullable NSDictionary<NSString *, NSObject *> *)metadata
                        loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
-              childComponentModels:(nullable NSArray<id<HUBComponentModel>> *)childComponentModels
+                            parent:(nullable id<HUBComponentModel>)parent
 {
     NSParameterAssert(identifier != nil);
     NSParameterAssert(componentIdentifier != nil);
@@ -57,6 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self) {
         _identifier = [identifier copy];
+        _type = type;
         _componentIdentifier = [componentIdentifier copy];
         _componentCategory = [componentCategory copy];
         _index = index;
@@ -72,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
         _metadata = metadata;
         _loggingData = loggingData;
         _customData = customData;
-        _childComponentModels = childComponentModels;
+        _parent = parent;
     }
     
     return self;
@@ -108,7 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
     serialization[HUBJSONKeyMetadata] = self.metadata;
     serialization[HUBJSONKeyLogging] = self.loggingData;
     serialization[HUBJSONKeyCustom] = self.customData;
-    serialization[HUBJSONKeyChildren] = [self serializedChildComponentModels];
+    serialization[HUBJSONKeyChildren] = [self serializedChildren];
     
     return [serialization copy];
 }
@@ -117,11 +120,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id<HUBComponentModel>)childComponentModelAtIndex:(NSUInteger)childIndex
 {
-    if (childIndex >= self.childComponentModels.count) {
+    if (childIndex >= self.children.count) {
         return nil;
     }
     
-    return self.childComponentModels[childIndex];
+    return self.children[childIndex];
 }
 
 #pragma mark - Private utilities
@@ -173,21 +176,21 @@ NS_ASSUME_NONNULL_BEGIN
     return [serialization copy];
 }
 
-- (nullable NSArray<NSDictionary<NSString *, NSObject<NSCoding> *> *> *)serializedChildComponentModels
+- (nullable NSArray<NSDictionary<NSString *, NSObject<NSCoding> *> *> *)serializedChildren
 {
-    NSArray<id<HUBComponentModel>> * const childComponentModels = self.childComponentModels;
+    NSArray<id<HUBComponentModel>> * const children = self.children;
     
-    if (childComponentModels.count == 0) {
+    if (children.count == 0) {
         return nil;
     }
     
-    NSMutableArray<NSDictionary<NSString *, NSObject<NSCoding> *> *> * const serializedModels = [NSMutableArray new];
+    NSMutableArray<NSDictionary<NSString *, NSObject<NSCoding> *> *> * const serializedChildren = [NSMutableArray new];
     
-    for (id<HUBComponentModel> const model in childComponentModels) {
-        [serializedModels addObject:[model serialize]];
+    for (id<HUBComponentModel> const child in children) {
+        [serializedChildren addObject:[child serialize]];
     }
     
-    return [serializedModels copy];
+    return [serializedChildren copy];
 }
 
 @end

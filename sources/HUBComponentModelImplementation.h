@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its possible values
  *
  *  @param identifier The identifier of the model
+ *  @param type The type of component that this model is for
  *  @param index The index of the model, either within its parent or within the root list
  *  @param componentIdentifier The identifier of the component that the model should be rendered using
  *  @param componentCategory The category of the component that the model should be rendered using
@@ -30,12 +31,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param metadata Any metadata that should be associated with the component
  *  @param loggingData Any data that should be logged alongside interactions or impressions for the component
  *  @param customData Any custom data that the component should use
- *  @param childComponentModels Any component models that are children of this model
+ *  @param parent Any model that is the parent of this one
  *
  *  For more information about these parameters and their corresponding properties, see their
  *  documentation in `HUBComponentModel`.
  */
 - (instancetype)initWithIdentifier:(NSString *)identifier
+                              type:(HUBComponentType)type
                              index:(NSUInteger)index
                componentIdentifier:(HUBIdentifier *)componentIdentifier
                  componentCategory:(HUBComponentCategory *)componentCategory
@@ -51,7 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
                           metadata:(nullable NSDictionary<NSString *, NSObject *> *)metadata
                        loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
                         customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
-              childComponentModels:(nullable NSArray<id<HUBComponentModel>> *)childComponentModels HUB_DESIGNATED_INITIALIZER;
+                            parent:(nullable id<HUBComponentModel>)parent HUB_DESIGNATED_INITIALIZER;
+
+/// The component models that are children of this one
+@property (nonatomic, strong, nullable) NSArray<id<HUBComponentModel>> *children;
 
 @end
 

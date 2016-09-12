@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
     
     id<HUBComponentModel> const componentModel = [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
+                                                                                                        type:HUBComponentTypeBody
                                                                                                        index:0
                                                                                          componentIdentifier:componentIdentifier
                                                                                            componentCategory:HUBComponentCategoryCard
@@ -39,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                     metadata:nil
                                                                                                  loggingData:nil
                                                                                                   customData:nil
-                                                                                        childComponentModels:nil];
+                                                                                                      parent:nil];
     
     UIViewController * const viewController = [UIViewController new];
     

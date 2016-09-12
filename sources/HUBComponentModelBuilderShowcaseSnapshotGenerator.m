@@ -14,17 +14,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBComponentModelBuilderShowcaseSnapshotGenerator
 
-- (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
-                             JSONSchema:(id<HUBJSONSchema>)JSONSchema
-                      componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
-                      componentDefaults:(HUBComponentDefaults *)componentDefaults
-                      iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
-                   mainImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)mainImageDataBuilder
-             backgroundImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)backgroundImageDataBuilder
+- (instancetype)initWithJSONSchema:(id<HUBJSONSchema>)JSONSchema
+                 componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+                 componentDefaults:(HUBComponentDefaults *)componentDefaults
+                 iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
+              mainImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)mainImageDataBuilder
+        backgroundImageDataBuilder:(nullable HUBComponentImageDataBuilderImplementation *)backgroundImageDataBuilder
 {
     NSParameterAssert(componentRegistry != nil);
     
-    self = [super initWithModelIdentifier:modelIdentifier
+    self = [super initWithModelIdentifier:nil
+                                     type:HUBComponentTypeBody
                                JSONSchema:JSONSchema
                         componentDefaults:componentDefaults
                         iconImageResolver:iconImageResolver
@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIImage *)generateShowcaseSnapshotForContainerViewSize:(CGSize)containerViewSize
 {
-    id<HUBComponentModel> const componentModel = [self buildForIndex:0];
+    id<HUBComponentModel> const componentModel = [self buildForIndex:0 parent:nil];
     id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
     
     [component loadView];
