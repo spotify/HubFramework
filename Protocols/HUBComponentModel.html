@@ -126,6 +126,9 @@
                 <a class="nav-group-task-link" href="../Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/HUBComponentType.html">HUBComponentType</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/HUBConnectivityState.html">HUBConnectivityState</a>
               </li>
             </ul>
@@ -357,10 +360,10 @@
           <div class="section-content">
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Identifier%20&amp;%20index"></a>
-                <a name="//apple_ref/objc/Section/Identifier &amp; index" class="dashAnchor"></a>
-                <a href="#/Identifier%20&amp;%20index">
-                  <h3 class="section-name">Identifier &amp; index</h3>
+                <a name="/Identifiers"></a>
+                <a name="//apple_ref/objc/Section/Identifiers" class="dashAnchor"></a>
+                <a href="#/Identifiers">
+                  <h3 class="section-name">Identifiers</h3>
                 </a>
               </div>
               <ul class="item-container">
@@ -393,6 +396,42 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="k">var</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentModel(py)type"></a>
+                    <a name="//apple_ref/objc/Property/type" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentModel(py)type">type</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The type of component that this model is for</p>
+
+<p>The Hub Framework supports 3 types of components; header, body &amp; overlay. For more information about the difference
+  between them, see the documentation for <code><a href="../Protocols/HUBViewModel.html">HUBViewModel</a></code>, as well as the content &amp; component programming guides.
+  A component&rsquo;s children always have the same type as their parent.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n"><a href="../Enums/HUBComponentType.html">HUBComponentType</a></span> <span class="n">type</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Enums/HUBComponentType.html">HUBComponentType</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -976,19 +1015,54 @@
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Child%20models"></a>
-                <a name="//apple_ref/objc/Section/Child models" class="dashAnchor"></a>
-                <a href="#/Child%20models">
-                  <h3 class="section-name">Child models</h3>
+                <a name="/Hierarchy"></a>
+                <a name="//apple_ref/objc/Section/Hierarchy" class="dashAnchor"></a>
+                <a href="#/Hierarchy">
+                  <h3 class="section-name">Hierarchy</h3>
                 </a>
               </div>
               <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentModel(py)childComponentModels"></a>
-                    <a name="//apple_ref/objc/Property/childComponentModels" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentModel(py)childComponentModels">childComponentModels</a>
+                    <a name="/c:objc(pl)HUBComponentModel(py)parent"></a>
+                    <a name="//apple_ref/objc/Property/parent" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentModel(py)parent">parent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Any component model that is the parent of this model</p>
+
+<p>This property contains a back-reference to any component that is above this one in the hierarchy. If this model is for a
+  root component, this property will be <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentModel</span><span class="o">&gt;</span> <span class="n">parent</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">weak</span> <span class="k">var</span> <span class="nv">parent</span><span class="p">:</span> <span class="kt">HUBComponentModel</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentModel(py)children"></a>
+                    <a name="//apple_ref/objc/Property/children" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentModel(py)children">children</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1008,12 +1082,12 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span>
-    <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentModel</span><span class="o">&gt;&gt;</span> <span class="o">*</span><span class="n">childComponentModels</span><span class="p">;</span></code></pre>
+    <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentModel</span><span class="o">&gt;&gt;</span> <span class="o">*</span><span class="n">children</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">childComponentModels</span><span class="p">:</span> <span class="p">[</span><span class="kt">HUBComponentModel</span><span class="p">]?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">children</span><span class="p">:</span> <span class="p">[</span><span class="kt">HUBComponentModel</span><span class="p">]?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -1035,7 +1109,7 @@
                       <div class="abstract">
                         <p>Return a child component model for a given index, or <code>nil</code> if an invalid index was supplied</p>
 
-<p>This method is a convenience API for accessing child component models directly using the <code><a href="../Protocols/HUBComponentModel.html#/c:objc(pl)HUBComponentModel(py)childComponentModels">childComponentModels</a></code> property, since
+<p>This method is a convenience API for accessing child component models directly using the <code>childComponentModels</code> property, since
   it&rsquo;s fine to call this method with an index that is not known to be valid (since it will fail gracefully and return <code>nil</code>).</p>
 
                       </div>
