@@ -113,13 +113,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponentModelBuilder, HUBComponentShowcaseSnapshotGenerator>)createShowcaseSnapshotComponentModelBuilder
 {
-    return [[HUBComponentModelBuilderShowcaseSnapshotGenerator alloc] initWithModelIdentifier:nil
-                                                                                   JSONSchema:self.JSONSchemaRegistry.defaultSchema
-                                                                            componentRegistry:self
-                                                                            componentDefaults:self.componentDefaults
-                                                                            iconImageResolver:self.iconImageResolver
-                                                                         mainImageDataBuilder:nil
-                                                                   backgroundImageDataBuilder:nil];
+    return [[HUBComponentModelBuilderShowcaseSnapshotGenerator alloc] initWithJSONSchema:self.JSONSchemaRegistry.defaultSchema
+                                                                       componentRegistry:self
+                                                                       componentDefaults:self.componentDefaults
+                                                                       iconImageResolver:self.iconImageResolver
+                                                                    mainImageDataBuilder:nil
+                                                              backgroundImageDataBuilder:nil];
 }
 
 @end

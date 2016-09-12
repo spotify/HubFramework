@@ -202,13 +202,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBViewModel>)build
 {
-    id<HUBComponentModel> const headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0];
+    id<HUBComponentModel> const headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0 parent:nil];
     
     NSArray * const bodyComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.bodyComponentModelBuilders
-                                                                                                    identifierOrder:self.bodyComponentIdentifierOrder];
+                                                                                                    identifierOrder:self.bodyComponentIdentifierOrder
+                                                                                                             parent:nil];
     
     NSArray * const overlayComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.overlayComponentModelBuilders
-                                                                                                       identifierOrder:self.overlayComponentIdentifierOrder];
+                                                                                                       identifierOrder:self.overlayComponentIdentifierOrder
+                                                                                                                parent:nil];
     
     return [[HUBViewModelImplementation alloc] initWithIdentifier:self.viewIdentifier
                                                navigationBarTitle:self.navigationBarTitle
@@ -347,7 +349,7 @@ NS_ASSUME_NONNULL_BEGIN
         identifier = @"header";
     }
     
-    HUBComponentModelBuilderImplementation * const newBuilder = [self createComponentModelBuilderWithIdentifier:identifier];
+    HUBComponentModelBuilderImplementation * const newBuilder = [self createComponentModelBuilderWithIdentifier:identifier type:HUBComponentTypeHeader];
     self.headerComponentModelBuilderImplementation = newBuilder;
     return newBuilder;
 }
@@ -361,7 +363,7 @@ NS_ASSUME_NONNULL_BEGIN
         return existingBuilder;
     }
     
-    HUBComponentModelBuilderImplementation * const newBuilder = [self createComponentModelBuilderWithIdentifier:identifier];
+    HUBComponentModelBuilderImplementation * const newBuilder = [self createComponentModelBuilderWithIdentifier:identifier type:HUBComponentTypeBody];
     self.bodyComponentModelBuilders[newBuilder.modelIdentifier] = newBuilder;
     [self.bodyComponentIdentifierOrder addObject:newBuilder.modelIdentifier];
     
@@ -377,7 +379,7 @@ NS_ASSUME_NONNULL_BEGIN
         return existingBuilder;
     }
     
-    HUBComponentModelBuilderImplementation * const newBuilder = [self createComponentModelBuilderWithIdentifier:identifier];
+    HUBComponentModelBuilderImplementation * const newBuilder = [self createComponentModelBuilderWithIdentifier:identifier type:HUBComponentTypeOverlay];
     self.overlayComponentModelBuilders[newBuilder.modelIdentifier] = newBuilder;
     [self.overlayComponentIdentifierOrder addObject:newBuilder.modelIdentifier];
     
@@ -398,8 +400,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 - (HUBComponentModelBuilderImplementation *)createComponentModelBuilderWithIdentifier:(nullable NSString *)identifier
+                                                                                 type:(HUBComponentType)type
 {
     return [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
+                                                                              type:type
                                                                         JSONSchema:self.JSONSchema
                                                                  componentDefaults:self.componentDefaults
                                                                  iconImageResolver:self.iconImageResolver

@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBComponentModelBuilderImplementation ()
 
+@property (nonatomic, assign, readonly) HUBComponentType type;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
@@ -52,6 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray<id<HUBComponentModel>> *)buildComponentModelsUsingBuilders:(NSDictionary<NSString *,HUBComponentModelBuilderImplementation *> *)builders
                                                       identifierOrder:(NSArray<NSString *> *)identifierOrder
+                                                               parent:(nullable id<HUBComponentModel>)parent
 {
     NSMutableOrderedSet<HUBComponentModelBuilderImplementation *> * const sortedBuilders = [NSMutableOrderedSet new];
     NSMutableDictionary<NSNumber *, HUBComponentModelBuilderImplementation *> * const buildersByPreferredIndex = [NSMutableDictionary new];
@@ -88,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableArray<id<HUBComponentModel>> * const models = [NSMutableArray new];
     
     for (HUBComponentModelBuilderImplementation * const builder in sortedBuilders) {
-        id<HUBComponentModel> const model = [builder buildForIndex:models.count];
+        id<HUBComponentModel> const model = [builder buildForIndex:models.count parent:parent];
         [models addObject:model];
     }
     
@@ -98,6 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Initializer
 
 - (instancetype)initWithModelIdentifier:(nullable NSString *)modelIdentifier
+                                   type:(HUBComponentType)type
                              JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
                       iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
@@ -114,6 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
     self = [super init];
     
     if (self) {
+        _type = type;
         _JSONSchema = JSONSchema;
         _componentDefaults = componentDefaults;
         _iconImageResolver = iconImageResolver;
@@ -393,7 +397,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)debugDescription
 {
     return [NSString stringWithFormat:@"HUBComponentModelBuilder with contents: %@",
-            HUBSerializeToString([self buildForIndex:self.preferredIndex.unsignedIntegerValue])];
+            HUBSerializeToString([self buildForIndex:self.preferredIndex.unsignedIntegerValue parent:nil])];
 }
 
 #pragma mark - NSCopying
@@ -404,6 +408,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentImageDataBuilderImplementation * const backgroundImageDataBuilder = [self.backgroundImageDataBuilderImplementation copy];
     
     HUBComponentModelBuilderImplementation * const copy = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:self.modelIdentifier
+                                                                                                                             type:self.type
                                                                                                                        JSONSchema:self.JSONSchema
                                                                                                                 componentDefaults:self.componentDefaults
                                                                                                                 iconImageResolver:self.iconImageResolver
@@ -438,7 +443,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (id<HUBComponentModel>)buildForIndex:(NSUInteger)index
+- (id<HUBComponentModel>)buildForIndex:(NSUInteger)index parent:(nullable id<HUBComponentModel>)parent
 {
     HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:self.componentNamespace
                                                                                     name:self.componentName];
@@ -463,26 +468,30 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBIcon> const icon = [self buildIconForPlaceholder:NO];
     id<HUBComponentTarget> const target = [self.targetBuilderImplementation build];
     
-    NSArray * const childComponentModels = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.childComponentModelBuilders
-                                                                                                     identifierOrder:self.childComponentIdentifierOrder];
+    HUBComponentModelImplementation * const model = [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
+                                                                                                           type:self.type
+                                                                                                          index:index
+                                                                                            componentIdentifier:componentIdentifier
+                                                                                              componentCategory:self.componentCategory
+                                                                                                          title:self.title
+                                                                                                       subtitle:self.subtitle
+                                                                                                 accessoryTitle:self.accessoryTitle
+                                                                                                descriptionText:self.descriptionText
+                                                                                                  mainImageData:mainImageData
+                                                                                            backgroundImageData:backgroundImageData
+                                                                                                customImageData:customImageData
+                                                                                                           icon:icon
+                                                                                                         target:target
+                                                                                                       metadata:self.metadata
+                                                                                                    loggingData:self.loggingData
+                                                                                                     customData:self.customData
+                                                                                                         parent:parent];
     
-    return [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
-                                                                 index:index
-                                                   componentIdentifier:componentIdentifier
-                                                     componentCategory:self.componentCategory
-                                                                 title:self.title
-                                                              subtitle:self.subtitle
-                                                        accessoryTitle:self.accessoryTitle
-                                                       descriptionText:self.descriptionText
-                                                         mainImageData:mainImageData
-                                                   backgroundImageData:backgroundImageData
-                                                       customImageData:customImageData
-                                                                  icon:icon
-                                                                target:target
-                                                              metadata:self.metadata
-                                                           loggingData:self.loggingData
-                                                            customData:self.customData
-                                                  childComponentModels:childComponentModels];
+    model.children = [HUBComponentModelBuilderImplementation buildComponentModelsUsingBuilders:self.childComponentModelBuilders
+                                                                               identifierOrder:self.childComponentIdentifierOrder
+                                                                                        parent:model];
+    
+    return model;
 }
 
 #pragma mark - Private utilities
@@ -527,6 +536,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     HUBComponentModelBuilderImplementation * const newBuilder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:identifier
+                                                                                                                                   type:self.type
                                                                                                                              JSONSchema:self.JSONSchema
                                                                                                                       componentDefaults:self.componentDefaults
                                                                                                                       iconImageResolver:self.iconImageResolver

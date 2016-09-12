@@ -18,6 +18,7 @@
             HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
             
             return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
+                                                                          type:HUBComponentTypeBody
                                                                          index:0
                                                            componentIdentifier:componentIdentifier
                                                              componentCategory:HUBComponentCategoryBanner
@@ -33,7 +34,7 @@
                                                                       metadata:nil
                                                                    loggingData:nil
                                                                     customData:nil
-                                                          childComponentModels:nil];
+                                                                        parent:nil];
         };
         
         NSURL * const extensionURL = [NSURL URLWithString:@"https://spotify.com/viewmodelextension"];
@@ -57,6 +58,7 @@
             HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
             
             return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
+                                                                          type:HUBComponentTypeBody
                                                                          index:0
                                                            componentIdentifier:componentIdentifier
                                                              componentCategory:HUBComponentCategoryBanner
@@ -72,7 +74,7 @@
                                                                       metadata:nil
                                                                    loggingData:nil
                                                                     customData:nil
-                                                          childComponentModels:nil];
+                                                                        parent:nil];
         };
         
         NSString * const title = [NSUUID UUID].UUIDString;

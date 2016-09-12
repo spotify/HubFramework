@@ -347,11 +347,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentModel> const componentModel = componentWrapper.model;
     
-    if (childIndex >= componentModel.childComponentModels.count) {
+    if (childIndex >= componentModel.children.count) {
         return;
     }
     
-    id<HUBComponentModel> const childComponentModel = componentModel.childComponentModels[childIndex];
+    id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
     [self loadImagesForComponentWrapper:componentWrapper childIndex:@(childIndex)];
     [self.delegate viewController:self componentWithModel:childComponentModel willAppearInView:childComponentView];
 }
@@ -362,11 +362,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentModel> const componentModel = componentWrapper.model;
     
-    if (childIndex >= componentModel.childComponentModels.count) {
+    if (childIndex >= componentModel.children.count) {
         return;
     }
     
-    id<HUBComponentModel> const childComponentModel = componentModel.childComponentModels[childIndex];
+    id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
     [self.delegate viewController:self componentWithModel:childComponentModel didDisappearFromView:childComponentView];
 }
 
@@ -376,11 +376,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentModel> const componentModel = componentWrapper.model;
     
-    if (childIndex >= componentModel.childComponentModels.count) {
+    if (childIndex >= componentModel.children.count) {
         return;
     }
     
-    id<HUBComponentModel> const childComponentModel = componentModel.childComponentModels[childIndex];
+    id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
     [self handleSelectionForComponentWithModel:childComponentModel view:childComponentView cellIndexPath:nil];
 }
 
@@ -864,11 +864,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentModel> parentModel = componentWrapper.model;
     
-    if (childIndex >= parentModel.childComponentModels.count) {
+    if (childIndex >= parentModel.children.count) {
         return nil;
     }
     
-    return parentModel.childComponentModels[childIndex];
+    return parentModel.children[childIndex];
 }
 
 @end

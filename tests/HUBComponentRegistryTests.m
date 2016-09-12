@@ -221,6 +221,7 @@ static NSString * const DefaultNamespace = @"default";
                                                                                                  customData:nil];
 
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
+                                                                  type:HUBComponentTypeBody
                                                                  index:0
                                                    componentIdentifier:componentIdentifier
                                                      componentCategory:componentCategory
@@ -236,7 +237,7 @@ static NSString * const DefaultNamespace = @"default";
                                                               metadata:nil
                                                            loggingData:nil
                                                             customData:nil
-                                                  childComponentModels:nil];
+                                                                parent:nil];
 }
 
 @end

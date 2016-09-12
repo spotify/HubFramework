@@ -37,6 +37,7 @@
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults iconImageResolver:iconImageResolver];
     
     self.builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:self.modelIdentifier
+                                                                                      type:HUBComponentTypeBody
                                                                                 JSONSchema:JSONSchema
                                                                          componentDefaults:self.componentDefaults
                                                                          iconImageResolver:iconImageResolver
@@ -64,8 +65,9 @@
     self.builder.loggingData = @{@"logging": @"data"};
     
     NSUInteger const modelIndex = 5;
-    id<HUBComponentModel> const model = [self.builder buildForIndex:modelIndex];
+    id<HUBComponentModel> const model = [self.builder buildForIndex:modelIndex parent:nil];
     
+    XCTAssertEqual(model.type, HUBComponentTypeBody);
     XCTAssertEqualObjects(model.componentIdentifier.namespacePart, @"namespace");
     XCTAssertEqualObjects(model.componentIdentifier.namePart, @"name");
     XCTAssertEqualObjects(model.componentCategory, @"category");
@@ -79,6 +81,7 @@
     XCTAssertEqualObjects(model.target.URI, self.builder.targetBuilder.URI);
     XCTAssertEqualObjects(model.customData, self.builder.customData);
     XCTAssertEqualObjects(model.loggingData, self.builder.loggingData);
+    XCTAssertNil(model.parent);
 }
 
 - (void)testOverridingDefaultComponentNameNamespaceAndCategory
@@ -87,7 +90,7 @@
     self.builder.componentName = @"name-override";
     self.builder.componentCategory = @"category-override";
     
-    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
     XCTAssertEqualObjects(model.componentIdentifier.namespacePart, @"namespace-override");
     XCTAssertEqualObjects(model.componentIdentifier.namePart, @"name-override");
     XCTAssertEqualObjects(model.componentCategory, @"category-override");
@@ -98,7 +101,7 @@
     self.builder.componentNamespace = @"component";
     self.builder.mainImageDataBuilder.placeholderIconIdentifier = @"placeholder";
     self.builder.backgroundImageDataBuilder.placeholderIconIdentifier = @"placeholder";
-    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
     
     XCTAssertEqual(model.mainImageData.type, HUBComponentImageTypeMain);
     XCTAssertEqual(model.backgroundImageData.type, HUBComponentImageTypeBackground);
@@ -133,7 +136,7 @@
     NSString * const emptyCustomImageBuilderIdentifier = @"empty";
     [self.builder builderForCustomImageDataWithIdentifier:emptyCustomImageBuilderIdentifier];
     
-    id<HUBComponentModel> const componentModel = [self.builder buildForIndex:0];
+    id<HUBComponentModel> const componentModel = [self.builder buildForIndex:0 parent:nil];
     id<HUBComponentImageData> const customImageData = componentModel.customImageData[customImageIdentifier];
     
     XCTAssertEqualObjects(customImageData.identifier, customImageIdentifier);
@@ -149,6 +152,7 @@
                                                                                       iconImageResolver:nil];
     
     self.builder = [[HUBComponentModelBuilderImplementation alloc] initWithModelIdentifier:self.modelIdentifier
+                                                                                      type:HUBComponentTypeBody
                                                                                 JSONSchema:JSONSchema
                                                                          componentDefaults:self.componentDefaults
                                                                          iconImageResolver:nil
@@ -157,12 +161,12 @@
     
     self.builder.iconIdentifier = @"icon";
     
-    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
     XCTAssertNotNil(model);
     XCTAssertNil(model.icon);
 }
 
-- (void)testCreatingChildComponentModel
+- (void)testCreatingChild
 {
     NSString * const childModelIdentifier = @"childModel";
     id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
@@ -179,7 +183,14 @@
     XCTAssertEqual([self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier], childBuilder);
 }
 
-- (void)testChildComponentModelPreferredIndexRespected
+- (void)testChildTypeSameAsParent
+{
+    [self.builder builderForChildComponentModelWithIdentifier:@"id"];
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
+    XCTAssertEqual(model.children[0].type, model.type);
+}
+
+- (void)testChildPreferredIndexRespected
 {
     self.builder.componentName = @"component";
     
@@ -193,15 +204,15 @@
     childBuilderB.preferredIndex = @0;
     childBuilderB.componentName = @"component";
     
-    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
-    XCTAssertEqual(model.childComponentModels.count, (NSUInteger)2);
-    XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifierB);
-    XCTAssertEqual(model.childComponentModels[0].index, (NSUInteger)0);
-    XCTAssertEqualObjects(model.childComponentModels[1].identifier, childIdentifierA);
-    XCTAssertEqual(model.childComponentModels[1].index, (NSUInteger)1);
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
+    XCTAssertEqual(model.children.count, (NSUInteger)2);
+    XCTAssertEqualObjects(model.children[0].identifier, childIdentifierB);
+    XCTAssertEqual(model.children[0].index, (NSUInteger)0);
+    XCTAssertEqualObjects(model.children[1].identifier, childIdentifierA);
+    XCTAssertEqual(model.children[1].index, (NSUInteger)1);
 }
 
-- (void)testChildComponentModelOutOfBoundsPreferredIndexHandled
+- (void)testChildOutOfBoundsPreferredIndexHandled
 {
     self.builder.componentName = @"component";
     
@@ -210,10 +221,10 @@
     childBuilder.componentName = @"component";
     childBuilder.preferredIndex = @99;
 
-    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
-    XCTAssertEqual(model.childComponentModels.count, (NSUInteger)1);
-    XCTAssertEqualObjects(model.childComponentModels[0].identifier, childIdentifier);
-    XCTAssertEqual(model.childComponentModels[0].index, (NSUInteger)0);
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
+    XCTAssertEqual(model.children.count, (NSUInteger)1);
+    XCTAssertEqualObjects(model.children[0].identifier, childIdentifier);
+    XCTAssertEqual(model.children[0].index, (NSUInteger)0);
 }
 
 - (void)testRemovingChildComponentModel
@@ -229,7 +240,7 @@
     XCTAssertEqual([self.builder allChildComponentModelBuilders].count, childBuilderCountBefore - 1);
 }
 
-- (void)testRemovingAllChildComponentModels
+- (void)testRemovingAllChildComponentModelBuilders
 {
     self.builder.componentName = @"component";
     
@@ -237,11 +248,20 @@
     [self.builder builderForChildComponentModelWithIdentifier:@"child2"].componentName = @"component";
     [self.builder builderForChildComponentModelWithIdentifier:@"child3"].componentName = @"component";
     
-    XCTAssertEqual([self.builder buildForIndex:0].childComponentModels.count, (NSUInteger)3);
+    XCTAssertEqual([self.builder buildForIndex:0 parent:nil].children.count, (NSUInteger)3);
     
     [self.builder removeAllChildComponentModelBuilders];
     
-    XCTAssertEqual([self.builder buildForIndex:0].childComponentModels.count, (NSUInteger)0);
+    XCTAssertEqual([self.builder buildForIndex:0 parent:nil].children.count, (NSUInteger)0);
+}
+
+- (void)testChildReferenceToParent
+{
+    id<HUBComponentModel> const parent = [self.builder buildForIndex:0 parent:nil];
+    id<HUBComponentModel> const child = [self.builder buildForIndex:0 parent:parent];
+    id<HUBComponentModel> const actualParent = child.parent;
+    
+    XCTAssertEqual(parent, actualParent);
 }
 
 - (void)testAddingJSONDataAndModelSerialization
@@ -326,7 +346,7 @@
     };
     
     [self.builder addDataFromJSONDictionary:dictionary];
-    id<HUBComponentModel> const model = [self.builder buildForIndex:0];
+    id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
     
     XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
     XCTAssertEqualObjects(model.componentCategory, @"mainCategory");
@@ -344,12 +364,12 @@
     XCTAssertEqualObjects(model.loggingData, loggingData);
     XCTAssertEqualObjects(model.customData, customData);
     
-    id<HUBComponentModel> const childModel1 = model.childComponentModels[0];
+    id<HUBComponentModel> const childModel1 = model.children[0];
     XCTAssertEqualObjects(childModel1.identifier, child1ModelIdentifier);
     XCTAssertEqualObjects(childModel1.componentIdentifier, child1ComponentIdentifier);
     XCTAssertEqualObjects(childModel1.componentCategory, @"child1Category");
     
-    id<HUBComponentModel> const childModel2 = model.childComponentModels[1];
+    id<HUBComponentModel> const childModel2 = model.children[1];
     XCTAssertEqualObjects(childModel2.identifier, child2ModelIdentifier);
     XCTAssertEqualObjects(childModel2.componentIdentifier, child2ComponentIdentifier);
     XCTAssertEqualObjects(childModel2.componentCategory, @"child2Category");

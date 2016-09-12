@@ -1,5 +1,6 @@
 #import "HUBSerializable.h"
 #import "HUBComponentCategories.h"
+#import "HUBComponentType.h"
 
 @class HUBIdentifier;
 @protocol HUBComponentImageData;
@@ -27,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponentModel <HUBSerializable>
 
-#pragma mark - Identifier & index
+#pragma mark - Identifiers
 
 /**
  *  The identifier of this model
@@ -36,6 +37,15 @@ NS_ASSUME_NONNULL_BEGIN
  *  debugging to distinguish this set of data from others.
  */
 @property (nonatomic, copy, readonly) NSString *identifier;
+
+/**
+ *  The type of component that this model is for
+ *
+ *  The Hub Framework supports 3 types of components; header, body & overlay. For more information about the difference
+ *  between them, see the documentation for `HUBViewModel`, as well as the content & component programming guides.
+ *  A component's children always have the same type as their parent.
+ */
+@property (nonatomic, readonly) HUBComponentType type;
 
 /**
  *  The index of the model, either within its parent or within the root list
@@ -171,7 +181,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *customData;
 
-#pragma mark - Child models
+#pragma mark - Hierarchy
+
+/**
+ *  Any component model that is the parent of this model
+ *
+ *  This property contains a back-reference to any component that is above this one in the hierarchy. If this model is for a
+ *  root component, this property will be `nil`.
+ */
+@property (nonatomic, weak, nullable, readonly) id<HUBComponentModel> parent;
 
 /**
  *  Any component models that are children of this model
@@ -180,7 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  with them. For example, when creating a carousel-like component, the children of that component might be the items that
  *  the carousel contains.
  */
-@property (nonatomic, strong, nullable, readonly) NSArray<id<HUBComponentModel>> *childComponentModels;
+@property (nonatomic, strong, nullable, readonly) NSArray<id<HUBComponentModel>> *children;
 
 /**
  *  Return a child component model for a given index, or `nil` if an invalid index was supplied
