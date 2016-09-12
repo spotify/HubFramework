@@ -19,6 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerInitialViewModel:(id<HUBViewModel>)initialViewModel forViewURI:(NSURL *)viewURI;
 
 /**
+ *  Remove any previously registered initial view model for a view URI
+ *
+ *  @param viewURI The view URI to remove an initial view model for
+ */
+- (void)removeInitialViewModelForViewURI:(NSURL *)viewURI;
+
+/**
  *  Return any previously registered initial view model for a view URI
  *
  *  @param viewURI The view URI to retrieve an initial view model for

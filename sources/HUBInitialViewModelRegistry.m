@@ -24,6 +24,11 @@
     self.initialViewModels[viewURI] = initialViewModel;
 }
 
+- (void)removeInitialViewModelForViewURI:(NSURL *)viewURI
+{
+    self.initialViewModels[viewURI] = nil;
+}
+
 - (id<HUBViewModel>)initialViewModelForViewURI:(NSURL *)viewURI
 {
     return self.initialViewModels[viewURI];
