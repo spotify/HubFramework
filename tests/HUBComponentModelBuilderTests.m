@@ -487,6 +487,7 @@
     self.builder.descriptionText = @"description text";
     self.builder.targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:framework"];
     self.builder.loggingData = @{@"logging": @"data"};
+    self.builder.metadata = @{@"meta": @"data"};
     self.builder.customData = @{@"custom": @"data"};
     
     self.builder.mainImageDataBuilder.placeholderIconIdentifier = @"mainPlaceholder";
@@ -507,6 +508,7 @@
     XCTAssertEqualObjects(builderCopy.descriptionText, @"description text");
     XCTAssertEqualObjects(builderCopy.targetBuilder.URI, [NSURL URLWithString:@"spotify:hub:framework"]);
     XCTAssertEqualObjects(builderCopy.loggingData, @{@"logging": @"data"});
+    XCTAssertEqualObjects(builderCopy.metadata, @{@"meta": @"data"});
     XCTAssertEqualObjects(builderCopy.customData, @{@"custom": @"data"});
     
     XCTAssertNotEqual(self.builder.mainImageDataBuilder, builderCopy.mainImageDataBuilder);
