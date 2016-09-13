@@ -208,7 +208,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  This method is a convenience API for accessing child component models directly using the `childComponentModels` property, since
  *  it's fine to call this method with an index that is not known to be valid (since it will fail gracefully and return `nil`).
  */
-- (nullable id<HUBComponentModel>)childComponentModelAtIndex:(NSUInteger)childIndex;
+- (nullable id<HUBComponentModel>)childAtIndex:(NSUInteger)childIndex;
 
 @end
 

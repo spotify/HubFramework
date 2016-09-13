@@ -118,7 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentModel
 
-- (nullable id<HUBComponentModel>)childComponentModelAtIndex:(NSUInteger)childIndex
+- (nullable id<HUBComponentModel>)childAtIndex:(NSUInteger)childIndex
 {
     if (childIndex >= self.children.count) {
         return nil;
