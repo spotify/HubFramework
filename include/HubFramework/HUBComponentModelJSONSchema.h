@@ -3,7 +3,6 @@
 @protocol HUBJSONStringPath;
 @protocol HUBJSONDictionaryPath;
 @protocol HUBJSONURLPath;
-@protocol HUBJSONDatePath;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -11,7 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
     HUBJSONIntegerPath,
     HUBJSONStringPath,
     HUBJSONURLPath,
-    HUBJSONDatePath,
     HUBJSONDictionaryPath
 >
 

@@ -5,7 +5,6 @@
 @protocol HUBJSONIntegerPath;
 @protocol HUBJSONStringPath;
 @protocol HUBJSONURLPath;
-@protocol HUBJSONDatePath;
 @protocol HUBJSONDictionaryPath;
 
 NS_ASSUME_NONNULL_BEGIN

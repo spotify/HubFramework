@@ -119,27 +119,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#pragma mark - HUBJSONDatePath
-
-/**
- *  Protocol defining the API for a JSON path that points to an `NSDate` value
- *
- *  See `HUBJSONPath` and `HUBMutableJSONPath` for more information on how JSON paths work.
- */
-@protocol HUBJSONDatePath <HUBJSONPath>
-
-/**
- *  Return an `NSDate` value by following this path in a JSON dictionary
- *
- *  @param dictionary The JSON dictionary to apply the path on
- *
- *  @return An `NSDate` instance parsed from an `NSString` value found by following the path, or `nil` as the default in
- *  case an operation in the path failed, or if the found value wasn't an `NSString` or couldn't be parsed into an `NSDate`.
- */
-- (nullable NSDate *)dateFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary;
-
-@end
-
 #pragma mark - HUBJSONDictionaryPath
 
 /**
