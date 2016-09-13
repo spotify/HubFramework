@@ -424,6 +424,39 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/c:objc(pl)HUBComponentTargetBuilder(py)actionIdentifiers"></a>
+                    <a name="//apple_ref/objc/Property/actionIdentifiers" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentTargetBuilder(py)actionIdentifiers">actionIdentifiers</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The identifiers of any custom actions that should be performed when the target is executed</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">NSMutableOrderedSet</span><span class="o">&lt;</span><span class="n"><a href="../Classes/HUBIdentifier.html">HUBIdentifier</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">actionIdentifiers</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">actionIdentifiers</span><span class="p">:</span> <span class="kt">NSMutableOrderedSet</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/c:objc(pl)HUBComponentTargetBuilder(py)customData"></a>
                     <a name="//apple_ref/objc/Property/customData" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)HUBComponentTargetBuilder(py)customData">customData</a>
@@ -450,6 +483,74 @@
                           <pre class="highlight"><code><span class="k">var</span> <span class="nv">customData</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">]?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentTargetBuilder(im)addActionWithNamespace:name:"></a>
+                    <a name="//apple_ref/objc/Method/-addActionWithNamespace:name:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentTargetBuilder(im)addActionWithNamespace:name:">-addActionWithNamespace:name:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add a custom action identifier to this target</p>
+
+<p>This method is an alias/convenience API for <code>[self.actionIdentifiers addObject:]</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addActionWithNamespace</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">actionNamespace</span>
+                          <span class="nf">name</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">actionName</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">addActionWithNamespace</span><span class="p">(</span><span class="nv">actionNamespace</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">name</span> <span class="nv">actionName</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>actionNamespace</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The namespace part of the action&rsquo;s identifier</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>actionName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name part of the action&rsquo;s identifier</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

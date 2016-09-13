@@ -431,6 +431,48 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/c:objc(pl)HUBComponentTarget(py)actionIdentifiers"></a>
+                    <a name="//apple_ref/objc/Property/actionIdentifiers" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentTarget(py)actionIdentifiers">actionIdentifiers</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The identifiers of any custom actions that should be performed when the target is executed</p>
+
+<p>When the user interacts with this target&rsquo;s associated component, an <code>HUBAction</code> implementation
+  will be resolved for each identifier in this array. Each action that was found will then be
+  performed, and if it returned a successful outcome (YES), the target will be considered to be
+  handled.</p>
+
+<p>You can use actions to implement custom selection behavior without having to modify the framework
+  itself, by implementing <code>HUBAction</code> and registering it through <code>HUBActionRegistry</code>. See those
+  protocols for more information about the Action API.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span>
+    <span class="n">NSArray</span><span class="o">&lt;</span><span class="n"><a href="../Classes/HUBIdentifier.html">HUBIdentifier</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">actionIdentifiers</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">actionIdentifiers</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/HUBIdentifier.html">HUBIdentifier</a></span><span class="p">]?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/c:objc(pl)HUBComponentTarget(py)customData"></a>
                     <a name="//apple_ref/objc/Property/customData" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)HUBComponentTarget(py)customData">customData</a>
