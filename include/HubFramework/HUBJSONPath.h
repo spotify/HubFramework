@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return An array of type-checked values, depending on what type that the path is associated with
  */
-- (NSArray<NSObject *> *)valuesFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary;
+- (NSArray<id> *)valuesFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary;
 
 /**
  *  Return a mutable copy of this path, that can be used to extend it with additional operations
