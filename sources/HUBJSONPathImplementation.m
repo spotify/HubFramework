@@ -78,14 +78,6 @@ NS_ASSUME_NONNULL_BEGIN
     return (NSURL *)[[self valuesFromJSONDictionary:dictionary] firstObject];
 }
 
-#pragma mark - HUBJSONDatePath
-
-- (nullable NSDate *)dateFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
-{
-    // Type-checking is performed by a parsing operation appended by `HUBMutableJSONPathImplementation`
-    return (NSDate *)[[self valuesFromJSONDictionary:dictionary] firstObject];
-}
-
 #pragma mark - HUBJSONDictionaryPath
 
 - (nullable NSDictionary<NSString *, NSObject *> *)dictionaryFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
