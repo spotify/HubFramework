@@ -31,6 +31,7 @@
                                                 componentFallbackHandler:componentFallbackHandler
                                                       imageLoaderFactory:nil
                                                        iconImageResolver:nil
+                                                    defaultActionHandler:nil
                                               defaultContentReloadPolicy:defaultContentReloadPolicy
                                         prependedContentOperationFactory:nil
                                          appendedContentOperationFactory:nil];

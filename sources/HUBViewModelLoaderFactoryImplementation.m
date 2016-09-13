@@ -62,7 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (nullable id<HUBViewModelLoader>)createViewModelLoaderForViewURI:(NSURL *)viewURI featureRegistration:(HUBFeatureRegistration *)featureRegistration
+- (nullable HUBViewModelLoaderImplementation *)createViewModelLoaderForViewURI:(NSURL *)viewURI
+                                                           featureRegistration:(HUBFeatureRegistration *)featureRegistration
 {
     id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureRegistration.featureIdentifier
                                                                                               title:featureRegistration.featureTitle];

@@ -5,6 +5,7 @@
 #import "HUBViewModel.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentImageData.h"
+#import "HUBComponentTarget.h"
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
@@ -19,10 +20,11 @@
 #import "HUBContainerView.h"
 #import "HUBContentReloadPolicy.h"
 #import "HUBComponentUIStateManager.h"
-#import "HUBComponentSelectionHandler.h"
-#import "HUBComponentSelectionContextImplementation.h"
 #import "HUBViewControllerScrollHandler.h"
 #import "HUBComponentReusePool.h"
+#import "HUBActionContextImplementation.h"
+#import "HUBActionRegistry.h"
+#import "HUBActionHandler.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -33,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
-@property (nonatomic, strong, readonly) id<HUBComponentSelectionHandler> componentSelectionHandler;
+@property (nonatomic, strong, readonly) id<HUBActionHandler> actionHandler;
 @property (nonatomic, strong, readonly) id<HUBViewControllerScrollHandler> scrollHandler;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, nullable, readonly) id<HUBImageLoader> imageLoader;
@@ -67,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-      componentSelectionHandler:(id<HUBComponentSelectionHandler>)componentSelectionHandler
+                  actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(nullable id<HUBImageLoader>)imageLoader
 
@@ -78,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(collectionViewFactory != nil);
     NSParameterAssert(componentRegistry != nil);
     NSParameterAssert(componentLayoutManager != nil);
-    NSParameterAssert(componentSelectionHandler != nil);
+    NSParameterAssert(actionHandler != nil);
     NSParameterAssert(scrollHandler != nil);
     
     if (!(self = [super initWithNibName:nil bundle:nil])) {
@@ -91,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
     _collectionViewFactory = collectionViewFactory;
     _componentRegistry = componentRegistry;
     _componentLayoutManager = componentLayoutManager;
-    _componentSelectionHandler = componentSelectionHandler;
+    _actionHandler = actionHandler;
     _scrollHandler = scrollHandler;
     _imageLoader = imageLoader;
     _viewModelIsInitial = YES;
@@ -821,19 +823,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel cellIndexPath:(nullable NSIndexPath *)cellIndexPath
 {
-    // self.viewModel is specified as nullable, but we can safely assume it exists at this point.
-    id<HUBViewModel> const viewModel = self.viewModel;
-    id<HUBComponentSelectionContext> const selectionContext = [[HUBComponentSelectionContextImplementation alloc] initWithViewURI:self.viewURI
-                                                                                                                        viewModel:viewModel
-                                                                                                                   componentModel:componentModel
-                                                                                                                   viewController:self];
-    
-    BOOL const selectionHandled = [self.componentSelectionHandler handleSelectionForComponentWithContext:selectionContext];
-    
     if (cellIndexPath != nil) {
         NSIndexPath * const indexPath = cellIndexPath;
         [self.collectionView cellForItemAtIndexPath:indexPath].highlighted = NO;
         [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    }
+    
+    BOOL selectionHandled = NO;
+    
+    for (HUBIdentifier * const identifier in componentModel.target.actionIdentifiers) {
+        selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
+                                        customIdentifier:identifier
+                                          componentModel:componentModel];
+        
+        if (selectionHandled) {
+            break;
+        }
+    }
+    
+    if (!selectionHandled) {
+        selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
+                                        customIdentifier:nil
+                                          componentModel:componentModel];
     }
     
     if (selectionHandled) {
@@ -852,6 +863,26 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return parentModel.children[childIndex];
+}
+
+- (BOOL)performActionForTrigger:(HUBActionTrigger)trigger
+               customIdentifier:(nullable HUBIdentifier *)customIdentifier
+                 componentModel:(id<HUBComponentModel>)componentModel
+{
+    if (self.viewModel == nil) {
+        return NO;
+    }
+    
+    id<HUBViewModel> const viewModel = self.viewModel;
+    
+    id<HUBActionContext> const context = [[HUBActionContextImplementation alloc] initWithTrigger:trigger
+                                                                          customActionIdentifier:customIdentifier
+                                                                                         viewURI:self.viewURI
+                                                                                       viewModel:viewModel
+                                                                                  componentModel:componentModel
+                                                                                  viewController:self];
+    
+    return [self.actionHandler handleActionWithContext:context];
 }
 
 @end

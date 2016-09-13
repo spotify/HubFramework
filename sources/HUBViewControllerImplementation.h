@@ -5,11 +5,12 @@
 @protocol HUBImageLoader;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
-@protocol HUBComponentSelectionHandler;
+@protocol HUBActionHandler;
 @protocol HUBViewControllerScrollHandler;
 @class HUBCollectionViewFactory;
 @class HUBComponentRegistryImplementation;
 @class HUBInitialViewModelRegistry;
+@class HUBActionRegistryImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param collectionViewFactory The factory to use to create collection views
  *  @param componentRegistry The registry to use to retrieve components to render
  *  @param componentLayoutManager The object that manages layout for components in the view controller
- *  @param componentSelectionHandler The object that handles selection events for components
+ *  @param actionHandler The object that will handle actions for this view controller
  *  @param scrollHandler The object that will handle scrolling for the view controller
  *  @param imageLoader The object to use to load images for components
  */
@@ -35,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-      componentSelectionHandler:(id<HUBComponentSelectionHandler>)componentSelectionHandler
+                  actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(nullable id<HUBImageLoader>)imageLoader HUB_DESIGNATED_INITIALIZER;
 

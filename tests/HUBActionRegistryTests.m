@@ -3,7 +3,7 @@
 #import "HUBActionRegistryImplementation.h"
 #import "HUBActionFactoryMock.h"
 #import "HUBActionMock.h"
-#import "HUBActionContextImplementation+Testing.h"
+#import "HUBIdentifier.h"
 
 @interface HUBActionRegistryTests : XCTestCase
 
@@ -18,19 +18,20 @@
 - (void)setUp
 {
     [super setUp];
-    self.actionRegistry = [HUBActionRegistryImplementation new];
+    self.actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionAction];
 }
 
 #pragma mark - Tests
 
 - (void)testRegisteringFactoryAndCreatingAction
 {
-    HUBActionMock * const action = [[HUBActionMock alloc] initWithBlock:nil];
-    HUBActionFactoryMock * const factory = [[HUBActionFactoryMock alloc] initWithActions:@{@"name": action}];
-    [self.actionRegistry registerActionFactory:factory forNamespace:@"namespace"];
+    HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
     
-    id<HUBActionContext> const context = [HUBActionContextImplementation contextForTestingWithActionNamespace:@"namespace" name:@"name"];
-    XCTAssertEqual([self.actionRegistry actionForContext:context], action);
+    HUBActionMock * const action = [[HUBActionMock alloc] initWithBlock:nil];
+    HUBActionFactoryMock * const factory = [[HUBActionFactoryMock alloc] initWithActions:@{actionIdentifier.namePart: action}];
+    [self.actionRegistry registerActionFactory:factory forNamespace:actionIdentifier.namespacePart];
+    
+    XCTAssertEqual([self.actionRegistry createCustomActionForIdentifier:actionIdentifier], action);
 }
 
 - (void)testRegisteringAlreadyRegisteredFactoryThrows

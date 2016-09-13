@@ -8,8 +8,9 @@
 #import "HUBViewControllerImplementation.h"
 #import "HUBCollectionViewFactory.h"
 #import "HUBInitialViewModelRegistry.h"
-#import "HUBComponentSelectionHandlerWrapper.h"
 #import "HUBViewControllerDefaultScrollHandler.h"
+#import "HUBActionHandlerWrapper.h"
+#import "HUBViewModelLoaderImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBFeatureRegistryImplementation *featureRegistry;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
+@property (nonatomic, strong, readonly) HUBActionRegistryImplementation *actionRegistry;
+@property (nonatomic, strong, readonly, nullable) id<HUBActionHandler> defaultActionHandler;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly, nullable) id<HUBImageLoaderFactory> imageLoaderFactory;
 
@@ -30,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
                                featureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
+                                actionRegistry:(HUBActionRegistryImplementation *)actionRegistry
+                          defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
                         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                             imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
 {
@@ -37,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(featureRegistry != nil);
     NSParameterAssert(componentRegistry != nil);
     NSParameterAssert(initialViewModelRegistry != nil);
+    NSParameterAssert(actionRegistry != nil);
     NSParameterAssert(componentLayoutManager != nil);
     
     self = [super init];
@@ -46,6 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
         _featureRegistry = featureRegistry;
         _componentRegistry = componentRegistry;
         _initialViewModelRegistry = initialViewModelRegistry;
+        _actionRegistry = actionRegistry;
+        _defaultActionHandler = defaultActionHandler;
         _componentLayoutManager = componentLayoutManager;
         _imageLoaderFactory = imageLoaderFactory;
     }
@@ -68,13 +76,17 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
-    id<HUBViewModelLoader> const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI
-                                                                                            featureRegistration:featureRegistration];
+    HUBViewModelLoaderImplementation * const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI
+                                                                                                        featureRegistration:featureRegistration];
     
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
-    id<HUBComponentSelectionHandler> const componentSelectionHandler = [[HUBComponentSelectionHandlerWrapper alloc] initWithSelectionHandler:featureRegistration.componentSelectionHandler
-                                                                                                                    initialViewModelRegistry:self.initialViewModelRegistry];
+    
+    id<HUBActionHandler> const actionHandler = featureRegistration.actionHandler ?: self.defaultActionHandler;
+    id<HUBActionHandler> const actionHandlerWrapper = [[HUBActionHandlerWrapper alloc] initWithActionHandler:actionHandler
+                                                                                              actionRegistry:self.actionRegistry
+                                                                                    initialViewModelRegistry:self.initialViewModelRegistry
+                                                                                             viewModelLoader:viewModelLoader];
     
     id<HUBViewControllerScrollHandler> const scrollHandlerToUse = featureRegistration.viewControllerScrollHandler ?: [HUBViewControllerDefaultScrollHandler new];
     
@@ -84,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
                                               collectionViewFactory:collectionViewFactory
                                                   componentRegistry:self.componentRegistry
                                              componentLayoutManager:self.componentLayoutManager
-                                          componentSelectionHandler:componentSelectionHandler
+                                                      actionHandler:actionHandlerWrapper
                                                       scrollHandler:scrollHandlerToUse
                                                         imageLoader:imageLoader];
 }

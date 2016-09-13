@@ -2,7 +2,7 @@
 
 @protocol HUBContentOperationFactory;
 @protocol HUBContentReloadPolicy;
-@protocol HUBComponentSelectionHandler;
+@protocol HUBActionHandler;
 @protocol HUBViewControllerScrollHandler;
 @class HUBViewURIPredicate;
 
@@ -32,8 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
  *         policy for this instance of the Hub Framework will be used. See `HUBContentReloadPolicy` for more information.
  *  @param customJSONSchemaIdentifier Any identifier of a custom schema to use to parse JSON data. If `nil`, the default
  *         schema will be used. Register your custom schema using `HUBJSONSchemaRegistry`. See `HUBJSONSchema` for more info.
- *  @param componentSelectionHandler Any custom selection handler to use to handle component selection events. This can be
- *         used to override the default "open target URL" selection handling. See `HUBComponentSelectionHandler` for more info.
+ *  @param actionHandler Any custom action handler that should be used for the feature. If `nil`, any default action handler
+ *         for this instance of the Hub Framework will be used. Action handlers can be used to run custom code instead of
+ *         performing actions. See `HUBActionHandler` for more info.
  *  @param viewControllerScrollHandler Any custom scroll handler to use to handle scroll events and customize scrolling behavior
  *         of view controllers created for this feature. See `HUBViewControllerScrollHandler` for more info.
  *
@@ -46,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
             contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                   contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
-            componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler
+                        actionHandler:(nullable id<HUBActionHandler>)actionHandler
           viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler;
 
 /**
