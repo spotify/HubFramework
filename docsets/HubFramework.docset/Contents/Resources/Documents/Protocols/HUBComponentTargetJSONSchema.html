@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>HUBComponentLayoutManager Protocol Reference</title>
+    <title>HUBComponentTargetJSONSchema Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Protocol/HUBComponentLayoutManager" class="dashAnchor"></a>
+    <a name="//apple_ref/objc/Protocol/HUBComponentTargetJSONSchema" class="dashAnchor"></a>
 
-    <a title="HUBComponentLayoutManager Protocol Reference"></a>
+    <a title="HUBComponentTargetJSONSchema Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -41,7 +41,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">HubFramework Reference</a>
       <img class="carat" src="../img/carat.png" />
-      HUBComponentLayoutManager Protocol Reference
+      HUBComponentTargetJSONSchema Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -338,20 +338,25 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>HUBComponentLayoutManager</h1>
+            <h1>HUBComponentTargetJSONSchema</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentLayoutManager</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentTargetJSONSchema</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
-            <p>Protocol implemented by an object that acts as a layout manager for components in an instance of the Hub Framework</p>
+            <p>Protocol defining the public API of a JSON schema for <code><a href="../Protocols/HUBComponentTarget.html">HUBComponentTarget</a></code></p>
 
-<p>You implement this protocol in a single custom object and inject it when setting up the application&rsquo;s <code><a href="../Classes/HUBManager.html">HUBManager</a></code>.
-  The responsibility of a component layout manager is to compute margins between various components and content edges.</p>
+<p>You don&rsquo;t conform to this protocol yourself, instead an object matching the default Hub Framework schema will
+  come attached to a <code><a href="../Protocols/HUBJSONSchema.html">HUBJSONSchema</a></code>. You are free to customize a schema in whatever way you want, but you must
+  do so before registering it with the <code><a href="../Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a></code>.</p>
 
-<p>A layout manager is always given a set of layout traits for the component(s) in question, to be able to make good
-  decisions on what margins to use. For more information about layout traits; see <code><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></code>.</p>
+<p>The Hub Framework uses a path-based approach to JSON parsing, that enables you to describe how to retrieve data
+  from a JSON structure using paths - sequences of operations that each perform a JSON parsing task, such as going
+  to a key in a dictionary, or iterating over an array. For more information about how to construct paths, see the
+  documentation for <code><a href="../Protocols/HUBJSONPath.html">HUBJSONPath</a></code> and <code><a href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a></code>.</p>
+
+<p>All paths in this schema are relative to a dictionary containing target data for a component.</p>
 
           </div>
         </section>
@@ -363,9 +368,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentLayoutManager(im)marginBetweenComponentWithLayoutTraits:andContentEdge:"></a>
-                    <a name="//apple_ref/objc/Method/-marginBetweenComponentWithLayoutTraits:andContentEdge:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentLayoutManager(im)marginBetweenComponentWithLayoutTraits:andContentEdge:">-marginBetweenComponentWithLayoutTraits:andContentEdge:</a>
+                    <a name="/c:objc(pl)HUBComponentTargetJSONSchema(py)URIPath"></a>
+                    <a name="//apple_ref/objc/Property/URIPath" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentTargetJSONSchema(py)URIPath">URIPath</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -373,61 +378,21 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Return the margin to use between a component with a set of layout traits and a content edge</p>
-
-<p>This method will be called by the Hub Framework when a component is about to be placed close to a content edge.
-  See <code><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></code> and <code><a href="../Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a></code> for more information.</p>
+                        <p>The path to follow to extract a target URI string. Maps to <code>URI</code>.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">marginBetweenComponentWithLayoutTraits</span><span class="p">:</span>
-               <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSSet</span><span class="o">&lt;</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">layoutTraits</span>
-                                   <span class="nf">andContentEdge</span><span class="p">:</span>
-                                       <span class="p">(</span><span class="n"><a href="../Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a></span><span class="p">)</span>
-                                           <span class="n">contentEdge</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">URIPath</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">marginBetweenComponentWithLayoutTraits</span><span class="p">(</span><span class="nv">layoutTraits</span><span class="p">:</span> <span class="kt">Set</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">URIPath</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layoutTraits</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The layout traits of the component to compute a margin for</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>contentEdge</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The content edge to compute the margin to</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -435,9 +400,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentLayoutManager(im)verticalMarginBetweenComponentWithLayoutTraits:andHeaderComponentWithLayoutTraits:"></a>
-                    <a name="//apple_ref/objc/Method/-verticalMarginBetweenComponentWithLayoutTraits:andHeaderComponentWithLayoutTraits:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentLayoutManager(im)verticalMarginBetweenComponentWithLayoutTraits:andHeaderComponentWithLayoutTraits:">-verticalMarginBetweenComponentWithLayoutTraits:andHeaderComponentWithLayoutTraits:</a>
+                    <a name="/c:objc(pl)HUBComponentTargetJSONSchema(py)initialViewModelDictionaryPath"></a>
+                    <a name="//apple_ref/objc/Property/initialViewModelDictionaryPath" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentTargetJSONSchema(py)initialViewModelDictionaryPath">initialViewModelDictionaryPath</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -445,61 +410,24 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Return the vertical margin to use between a body component and a header component</p>
+                        <p>The path to follow to extract an initial view model dictionary for the target. Maps to <code>initialViewModel</code>.</p>
 
-<p>This method will be called by the Hub Framework when a component is about to be placed on the first row below a header
-  component. See <code><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></code> for more information.</p>
+<p>The dictionary extracted by following this path will then be parsed using <code><a href="../Protocols/HUBViewModelJSONSchema.html">HUBViewModelJSONSchema</a></code>.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">verticalMarginBetweenComponentWithLayoutTraits</span><span class="p">:</span>
-               <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSSet</span><span class="o">&lt;</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">layoutTraits</span>
-                       <span class="nf">andHeaderComponentWithLayoutTraits</span><span class="p">:</span>
-                           <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSSet</span><span class="o">&lt;</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span>
-                               <span class="n">headerLayoutTraits</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">initialViewModelDictionaryPath</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">verticalMarginBetweenComponentWithLayoutTraits</span><span class="p">(</span><span class="nv">layoutTraits</span><span class="p">:</span> <span class="kt">Set</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">initialViewModelDictionaryPath</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layoutTraits</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The layout traits for the body component</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>headerLayoutTraits</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The layout traits for the header component</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -507,9 +435,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentLayoutManager(im)horizontalMarginForComponentWithLayoutTraits:precedingComponentLayoutTraits:"></a>
-                    <a name="//apple_ref/objc/Method/-horizontalMarginForComponentWithLayoutTraits:precedingComponentLayoutTraits:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentLayoutManager(im)horizontalMarginForComponentWithLayoutTraits:precedingComponentLayoutTraits:">-horizontalMarginForComponentWithLayoutTraits:precedingComponentLayoutTraits:</a>
+                    <a name="/c:objc(pl)HUBComponentTargetJSONSchema(py)customDataPath"></a>
+                    <a name="//apple_ref/objc/Property/customDataPath" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentTargetJSONSchema(py)customDataPath">customDataPath</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -517,61 +445,22 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Return the horizontal margin to use between two body components</p>
-
-<p>The Hub Framework will only call this method once for a given component pair, so the returned value should be the absolute
-  margin between the components, rather than a half value. See <code><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></code> for more information.</p>
+                        <p>The path to follow to extract any custom data for the target. Maps to <code>customData</code>.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">horizontalMarginForComponentWithLayoutTraits</span><span class="p">:</span>
-               <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSSet</span><span class="o">&lt;</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">layoutTraits</span>
-                         <span class="nf">precedingComponentLayoutTraits</span><span class="p">:</span>
-                             <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSSet</span><span class="o">&lt;</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span>
-                                 <span class="n">precedingComponentLayoutTraits</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">customDataPath</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">horizontalMarginForComponentWithLayoutTraits</span><span class="p">(</span><span class="nv">layoutTraits</span><span class="p">:</span> <span class="kt">Set</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">customDataPath</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layoutTraits</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The layout traits for the component to determine the margin for</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>precedingComponentLayoutTraits</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The layout traits for the component that precedes the current one horizontally</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -579,9 +468,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentLayoutManager(im)verticalMarginForComponentWithLayoutTraits:precedingComponentLayoutTraits:"></a>
-                    <a name="//apple_ref/objc/Method/-verticalMarginForComponentWithLayoutTraits:precedingComponentLayoutTraits:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentLayoutManager(im)verticalMarginForComponentWithLayoutTraits:precedingComponentLayoutTraits:">-verticalMarginForComponentWithLayoutTraits:precedingComponentLayoutTraits:</a>
+                    <a name="/c:objc(pl)HUBComponentTargetJSONSchema(im)copy"></a>
+                    <a name="//apple_ref/objc/Method/-copy" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentTargetJSONSchema(im)copy">-copy</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -589,150 +478,21 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Return the vertical margin to use between two body components</p>
-
-<p>The Hub Framework will only call this method once for a given component pair, so the returned value should be the absolute
-  margin between the components, rather than a half value. See <code><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></code> for more information.</p>
+                        <p>Create a copy of this schema, with the same paths</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">verticalMarginForComponentWithLayoutTraits</span><span class="p">:</span>
-               <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSSet</span><span class="o">&lt;</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">layoutTraits</span>
-                       <span class="nf">precedingComponentLayoutTraits</span><span class="p">:</span>
-                           <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSSet</span><span class="o">&lt;</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span>
-                               <span class="n">precedingComponentLayoutTraits</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentTargetJSONSchema</span><span class="o">&gt;</span><span class="p">)</span><span class="n">copy</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">verticalMarginForComponentWithLayoutTraits</span><span class="p">(</span><span class="nv">layoutTraits</span><span class="p">:</span> <span class="kt">Set</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">copy</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">HUBComponentTargetJSONSchema</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>layoutTraits</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The layout traits for the compone to determine the margin for</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>precedingComponentLayoutTraits</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The layout traits for the component that precedes the current one vertically</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBComponentLayoutManager(im)horizontalOffsetForComponentsWithLayoutTraits:firstComponentLeadingHorizontalOffset:lastComponentTrailingHorizontalOffset:"></a>
-                    <a name="//apple_ref/objc/Method/-horizontalOffsetForComponentsWithLayoutTraits:firstComponentLeadingHorizontalOffset:lastComponentTrailingHorizontalOffset:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentLayoutManager(im)horizontalOffsetForComponentsWithLayoutTraits:firstComponentLeadingHorizontalOffset:lastComponentTrailingHorizontalOffset:">-horizontalOffsetForComponentsWithLayoutTraits:firstComponentLeadingHorizontalOffset:lastComponentTrailingHorizontalOffset:</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Calculate the horizontal offset for the provided components represented by their layout traits</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">horizontalOffsetForComponentsWithLayoutTraits</span><span class="p">:</span>
-               <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">NSSet</span><span class="o">&lt;</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></span> <span class="o">*&gt;</span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span>
-                   <span class="n">componentsTraits</span>
-                   <span class="n">firstComponentLeadingHorizontalOffset</span><span class="o">:</span>
-                       <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">firstComponentLeadingOffsetX</span>
-                   <span class="n">lastComponentTrailingHorizontalOffset</span><span class="o">:</span>
-                       <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">lastComponentTrailingOffsetX</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">horizontalOffsetForComponentsWithLayoutTraits</span><span class="p">(</span><span class="nv">componentsTraits</span><span class="p">:</span> <span class="p">[</span><span class="kt">Set</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>componentsTraits</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>An array of the sets of layout traits for all components for which the horizontal adjustment should be calculated</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>firstComponentLeadingOffsetX</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The leading horizontal offset of the first component in the sequence</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>lastComponentTrailingOffsetX</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The trailing horizontal offset of the last component in the sequence</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>The value by which the horizontal origins of all components should be adjusted</p>
-
                       </div>
                     </section>
                   </div>

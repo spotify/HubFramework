@@ -190,6 +190,15 @@
                 <a class="nav-group-task-link" href="Protocols/HUBComponentShowcaseSnapshotGenerator.html">HUBComponentShowcaseSnapshotGenerator</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBComponentTarget.html">HUBComponentTarget</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBComponentTargetBuilder.html">HUBComponentTargetBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBComponentTargetJSONSchema.html">HUBComponentTargetJSONSchema</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBComponentViewObserver.html">HUBComponentViewObserver</a>
               </li>
               <li class="nav-group-task">
@@ -1101,6 +1110,138 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentShowcaseSnapshotGenerator</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentTarget"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBComponentTarget" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentTarget">HUBComponentTarget</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Protocol defining the public API of an object that describes a target of a user interaction
+  with a Hub Framework component.</p>
+
+<p>You create targets using <code><a href="Protocols/HUBComponentTargetBuilder.html">HUBComponentTargetBuilder</a></code>, available on <code><a href="Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></code>.</p>
+
+                        <a href="Protocols/HUBComponentTarget.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentTarget</span> <span class="o">&lt;</span><span class="n"><a href="Protocols/HUBSerializable.html">HUBSerializable</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentTarget</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBSerializable.html">HUBSerializable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentTargetBuilder"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBComponentTargetBuilder" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentTargetBuilder">HUBComponentTargetBuilder</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Protocol defining the public API for a builder that builds component target objects</p>
+
+<p>This builder acts like a mutable model counterpart for <code><a href="Protocols/HUBComponentTarget.html">HUBComponentTarget</a></code>, with the
+  key difference that they are not related by inheritance.</p>
+
+<p>All properties are briefly documented as part of this protocol, but for more extensive
+  documentation and use case examples, see the full documentation in the <code><a href="Protocols/HUBComponentTarget.html">HUBComponentTarget</a></code>
+  protocol definition.</p>
+
+                        <a href="Protocols/HUBComponentTargetBuilder.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentTargetBuilder</span> <span class="o">&lt;</span><span class="n"><a href="Protocols/HUBJSONCompatibleBuilder.html">HUBJSONCompatibleBuilder</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentTargetBuilder</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBJSONCompatibleBuilder.html">HUBJSONCompatibleBuilder</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentTargetJSONSchema"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBComponentTargetJSONSchema" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentTargetJSONSchema">HUBComponentTargetJSONSchema</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Protocol defining the public API of a JSON schema for <code><a href="Protocols/HUBComponentTarget.html">HUBComponentTarget</a></code></p>
+
+<p>You don&rsquo;t conform to this protocol yourself, instead an object matching the default Hub Framework schema will
+  come attached to a <code><a href="Protocols/HUBJSONSchema.html">HUBJSONSchema</a></code>. You are free to customize a schema in whatever way you want, but you must
+  do so before registering it with the <code><a href="Protocols/HUBJSONSchemaRegistry.html">HUBJSONSchemaRegistry</a></code>.</p>
+
+<p>The Hub Framework uses a path-based approach to JSON parsing, that enables you to describe how to retrieve data
+  from a JSON structure using paths - sequences of operations that each perform a JSON parsing task, such as going
+  to a key in a dictionary, or iterating over an array. For more information about how to construct paths, see the
+  documentation for <code><a href="Protocols/HUBJSONPath.html">HUBJSONPath</a></code> and <code><a href="Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a></code>.</p>
+
+<p>All paths in this schema are relative to a dictionary containing target data for a component.</p>
+
+                        <a href="Protocols/HUBComponentTargetJSONSchema.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentTargetJSONSchema</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentTargetJSONSchema</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
 
                         </div>
                       </div>
