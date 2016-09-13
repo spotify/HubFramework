@@ -10,6 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface HUBComponentModelImplementation ()
+
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSNumber *> *childIdentifierToIndexMap;
+
+@end
+
 @implementation HUBComponentModelImplementation
 
 @synthesize identifier = _identifier;
@@ -30,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize loggingData = _loggingData;
 @synthesize customData = _customData;
 @synthesize parent = _parent;
+
+#pragma mark - Initializer
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
                               type:(HUBComponentType)type
@@ -81,6 +89,21 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
+#pragma mark - API
+
+- (void)setChildren:(nullable NSArray<id<HUBComponentModel>> *)children
+{
+    _children = children;
+    
+    NSMutableDictionary<NSString *, NSNumber *> * const identifierToIndexMap = [NSMutableDictionary new];
+    
+    for (id<HUBComponentModel> const child in children) {
+        identifierToIndexMap[child.identifier] = @(child.index);
+    }
+    
+    self.childIdentifierToIndexMap = [identifierToIndexMap copy];
+}
+
 #pragma mark - NSObject
 
 - (nullable id)valueForKey:(NSString *)key
@@ -125,6 +148,17 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return self.children[childIndex];
+}
+
+- (nullable id<HUBComponentModel>)childWithIdentifier:(NSString *)identifier
+{
+    NSNumber * const index = self.childIdentifierToIndexMap[identifier];
+    
+    if (index == nil) {
+        return nil;
+    }
+
+    return self.children[index.unsignedIntegerValue];
 }
 
 #pragma mark - Private utilities

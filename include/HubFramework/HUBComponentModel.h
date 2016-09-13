@@ -205,10 +205,20 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param childIndex The index to return a child component model for
  *
- *  This method is a convenience API for accessing child component models directly using the `childComponentModels` property, since
- *  it's fine to call this method with an index that is not known to be valid (since it will fail gracefully and return `nil`).
+ *  This method is a convenience API for accessing child component models directly using the `children` property, since it's fine
+ *  to call this method with an index that is not known to be valid (since it will fail gracefully and return `nil`).
  */
 - (nullable id<HUBComponentModel>)childComponentModelAtIndex:(NSUInteger)childIndex;
+
+/**
+ *  Return a child component that has a certain identifier, or `nil` if an unknown identifier was given
+ *
+ *  @param identifier The identifier of the child to look for
+ *
+ *  Accessing a child component model this way is preferred to iterating over the `children` array and looking for a model matching
+ *  an index manually - not only because it's easier - but also because this method has O(1) complexity.
+ */
+- (nullable id<HUBComponentModel>)childWithIdentifier:(NSString *)identifier;
 
 @end
 
