@@ -13,7 +13,6 @@
 		8A1132C11CDA4BA60053AA26 /* HUBFeatureInfoImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1132C01CDA4BA60053AA26 /* HUBFeatureInfoImplementation.m */; };
 		8A16274E1CC90B8F005CC3FB /* HUBCollectionViewCellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A16274D1CC90B8F005CC3FB /* HUBCollectionViewCellTests.m */; };
 		8A1A19A61D8813DB0022438F /* HUBInitialViewModelRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A19A51D8813DB0022438F /* HUBInitialViewModelRegistryTests.m */; };
-		8A2061151CCA1C17008C34E3 /* HUBDeviceMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2061141CCA1C17008C34E3 /* HUBDeviceMock.m */; };
 		8A2A72E31D4B6E3300141619 /* HUBComponentTargetImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A72E21D4B6E3300141619 /* HUBComponentTargetImplementation.m */; };
 		8A2A72E61D4B6F1700141619 /* HUBComponentTargetBuilderImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A72E51D4B6F1700141619 /* HUBComponentTargetBuilderImplementation.m */; };
 		8A2A72EB1D4B726800141619 /* HUBComponentTargetJSONSchemaImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A72EA1D4B726800141619 /* HUBComponentTargetJSONSchemaImplementation.m */; };
@@ -175,8 +174,6 @@
 		8A1627DD1CC915CB005CC3FB /* HUBComponentViewObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentViewObserver.h; sourceTree = "<group>"; };
 		8A1A199E1D86B5380022438F /* HUBComponentType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentType.h; sourceTree = "<group>"; };
 		8A1A19A51D8813DB0022438F /* HUBInitialViewModelRegistryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBInitialViewModelRegistryTests.m; sourceTree = "<group>"; };
-		8A2061131CCA1C17008C34E3 /* HUBDeviceMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBDeviceMock.h; sourceTree = "<group>"; };
-		8A2061141CCA1C17008C34E3 /* HUBDeviceMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBDeviceMock.m; sourceTree = "<group>"; };
 		8A2A72E01D4B6D2700141619 /* HUBComponentTarget.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentTarget.h; sourceTree = "<group>"; };
 		8A2A72E11D4B6E3300141619 /* HUBComponentTargetImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentTargetImplementation.h; sourceTree = "<group>"; };
 		8A2A72E21D4B6E3300141619 /* HUBComponentTargetImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentTargetImplementation.m; sourceTree = "<group>"; };
@@ -682,15 +679,6 @@
 			name = View;
 			sourceTree = "<group>";
 		};
-		8A6529EF1D82B4AE007B1A15 /* System */ = {
-			isa = PBXGroup;
-			children = (
-				8A2061131CCA1C17008C34E3 /* HUBDeviceMock.h */,
-				8A2061141CCA1C17008C34E3 /* HUBDeviceMock.m */,
-			);
-			name = System;
-			sourceTree = "<group>";
-		};
 		8A6529F01D82B4BD007B1A15 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
@@ -881,7 +869,6 @@
 		8ADD42AE1C21D8C900D1A801 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				8A6529EF1D82B4AE007B1A15 /* System */,
 				8A6529EC1D82B45B007B1A15 /* Connectivity */,
 				8A6529EB1D82B44D007B1A15 /* Content */,
 				8A6529EE1D82B482007B1A15 /* View */,
@@ -1143,7 +1130,6 @@
 				8A6529DF1D81B14F007B1A15 /* HUBViewModelTests.m in Sources */,
 				8A3D83941CA3FC3500662B73 /* HUBJSONSchemaTests.m in Sources */,
 				8AD064661C64F7C30086C081 /* HUBContentOperationMock.m in Sources */,
-				8A2061151CCA1C17008C34E3 /* HUBDeviceMock.m in Sources */,
 				DDA41C911C6D08F50056E511 /* HUBComponentImageDataJSONSchemaImplementation.m in Sources */,
 				8A786B961C57E6F300B2AB9E /* HUBViewModelBuilderTests.m in Sources */,
 				8ADD42AA1C21D08100D1A801 /* HUBManagerTests.m in Sources */,
@@ -1190,6 +1176,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1200,6 +1187,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1212,6 +1200,7 @@
 				HUB_NON_ERROR_WARNINGS_0720 = "";
 				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1228,6 +1217,7 @@
 				HUB_NON_ERROR_WARNINGS_0720 = "";
 				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

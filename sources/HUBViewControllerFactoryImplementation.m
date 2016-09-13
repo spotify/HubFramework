@@ -86,7 +86,6 @@ NS_ASSUME_NONNULL_BEGIN
                                              componentLayoutManager:self.componentLayoutManager
                                           componentSelectionHandler:componentSelectionHandler
                                                       scrollHandler:scrollHandlerToUse
-                                                             device:[UIDevice currentDevice]
                                                         imageLoader:imageLoader];
 }
 

@@ -27,7 +27,6 @@
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBIconImageResolverMock.h"
-#import "HUBDeviceMock.h"
 #import "HUBImplementationMacros.h"
 #import "HUBFeatureInfoImplementation.h"
 #import "HUBComponentSelectionHandlerWrapper.h"
@@ -48,7 +47,6 @@
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
 @property (nonatomic, strong) HUBInitialViewModelRegistry *initialViewModelRegistry;
-@property (nonatomic, strong) HUBDeviceMock *device;
 @property (nonatomic, strong) NSURL *viewURI;
 @property (nonatomic, strong) HUBViewControllerImplementation *viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
@@ -117,7 +115,6 @@
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     
     self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
-    self.device = [HUBDeviceMock new];
     
     id<HUBComponentSelectionHandler> const componentSelectionHandler = [[HUBComponentSelectionHandlerWrapper alloc] initWithSelectionHandler:self.componentSelectionHandler
                                                                                                                     initialViewModelRegistry:self.initialViewModelRegistry];
@@ -130,7 +127,6 @@
                                                             componentLayoutManager:componentLayoutManager
                                                          componentSelectionHandler:componentSelectionHandler
                                                                      scrollHandler:self.scrollHandler
-                                                                            device:self.device
                                                                        imageLoader:self.imageLoader];
     
     self.viewController.delegate = self;
@@ -856,27 +852,8 @@
     XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)2);
 }
 
-- (void)testComponentNotifiedOfViewWillAppearOnCellCreationOnSystemVersion7
-{
-    self.device.mockedSystemVersion = @"7.0.0";
-    self.component.isViewObserver = YES;
-    
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].title = @"A title";
-        return YES;
-    };
-    
-    [self simulateViewControllerLayoutCycle];
-    
-    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-    
-    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
-}
-
 - (void)testComponentNotifiedOfViewWillAppearWhenCellIsDisplayed
 {
-    self.device.mockedSystemVersion = @"8.0.0";
     self.component.isViewObserver = YES;
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
