@@ -1,6 +1,7 @@
 #import "HUBSerializable.h"
 
 @protocol HUBViewModel;
+@class HUBIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,6 +33,20 @@ NS_ASSUME_NONNULL_BEGIN
  *  version of new views before the their content is loaded, rather than just seing a blank screen.
  */
 @property (nonatomic, strong, readonly, nullable) id<HUBViewModel> initialViewModel;
+
+/**
+ *  The identifiers of any custom actions that should be performed when the target is executed
+ *
+ *  When the user interacts with this target's associated component, an `HUBAction` implementation
+ *  will be resolved for each identifier in this array. Each action that was found will then be
+ *  performed, and if it returned a successful outcome (YES), the target will be considered to be
+ *  handled.
+ *
+ *  You can use actions to implement custom selection behavior without having to modify the framework
+ *  itself, by implementing `HUBAction` and registering it through `HUBActionRegistry`. See those
+ *  protocols for more information about the Action API.
+ */
+@property (nonatomic, strong, readonly, nullable) NSArray<HUBIdentifier *> *actionIdentifiers;
 
 /**
  *  Any custom data associated with this target

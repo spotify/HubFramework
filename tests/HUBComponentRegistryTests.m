@@ -218,6 +218,7 @@ static NSString * const DefaultNamespace = @"default";
     NSString * const identifier = [NSUUID UUID].UUIDString;
     HUBComponentTargetImplementation * const target = [[HUBComponentTargetImplementation alloc] initWithURI:nil
                                                                                            initialViewModel:nil
+                                                                                          actionIdentifiers:nil
                                                                                                  customData:nil];
 
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier

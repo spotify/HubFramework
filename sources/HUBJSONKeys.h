@@ -3,6 +3,9 @@
 /// JSON key used to encode an accessory
 static NSString * const HUBJSONKeyAccessory = @"accessory";
 
+/// JSON key used to encode an array of actions
+static NSString * const HUBJSONKeyActions = @"actions";
+
 /// JSON key used to encode background information
 static NSString * const HUBJSONKeyBackground = @"background";
 

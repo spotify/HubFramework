@@ -2,6 +2,7 @@
 
 #import "HUBJSONKeys.h"
 #import "HUBViewModel.h"
+#import "HUBIdentifier.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -9,12 +10,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize URI = _URI;
 @synthesize initialViewModel = _initialViewModel;
+@synthesize actionIdentifiers = _actionIdentifiers;
 @synthesize customData = _customData;
 
 #pragma mark - Initializer
 
 - (instancetype)initWithURI:(nullable NSURL *)URI
            initialViewModel:(nullable id<HUBViewModel>)initialViewModel
+          actionIdentifiers:(nullable NSArray<HUBIdentifier *> *)actionIdentifiers
                  customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
 {
     self = [super init];
@@ -22,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (self) {
         _URI = [URI copy];
         _initialViewModel = initialViewModel;
+        _actionIdentifiers = actionIdentifiers;
         _customData = [customData copy];
     }
     
@@ -36,9 +40,27 @@ NS_ASSUME_NONNULL_BEGIN
     
     serialization[HUBJSONKeyURI] = self.URI.absoluteString;
     serialization[HUBJSONKeyView] = [self.initialViewModel serialize];
+    serialization[HUBJSONKeyActions] = [self serializeActionIdentifiers];
     serialization[HUBJSONKeyCustom] = self.customData;
     
     return [serialization copy];
+}
+
+#pragma mark - Private utilities
+
+- (nullable NSArray<NSString *> *)serializeActionIdentifiers
+{
+    if (self.actionIdentifiers == nil) {
+        return nil;
+    }
+    
+    NSMutableArray<NSString *> * const serializedIdentifiers = [NSMutableArray new];
+    
+    for (HUBIdentifier * const identifier in self.actionIdentifiers) {
+        [serializedIdentifiers addObject:identifier.identifierString];
+    }
+    
+    return [serializedIdentifiers copy];
 }
 
 @end

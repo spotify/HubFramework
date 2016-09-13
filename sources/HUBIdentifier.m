@@ -4,6 +4,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBIdentifier
 
+#pragma mark - Initializers
+
 - (instancetype)initWithNamespace:(NSString *)namespacePart name:(NSString *)namePart
 {
     NSParameterAssert(namespacePart != nil);
@@ -18,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     return self;
 }
+
+#pragma mark - Property overrides
 
 - (NSString *)identifierString
 {
