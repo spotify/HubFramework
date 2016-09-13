@@ -66,8 +66,11 @@
                                                                                                               extensionURL:nil
                                                                                                                 customData:nil];
         
+        HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+        
         id<HUBComponentTarget> const target = [[HUBComponentTargetImplementation alloc] initWithURI:targetURI
                                                                                    initialViewModel:targetInitialViewModel
+                                                                                  actionIdentifiers:@[actionIdentifier]
                                                                                          customData:@{@"custom": @"data"}];
         
         return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
@@ -129,6 +132,7 @@
     HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
     HUBComponentTargetImplementation * const target = [[HUBComponentTargetImplementation alloc] initWithURI:nil
                                                                                            initialViewModel:nil
+                                                                                          actionIdentifiers:nil
                                                                                                  customData:nil];
     
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier

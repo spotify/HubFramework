@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> initialViewModelDictionaryPath;
 
+/// The path to follow to extract an array of action identifiers for the target. Maps to `actionIdentifiers`.
+@property (nonatomic, strong) id<HUBJSONStringPath> actionIdentifiersPath;
+
 /// The path to follow to extract any custom data for the target. Maps to `customData`.
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> customDataPath;
 

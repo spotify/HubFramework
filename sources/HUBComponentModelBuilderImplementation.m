@@ -315,43 +315,19 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary * const metadata = [componentModelSchema.metadataPath dictionaryFromJSONDictionary:dictionary];
     
     if (metadata != nil) {
-        NSDictionary * const existingMetadata = self.metadata;
-        
-        if (existingMetadata != nil) {
-            NSMutableDictionary * const mutableMetadata = [existingMetadata mutableCopy];
-            [mutableMetadata addEntriesFromDictionary:metadata];
-            self.metadata = [mutableMetadata copy];
-        } else {
-            self.metadata = metadata;
-        }
+        self.metadata = HUBMergeDictionaries(self.metadata, metadata);
     }
     
     NSDictionary * const loggingData = [componentModelSchema.loggingDataPath dictionaryFromJSONDictionary:dictionary];
     
     if (loggingData != nil) {
-        NSDictionary * const existingLoggingData = self.loggingData;
-        
-        if (existingLoggingData != nil) {
-            NSMutableDictionary * const mutableLoggingData = [existingLoggingData mutableCopy];
-            [mutableLoggingData addEntriesFromDictionary:loggingData];
-            self.loggingData = [mutableLoggingData copy];
-        } else {
-            self.loggingData = loggingData;
-        }
+        self.loggingData = HUBMergeDictionaries(self.loggingData, loggingData);
     }
     
     NSDictionary * const customData = [componentModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
     
     if (customData != nil) {
-        NSDictionary * const existingCustomData = self.customData;
-        
-        if (existingCustomData != nil) {
-            NSMutableDictionary * const mutableCustomData = [existingCustomData mutableCopy];
-            [mutableCustomData addEntriesFromDictionary:customData];
-            self.customData = [mutableCustomData copy];
-        } else {
-            self.customData = customData;
-        }
+        self.customData = HUBMergeDictionaries(self.customData, customData);
     }
     
     NSDictionary * const mainImageDataDictionary = [componentModelSchema.mainImageDataDictionaryPath dictionaryFromJSONDictionary:dictionary];
@@ -502,7 +478,8 @@ NS_ASSUME_NONNULL_BEGIN
     if (self.targetBuilderImplementation == nil) {
         self.targetBuilderImplementation = [[HUBComponentTargetBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
                                                                                              componentDefaults:self.componentDefaults
-                                                                                             iconImageResolver:self.iconImageResolver];
+                                                                                             iconImageResolver:self.iconImageResolver
+                                                                                             actionIdentifiers:nil];
     }
     
     HUBComponentTargetBuilderImplementation * const targetBuilder = self.targetBuilderImplementation;

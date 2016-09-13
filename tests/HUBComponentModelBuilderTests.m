@@ -280,6 +280,7 @@
     NSURL * const targetURL = [NSURL URLWithString:@"spotify:hub:target"];
     NSString * const targetTitle = @"Target title";
     NSString * const targetViewIdentifier = @"identifier";
+    HUBIdentifier * const targetActionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"action"];
     NSDictionary * const metadata = @{@"meta": @"data"};
     NSDictionary * const loggingData = @{@"logging": @"data"};
     NSDictionary * const customData = @{@"custom": @"data"};
@@ -322,7 +323,8 @@
             @"view": @{
                 @"id": targetViewIdentifier,
                 @"title": targetTitle
-            }
+            },
+            @"actions": @[targetActionIdentifier.identifierString]
         },
         @"metadata": metadata,
         @"logging": loggingData,
@@ -360,6 +362,9 @@
     XCTAssertEqualObjects(model.icon.identifier, iconIdentifier);
     XCTAssertEqualObjects(model.target.URI, targetURL);
     XCTAssertEqualObjects(model.target.initialViewModel.navigationBarTitle, targetTitle);
+    XCTAssertEqual(model.target.actionIdentifiers.count, (NSUInteger)1);
+    XCTAssertEqualObjects(model.target.actionIdentifiers.firstObject, targetActionIdentifier);
+    
     XCTAssertEqualObjects(model.metadata, metadata);
     XCTAssertEqualObjects(model.loggingData, loggingData);
     XCTAssertEqualObjects(model.customData, customData);

@@ -4,7 +4,7 @@
 #import "HUBJSONSchema.h"
 #import "HUBComponentTargetJSONSchema.h"
 #import "HUBComponentTargetImplementation.h"
-
+#import "HUBIdentifier.h"
 #import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentTargetBuilderImplementation
 
 @synthesize URI = _URI;
+@synthesize actionIdentifiers = _actionIdentifiers;
 @synthesize customData = _customData;
 
 #pragma mark - Initializer
@@ -28,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithJSONSchema:(id<HUBJSONSchema>)JSONSchema
                  componentDefaults:(HUBComponentDefaults *)componentDefaults
                  iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
+                 actionIdentifiers:(nullable NSOrderedSet<HUBIdentifier *> *)actionIdentifiers
 {
     NSParameterAssert(JSONSchema != nil);
     NSParameterAssert(componentDefaults != nil);
@@ -38,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
         _JSONSchema = JSONSchema;
         _componentDefaults = componentDefaults;
         _iconImageResolver = iconImageResolver;
+        _actionIdentifiers = (NSMutableOrderedSet *)([actionIdentifiers mutableCopy] ?: [NSMutableOrderedSet new]);
     }
     
     return self;
@@ -48,9 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBComponentTarget>)build
 {
     id<HUBViewModel> const initialViewModel = [self.initialViewModelBuilderImplementation build];
+    NSArray<HUBIdentifier *> * const actionIdentifiers = self.actionIdentifiers.count > 0 ? self.actionIdentifiers.array : nil;
     
     return [[HUBComponentTargetImplementation alloc] initWithURI:self.URI
                                                 initialViewModel:initialViewModel
+                                               actionIdentifiers:actionIdentifiers
                                                       customData:self.customData];
 }
 
@@ -59,6 +64,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBViewModelBuilder>)initialViewModelBuilder
 {
     return [self getOrCreateInitialViewModelBuilder];
+}
+
+- (void)addActionWithNamespace:(NSString *)actionNamespace name:(NSString *)actionName
+{
+    HUBIdentifier * const identifier = [[HUBIdentifier alloc] initWithNamespace:actionNamespace name:actionName];
+    [self.actionIdentifiers addObject:identifier];
 }
 
 #pragma mark - HUBJSONCompatibleBuilder
@@ -84,10 +95,25 @@ NS_ASSUME_NONNULL_BEGIN
         [[self getOrCreateInitialViewModelBuilder] addDataFromJSONDictionary:initialViewModelDictionary];
     }
     
+    NSArray<NSString *> * const actionIdentifierStrings = [schema.actionIdentifiersPath valuesFromJSONDictionary:dictionary];
+    
+    for (NSString * const actionIdentifierString in actionIdentifierStrings) {
+        NSArray * const actionIdentifierParts = [actionIdentifierString componentsSeparatedByString:@":"];
+        
+        if (actionIdentifierParts.count != 2) {
+            continue;
+        }
+        
+        HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:actionIdentifierParts[0]
+                                                                                     name:actionIdentifierParts[1]];
+        
+        [self.actionIdentifiers addObject:actionIdentifier];
+    }
+    
     NSDictionary * const customData = [schema.customDataPath dictionaryFromJSONDictionary:dictionary];
     
     if (customData != nil) {
-        self.customData = customData;
+        self.customData = HUBMergeDictionaries(self.customData, customData);
     }
 }
 
@@ -97,7 +123,8 @@ NS_ASSUME_NONNULL_BEGIN
 {
     HUBComponentTargetBuilderImplementation * const copy = [[HUBComponentTargetBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
                                                                                                              componentDefaults:self.componentDefaults
-                                                                                                             iconImageResolver:self.iconImageResolver];
+                                                                                                             iconImageResolver:self.iconImageResolver
+                                                                                                             actionIdentifiers:self.actionIdentifiers];
     
     copy.URI = self.URI;
     copy.initialViewModelBuilderImplementation = [self.initialViewModelBuilderImplementation copy];
