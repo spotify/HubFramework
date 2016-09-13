@@ -1115,8 +1115,8 @@
                       <div class="abstract">
                         <p>Return a child component model for a given index, or <code>nil</code> if an invalid index was supplied</p>
 
-<p>This method is a convenience API for accessing child component models directly using the <code>childComponentModels</code> property, since
-  it&rsquo;s fine to call this method with an index that is not known to be valid (since it will fail gracefully and return <code>nil</code>).</p>
+<p>This method is a convenience API for accessing child component models directly using the <code><a href="../Protocols/HUBComponentModel.html#/c:objc(pl)HUBComponentModel(py)children">children</a></code> property, since it&rsquo;s fine
+  to call this method with an index that is not known to be valid (since it will fail gracefully and return <code>nil</code>).</p>
 
                       </div>
                       <div class="declaration">
@@ -1145,6 +1145,62 @@
                               <td>
                                 <div>
                                   <p>The index to return a child component model for</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentModel(im)childWithIdentifier:"></a>
+                    <a name="//apple_ref/objc/Method/-childWithIdentifier:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentModel(im)childWithIdentifier:">-childWithIdentifier:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return a child component that has a certain identifier, or <code>nil</code> if an unknown identifier was given</p>
+
+<p>Accessing a child component model this way is preferred to iterating over the <code><a href="../Protocols/HUBComponentModel.html#/c:objc(pl)HUBComponentModel(py)children">children</a></code> array and looking for a model matching
+  an index manually - not only because it&rsquo;s easier - but also because this method has O(1) complexity.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentModel</span><span class="o">&gt;</span><span class="p">)</span><span class="nf">childWithIdentifier</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">childWithIdentifier</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">HUBComponentModel</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier of the child to look for</p>
 
                                 </div>
                               </td>
