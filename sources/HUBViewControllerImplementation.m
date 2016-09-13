@@ -11,7 +11,6 @@
 #import "HUBComponentWrapper.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponentCollectionViewCell.h"
-#import "HUBImplementationMacros.h"
 #import "HUBUtilities.h"
 #import "HUBImageLoader.h"
 #import "HUBComponentImageLoadingContext.h"
@@ -36,7 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) id<HUBComponentSelectionHandler> componentSelectionHandler;
 @property (nonatomic, strong, readonly) id<HUBViewControllerScrollHandler> scrollHandler;
-@property (nonatomic, weak, nullable) UIDevice *device;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, nullable, readonly) id<HUBImageLoader> imageLoader;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
@@ -71,7 +69,6 @@ NS_ASSUME_NONNULL_BEGIN
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
       componentSelectionHandler:(id<HUBComponentSelectionHandler>)componentSelectionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
-                         device:(UIDevice *)device
                     imageLoader:(nullable id<HUBImageLoader>)imageLoader
 
 {
@@ -83,7 +80,6 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentSelectionHandler != nil);
     NSParameterAssert(scrollHandler != nil);
-    NSParameterAssert(device != nil);
     
     if (!(self = [super initWithNibName:nil bundle:nil])) {
         return nil;
@@ -97,7 +93,6 @@ NS_ASSUME_NONNULL_BEGIN
     _componentLayoutManager = componentLayoutManager;
     _componentSelectionHandler = componentSelectionHandler;
     _scrollHandler = scrollHandler;
-    _device = device;
     _imageLoader = imageLoader;
     _viewModelIsInitial = YES;
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
@@ -201,18 +196,9 @@ NS_ASSUME_NONNULL_BEGIN
     self.viewModelHasChangedSinceLastLayoutUpdate = NO;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self.collectionView.collectionViewLayout invalidateLayout];
-}
-
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    HUB_IGNORE_PARTIAL_AVAILABILTY_BEGIN
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    HUB_IGNORE_PARTIAL_AVAILABILTY_END
-
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
@@ -432,14 +418,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (componentWrapper.isContentOffsetObserver) {
         [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
-    }
-    
-    UIDevice * const device = self.device;
-    
-    if (device != nil) {
-        if (!HUBDeviceIsRunningSystemVersion8OrHigher(device)) {
-            [self collectionViewCellWillAppear:cell ignorePreviousAppearance:self.collectionViewIsScrolling];
-        }
     }
     
     return cell;

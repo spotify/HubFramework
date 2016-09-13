@@ -7,16 +7,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Return whether a given device is running iOS 8 or higher
- *
- *  @param device The device to perfrom the system version check for
- */
-static inline BOOL HUBDeviceIsRunningSystemVersion8OrHigher(UIDevice *device) {
-    NSArray<NSString *> * const versionComponents = [device.systemVersion componentsSeparatedByString:@"."];
-    return [[versionComponents firstObject] integerValue] >= 8;
-}
-
-/**
  *  Load the view for a component if it hasn't been loaded already
  *
  *  @param component The component to load a view for

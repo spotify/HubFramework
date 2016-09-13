@@ -12,7 +12,6 @@
 #import "HUBComponentDefaults.h"
 #import "HUBIconImplementation.h"
 #import "HUBUtilities.h"
-#import "HUBImplementationMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
