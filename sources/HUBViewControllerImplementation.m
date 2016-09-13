@@ -376,6 +376,24 @@ NS_ASSUME_NONNULL_BEGIN
     [self handleSelectionForComponentWithModel:childComponentModel cellIndexPath:nil];
 }
 
+- (BOOL)componentWrapper:(HUBComponentWrapper *)componentWrapper performActionWithIdentifier:(HUBIdentifier *)identifier
+{
+    if (self.viewModel == nil) {
+        return NO;
+    }
+    
+    id<HUBViewModel> const viewModel = self.viewModel;
+    
+    id<HUBActionContext> const actionContext = [[HUBActionContextImplementation alloc] initWithTrigger:HUBActionTriggerComponent
+                                                                                customActionIdentifier:identifier
+                                                                                               viewURI:self.viewURI
+                                                                                             viewModel:viewModel
+                                                                                        componentModel:componentWrapper.model
+                                                                                        viewController:self];
+    
+    return [self.actionHandler handleActionWithContext:actionContext];
+}
+
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
 {
     if (componentWrapper.isRootComponent) {

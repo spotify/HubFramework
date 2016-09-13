@@ -6,6 +6,7 @@
 @protocol HUBComponent;
 @protocol HUBComponentModel;
 @protocol HUBComponentImageData;
+@class HUBIdentifier;
 @class HUBComponentWrapper;
 @class HUBComponentUIStateManager;
 
@@ -53,6 +54,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
     childSelectedAtIndex:(NSUInteger)childIndex;
+
+/**
+ *  Ask the delegate to perform an action on behalf of a component wrapper
+ *
+ *  @param componentWrapper The wrapper of the component that wants an action to be performed
+ *  @param identifier The identifier of the action to perform
+ *
+ *  @return A boolean indicating whether an action was successfully performed or not
+ */
+- (BOOL)componentWrapper:(HUBComponentWrapper *)componentWrapper performActionWithIdentifier:(HUBIdentifier *)identifier;
 
 /**
  *  Send a component wrapper to its reuse pool

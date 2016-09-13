@@ -2,6 +2,7 @@
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentWithRestorableUIState.h"
 #import "HUBComponentViewObserver.h"
+#import "HUBComponentActionPerformer.h"
 
 @protocol HUBComponentImageData;
 
@@ -12,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentWithChildren,
     HUBComponentWithImageHandling,
     HUBComponentWithRestorableUIState,
-    HUBComponentViewObserver
+    HUBComponentViewObserver,
+    HUBComponentActionPerformer
 >
 
 /// The layout traits the component should act like it's having

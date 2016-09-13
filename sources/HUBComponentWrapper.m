@@ -5,6 +5,7 @@
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentContentOffsetObserver.h"
+#import "HUBComponentActionPerformer.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentUIStateManager.h"
 #import "HUBComponentResizeObservingView.h"
@@ -12,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBComponentWrapper () <HUBComponentChildDelegate, HUBComponentResizeObservingViewDelegate>
+@interface HUBComponentWrapper () <HUBComponentChildDelegate, HUBComponentActionDelegate, HUBComponentResizeObservingViewDelegate>
 
 @property (nonatomic, strong, readwrite) id<HUBComponentModel> model;
 @property (nonatomic, assign) BOOL viewHasAppearedSinceLastModelChange;
@@ -51,6 +52,10 @@ NS_ASSUME_NONNULL_BEGIN
 
         if ([_component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
             ((id<HUBComponentWithChildren>)_component).childDelegate = self;
+        }
+        
+        if ([_component conformsToProtocol:@protocol(HUBComponentActionPerformer)]) {
+            ((id<HUBComponentActionPerformer>)_component).actionDelegate = self;
         }
     }
     
@@ -252,6 +257,17 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     [self.delegate componentWrapper:self childSelectedAtIndex:childIndex];
+}
+
+#pragma mark - HUBComponentActionDelegate
+
+- (BOOL)component:(id<HUBComponentActionPerformer>)component performActionWithIdentifier:(HUBIdentifier *)identifier
+{
+    if (self.component != component) {
+        return NO;
+    }
+    
+    return [self.delegate componentWrapper:self performActionWithIdentifier:identifier];
 }
 
 #pragma mark - HUBComponentResizeObservingViewDelegate

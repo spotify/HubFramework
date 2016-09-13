@@ -8,6 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readwrite) id<HUBFeatureInfo> featureInfo;
 @property (nonatomic, assign, readwrite) HUBConnectivityState connectivityState;
 @property (nonatomic, strong, readwrite, nullable) NSError *previousContentOperationError;
+@property (nonatomic, strong, readwrite, nullable) id<HUBActionContext> actionContext;
 
 @end
 
@@ -51,6 +52,16 @@ NS_ASSUME_NONNULL_BEGIN
     if (self.initialContentLoadingBlock != nil) {
         self.initialContentLoadingBlock(viewModelBuilder);
     }
+}
+
+#pragma mark - HUBContentOperationActionObserver
+
+- (void)actionPerformedWithContext:(id<HUBActionContext>)context
+                           viewURI:(NSURL *)viewURI
+                       featureInfo:(id<HUBFeatureInfo>)featureInfo
+                 connectivityState:(HUBConnectivityState)connectivityState
+{
+    self.actionContext = context;
 }
 
 #pragma mark - NSObject
