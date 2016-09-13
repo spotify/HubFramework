@@ -1174,7 +1174,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1185,7 +1184,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1198,7 +1196,6 @@
 				HUB_NON_ERROR_WARNINGS_0720 = "";
 				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1215,7 +1212,6 @@
 				HUB_NON_ERROR_WARNINGS_0720 = "";
 				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
