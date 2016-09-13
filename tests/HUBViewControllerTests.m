@@ -685,7 +685,7 @@
     
     id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
     
-    id<HUBComponentModel> const childComponentModelA = [component.model childComponentModelAtIndex:0];
+    id<HUBComponentModel> const childComponentModelA = [component.model childAtIndex:0];
     XCTAssertNotNil(childComponentModelA);
     
     id<HUBComponent> const childComponentWrapper = [childDelegate component:component childComponentForModel:childComponentModelA];
@@ -697,7 +697,7 @@
     
     [childComponentWrapper prepareViewForReuse];
     
-    id<HUBComponentModel> const childComponentModelB = [component.model childComponentModelAtIndex:1];
+    id<HUBComponentModel> const childComponentModelB = [component.model childAtIndex:1];
     XCTAssertNotNil(childComponentModelB);
     
     id<HUBComponent> const reusedChildComponentWrapper = [childDelegate component:component childComponentForModel:childComponentModelB];
@@ -1161,7 +1161,7 @@
 
     id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
 
-    id<HUBComponentModel> const childComponentModelA = [component.model childComponentModelAtIndex:0];
+    id<HUBComponentModel> const childComponentModelA = [component.model childAtIndex:0];
     XCTAssertNotNil(childComponentModelA);
 
     [childDelegate component:component childComponentForModel:childComponentModelA];

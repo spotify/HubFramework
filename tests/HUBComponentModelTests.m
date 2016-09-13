@@ -23,9 +23,9 @@
     HUBComponentModelImplementation * const model = [self createComponentModelWithIdentifier:@"id"];
     model.children = childModels;
     
-    XCTAssertEqual([model childComponentModelAtIndex:0], childModels[0]);
-    XCTAssertEqual([model childComponentModelAtIndex:1], childModels[1]);
-    XCTAssertNil([model childComponentModelAtIndex:2]);
+    XCTAssertEqual([model childAtIndex:0], childModels[0]);
+    XCTAssertEqual([model childAtIndex:1], childModels[1]);
+    XCTAssertNil([model childAtIndex:2]);
 }
 
 - (void)testIdenticalInstancesAreEqual
