@@ -11,7 +11,6 @@
 #import "HUBComponentWrapper.h"
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponentCollectionViewCell.h"
-#import "HUBImplementationMacros.h"
 #import "HUBUtilities.h"
 #import "HUBImageLoader.h"
 #import "HUBComponentImageLoadingContext.h"

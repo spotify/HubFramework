@@ -27,7 +27,6 @@
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBIconImageResolverMock.h"
-#import "HUBImplementationMacros.h"
 #import "HUBFeatureInfoImplementation.h"
 #import "HUBComponentSelectionHandlerWrapper.h"
 #import "HUBViewControllerScrollHandlerMock.h"
@@ -869,11 +868,9 @@
     
     id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
     
-HUB_IGNORE_PARTIAL_AVAILABILTY_BEGIN
     [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
     [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
     [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
-HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
     XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, (NSUInteger)1);
@@ -916,10 +913,7 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     self.collectionView.cells[indexPath] = cell;
     
     id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
-    
-    HUB_IGNORE_PARTIAL_AVAILABILTY_BEGIN
     [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
-    HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
     NSArray<id<HUBComponentModel>> * const children = componentModel.children;
@@ -947,10 +941,7 @@ HUB_IGNORE_PARTIAL_AVAILABILTY_END
     XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod, expectedAppearanceComponentModels);
     
     [collectionViewDelegate scrollViewWillBeginDragging:self.collectionView];
-    
-    HUB_IGNORE_PARTIAL_AVAILABILTY_BEGIN
     [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
-    HUB_IGNORE_PARTIAL_AVAILABILTY_END
     
     [collectionViewDelegate scrollViewDidEndDecelerating:self.collectionView];
     
