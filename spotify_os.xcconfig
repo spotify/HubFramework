@@ -1,7 +1,7 @@
 // A set of configurations used for Spotify Objective-C Open Source Projects
 
 // Project settings:
-VALID_ARCHS = i386 x86_64 armv7 armv7k arm64
+VALID_ARCHS = i386 x86_64 armv7 arm64
 IPHONEOS_DEPLOYMENT_TARGET = 8.0
 
 ENABLE_NS_ASSERTIONS_Debug = YES

@@ -26,9 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBDictionaryPath
 
-- (NSArray<NSObject *> *)valuesFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
+- (NSArray<id> *)valuesFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {
-    NSArray<NSObject *> *currentValues = @[dictionary];
+    NSArray<id> *currentValues = @[dictionary];
     
     for (HUBJSONParsingOperation * const operation in self.parsingOperations) {
         currentValues = [self valuesByPerformingParsingOperation:operation withInputValues:currentValues];
@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)boolFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {
     // Type-checking is performed by a parsing operation appended by `HUBMutableJSONPathImplementation`
-    return [(NSNumber *)[[self valuesFromJSONDictionary:dictionary] firstObject] boolValue];
+    return [[[self valuesFromJSONDictionary:dictionary] firstObject] boolValue];
 }
 
 #pragma mark - HUBJSONIntegerPath
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSInteger)integerFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {
     // Type-checking is performed by a parsing operation appended by `HUBMutableJSONPathImplementation`
-    return [(NSNumber *)[[self valuesFromJSONDictionary:dictionary] firstObject] integerValue];
+    return [[[self valuesFromJSONDictionary:dictionary] firstObject] integerValue];
 }
 
 #pragma mark - HUBJSONStringPath
@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString *)stringFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {
     // Type-checking is performed by a parsing operation appended by `HUBMutableJSONPathImplementation`
-    return (NSString *)[[self valuesFromJSONDictionary:dictionary] firstObject];
+    return [[self valuesFromJSONDictionary:dictionary] firstObject];
 }
 
 #pragma mark - HUBJSONURLPath
@@ -75,15 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSURL *)URLFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {
     // Type-checking is performed by a parsing operation appended by `HUBMutableJSONPathImplementation`
-    return (NSURL *)[[self valuesFromJSONDictionary:dictionary] firstObject];
-}
-
-#pragma mark - HUBJSONDatePath
-
-- (nullable NSDate *)dateFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
-{
-    // Type-checking is performed by a parsing operation appended by `HUBMutableJSONPathImplementation`
-    return (NSDate *)[[self valuesFromJSONDictionary:dictionary] firstObject];
+    return [[self valuesFromJSONDictionary:dictionary] firstObject];
 }
 
 #pragma mark - HUBJSONDictionaryPath
