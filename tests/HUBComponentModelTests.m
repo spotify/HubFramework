@@ -16,11 +16,11 @@
 - (void)testChildComponentModelAtIndex
 {
     NSArray * const childModels = @[
-        [self createComponentModelWithIdentifier:@"child1"],
-        [self createComponentModelWithIdentifier:@"child2"]
+        [self createComponentModelWithIdentifier:@"child1" index:0],
+        [self createComponentModelWithIdentifier:@"child2" index:1]
     ];
     
-    HUBComponentModelImplementation * const model = [self createComponentModelWithIdentifier:@"id"];
+    HUBComponentModelImplementation * const model = [self createComponentModelWithIdentifier:@"id" index:0];
     model.children = childModels;
     
     XCTAssertEqual([model childAtIndex:0], childModels[0]);
@@ -125,9 +125,23 @@
     XCTAssertNotEqualObjects(createComponentModel(), createComponentModel());
 }
 
+- (void)testChildWithIdentifier
+{
+    HUBComponentModelImplementation * const parent = [self createComponentModelWithIdentifier:@"parent" index:0];
+    HUBComponentModelImplementation * const childA = [self createComponentModelWithIdentifier:@"childA" index:0];
+    HUBComponentModelImplementation * const childB = [self createComponentModelWithIdentifier:@"childB" index:1];
+    HUBComponentModelImplementation * const childC = [self createComponentModelWithIdentifier:@"childC" index:2];
+    parent.children = @[childA, childB, childC];
+    
+    XCTAssertEqual([parent childWithIdentifier:@"childA"], childA);
+    XCTAssertEqual([parent childWithIdentifier:@"childB"], childB);
+    XCTAssertEqual([parent childWithIdentifier:@"childC"], childC);
+    XCTAssertNil([parent childWithIdentifier:@"noChild"]);
+}
+
 #pragma mark - Utilities
 
-- (HUBComponentModelImplementation *)createComponentModelWithIdentifier:(NSString *)identifier
+- (HUBComponentModelImplementation *)createComponentModelWithIdentifier:(NSString *)identifier index:(NSUInteger)index
 {
     HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
     HUBComponentTargetImplementation * const target = [[HUBComponentTargetImplementation alloc] initWithURI:nil
@@ -137,7 +151,7 @@
     
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
                                                                   type:HUBComponentTypeBody
-                                                                 index:0
+                                                                 index:index
                                                    componentIdentifier:componentIdentifier
                                                      componentCategory:HUBComponentCategoryRow
                                                                  title:nil
