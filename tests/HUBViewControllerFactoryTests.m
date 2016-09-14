@@ -1,6 +1,7 @@
 #import <XCTest/XCTest.h>
 
 #import "HUBViewControllerFactory.h"
+#import "HUBViewController.h"
 #import "HUBManager.h"
 #import "HUBFeatureRegistry.h"
 #import "HUBConnectivityStateResolverMock.h"
@@ -11,9 +12,15 @@
 #import "HUBContentReloadPolicyMock.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBComponentFallbackHandlerMock.h"
+#import "HUBActionHandlerMock.h"
+#import "HUBViewModelBuilder.h"
+#import "HUBViewModel.h"
+#import "HUBComponentModelBuilder.h"
+#import "HUBActionContext.h"
 
 @interface HUBViewControllerFactoryTests : XCTestCase
 
+@property (nonatomic, strong) HUBActionHandlerMock *defaultActionHandler;
 @property (nonatomic, strong) HUBContentReloadPolicyMock *defaultContentReloadPolicy;
 @property (nonatomic, strong) HUBManager *manager;
 
@@ -27,6 +34,7 @@
 {
     [super setUp];
     
+    self.defaultActionHandler = [HUBActionHandlerMock new];
     self.defaultContentReloadPolicy = [HUBContentReloadPolicyMock new];
     
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
@@ -39,6 +47,7 @@
                                                 componentFallbackHandler:componentFallbackHandler
                                                       imageLoaderFactory:nil
                                                        iconImageResolver:nil
+                                                    defaultActionHandler:self.defaultActionHandler
                                               defaultContentReloadPolicy:self.defaultContentReloadPolicy
                                         prependedContentOperationFactory:nil
                                          appendedContentOperationFactory:nil];
@@ -59,7 +68,7 @@
                                       contentOperationFactories:@[contentOperationFactory]
                                             contentReloadPolicy:nil
                                      customJSONSchemaIdentifier:nil
-                                      componentSelectionHandler:nil
+                                                  actionHandler:nil
                                     viewControllerScrollHandler:nil];
     
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
@@ -86,7 +95,7 @@
                                       contentOperationFactories:@[contentOperationFactory]
                                             contentReloadPolicy:nil
                                      customJSONSchemaIdentifier:nil
-                                      componentSelectionHandler:nil
+                                                  actionHandler:nil
                                     viewControllerScrollHandler:nil];
     
     UIViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
@@ -95,6 +104,42 @@
     
     XCTAssertEqualObjects(self.defaultContentReloadPolicy.lastViewURI, viewURI);
     XCTAssertEqual(self.defaultContentReloadPolicy.numberOfRequests, (NSUInteger)1);
+}
+
+- (void)testDefaultActionHandlerUsedIfFeatureDidNotSupplyOne
+{
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithViewURI:viewURI];
+    
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].title = @"A component";
+        return YES;
+    };
+    
+    HUBContentOperationFactoryMock * const contentOperationFactory = [[HUBContentOperationFactoryMock alloc] initWithContentOperations:@[contentOperation]];
+    
+    [self.manager.featureRegistry registerFeatureWithIdentifier:@"feature"
+                                               viewURIPredicate:viewURIPredicate
+                                                          title:@"Title"
+                                      contentOperationFactories:@[contentOperationFactory]
+                                            contentReloadPolicy:nil
+                                     customJSONSchemaIdentifier:nil
+                                                  actionHandler:nil
+                                    viewControllerScrollHandler:nil];
+    
+    self.defaultActionHandler.block = ^(id<HUBActionContext> context) {
+        return YES;
+    };
+    
+    UIViewController<HUBViewController> * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    [viewController viewWillAppear:YES];
+    
+    id<HUBComponentModel> const componentModel = viewController.viewModel.bodyComponentModels[0];
+    [viewController selectComponentWithModel:componentModel];
+    
+    XCTAssertEqual(self.defaultActionHandler.contexts.count, (NSUInteger)1);
+    XCTAssertEqualObjects(self.defaultActionHandler.contexts[0].componentModel, componentModel);
 }
 
 @end

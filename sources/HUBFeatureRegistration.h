@@ -2,7 +2,7 @@
 
 @protocol HUBContentOperationFactory;
 @protocol HUBContentReloadPolicy;
-@protocol HUBComponentSelectionHandler;
+@protocol HUBActionHandler;
 @protocol HUBViewControllerScrollHandler;
 @class HUBViewURIPredicate;
 
@@ -29,8 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The identifier of any custom JSON schema that the feature is using
 @property (nonatomic, copy, nullable, readonly) NSString *customJSONSchemaIdentifier;
 
-/// Any custom component selection handler that the feature is using
-@property (nonatomic, strong, nullable, readonly) id<HUBComponentSelectionHandler> componentSelectionHandler;
+/// Any custom action handler that the feature is using
+@property (nonatomic, strong, nullable, readonly) id<HUBActionHandler> actionHandler;
 
 /// Any custom view controller scroll handler that the feature is using
 @property (nonatomic, strong, nullable, readonly) id<HUBViewControllerScrollHandler> viewControllerScrollHandler;
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param contentOperationFactories The content operation factories that the feature will use
  *  @param contentReloadPolicy Any custom content reload policy that the feature will use
  *  @param customJSONSchemaIdentifier The identifier of any custom JSON schema the feature will use
- *  @param componentSelectionHandler Any custom component selection handler that the feature will use
+ *  @param actionHandler Any custom action handler that the feature will use
  *  @param viewControllerScrollHandler Any custom view controller scroll handler that the feature will use
  */
 - (instancetype)initWithFeatureIdentifier:(NSString *)featureIdentifier
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
                 contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
                       contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
-                componentSelectionHandler:(nullable id<HUBComponentSelectionHandler>)componentSelectionHandler
+                            actionHandler:(nullable id<HUBActionHandler>)actionHandler
               viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler HUB_DESIGNATED_INITIALIZER;
 
 @end

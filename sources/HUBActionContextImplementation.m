@@ -4,19 +4,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBActionContextImplementation
 
-@synthesize actionIdentifier = _actionIdentifier;
+@synthesize trigger = _trigger;
+@synthesize customActionIdentifier = _customActionIdentifier;
 @synthesize viewURI = _viewURI;
 @synthesize viewModel = _viewModel;
 @synthesize componentModel = _componentModel;
 @synthesize viewController = _viewController;
 
-- (instancetype)initWithActionIdentifier:(HUBIdentifier *)actionIdentifier
-                                 viewURI:(NSURL *)viewURI
-                               viewModel:(id<HUBViewModel>)viewModel
-                          componentModel:(id<HUBComponentModel>)componentModel
-                          viewController:(UIViewController *)viewController
+- (instancetype)initWithTrigger:(HUBActionTrigger)trigger
+         customActionIdentifier:(nullable HUBIdentifier *)customActionIdentifier
+                        viewURI:(NSURL *)viewURI
+                      viewModel:(id<HUBViewModel>)viewModel
+                 componentModel:(id<HUBComponentModel>)componentModel
+                 viewController:(UIViewController *)viewController
 {
-    NSParameterAssert(actionIdentifier != nil);
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(viewModel != nil);
     NSParameterAssert(componentModel != nil);
@@ -25,7 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
     self = [super init];
     
     if (self) {
-        _actionIdentifier = actionIdentifier;
+        _trigger = trigger;
+        _customActionIdentifier = customActionIdentifier;
         _viewURI = viewURI;
         _viewModel = viewModel;
         _componentModel = componentModel;

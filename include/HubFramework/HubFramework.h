@@ -7,6 +7,7 @@
 #import "HUBJSONSchema.h"
 #import "HUBViewModelJSONSchema.h"
 #import "HUBComponentModelJSONSchema.h"
+#import "HUBComponentTargetJSONSchema.h"
 #import "HUBComponentImageDataJSONSchema.h"
 #import "HUBComponentTargetJSONSchema.h"
 #import "HUBJSONCompatibleBuilder.h"
@@ -56,8 +57,6 @@
 #import "HUBComponentLayoutTraits.h"
 #import "HUBComponentCategories.h"
 #import "HUBComponentFallbackHandler.h"
-#import "HUBComponentSelectionHandler.h"
-#import "HUBComponentSelectionContext.h"
 #import "HUBComponentShowcaseManager.h"
 #import "HUBComponentShowcaseShapshotGenerator.h"
 
@@ -66,3 +65,11 @@
 #import "HUBImageLoader.h"
 #import "HUBIcon.h"
 #import "HUBIconImageResolver.h"
+
+// Actions
+#import "HUBAction.h"
+#import "HUBActionFactory.h"
+#import "HUBActionRegistry.h"
+#import "HUBActionHandler.h"
+#import "HUBActionContext.h"
+#import "HUBActionTrigger.h"

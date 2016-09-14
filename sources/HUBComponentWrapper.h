@@ -54,6 +54,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
     childSelectedAtIndex:(NSUInteger)childIndex;
 
+/**
+ *  Send a component wrapper to its reuse pool
+ *
+ *  @param componentWrapper The component wrapper that should be sent to its reuse pool
+ *
+ *  Sending a component wrapper to a its reuse pool will open it up to be reused for
+ *  rendering other models.
+ */
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper;
 
 @end

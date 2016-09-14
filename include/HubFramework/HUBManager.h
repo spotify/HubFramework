@@ -11,6 +11,7 @@
 @protocol HUBDataLoaderFactory;
 @protocol HUBImageLoaderFactory;
 @protocol HUBIconImageResolver;
+@protocol HUBActionHandler;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
 @protocol HUBComponentFallbackHandler;
@@ -60,6 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
  *         If nil, this instance of the Hub Framework won't support remote images. See `HUBImageLoaderFactory` for more info.
  *  @param iconImageResolver Any object responsible for converting icons into renderable images. If nil, this instance of
  *         the Hub Framework won't support icons. See `HUBIconImageResolver` for more information.
+ *  @param defaultActionHandler Any default action handler to use for features that do not define their own. An action handler
+ *         enables execution of custom code instead of performing an action. See `HUBActionHandler` for more information.
  *  @param defaultContentReloadPolicy Any default content reload policy to use for features that do not define their own.
  *         A content reload policy determines whenever a view belonging to the feature should have its content reloaded.
  *         If nil, any feature not defining its own reload policy will always be reloaded whenever a view that belongs to
@@ -76,6 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
                                imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
                                 iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
+                             defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
                        defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                  prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                   appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory HUB_DESIGNATED_INITIALIZER;

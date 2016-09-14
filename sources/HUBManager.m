@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
                                imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
                                 iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
+                             defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
                        defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
                  prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                   appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
@@ -65,12 +66,14 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                           appendedContentOperationFactory:appendedContentOperationFactory
                                                                                                                                defaultContentReloadPolicy:defaultContentReloadPolicy];
         
-        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation new];
+        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionAction];
         
         HUBViewControllerFactoryImplementation * const viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:viewModelLoaderFactory
                                                                                                                                               featureRegistry:featureRegistry
                                                                                                                                             componentRegistry:componentRegistry
                                                                                                                                      initialViewModelRegistry:_initialViewModelRegistry
+                                                                                                                                               actionRegistry:actionRegistry
+                                                                                                                                         defaultActionHandler:defaultActionHandler
                                                                                                                                        componentLayoutManager:componentLayoutManager
                                                                                                                                            imageLoaderFactory:imageLoaderFactory];
         

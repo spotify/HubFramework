@@ -1,8 +1,6 @@
 #import "HUBActionContext.h"
 #import "HUBHeaderMacros.h"
 
-@protocol HUBViewModel, HUBComponentModel;
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBActionContext` protocol.
@@ -11,17 +9,19 @@ NS_ASSUME_NONNULL_BEGIN
 /** 
  *  Initializes an instance of the class with the provided values.
  *
- *  @param actionIdentifier The identifier of the action that this context is for
+ *  @param trigger The reason that the action will be triggered
+ *  @param customActionIdentifier The identifier of any custom action that this context is for
  *  @param viewURI The URI of the view that the action is for
  *  @param viewModel The model of the view that the action is for
  *  @param componentModel The model of the component that the action is for
  *  @param viewController The view controller presenting the view that the action is for
  */
-- (instancetype)initWithActionIdentifier:(HUBIdentifier *)actionIdentifier
-                                 viewURI:(NSURL *)viewURI
-                               viewModel:(id<HUBViewModel>)viewModel
-                          componentModel:(id<HUBComponentModel>)componentModel
-                          viewController:(UIViewController *)viewController HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTrigger:(HUBActionTrigger)trigger
+         customActionIdentifier:(nullable HUBIdentifier *)customActionIdentifier
+                        viewURI:(NSURL *)viewURI
+                      viewModel:(id<HUBViewModel>)viewModel
+                 componentModel:(id<HUBComponentModel>)componentModel
+                 viewController:(UIViewController *)viewController HUB_DESIGNATED_INITIALIZER;
 
 @end
 

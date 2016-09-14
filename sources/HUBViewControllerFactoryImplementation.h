@@ -4,10 +4,12 @@
 @protocol HUBImageLoaderFactory;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
+@protocol HUBActionHandler;
 @class HUBViewModelLoaderFactoryImplementation;
 @class HUBFeatureRegistryImplementation;
 @class HUBComponentRegistryImplementation;
 @class HUBInitialViewModelRegistry;
+@class HUBActionRegistryImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureRegistry The feature registry to use to retrieve information about registered features
  *  @param componentRegistry The component registry to use in the view controllers that this factory creates
  *  @param initialViewModelRegistry The registry to use to retrieve pre-computed view models for initial content
+ *  @param actionRegistry The registry to use to retrieve actions for events occuring in a view controller
+ *  @param defaultActionHandler Any user-defined action handler to use for features that don't define their own
  *  @param componentLayoutManager The object that manages layout for components for created view controllers
  *  @param imageLoaderFactory The factory to use to create image loaders
  */
@@ -28,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
                                featureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry
                              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
                       initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
+                                actionRegistry:(HUBActionRegistryImplementation *)actionRegistry
+                          defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
                         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                             imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory HUB_DESIGNATED_INITIALIZER;
 

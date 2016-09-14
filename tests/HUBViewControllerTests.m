@@ -12,23 +12,28 @@
 #import "HUBViewModelBuilder.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentModel.h"
+#import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentTargetBuilder.h"
 #import "HUBComponentTarget.h"
-#import "HUBComponentImageDataBuilder.h"
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentMock.h"
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
 #import "HUBComponentLayoutManagerMock.h"
-#import "HUBComponentSelectionHandlerMock.h"
+#import "HUBActionHandlerMock.h"
 #import "HUBInitialViewModelRegistry.h"
+#import "HUBActionRegistryImplementation.h"
 #import "HUBViewModel.h"
 #import "HUBContentReloadPolicyMock.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBIconImageResolverMock.h"
 #import "HUBFeatureInfoImplementation.h"
-#import "HUBComponentSelectionHandlerWrapper.h"
+#import "HUBActionHandlerWrapper.h"
+#import "HUBActionHandlerMock.h"
+#import "HUBActionContext.h"
+#import "HUBActionFactoryMock.h"
+#import "HUBActionMock.h"
 #import "HUBViewControllerScrollHandlerMock.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
@@ -41,11 +46,13 @@
 @property (nonatomic, strong) HUBCollectionViewMock *collectionView;
 @property (nonatomic, strong) HUBCollectionViewFactoryMock *collectionViewFactory;
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
-@property (nonatomic, strong) HUBComponentSelectionHandlerMock *componentSelectionHandler;
 @property (nonatomic, strong) HUBViewControllerScrollHandlerMock *scrollHandler;
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
 @property (nonatomic, strong) HUBInitialViewModelRegistry *initialViewModelRegistry;
+@property (nonatomic, strong) HUBActionHandlerMock *actionHandler;
+@property (nonatomic, strong) HUBActionMock *selectionAction;
+@property (nonatomic, strong) HUBActionRegistryImplementation *actionRegistry;
 @property (nonatomic, strong) NSURL *viewURI;
 @property (nonatomic, strong) HUBViewControllerImplementation *viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
@@ -83,7 +90,6 @@
                                                                               JSONSchemaRegistry:JSONSchemaRegistry
                                                                                iconImageResolver:iconImageResolver];
     
-    self.componentSelectionHandler = [HUBComponentSelectionHandlerMock new];
     self.scrollHandler = [HUBViewControllerScrollHandlerMock new];
     
     self.component = [HUBComponentMock new];
@@ -115,8 +121,15 @@
     
     self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     
-    id<HUBComponentSelectionHandler> const componentSelectionHandler = [[HUBComponentSelectionHandlerWrapper alloc] initWithSelectionHandler:self.componentSelectionHandler
-                                                                                                                    initialViewModelRegistry:self.initialViewModelRegistry];
+    self.actionHandler = [HUBActionHandlerMock new];
+    self.selectionAction = [[HUBActionMock alloc] initWithBlock:nil];
+    self.actionRegistry = [[HUBActionRegistryImplementation alloc] initWithSelectionAction:self.selectionAction];
+    
+    
+    id<HUBActionHandler> const actionHandler = [[HUBActionHandlerWrapper alloc] initWithActionHandler:self.actionHandler
+                                                                                       actionRegistry:self.actionRegistry
+                                                                             initialViewModelRegistry:self.initialViewModelRegistry
+                                                                                      viewModelLoader:self.viewModelLoader];
     
     self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:self.viewURI
                                                                  featureIdentifier:featureInfo.identifier
@@ -124,7 +137,7 @@
                                                              collectionViewFactory:self.collectionViewFactory
                                                                  componentRegistry:self.componentRegistry
                                                             componentLayoutManager:componentLayoutManager
-                                                         componentSelectionHandler:componentSelectionHandler
+                                                                     actionHandler:actionHandler
                                                                      scrollHandler:self.scrollHandler
                                                                        imageLoader:self.imageLoader];
     
@@ -601,10 +614,16 @@
     
     [self simulateViewControllerLayoutCycle];
     
+    __block id<HUBViewModel> targetInitialViewModel = nil;
+    
+    self.selectionAction.block = ^BOOL(id<HUBActionContext> context) {
+        targetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:targetViewURI];
+        return YES;
+    };
+    
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.delegate collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
     
-    id<HUBViewModel> const targetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:targetViewURI];
     XCTAssertEqualObjects(targetInitialViewModel.identifier, initialViewModelIdentifier);
 }
 
@@ -628,7 +647,9 @@
 
 - (void)testComponentDeselectedAfterCustomSelectionHandling
 {
-    self.componentSelectionHandler.handlesSelection = YES;
+    self.actionHandler.block = ^(id<HUBActionContext> context) {
+        return YES;
+    };
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
@@ -728,12 +749,15 @@
         id<HUBComponentModelBuilder> const selectableBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:selectableIdentifier];
         selectableBuilder.componentNamespace = componentNamespace;
         selectableBuilder.componentName = selectableIdentifier;
-        selectableBuilder.targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:framework"];
         
         return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
+    
+    self.selectionAction.block = ^BOOL(id<HUBActionContext> context) {
+        return [context.componentModel.identifier isEqualToString:selectableIdentifier];
+    };
     
     id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
     
@@ -744,18 +768,21 @@
     NSIndexPath * const selectableIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
     [collectionViewDelegate collectionView:self.collectionView didSelectItemAtIndexPath:selectableIndexPath];
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
-    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].target.URI, [NSURL URLWithString:@"spotify:hub:framework"]);
+    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].identifier, selectableIdentifier);
     
-    // Test custom selection handling
-    self.componentSelectionHandler.handlesSelection = YES;
+    // Test custom selection action handling
+    self.actionHandler.block = ^(id<HUBActionContext> context) {
+        return YES;
+    };
+    
     [collectionViewDelegate collectionView:self.collectionView didSelectItemAtIndexPath:selectableIndexPath];
-    XCTAssertEqual(self.componentSelectionHandler.selectionContexts.count, (NSUInteger)1);
+    XCTAssertEqual(self.actionHandler.contexts.count, (NSUInteger)1);
 
-    id<HUBComponentSelectionContext> selectionContext = self.componentSelectionHandler.selectionContexts.firstObject;
-    XCTAssertEqualObjects(selectionContext.componentModel.target.URI, [NSURL URLWithString:@"spotify:hub:framework"]);
-    XCTAssertEqualObjects(selectionContext.viewURI, self.viewURI);
-    XCTAssertEqualObjects(selectionContext.viewModel, self.viewModelFromDelegateMethod);
-    XCTAssertEqualObjects(selectionContext.viewController, self.viewController);
+    id<HUBActionContext> actionContext = self.actionHandler.contexts.firstObject;
+    XCTAssertEqualObjects(actionContext.componentModel.identifier, selectableIdentifier);
+    XCTAssertEqualObjects(actionContext.viewURI, self.viewURI);
+    XCTAssertEqualObjects(actionContext.viewModel, self.viewModelFromDelegateMethod);
+    XCTAssertEqualObjects(actionContext.viewController, self.viewController);
 }
 
 - (void)testSelectionForChildComponent
@@ -791,13 +818,19 @@
     
     [self simulateViewControllerLayoutCycle];
     
+    __block id<HUBViewModel> childComponentTargetInitialViewModel = nil;
+    
+    self.selectionAction.block = ^BOOL(id<HUBActionContext> context) {
+        childComponentTargetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:childComponentTargetURL];
+        return YES;
+    };
+    
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
     id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
     [childDelegate component:component childSelectedAtIndex:0];
     
-    id<HUBViewModel> const childComponentTargetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:childComponentTargetURL];
     XCTAssertEqualObjects(childComponentTargetInitialViewModel.identifier, childComponentInitialViewModelIdentifier);
     
     // Make sure bounds-checking is performed for child component index
@@ -807,15 +840,18 @@
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].target.URI, childComponentTargetURL);
     
     // Test custom selection handling
-    self.componentSelectionHandler.handlesSelection = YES;
+    self.actionHandler.block = ^(id<HUBActionContext> context) {
+        return YES;
+    };
+    
     [childDelegate component:component childSelectedAtIndex:0];
-    XCTAssertEqual(self.componentSelectionHandler.selectionContexts.count, (NSUInteger)1);
+    XCTAssertEqual(self.actionHandler.contexts.count, (NSUInteger)1);
 
-    id<HUBComponentSelectionContext> selectionContext = self.componentSelectionHandler.selectionContexts.firstObject;
-    XCTAssertEqualObjects(selectionContext.componentModel.target.URI, childComponentTargetURL);
-    XCTAssertEqualObjects(selectionContext.viewController, self.viewController);
-    XCTAssertEqualObjects(selectionContext.viewModel, self.viewModelFromDelegateMethod);
-    XCTAssertEqualObjects(selectionContext.viewURI, self.viewURI);
+    id<HUBActionContext> actionContext = self.actionHandler.contexts.firstObject;
+    XCTAssertEqualObjects(actionContext.componentModel.target.URI, childComponentTargetURL);
+    XCTAssertEqualObjects(actionContext.viewController, self.viewController);
+    XCTAssertEqualObjects(actionContext.viewModel, self.viewModelFromDelegateMethod);
+    XCTAssertEqualObjects(actionContext.viewURI, self.viewURI);
 }
 
 - (void)testProgrammaticSelectionForRootComponent
@@ -827,9 +863,14 @@
     
     [self simulateViewControllerLayoutCycle];
     
+    self.actionHandler.block = ^(id<HUBActionContext> context) {
+        return YES;
+    };
+    
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
     XCTAssertTrue([self.viewController selectComponentWithModel:componentModel]);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod, @[componentModel]);
+    XCTAssertEqualObjects(self.actionHandler.contexts.firstObject.componentModel, componentModel);
 }
 
 - (void)testProgrammaticSelectionForChildComponent
@@ -843,9 +884,14 @@
     
     [self simulateViewControllerLayoutCycle];
     
+    self.actionHandler.block = ^(id<HUBActionContext> context) {
+        return YES;
+    };
+    
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0].children[0];
     XCTAssertTrue([self.viewController selectComponentWithModel:componentModel]);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod, @[componentModel]);
+    XCTAssertEqualObjects(self.actionHandler.contexts.firstObject.componentModel, componentModel);
 }
 
 - (void)testProgrammaticSelectionForNonSelectableComponentReturningFalse
@@ -1177,9 +1223,9 @@
     HUBComponentMock * const childComponent = [HUBComponentMock new];
 
     HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
-                                                                                                             componentName: component,
-                                                                                                             childComponentName: childComponent
-                                                                                                             }];
+        componentName: component,
+        childComponentName: childComponent
+    }];
 
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
 

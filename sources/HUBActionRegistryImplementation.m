@@ -3,6 +3,7 @@
 #import "HUBActionFactory.h"
 #import "HUBActionContext.h"
 #import "HUBIdentifier.h"
+#import "HUBSelectionAction.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,13 +15,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBActionRegistryImplementation
 
-#pragma mark - Initializer
+#pragma mark - Initializers
 
-- (instancetype)init
++ (instancetype)registryWithDefaultSelectionAction
 {
+    return [[self alloc] initWithSelectionAction:[HUBSelectionAction new]];
+}
+
+- (instancetype)initWithSelectionAction:(id<HUBAction>)selectionAction
+{
+    NSParameterAssert(selectionAction != nil);
+    
     self = [super init];
     
     if (self) {
+        _selectionAction = selectionAction;
         _actionFactories = [NSMutableDictionary new];
     }
     
@@ -29,11 +38,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (nullable id<HUBAction>)actionForContext:(id<HUBActionContext>)context
+- (nullable id<HUBAction>)createCustomActionForIdentifier:(HUBIdentifier *)identifier
 {
-    HUBIdentifier * const actionIdentifier = context.actionIdentifier;
-    id<HUBActionFactory> const factory = self.actionFactories[actionIdentifier.namespacePart];
-    return [factory createActionForName:actionIdentifier.namePart];
+    id<HUBActionFactory> const factory = self.actionFactories[identifier.namespacePart];
+    return [factory createActionForName:identifier.namePart];
 }
 
 #pragma mark - HUBActionRegistry

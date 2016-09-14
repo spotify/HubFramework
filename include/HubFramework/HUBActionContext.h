@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+#import "HUBActionTrigger.h"
+
 @protocol HUBViewModel, HUBComponentModel;
 @class HUBIdentifier;
 
@@ -15,8 +17,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBActionContext <NSObject>
 
-/// The identifier of the action that is being performed
-@property (nonatomic, strong, readonly) HUBIdentifier *actionIdentifier;
+/// The type of event that triggered the action to be performed
+@property (nonatomic, assign, readonly) HUBActionTrigger trigger;
+
+/**
+ *  The identifier of any custom action that is being performed
+ *
+ *  This property will be `nil` if this context is for the default selection action
+ */
+@property (nonatomic, strong, readonly, nullable) HUBIdentifier *customActionIdentifier;
 
 /// The URI of the view that the action is being performed in
 @property (nonatomic, copy, readonly) NSURL *viewURI;

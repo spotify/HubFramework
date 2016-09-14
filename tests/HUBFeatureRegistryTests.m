@@ -37,7 +37,7 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil
+                                   actionHandler:nil
                      viewControllerScrollHandler:nil];
     
     XCTAssertThrows([self.registry registerFeatureWithIdentifier:identifier
@@ -46,7 +46,7 @@
                                        contentOperationFactories:@[contentOperationFactory]
                                              contentReloadPolicy:nil
                                       customJSONSchemaIdentifier:nil
-                                       componentSelectionHandler:nil
+                                                   actionHandler:nil
                                      viewControllerScrollHandler:nil]);
 }
 
@@ -64,7 +64,7 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:customJSONSchemaIdentifier
-                       componentSelectionHandler:nil
+                                   actionHandler:nil
                      viewControllerScrollHandler:nil];
     
     HUBFeatureRegistration * const registration = [self.registry featureRegistrationForViewURI:rootViewURI];
@@ -89,7 +89,7 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil
+                                   actionHandler:nil
                      viewControllerScrollHandler:nil];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
@@ -110,7 +110,7 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil
+                                   actionHandler:nil
                      viewControllerScrollHandler:nil];
     
     [self.registry registerFeatureWithIdentifier:@"featureB"
@@ -119,7 +119,7 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil
+                                   actionHandler:nil
                      viewControllerScrollHandler:nil];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
@@ -139,7 +139,7 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil
+                                   actionHandler:nil
                      viewControllerScrollHandler:nil];
     
     [self.registry unregisterFeatureWithIdentifier:identifier];
@@ -151,7 +151,7 @@
                        contentOperationFactories:@[contentOperationFactory]
                              contentReloadPolicy:nil
                       customJSONSchemaIdentifier:nil
-                       componentSelectionHandler:nil
+                                   actionHandler:nil
                      viewControllerScrollHandler:nil];
 }
 
