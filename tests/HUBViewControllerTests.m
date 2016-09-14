@@ -359,7 +359,7 @@
         componentModelBuilder.componentNamespace = componentNamespace;
         componentModelBuilder.componentName = componentName;
         
-        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"];
+        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildWithIdentifier:@"child"];
         childComponentModelBuilder.componentNamespace = componentNamespace;
         childComponentModelBuilder.componentName = childComponentName;
         childComponentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
@@ -667,11 +667,11 @@
         componentModelBuilder.componentNamespace = componentNamespace;
         componentModelBuilder.componentName = componentName;
         
-        id<HUBComponentModelBuilder> const childComponentModelBuilderA = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"childA"];
+        id<HUBComponentModelBuilder> const childComponentModelBuilderA = [componentModelBuilder builderForChildWithIdentifier:@"childA"];
         childComponentModelBuilderA.componentNamespace = componentNamespace;
         childComponentModelBuilderA.componentName = childComponentName;
         
-        id<HUBComponentModelBuilder> const childComponentModelBuilderB = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"childB"];
+        id<HUBComponentModelBuilder> const childComponentModelBuilderB = [componentModelBuilder builderForChildWithIdentifier:@"childB"];
         childComponentModelBuilderB.componentNamespace = componentNamespace;
         childComponentModelBuilderB.componentName = childComponentName;
         
@@ -780,7 +780,7 @@
         componentModelBuilder.componentNamespace = componentNamespace;
         componentModelBuilder.componentName = componentName;
         
-        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"];
+        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildWithIdentifier:@"child"];
         childComponentModelBuilder.componentNamespace = componentNamespace;
         childComponentModelBuilder.componentName = childComponentName;
         childComponentModelBuilder.targetBuilder.URI = childComponentTargetURL;
@@ -836,7 +836,7 @@
 {
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const parentBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"parent"];
-        id<HUBComponentModelBuilder> const childBuilder = [parentBuilder builderForChildComponentModelWithIdentifier:@"child"];
+        id<HUBComponentModelBuilder> const childBuilder = [parentBuilder builderForChildWithIdentifier:@"child"];
         childBuilder.targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:framework"];
         return YES;
     };
@@ -944,9 +944,9 @@
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const parentComponentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"parent"];
-        [parentComponentModelBuilder builderForChildComponentModelWithIdentifier:@"childA"].componentName = @"childA";
-        [parentComponentModelBuilder builderForChildComponentModelWithIdentifier:@"childB"].componentName = @"childB";
-        [parentComponentModelBuilder builderForChildComponentModelWithIdentifier:@"childC"].componentName = @"childC";
+        [parentComponentModelBuilder builderForChildWithIdentifier:@"childA"].componentName = @"childA";
+        [parentComponentModelBuilder builderForChildWithIdentifier:@"childB"].componentName = @"childB";
+        [parentComponentModelBuilder builderForChildWithIdentifier:@"childC"].componentName = @"childC";
         return YES;
     };
     
@@ -1019,7 +1019,7 @@
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
         componentModelBuilder.title = @"Title";
-        [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"].title = @"Child title";
+        [componentModelBuilder builderForChildWithIdentifier:@"child"].title = @"Child title";
         return YES;
     };
     
@@ -1188,7 +1188,7 @@
         componentModelBuilder.componentNamespace = componentNamespace;
         componentModelBuilder.componentName = componentName;
 
-        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildComponentModelWithIdentifier:@"child"];
+        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildWithIdentifier:@"child"];
         childComponentModelBuilder.componentNamespace = componentNamespace;
         childComponentModelBuilder.componentName = childComponentName;
 

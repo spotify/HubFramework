@@ -89,11 +89,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> customDataPath;
 
 /**
- *  The path to follow to extract dictionaries to create child component models from. Maps to `childComponentModels`.
+ *  The path to follow to extract dictionaries to create child component models from. Maps to `children`.
  *
  *  The dictionaries extracted by following this path will then be parsed recursively by this schema.
  */
-@property (nonatomic, strong) id<HUBJSONDictionaryPath> childComponentModelDictionariesPath;
+@property (nonatomic, strong) id<HUBJSONDictionaryPath> childDictionariesPath;
 
 /// Create a copy of this schema, with the same paths
 - (id<HUBComponentModelJSONSchema>)copy;
