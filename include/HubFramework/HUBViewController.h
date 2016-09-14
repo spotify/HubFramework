@@ -75,11 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewController The view controller in which the component was selected
  *  @param componentModel The model of the component that was selected
- *  @param componentView The view that the component was selected in
  */
-- (void)viewController:(UIViewController<HUBViewController> *)viewController
-    componentWithModel:(id<HUBComponentModel>)componentModel
-        selectedInView:(UIView *)componentView;
+- (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
 
 @end
 

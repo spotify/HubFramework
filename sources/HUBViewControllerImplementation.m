@@ -357,8 +357,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
-  childComponentWithView:(UIView *)childComponentView
-         selectedAtIndex:(NSUInteger)childIndex
+    childSelectedAtIndex:(NSUInteger)childIndex
 {
     id<HUBComponentModel> const componentModel = componentWrapper.model;
     
@@ -367,7 +366,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
-    [self handleSelectionForComponentWithModel:childComponentModel view:childComponentView cellIndexPath:nil];
+    [self handleSelectionForComponentWithModel:childComponentModel cellIndexPath:nil];
 }
 
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
@@ -428,8 +427,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
-    UICollectionViewCell * const cell = [collectionView cellForItemAtIndexPath:indexPath];
-    [self handleSelectionForComponentWithModel:componentModel view:cell cellIndexPath:indexPath];
+    [self handleSelectionForComponentWithModel:componentModel cellIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView
@@ -816,7 +814,7 @@ NS_ASSUME_NONNULL_BEGIN
                                       animated:!loadedFromCache];
 }
 
-- (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel view:(UIView *)view cellIndexPath:(nullable NSIndexPath *)cellIndexPath
+- (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel cellIndexPath:(nullable NSIndexPath *)cellIndexPath
 {
     // self.viewModel is specified as nullable, but we can safely assume it exists at this point.
     id<HUBViewModel> const viewModel = self.viewModel;
@@ -834,7 +832,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     if (selectionHandled) {
-        [self.delegate viewController:self componentWithModel:componentModel selectedInView:view];
+        [self.delegate viewController:self componentSelectedWithModel:componentModel];
     }
 }
 

@@ -795,7 +795,7 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
     id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
-    [childDelegate component:component childSelectedAtIndex:0 view:[UIView new]];
+    [childDelegate component:component childSelectedAtIndex:0];
     
     id<HUBViewModel> const childComponentTargetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:childComponentTargetURL];
     XCTAssertEqualObjects(childComponentTargetInitialViewModel.identifier, childComponentInitialViewModelIdentifier);
@@ -808,7 +808,7 @@
     
     // Test custom selection handling
     self.componentSelectionHandler.handlesSelection = YES;
-    [childDelegate component:component childSelectedAtIndex:0 view:[UIView new]];
+    [childDelegate component:component childSelectedAtIndex:0];
     XCTAssertEqual(self.componentSelectionHandler.selectionContexts.count, (NSUInteger)1);
 
     id<HUBComponentSelectionContext> selectionContext = self.componentSelectionHandler.selectionContexts.firstObject;
@@ -1439,9 +1439,7 @@
     [self.componentModelsFromDisapperanceDelegateMethod addObject:componentModel];
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController
-    componentWithModel:(id<HUBComponentModel>)componentModel
-        selectedInView:(UIView *)componentView
+- (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
 {
     XCTAssertEqual(viewController, self.viewController);
     [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];
