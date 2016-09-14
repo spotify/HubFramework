@@ -139,8 +139,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Note that this method won't actually simulate a user interaction on a component view, but rather
  *  run the exact same code that gets run whenever that happens.
+ *
+ *  @return A boolean indicating whether selection handling was performed, that is if any target URI or action
+ *          was executed as a result of the selection.
  */
-- (void)selectComponentWithModel:(id<HUBComponentModel>)componentModel;
+- (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel;
 
 @end
 

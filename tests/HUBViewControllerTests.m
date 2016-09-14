@@ -828,8 +828,7 @@
     [self simulateViewControllerLayoutCycle];
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
-    [self.viewController selectComponentWithModel:componentModel];
-    
+    XCTAssertTrue([self.viewController selectComponentWithModel:componentModel]);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod, @[componentModel]);
 }
 
@@ -845,9 +844,22 @@
     [self simulateViewControllerLayoutCycle];
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0].children[0];
-    [self.viewController selectComponentWithModel:componentModel];
-    
+    XCTAssertTrue([self.viewController selectComponentWithModel:componentModel]);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod, @[componentModel]);
+}
+
+- (void)testProgrammaticSelectionForNonSelectableComponentReturningFalse
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].title = @"Component title";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
+    XCTAssertFalse([self.viewController selectComponentWithModel:componentModel]);
+    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)0);
 }
 
 - (void)testComponentNotifiedOfResize

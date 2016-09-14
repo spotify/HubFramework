@@ -286,9 +286,9 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate viewController:self didFailToUpdateWithError:error];
 }
 
-- (void)selectComponentWithModel:(id<HUBComponentModel>)componentModel
+- (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel
 {
-    [self handleSelectionForComponentWithModel:componentModel cellIndexPath:nil];
+    return [self handleSelectionForComponentWithModel:componentModel cellIndexPath:nil];
 }
 
 #pragma mark - HUBImageLoaderDelegate
@@ -819,7 +819,7 @@ NS_ASSUME_NONNULL_BEGIN
                                       animated:!loadedFromCache];
 }
 
-- (void)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel cellIndexPath:(nullable NSIndexPath *)cellIndexPath
+- (BOOL)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel cellIndexPath:(nullable NSIndexPath *)cellIndexPath
 {
     // self.viewModel is specified as nullable, but we can safely assume it exists at this point.
     id<HUBViewModel> const viewModel = self.viewModel;
@@ -839,6 +839,8 @@ NS_ASSUME_NONNULL_BEGIN
     if (selectionHandled) {
         [self.delegate viewController:self componentSelectedWithModel:componentModel];
     }
+    
+    return selectionHandled;
 }
 
 - (nullable id<HUBComponentModel>)childModelAtIndex:(NSUInteger)childIndex fromComponentWrapper:(HUBComponentWrapper *)componentWrapper
