@@ -795,7 +795,7 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
     id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
-    [childDelegate component:component childSelectedAtIndex:0 view:[UIView new]];
+    [childDelegate component:component childSelectedAtIndex:0];
     
     id<HUBViewModel> const childComponentTargetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:childComponentTargetURL];
     XCTAssertEqualObjects(childComponentTargetInitialViewModel.identifier, childComponentInitialViewModelIdentifier);
@@ -808,7 +808,7 @@
     
     // Test custom selection handling
     self.componentSelectionHandler.handlesSelection = YES;
-    [childDelegate component:component childSelectedAtIndex:0 view:[UIView new]];
+    [childDelegate component:component childSelectedAtIndex:0];
     XCTAssertEqual(self.componentSelectionHandler.selectionContexts.count, (NSUInteger)1);
 
     id<HUBComponentSelectionContext> selectionContext = self.componentSelectionHandler.selectionContexts.firstObject;
@@ -816,6 +816,50 @@
     XCTAssertEqualObjects(selectionContext.viewController, self.viewController);
     XCTAssertEqualObjects(selectionContext.viewModel, self.viewModelFromDelegateMethod);
     XCTAssertEqualObjects(selectionContext.viewURI, self.viewURI);
+}
+
+- (void)testProgrammaticSelectionForRootComponent
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:framework"];
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
+    XCTAssertTrue([self.viewController selectComponentWithModel:componentModel]);
+    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod, @[componentModel]);
+}
+
+- (void)testProgrammaticSelectionForChildComponent
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const parentBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"parent"];
+        id<HUBComponentModelBuilder> const childBuilder = [parentBuilder builderForChildComponentModelWithIdentifier:@"child"];
+        childBuilder.targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:framework"];
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0].children[0];
+    XCTAssertTrue([self.viewController selectComponentWithModel:componentModel]);
+    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod, @[componentModel]);
+}
+
+- (void)testProgrammaticSelectionForNonSelectableComponentReturningFalse
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].title = @"Component title";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
+    XCTAssertFalse([self.viewController selectComponentWithModel:componentModel]);
+    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)0);
 }
 
 - (void)testComponentNotifiedOfResize
@@ -1439,9 +1483,7 @@
     [self.componentModelsFromDisapperanceDelegateMethod addObject:componentModel];
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController
-    componentWithModel:(id<HUBComponentModel>)componentModel
-        selectedInView:(UIView *)componentView
+- (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
 {
     XCTAssertEqual(viewController, self.viewController);
     [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];

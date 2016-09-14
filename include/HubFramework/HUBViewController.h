@@ -75,11 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewController The view controller in which the component was selected
  *  @param componentModel The model of the component that was selected
- *  @param componentView The view that the component was selected in
  */
-- (void)viewController:(UIViewController<HUBViewController> *)viewController
-    componentWithModel:(id<HUBComponentModel>)componentModel
-        selectedInView:(UIView *)componentView;
+- (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
 
 @end
 
@@ -134,6 +131,19 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param animated Defines if scrolling should be animated.
  */
 - (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
+
+/**
+ *  Perform a programmatic selection of a component with a given model
+ *
+ *  @param componentModel The model of the component to select
+ *
+ *  Note that this method won't actually simulate a user interaction on a component view, but rather
+ *  run the exact same code that gets run whenever that happens.
+ *
+ *  @return A boolean indicating whether selection handling was performed, that is if any target URI or action
+ *          was executed as a result of the selection.
+ */
+- (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel;
 
 @end
 

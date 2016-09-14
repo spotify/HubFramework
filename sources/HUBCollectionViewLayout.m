@@ -155,7 +155,7 @@ NS_ASSUME_NONNULL_BEGIN
     // No-op
 }
 
-- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex view:(UIView *)childView
+- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex
 {
     // No-op
 }

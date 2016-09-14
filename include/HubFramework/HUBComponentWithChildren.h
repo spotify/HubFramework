@@ -63,12 +63,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param component The parent component
  *  @param childIndex The index of the child component that was selected
- *  @param childView The view of the child component that was selected
  *
  *  If your component has nested child components, you should call this method every time a child component was
  *  selected by the user, to enable the Hub Framework to handle the selection.
  */
-- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex view:(UIView *)childView;
+- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex;
 
 @end
 

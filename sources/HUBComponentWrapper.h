@@ -49,12 +49,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  Notify the delegate that a child component in the wrapped component was selected
  *
  *  @param componentWrapper The wrapper of the component in which the event occured
- *  @param childComponentView The view of the child component that was selected
  *  @param childIndex The index of the child component that was selected
  */
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
-  childComponentWithView:(UIView *)childComponentView
-         selectedAtIndex:(NSUInteger)childIndex;
+    childSelectedAtIndex:(NSUInteger)childIndex;
 
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper;
 
