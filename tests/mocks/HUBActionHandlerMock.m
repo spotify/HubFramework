@@ -2,6 +2,8 @@
 
 #import "HUBActionContext.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface HUBActionHandlerMock ()
 
 @property (nonatomic, strong, readonly) NSMutableArray<id<HUBActionContext>> *mutableContexts;
@@ -42,3 +44,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
