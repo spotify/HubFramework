@@ -20,7 +20,7 @@
 @synthesize metadataPath = _metadataPath;
 @synthesize loggingDataPath = _loggingDataPath;
 @synthesize customDataPath = _customDataPath;
-@synthesize childComponentModelDictionariesPath = _childComponentModelDictionariesPath;
+@synthesize childDictionariesPath = _childDictionariesPath;
 
 - (instancetype)init
 {
@@ -44,7 +44,7 @@
                            metadataPath:[[basePath goTo:HUBJSONKeyMetadata] dictionaryPath]
                         loggingDataPath:[[basePath goTo:HUBJSONKeyLogging] dictionaryPath]
                          customDataPath:[[basePath goTo:HUBJSONKeyCustom] dictionaryPath]
-    childComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyChildren] forEach] dictionaryPath]];
+                  childDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyChildren] forEach] dictionaryPath]];
 }
 
 - (instancetype)initWithIdentifierPath:(id<HUBJSONStringPath>)identifierPath
@@ -62,7 +62,7 @@
                           metadataPath:(id<HUBJSONDictionaryPath>)metadataPath
                        loggingDataPath:(id<HUBJSONDictionaryPath>)loggingDataPath
                         customDataPath:(id<HUBJSONDictionaryPath>)customDataPath
-   childComponentModelDictionariesPath:(id<HUBJSONDictionaryPath>)childComponentModelDictionariesPath
+                 childDictionariesPath:(id<HUBJSONDictionaryPath>)childDictionariesPath
 {
     self = [super init];
     
@@ -82,7 +82,7 @@
         _metadataPath = metadataPath;
         _loggingDataPath = loggingDataPath;
         _customDataPath = customDataPath;
-        _childComponentModelDictionariesPath = childComponentModelDictionariesPath;
+        _childDictionariesPath = childDictionariesPath;
     }
     
     return self;
@@ -107,7 +107,7 @@
                                                                         metadataPath:self.metadataPath
                                                                      loggingDataPath:self.loggingDataPath
                                                                       customDataPath:self.customDataPath
-                                                 childComponentModelDictionariesPath:self.childComponentModelDictionariesPath];
+                                                               childDictionariesPath:self.childDictionariesPath];
 }
 
 @end

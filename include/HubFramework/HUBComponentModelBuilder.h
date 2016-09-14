@@ -144,14 +144,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  any `preferredIndex` set by the component model builders hasn't been resolved at this point, so those
  *  are not taken into account.
  */
-- (NSArray<id<HUBComponentModelBuilder>> *)allChildComponentModelBuilders;
+- (NSArray<id<HUBComponentModelBuilder>> *)allChildBuilders;
 
 /**
  *  Return whether this builder contains a builder for a child component model builder with a certain identifier
  *
  *  @param identifier The identifier to look for
  */
-- (BOOL)builderExistsForChildComponentModelWithIdentifier:(NSString *)identifier;
+- (BOOL)builderExistsForChildWithIdentifier:(NSString *)identifier;
 
 /**
  *  Get or create a builder for a child component model with a certain identifier
@@ -164,19 +164,19 @@ NS_ASSUME_NONNULL_BEGIN
  *  doesn't already exist, use the `-builderExistsForChildComponentModelWithIdentifier:` API instead if you simply
  *  wish to check for the existance of a builder.
  */
-- (id<HUBComponentModelBuilder>)builderForChildComponentModelWithIdentifier:(NSString *)identifier;
+- (id<HUBComponentModelBuilder>)builderForChildWithIdentifier:(NSString *)identifier;
 
 /**
  *  Remove a builder for a child component model with a certain identifier
  *
  *  @param identifier The identifier of the child component model builder to remove
  */
-- (void)removeBuilderForChildComponentModelWithIdentifier:(NSString *)identifier;
+- (void)removeBuilderForChildWithIdentifier:(NSString *)identifier;
 
 /**
  *  Remove all builders for child component models contained within this builder
  */
-- (void)removeAllChildComponentModelBuilders;
+- (void)removeAllChildBuilders;
 
 @end
 

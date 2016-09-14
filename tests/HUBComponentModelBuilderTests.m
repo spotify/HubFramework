@@ -169,23 +169,23 @@
 - (void)testCreatingChild
 {
     NSString * const childModelIdentifier = @"childModel";
-    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
+    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildWithIdentifier:childModelIdentifier];
     
     XCTAssertEqualObjects(childBuilder.modelIdentifier, childModelIdentifier);
-    XCTAssertTrue([self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier]);
+    XCTAssertTrue([self.builder builderExistsForChildWithIdentifier:childModelIdentifier]);
 }
 
 - (void)testChildComponentModelBuilderReuse
 {
     NSString * const childModelIdentifier = @"childModel";
-    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier];
+    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildWithIdentifier:childModelIdentifier];
     
-    XCTAssertEqual([self.builder builderForChildComponentModelWithIdentifier:childModelIdentifier], childBuilder);
+    XCTAssertEqual([self.builder builderForChildWithIdentifier:childModelIdentifier], childBuilder);
 }
 
 - (void)testChildTypeSameAsParent
 {
-    [self.builder builderForChildComponentModelWithIdentifier:@"id"];
+    [self.builder builderForChildWithIdentifier:@"id"];
     id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
     XCTAssertEqual(model.children[0].type, model.type);
 }
@@ -195,12 +195,12 @@
     self.builder.componentName = @"component";
     
     NSString * const childIdentifierA = @"componentA";
-    id<HUBComponentModelBuilder> const childBuilderA = [self.builder builderForChildComponentModelWithIdentifier:childIdentifierA];
+    id<HUBComponentModelBuilder> const childBuilderA = [self.builder builderForChildWithIdentifier:childIdentifierA];
     childBuilderA.preferredIndex = @1;
     childBuilderA.componentName = @"component";
     
     NSString * const childIdentifierB = @"componentB";
-    id<HUBComponentModelBuilder> const childBuilderB = [self.builder builderForChildComponentModelWithIdentifier:childIdentifierB];
+    id<HUBComponentModelBuilder> const childBuilderB = [self.builder builderForChildWithIdentifier:childIdentifierB];
     childBuilderB.preferredIndex = @0;
     childBuilderB.componentName = @"component";
     
@@ -217,7 +217,7 @@
     self.builder.componentName = @"component";
     
     NSString * const childIdentifier = @"child";
-    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildComponentModelWithIdentifier:childIdentifier];
+    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildWithIdentifier:childIdentifier];
     childBuilder.componentName = @"component";
     childBuilder.preferredIndex = @99;
 
@@ -231,26 +231,26 @@
 {
     NSString * const childIdentifier = @"child";
     
-    [self.builder builderForChildComponentModelWithIdentifier:childIdentifier].componentName = @"component";
-    XCTAssertTrue([self.builder builderExistsForChildComponentModelWithIdentifier:childIdentifier]);
+    [self.builder builderForChildWithIdentifier:childIdentifier].componentName = @"component";
+    XCTAssertTrue([self.builder builderExistsForChildWithIdentifier:childIdentifier]);
 
-    NSUInteger childBuilderCountBefore = [self.builder allChildComponentModelBuilders].count;
-    [self.builder removeBuilderForChildComponentModelWithIdentifier:childIdentifier];
-    XCTAssertFalse([self.builder builderExistsForChildComponentModelWithIdentifier:childIdentifier]);
-    XCTAssertEqual([self.builder allChildComponentModelBuilders].count, childBuilderCountBefore - 1);
+    NSUInteger childBuilderCountBefore = [self.builder allChildBuilders].count;
+    [self.builder removeBuilderForChildWithIdentifier:childIdentifier];
+    XCTAssertFalse([self.builder builderExistsForChildWithIdentifier:childIdentifier]);
+    XCTAssertEqual([self.builder allChildBuilders].count, childBuilderCountBefore - 1);
 }
 
 - (void)testRemovingAllChildComponentModelBuilders
 {
     self.builder.componentName = @"component";
     
-    [self.builder builderForChildComponentModelWithIdentifier:@"child1"].componentName = @"component";
-    [self.builder builderForChildComponentModelWithIdentifier:@"child2"].componentName = @"component";
-    [self.builder builderForChildComponentModelWithIdentifier:@"child3"].componentName = @"component";
+    [self.builder builderForChildWithIdentifier:@"child1"].componentName = @"component";
+    [self.builder builderForChildWithIdentifier:@"child2"].componentName = @"component";
+    [self.builder builderForChildWithIdentifier:@"child3"].componentName = @"component";
     
     XCTAssertEqual([self.builder buildForIndex:0 parent:nil].children.count, (NSUInteger)3);
     
-    [self.builder removeAllChildComponentModelBuilders];
+    [self.builder removeAllChildBuilders];
     
     XCTAssertEqual([self.builder buildForIndex:0 parent:nil].children.count, (NSUInteger)0);
 }
