@@ -132,6 +132,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
 
+/**
+ *  Perform a programmatic selection of a component with a given model
+ *
+ *  @param componentModel The model of the component to select
+ *
+ *  Note that this method won't actually simulate a user interaction on a component view, but rather
+ *  run the exact same code that gets run whenever that happens.
+ */
+- (void)selectComponentWithModel:(id<HUBComponentModel>)componentModel;
+
 @end
 
 NS_ASSUME_NONNULL_END

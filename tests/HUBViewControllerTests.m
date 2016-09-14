@@ -818,6 +818,38 @@
     XCTAssertEqualObjects(selectionContext.viewURI, self.viewURI);
 }
 
+- (void)testProgrammaticSelectionForRootComponent
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:framework"];
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
+    [self.viewController selectComponentWithModel:componentModel];
+    
+    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod, @[componentModel]);
+}
+
+- (void)testProgrammaticSelectionForChildComponent
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const parentBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"parent"];
+        id<HUBComponentModelBuilder> const childBuilder = [parentBuilder builderForChildComponentModelWithIdentifier:@"child"];
+        childBuilder.targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:framework"];
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0].children[0];
+    [self.viewController selectComponentWithModel:componentModel];
+    
+    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod, @[componentModel]);
+}
+
 - (void)testComponentNotifiedOfResize
 {
     self.component.isViewObserver = YES;

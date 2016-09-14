@@ -286,6 +286,11 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate viewController:self didFailToUpdateWithError:error];
 }
 
+- (void)selectComponentWithModel:(id<HUBComponentModel>)componentModel
+{
+    [self handleSelectionForComponentWithModel:componentModel cellIndexPath:nil];
+}
+
 #pragma mark - HUBImageLoaderDelegate
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache
