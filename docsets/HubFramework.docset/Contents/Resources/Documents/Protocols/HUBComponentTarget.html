@@ -117,6 +117,9 @@
             <a class="nav-group-name-link" href="../Enums.html">Enums</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/HUBActionTrigger.html">HUBActionTrigger</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/HUBComponentImageStyle.html">HUBComponentImageStyle</a>
               </li>
               <li class="nav-group-task">
@@ -136,6 +139,21 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBAction.html">HUBAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionContext.html">HUBActionContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionFactory.html">HUBActionFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionHandler.html">HUBActionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionRegistry.html">HUBActionRegistry</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponent.html">HUBComponent</a>
               </li>
@@ -177,12 +195,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBComponentSelectionContext.html">HUBComponentSelectionContext</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentShowcaseManager.html">HUBComponentShowcaseManager</a>
@@ -374,7 +386,7 @@
 
 <p>By default, this URI is opened using <code>[UIApplication openURL:]</code> when a user interacts with
   this target&rsquo;s associated component. This behavior can be overriden by implementing a custom
-  selection handler (<code><a href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a></code>) and sending it when registering a feature
+  selection handler (<code>HUBComponentSelectionHandler</code>) and sending it when registering a feature
   using <code><a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a></code>.</p>
 
                       </div>
@@ -443,13 +455,13 @@
                       <div class="abstract">
                         <p>The identifiers of any custom actions that should be performed when the target is executed</p>
 
-<p>When the user interacts with this target&rsquo;s associated component, an <code>HUBAction</code> implementation
+<p>When the user interacts with this target&rsquo;s associated component, an <code><a href="../Protocols/HUBAction.html">HUBAction</a></code> implementation
   will be resolved for each identifier in this array. Each action that was found will then be
   performed, and if it returned a successful outcome (YES), the target will be considered to be
   handled.</p>
 
 <p>You can use actions to implement custom selection behavior without having to modify the framework
-  itself, by implementing <code>HUBAction</code> and registering it through <code>HUBActionRegistry</code>. See those
+  itself, by implementing <code><a href="../Protocols/HUBAction.html">HUBAction</a></code> and registering it through <code><a href="../Protocols/HUBActionRegistry.html">HUBActionRegistry</a></code>. See those
   protocols for more information about the Action API.</p>
 
                       </div>

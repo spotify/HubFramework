@@ -117,6 +117,9 @@
             <a class="nav-group-name-link" href="../Enums.html">Enums</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/HUBActionTrigger.html">HUBActionTrigger</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/HUBComponentImageStyle.html">HUBComponentImageStyle</a>
               </li>
               <li class="nav-group-task">
@@ -136,6 +139,21 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBAction.html">HUBAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionContext.html">HUBActionContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionFactory.html">HUBActionFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionHandler.html">HUBActionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionRegistry.html">HUBActionRegistry</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponent.html">HUBComponent</a>
               </li>
@@ -177,12 +195,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBComponentSelectionContext.html">HUBComponentSelectionContext</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentShowcaseManager.html">HUBComponentShowcaseManager</a>
@@ -360,9 +372,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBFeatureRegistry(im)registerFeatureWithIdentifier:viewURIPredicate:title:contentOperationFactories:contentReloadPolicy:customJSONSchemaIdentifier:componentSelectionHandler:viewControllerScrollHandler:"></a>
-                    <a name="//apple_ref/objc/Method/-registerFeatureWithIdentifier:viewURIPredicate:title:contentOperationFactories:contentReloadPolicy:customJSONSchemaIdentifier:componentSelectionHandler:viewControllerScrollHandler:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBFeatureRegistry(im)registerFeatureWithIdentifier:viewURIPredicate:title:contentOperationFactories:contentReloadPolicy:customJSONSchemaIdentifier:componentSelectionHandler:viewControllerScrollHandler:">-registerFeatureWithIdentifier:viewURIPredicate:title:contentOperationFactories:contentReloadPolicy:customJSONSchemaIdentifier:componentSelectionHandler:viewControllerScrollHandler:</a>
+                    <a name="/c:objc(pl)HUBFeatureRegistry(im)registerFeatureWithIdentifier:viewURIPredicate:title:contentOperationFactories:contentReloadPolicy:customJSONSchemaIdentifier:actionHandler:viewControllerScrollHandler:"></a>
+                    <a name="//apple_ref/objc/Method/-registerFeatureWithIdentifier:viewURIPredicate:title:contentOperationFactories:contentReloadPolicy:customJSONSchemaIdentifier:actionHandler:viewControllerScrollHandler:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBFeatureRegistry(im)registerFeatureWithIdentifier:viewURIPredicate:title:contentOperationFactories:contentReloadPolicy:customJSONSchemaIdentifier:actionHandler:viewControllerScrollHandler:">-registerFeatureWithIdentifier:viewURIPredicate:title:contentOperationFactories:contentReloadPolicy:customJSONSchemaIdentifier:actionHandler:viewControllerScrollHandler:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -390,8 +402,7 @@
           <span class="n">contentReloadPolicy</span><span class="o">:</span>
               <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a></span><span class="o">&gt;</span><span class="p">)</span><span class="n">contentReloadPolicy</span>
    <span class="n">customJSONSchemaIdentifier</span><span class="o">:</span><span class="p">(</span><span class="n">nullable</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">customJSONSchemaIdentifier</span>
-    <span class="n">componentSelectionHandler</span><span class="o">:</span>
-        <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a></span><span class="o">&gt;</span><span class="p">)</span><span class="n">componentSelectionHandler</span>
+                <span class="n">actionHandler</span><span class="o">:</span><span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBActionHandler.html">HUBActionHandler</a></span><span class="o">&gt;</span><span class="p">)</span><span class="n">actionHandler</span>
   <span class="n">viewControllerScrollHandler</span><span class="o">:</span>
       <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewControllerScrollHandler.html">HUBViewControllerScrollHandler</a></span><span class="o">&gt;</span><span class="p">)</span><span class="n">viewControllerScrollHandler</span><span class="p">;</span></code></pre>
 
@@ -491,13 +502,14 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>componentSelectionHandler</em>
+                                <em>actionHandler</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>Any custom selection handler to use to handle component selection events. This can be
-        used to override the default <q>open target URL</q> selection handling. See <code>HUBComponentSelectionHandler</code> for more info.</p>
+                                  <p>Any custom action handler that should be used for the feature. If <code>nil</code>, any default action handler
+        for this instance of the Hub Framework will be used. Action handlers can be used to run custom code instead of
+        performing actions. See <code>HUBActionHandler</code> for more info.</p>
 
                                 </div>
                               </td>

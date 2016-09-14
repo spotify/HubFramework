@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>HUBComponentSelectionContext Protocol Reference</title>
+    <title>HUBActionHandler Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Protocol/HUBComponentSelectionContext" class="dashAnchor"></a>
+    <a name="//apple_ref/objc/Protocol/HUBActionHandler" class="dashAnchor"></a>
 
-    <a title="HUBComponentSelectionContext Protocol Reference"></a>
+    <a title="HUBActionHandler Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -41,7 +41,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">HubFramework Reference</a>
       <img class="carat" src="../img/carat.png" />
-      HUBComponentSelectionContext Protocol Reference
+      HUBActionHandler Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -117,6 +117,9 @@
             <a class="nav-group-name-link" href="../Enums.html">Enums</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/HUBActionTrigger.html">HUBActionTrigger</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/HUBComponentImageStyle.html">HUBComponentImageStyle</a>
               </li>
               <li class="nav-group-task">
@@ -136,6 +139,21 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBAction.html">HUBAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionContext.html">HUBActionContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionFactory.html">HUBActionFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionHandler.html">HUBActionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionRegistry.html">HUBActionRegistry</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponent.html">HUBComponent</a>
               </li>
@@ -177,12 +195,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBComponentSelectionContext.html">HUBComponentSelectionContext</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentShowcaseManager.html">HUBComponentShowcaseManager</a>
@@ -338,18 +350,22 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>HUBComponentSelectionContext</h1>
+            <h1>HUBActionHandler</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentSelectionContext</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBActionHandler</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
-            <p>Protocol representing a context in which a selection occurred</p>
+            <p>Protocol used to define Hub Framework action handlers</p>
 
-<p>The Hub Framework will send an object conforming to this protocol to any
- <code><a href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a></code> registered for the feature in which a
- selection occured.</p>
+<p>An action handler is an object that optionally takes over the handling of an action,
+  preventing that action from executing as it normally would. This enables you to customize
+  what will happen for certain actions, including selection and other events.</p>
+
+<p>Each feature can supply each own action handler when it&rsquo;s being setup with <code><a href="../Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a></code>.
+  A default action handler to be used system-wide can also be supplied when setting up this
+  application&rsquo;s <code><a href="../Classes/HUBManager.html">HUBManager</a></code>.</p>
 
           </div>
         </section>
@@ -361,9 +377,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentSelectionContext(py)viewURI"></a>
-                    <a name="//apple_ref/objc/Property/viewURI" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentSelectionContext(py)viewURI">viewURI</a>
+                    <a name="/c:objc(pl)HUBActionHandler(im)handleActionWithContext:"></a>
+                    <a name="//apple_ref/objc/Method/-handleActionWithContext:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBActionHandler(im)handleActionWithContext:">-handleActionWithContext:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -371,107 +387,42 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The URI of the view which the selection event occured in.</p>
+                        <p>Handle an action with a given context</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSURL</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">viewURI</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">viewURI</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span></code></pre>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">handleActionWithContext</span><span class="p">:(</span><span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBActionContext.html">HUBActionContext</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">context</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBComponentSelectionContext(py)viewModel"></a>
-                    <a name="//apple_ref/objc/Property/viewModel" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentSelectionContext(py)viewModel">viewModel</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The model of the view in which the selection event occured.</p>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The context of the action to handle</p>
 
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewModel.html">HUBViewModel</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">viewModel</span><span class="p">;</span></code></pre>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A boolean indicating whether the action was handled. If <code>YES</code> is returned, the action
+         will be considered handled, and it won&rsquo;t be executed.</p>
 
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBComponentSelectionContext(py)componentModel"></a>
-                    <a name="//apple_ref/objc/Property/componentModel" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentSelectionContext(py)componentModel">componentModel</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The model of the component that was selected.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">componentModel</span><span class="p">;</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(pl)HUBComponentSelectionContext(py)viewController"></a>
-                    <a name="//apple_ref/objc/Property/viewController" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentSelectionContext(py)viewController">viewController</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The view controller that the selection event occured in</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">UIViewController</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">viewController</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>

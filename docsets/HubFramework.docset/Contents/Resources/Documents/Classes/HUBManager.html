@@ -117,6 +117,9 @@
             <a class="nav-group-name-link" href="../Enums.html">Enums</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/HUBActionTrigger.html">HUBActionTrigger</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/HUBComponentImageStyle.html">HUBComponentImageStyle</a>
               </li>
               <li class="nav-group-task">
@@ -136,6 +139,21 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBAction.html">HUBAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionContext.html">HUBActionContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionFactory.html">HUBActionFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionHandler.html">HUBActionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionRegistry.html">HUBActionRegistry</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponent.html">HUBComponent</a>
               </li>
@@ -177,12 +195,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentRegistry.html">HUBComponentRegistry</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBComponentSelectionContext.html">HUBComponentSelectionContext</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBComponentSelectionHandler.html">HUBComponentSelectionHandler</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentShowcaseManager.html">HUBComponentShowcaseManager</a>
@@ -427,7 +439,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The registry used to register actions with the framework. See the documentation for <code>HUBActionRegistry</code> for more info.</p>
+                        <p>The registry used to register actions with the framework. See the documentation for <code><a href="../Protocols/HUBActionRegistry.html">HUBActionRegistry</a></code> for more info.</p>
 
                       </div>
                       <div class="declaration">
@@ -435,7 +447,7 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBActionRegistry</span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">actionRegistry</span><span class="p">;</span></code></pre>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBActionRegistry.html">HUBActionRegistry</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">actionRegistry</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -557,9 +569,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)HUBManager(im)initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:"></a>
-                    <a name="//apple_ref/objc/Method/-initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)HUBManager(im)initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:">-initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:</a>
+                    <a name="/c:objc(cs)HUBManager(im)initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:"></a>
+                    <a name="//apple_ref/objc/Method/-initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(im)initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:">-initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -585,6 +597,8 @@
                    <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBImageLoaderFactory.html">HUBImageLoaderFactory</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">imageLoaderFactory</span>
                 <span class="nf">iconImageResolver</span><span class="p">:</span>
                     <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBIconImageResolver.html">HUBIconImageResolver</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">iconImageResolver</span>
+             <span class="nf">defaultActionHandler</span><span class="p">:</span>
+                 <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBActionHandler.html">HUBActionHandler</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">defaultActionHandler</span>
        <span class="nf">defaultContentReloadPolicy</span><span class="p">:</span>
            <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">defaultContentReloadPolicy</span>
  <span class="nf">prependedContentOperationFactory</span><span class="p">:</span>
@@ -663,6 +677,20 @@
                                 <div>
                                   <p>Any object responsible for converting icons into renderable images. If nil, this instance of
         the Hub Framework won&rsquo;t support icons. See <code>HUBIconImageResolver</code> for more information.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>defaultActionHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any default action handler to use for features that do not define their own. An action handler
+        enables execution of custom code instead of performing an action. See <code>HUBActionHandler</code> for more information.</p>
 
                                 </div>
                               </td>
