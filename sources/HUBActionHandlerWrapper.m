@@ -48,10 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)handleActionWithContext:(id<HUBActionContext>)context
 {
-    if ([self.actionHandler handleActionWithContext:context]) {
-        return YES;
-    }
-    
     id<HUBComponentTarget> const target = context.componentModel.target;
     id<HUBAction> action = nil;
     
@@ -69,15 +65,21 @@ NS_ASSUME_NONNULL_BEGIN
         action = [self.actionRegistry createCustomActionForIdentifier:actionIdentifier];
     }
     
-    if (action == nil) {
-        return NO;
-    }
+    BOOL actionPerformed = NO;
     
-    BOOL const actionPerformed = [action performWithContext:context];
+    if ([self.actionHandler handleActionWithContext:context]) {
+        actionPerformed = YES;
+    } else {
+        actionPerformed = [action performWithContext:context];
+    }
     
     if (context.customActionIdentifier == nil && target.URI != nil) {
         NSURL * const targetURI = target.URI;
         [self.initialViewModelRegistry removeInitialViewModelForViewURI:targetURI];
+    }
+    
+    if (actionPerformed) {
+        [self.viewModelLoader actionPerformedWithContext:context];
     }
     
     return actionPerformed;

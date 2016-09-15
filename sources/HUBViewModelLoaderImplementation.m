@@ -3,6 +3,7 @@
 #import "HUBFeatureInfo.h"
 #import "HUBConnectivityStateResolver.h"
 #import "HUBContentOperationWithInitialContent.h"
+#import "HUBContentOperationActionObserver.h"
 #import "HUBContentReloadPolicy.h"
 #import "HUBJSONSchema.h"
 #import "HUBViewModelBuilderImplementation.h"
@@ -36,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize delegate = _delegate;
 
-#pragma mark - Public API
+#pragma mark - Lifecycle
 
 - (instancetype)initWithViewURI:(NSURL *)viewURI
                     featureInfo:(id<HUBFeatureInfo>)featureInfo
@@ -81,6 +82,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)dealloc
 {
     [_connectivityStateResolver removeObserver:self];
+}
+
+#pragma mark - Public API
+
+- (void)actionPerformedWithContext:(id<HUBActionContext>)context
+{
+    for (id<HUBContentOperation> const operation in self.contentOperations) {
+        if (![operation conformsToProtocol:@protocol(HUBContentOperationActionObserver)]) {
+            continue;
+        }
+        
+        [(id<HUBContentOperationActionObserver>)operation actionPerformedWithContext:context
+                                                                             viewURI:self.viewURI
+                                                                         featureInfo:self.featureInfo
+                                                                   connectivityState:self.connectivityState];
+    }
 }
 
 #pragma mark - HUBViewModelLoader

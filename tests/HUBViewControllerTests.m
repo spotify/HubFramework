@@ -1493,6 +1493,68 @@
     XCTAssertEqual(visibleViews[@2], componentC.view);
 }
 
+- (void)testContentOperationNotifiedOfSelectionAction
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"A"].title = @"A";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    __block id<HUBActionContext> actionContext = nil;
+    
+    self.actionHandler.block = ^(id<HUBActionContext> context) {
+        actionContext = context;
+        return YES;
+    };
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    [self.collectionView.delegate collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+    
+    XCTAssertEqual(self.contentOperation.actionContext, actionContext);
+}
+
+- (void)testPerformingActionFromComponent
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"A"].title = @"A";
+        return YES;
+    };
+    
+    __block id<HUBActionContext> actionContext = nil;
+    
+    HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"component" name:@"action"];
+    
+    HUBActionMock * const action = [[HUBActionMock alloc] initWithBlock:^BOOL(id<HUBActionContext> context) {
+        actionContext = context;
+        return YES;
+    }];
+    
+    HUBActionFactoryMock * const actionFactory = [[HUBActionFactoryMock alloc] initWithActions:@{
+        actionIdentifier.namePart: action
+    }];
+    
+    [self.actionRegistry registerActionFactory:actionFactory forNamespace:actionIdentifier.namespacePart];
+    
+    self.actionHandler.block = ^(id<HUBActionContext> context) {
+        return NO;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
+    BOOL const actionOutcome = [self.component.actionDelegate component:self.component performActionWithIdentifier:actionIdentifier];
+    
+    XCTAssertTrue(actionOutcome);
+    XCTAssertEqualObjects(actionContext.componentModel.identifier, @"A");
+    XCTAssertEqual(actionContext.trigger, HUBActionTriggerComponent);
+    XCTAssertEqualObjects(self.actionHandler.contexts, @[actionContext]);
+    XCTAssertEqual(self.contentOperation.actionContext, actionContext);
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
