@@ -37,6 +37,13 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize customData = _customData;
 @synthesize parent = _parent;
 
+#pragma mark - HUBAutoEquatable
+
++ (nullable NSSet<NSString *> *)ignoredAutoEquatablePropertyNames
+{
+    return [NSSet setWithObject:NSStringFromSelector(@selector(parent))];
+}
+
 #pragma mark - Initializer
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
