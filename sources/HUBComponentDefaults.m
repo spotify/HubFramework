@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithComponentNamespace:(NSString *)componentNamespace
                              componentName:(NSString *)componentName
-                         componentCategory:(HUBComponentCategory *)componentCategory
+                         componentCategory:(HUBComponentCategory)componentCategory
 {
     NSParameterAssert(componentNamespace != nil);
     NSParameterAssert(componentName != nil);

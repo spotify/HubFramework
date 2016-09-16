@@ -10,19 +10,19 @@
  *  behavior, but still contain enough information for a `HUBComponentFallbackHandler` to create appropriate fallback
  *  components based on them.
  */
-typedef NSObject<NSCopying, NSCoding> HUBComponentCategory;
+typedef NSString * HUBComponentCategory NS_EXTENSIBLE_STRING_ENUM;
 
 /// Category for components that have a header-like appearance, usually used for header components
-static HUBComponentCategory * const HUBComponentCategoryHeader = @"header";
+static HUBComponentCategory const HUBComponentCategoryHeader = @"header";
 
 /// Category for components that have a row-like appearance, with a full screen width and a compact height
-static HUBComponentCategory * const HUBComponentCategoryRow = @"row";
+static HUBComponentCategory const HUBComponentCategoryRow = @"row";
 
 /// Category for components that have a card-like appearance, that are placable in a grid with compact width & height
-static HUBComponentCategory * const HUBComponentCategoryCard = @"card";
+static HUBComponentCategory const HUBComponentCategoryCard = @"card";
 
 /// Category for components that have a carousel-like apperance, with a swipeable horizontal set of child components
-static HUBComponentCategory * const HUBComponentCategoryCarousel = @"carousel";
+static HUBComponentCategory const HUBComponentCategoryCarousel = @"carousel";
 
 /// Category for components that have a banner-like appearance, imagery-heavy with a full screen width and compact height
-static HUBComponentCategory * const HUBComponentCategoryBanner = @"banner";
+static HUBComponentCategory const HUBComponentCategoryBanner = @"banner";

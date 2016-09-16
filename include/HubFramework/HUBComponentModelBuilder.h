@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  model's `componentNamespace`/`componentName` combo - so that a fallback component may be created with similar
  *  visuals as the originally intended component.
  */
-@property (nonatomic, copy) HUBComponentCategory *componentCategory;
+@property (nonatomic, copy) HUBComponentCategory componentCategory;
 
 #pragma mark - Text
 
