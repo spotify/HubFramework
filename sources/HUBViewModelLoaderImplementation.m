@@ -27,9 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, nullable) id<HUBViewModel> cachedInitialViewModel;
 @property (nonatomic, strong, nullable) id<HUBViewModel> previouslyLoadedViewModel;
-@property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *currentBuilder;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBViewModelBuilderImplementation *> *builderSnapshots;
-@property (nonatomic, strong, nullable) NSError *encounteredError;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, NSError *> *errorSnapshots;
+@property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *currentBuilder;
+@property (nonatomic, strong, nullable) NSError *currentError;
 
 @end
 
@@ -72,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
         _iconImageResolver = iconImageResolver;
         _cachedInitialViewModel = initialViewModel;
         _builderSnapshots = [NSMutableDictionary new];
+        _errorSnapshots = [NSMutableDictionary new];
         
         [connectivityStateResolver addObserver:self];
     }
@@ -143,13 +145,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)contentOperationWrapperDidFinish:(HUBContentOperationWrapper *)operationWrapper
 {
-    self.encounteredError = nil;
+    self.currentError = nil;
     [self performFirstContentOperationInQueueAfterFinishingOperation:operationWrapper];
 }
 
 - (void)contentOperationWrapper:(HUBContentOperationWrapper *)operationWrapper didFailWithError:(NSError *)error
 {
-    self.encounteredError = error;
+    self.currentError = error;
     [self performFirstContentOperationInQueueAfterFinishingOperation:operationWrapper];
 }
 
@@ -184,6 +186,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (previouslyExecutedOperation.index == index - 1) {
             NSAssert(self.currentBuilder != nil, @"Unexpected nil view model builder in ongoing content loading chain");
             self.builderSnapshots[@(index)] = [self.currentBuilder copy];
+            self.errorSnapshots[@(index)] = self.currentError;
             
             HUBViewModelBuilderImplementation * const copiedBuilder = [self.currentBuilder copy];
             return copiedBuilder;
@@ -248,21 +251,23 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.currentBuilder = builder;
     
+    NSError * const previousError = self.errorSnapshots[@(operation.index)];
+    
     [operation performOperationForViewURI:self.viewURI
                               featureInfo:self.featureInfo
                         connectivityState:self.connectivityState
                          viewModelBuilder:builder
-                            previousError:self.encounteredError];
+                            previousError:previousError];
 }
 
 - (void)contentOperationQueueDidBecomeEmpty
 {
     id<HUBViewModelLoaderDelegate> const delegate = self.delegate;
     
-    if (self.encounteredError != nil) {
-        NSError * const error = self.encounteredError;
+    if (self.currentError != nil) {
+        NSError * const error = self.currentError;
         [delegate viewModelLoader:self didFailLoadingWithError:error];
-        self.encounteredError = nil;
+        self.currentError = nil;
         return;
     }
     
