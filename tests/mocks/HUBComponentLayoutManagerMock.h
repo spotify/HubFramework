@@ -4,18 +4,18 @@
 @interface HUBComponentLayoutManagerMock : NSObject <HUBComponentLayoutManager>
 
 /// Map of content edge margins to use (for all edges) for a set of layout traits
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSSet<HUBComponentLayoutTrait *> *, NSNumber *> *contentEdgeMarginsForLayoutTraits;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSSet<HUBComponentLayoutTrait> *, NSNumber *> *contentEdgeMarginsForLayoutTraits;
 
 /// Map of header margins to use for a set of layout traits
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSSet<HUBComponentLayoutTrait *> *, NSNumber *> *headerMarginsForLayoutTraits;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSSet<HUBComponentLayoutTrait> *, NSNumber *> *headerMarginsForLayoutTraits;
 
 /// Map of horizontal component margins to use for a set of layout traits
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSSet<HUBComponentLayoutTrait *> *, NSNumber *> *horizontalComponentMarginsForLayoutTraits;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSSet<HUBComponentLayoutTrait> *, NSNumber *> *horizontalComponentMarginsForLayoutTraits;
 
 /// Map of vertical component margins to use for a set of layout traits
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSSet<HUBComponentLayoutTrait *> *, NSNumber *> *verticalComponentMarginsForLayoutTraits;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSSet<HUBComponentLayoutTrait> *, NSNumber *> *verticalComponentMarginsForLayoutTraits;
 
 /// Map of horizontal component offsets to use for an array of sets of layout traits
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSArray<NSSet<HUBComponentLayoutTrait *> *> *, NSNumber *> *horizontalComponentOffsetsForArrayOfLayoutTraits;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSArray<NSSet<HUBComponentLayoutTrait> *> *, NSNumber *> *horizontalComponentOffsetsForArrayOfLayoutTraits;
 
 @end

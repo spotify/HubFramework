@@ -15,18 +15,18 @@ NS_ASSUME_NONNULL_BEGIN
  *  Ideally, a layout trait should be generic enough to apply to a broad range of components, but still contain enough
  *  information for a `HUBComponentLayoutManager` to make correct decisions based on them.
  */
-typedef NSObject HUBComponentLayoutTrait;
+typedef NSString * HUBComponentLayoutTrait NS_EXTENSIBLE_STRING_ENUM;
 
 /// Layout trait for components which width does not fill the screen and is considered compact
-static HUBComponentLayoutTrait * const HUBComponentLayoutTraitCompactWidth = @"compactWidth";
+static HUBComponentLayoutTrait const HUBComponentLayoutTraitCompactWidth = @"compactWidth";
 
 /// Layout trait for components which width fills the screen
-static HUBComponentLayoutTrait * const HUBComponentLayoutTraitFullWidth = @"fullWidth";
+static HUBComponentLayoutTrait const HUBComponentLayoutTraitFullWidth = @"fullWidth";
 
 /// Layout trait for components which are stackable on top of each other, without any margin in between
-static HUBComponentLayoutTrait * const HUBComponentLayoutTraitStackable = @"stackable";
+static HUBComponentLayoutTrait const HUBComponentLayoutTraitStackable = @"stackable";
 
 /// Layout trait for components which should be presented on rows which have equal left and right margins
-static HUBComponentLayoutTrait * const HUBComponentLayoutTraitCentered = @"centered";
+static HUBComponentLayoutTrait const HUBComponentLayoutTraitCentered = @"centered";
 
 NS_ASSUME_NONNULL_END

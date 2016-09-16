@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  For more information, see `HUBComponentLayoutTrait`.
  */
-@property (nonatomic, strong, readonly) NSSet<HUBComponentLayoutTrait *> *layoutTraits;
+@property (nonatomic, strong, readonly) NSSet<HUBComponentLayoutTrait> *layoutTraits;
 
 #pragma mark - Managing the View
 

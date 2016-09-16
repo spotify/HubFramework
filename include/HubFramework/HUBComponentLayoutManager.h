@@ -40,7 +40,7 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
  *  This method will be called by the Hub Framework when a component is about to be placed close to a content edge.
  *  See `HUBComponentLayoutTrait` and `HUBComponentLayoutContentEdge` for more information.
  */
-- (CGFloat)marginBetweenComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
+- (CGFloat)marginBetweenComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
                                    andContentEdge:(HUBComponentLayoutContentEdge)contentEdge;
 
 /**
@@ -52,8 +52,8 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
  *  This method will be called by the Hub Framework when a component is about to be placed on the first row below a header
  *  component. See `HUBComponentLayoutTrait` for more information.
  */
-- (CGFloat)verticalMarginBetweenComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
-                       andHeaderComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)headerLayoutTraits;
+- (CGFloat)verticalMarginBetweenComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
+                       andHeaderComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait> *)headerLayoutTraits;
 
 /**
  *  Return the horizontal margin to use between two body components
@@ -64,8 +64,8 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
  *  The Hub Framework will only call this method once for a given component pair, so the returned value should be the absolute
  *  margin between the components, rather than a half value. See `HUBComponentLayoutTrait` for more information.
  */
-- (CGFloat)horizontalMarginForComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
-                         precedingComponentLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)precedingComponentLayoutTraits;
+- (CGFloat)horizontalMarginForComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
+                         precedingComponentLayoutTraits:(NSSet<HUBComponentLayoutTrait> *)precedingComponentLayoutTraits;
 
 /**
  *  Return the vertical margin to use between two body components
@@ -76,8 +76,8 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
  *  The Hub Framework will only call this method once for a given component pair, so the returned value should be the absolute
  *  margin between the components, rather than a half value. See `HUBComponentLayoutTrait` for more information.
  */
-- (CGFloat)verticalMarginForComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)layoutTraits
-                       precedingComponentLayoutTraits:(NSSet<HUBComponentLayoutTrait *> *)precedingComponentLayoutTraits;
+- (CGFloat)verticalMarginForComponentWithLayoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
+                       precedingComponentLayoutTraits:(NSSet<HUBComponentLayoutTrait> *)precedingComponentLayoutTraits;
 
 /**
  *  Calculate the horizontal offset for the provided components represented by their layout traits
@@ -88,7 +88,7 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
  *
  *  @return The value by which the horizontal origins of all components should be adjusted
  */
-- (CGFloat)horizontalOffsetForComponentsWithLayoutTraits:(NSArray<NSSet<HUBComponentLayoutTrait *> *> *)componentsTraits
+- (CGFloat)horizontalOffsetForComponentsWithLayoutTraits:(NSArray<NSSet<HUBComponentLayoutTrait> *> *)componentsTraits
                    firstComponentLeadingHorizontalOffset:(CGFloat)firstComponentLeadingOffsetX
                    lastComponentTrailingHorizontalOffset:(CGFloat)lastComponentTrailingOffsetX;
 @end
