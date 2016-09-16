@@ -411,6 +411,46 @@
     XCTAssertEqual(contentOperationC.performCount, (NSUInteger)4);
 }
 
+- (void)testErrorSnapshotting
+{
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationC = [HUBContentOperationMock new];
+    
+    NSError * const errorA = [NSError errorWithDomain:@"A" code:9 userInfo:nil];
+    contentOperationA.error = errorA;
+    
+    NSError * const errorB = [NSError errorWithDomain:@"B" code:9 userInfo:nil];
+    contentOperationB.error = errorB;
+    
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB, contentOperationC]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    
+    XCTAssertEqualObjects(contentOperationB.previousContentOperationError, errorA);
+    XCTAssertEqualObjects(contentOperationC.previousContentOperationError, errorB);
+    
+    [contentOperationB.delegate contentOperationRequiresRescheduling:contentOperationB];
+    
+    XCTAssertEqualObjects(contentOperationB.previousContentOperationError, errorA);
+    XCTAssertEqualObjects(contentOperationC.previousContentOperationError, errorB);
+    
+    [contentOperationC.delegate contentOperationRequiresRescheduling:contentOperationC];
+    
+    XCTAssertEqualObjects(contentOperationC.previousContentOperationError, errorB);
+    
+    contentOperationA.error = nil;
+    contentOperationB.error = nil;
+    
+    [contentOperationA.delegate contentOperationRequiresRescheduling:contentOperationA];
+    
+    XCTAssertNil(contentOperationA.previousContentOperationError);
+    XCTAssertNil(contentOperationB.previousContentOperationError);
+    XCTAssertNil(contentOperationC.previousContentOperationError);
+}
+
 - (void)testContentOperationRescheduling
 {
     HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
