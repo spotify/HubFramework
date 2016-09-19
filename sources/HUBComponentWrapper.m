@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponent
 
-- (NSSet<HUBComponentLayoutTrait *> *)layoutTraits
+- (NSSet<HUBComponentLayoutTrait> *)layoutTraits
 {
     return self.component.layoutTraits;
 }

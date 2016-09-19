@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
     for (NSUInteger componentIndex = 0; componentIndex < allComponentsCount; componentIndex++) {
         id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[componentIndex];
         id<HUBComponent> const component = [self componentForModel:componentModel];
-        NSSet<HUBComponentLayoutTrait *> * const componentLayoutTraits = component.layoutTraits;
+        NSSet<HUBComponentLayoutTrait> * const componentLayoutTraits = component.layoutTraits;
         BOOL isLastComponent = (componentIndex == allComponentsCount - 1);
 
         CGRect componentViewFrame = [self defaultViewFrameForComponent:component
@@ -230,7 +230,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 isInTopRow:(BOOL)componentIsInTopRow
                     componentsOnCurrentRow:(NSArray<id<HUBComponent>> *)componentsOnCurrentRow
 {
-    NSSet<HUBComponentLayoutTrait *> * const componentLayoutTraits = component.layoutTraits;
+    NSSet<HUBComponentLayoutTrait> * const componentLayoutTraits = component.layoutTraits;
     UIEdgeInsets margins = UIEdgeInsetsZero;
     
     if (componentIsInTopRow) {
@@ -328,7 +328,7 @@ NS_ASSUME_NONNULL_BEGIN
                                      lastComponentX:(CGFloat)lastComponentX
                                            rowWidth:(CGFloat)rowWidth
 {
-    NSArray<NSSet<HUBComponentLayoutTrait *> *> *componentsTraits = [components valueForKey:NSStringFromSelector(@selector(layoutTraits))];
+    NSArray<NSSet<HUBComponentLayoutTrait> *> *componentsTraits = [components valueForKey:NSStringFromSelector(@selector(layoutTraits))];
     CGFloat adjustment = [self.componentLayoutManager horizontalOffsetForComponentsWithLayoutTraits:componentsTraits
                                                               firstComponentLeadingHorizontalOffset:firstComponentX
                                                               lastComponentTrailingHorizontalOffset:rowWidth - lastComponentX];

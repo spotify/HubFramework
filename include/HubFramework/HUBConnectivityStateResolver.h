@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The connectivity state resolver should not retain the observer. Instead, it should just keep a weak
  *  reference to it, and call it whenever the connectivity state was changed.
  */
-- (void)addObserver:(id<HUBConnectivityStateResolverObserver>)observer;
+- (void)addObserver:(id<HUBConnectivityStateResolverObserver>)observer NS_SWIFT_NAME(add(observer:));
 
 /**
  *  Remove an observer from the connectivity state resolver
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  The connectivity state resolver should immediately remove the observer.
  */
-- (void)removeObserver:(id<HUBConnectivityStateResolverObserver>)observer;
+- (void)removeObserver:(id<HUBConnectivityStateResolverObserver>)observer NS_SWIFT_NAME(remove(observer:));
 
 @end
 

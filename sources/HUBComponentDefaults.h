@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *componentName;
 
 /// The default component category that all component model builders will initially have
-@property (nonatomic, copy, readonly) HUBComponentCategory *componentCategory;
+@property (nonatomic, copy, readonly) HUBComponentCategory componentCategory;
 
 /**
  *  Initialize an instance of this class with its required values
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithComponentNamespace:(NSString *)componentNamespace
                              componentName:(NSString *)componentName
-                         componentCategory:(HUBComponentCategory *)componentCategory HUB_DESIGNATED_INITIALIZER;
+                         componentCategory:(HUBComponentCategory)componentCategory HUB_DESIGNATED_INITIALIZER;
 
 @end
 

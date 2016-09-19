@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 >
 
 /// The layout traits the component should act like it's having
-@property (nonatomic, strong) NSMutableSet<HUBComponentLayoutTrait *> *layoutTraits;
+@property (nonatomic, strong) NSMutableSet<HUBComponentLayoutTrait> *layoutTraits;
 
 /// The size that the component should return as its preferred view size
 @property (nonatomic) CGSize preferredViewSize;

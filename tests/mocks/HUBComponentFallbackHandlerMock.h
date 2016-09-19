@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The mock will stat returning the given component every time it's asked to create a fallback component for
  *  the given category.
  */
-- (void)addFallbackComponent:(id<HUBComponent>)component forCategory:(HUBComponentCategory *)category;
+- (void)addFallbackComponent:(id<HUBComponent>)component forCategory:(HUBComponentCategory)category;
 
 @end
 

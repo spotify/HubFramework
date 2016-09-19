@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The Hub Framework uses the value of this property to create a fallback component in case no component could be
  *  created by any registered `HUBComponentFactory` for the model's `componentIdentifier`
  */
-@property (nonatomic, copy, readonly) HUBComponentCategory *componentCategory;
+@property (nonatomic, copy, readonly) HUBComponentCategory componentCategory;
 
 #pragma mark - Text
 

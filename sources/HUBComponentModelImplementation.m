@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
                               type:(HUBComponentType)type
                              index:(NSUInteger)index
                componentIdentifier:(HUBIdentifier *)componentIdentifier
-                 componentCategory:(HUBComponentCategory *)componentCategory
+                 componentCategory:(HUBComponentCategory)componentCategory
                              title:(nullable NSString *)title
                           subtitle:(nullable NSString *)subtitle
                     accessoryTitle:(nullable NSString *)accessoryTitle
