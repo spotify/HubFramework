@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import "HUBHeaderMacros.h"
 
 /**
  *  Type for objects that describe a component category to use for fallbacks using `HUBComponentFallbackHandler`
