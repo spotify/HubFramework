@@ -19,7 +19,7 @@ In this guide, we'll be building a new feature called **"Cities"**, which will u
 - [Using your new row component](#using-your-new-row-component)
 - [Adding multiple row components to the view](#adding-multiple-row-components-to-the-view)
 - [Creating an image component](#creating-an-image-component)
-- [Adding image components through JSON](#adding-image-components-through-JSON)
+- [Adding image components through JSON](#adding-image-components-through-json)
 - [The final view](#the-final-view)
 
 ## Setting up a feature
