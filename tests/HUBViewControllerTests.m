@@ -60,6 +60,8 @@
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromAppearanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromDisapperanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromSelectionDelegateMethod;
+@property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
+
 
 @end
 
@@ -1076,7 +1078,13 @@
     
     XCTAssertEqual(self.componentModelsFromDisapperanceDelegateMethod.count, (NSUInteger)1);
     XCTAssertEqualObjects(self.componentModelsFromDisapperanceDelegateMethod[0].title, @"Child title");
-    
+}
+
+- (void)testDelegateNotifiedWhenLayoutChanged
+{
+    XCTAssertFalse(self.didReceiveViewControllerDidFinishRendering);
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertTrue(self.didReceiveViewControllerDidFinishRendering);
 }
 
 - (void)testSavingAndRestoringHeaderComponentUIState
@@ -1573,6 +1581,12 @@
 {
     XCTAssertEqual(viewController, self.viewController);
     self.errorFromDelegateMethod = error;
+}
+
+- (void)viewControllerDidFinishRendering:(UIViewController<HUBViewController> *)viewController
+{
+    XCTAssertEqual(viewController, self.viewController);
+    self.didReceiveViewControllerDidFinishRendering = YES;
 }
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController

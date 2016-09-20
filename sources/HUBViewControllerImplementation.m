@@ -196,6 +196,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self headerAndOverlayComponentViewsWillAppear];
     
     self.viewModelHasChangedSinceLastLayoutUpdate = NO;
+    [self.delegate viewControllerDidFinishRendering:self];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
