@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewController:(UIViewController<HUBViewController> *)viewController didFailToUpdateWithError:(NSError *)error;
 
 /**
- *  Sent to a Hub Framework view controller's delegate when view has finished rendering, due to a view model update.
+ *  Sent to a Hub Framework view controller's delegate when the view finished rendering, due to a view model update.
 
  *  @param viewController The view controller that finished rendering.
  *
