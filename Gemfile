@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
 gem 'jazzy'
-gem 'rake'
+gem 'activesupport', '~> 4.0'
