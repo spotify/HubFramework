@@ -6,7 +6,7 @@ Note that this guide does not involve *setting up* the Hub Framework in your app
 
 In this guide, we'll be building a new feature called **"Cities"**, which will use row & image components to display various cities from around the world. The feature will have only one view, and we'll be building both the content and the components from scratch. The end result will look like this:
 
-<img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-final.jpg" height="300px">
+<img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-final.png" height="300px">
 
 **Table of contents**
 
@@ -162,7 +162,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
 
 You should now be able to see an empty view with the navigation bar title "Cities", like this:
 
-<img alt="Navigation bar title" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-navbar.jpg" height="300px">
+<img alt="Navigation bar title" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-navbar.png" height="300px">
 
 ## Creating a row component
 
@@ -326,7 +326,7 @@ We then need to assign the `rowBuilder` the `componentNamespace` and `componentN
 
 To see our new component in action, head back to your view like you did during the [Opening the view](#opening-the-view) section, and you should now see something like this:
 
-<img alt="City names" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-hello-world.jpg" height="300px">
+<img alt="City names" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-hello-world.png" height="300px">
 
 ## Adding multiple row components to the view
 
@@ -365,7 +365,7 @@ Everyone enjoys a good "Hello world!" moment, but it's now time for us to add so
 
 If you go back to your view now, you should see this:
 
-<img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-cities.jpg" height="300px">
+<img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-cities.png" height="300px">
 
 ## Creating an image component
 
@@ -597,7 +597,7 @@ This is what our content operation factory looks like after the update:
 
 With that, we have our final view. Open your view again and you'll now be able to see the final result:
 
-<img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-final.jpg" height="300px">
+<img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-final.png" height="300px">
 
 We hope this guide helped you gain some basic understanding of the core concepts of the Hub Framework; components & content operations. However, this only scratches the surface of what you can do with the framework - so for more information - make sure you read through all the programming guides as well as refer to the class & symbol documentation available throughout the framework.
 
