@@ -25,18 +25,18 @@ To learn more about content operations, check out the [Content programming guide
 
 ## Getting started
 
-To enable you to quickly get started using the Hub Framework, we've created a series of **programming guides** that each introduce you to different aspects of the framework.
+To enable you to quickly get started using the Hub Framework, we've created a [**getting started guide**](https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html) that will give you a step-by-step guide to building your first view using it.
+
+There are also a series of **programming guides** that each introduce you to different aspects of the framework.
 
 - [Component programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html)
 - [Content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html)
 - [Layout programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html)
 - [JSON programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/json-programming-guide.html)
-
-There’s also a short [“Hello World” video](https://www.dropbox.com/s/jhzabbfoeectdv4/hub-2.0-hello-world.mov?dl=0) _[12 minutes, 1.03 GB]_ which will guide you to creating your first HubFramework driven view.
  
 ### Documentation
 
-The HubFramework’s API is also well documented and we generate both a [documentation website](https://ghe.spotify.net/pages/iOS/HubFramework/) as well as a DocSet for the documentation app [Dash](https://kapeli.com/dash). The documentation is also written in such a way that Xcode will present it on usage.
+The Hub Framework’s API is also well documented and we generate both a [documentation website](https://ghe.spotify.net/pages/iOS/HubFramework/) as well as a DocSet for the documentation app [Dash](https://kapeli.com/dash). The documentation is also written in such a way that Xcode will present it on usage.
 
 The Dash documentation is updated automatically for you on any changes to HubFramework. Get it by subscribing to the [https://ghe.spotify.net/pages/iOS/HubFramework/docsets/HubFramework.xml](dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml) feed.
 
