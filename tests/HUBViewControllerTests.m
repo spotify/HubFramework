@@ -1575,6 +1575,11 @@
     self.errorFromDelegateMethod = error;
 }
 
+- (void)viewControllerDidFinishRendering:(UIViewController<HUBViewController> *)viewController
+{
+    XCTAssertEqual(viewController, self.viewController);
+}
+
 - (void)viewController:(UIViewController<HUBViewController> *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
       willAppearInView:(UIView *)componentView
