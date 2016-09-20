@@ -40,7 +40,6 @@ Here is a reference for the default JSON schema:
 | Key | Type | Description | Maps to |
 | --- | ---- | ----------- | ------- |
 | `id` | `String` | The identifier of the view model. Can be used for logging, or to identify the view in various delegate methods & handlers. | `identifier` |
-| `feature` | `String` | The identifier of the feature that the view belongs to (if other than what has been defined client side). Can be used for logging, or to identifier the view's feature in various delegate methods & handlers. | `featureIdentifier` |
 | `title` | `String` | The title to use for the view's navigation bar. | `navigationBarTitle` |
 | `header` | `Dictionary -> ComponentModel` | Dictionary for a component model that should be used as the view's header component. Will be parsed using the schema for component models. | `headerComponentModel` |
 | `body` | `[Dictionary] -> [ComponentModel]` | An array of dictionaries for the component models that should be used for the view's body components. Will be parsed using the schema for component models. | `bodyComponentModels` |
@@ -73,8 +72,7 @@ Here is a reference for the default JSON schema:
 | `images.main` | `Dictionary -> ComponentImageData` | The data for the component's main image, that will be displayed in the foreground of the component. Will be parsed using the schema for component image data. | `mainImageData` |
 | `images.background` | `Dictionary -> ComponentImageData` | The data for the component's background image. Will be parsed using the schema for component image data. | `backgroundImageData` |
 | `images.custom` | `{String : Dictionary -> ComponentImageData}` | A dictionary containing dictionaries for custom image data that the component may use. Each nested dictionary will be parsed using the schema for component image data. | `customImageData`. |
-| `target.uri` | `String -> URL` | Any URI that should be opened when the user interacts with the component. | `targetURL` |
-| `target.view` | `Dictionary -> ViewModel` | Any pre-loaded view model that should be used for a Hub Framework-powered view that is the destination for `targetURL`. Will be parsed using the schema for view models. | `targetInitialViewModel` |
+| `target` | `Dictionary -> ComponentTarget` | A dictionary containing target information for the component, used to handle selections. Will be parsed using the schema for component targets. | `target` |
 | `metadata` | `Dictionary` | Any application-specific metadata to associate with the component. Typically this data is not consumed by the component itself, but by application-wide systems such as playback for a media app, or photo metadata for a photo app, etc. | `metadata` |
 | `logging` | `Dictionary` | Logging information that can be used to log events that occur for the component. Each application should define what keys that are used in this dictionary. | `loggingData` |
 | `custom` | `Dictionary` | Dictionary used to provide an extension point for component authors. Each component can define which keys that it wants to use from this dictionary, enabling customization of properties that are not included as first-class properties in the component model schema. | `customData` |
@@ -84,9 +82,17 @@ Here is a reference for the default JSON schema:
 
 | Key | Type | Description | Maps to |
 | --- | ---- | ----------- | ------- |
-| `style` | `String` | The style of the image. Possible values are `rectangular` (default), `circular` and `none`. | `style` |
 | `uri` | `String` | The URI of the image. Used to download a remote image using the application's `HUBImageLoader(Factory)`. | `URL` |
 | `placeholder` | `String` | Any icon to use as a placeholder until a remote image has been downloaded. Will be resolved using the application's `HUBIconImageResolver`. | `placeholderIcon` |
+
+### Component target schema
+
+| Key | Type | Description | Maps to |
+| --- | ---- | ----------- | ------- |
+| `uri` | `String -> URI` | Any URI that should be opened when the user selects the component. | `URI` |
+| `actions` | `[String]` | The identifiers (`namespace:name`) of any actions (`HUBAction`) that should be performed when the user selects the component. | `actionIdentifiers` |
+| `view` | `Dictionary -> ViewModel` | Any pre-loaded view model that should be used for a Hub Framework-powered view that is the destination of `uri`. Will be parsed using the schema for view models. | `initialViewModel` |
+| `custom` | `Dictionary` | Any custom (free-form) data to associate with the target. | `customData` |
 
 ## Using custom JSON schemas
 
