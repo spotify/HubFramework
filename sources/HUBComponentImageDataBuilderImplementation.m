@@ -19,7 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Property synthesization
 
-@synthesize style = _style;
 @synthesize URL = _URL;
 @synthesize placeholderIconIdentifier = _placeholderIconIdentifier;
 @synthesize localImage = _localImage;
@@ -49,28 +48,16 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentImageDataJSONSchema> const imageDataSchema = self.JSONSchema.componentImageDataSchema;
     
-    self.style = HUBComponentImageStyleRectangular;
-    self.URL = [imageDataSchema.URLPath URLFromJSONDictionary:dictionary];
-    self.placeholderIconIdentifier = [imageDataSchema.placeholderIconIdentifierPath stringFromJSONDictionary:dictionary];
+    NSURL * const URL = [imageDataSchema.URLPath URLFromJSONDictionary:dictionary];
     
-    NSString * const styleString = [imageDataSchema.styleStringPath stringFromJSONDictionary:dictionary];
+    if (URL != nil) {
+        self.URL = URL;
+    }
     
-    if (styleString != nil) {
-        NSNumber * const styleNumber = imageDataSchema.styleStringMap[styleString];
-        
-        if (styleNumber != nil) {
-            NSInteger const potentialImageStyle = styleNumber.integerValue;
-            
-            switch (potentialImageStyle) {
-                case HUBComponentImageStyleNone:
-                case HUBComponentImageStyleRectangular:
-                case HUBComponentImageStyleCircular:
-                    self.style = potentialImageStyle;
-                    break;
-                default:
-                    break;
-            }
-        }
+    NSString * const placeholderIconIdentifier = [imageDataSchema.placeholderIconIdentifierPath stringFromJSONDictionary:dictionary];
+    
+    if (placeholderIconIdentifier != nil) {
+        self.placeholderIconIdentifier = placeholderIconIdentifier;
     }
 }
 
@@ -81,7 +68,6 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentImageDataBuilderImplementation * const copy = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
                                                                                                                    iconImageResolver:self.iconImageResolver];
     
-    copy.style = self.style;
     copy.URL = self.URL;
     copy.placeholderIconIdentifier = self.placeholderIconIdentifier;
     copy.localImage = self.localImage;
@@ -101,7 +87,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     return [[HUBComponentImageDataImplementation alloc] initWithIdentifier:identifier
                                                                       type:type
-                                                                     style:self.style
                                                                        URL:self.URL
                                                            placeholderIcon:placeholderIcon
                                                                 localImage:self.localImage];

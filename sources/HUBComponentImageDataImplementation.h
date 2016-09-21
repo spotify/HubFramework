@@ -6,13 +6,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- *  Return a string representation of a `HUBComponentImageStyle` value
- *
- *  @param style The image style value to convert to a string
- */
-extern NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle style);
-
 /// Concrete implementation of the `HUBComponentImageData` API
 @interface HUBComponentImageDataImplementation : HUBAutoEquatable <HUBComponentImageData>
 
@@ -21,7 +14,6 @@ extern NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle st
  *
  *  @param identifier Any identifier for the image (only non-`nil` for custom images)
  *  @param type The type of the image. See `HUBComponentImageType` for more information.
- *  @param style The style the image should be rendered in
  *  @param URL Any HTTP URL of a remote image that should be downloaded and then rendered
  *  @param placeholderIcon Any icon to use as a placeholder before a remote image has been downloaded
  *  @param localImage Any local image that should be rendered
@@ -31,7 +23,6 @@ extern NSString *HUBComponentImageStyleStringFromStyle(HUBComponentImageStyle st
  */
 - (instancetype)initWithIdentifier:(nullable NSString *)identifier
                               type:(HUBComponentImageType)type
-                             style:(HUBComponentImageStyle)style
                                URL:(nullable NSURL *)URL
                    placeholderIcon:(nullable id<HUBIcon>)placeholderIcon
                         localImage:(nullable UIImage *)localImage HUB_DESIGNATED_INITIALIZER;

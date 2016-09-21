@@ -5,16 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Enum describing various styles that an image can be rendered in
-typedef NS_ENUM(NSInteger, HUBComponentImageStyle) {
-    /// No image should be rendered
-    HUBComponentImageStyleNone,
-    /// The image should be rendered in a rectangular shape
-    HUBComponentImageStyleRectangular,
-    /// The image should be rendered in a circular shape
-    HUBComponentImageStyleCircular
-};
-
 /// Enum describing various types of component images
 typedef NS_ENUM(NSInteger, HUBComponentImageType) {
     /// The main image of a component. See `HUBComponentModel.mainImageData` for more information.
@@ -48,15 +38,6 @@ typedef NS_ENUM(NSInteger, HUBComponentImageType) {
  *  image. See `HUBComponentImageType` for more information.
  */
 @property (nonatomic, readonly) HUBComponentImageType type;
-
-/**
- *  The style that the image should be rendered in
- *
- *  If `HUBComponentImageStyleNone`, that indicates to a component that no image should actually be rendered. This might
- *  be the case when you want to use an image for another purpose than rendering in a component (such as providing it to an
- *  external data API user). See `HUBComponentImageStyle` for more information.
- */
-@property (nonatomic, readonly) HUBComponentImageStyle style;
 
 /**
  *  Any HTTP URL of a remote image that should be downloaded and then rendered

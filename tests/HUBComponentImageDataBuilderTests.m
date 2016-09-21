@@ -35,7 +35,6 @@
 
 - (void)testPropertyAssignment
 {
-    self.builder.style = HUBComponentImageStyleCircular;
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
     self.builder.localImage = [UIImage new];
     self.builder.placeholderIconIdentifier = @"placeholder";
@@ -47,7 +46,6 @@
     
     XCTAssertEqual(imageData.identifier, identifier);
     XCTAssertEqual(imageData.type, type);
-    XCTAssertEqual(imageData.style, self.builder.style);
     XCTAssertEqualObjects(imageData.URL, self.builder.URL);
     XCTAssertEqual(imageData.localImage, self.builder.localImage);
     XCTAssertEqualObjects(imageData.placeholderIcon.identifier, @"placeholder");
@@ -99,16 +97,27 @@
     NSURL * const imageURL = [NSURL URLWithString:@"http://cdn.spotify.com/image"];
     
     NSDictionary * const dictionary = @{
-        @"style": @"circular",
         @"uri": imageURL.absoluteString,
         @"placeholder": @"place_holder"
     };
     
     [self.builder addDataFromJSONDictionary:dictionary];
     
-    XCTAssertEqual(self.builder.style, HUBComponentImageStyleCircular);
     XCTAssertEqualObjects(self.builder.URL, imageURL);
     XCTAssertEqualObjects(self.builder.placeholderIconIdentifier, @"place_holder");
+}
+
+- (void)testAddingJSONDataNotOverridingExistingData
+{
+    NSURL * const imageURL = [NSURL URLWithString:@"http://cdn.spotify.com/image"];
+    
+    self.builder.placeholderIconIdentifier = @"placeholder";
+    self.builder.URL = imageURL;
+    
+    [self.builder addDataFromJSONDictionary:@{}];
+    
+    XCTAssertEqualObjects(self.builder.placeholderIconIdentifier, @"placeholder");
+    XCTAssertEqualObjects(self.builder.URL, imageURL);
 }
 
 - (void)testAddingNonDictionaryJSONDataReturnsError
@@ -120,27 +129,10 @@
     XCTAssertNotNil([self.builder addJSONData:arrayData]);
 }
 
-- (void)testInvalidImageStyleStringProducingRectangularStyle
-{
-    [self.builder addDataFromJSONDictionary:@{}];
-    XCTAssertEqual(self.builder.style, HUBComponentImageStyleRectangular);
-    
-    [self.builder addDataFromJSONDictionary:@{@"style" : @"invalid"}];
-    XCTAssertEqual(self.builder.style, HUBComponentImageStyleRectangular);
-}
-
-- (void)testProtectionAgainstInvalidImageStyleEnumValues
-{
-    self.schema.componentImageDataSchema.styleStringMap = @{@"invalid": @(99)};
-    [self.builder addDataFromJSONDictionary:@{@"style" : @"invalid"}];
-    XCTAssertEqual(self.builder.style, HUBComponentImageStyleRectangular);
-}
-
 - (void)testCopying
 {
     UIImage * const localImage = [UIImage new];
     
-    self.builder.style = HUBComponentImageStyleCircular;
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
     self.builder.localImage = localImage;
     self.builder.placeholderIconIdentifier = @"placeholder";
@@ -148,7 +140,6 @@
     HUBComponentImageDataBuilderImplementation * const builderCopy = [self.builder copy];
     XCTAssertNotEqual(self.builder, builderCopy);
     
-    XCTAssertEqual(builderCopy.style, HUBComponentImageStyleCircular);
     XCTAssertEqualObjects(builderCopy.URL, [NSURL URLWithString:@"cdn.spotify.com/hub"]);
     XCTAssertEqualObjects(builderCopy.localImage, localImage);
     XCTAssertEqualObjects(builderCopy.placeholderIconIdentifier, @"placeholder");

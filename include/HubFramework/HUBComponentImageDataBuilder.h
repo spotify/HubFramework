@@ -20,9 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponentImageDataBuilder <HUBJSONCompatibleBuilder>
 
-/// The style that the image should be rendered in
-@property (nonatomic) HUBComponentImageStyle style;
-
 /// Any HTTP URL of a remote image that should be downloaded and then rendered
 @property (nonatomic, copy, nullable) NSURL *URL;
 

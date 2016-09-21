@@ -36,7 +36,6 @@
         NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.com/main.jpg"];
         id<HUBComponentImageData> const mainImageData = [[HUBComponentImageDataImplementation alloc] initWithIdentifier:nil
                                                                                                                    type:HUBComponentImageTypeMain
-                                                                                                                  style:HUBComponentImageStyleRectangular
                                                                                                                     URL:mainImageURL
                                                                                                         placeholderIcon:nil
                                                                                                              localImage:nil];
@@ -44,7 +43,6 @@
         NSURL * const backgroundImageURL = [NSURL URLWithString:@"https://image.com/main.jpg"];
         id<HUBComponentImageData> const backgroundImageData = [[HUBComponentImageDataImplementation alloc] initWithIdentifier:nil
                                                                                                                          type:HUBComponentImageTypeBackground
-                                                                                                                        style:HUBComponentImageStyleRectangular
                                                                                                                           URL:backgroundImageURL
                                                                                                               placeholderIcon:nil
                                                                                                                    localImage:nil];
@@ -52,7 +50,6 @@
         NSURL * const customImageURL = [NSURL URLWithString:@"https://image.com/custom.jpg"];
         id<HUBComponentImageData> const customImageData = [[HUBComponentImageDataImplementation alloc] initWithIdentifier:nil
                                                                                                                      type:HUBComponentImageTypeCustom
-                                                                                                                    style:HUBComponentImageStyleRectangular
                                                                                                                       URL:customImageURL
                                                                                                           placeholderIcon:nil
                                                                                                                localImage:nil];
