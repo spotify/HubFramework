@@ -407,12 +407,6 @@
 <td><code>identifier</code></td>
 </tr>
 <tr>
-<td><code>feature</code></td>
-<td><code>String</code></td>
-<td>The identifier of the feature that the view belongs to (if other than what has been defined client side). Can be used for logging, or to identifier the view&rsquo;s feature in various delegate methods &amp; handlers.</td>
-<td><code>featureIdentifier</code></td>
-</tr>
-<tr>
 <td><code>title</code></td>
 <td><code>String</code></td>
 <td>The title to use for the view&rsquo;s navigation bar.</td>
@@ -534,16 +528,10 @@
 <td><code>customImageData</code>.</td>
 </tr>
 <tr>
-<td><code>target.uri</code></td>
-<td><code>String -&gt; URL</code></td>
-<td>Any URI that should be opened when the user interacts with the component.</td>
-<td><code>targetURL</code></td>
-</tr>
-<tr>
-<td><code>target.view</code></td>
-<td><code>Dictionary -&gt; ViewModel</code></td>
-<td>Any pre-loaded view model that should be used for a Hub Framework-powered view that is the destination for <code>targetURL</code>. Will be parsed using the schema for view models.</td>
-<td><code>targetInitialViewModel</code></td>
+<td><code>target</code></td>
+<td><code>Dictionary -&gt; ComponentTarget</code></td>
+<td>A dictionary containing target information for the component, used to handle selections. Will be parsed using the schema for component targets.</td>
+<td><code>target</code></td>
 </tr>
 <tr>
 <td><code>metadata</code></td>
@@ -581,12 +569,6 @@
 </tr>
 </thead><tbody>
 <tr>
-<td><code>style</code></td>
-<td><code>String</code></td>
-<td>The style of the image. Possible values are <code>rectangular</code> (default), <code>circular</code> and <code>none</code>.</td>
-<td><code>style</code></td>
-</tr>
-<tr>
 <td><code>uri</code></td>
 <td><code>String</code></td>
 <td>The URI of the image. Used to download a remote image using the application&rsquo;s <code>HUBImageLoader(Factory)</code>.</td>
@@ -597,6 +579,41 @@
 <td><code>String</code></td>
 <td>Any icon to use as a placeholder until a remote image has been downloaded. Will be resolved using the application&rsquo;s <code>HUBIconImageResolver</code>.</td>
 <td><code>placeholderIcon</code></td>
+</tr>
+</tbody></table>
+<a href='#component-target-schema' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='component-target-schema'>Component target schema</h3>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+<th>Maps to</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>uri</code></td>
+<td><code>String -&gt; URI</code></td>
+<td>Any URI that should be opened when the user selects the component.</td>
+<td><code>URI</code></td>
+</tr>
+<tr>
+<td><code>actions</code></td>
+<td><code>[String]</code></td>
+<td>The identifiers (<code>namespace:name</code>) of any actions (<code>HUBAction</code>) that should be performed when the user selects the component.</td>
+<td><code>actionIdentifiers</code></td>
+</tr>
+<tr>
+<td><code>view</code></td>
+<td><code>Dictionary -&gt; ViewModel</code></td>
+<td>Any pre-loaded view model that should be used for a Hub Framework-powered view that is the destination of <code>uri</code>. Will be parsed using the schema for view models.</td>
+<td><code>initialViewModel</code></td>
+</tr>
+<tr>
+<td><code>custom</code></td>
+<td><code>Dictionary</code></td>
+<td>Any custom (free-form) data to associate with the target.</td>
+<td><code>customData</code></td>
 </tr>
 </tbody></table>
 <a href='#using-custom-json-schemas' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='using-custom-json-schemas'>Using custom JSON schemas</h2>
