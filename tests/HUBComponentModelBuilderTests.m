@@ -303,17 +303,14 @@
         },
         @"images": @{
             @"main": @{
-                @"placeholder": mainImagePlaceholderIdentifier,
-                @"style": HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleNone)
+                @"placeholder": mainImagePlaceholderIdentifier
             },
             @"background": @{
-                @"placeholder": backgroundImagePlaceholderIdentifier,
-                @"style": HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleRectangular)
+                @"placeholder": backgroundImagePlaceholderIdentifier
             },
             @"custom": @{
                 customImageIdentifier: @{
-                    @"placeholder": customImagePlaceholderIdentifier,
-                    @"style": HUBComponentImageStyleStringFromStyle(HUBComponentImageStyleCircular)
+                    @"placeholder": customImagePlaceholderIdentifier
                 }
             },
             @"icon": iconIdentifier

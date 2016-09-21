@@ -63,9 +63,6 @@ static NSString * const HUBJSONKeyOverlays = @"overlays";
 /// JSON key used to encode a placeholder identifier
 static NSString * const HUBJSONKeyPlaceholder = @"placeholder";
 
-/// JSON key used to encode a style definition
-static NSString * const HUBJSONKeyStyle = @"style";
-
 /// JSON key used to encode a subtitle
 static NSString * const HUBJSONKeySubtitle = @"subtitle";
 
