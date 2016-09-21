@@ -667,9 +667,15 @@ NS_ASSUME_NONNULL_BEGIN
     
     contentInsets = [self.scrollHandler contentInsetsForViewController:self
                                                  proposedContentInsets:contentInsets];
-    
-    self.collectionView.contentInset = contentInsets;
-    self.collectionView.scrollIndicatorInsets = contentInsets;
+
+    if (!UIEdgeInsetsEqualToEdgeInsets(self.collectionView.contentInset, contentInsets)) {
+        self.collectionView.contentInset = contentInsets;
+        CGPoint contentOffset = self.collectionView.contentOffset;
+        contentOffset.y = -contentInsets.top;
+        self.collectionView.contentOffset = contentOffset;
+    }
+
+    self.collectionView.scrollIndicatorInsets = self.collectionView.contentInset;
 }
 
 - (void)collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell
