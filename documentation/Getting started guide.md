@@ -1,6 +1,6 @@
 # Getting started guide
 
-Welcome to the Hub Framework getting started guide! This guide aims to to help introduce you to the concepts of the framework, and give you a step-by-step guide to building your first dynamic, component-driven view.
+Welcome to the Hub Framework getting started guide! This guide aims to help introduce you to the concepts of the framework, and give you a step-by-step guide to building your first dynamic, component-driven view.
 
 Note that this guide does not involve *setting up* the Hub Framework in your application - for that, see the [setup guide](https://ghe.spotify.net/pages/iOS/HubFramework/setup-guide.html). This guide requires an application already set up with the Hub Framework, if you don't have your own - you can use the [demo app](https://ghe.spotify.net/iOS/HubFramework/tree/master/demo) that is included in the Hub Framework repo.
 
