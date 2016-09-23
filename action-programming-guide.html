@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Classes  Reference</title>
+    <title>action-programming-guide  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
   <body>
 
 
-    <a title="Classes  Reference"></a>
+    <a title="action-programming-guide  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -40,7 +40,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">HubFramework Reference</a>
       <img class="carat" src="img/carat.png" />
-      Classes  Reference
+      action-programming-guide  Reference
     </p>
 
     <div class="content-wrapper">
@@ -355,187 +355,185 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>Classes</h1>
-            <p>The following classes are available globally.</p>
+            
+            <a href='#action-programming-guide' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='action-programming-guide'>Action Programming Guide</h1>
+
+<p>Welcome to the Hub Framework action programming guide! This guide aims to help you gain a deeper understanding of how actions work, how to create them and how you can use them to easily extend the framework with additional functionality.</p>
+
+<p>If you haven&rsquo;t already - we really recommend that you read the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html">component programming guide</a> and <a href="https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html">content programming guide</a> before proceeding with this one.</p>
+
+<p><strong>Table of contents</strong></p>
+
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+</ul>
+<a href='#introduction' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='introduction'>Introduction</h2>
+
+<p>The Hub Framework comes with built-in selection handling for components. Whenever a component is selected, the <code>URI</code> associated with that component&rsquo;s <code>target</code> will be opened, using the standard <code>[UIApplication openURL:]</code> API. However, if you want to customize the selection behavior, or execute other type of actions based on other user interactions - that&rsquo;s when the Action API comes in handy.</p>
+
+<p>The Action API also makes it easy to send events back to your content operations from your components.</p>
+<a href='#creating-an-action' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='creating-an-action'>Creating an action</h2>
+
+<p>Just like components, content operations and the other aspects of the Hub Framework, actions are defined using a protocol - <code>HUBAction</code>. Actions are very simple to implement, all you require is one method:</p>
+<pre class="highlight plaintext"><code>@interface SPTMyHubAction : NSObject &lt;HUBAction&gt;
+
+@end
+</code></pre>
+<pre class="highlight plaintext"><code>@implementation SPTMyHubAction
+
+- (BOOL)performWithContext:(id&lt;HUBActionContext&gt;)context
+{
+    // Return a boolean indicating whether the action was performed or not
+    return YES;
+}
+
+@end
+</code></pre>
+
+<p>The contextual object passed to the action contains useful information like what view controller (and for which view URI) the action is being performed, as well as the component &amp; view model that the action should be performed for.</p>
+<a href='#integrating-an-action-with-the-framework' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='integrating-an-action-with-the-framework'>Integrating an action with the framework</h2>
+
+<p>Before an action can be used, it must be integrated into the Hub Framework. This is done through the <code>HUBActionRegistry</code> API, which works similar to how the <code>HUBComponentRegistry</code> works for components.</p>
+
+<p>In order to avoid accidentally sharing state between actions, all actions are uniquely created before they are performed, using a factory - an implementation of <code>HUBActionFactory</code>.</p>
+
+<p>So, to integrate your action into the framework, first create a factory class:</p>
+<pre class="highlight plaintext"><code>@interface SPTMyActionFactory : NSObject &lt;HUBActionFactory&gt;
+
+@end
+</code></pre>
+<pre class="highlight plaintext"><code>@implementation SPTMyActionFactory
+
+- (nullable id&lt;HUBAction&gt;)createActionForName:(NSString *)name
+{
+    if ([name isEqualToString:@"myAction"]) {
+        return [SPTMyAction new];
+    }
+
+    return nil;
+}
+
+@end
+</code></pre>
+
+<p>Then, register your factory with the action registry (available on <code>HUBManager</code>):</p>
+<pre class="highlight plaintext"><code>id&lt;HUBActionFactory&gt; factory = [SPTMyActionFactory new];
+[actionRegistry registerActionFactory:factory forNamespace:@"myNamespace"];
+</code></pre>
+
+<p>The <code>namespace</code> used when registering the factory are used to match actions when performed - just like the way components are matched.</p>
+<a href='#triggering-an-action' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='triggering-an-action'>Triggering an action</h2>
+<a href='#triggering-an-action-from-a-component-model' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='triggering-an-action-from-a-component-model'>Triggering an action from a component model</h3>
+
+<p>Actions that are associated with a <code>HUBComponentModel</code> will automatically be triggered when a component rendering that model was selected by the user.</p>
+
+<p>To add actions to a component model, you add a <code>HUBIdentifier</code> matching your action&rsquo;s <code>name</code> and <code>namespace</code> (that your factory was registered for) either using code in a content operation:</p>
+<pre class="highlight plaintext"><code>id&lt;HUBComponentModelBuilder&gt; componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"myComponent"];
+[componentModelBuilder.targetBuilder addActionWithNamespace:@"myNamespace"
+                                                       name:@"myAction"];
+</code></pre>
+
+<p>Or using JSON:</p>
+<pre class="highlight json"><code><span class="err">//</span><span class="w"> </span><span class="err">A</span><span class="w"> </span><span class="err">component</span><span class="w"> </span><span class="err">model</span><span class="w"> </span><span class="err">dictionary</span><span class="w">
+</span><span class="p">{</span><span class="w">
+   </span><span class="nt">"target"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+       </span><span class="nt">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"myNamespace:myAction"</span><span class="p">]</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<a href='#triggering-an-action-from-a-component' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='triggering-an-action-from-a-component'>Triggering an action from a component</h3>
+
+<p>You can also have a component implementation manually trigger an action. This can be done at any point in time, for example in response to a custom user interaction (such as a swipe), or some other event.</p>
+
+<p>To make a component able to perform actions, make it conform to the <code>HUBComponentActionPerformer</code> protocol. This gives you an <code>actionDelegate</code> that you can call to perform an action for a given identifier (which will be resolved exactly the same way as when action identifiers are attached to a <code>HUBComponentModel</code>).</p>
+
+<p>Here&rsquo;s an example where we perform an action in response to a <code>UIGestureRecognizer</code> being triggered:</p>
+<pre class="highlight plaintext"><code>- (void)handleGestureRecognizer:(UIGestureRecognizer *)recognizer
+{
+    HUBIdentifier *actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"myFeature" name:@"myAction"];
+    [self.actionDelegate component:self performActionWithIdentifier:actionIdentifier];
+}
+</code></pre>
+<a href='#responding-to-an-action-in-a-content-operation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='responding-to-an-action-in-a-content-operation'>Responding to an action in a content operation</h2>
+
+<p>As mentioned in the introduction, one thing you can use actions for, is to be able to easily communicate with a content operation from a component. For example, you might want to reschedule an operation based on user interaction, or modify your underlying data.</p>
+
+<p>To observe actions performed in the view that a content operation is serving, conform to the <code>HUBContentOperationActionObserver</code> protocol in your content operation.</p>
+
+<p>In the example below, we are rendering a list of songs based on a <code>SPTSongContentOperation</code>. We then implement a delete button in one of our components, which will trigger an action to delete the song associated with that component from our data source, and then reschedule our content operation to re-render our view (with the component deleted).</p>
+
+<p>First, the component which performs the action when the delete button is tapped:</p>
+<pre class="highlight plaintext"><code>@implementation SPTDeletableComponent
+
+- (void)handleDeleteButtonTapped
+{
+    HUBIdentifier *actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"delete" name:@"song"];
+    [self.actionDelegate component:self performActionWithIdentifier:actionIdentifier];
+}
+
+@end
+</code></pre>
+
+<p>Then, the action, which deletes the song from our data source:</p>
+<pre class="highlight plaintext"><code>@implementation SPTDeleteSongAction
+
+- (BOOL)performWithContext:(id&lt;HUBActionContext&gt;)context
+{
+    NSString *songID = context.componentModel.identifier;
+    [self.dataSource removeSongWithIdentifier:songID];
+    return YES;
+}
+
+@end
+</code></pre>
+
+<p>Finally, we observe actions being performed in our content operation, and re-schedule it once a delete action was performed:</p>
+<pre class="highlight plaintext"><code>@implementation SPTSongContentOperation
+
+- (void)actionPerformedWithContext:(id&lt;HUBActionContext&gt;)context
+                           viewURI:(NSURL *)viewURI
+                       featureInfo:(id&lt;HUBFeatureInfo&gt;)featureInfo
+                 connectivityState:(HUBConnectivityState)connectivityState
+{
+    HUBIdentifier *deleteSongActionID = [[HUBIdentifier alloc] initWithNamespace:@"delete" name:@"song"];
+
+    if ([context.customActionIdentifier isEqual:deleteSongActionID]) {
+        [self.delegate contentOperationRequiresRescheduling:self];
+    }
+}
+
+@end
+</code></pre>
+
+<p>The result of the above is that every time a delete button is pressed, the component for that song is deleted from the view.</p>
+<a href='#handling-actions' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='handling-actions'>Handling actions</h2>
+
+<p>You can also opt to handle certain actions on a feature level. When you set up your feature with the Hub Framework, you can pass an <code>actionHandler</code> (an implementation of the <code>HUBActionHandler</code> protocol), that gets called each time an action is about to be performed. The action handler can then choose to handle the action itself, rather than letting the action being performed.</p>
+
+<p>Let&rsquo;s take the <q>delete a song</q> example from just before, and add some <q>protected songs</q> that are not deletable. That is, when the <code>SPTDeleteSongAction</code> is about to be performed, we check if the song is protected, and if it is - we veto the action, preventing it from being performed. Let&rsquo;s implement <code>HUBActionHandler</code>:</p>
+<pre class="highlight plaintext"><code>@implementation SPTMyActionHandler
+
+- (BOOL)handleActionWithContext:(id&lt;HUBActionContext&gt;)context
+{
+    NSString *songID = context.componentModel.identifier;
+
+    if ([self isSongWithIdentifierProtected:songID]) {
+        return YES;
+    }
+
+    return NO;
+}
+
+@end
+</code></pre>
+
+<p>By returning <code>YES</code> above, we tell the Hub Framework that we&rsquo;ve handled the action in our action handler, which means that the action won&rsquo;t be performed.</p>
+
+<p>A global action handler can also be added when setting up <code>HUBManager</code>, that will be used for all features that do not implement their own. For more information about setting up Hub Manager, see the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/setup-guide.html">setup guide</a>.</p>
 
           </div>
         </section>
 
-        <section class="section">
-          <div class="section-content">
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(cs)HUBComponentCollectionViewCell"></a>
-                    <a name="//apple_ref/objc/Class/HUBComponentCollectionViewCell" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)HUBComponentCollectionViewCell">HUBComponentCollectionViewCell</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Collection view cell that can be used to display a Hub Framework component</p>
-
-<p>The Hub Framework uses this collection view cell internally to wrap component views, manage their size,
-  reuse, etc. If you&rsquo;re building a component that uses a nested <code>UICollectionView</code> to display child components,
-  you can use this cell class to easily be able to render your child components.</p>
-
-                        <a href="Classes/HUBComponentCollectionViewCell.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@interface</span> <span class="nc">HUBComponentCollectionViewCell</span> <span class="p">:</span> <span class="nc">UICollectionViewCell</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">class</span> <span class="kt">HUBComponentCollectionViewCell</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(cs)HUBIdentifier"></a>
-                    <a name="//apple_ref/objc/Class/HUBIdentifier" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)HUBIdentifier">HUBIdentifier</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A component identifier is used to match a <code><a href="Protocols/HUBComponentModel.html">HUBComponentModel</a></code> to a <code><a href="Protocols/HUBComponent.html">HUBComponent</a></code> implementation</p>
-
-<p>Component identifiers have two parts; a <code>namespace</code> and a <code>name</code>. The namespace is used to resolve
-  which <code><a href="Protocols/HUBComponentFactory.html">HUBComponentFactory</a></code> to use to create a component for a model, and the name is then passed
-  to that factory when it&rsquo;s asked to create a component.</p>
-
-<p>You can create component identifiers programmatically, or supply string representations when
-  using JSON data using the <code>namespace:name</code> format.</p>
-
-                        <a href="Classes/HUBIdentifier.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@interface</span> <span class="nc">HUBIdentifier</span> <span class="p">:</span> <span class="nc">NSObject</span> <span class="o">&lt;</span><span class="n">NSCopying</span><span class="o">&gt;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">class</span> <span class="kt">HUBIdentifier</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">NSCopying</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(cs)HUBManager"></a>
-                    <a name="//apple_ref/objc/Class/HUBManager" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)HUBManager">HUBManager</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>This class is the main entry point into the Hub Framework</p>
-
-<p>An application using the Hub Framework should create a single instance of this class and retain it in a central
-  location (such as its App Delegate). This class exposes the public API of the Hub Framework in a modular fashion,
-  with each part of the API encapsulated in either a registry or a factory.</p>
-
-                        <a href="Classes/HUBManager.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@interface</span> <span class="nc">HUBManager</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">class</span> <span class="kt">HUBManager</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(cs)HUBViewURIPredicate"></a>
-                    <a name="//apple_ref/objc/Class/HUBViewURIPredicate" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)HUBViewURIPredicate">HUBViewURIPredicate</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Class used to define predicates that evaulates whether a view URI should be handled by the Hub Framework</p>
-
-<p>A view URI predicate is passed when registering a feature with <code><a href="Protocols/HUBFeatureRegistry.html">HUBFeatureRegistry</a></code>, and is used by the
-  Hub Framework to determine whether it should handle a certain view URI when a view controller or view model
-  loader is requested.</p>
-
-<p>You can construct simple predicates that only successfully evaluates a constant view URI, or enable a tree
-  of view URIs using a root view URI, as well as using a block or <code>NSPredicate</code> to construct complex predicates
-  that evaluate based on any condition.</p>
-
-                        <a href="Classes/HUBViewURIPredicate.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@interface</span> <span class="nc">HUBViewURIPredicate</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">class</span> <span class="kt">HUBViewURIPredicate</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
 
       </article>
     </div>
