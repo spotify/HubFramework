@@ -5,6 +5,7 @@
 
 @property (nonatomic, strong, readwrite, nullable) id<HUBComponentModel> model;
 @property (nonatomic, strong, readwrite, nullable) id<HUBComponentImageData> mainImageData;
+@property (nonatomic, strong, readwrite, nullable) id<HUBComponentImageData> backgroundImageData;
 @property (nonatomic, readwrite) NSUInteger numberOfResizes;
 @property (nonatomic, readwrite) NSUInteger numberOfAppearances;
 @property (nonatomic, readwrite) NSUInteger numberOfReuses;
@@ -69,6 +70,8 @@
             self.mainImageData = imageData;
             break;
         case HUBComponentImageTypeBackground:
+            self.backgroundImageData = imageData;
+            break;
         case HUBComponentImageTypeCustom:
             break;
     }

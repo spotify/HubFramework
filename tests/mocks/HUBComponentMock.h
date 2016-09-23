@@ -38,8 +38,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// The current container view size that was provided when configured with model
 @property (nonatomic) CGSize currentContainerViewSize;
 
-/// The main image the component is currently displaying
+/// The data for any main image the component is currently displaying
 @property (nonatomic, strong, readonly, nullable) id<HUBComponentImageData> mainImageData;
+
+/// The data for any background image the component is currently displaying
+@property (nonatomic, strong, readonly, nullable) id<HUBComponentImageData> backgroundImageData;
 
 /// The number of times `viewDidResize` has been called on this component
 @property (nonatomic, readonly) NSUInteger numberOfResizes;

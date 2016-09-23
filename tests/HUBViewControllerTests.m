@@ -234,6 +234,7 @@
 - (void)testBodyComponentImageLoading
 {
     NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
+    UIImage * const localMainImage = [UIImage new];
     NSURL * const backgroundImageURL = [NSURL URLWithString:@"https://image.background"];
     NSURL * const customImageURL = [NSURL URLWithString:@"https://image.custom"];
     NSString * const customImageIdentifier = @"custom";
@@ -246,6 +247,7 @@
         id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
         componentModelBuilder.componentName = strongSelf.componentIdentifier.namePart;
         componentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
+        componentModelBuilder.mainImageDataBuilder.localImage = localMainImage;
         componentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
         [componentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
         
@@ -256,6 +258,9 @@
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
+    XCTAssertEqual(self.component.mainImageData.localImage, localMainImage);
+    XCTAssertNil(self.component.backgroundImageData);
     
     [self performAsynchronousTestWithBlock:^{
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
