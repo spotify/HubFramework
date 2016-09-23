@@ -9,6 +9,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  You conform to this protocol in a custom object and pass that object when setting up `HUBManager`. The
  *  Hub Framework will then use the factory to create an image loader for each view controller that it creates.
+ *
+ *  In case you don't supply your own image loader factory, the default `HUBDefaultImageLoaderFactory` is used.
+ *
  *  See `HUBImageLoader` for more information.
  */
 @protocol HUBImageLoaderFactory <NSObject>

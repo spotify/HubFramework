@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentLayoutManager The object that manages layout for components in the view controller
  *  @param actionHandler The object that will handle actions for this view controller
  *  @param scrollHandler The object that will handle scrolling for the view controller
- *  @param imageLoader The object to use to load images for components
+ *  @param imageLoader The loader to use to load images for components
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
-                    imageLoader:(nullable id<HUBImageLoader>)imageLoader HUB_DESIGNATED_INITIALIZER;
+                    imageLoader:(id<HUBImageLoader>)imageLoader HUB_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 

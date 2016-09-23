@@ -57,8 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
  *         See `HUBComponentLayoutManager` for more information.
  *  @param componentFallbackHandler The object to use to fall back to default components in case a component couldn't be
  *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
- *  @param imageLoaderFactory Any factory that creates image loaders that are used to load remote images for components.
- *         If nil, this instance of the Hub Framework won't support remote images. See `HUBImageLoaderFactory` for more info.
+ *  @param imageLoaderFactory Any custom factory that creates image loaders that are used to load remote images for components.
+ *         If nil, a default image loader factory will be used. See `HUBImageLoaderFactory` for more info.
  *  @param iconImageResolver Any object responsible for converting icons into renderable images. If nil, this instance of
  *         the Hub Framework won't support icons. See `HUBIconImageResolver` for more information.
  *  @param defaultActionHandler Any default action handler to use for features that do not define their own. An action handler

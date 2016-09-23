@@ -46,6 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  component is about to be displayed on the screen. The framework itself does not employ any caching on images, so
  *  it's up to each implementation of this protocol to handle that.
  *
+ *  In case you don't supply your own image loader implementation, the default `HUBDefaultImageLoader` is used.
+ *
  *  See also `HUBImageLoaderFactory` which is used to create instances conforming to this protocol.
  */
 @protocol HUBImageLoader <NSObject>

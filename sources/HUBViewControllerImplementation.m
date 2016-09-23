@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
-                    imageLoader:(nullable id<HUBImageLoader>)imageLoader
+                    imageLoader:(id<HUBImageLoader>)imageLoader
 
 {
     NSParameterAssert(viewURI != nil);
@@ -82,6 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(actionHandler != nil);
     NSParameterAssert(scrollHandler != nil);
+    NSParameterAssert(imageLoader != nil);
     
     if (!(self = [super initWithNibName:nil bundle:nil])) {
         return nil;
@@ -308,6 +309,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache
 {
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self imageLoader:imageLoader didLoadImage:image forURL:imageURL fromCache:loadedFromCache];
+        });
+        
+        return;
+    }
+    
     NSArray * const contexts = self.componentImageLoadingContexts[imageURL];
     
     for (HUBComponentImageLoadingContext * const context in contexts) {
@@ -719,10 +728,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadImagesForComponentWrapper:(HUBComponentWrapper *)componentWrapper
                            childIndex:(nullable NSNumber *)childIndex
 {
-    if (self.imageLoader == nil) {
-        return;
-    }
-    
     if (!componentWrapper.handlesImages) {
         return;
     }
@@ -776,10 +781,6 @@ NS_ASSUME_NONNULL_BEGIN
                                           animated:NO];
     }
     
-    if (self.imageLoader == nil) {
-        return;
-    }
-    
     NSURL * const imageURL = imageData.URL;
     
     if (imageURL == nil) {
@@ -802,15 +803,15 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableArray *contextsForURL = self.componentImageLoadingContexts[imageURL];
     
     if (contextsForURL == nil) {
-        contextsForURL = [NSMutableArray new];
+        contextsForURL = [NSMutableArray arrayWithObject:context];
         self.componentImageLoadingContexts[imageURL] = contextsForURL;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
+        });
+    } else {
+        [contextsForURL addObject:context];
     }
-    
-    [contextsForURL addObject:context];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
-    });
 }
 
 - (void)handleLoadedComponentImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache context:(HUBComponentImageLoadingContext *)context
