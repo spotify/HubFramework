@@ -767,6 +767,14 @@ NS_ASSUME_NONNULL_BEGIN
          componentWrapper:(HUBComponentWrapper *)componentWrapper
                childIndex:(nullable NSNumber *)childIndex
 {
+    if (imageData.localImage != nil) {
+        UIImage * const localImage = imageData.localImage;
+        [componentWrapper updateViewForLoadedImage:localImage
+                                          fromData:imageData
+                                             model:model
+                                          animated:NO];
+    }
+    
     if (self.imageLoader == nil) {
         return;
     }
