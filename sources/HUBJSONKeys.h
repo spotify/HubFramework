@@ -36,6 +36,9 @@ static NSString * const HUBJSONKeyExtension = @"extension";
 /// JSON key used to encode a feature identifier
 static NSString * const HUBJSONKeyFeature = @"feature";
 
+/// JSON key used to encode a group identifier
+static NSString * const HUBJSONKeyGroup = @"group";
+
 /// JSON key used to encode a header definition
 static NSString * const HUBJSONKeyHeader = @"header";
 

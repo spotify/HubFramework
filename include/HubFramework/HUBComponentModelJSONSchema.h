@@ -26,8 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponentModelJSONSchema <NSObject>
 
-/// The path to follow to extract a component model identifier. Maps to `identifier.
+/// The path to follow to extract a component model identifier. Maps to `identifier`.
 @property (nonatomic, strong) id<HUBJSONStringPath> identifierPath;
+
+/// The path to follow to extract a component group identifier. Maps to `groupIdentifier`.
+@property (nonatomic, strong) id<HUBJSONStringPath> groupIdentifierPath;
 
 /// The path to follow to extract a component identifier. Maps to `componentIdentifier`.
 @property (nonatomic, strong) id<HUBJSONStringPath> componentIdentifierPath;

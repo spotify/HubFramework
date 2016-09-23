@@ -62,6 +62,7 @@ Here is a reference for the default JSON schema:
 | Key | Type | Description | Maps to |
 | --- | ---- | ----------- | ------- |
 | `id` | `String` | The identifier of the component model. Can be used for logging, or to identify the model in other content operations, various delegate methods, handlers, etc. | `identifier` |
+| `group` | `String` | The identifier of any logical group to put the component model in within its parent. Can be used to associate certain child components with each other. | `groupIdentifier` |
 | `component.id` | `String` | The identifier (`namespace:name`) of the component to use to render the model. | `componentNamespace` and `componentName` |
 | `component.category` | `String` | The category of the component. Used to perform sensible fallbacks for older versions of the application that might not support the requested component. See [component categories](https://ghe.spotify.net/pages/iOS/HubFramework/Constants.html#/c:HUBComponentCategories.h) for possible values. | `componentCategory` |
 | `text.title` | `String` | The title that the component should display. | `title` |
