@@ -29,4 +29,7 @@ static HUBComponentLayoutTrait const HUBComponentLayoutTraitStackable = @"stacka
 /// Layout trait for components which should be presented on rows which have equal left and right margins
 static HUBComponentLayoutTrait const HUBComponentLayoutTraitCentered = @"centered";
 
+/// Layout trait for components which are stackable on top of each other, without any margin in between, regardless of the layout traits the preceding component has
+static HUBComponentLayoutTrait const HUBComponentLayoutTraitAlwaysStackUpwards = @"alwaysStackUpwards";
+
 NS_ASSUME_NONNULL_END
