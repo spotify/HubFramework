@@ -10,7 +10,7 @@ If you haven't already - we really recommend that you read the [component progra
 
 ## Introduction
 
-The Hub Framework comes with built-in selection handling for components. Whenever a component is selected, the `URI` associated with that component's `target` will be opened, using the standard `[UIApplication openURL:]` API. However, if you want to customize the selection behavior, or execute other type of actions based on other user interactions - that's when the Action API comes i handy.
+The Hub Framework comes with built-in selection handling for components. Whenever a component is selected, the `URI` associated with that component's `target` will be opened, using the standard `[UIApplication openURL:]` API. However, if you want to customize the selection behavior, or execute other type of actions based on other user interactions - that's when the Action API comes in handy.
 
 The Action API also makes it easy to send events back to your content operations from your components.
 
