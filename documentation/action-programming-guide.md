@@ -42,7 +42,7 @@ The contextual object passed to the action contains useful information like what
 
 Before an action can be used, it must be integrated into the Hub Framework. This is done through the `HUBActionRegistry` API, which works similar to how the `HUBComponentRegistry` works for components.
 
-In order to avoid accidentially sharing state between actions, all actions are uniquely created before they are performed, using a factory - an implementation of `HUBActionFactory`.
+In order to avoid accidentally sharing state between actions, all actions are uniquely created before they are performed, using a factory - an implementation of `HUBActionFactory`.
 
 So, to integrate your action into the framework, first create a factory class:
 
