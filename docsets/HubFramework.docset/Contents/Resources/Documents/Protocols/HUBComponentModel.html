@@ -493,6 +493,40 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentModel(py)groupIdentifier"></a>
+                    <a name="//apple_ref/objc/Property/groupIdentifier" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentModel(py)groupIdentifier">groupIdentifier</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The identifier of any logical group that the component model belongs to</p>
+
+<p>You can access the component models in a certain group through the parent&rsquo;s <code>childrenInGroupWithIdentifier:</code> method.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">groupIdentifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">groupIdentifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
             <div class="task-group">
@@ -1183,7 +1217,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Return a child component that has a certain identifier, or <code>nil</code> if an unknown identifier was given</p>
+                        <p>Return a child component model that has a certain identifier, or <code>nil</code> if an unknown identifier was given</p>
 
 <p>Accessing a child component model this way is preferred to iterating over the <code><a href="../Protocols/HUBComponentModel.html#/c:objc(pl)HUBComponentModel(py)children">children</a></code> array and looking for a model matching
   an index manually - not only because it&rsquo;s easier - but also because this method has O(1) complexity.</p>
@@ -1216,6 +1250,62 @@
                               <td>
                                 <div>
                                   <p>The identifier of the child to look for</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentModel(im)childrenInGroupWithIdentifier:"></a>
+                    <a name="//apple_ref/objc/Method/-childrenInGroupWithIdentifier:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentModel(im)childrenInGroupWithIdentifier:">-childrenInGroupWithIdentifier:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return an array of child component models that belong to certain group</p>
+
+<p>To put a child component model into a certain group, set its <code><a href="../Protocols/HUBComponentModel.html#/c:objc(pl)HUBComponentModel(py)groupIdentifier">groupIdentifier</a></code> property either through JSON or when building
+  the model through <code><a href="../Protocols/HUBComponentModelBuilder.html">HUBComponentModelBuilder</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nullable</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">id</span><span class="o">&lt;</span><span class="n">HUBComponentModel</span><span class="o">&gt;&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nf">childrenInGroupWithIdentifier</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">groupIdentifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">childrenInGroupWithIdentifier</span><span class="p">(</span><span class="nv">groupIdentifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">HUBComponentModel</span><span class="p">]?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>groupIdentifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier of the group to return the child component models in</p>
 
                                 </div>
                               </td>
