@@ -73,6 +73,7 @@
         return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
                                                                       type:HUBComponentTypeBody
                                                                      index:0
+                                                           groupIdentifier:nil
                                                        componentIdentifier:componentIdentifier
                                                          componentCategory:HUBComponentCategoryRow
                                                                      title:@"Title"
@@ -102,6 +103,7 @@
         return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
                                                                       type:HUBComponentTypeBody
                                                                      index:0
+                                                           groupIdentifier:nil
                                                        componentIdentifier:componentIdentifier
                                                          componentCategory:HUBComponentCategoryRow
                                                                      title:nil
@@ -149,6 +151,7 @@
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
                                                                   type:HUBComponentTypeBody
                                                                  index:index
+                                                       groupIdentifier:nil
                                                    componentIdentifier:componentIdentifier
                                                      componentCategory:HUBComponentCategoryRow
                                                                  title:nil

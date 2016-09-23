@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param identifier The identifier of the model
  *  @param type The type of component that this model is for
  *  @param index The index of the model, either within its parent or within the root list
+ *  @param groupIdentifier Any logical group that the component model should belong to
  *  @param componentIdentifier The identifier of the component that the model should be rendered using
  *  @param componentCategory The category of the component that the model should be rendered using
  *  @param title Any title that the component should render
@@ -39,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithIdentifier:(NSString *)identifier
                               type:(HUBComponentType)type
                              index:(NSUInteger)index
+                   groupIdentifier:(nullable NSString *)groupIdentifier
                componentIdentifier:(HUBIdentifier *)componentIdentifier
                  componentCategory:(HUBComponentCategory)componentCategory
                              title:(nullable NSString *)title

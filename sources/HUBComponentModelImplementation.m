@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBComponentModelImplementation ()
 
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSNumber *> *childIdentifierToIndexMap;
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSArray<id<HUBComponentModel>> *> *childrenByGroupIdentifier;
 
 @end
 
@@ -21,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize identifier = _identifier;
 @synthesize type = _type;
 @synthesize index = _index;
+@synthesize groupIdentifier = _groupIdentifier;
 @synthesize componentIdentifier = _componentIdentifier;
 @synthesize componentCategory = _componentCategory;
 @synthesize title = _title;
@@ -49,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithIdentifier:(NSString *)identifier
                               type:(HUBComponentType)type
                              index:(NSUInteger)index
+                   groupIdentifier:(nullable NSString *)groupIdentifier
                componentIdentifier:(HUBIdentifier *)componentIdentifier
                  componentCategory:(HUBComponentCategory)componentCategory
                              title:(nullable NSString *)title
@@ -78,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
         _componentIdentifier = [componentIdentifier copy];
         _componentCategory = [componentCategory copy];
         _index = index;
+        _groupIdentifier = [groupIdentifier copy];
         _title = [title copy];
         _subtitle = [subtitle copy];
         _accessoryTitle = [accessoryTitle copy];
@@ -103,12 +107,28 @@ NS_ASSUME_NONNULL_BEGIN
     _children = children;
     
     NSMutableDictionary<NSString *, NSNumber *> * const identifierToIndexMap = [NSMutableDictionary new];
+    NSMutableDictionary<NSString *, NSMutableArray<id<HUBComponentModel>> *> *childrenByGroupIdentifier = [NSMutableDictionary new];
     
     for (id<HUBComponentModel> const child in children) {
         identifierToIndexMap[child.identifier] = @(child.index);
+        
+        if (child.groupIdentifier != nil) {
+            NSString * const groupIdentifier = child.groupIdentifier;
+            NSMutableArray<id<HUBComponentModel>> * const childrenInGroup = childrenByGroupIdentifier[groupIdentifier];
+            
+            if (childrenInGroup != nil) {
+                [childrenInGroup addObject:child];
+            } else {
+                childrenByGroupIdentifier[groupIdentifier] = [NSMutableArray arrayWithObject:child];
+            }
+        }
     }
     
     self.childIdentifierToIndexMap = [identifierToIndexMap copy];
+    
+    if (childrenByGroupIdentifier.count > 0) {
+        self.childrenByGroupIdentifier = [childrenByGroupIdentifier copy];
+    }
 }
 
 #pragma mark - NSObject
@@ -166,6 +186,11 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     return self.children[index.unsignedIntegerValue];
+}
+
+- (nullable NSArray<id<HUBComponentModel>> *)childrenInGroupWithIdentifier:(NSString *)groupIdentifier
+{
+    return self.childrenByGroupIdentifier[groupIdentifier];
 }
 
 #pragma mark - Private utilities

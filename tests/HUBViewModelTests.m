@@ -20,6 +20,7 @@
             return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
                                                                           type:HUBComponentTypeBody
                                                                          index:0
+                                                               groupIdentifier:nil
                                                            componentIdentifier:componentIdentifier
                                                              componentCategory:HUBComponentCategoryBanner
                                                                          title:@"title"
@@ -60,6 +61,7 @@
             return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
                                                                           type:HUBComponentTypeBody
                                                                          index:0
+                                                               groupIdentifier:nil
                                                            componentIdentifier:componentIdentifier
                                                              componentCategory:HUBComponentCategoryBanner
                                                                          title:@"title"

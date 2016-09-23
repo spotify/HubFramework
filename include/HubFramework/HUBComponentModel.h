@@ -54,6 +54,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) NSUInteger index;
 
+/**
+ *  The identifier of any logical group that the component model belongs to
+ *
+ *  You can access the component models in a certain group through the parent's `childrenInGroupWithIdentifier:` method.
+ */
+@property (nonatomic, copy, nullable, readonly) NSString *groupIdentifier;
+
 #pragma mark - Component
 
 /**
@@ -211,7 +218,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable id<HUBComponentModel>)childAtIndex:(NSUInteger)childIndex;
 
 /**
- *  Return a child component that has a certain identifier, or `nil` if an unknown identifier was given
+ *  Return a child component model that has a certain identifier, or `nil` if an unknown identifier was given
  *
  *  @param identifier The identifier of the child to look for
  *
@@ -219,6 +226,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  an index manually - not only because it's easier - but also because this method has O(1) complexity.
  */
 - (nullable id<HUBComponentModel>)childWithIdentifier:(NSString *)identifier;
+
+/**
+ *  Return an array of child component models that belong to certain group
+ *
+ *  @param groupIdentifier The identifier of the group to return the child component models in
+ *
+ *  To put a child component model into a certain group, set its `groupIdentifier` property either through JSON or when building
+ *  the model through `HUBComponentModelBuilder`.
+ */
+- (nullable NSArray<id<HUBComponentModel>> *)childrenInGroupWithIdentifier:(NSString *)groupIdentifier;
 
 @end
 

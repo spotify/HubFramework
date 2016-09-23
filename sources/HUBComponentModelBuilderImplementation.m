@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize modelIdentifier = _modelIdentifier;
 @synthesize preferredIndex = _preferredIndex;
+@synthesize groupIdentifier = _groupIdentifier;
 @synthesize componentNamespace = _componentNamespace;
 @synthesize componentName = _componentName;
 @synthesize componentCategory = _componentCategory;
@@ -275,6 +276,12 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
+    NSString * const groupIdentifier = [componentModelSchema.groupIdentifierPath stringFromJSONDictionary:dictionary];
+    
+    if (groupIdentifier != nil) {
+        self.groupIdentifier = groupIdentifier;
+    }
+    
     NSString * const componentCategory = [componentModelSchema.componentCategoryPath stringFromJSONDictionary:dictionary];
     
     if (componentCategory != nil) {
@@ -447,6 +454,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentModelImplementation * const model = [[HUBComponentModelImplementation alloc] initWithIdentifier:self.modelIdentifier
                                                                                                            type:self.type
                                                                                                           index:index
+                                                                                                groupIdentifier:self.groupIdentifier
                                                                                             componentIdentifier:componentIdentifier
                                                                                               componentCategory:self.componentCategory
                                                                                                           title:self.title

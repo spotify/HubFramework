@@ -20,13 +20,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol HUBComponentModelBuilder <HUBJSONCompatibleBuilder>
 
-#pragma mark - Identifier & index
+#pragma mark - Identifiers
 
 /// The identifier of the model that this builder is for
 @property (nonatomic, copy, readonly) NSString *modelIdentifier;
 
 /// The index that the component would prefer to be placed at. Can be used to move components locally.
 @property (nonatomic, copy, nullable) NSNumber *preferredIndex;
+
+/// The identifier of any logical group to put the component model in within its parent.
+@property (nonatomic, copy, nullable) NSString *groupIdentifier;
 
 #pragma mark - Component
 

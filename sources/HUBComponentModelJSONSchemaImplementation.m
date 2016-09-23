@@ -6,6 +6,7 @@
 @implementation HUBComponentModelJSONSchemaImplementation
 
 @synthesize identifierPath = _identifierPath;
+@synthesize groupIdentifierPath = _groupIdentifierPath;
 @synthesize componentIdentifierPath = _componentIdentifierPath;
 @synthesize componentCategoryPath = _componentCategoryPath;
 @synthesize titlePath = _titlePath;
@@ -30,6 +31,7 @@
     id<HUBMutableJSONPath> const imagesDictionaryPath = [basePath goTo:HUBJSONKeyImages];
     
     return [self initWithIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyIdentifier] stringPath]
+                    groupIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyGroup] stringPath]
                 componentIdentifierPath:[[componentDictionaryPath goTo:HUBJSONKeyIdentifier] stringPath]
                   componentCategoryPath:[[componentDictionaryPath goTo:HUBJSONKeyCategory] stringPath]
                               titlePath:[[textDictionaryPath goTo:HUBJSONKeyTitle] stringPath]
@@ -48,6 +50,7 @@
 }
 
 - (instancetype)initWithIdentifierPath:(id<HUBJSONStringPath>)identifierPath
+                   groupIdentifierPath:(id<HUBJSONStringPath>)groupIdentifierPath
                componentIdentifierPath:(id<HUBJSONStringPath>)componentIdentiferPath
                  componentCategoryPath:(id<HUBJSONStringPath>)componentCategoryPath
                              titlePath:(id<HUBJSONStringPath>)titlePath
@@ -68,6 +71,7 @@
     
     if (self) {
         _identifierPath = identifierPath;
+        _groupIdentifierPath = groupIdentifierPath;
         _componentIdentifierPath = componentIdentiferPath;
         _componentCategoryPath = componentCategoryPath;
         _titlePath = titlePath;
@@ -93,6 +97,7 @@
 - (id)copy
 {
     return [[HUBComponentModelJSONSchemaImplementation alloc] initWithIdentifierPath:self.identifierPath
+                                                                 groupIdentifierPath:self.groupIdentifierPath
                                                              componentIdentifierPath:self.componentIdentifierPath
                                                                componentCategoryPath:self.componentCategoryPath
                                                                            titlePath:self.titlePath

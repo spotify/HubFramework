@@ -264,6 +264,33 @@
     XCTAssertEqual(parent, actualParent);
 }
 
+- (void)testChildGrouping
+{
+    [self.builder builderForChildWithIdentifier:@"childA"].groupIdentifier = @"groupA";
+    [self.builder builderForChildWithIdentifier:@"childB"].groupIdentifier = @"groupA";
+    [self.builder builderForChildWithIdentifier:@"childC"].groupIdentifier = @"groupB";
+    [self.builder builderForChildWithIdentifier:@"childD"].groupIdentifier = @"groupB";
+    
+    id<HUBComponentModel> const parent = [self.builder buildForIndex:0 parent:nil];
+    
+    id<HUBComponentModel> const childA = [parent childWithIdentifier:@"childA"];
+    id<HUBComponentModel> const childB = [parent childWithIdentifier:@"childB"];
+    NSArray<id<HUBComponentModel>> * const groupA = @[childA, childB];
+    
+    XCTAssertEqualObjects(childA.groupIdentifier, @"groupA");
+    XCTAssertEqualObjects(childB.groupIdentifier, @"groupA");
+    
+    id<HUBComponentModel> const childC = [parent childWithIdentifier:@"childC"];
+    id<HUBComponentModel> const childD = [parent childWithIdentifier:@"childD"];
+    NSArray<id<HUBComponentModel>> * const groupB = @[childC, childD];
+    
+    XCTAssertEqualObjects(childC.groupIdentifier, @"groupB");
+    XCTAssertEqualObjects(childD.groupIdentifier, @"groupB");
+    
+    XCTAssertEqualObjects([parent childrenInGroupWithIdentifier:@"groupA"], groupA);
+    XCTAssertEqualObjects([parent childrenInGroupWithIdentifier:@"groupB"], groupB);
+}
+
 - (void)testAddingJSONDataAndModelSerialization
 {
     NSString * const modelIdentifier = @"model";
