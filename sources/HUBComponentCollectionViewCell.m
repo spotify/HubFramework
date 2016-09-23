@@ -137,6 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self forwardTouches:touches event:event phase:HUBTouchPhaseCancelled];
 }
 
+// For the reasoning behind this code, please see the documentation for `HUBComponentCellWrapperView`
 - (void)forwardTouches:(NSSet<UITouch *> *)touches event:(nullable UIEvent *)event phase:(HUBTouchPhase)phase
 {
     if (self.cellWrapperView == nil || self.component.view == nil || event == nil) {
