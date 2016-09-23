@@ -180,14 +180,15 @@ NS_ASSUME_NONNULL_BEGIN
             return;
         }
     }
-    
+
+    [self saveStatesForVisibleComponents];
     self.collectionView.frame = self.view.bounds;
     [self.collectionView reloadData];
 
     HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
                                                                               componentRegistry:self.componentRegistry
                                                                          componentLayoutManager:self.componentLayoutManager];
-    
+
     [layout computeForCollectionViewSize:self.collectionView.frame.size];
     self.collectionView.collectionViewLayout = layout;
     
@@ -197,6 +198,14 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.viewModelHasChangedSinceLastLayoutUpdate = NO;
     [self.delegate viewControllerDidFinishRendering:self];
+}
+
+- (void)saveStatesForVisibleComponents
+{
+    for (HUBComponentCollectionViewCell *cell in self.collectionView.visibleCells) {
+        HUBComponentWrapper *wrapper = [self componentWrapperFromCell:cell];
+        [wrapper saveComponentUIState];
+    }
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator

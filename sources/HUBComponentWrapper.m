@@ -73,6 +73,21 @@ NS_ASSUME_NONNULL_BEGIN
     [(id<HUBComponentContentOffsetObserver>)self.component updateViewForChangedContentOffset:contentOffset];
 }
 
+- (void)saveComponentUIState
+{
+    if (![self.component conformsToProtocol:@protocol(HUBComponentWithRestorableUIState)]) {
+        return;
+    }
+    
+    id currentUIState = [(id<HUBComponentWithRestorableUIState>)self.component currentUIState];
+    
+    if (currentUIState == nil) {
+        [self.UIStateManager removeSavedUIStateForComponentModel:self.model];
+    } else {
+        [self.UIStateManager saveUIState:currentUIState forComponentModel:self.model];
+    }
+}
+
 #pragma mark - Property overrides
 
 - (BOOL)handlesImages
@@ -133,7 +148,6 @@ NS_ASSUME_NONNULL_BEGIN
             return;
         }
         
-        [self saveComponentUIState];
         [self.component prepareViewForReuse];
     }
     
@@ -148,6 +162,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)prepareViewForReuse
 {
+    [self saveComponentUIState];
     NSNumber * const index = @(self.model.index);
     
     HUBComponentWrapper * const parent = self.parent;
@@ -278,21 +293,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Private utilities
-
-- (void)saveComponentUIState
-{
-    if (![self.component conformsToProtocol:@protocol(HUBComponentWithRestorableUIState)]) {
-        return;
-    }
-    
-    id currentUIState = [(id<HUBComponentWithRestorableUIState>)self.component currentUIState];
-    
-    if (currentUIState == nil) {
-        [self.UIStateManager removeSavedUIStateForComponentModel:self.model];
-    } else {
-        [self.UIStateManager saveUIState:currentUIState forComponentModel:self.model];
-    }
-}
 
 - (void)restoreComponentUIStateForModel:(id<HUBComponentModel>)model
 {

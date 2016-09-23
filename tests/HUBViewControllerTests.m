@@ -1156,7 +1156,7 @@
     id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
     
     NSIndexPath * const firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-     NSIndexPath * const secondIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
+    NSIndexPath * const secondIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
     UICollectionViewCell * const cell = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:firstIndexPath];
     self.collectionView.cells[firstIndexPath] = cell;
     self.collectionView.cells[secondIndexPath] = cell;
