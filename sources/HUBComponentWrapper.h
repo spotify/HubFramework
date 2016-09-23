@@ -1,6 +1,7 @@
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentContentOffsetObserver.h"
+#import "HUBComponentWithRestorableUIState.h"
 #import "HUBHeaderMacros.h"
 
 @protocol HUBComponent;
@@ -122,6 +123,12 @@ NS_ASSUME_NONNULL_BEGIN
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
                            parent:(nullable HUBComponentWrapper *)parent HUB_DESIGNATED_INITIALIZER;
+
+/** 
+ * Manually saves the underlying component's UI state. This is normally called before the component
+ * is prepared for reuse.
+ */
+- (void)saveComponentUIState;
 
 @end
 
