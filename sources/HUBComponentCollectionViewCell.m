@@ -1,10 +1,23 @@
 #import "HUBComponentCollectionViewCell.h"
 
+#import <UIKit/UIGestureRecognizerSubclass.h>
+
 #import "HUBComponent.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBUtilities.h"
+#import "HUBComponentCellWrapperView.h"
+#import "HUBTouchPhase.h"
+#import "UIView+HUBTouchForwardingTarget.h"
+#import "UIGestureRecognizer+HUBTouchForwardingTarget.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+@interface HUBComponentCollectionViewCell ()
+
+@property (nonatomic, strong, readonly) NSMutableSet<UIEvent *> *forwardedEvents;
+@property (nonatomic, strong, nullable) HUBComponentCellWrapperView *cellWrapperView;
+
+@end
 
 @implementation HUBComponentCollectionViewCell
 
@@ -16,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self) {
         _identifier = [NSUUID UUID];
+        _forwardedEvents = [NSMutableSet new];
     }
     
     return self;
@@ -39,11 +53,20 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBComponent> const nonNilComponent = component;
     UIView * const componentView = HUBComponentLoadViewIfNeeded(nonNilComponent);
     
-    if ([componentView isKindOfClass:[UICollectionViewCell class]]) {
-        componentView.userInteractionEnabled = NO;
+    if ([componentView isKindOfClass:[UICollectionViewCell class]] || [componentView isKindOfClass:[UITableViewCell class]]) {
+        if (self.cellWrapperView == nil) {
+            HUBComponentCellWrapperView * const wrapperView = [HUBComponentCellWrapperView new];
+            self.cellWrapperView = wrapperView;
+            [self.contentView addSubview:wrapperView];
+        }
+        
+        self.cellWrapperView.componentView = componentView;
+    } else {
+        [self.cellWrapperView removeFromSuperview];
+        self.cellWrapperView = nil;
+        
+        [self.contentView addSubview:componentView];
     }
-    
-    [self.contentView addSubview:componentView];
 }
 
 #pragma mark - UICollectionViewCell
@@ -61,6 +84,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     if ([componentView isKindOfClass:[UICollectionViewCell class]]) {
         ((UICollectionViewCell *)componentView).selected = selected;
+    } else if ([componentView isKindOfClass:[UITableViewCell class]]) {
+        ((UITableViewCell *)componentView).selected = selected;
     }
 }
 
@@ -72,6 +97,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     if ([componentView isKindOfClass:[UICollectionViewCell class]]) {
         ((UICollectionViewCell *)componentView).highlighted = highlighted;
+    } else if ([componentView isKindOfClass:[UITableViewCell class]]) {
+        ((UITableViewCell *)componentView).highlighted = highlighted;
     }
 }
 
@@ -79,9 +106,77 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super layoutSubviews];
     
+    self.component.view.bounds = self.contentView.bounds;
+    self.component.view.center = self.contentView.center;
+    
+    self.cellWrapperView.bounds = self.contentView.bounds;
+    self.cellWrapperView.center = self.contentView.center;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    [self forwardTouches:touches event:event phase:HUBTouchPhaseBegan];
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event
+{
+    [super touchesMoved:touches withEvent:event];
+    [self forwardTouches:touches event:event phase:HUBTouchPhaseMoved];
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    [self forwardTouches:touches event:event phase:HUBTouchPhaseEnded];
+}
+
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event
+{
+    [super touchesCancelled:touches withEvent:event];
+    [self forwardTouches:touches event:event phase:HUBTouchPhaseCancelled];
+}
+
+// For the reasoning behind this code, please see the documentation for `HUBComponentCellWrapperView`
+- (void)forwardTouches:(NSSet<UITouch *> *)touches event:(nullable UIEvent *)event phase:(HUBTouchPhase)phase
+{
+    if (self.cellWrapperView == nil || self.component.view == nil || event == nil) {
+        return;
+    }
+    
+    UIEvent * const nonNilEvent = event;
     UIView * const componentView = self.component.view;
-    componentView.bounds = self.contentView.bounds;
-    componentView.center = self.contentView.center;
+    
+    if ([self.forwardedEvents containsObject:nonNilEvent]) {
+        [self.forwardedEvents removeObject:nonNilEvent];
+        return;
+    }
+    
+    [self.forwardedEvents addObject:nonNilEvent];
+    
+    NSMutableArray<id<HUBTouchForwardingTarget>> * const targets = [NSMutableArray arrayWithObject:componentView];
+    NSArray * const gestureRecognizers = componentView.gestureRecognizers;
+    
+    if (gestureRecognizers != nil) {
+        [targets addObjectsFromArray:gestureRecognizers];
+    }
+    
+    for (id<HUBTouchForwardingTarget> const target in targets) {
+        switch (phase) {
+            case HUBTouchPhaseBegan:
+                [target touchesBegan:touches withEvent:nonNilEvent];
+                break;
+            case HUBTouchPhaseMoved:
+                [target touchesMoved:touches withEvent:nonNilEvent];
+                break;
+            case HUBTouchPhaseEnded:
+                [target touchesEnded:touches withEvent:nonNilEvent];
+                break;
+            case HUBTouchPhaseCancelled:
+                [target touchesCancelled:touches withEvent:nonNilEvent];
+                break;
+        }
+    }
 }
 
 @end

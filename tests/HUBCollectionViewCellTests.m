@@ -2,6 +2,8 @@
 
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBComponentMock.h"
+#import "HUBGestureRecognizerMock.h"
+#import "HUBTouchPhase.h"
 
 @interface HUBCollectionViewCellTests : XCTestCase
 
@@ -20,7 +22,6 @@
     
     self.component = [HUBComponentMock new];
     self.cell = [[HUBComponentCollectionViewCell alloc] initWithFrame:CGRectZero];
-    self.cell.component = self.component;
 }
 
 #pragma mark - Tests
@@ -34,6 +35,7 @@
 {
     UICollectionViewCell * const componentCell = [[UICollectionViewCell alloc] initWithFrame:CGRectZero];
     self.component.view = componentCell;
+    self.cell.component = self.component;
     
     self.cell.selected = YES;
     XCTAssertTrue(componentCell.isSelected);
@@ -46,6 +48,7 @@
 {
     UICollectionViewCell * const componentCell = [[UICollectionViewCell alloc] initWithFrame:CGRectZero];
     self.component.view = componentCell;
+    self.cell.component = self.component;
     
     self.cell.highlighted = YES;
     XCTAssertTrue(componentCell.isHighlighted);
@@ -56,11 +59,33 @@
 
 - (void)testNoSelectionOrHighlightForwardingForNonCollectionViewCellComponentViews
 {
-    [self.component loadView];
+    self.cell.component = self.component;
     
     // Shouldn't generate an exception
     self.cell.selected = YES;
     self.cell.highlighted = YES;
+}
+
+- (void)testTouchEventsForwardedToComponentCellGestureRecognizer
+{
+    UICollectionViewCell * const componentCell = [[UICollectionViewCell alloc] initWithFrame:CGRectZero];
+    self.component.view = componentCell;
+    self.cell.component = self.component;
+    
+    HUBGestureRecognizerMock * const gestureRecgonizer = [HUBGestureRecognizerMock new];
+    [componentCell addGestureRecognizer:gestureRecgonizer];
+    
+    [self.cell touchesBegan:[NSSet new] withEvent:[UIEvent new]];
+    XCTAssertEqualObjects(gestureRecgonizer.touchPhaseValue, @(HUBTouchPhaseBegan));
+    
+    [self.cell touchesMoved:[NSSet new] withEvent:[UIEvent new]];
+    XCTAssertEqualObjects(gestureRecgonizer.touchPhaseValue, @(HUBTouchPhaseMoved));
+    
+    [self.cell touchesEnded:[NSSet new] withEvent:[UIEvent new]];
+    XCTAssertEqualObjects(gestureRecgonizer.touchPhaseValue, @(HUBTouchPhaseEnded));
+    
+    [self.cell touchesCancelled:[NSSet new] withEvent:[UIEvent new]];
+    XCTAssertEqualObjects(gestureRecgonizer.touchPhaseValue, @(HUBTouchPhaseCancelled));
 }
 
 @end

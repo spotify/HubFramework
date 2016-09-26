@@ -35,6 +35,10 @@
 		8A6529E61D82B313007B1A15 /* HUBActionRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6529E51D82B313007B1A15 /* HUBActionRegistryTests.m */; };
 		8A6529F91D82DC33007B1A15 /* HUBActionHandlerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6529F81D82DC33007B1A15 /* HUBActionHandlerWrapper.m */; };
 		8A6529FC1D82DF18007B1A15 /* HUBSelectionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6529FB1D82DF18007B1A15 /* HUBSelectionAction.m */; };
+		8A684AB51D951C6B00E29513 /* HUBComponentCellWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A684AB41D951C6B00E29513 /* HUBComponentCellWrapperView.m */; };
+		8A684ACC1D95331400E29513 /* UIView+HUBTouchForwardingTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A684ACB1D95331400E29513 /* UIView+HUBTouchForwardingTarget.m */; };
+		8A684ACF1D95333B00E29513 /* UIGestureRecognizer+HUBTouchForwardingTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A684ACE1D95333B00E29513 /* UIGestureRecognizer+HUBTouchForwardingTarget.m */; };
+		8A684AD61D95387C00E29513 /* HUBGestureRecognizerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A684AD51D95387C00E29513 /* HUBGestureRecognizerMock.m */; };
 		8A69DBAA1C7DF8C000F5EFC6 /* HUBCollectionViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A69DBA91C7DF8C000F5EFC6 /* HUBCollectionViewFactory.m */; };
 		8A69DBAD1C7DF9D300F5EFC6 /* HUBCollectionViewFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A69DBAC1C7DF9D300F5EFC6 /* HUBCollectionViewFactoryMock.m */; };
 		8A69DBB01C7DFA1A00F5EFC6 /* HUBCollectionViewMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A69DBAF1C7DFA1A00F5EFC6 /* HUBCollectionViewMock.m */; };
@@ -228,6 +232,16 @@
 		8A6529F81D82DC33007B1A15 /* HUBActionHandlerWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBActionHandlerWrapper.m; sourceTree = "<group>"; };
 		8A6529FA1D82DF18007B1A15 /* HUBSelectionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBSelectionAction.h; sourceTree = "<group>"; };
 		8A6529FB1D82DF18007B1A15 /* HUBSelectionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBSelectionAction.m; sourceTree = "<group>"; };
+		8A684AB31D951C6B00E29513 /* HUBComponentCellWrapperView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentCellWrapperView.h; sourceTree = "<group>"; };
+		8A684AB41D951C6B00E29513 /* HUBComponentCellWrapperView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentCellWrapperView.m; sourceTree = "<group>"; };
+		8A684AC71D952F7400E29513 /* HUBTouchPhase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBTouchPhase.h; sourceTree = "<group>"; };
+		8A684AC81D9532C900E29513 /* HUBTouchForwardingTarget.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBTouchForwardingTarget.h; sourceTree = "<group>"; };
+		8A684ACA1D95331400E29513 /* UIView+HUBTouchForwardingTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HUBTouchForwardingTarget.h"; sourceTree = "<group>"; };
+		8A684ACB1D95331400E29513 /* UIView+HUBTouchForwardingTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+HUBTouchForwardingTarget.m"; sourceTree = "<group>"; };
+		8A684ACD1D95333B00E29513 /* UIGestureRecognizer+HUBTouchForwardingTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+HUBTouchForwardingTarget.h"; sourceTree = "<group>"; };
+		8A684ACE1D95333B00E29513 /* UIGestureRecognizer+HUBTouchForwardingTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+HUBTouchForwardingTarget.m"; sourceTree = "<group>"; };
+		8A684AD41D95387C00E29513 /* HUBGestureRecognizerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBGestureRecognizerMock.h; sourceTree = "<group>"; };
+		8A684AD51D95387C00E29513 /* HUBGestureRecognizerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBGestureRecognizerMock.m; sourceTree = "<group>"; };
 		8A69DBA81C7DF8C000F5EFC6 /* HUBCollectionViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBCollectionViewFactory.h; sourceTree = "<group>"; };
 		8A69DBA91C7DF8C000F5EFC6 /* HUBCollectionViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewFactory.m; sourceTree = "<group>"; };
 		8A69DBAB1C7DF9D300F5EFC6 /* HUBCollectionViewFactoryMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBCollectionViewFactoryMock.h; sourceTree = "<group>"; };
@@ -454,6 +468,7 @@
 				8AA29C891C4FAD4200E972B7 /* Components */,
 				8A49BAF51C777F97005F7453 /* Images & icons */,
 				8A2A72F01D4B75C500141619 /* Actions */,
+				8A684AC91D9532D300E29513 /* Touch handling */,
 				8A2061101CCA1971008C34E3 /* Utilities */,
 			);
 			path = sources;
@@ -696,6 +711,28 @@
 			name = Actions;
 			sourceTree = "<group>";
 		};
+		8A684AC91D9532D300E29513 /* Touch handling */ = {
+			isa = PBXGroup;
+			children = (
+				8A684AC71D952F7400E29513 /* HUBTouchPhase.h */,
+				8A684AC81D9532C900E29513 /* HUBTouchForwardingTarget.h */,
+				8A684ACA1D95331400E29513 /* UIView+HUBTouchForwardingTarget.h */,
+				8A684ACB1D95331400E29513 /* UIView+HUBTouchForwardingTarget.m */,
+				8A684ACD1D95333B00E29513 /* UIGestureRecognizer+HUBTouchForwardingTarget.h */,
+				8A684ACE1D95333B00E29513 /* UIGestureRecognizer+HUBTouchForwardingTarget.m */,
+			);
+			name = "Touch handling";
+			sourceTree = "<group>";
+		};
+		8A684AD31D95386800E29513 /* Gestures */ = {
+			isa = PBXGroup;
+			children = (
+				8A684AD41D95387C00E29513 /* HUBGestureRecognizerMock.h */,
+				8A684AD51D95387C00E29513 /* HUBGestureRecognizerMock.m */,
+			);
+			name = Gestures;
+			sourceTree = "<group>";
+		};
 		8A786B971C58E3B100B2AB9E /* Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -798,6 +835,8 @@
 				8AFD98511D09C67D00AFF898 /* HUBComponentUIStateManager.m */,
 				8AFD56271D477E4700E80C00 /* HUBComponentResizeObservingView.h */,
 				8AFD56281D477E4700E80C00 /* HUBComponentResizeObservingView.m */,
+				8A684AB31D951C6B00E29513 /* HUBComponentCellWrapperView.h */,
+				8A684AB41D951C6B00E29513 /* HUBComponentCellWrapperView.m */,
 				8A9ED75B1D4A049C006B27D8 /* HUBComponentReusePool.h */,
 				8A9ED75C1D4A049C006B27D8 /* HUBComponentReusePool.m */,
 			);
@@ -877,6 +916,7 @@
 				8A6529EA1D82B43E007B1A15 /* Components */,
 				8A6529ED1D82B469007B1A15 /* Images & icons */,
 				8A6529F01D82B4BD007B1A15 /* Actions */,
+				8A684AD31D95386800E29513 /* Gestures */,
 			);
 			name = Mocks;
 			path = mocks;
@@ -1015,6 +1055,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A684ACC1D95331400E29513 /* UIView+HUBTouchForwardingTarget.m in Sources */,
+				8A684AD61D95387C00E29513 /* HUBGestureRecognizerMock.m in Sources */,
 				8A8808A01C21AD0900ADB737 /* HUBComponentRegistryImplementation.m in Sources */,
 				8AA29C881C4FAB6200E972B7 /* HUBComponentImageDataImplementation.m in Sources */,
 				8A6ACAB31D7D893400102EA9 /* HUBActionContextImplementation.m in Sources */,
@@ -1046,9 +1088,11 @@
 				8AA97C141C60BD6D0078F19D /* HUBFeatureRegistration.m in Sources */,
 				8AF9FA071C5254F5003F3D6C /* HUBViewModelImplementation.m in Sources */,
 				8AD00A091CC77C950012A9AF /* HUBIconImplementation.m in Sources */,
+				8A684AB51D951C6B00E29513 /* HUBComponentCellWrapperView.m in Sources */,
 				8A786BAB1C5A326300B2AB9E /* HUBJSONSchemaImplementation.m in Sources */,
 				8A2A72EB1D4B726800141619 /* HUBComponentTargetJSONSchemaImplementation.m in Sources */,
 				8AD064561C64B6DB0086C081 /* HUBComponentModelJSONSchemaImplementation.m in Sources */,
+				8A684ACF1D95333B00E29513 /* UIGestureRecognizer+HUBTouchForwardingTarget.m in Sources */,
 				8AD064691C68DEA10086C081 /* HUBViewControllerImplementation.m in Sources */,
 				8A786BA81C5A2E8F00B2AB9E /* HUBJSONSchemaRegistryImplementation.m in Sources */,
 				8A2A72E61D4B6F1700141619 /* HUBComponentTargetBuilderImplementation.m in Sources */,
