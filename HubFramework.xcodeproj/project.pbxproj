@@ -1050,7 +1050,7 @@
 		8A0754961C21A79200AFAD38 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Spotify;
 				TargetAttributes = {
 					8A07549D1C21A79200AFAD38 = {
