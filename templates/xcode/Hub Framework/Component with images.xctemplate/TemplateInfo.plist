@@ -6,8 +6,6 @@
 	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
 	<key>Description</key>
 	<string>A class defining a Hub Framework component that handles &amp; displays loaded images</string>
-	<key>SortOrder</key>
-	<string>-1</string>
 	<key>DefaultCompletionName</key>
 	<string>HubComponent</string>
 	<key>Platforms</key>

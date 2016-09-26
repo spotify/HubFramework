@@ -6,8 +6,6 @@
 	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
 	<key>Description</key>
 	<string>A class defining a Hub Framework component that observes the content offset of its container view, and can react to it</string>
-	<key>SortOrder</key>
-	<string>-2</string>
 	<key>DefaultCompletionName</key>
 	<string>HubComponent</string>
 	<key>Platforms</key>
