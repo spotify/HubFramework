@@ -23,42 +23,42 @@
     },
     {
       "file": "/Users/spotify-buildagent/buildAgent/work/1881a27d643858a0/include/HubFramework/HUBManager.h",
-      "line": 85,
+      "line": 106,
       "symbol": "HUBManager.+new",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
     },
     {
       "file": "/Users/spotify-buildagent/buildAgent/work/1881a27d643858a0/include/HubFramework/HUBManager.h",
-      "line": 85,
+      "line": 106,
       "symbol": "HUBManager.-init",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/spotify-buildagent/buildAgent/work/1881a27d643858a0/include/HubFramework/HUBManager.h",
-      "line": 85,
+      "line": 106,
       "symbol": "HUBManager.-initWithCoder:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/spotify-buildagent/buildAgent/work/1881a27d643858a0/include/HubFramework/HUBViewURIPredicate.h",
-      "line": 67,
+      "line": 88,
       "symbol": "HUBViewURIPredicate.+new",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
     },
     {
       "file": "/Users/spotify-buildagent/buildAgent/work/1881a27d643858a0/include/HubFramework/HUBViewURIPredicate.h",
-      "line": 67,
+      "line": 88,
       "symbol": "HUBViewURIPredicate.-init",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/spotify-buildagent/buildAgent/work/1881a27d643858a0/include/HubFramework/HUBViewURIPredicate.h",
-      "line": 67,
+      "line": 88,
       "symbol": "HUBViewURIPredicate.-initWithCoder:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
