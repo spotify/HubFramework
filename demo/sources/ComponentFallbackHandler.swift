@@ -22,6 +22,7 @@
 import Foundation
 import HubFramework
 
+/// Component fallback handler used when setting up HUBManager
 class ComponentFallbackHandler: NSObject, HUBComponentFallbackHandler {
     var defaultComponentNamespace: String {
         return "default"

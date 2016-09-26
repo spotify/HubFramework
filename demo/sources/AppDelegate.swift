@@ -22,8 +22,8 @@
 import UIKit
 import HubFramework
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+/// The delegate of the application
+@UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var navigationController: UINavigationController?
     var hubManager: HUBManager?
@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.rootViewController = self.navigationController
         window.makeKeyAndVisible()
         
-        self.open(viewURI: URL(string: "demo:root")!, animated: false)
+        self.registerAndOpenRootFeature()
         
         return true
     }
@@ -63,12 +63,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
     }
     
+    private func registerAndOpenRootFeature() {
+        self.hubManager?.featureRegistry.registerFeature(
+            withIdentifier: "root",
+            viewURIPredicate: HUBViewURIPredicate(viewURI: .rootViewURI),
+            title: "Root feature",
+            contentOperationFactories: [RootContentOperationFactory()],
+            contentReloadPolicy: nil,
+            customJSONSchemaIdentifier: nil,
+            actionHandler: nil,
+            viewControllerScrollHandler: nil
+        )
+        
+        self.open(viewURI: .rootViewURI, animated: false)
+    }
+    
     @discardableResult private func open(viewURI: URL, animated: Bool) -> Bool {
         guard let viewController = self.hubManager?.viewControllerFactory.createViewController(forViewURI: viewURI) else {
             return false
         }
         
+        viewController.view.backgroundColor = .white
         self.navigationController?.pushViewController(viewController, animated: animated)
+        
         return true
     }
 }
