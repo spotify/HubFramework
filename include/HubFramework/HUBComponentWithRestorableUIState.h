@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  the component was sent `configureViewWithModel:`, before the component is about to appear on the
  *  screen.
  */
-- (void)restoreUIState:(id)state;
+- (void)restoreUIState:(id)state NS_SWIFT_NAME(restoreUIState(_:));
 
 @end
 
