@@ -30,6 +30,7 @@
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBComponentDefaults.h"
 #import "HUBComponentFallbackHandler.h"
+#import "HUBDefaultImageLoaderFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -89,6 +90,8 @@ NS_ASSUME_NONNULL_BEGIN
         
         HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionAction];
         
+        id<HUBImageLoaderFactory> const imageLoaderFactoryToUse = imageLoaderFactory ?: [HUBDefaultImageLoaderFactory new];
+        
         HUBViewControllerFactoryImplementation * const viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:viewModelLoaderFactory
                                                                                                                                               featureRegistry:featureRegistry
                                                                                                                                             componentRegistry:componentRegistry
@@ -96,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                                                actionRegistry:actionRegistry
                                                                                                                                          defaultActionHandler:defaultActionHandler
                                                                                                                                        componentLayoutManager:componentLayoutManager
-                                                                                                                                           imageLoaderFactory:imageLoaderFactory];
+                                                                                                                                           imageLoaderFactory:imageLoaderFactoryToUse];
         
         _featureRegistry = featureRegistry;
         _componentRegistry = componentRegistry;
