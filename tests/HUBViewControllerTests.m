@@ -1568,6 +1568,18 @@
     XCTAssertEqual(self.contentOperation.actionContext, actionContext);
 }
 
+- (void)testAssigningTitle
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.navigationBarTitle = @"Nav bar title";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqualObjects(self.viewController.title, @"Nav bar title");
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel

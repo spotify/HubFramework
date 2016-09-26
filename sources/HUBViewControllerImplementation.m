@@ -285,6 +285,7 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBViewControllerDelegate> const delegate = self.delegate;
     [delegate viewController:self willUpdateWithViewModel:viewModel];
     
+    self.title = viewModel.navigationBarTitle;
     self.viewModel = viewModel;
     self.viewModelIsInitial = NO;
     self.viewModelHasChangedSinceLastLayoutUpdate = YES;
