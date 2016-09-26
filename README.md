@@ -33,7 +33,7 @@ There are also a series of **programming guides** that each introduce you to dif
 - [Content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html)
 - [Layout programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html)
 - [JSON programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/json-programming-guide.html)
- 
+
 ### Documentation
 
 The Hub Framework’s API is also well documented and we generate both a [documentation website](https://ghe.spotify.net/pages/iOS/HubFramework/) as well as a DocSet for the documentation app [Dash](https://kapeli.com/dash). The documentation is also written in such a way that Xcode will present it on usage.
@@ -55,11 +55,4 @@ We also offer workshops to help new developers familiarize themselves with the f
 
 ## Contributing
 
-Anyone using the Hub Framework is more than welcome to contribute to it! Together we can make the framework even more capable, and help each other fix any issues that we might find.
-
-Important to note before though, is that we really want to avoid "quick fix" style commits, to be able to focus on the long-term stability and maintainability of the framework. Here are some quick guidelines:
-
-- Always fully unit test your code.
-- Always fully document APIs, in a way that makes new users of those APIs understand how they work, and highlight things that are good to keep in mind when using them.
-- Always use explicit storage and nullability specifiers. We run the static analyzer on every build, and by using explicit rules about nullability we can leverage the analyzer to increase our code quality & predictability. Being explicit also lets your fellow developers easily understand the intent of the code.
-- For larger API changes, it's recommended (but not required) to open an RFC using a GitHub issue, where you can get quicker feedback on your API idea instead of having to wait until it has been implemented.
+Anyone is more than welcome to contribute to the Hub Framework! Together we can make the framework even more capable, and help each other fix any issues that we might find. However, before you contribute, please read [our contribution guidlines](CONTRIBUTING.md).
