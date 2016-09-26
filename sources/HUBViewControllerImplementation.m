@@ -46,6 +46,7 @@
 #import "HUBActionContextImplementation.h"
 #import "HUBActionRegistry.h"
 #import "HUBActionHandler.h"
+#import "HUBViewModelDiff.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -72,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *componentUIStateManager;
 @property (nonatomic, strong, readonly) HUBComponentReusePool *childComponentReusePool;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
+@property (nonatomic, strong, nullable) HUBViewModelDiff *lastViewModelDiff;
 @property (nonatomic) BOOL viewModelIsInitial;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
 
@@ -205,6 +207,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     [self saveStatesForVisibleComponents];
     self.collectionView.frame = self.view.bounds;
+
     [self.collectionView reloadData];
 
     HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
@@ -306,6 +309,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBViewControllerDelegate> const delegate = self.delegate;
     [delegate viewController:self willUpdateWithViewModel:viewModel];
+
+    self.lastViewModelDiff = [HUBViewModelDiff diffFromViewModel:self.viewModel toViewModel:viewModel];
     
     self.title = viewModel.navigationBarTitle;
     self.viewModel = viewModel;
