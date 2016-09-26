@@ -1,5 +1,7 @@
 #import "HUBContentOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Extended Hub content operation protocol that adds the ability to add initial content to a view
  *
@@ -27,3 +29,5 @@
                  toViewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder;
 
 @end
+
+NS_ASSUME_NONNULL_END

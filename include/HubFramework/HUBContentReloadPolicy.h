@@ -2,6 +2,8 @@
 
 @protocol HUBViewModel;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Protocol used to define objects that represent a policy for when the content for a view should be reloaded
  *
@@ -27,3 +29,5 @@
 - (BOOL)shouldReloadContentForViewURI:(NSURL *)viewURI currentViewModel:(id<HUBViewModel>)currentViewModel;
 
 @end
+
+NS_ASSUME_NONNULL_END

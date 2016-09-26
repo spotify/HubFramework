@@ -2,6 +2,8 @@
 
 @protocol HUBActionContext;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Protocol used to define Hub Framework actions
  *
@@ -27,3 +29,5 @@
 - (BOOL)performWithContext:(id<HUBActionContext>)context;
 
 @end
+
+NS_ASSUME_NONNULL_END
