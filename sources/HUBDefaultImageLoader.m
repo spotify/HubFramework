@@ -2,6 +2,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+static NSTimeInterval const HUBDefaultImageLoaderCacheCutoffTimeInterval = 0.7;
+
 @interface HUBDefaultImageLoader ()
 
 @property (nonatomic, strong, readonly) NSURLSession *session;
@@ -62,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
             UIGraphicsEndImageContext();
         }
         
-        BOOL const loadedFromCache = [[NSDate date] timeIntervalSinceDate:startDate] > 0.07;
+        BOOL const loadedFromCache = [[NSDate date] timeIntervalSinceDate:startDate] > HUBDefaultImageLoaderCacheCutoffTimeInterval;
         [delegate imageLoader:strongSelf didLoadImage:image forURL:imageURL fromCache:loadedFromCache];
     }];
 
