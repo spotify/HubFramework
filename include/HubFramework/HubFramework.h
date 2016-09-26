@@ -23,6 +23,7 @@
 #import "HUBContentOperationFactory.h"
 #import "HUBContentOperation.h"
 #import "HUBContentOperationWithInitialContent.h"
+#import "HUBContentOperationActionObserver.h"
 #import "HUBContentReloadPolicy.h"
 
 // View
@@ -42,6 +43,7 @@
 #import "HUBComponentWithRestorableUIState.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
+#import "HUBComponentActionPerformer.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBComponentFactory.h"
 #import "HUBComponentFactoryShowcaseNameProvider.h"

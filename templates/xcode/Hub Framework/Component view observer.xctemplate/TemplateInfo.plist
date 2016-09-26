@@ -4,15 +4,52 @@
 <dict>
 	<key>Kind</key>
 	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
-	<key>Description</key>
-	<string>A class defining a Hub Framework component that observes its own view to be able to react to when it appears or to do internal layouting</string>
-	<key>DefaultCompletionName</key>
-	<string>HubComponent</string>
 	<key>Platforms</key>
 	<array>
 		<string>com.apple.platform.iphoneos</string>
 	</array>
-	<key>MainTemplateFile</key>
-	<string>___FILEBASENAME___.m</string>
+    <key>Options</key>
+	<array>
+        <dict>
+            <key>Identifier</key>
+            <string>productName</string>
+            <key>Required</key>
+            <true/>
+            <key>Name</key>
+            <string>Class name:</string>
+            <key>Description</key>
+            <string>The name of the class to create</string>
+            <key>Type</key>
+            <string>text</string>
+            <key>NotPersisted</key>
+            <true/>
+            <key>Default</key>
+            <string>Component</string>
+        </dict>
+        <dict>
+			<key>Identifier</key>
+			<string>languageChoice</string>
+			<key>Required</key>
+			<true/>
+			<key>Name</key>
+			<string>Language:</string>
+			<key>Type</key>
+			<string>popup</string>
+			<key>Default</key>
+			<string>Objective-C</string>
+			<key>Values</key>
+			<array>
+				<string>Swift</string>
+				<string>Objective-C</string>
+			</array>
+			<key>MainTemplateFiles</key>
+			<dict>
+				<key>Swift</key>
+				<string>___FILEBASENAME___.swift</string>
+				<key>Objective-C</key>
+				<string>___FILEBASENAME___.m</string>
+			</dict>
+		</dict>
+    </array>
 </dict>
 </plist>

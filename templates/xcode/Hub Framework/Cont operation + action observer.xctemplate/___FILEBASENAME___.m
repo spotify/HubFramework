@@ -4,6 +4,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation ___FILEBASENAMEASIDENTIFIER___
 
+@synthesize delegate = _delegate;
+
 - (void)performForViewURI:(NSURL *)viewURI
               featureInfo:(id<HUBFeatureInfo>)featureInfo
         connectivityState:(HUBConnectivityState)connectivityState

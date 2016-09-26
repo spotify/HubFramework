@@ -7,6 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<id<HUBContentOperation>> *)createContentOperationsForViewURI:(NSURL *)viewURI
 {
     // Create the content operations to use for a view, the order determines the loading order
+    return @[];
 }
 
 @end

@@ -1,5 +1,7 @@
 #import "HUBContentOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Extended Hub content operation protocol that adds the ability to add initial content to a view
  *
@@ -24,6 +26,8 @@
  *  In case no relevant content can be added by the content operation, it can just implement this method as a no-op.
  */
 - (void)addInitialContentForViewURI:(NSURL *)viewURI
-                 toViewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder;
+                 toViewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder NS_SWIFT_NAME(addInitialContent(viewURI:viewModelBuilder:));
 
 @end
+
+NS_ASSUME_NONNULL_END
