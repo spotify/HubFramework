@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
     // Prepare your view for reuse, reset state, remove highlights, etc.
 }
 
-- (void)configureViewWithModel:(id<HUBComponentModel>)model
+- (void)configureViewWithModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
     // Do your model->view data binding here
 }
