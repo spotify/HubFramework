@@ -5,7 +5,7 @@
 	<key>Kind</key>
 	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
 	<key>Description</key>
-	<string>A class defining a Hub Framework component that observes the content offset of its container view, and can react to it</string>
+	<string>A class defining a Hub Framework component that can perform actions</string>
 	<key>DefaultCompletionName</key>
 	<string>HubComponent</string>
 	<key>Platforms</key>

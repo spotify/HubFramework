@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  `HUBComponentContentOffsetObserver`: For components that react to the view's content offset.
  *
  *  `HUBComponentViewObserver`: For components that observe their view for various events.
+ *
+ *  `HUBComponentActionPerformer`: For components that can perform actions (see `HUBAction`).
  */
 @protocol HUBComponent <NSObject>
 

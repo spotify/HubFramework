@@ -6,8 +6,6 @@
 	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
 	<key>Description</key>
 	<string>A class that creates content operations for a Hub Framework-powered feature</string>
-	<key>SortOrder</key>
-	<string>-3</string>
 	<key>DefaultCompletionName</key>
 	<string>HubContentOperationFactory</string>
 	<key>Platforms</key>

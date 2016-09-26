@@ -5,6 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation ___FILEBASENAMEASIDENTIFIER___
 
 @synthesize view = _view;
+@synthesize actionDelegate = _actionDelegate;
 
 - (NSSet<HUBComponentLayoutTrait *> *)layoutTraits
 {
@@ -32,17 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)configureViewWithModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
     // Do your model->view data binding here
-}
-
-- (nullable id)currentUIState
-{
-    // Return an object that describes the component's current UI state
-    return nil;
-}
-
-- (void)restoreUIState:(id)state
-{
-    // Restore the component's UI state from a saved state
 }
 
 @end

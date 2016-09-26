@@ -5,11 +5,9 @@
 	<key>Kind</key>
 	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
 	<key>Description</key>
-	<string>A class that performs a content operation (for example data loading) for a Hub Framework-powered view</string>
-	<key>SortOrder</key>
-	<string>-3</string>
+	<string>A class defining a Hub Framework action handler</string>
 	<key>DefaultCompletionName</key>
-	<string>HubContentOperation</string>
+	<string>HubActionHandler</string>
 	<key>Platforms</key>
 	<array>
 		<string>com.apple.platform.iphoneos</string>
