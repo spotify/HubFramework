@@ -25,7 +25,7 @@ To learn more about content operations, check out the [Content programming guide
 
 ## Getting started
 
-To enable you to quickly get started using the Hub Framework, we've created a [**getting started guide**](https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html) that will give you a step-by-step guide to building your first view using it.
+To enable you to quickly get started using the Hub Framework, we've created a [**setup guide**](https://ghe.spotify.net/pages/iOS/HubFramework/setup-guide.html) that walks you through how to set it up in an application, as well as a [**getting started guide**](https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html) that will give you a step-by-step tutorial to building your first view using it.
 
 There are also a series of **programming guides** that each introduce you to different aspects of the framework.
 
