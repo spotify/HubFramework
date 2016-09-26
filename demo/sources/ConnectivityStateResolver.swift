@@ -1,6 +1,7 @@
 import Foundation
 import HubFramework
 
+/// Connectivity state resolver used when setting up HUBManager
 class ConnectivityStateResolver: NSObject, HUBConnectivityStateResolver {
     private let observers = NSHashTable<HUBConnectivityStateResolverObserver>.weakObjects()
     

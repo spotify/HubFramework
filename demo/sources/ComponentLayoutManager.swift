@@ -1,6 +1,7 @@
 import Foundation
 import HubFramework
 
+/// Component layout manager used when setting up HUBManager
 class ComponentLayoutManager: NSObject, HUBComponentLayoutManager {
     func marginBetweenComponent(withLayoutTraits layoutTraits: Set<HUBComponentLayoutTrait>, andContentEdge contentEdge: HUBComponentLayoutContentEdge) -> CGFloat {
         return 0
