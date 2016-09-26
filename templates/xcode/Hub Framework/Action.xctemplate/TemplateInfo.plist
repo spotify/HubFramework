@@ -5,9 +5,9 @@
 	<key>Kind</key>
 	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
 	<key>Description</key>
-	<string>A class defining a Hub Framework component that can perform actions</string>
+	<string>A class defining a Hub Framework action</string>
 	<key>DefaultCompletionName</key>
-	<string>HubComponent</string>
+	<string>HubAction</string>
 	<key>Platforms</key>
 	<array>
 		<string>com.apple.platform.iphoneos</string>

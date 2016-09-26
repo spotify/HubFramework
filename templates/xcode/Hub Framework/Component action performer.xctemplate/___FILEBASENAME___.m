@@ -5,6 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation ___FILEBASENAMEASIDENTIFIER___
 
 @synthesize view = _view;
+@synthesize actionDelegate = _actionDelegate;
 
 - (NSSet<HUBComponentLayoutTrait *> *)layoutTraits
 {
