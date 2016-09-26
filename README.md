@@ -33,13 +33,13 @@ There are also a series of **programming guides** that each introduce you to dif
 - [Content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html)
 - [Layout programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html)
 - [JSON programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/json-programming-guide.html)
+- [Action programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/action-programming-guide.html)
 
 ### Documentation
 
 The Hub Framework’s API is also well documented and we generate both a [documentation website](https://ghe.spotify.net/pages/iOS/HubFramework/) as well as a DocSet for the documentation app [Dash](https://kapeli.com/dash). The documentation is also written in such a way that Xcode will present it on usage.
 
 The Dash documentation is updated automatically for you on any changes to HubFramework. Get it by subscribing to the [https://ghe.spotify.net/pages/iOS/HubFramework/docsets/HubFramework.xml](dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml) feed.
-
 
 ## Xcode file templates
 
