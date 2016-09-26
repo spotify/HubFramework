@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param size The size of the image to return
  *  @param color The color of the icon image to return
  */
-- (nullable UIImage *)imageWithSize:(CGSize)size color:(UIColor *)color;
+- (nullable UIImage *)imageWithSize:(CGSize)size color:(UIColor *)color NS_SWIFT_NAME(imageWith(size:color:));
 
 @end
 
