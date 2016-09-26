@@ -2283,6 +2283,8 @@
   component is about to be displayed on the screen. The framework itself does not employ any caching on images, so
   it&rsquo;s up to each implementation of this protocol to handle that.</p>
 
+<p>In case you don&rsquo;t supply your own image loader implementation, the default <code>HUBDefaultImageLoader</code> is used.</p>
+
 <p>See also <code><a href="Protocols/HUBImageLoaderFactory.html">HUBImageLoaderFactory</a></code> which is used to create instances conforming to this protocol.</p>
 
                         <a href="Protocols/HUBImageLoader.html" class="slightly-smaller">See more</a>
@@ -2323,8 +2325,11 @@
                         <p>Protocol that objects that create image loaders for use with the Hub Framework conform to</p>
 
 <p>You conform to this protocol in a custom object and pass that object when setting up <code><a href="Classes/HUBManager.html">HUBManager</a></code>. The
-  Hub Framework will then use the factory to create an image loader for each view controller that it creates.
-  See <code><a href="Protocols/HUBImageLoader.html">HUBImageLoader</a></code> for more information.</p>
+  Hub Framework will then use the factory to create an image loader for each view controller that it creates.</p>
+
+<p>In case you don&rsquo;t supply your own image loader factory, the default <code>HUBDefaultImageLoaderFactory</code> is used.</p>
+
+<p>See <code><a href="Protocols/HUBImageLoader.html">HUBImageLoader</a></code> for more information.</p>
 
                         <a href="Protocols/HUBImageLoaderFactory.html" class="slightly-smaller">See more</a>
                       </div>

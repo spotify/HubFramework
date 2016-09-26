@@ -375,8 +375,11 @@
             <p>Protocol that objects that create image loaders for use with the Hub Framework conform to</p>
 
 <p>You conform to this protocol in a custom object and pass that object when setting up <code><a href="../Classes/HUBManager.html">HUBManager</a></code>. The
-  Hub Framework will then use the factory to create an image loader for each view controller that it creates.
-  See <code><a href="../Protocols/HUBImageLoader.html">HUBImageLoader</a></code> for more information.</p>
+  Hub Framework will then use the factory to create an image loader for each view controller that it creates.</p>
+
+<p>In case you don&rsquo;t supply your own image loader factory, the default <code>HUBDefaultImageLoaderFactory</code> is used.</p>
+
+<p>See <code><a href="../Protocols/HUBImageLoader.html">HUBImageLoader</a></code> for more information.</p>
 
           </div>
         </section>
