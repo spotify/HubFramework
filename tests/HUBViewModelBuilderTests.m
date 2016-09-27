@@ -98,16 +98,26 @@
     XCTAssertNil(self.builder.headerComponentModelBuilder.title);
 }
 
-- (void)testAllBodyComponentBuilders
+- (void)testAllBodyComponentModelBuilders
 {
-    NSMutableArray * const arrayOfBodyComponentModelBuilders = [NSMutableArray new];
-    [arrayOfBodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"body4"]];
-    [arrayOfBodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"body3"]];
-    [arrayOfBodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"body2"]];
-    [arrayOfBodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"body1"]];
+    NSMutableArray * const bodyComponentModelBuilders = [NSMutableArray new];
+    [bodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"A"]];
+    [bodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"B"]];
+    [bodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"C"]];
+    [bodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"D"]];
     
-    NSArray<id<HUBComponentModelBuilder>> * const allBodyComponentModelBuilders = [self.builder allBodyComponentModelBuilders];
-    XCTAssert([allBodyComponentModelBuilders isEqualToArray:arrayOfBodyComponentModelBuilders]);
+    XCTAssertEqualObjects([self.builder allBodyComponentModelBuilders], bodyComponentModelBuilders);
+}
+
+- (void)testAllOverlayComponentModelBuilders
+{
+    NSMutableArray * const overlayComponentModelBuilders = [NSMutableArray new];
+    [overlayComponentModelBuilders addObject:[self.builder builderForOverlayComponentModelWithIdentifier:@"A"]];
+    [overlayComponentModelBuilders addObject:[self.builder builderForOverlayComponentModelWithIdentifier:@"B"]];
+    [overlayComponentModelBuilders addObject:[self.builder builderForOverlayComponentModelWithIdentifier:@"C"]];
+    [overlayComponentModelBuilders addObject:[self.builder builderForOverlayComponentModelWithIdentifier:@"D"]];
+    
+    XCTAssertEqualObjects([self.builder allOverlayComponentModelBuilders], overlayComponentModelBuilders);
 }
 
 - (void)testBodyComponentBuilders

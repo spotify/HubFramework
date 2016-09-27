@@ -137,6 +137,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<id<HUBComponentModelBuilder>> *)allBodyComponentModelBuilders;
 
 /**
+ *  Return all current overlay component model builders
+ *
+ *  @return All the existing overlay component model builders, in the order that they were created. Note that
+ *  any `preferredIndex` set by the component model builders hasn't been resolved at this point, so those
+ *  are not taken into account.
+ */
+- (NSArray<id<HUBComponentModelBuilder>> *)allOverlayComponentModelBuilders;
+
+/**
  *  Get or create a builder for a body component model with a certain identifier
  *
  *  @param identifier The identifier that the component model should have
