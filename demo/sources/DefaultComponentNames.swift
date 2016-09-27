@@ -20,23 +20,15 @@
  */
 
 import Foundation
-import HubFramework
 
-/// Component fallback handler used when setting up HUBManager
-class ComponentFallbackHandler: NSObject, HUBComponentFallbackHandler {
-    var defaultComponentNamespace: String {
-        return DefaultComponentFactory.namespace
-    }
-    
-    var defaultComponentName: String {
-        return DefaultComponentNames.row
-    }
-    
-    var defaultComponentCategory: HUBComponentCategory {
-        return .row
-    }
-    
-    func createFallbackComponent(forCategory componentCategory: HUBComponentCategory) -> HUBComponent {
-        return RowComponent()
-    }
+/// The component names that `DefaultComponentFactory` is compatible with
+struct DefaultComponentNames {
+    /// A row component - maps to `RowComponent`
+    static var row: String { return "row" }
+    /// A label component - maps to `LabelComponent`
+    static var label: String { return "label" }
+    /// A search bar component - maps to `SearchBarComponent`
+    static var searchBar: String { return "searchBar" }
+    /// An activity indicator component - maps to `ActivityIndicatorComponent`
+    static var activityIndicator: String { return "activityIndicator" }
 }

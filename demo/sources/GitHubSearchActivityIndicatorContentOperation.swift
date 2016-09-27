@@ -22,21 +22,19 @@
 import Foundation
 import HubFramework
 
-/// Component fallback handler used when setting up HUBManager
-class ComponentFallbackHandler: NSObject, HUBComponentFallbackHandler {
-    var defaultComponentNamespace: String {
-        return DefaultComponentFactory.namespace
-    }
-    
-    var defaultComponentName: String {
-        return DefaultComponentNames.row
-    }
-    
-    var defaultComponentCategory: HUBComponentCategory {
-        return .row
-    }
-    
-    func createFallbackComponent(forCategory componentCategory: HUBComponentCategory) -> HUBComponent {
-        return RowComponent()
+class GitHubSearchActivityIndicatorContentOperation: NSObject, HUBContentOperation {
+    weak var delegate: HUBContentOperationDelegate?
+
+    func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
+        if viewModelBuilder.customData?[GitHubSearchCustomDataKeys.searchString] != nil {
+            if viewModelBuilder.allBodyComponentModelBuilders().count == 1 {
+                if viewModelBuilder.allOverlayComponentModelBuilders().isEmpty {
+                    let activityIndicatorBuilder = viewModelBuilder.builderForOverlayComponentModel(withIdentifier: "activityIndicator")
+                    activityIndicatorBuilder.componentName = DefaultComponentNames.activityIndicator
+                }
+            }
+        }
+        
+        self.delegate?.contentOperationDidFinish(self)
     }
 }

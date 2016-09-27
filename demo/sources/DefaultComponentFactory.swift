@@ -22,21 +22,18 @@
 import Foundation
 import HubFramework
 
-/// Component fallback handler used when setting up HUBManager
-class ComponentFallbackHandler: NSObject, HUBComponentFallbackHandler {
-    var defaultComponentNamespace: String {
-        return DefaultComponentFactory.namespace
-    }
+/// Default component factory, used as the implicit factory when no namespace was given
+class DefaultComponentFactory: NSObject, HUBComponentFactory {
+    static var namespace = "default"
     
-    var defaultComponentName: String {
-        return DefaultComponentNames.row
-    }
+    private lazy var creationMap: [String: () -> HUBComponent] = [
+        DefaultComponentNames.row: { RowComponent() },
+        DefaultComponentNames.label: { LabelComponent() },
+        DefaultComponentNames.searchBar: { SearchBarComponent() },
+        DefaultComponentNames.activityIndicator: { ActivityIndicatorComponent() }
+    ]
     
-    var defaultComponentCategory: HUBComponentCategory {
-        return .row
-    }
-    
-    func createFallbackComponent(forCategory componentCategory: HUBComponentCategory) -> HUBComponent {
-        return RowComponent()
+    func createComponent(forName name: String) -> HUBComponent? {
+        return self.creationMap[name]?()
     }
 }
