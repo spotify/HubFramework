@@ -39,12 +39,15 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param component The component that wants the action to be performed
  *  @param identifier The identifier of the action to perform
+ *  @param customData Any custom data that should be passed to the action
  *
  *  @return A boolean indicating whether the action was successfully performed. For example, `NO` will be returned
  *          if no actions could be found for the given identifier, or if that action in turn returned `NO` as its
  *          outcome when being performed.
  */
-- (BOOL)component:(id<HUBComponentActionPerformer>)component performActionWithIdentifier:(HUBIdentifier *)identifier;
+- (BOOL)component:(id<HUBComponentActionPerformer>)component
+        performActionWithIdentifier:(HUBIdentifier *)identifier
+        customData:(nullable NSDictionary<NSString *, id> *)customData;
 
 @end
 

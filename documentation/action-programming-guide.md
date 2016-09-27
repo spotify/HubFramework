@@ -105,7 +105,7 @@ Or using JSON:
 
 You can also have a component implementation manually trigger an action. This can be done at any point in time, for example in response to a custom user interaction (such as a swipe), or some other event.
 
-To make a component able to perform actions, make it conform to the `HUBComponentActionPerformer` protocol. This gives you an `actionDelegate` that you can call to perform an action for a given identifier (which will be resolved exactly the same way as when action identifiers are attached to a `HUBComponentModel`).
+To make a component able to perform actions, make it conform to the `HUBComponentActionPerformer` protocol. This gives you an `actionDelegate` that you can call to perform an action for a given identifier (which will be resolved exactly the same way as when action identifiers are attached to a `HUBComponentModel`). You also have the option of passing any `customData` that you can then pick up in the action or in a content operation.
 
 Here's an example where we perform an action in response to a `UIGestureRecognizer` being triggered:
 
@@ -113,7 +113,7 @@ Here's an example where we perform an action in response to a `UIGestureRecogniz
 - (void)handleGestureRecognizer:(UIGestureRecognizer *)recognizer
 {
     HUBIdentifier *actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"myFeature" name:@"myAction"];
-    [self.actionDelegate component:self performActionWithIdentifier:actionIdentifier];
+    [self.actionDelegate component:self performActionWithIdentifier:actionIdentifier customData:nil];
 }
 ```
 

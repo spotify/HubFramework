@@ -297,13 +297,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentActionDelegate
 
-- (BOOL)component:(id<HUBComponentActionPerformer>)component performActionWithIdentifier:(HUBIdentifier *)identifier
+- (BOOL)component:(id<HUBComponentActionPerformer>)component performActionWithIdentifier:(HUBIdentifier *)identifier customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     if (self.component != component) {
         return NO;
     }
     
-    return [self.delegate componentWrapper:self performActionWithIdentifier:identifier];
+    return [self.delegate componentWrapper:self performActionWithIdentifier:identifier customData:customData];
 }
 
 #pragma mark - HUBComponentResizeObservingViewDelegate

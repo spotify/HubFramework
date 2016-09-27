@@ -417,22 +417,12 @@ NS_ASSUME_NONNULL_BEGIN
     [self handleSelectionForComponentWithModel:childComponentModel cellIndexPath:nil];
 }
 
-- (BOOL)componentWrapper:(HUBComponentWrapper *)componentWrapper performActionWithIdentifier:(HUBIdentifier *)identifier
+- (BOOL)componentWrapper:(HUBComponentWrapper *)componentWrapper performActionWithIdentifier:(HUBIdentifier *)identifier customData:(nullable NSDictionary<NSString *, id> *)customData
 {
-    if (self.viewModel == nil) {
-        return NO;
-    }
-    
-    id<HUBViewModel> const viewModel = self.viewModel;
-    
-    id<HUBActionContext> const actionContext = [[HUBActionContextImplementation alloc] initWithTrigger:HUBActionTriggerComponent
-                                                                                customActionIdentifier:identifier
-                                                                                               viewURI:self.viewURI
-                                                                                             viewModel:viewModel
-                                                                                        componentModel:componentWrapper.model
-                                                                                        viewController:self];
-    
-    return [self.actionHandler handleActionWithContext:actionContext];
+    return [self performActionForTrigger:HUBActionTriggerComponent
+                        customIdentifier:identifier
+                              customData:customData
+                          componentModel:componentWrapper.model];
 }
 
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
@@ -899,6 +889,7 @@ NS_ASSUME_NONNULL_BEGIN
     for (HUBIdentifier * const identifier in componentModel.target.actionIdentifiers) {
         selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
                                         customIdentifier:identifier
+                                              customData:nil
                                           componentModel:componentModel];
         
         if (selectionHandled) {
@@ -909,6 +900,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (!selectionHandled) {
         selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
                                         customIdentifier:nil
+                                              customData:nil
                                           componentModel:componentModel];
     }
     
@@ -932,6 +924,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)performActionForTrigger:(HUBActionTrigger)trigger
                customIdentifier:(nullable HUBIdentifier *)customIdentifier
+                     customData:(nullable NSDictionary<NSString *, id> *)customData
                  componentModel:(id<HUBComponentModel>)componentModel
 {
     if (self.viewModel == nil) {
@@ -942,6 +935,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBActionContext> const context = [[HUBActionContextImplementation alloc] initWithTrigger:trigger
                                                                           customActionIdentifier:customIdentifier
+                                                                                      customData:customData
                                                                                          viewURI:self.viewURI
                                                                                        viewModel:viewModel
                                                                                   componentModel:componentModel

@@ -27,6 +27,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly, nullable) HUBIdentifier *customActionIdentifier;
 
+/**
+ *  Any custom data that was passed when triggering the action
+ *
+ *  This property will always be `nil` if this context is for the default selection action
+ */
+@property (nonatomic, strong, readonly, nullable) NSDictionary<NSString *, id> *customData;
+
 /// The URI of the view that the action is being performed in
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 
