@@ -401,6 +401,7 @@ NS_ASSUME_NONNULL_BEGIN
     copy.componentName = self.componentName;
     copy.componentCategory = self.componentCategory;
     copy.preferredIndex = self.preferredIndex;
+    copy.groupIdentifier = self.groupIdentifier;
     copy.title = self.title;
     copy.subtitle = self.subtitle;
     copy.accessoryTitle = self.accessoryTitle;
