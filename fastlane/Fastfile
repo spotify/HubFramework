@@ -7,7 +7,7 @@ platform :ios do
 
   desc 'Run unit tests'
   lane :test do
-    reset_simulators
+    kill_and_reset_simulators
 
     scan(
       :workspace => 'HubFramework.xcworkspace',
