@@ -130,13 +130,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Metadata
 
 /// Any application-specific model metadata that should be associated with the component
-@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *metadata;
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, id> *metadata;
 
 /// Any data that should be logged alongside interactions or impressions for the component
-@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *loggingData;
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, id> *loggingData;
 
 /// Any custom data that the component should use
-@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, id> *customData;
 
 #pragma mark - Custom image data builders
 

@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
             overlayComponentModels:(NSArray<id<HUBComponentModel>> *)overlayComponentModels
                       extensionURL:(nullable NSURL *)extensionURL
-                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
+                        customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     self = [super init];
     

@@ -189,7 +189,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Use this for any metadata that is not consumed by the component itself, such as model metadata (music metadata for a music player,
  *  photo metadata for a photo editor, for example). For component customization options; use the `customData` dictionary instead.
  */
-@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *metadata;
+@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, id> *metadata;
 
 /**
  *  Any data that should be logged alongside interactions or impressions for the component
@@ -197,7 +197,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The format of this dictionary is completely free form, but since at some point it will end up being serialized, make sure that
  *  it only contains serializable values.
  */
-@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *loggingData;
+@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, id> *loggingData;
 
 /**
  *  Any custom data that the component should use
@@ -207,7 +207,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  data (music metadata for a music player, photo metadata for a photo editor, for example), that don't relate to the component itself,
  *  use the `metadata` dictionary.
  */
-@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, NSObject *> *customData;
+@property (nonatomic, strong, nullable, readonly) NSDictionary<NSString *, id> *customData;
 
 #pragma mark - Hierarchy
 

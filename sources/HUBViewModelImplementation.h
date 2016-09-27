@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
             overlayComponentModels:(NSArray<id<HUBComponentModel>> *)overlayComponentModels
                       extensionURL:(nullable NSURL *)extensionURL
-                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData HUB_DESIGNATED_INITIALIZER;
+                        customData:(nullable NSDictionary<NSString *, id> *)customData HUB_DESIGNATED_INITIALIZER;
 
 @end
 

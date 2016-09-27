@@ -107,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  extended use consider making a contribution to the main `HUBViewModel` API instead, if it's some piece of data that
  *  is considered useful for other API users as well.
  */
-@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, id> *customData;
 
 #pragma mark - Checking if component model builders exist
 
