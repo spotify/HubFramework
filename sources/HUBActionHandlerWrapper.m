@@ -99,9 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
         [self.initialViewModelRegistry removeInitialViewModelForViewURI:targetURI];
     }
     
-    if (actionPerformed) {
-        [self.viewModelLoader actionPerformedWithContext:context];
-    }
+    [self.viewModelLoader actionPerformedWithContext:context];
     
     return actionPerformed;
 }
