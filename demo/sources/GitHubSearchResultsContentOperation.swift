@@ -22,6 +22,17 @@
 import Foundation
 import HubFramework
 
+/**
+ *  Content operation that calls the GitHub search API to download results
+ *
+ *  This content operation only does work if a previous operation has set the "searchString" key on the view model
+ *  builder's custom data. This is to indicate whether a search was performed by the user, or if the operation is
+ *  being run for the initial view state.
+ *
+ *  The operation then downloads JSON data from the GitHub search API, and stores it. After that it reschedules itself
+ *  to add the data to the view model builder. The reason we don't simply wait until the API response has been downloaded,
+ *  is because we don't want to block the rendering of the view.
+ */
 class GitHubSearchResultsContentOperation: NSObject, HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
     private var jsonData: Data?

@@ -22,6 +22,7 @@
 import Foundation
 import HubFramework
 
+/// Content operation that adds a search bar for the GitHub search feature
 class GitHubSearchBarContentOperation: NSObject, HUBContentOperationActionObserver {
     weak var delegate: HUBContentOperationDelegate?
     private var searchString: String?
