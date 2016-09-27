@@ -2,7 +2,7 @@
 
 Welcome to the Hub Framework setup guide! This guide aims to help you get set up with the framework in either a new or existing application.
 
-Note that you only have to follow this guide when setting up the framework for the first time in your application. To learn how to use the framework in terms of building UIs and features using it; refer to the [getting started guide](https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html).
+Note that you only have to follow this guide when setting up the framework for the first time in your application. To learn how to use the framework in terms of building UIs and features using it - refer to the [getting started guide](https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html).
 
 Before you proceed with this guide, it’s recommended that you read all of the programming guides, as to familiarize yourself with the various aspects of the framework. You can find links to all the programming guides [in the README](https://ghe.spotify.net/iOS/HubFramework#getting-started).
 
