@@ -19,22 +19,21 @@
  *  under the License.
  */
 
-import UIKit
+import Foundation
+import HubFramework
 
-extension UIImageView {
-    /// Set the image of this image view, optionally animating the change
-    func setImage(_ image: UIImage, animated shouldAnimate: Bool) {
-        self.image = image
-        
-        if shouldAnimate {
-            let animationKey = "hub_imageAnimation"
-            self.layer.removeAnimation(forKey: animationKey)
-            
-            let animation = CATransition()
-            animation.duration = 0.3
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            animation.type = kCATransitionFade
-            self.layer.add(animation, forKey: animationKey)
-        }
+/// Default component factory, used as the implicit factory when no namespace was given
+class DefaultComponentFactory: NSObject, HUBComponentFactory {
+    static var namespace = "default"
+    
+    private lazy var creationMap: [String: () -> HUBComponent] = [
+        DefaultComponentNames.row: { RowComponent() },
+        DefaultComponentNames.label: { LabelComponent() },
+        DefaultComponentNames.searchBar: { SearchBarComponent() },
+        DefaultComponentNames.activityIndicator: { ActivityIndicatorComponent() }
+    ]
+    
+    func createComponent(forName name: String) -> HUBComponent? {
+        return self.creationMap[name]?()
     }
 }

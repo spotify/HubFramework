@@ -19,22 +19,10 @@
  *  under the License.
  */
 
-import UIKit
+import Foundation
 
-extension UIImageView {
-    /// Set the image of this image view, optionally animating the change
-    func setImage(_ image: UIImage, animated shouldAnimate: Bool) {
-        self.image = image
-        
-        if shouldAnimate {
-            let animationKey = "hub_imageAnimation"
-            self.layer.removeAnimation(forKey: animationKey)
-            
-            let animation = CATransition()
-            animation.duration = 0.3
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            animation.type = kCATransitionFade
-            self.layer.add(animation, forKey: animationKey)
-        }
-    }
+/// Struct containing keys used for custom data in the GitHub search feature
+struct GitHubSearchCustomDataKeys {
+    /// Key used to encode a search string into a view model builder's custom data
+    static var searchString: String { return "searchString" }
 }

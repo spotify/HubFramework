@@ -19,22 +19,16 @@
  *  under the License.
  */
 
-import UIKit
+import Foundation
 
-extension UIImageView {
-    /// Set the image of this image view, optionally animating the change
-    func setImage(_ image: UIImage, animated shouldAnimate: Bool) {
-        self.image = image
-        
-        if shouldAnimate {
-            let animationKey = "hub_imageAnimation"
-            self.layer.removeAnimation(forKey: animationKey)
-            
-            let animation = CATransition()
-            animation.duration = 0.3
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            animation.type = kCATransitionFade
-            self.layer.add(animation, forKey: animationKey)
-        }
-    }
+/// The component names that `DefaultComponentFactory` is compatible with
+struct DefaultComponentNames {
+    /// A row component - maps to `RowComponent`
+    static var row: String { return "row" }
+    /// A label component - maps to `LabelComponent`
+    static var label: String { return "label" }
+    /// A search bar component - maps to `SearchBarComponent`
+    static var searchBar: String { return "searchBar" }
+    /// An activity indicator component - maps to `ActivityIndicatorComponent`
+    static var activityIndicator: String { return "activityIndicator" }
 }

@@ -25,11 +25,11 @@ import HubFramework
 /// Component fallback handler used when setting up HUBManager
 class ComponentFallbackHandler: NSObject, HUBComponentFallbackHandler {
     var defaultComponentNamespace: String {
-        return "default"
+        return DefaultComponentFactory.namespace
     }
     
     var defaultComponentName: String {
-        return "row"
+        return DefaultComponentNames.row
     }
     
     var defaultComponentCategory: HUBComponentCategory {
