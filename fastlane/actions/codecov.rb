@@ -8,12 +8,13 @@ module Fastlane
         dd_path = params[:derived_data_path] || Actions.lane_context[:SCAN_DERIVED_DATA_PATH]
         UI.user_error!("Invalid derived_data_path") unless dd_path
 
+        cc_url = "https://codecov.spotify.net"
         cc_token = params[:token]
         pr = (params[:branch] || '').scan(/pull\/(\d+)\//).flatten.first
 
         script = Tempfile.new('codecov')
         begin
-          script_url = "https://codecov.spotify.net/bash"
+          script_url = "#{cc_url}/bash"
           sh!('curl', '-sf', script_url, '-o', script.path)
           sh!('chmod', '+x', script.path)
           sh!(
@@ -39,7 +40,7 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :token,
                                        env_name: "CODECOV_TOKEN",
                                        description: "The Codecov upload token"),
-          
+
           FastlaneCore::ConfigItem.new(key: :derived_data_path,
                                        env_name: "CODECOV_DERIVED_DATA_PATH",
                                        description: "Path to the derived data directory",
