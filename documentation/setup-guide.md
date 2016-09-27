@@ -143,7 +143,7 @@ Here is an example implementation:
 
 ### Defining a global reload policy
 
-A `HUBContentReloadPolicy` is used to determine whether a given view should be reloaded. They can be defined on a per-feature basis, but you also have the option to supply a global one that is used in case a feature didn’t supply its own. You pass a default content reload policy as `defaultContentReloadPolicy` when setting up `HUBManager`.
+A `HUBContentReloadPolicy` is used to determine whether a given view should be reloaded when it is about to re-appear on the screen. They can be defined on a per-feature basis, but you also have the option to supply a global one that is used in case a feature didn’t supply its own. You pass a default content reload policy as `defaultContentReloadPolicy` when setting up `HUBManager`.
 
 Here is an example reload policy implementation:
 
