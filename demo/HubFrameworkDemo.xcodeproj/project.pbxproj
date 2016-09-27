@@ -14,7 +14,6 @@
 		8A42E0B21D8C3779004FAC33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */; };
 		8A42E0B31D8C3779004FAC33 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AF1D8C3779004FAC33 /* LaunchScreen.storyboard */; };
 		8A42E1001D8C399D004FAC33 /* libHubFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A42E0BB1D8C37B4004FAC33 /* libHubFramework.a */; };
-		8A42E1F51D8C4153004FAC33 /* ConnectivityStateResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F41D8C4153004FAC33 /* ConnectivityStateResolver.swift */; };
 		8A42E1F71D8C468C004FAC33 /* ComponentLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */; };
 		8A42E1F91D8C476C004FAC33 /* ComponentFallbackHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */; };
 		8A42E1FB1D8C4CEB004FAC33 /* RowComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */; };
@@ -30,6 +29,7 @@
 		8AD5EDC81D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDC71D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift */; };
 		8AD5EDCA1D9A9DBC004B2CEA /* GitHubSearchActivityIndicatorContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDC91D9A9DBC004B2CEA /* GitHubSearchActivityIndicatorContentOperation.swift */; };
 		8AD5EDCE1D9AA294004B2CEA /* LabelComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDCD1D9AA294004B2CEA /* LabelComponent.swift */; };
+		8AD732081D9AD63700E4B427 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD732071D9AD63700E4B427 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,7 +59,6 @@
 		8A42E0B01D8C3779004FAC33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A42E0B11D8C3779004FAC33 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HubFramework.xcodeproj; path = ../HubFramework.xcodeproj; sourceTree = "<group>"; };
-		8A42E1F41D8C4153004FAC33 /* ConnectivityStateResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectivityStateResolver.swift; sourceTree = "<group>"; };
 		8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentLayoutManager.swift; sourceTree = "<group>"; };
 		8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentFallbackHandler.swift; sourceTree = "<group>"; };
 		8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowComponent.swift; sourceTree = "<group>"; };
@@ -75,6 +74,7 @@
 		8AD5EDC71D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorComponent.swift; sourceTree = "<group>"; };
 		8AD5EDC91D9A9DBC004B2CEA /* GitHubSearchActivityIndicatorContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubSearchActivityIndicatorContentOperation.swift; sourceTree = "<group>"; };
 		8AD5EDCD1D9AA294004B2CEA /* LabelComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelComponent.swift; sourceTree = "<group>"; };
+		8AD732071D9AD63700E4B427 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AD732081D9AD63700E4B427 /* SystemConfiguration.framework in Frameworks */,
 				8A42E1001D8C399D004FAC33 /* libHubFramework.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +97,7 @@
 				8A42E0A81D8C376B004FAC33 /* Sources */,
 				8A42E0AD1D8C3779004FAC33 /* Resources */,
 				8A42E0931D8C36A3004FAC33 /* Products */,
+				8AD732061D9AD63700E4B427 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -143,7 +145,6 @@
 		8AD5EDA81D997913004B2CEA /* Hub Manager Setup */ = {
 			isa = PBXGroup;
 			children = (
-				8A42E1F41D8C4153004FAC33 /* ConnectivityStateResolver.swift */,
 				8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */,
 				8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */,
 			);
@@ -201,6 +202,14 @@
 				8AD5EDC91D9A9DBC004B2CEA /* GitHubSearchActivityIndicatorContentOperation.swift */,
 			);
 			name = "GitHub Search";
+			sourceTree = "<group>";
+		};
+		8AD732061D9AD63700E4B427 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8AD732071D9AD63700E4B427 /* SystemConfiguration.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,7 +316,6 @@
 				8AD5EDCA1D9A9DBC004B2CEA /* GitHubSearchActivityIndicatorContentOperation.swift in Sources */,
 				8A42E1FB1D8C4CEB004FAC33 /* RowComponent.swift in Sources */,
 				8AD5EDBD1D9A7EC3004B2CEA /* GitHubSearchContentOperationFactory.swift in Sources */,
-				8A42E1F51D8C4153004FAC33 /* ConnectivityStateResolver.swift in Sources */,
 				8A42E0AB1D8C376B004FAC33 /* AppDelegate.swift in Sources */,
 				8AD5EDC41D9A92EC004B2CEA /* GitHubSearchCustomDataKeys.swift in Sources */,
 				8A27299E1D9546ED00EF43FC /* RootContentOperation.swift in Sources */,
