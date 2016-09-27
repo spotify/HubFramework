@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  You can use custom data to set key/value combinations to be used in a custom selection handler
  *  or component to make decisions.
  */
-@property (nonatomic, copy, readonly, nullable) NSDictionary<NSString *, NSObject *> *customData;
+@property (nonatomic, copy, readonly, nullable) NSDictionary<NSString *, id> *customData;
 
 @end
 

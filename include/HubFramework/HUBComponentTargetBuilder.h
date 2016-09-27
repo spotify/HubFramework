@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableOrderedSet<HUBIdentifier *> *actionIdentifiers;
 
 /// Any custom data to associate with the target
-@property (nonatomic, copy, nullable) NSDictionary<NSString *, NSObject *> *customData;
+@property (nonatomic, copy, nullable) NSDictionary<NSString *, id> *customData;
 
 /**
  *  Add a custom action identifier to this target

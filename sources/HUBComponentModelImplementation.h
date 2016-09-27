@@ -73,9 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
                    customImageData:(NSDictionary<NSString *, id<HUBComponentImageData>> *)customImageData
                               icon:(nullable id<HUBIcon>)icon
                             target:(nullable id<HUBComponentTarget>)target
-                          metadata:(nullable NSDictionary<NSString *, NSObject *> *)metadata
-                       loggingData:(nullable NSDictionary<NSString *, NSObject *> *)loggingData
-                        customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
+                          metadata:(nullable NSDictionary<NSString *, id> *)metadata
+                       loggingData:(nullable NSDictionary<NSString *, id> *)loggingData
+                        customData:(nullable NSDictionary<NSString *, id> *)customData
                             parent:(nullable id<HUBComponentModel>)parent HUB_DESIGNATED_INITIALIZER;
 
 /// The component models that are children of this one

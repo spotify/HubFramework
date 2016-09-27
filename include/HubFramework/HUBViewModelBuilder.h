@@ -107,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  extended use consider making a contribution to the main `HUBViewModel` API instead, if it's some piece of data that
  *  is considered useful for other API users as well.
  */
-@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSObject *> *customData;
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, id> *customData;
 
 #pragma mark - Checking if component model builders exist
 
@@ -203,14 +203,14 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param identifier The identifier of the component model builder to remove
  */
-- (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier;
+- (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier NS_SWIFT_NAME(removeBuilderForBodyComponentModel(withIdentifier:));
 
 /**
  *  Remove a builder for an overlay component with a certain identifier
  *
  *  @param identifier The identifier of the component model builder to remove
  */
-- (void)removeBuilderForOverlayComponentModelWithIdentifier:(NSString *)identifier;
+- (void)removeBuilderForOverlayComponentModelWithIdentifier:(NSString *)identifier NS_SWIFT_NAME(removeBuilderForOverlayComponentModel(withIdentifier:));
 
 /**
  *  Remove all component model builders that this builder contains

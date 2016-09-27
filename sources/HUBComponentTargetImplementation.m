@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithURI:(nullable NSURL *)URI
            initialViewModel:(nullable id<HUBViewModel>)initialViewModel
           actionIdentifiers:(nullable NSArray<HUBIdentifier *> *)actionIdentifiers
-                 customData:(nullable NSDictionary<NSString *, NSObject *> *)customData
+                 customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     self = [super init];
     

@@ -94,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  This dictionary contains any custom data passed from the server side, or added in the local content loading process.
  */
-@property (nonatomic, strong, readonly, nullable) NSDictionary<NSString *, NSObject *> *customData;
+@property (nonatomic, strong, readonly, nullable) NSDictionary<NSString *, id> *customData;
 
 /**
  *  The date when this view model was built by the Hub Framework
