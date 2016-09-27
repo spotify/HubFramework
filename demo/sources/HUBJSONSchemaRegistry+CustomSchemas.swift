@@ -1,9 +1,12 @@
 import Foundation
 import HubFramework
 
+/// Extension adding APIs for registering custom JSON schemas with the Hub Framework
 extension HUBJSONSchemaRegistry {
+    /// The JSON schema identifier used by the GitHub search feature
     var gitHubSearchSchemaIdentifier: String { return "gitHub" }
     
+    /// Register the JSON schema for the GitHub search feature
     func registerGitHubSearchSchema() {
         let schema = self.createNewSchema()
         schema.viewModelSchema.bodyComponentModelDictionariesPath = schema.createNewPath().go(to: "items").forEach().dictionaryPath()

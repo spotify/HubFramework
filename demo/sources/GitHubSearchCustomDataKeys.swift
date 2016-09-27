@@ -21,6 +21,8 @@
 
 import Foundation
 
+/// Struct containing keys used for custom data in the GitHub search feature
 struct GitHubSearchCustomDataKeys {
+    /// Key used to encode a search string into a view model builder's custom data
     static var searchString: String { return "searchString" }
 }
