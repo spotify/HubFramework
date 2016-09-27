@@ -119,16 +119,11 @@ NS_ASSUME_NONNULL_BEGIN
     NSArray<NSString *> * const actionIdentifierStrings = [schema.actionIdentifiersPath valuesFromJSONDictionary:dictionary];
     
     for (NSString * const actionIdentifierString in actionIdentifierStrings) {
-        NSArray * const actionIdentifierParts = [actionIdentifierString componentsSeparatedByString:@":"];
+        HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithString:actionIdentifierString];
         
-        if (actionIdentifierParts.count != 2) {
-            continue;
+        if (actionIdentifier != nil) {
+            [self.actionIdentifiers addObject:actionIdentifier];
         }
-        
-        HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:actionIdentifierParts[0]
-                                                                                     name:actionIdentifierParts[1]];
-        
-        [self.actionIdentifiers addObject:actionIdentifier];
     }
     
     NSDictionary * const customData = [schema.customDataPath dictionaryFromJSONDictionary:dictionary];
