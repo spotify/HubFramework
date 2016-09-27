@@ -36,9 +36,27 @@ There are also several optional parameters that you can choose to supply in case
 
 The Hub Framework encourages the use of a view URI-based navigation system. This enables views to be completely decoupled, as they are no longer creating instances of each other but rather opening a URI, and having the system performing the actual navigation.
 
-By default, the framework calls `[UIApplication openURL:]` for any `target.URI` that a component’s model has, once that component was selected by the user (through a tap). This open URL call will make iOS call the `application:openURL:options:` method on your app delegate, which is an ideal place to perform the actual navigation.
-
 ### Using navigation by opening URLs
+
+By default, the framework calls `[UIApplication openURL:]` for any `target.URI` that a component’s model has, once that component was selected by the user (through a tap).
+
+To make iOS route some/all of those URIs to your app, define what URL types and schemes that your app supports in your `Info.plist` file. Here's an example where we add support for the `hub-demo` scheme:
+
+```xml
+<key>CGBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleURLName</key>
+        <string>com.spotify.hubFrameworkDemo</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>hub-demo</string>
+        </array>
+    </dict>
+</array>
+```
+
+Once you've added the appropriate URL information to your `Info.plist`, any URL matching that information will be routed to your app delegate's `application:openURL:options:` method. This is an ideal place to perform the actual navigation.
 
 To perform navigation, the first thing you’d want to do is to create a view controller to navigate to. To do that, use `HUBViewControllerFactory`, available on `HUBManager`. Then, push any view controller that was created onto your navigation controller, like this:
 
