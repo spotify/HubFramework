@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  the given component namespace as part of its `componentIdentifier`.
  */
 - (void)registerComponentFactory:(id<HUBComponentFactory>)componentFactory
-                    forNamespace:(NSString *)componentNamespace;
+                    forNamespace:(NSString *)componentNamespace NS_SWIFT_NAME(register(componentFactory:namespace:));
 
 /**
  *  Unregister a component factory from the Hub Framework
