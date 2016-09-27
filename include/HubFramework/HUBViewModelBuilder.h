@@ -194,14 +194,14 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param identifier The identifier of the component model builder to remove
  */
-- (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier;
+- (void)removeBuilderForBodyComponentModelWithIdentifier:(NSString *)identifier NS_SWIFT_NAME(removeBuilderForBodyComponentModel(withIdentifier:));
 
 /**
  *  Remove a builder for an overlay component with a certain identifier
  *
  *  @param identifier The identifier of the component model builder to remove
  */
-- (void)removeBuilderForOverlayComponentModelWithIdentifier:(NSString *)identifier;
+- (void)removeBuilderForOverlayComponentModelWithIdentifier:(NSString *)identifier NS_SWIFT_NAME(removeBuilderForOverlayComponentModel(withIdentifier:));
 
 /**
  *  Remove all component model builders that this builder contains
