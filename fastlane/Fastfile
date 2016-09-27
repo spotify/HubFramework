@@ -30,8 +30,8 @@ platform :ios do
     xcodebuild(
       :build => true,
       :parallelize_targets => true,
-      :workspace => 'HubFramework.xcworkspace',
-      :scheme => 'HubFrameworkDemo',
+      :project => 'demo/HubFrameworkDemo.xcodeproj',
+      :target => 'HubFrameworkDemo',
       :sdk => 'iphonesimulator',
       :configuration => 'Release',
       :derived_data_path => 'build/DerivedData',
