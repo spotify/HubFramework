@@ -20,26 +20,11 @@
  */
 
 import Foundation
+import HubFramework
 
-extension URL {
-    /// The view URI used for the "Root" feature
-    static var rootViewURI: URL {
-        return URL(viewURI: "root")
-    }
-    
-    // The view URI used for the "GitHub search" feature
-    static var gitHubSearchViewURI: URL {
-        return URL(viewURI: "githubsearch")
-    }
-    
-    /// The view URI used for the "Pretty pictures" feature
-    static var prettyPicturesViewURI: URL {
-        return URL(viewURI: "prettypictures")
-    }
-}
-
-private extension URL {
-    init(viewURI: String) {
-        self.init(string: "hub-demo:" + viewURI)!
+/// Content operation factory used in the "Pretty pictures" feature
+class PrettyPicturesContentOperationFactory: NSObject, HUBContentOperationFactory {
+    func createContentOperations(forViewURI viewURI: URL) -> [HUBContentOperation] {
+        return [PrettyPicturesContentOperation()]
     }
 }

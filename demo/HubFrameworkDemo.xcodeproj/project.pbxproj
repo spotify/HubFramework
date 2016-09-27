@@ -30,6 +30,9 @@
 		8AD5EDC81D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDC71D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift */; };
 		8AD5EDCA1D9A9DBC004B2CEA /* GitHubSearchActivityIndicatorContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDC91D9A9DBC004B2CEA /* GitHubSearchActivityIndicatorContentOperation.swift */; };
 		8AD5EDCE1D9AA294004B2CEA /* LabelComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDCD1D9AA294004B2CEA /* LabelComponent.swift */; };
+		8AD72F531D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD72F521D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift */; };
+		8AD72F551D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD72F541D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift */; };
+		8AD72F571D9AC22600E4B427 /* ImageComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD72F561D9AC22600E4B427 /* ImageComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +78,9 @@
 		8AD5EDC71D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorComponent.swift; sourceTree = "<group>"; };
 		8AD5EDC91D9A9DBC004B2CEA /* GitHubSearchActivityIndicatorContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubSearchActivityIndicatorContentOperation.swift; sourceTree = "<group>"; };
 		8AD5EDCD1D9AA294004B2CEA /* LabelComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelComponent.swift; sourceTree = "<group>"; };
+		8AD72F521D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrettyPicturesContentOperation.swift; sourceTree = "<group>"; };
+		8AD72F541D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrettyPicturesContentOperationFactory.swift; sourceTree = "<group>"; };
+		8AD72F561D9AC22600E4B427 /* ImageComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +163,7 @@
 				8AD5EDBA1D9A7E5D004B2CEA /* DefaultComponentNames.swift */,
 				8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */,
 				8AD5EDCD1D9AA294004B2CEA /* LabelComponent.swift */,
+				8AD72F561D9AC22600E4B427 /* ImageComponent.swift */,
 				8AD5EDB61D9A7D50004B2CEA /* SearchBarComponent.swift */,
 				8AD5EDC71D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift */,
 			);
@@ -168,6 +175,7 @@
 			children = (
 				8AD5EDAD1D997AF8004B2CEA /* Root */,
 				8AD5EDB11D9A7CE4004B2CEA /* GitHub Search */,
+				8AD72F4F1D9ABCDD00E4B427 /* Pretty pictures */,
 			);
 			name = Features;
 			sourceTree = "<group>";
@@ -201,6 +209,15 @@
 				8AD5EDC91D9A9DBC004B2CEA /* GitHubSearchActivityIndicatorContentOperation.swift */,
 			);
 			name = "GitHub Search";
+			sourceTree = "<group>";
+		};
+		8AD72F4F1D9ABCDD00E4B427 /* Pretty pictures */ = {
+			isa = PBXGroup;
+			children = (
+				8AD72F541D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift */,
+				8AD72F521D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift */,
+			);
+			name = "Pretty pictures";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,6 +318,7 @@
 				8AD5EDB71D9A7D50004B2CEA /* SearchBarComponent.swift in Sources */,
 				8AD5EDBF1D9A7ED0004B2CEA /* GitHubSearchBarContentOperation.swift in Sources */,
 				8AD5EDBB1D9A7E5D004B2CEA /* DefaultComponentNames.swift in Sources */,
+				8AD72F571D9AC22600E4B427 /* ImageComponent.swift in Sources */,
 				8A2729A21D95486A00EF43FC /* URL+ViewURIs.swift in Sources */,
 				8A42E1F91D8C476C004FAC33 /* ComponentFallbackHandler.swift in Sources */,
 				8AD5EDCE1D9AA294004B2CEA /* LabelComponent.swift in Sources */,
@@ -314,9 +332,11 @@
 				8AD5EDB91D9A7DEC004B2CEA /* DefaultComponentFactory.swift in Sources */,
 				8AD5EDC61D9A9674004B2CEA /* HUBJSONSchemaRegistry+CustomSchemas.swift in Sources */,
 				8AD5EDC81D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift in Sources */,
+				8AD72F551D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift in Sources */,
 				8AD5EDC21D9A90F7004B2CEA /* GitHubSearchResultsContentOperation.swift in Sources */,
 				8AD14FED1D9958A90008E182 /* UIImageView+Animation.swift in Sources */,
 				8A42E1F71D8C468C004FAC33 /* ComponentLayoutManager.swift in Sources */,
+				8AD72F531D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
