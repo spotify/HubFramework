@@ -13,8 +13,9 @@ class RootContentOperation: NSObject, HUBContentOperation {
         viewModelBuilder.navigationBarTitle = "Hub Framework Demo App"
         
         let rowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "row")
-        rowBuilder.title = "Row title"
-        rowBuilder.subtitle = "Row subtitle"
+        rowBuilder.title = "GitHub Search"
+        rowBuilder.subtitle = "A feature that enables you to search GitHub"
+        rowBuilder.targetBuilder.uri = .gitHubSearchViewURI
         
         self.delegate?.contentOperationDidFinish(self)
     }
