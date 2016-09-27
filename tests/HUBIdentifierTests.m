@@ -54,4 +54,17 @@
     XCTAssertNotEqualObjects(identifierA, identifierC);
 }
 
+- (void)testCreatingIdentifierFromString
+{
+    HUBIdentifier * const identifier = [[HUBIdentifier alloc] initWithString:@"namespace:name"];
+    XCTAssertEqualObjects(identifier.namespacePart, @"namespace");
+    XCTAssertEqualObjects(identifier.namePart, @"name");
+}
+
+- (void)testCreatingIdentifierWithInvalidStringReturnsNil
+{
+    XCTAssertNil([[HUBIdentifier alloc] initWithString:@""]);
+    XCTAssertNil([[HUBIdentifier alloc] initWithString:@"namespaceWithoutName"]);
+}
+
 @end

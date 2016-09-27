@@ -42,6 +42,17 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
+- (nullable instancetype)initWithString:(NSString *)string
+{
+    NSArray * const identifierParts = [string componentsSeparatedByString:@":"];
+    
+    if (identifierParts.count != 2) {
+        return nil;
+    }
+    
+    return [self initWithNamespace:identifierParts[0] name:identifierParts[1]];
+}
+
 #pragma mark - Property overrides
 
 - (NSString *)identifierString

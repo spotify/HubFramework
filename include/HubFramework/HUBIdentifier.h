@@ -33,6 +33,14 @@ NS_ASSUME_NONNULL_BEGIN
                              name:(NSString *)namePart HUB_DESIGNATED_INITIALIZER;
 
 /**
+ *  Initialize an identifier with a string
+ *
+ *  @param string The string to parse into an identifier. The string needs to have the `namepsace:name`
+ *         format, otherwise nil is returned.
+ */
+- (nullable instancetype)initWithString:(NSString *)string;
+
+/**
  *  Compare two identifiers for equality
  *
  *  @param identifier Th identifier to compare this instance to
