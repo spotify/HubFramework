@@ -9,6 +9,7 @@ Before reading this guide, it's recommended to read the [Content programming gui
 - [Introduction](#introduction)
 - [JSON schema hierarchy](#json-schema-hierarchy)
 - [Default JSON schema](#default-json-schema)
+- [Example JSON](#example-json)
 - [Using custom JSON schemas](#using-custom-json-schemas)
 
 ## Introduction
@@ -94,6 +95,176 @@ Here is a reference for the default JSON schema:
 | `actions` | `[String]` | The identifiers (`namespace:name`) of any actions (`HUBAction`) that should be performed when the user selects the component. | `actionIdentifiers` |
 | `view` | `Dictionary -> ViewModel` | Any pre-loaded view model that should be used for a Hub Framework-powered view that is the destination of `uri`. Will be parsed using the schema for view models. | `initialViewModel` |
 | `custom` | `Dictionary` | Any custom (free-form) data to associate with the target. | `customData` |
+
+## Example JSON
+
+Below is an example JSON file that shows how to use the default schema. It adds a header component, a carousel, a section header and 3 rows to a view model.
+
+```json
+{
+    "header": {
+        "id": "header",
+        "component": {
+            "id": "default:header",
+            "category": "header"
+        },
+        "text": {
+            "title": "Delicious Food",
+            "subtitle": "Discover the tastes of the world"
+        },
+        "images": {
+            "background": {
+                "uri": "https://spotify.com/image/of/food.jpg",
+                "placeholder": "food"
+            }
+        }
+    },
+    "body": [
+        {
+            "id": "featured",
+            "component": {
+                "id": "default:carousel",
+                "category": "carousel"
+            },
+            "text": {
+                "title": "Great quick meals"
+            },
+            "children": [
+                {
+                    "id": "featured-0",
+                    "component": {
+                        "id": "default:card",
+                        "category": "card"
+                    },
+                    "text": {
+                        "title": "Hamburger",
+                        "description": "Very popular around the world - and quick both to make and eat!"
+                    },
+                    "images": {
+                        "main": {
+                            "uri": "https://spotify.com/image/of/hamburger.jpg",
+                            "placeholder": "quickfood"
+                        }
+                    },
+                    "target": {
+                        "uri": "https://en.wikipedia.org/wiki/Hamburger"
+                    }
+                },
+                {
+                    "id": "featured-1",
+                    "component": {
+                        "id": "default:card",
+                        "category": "card"
+                    },
+                    "text": {
+                        "title": "Noodles",
+                        "description": "Quick to boil - and can be served with many different accessories."
+                    },
+                    "images": {
+                        "main": {
+                            "uri": "https://spotify.com/image/of/noodles.jpg",
+                            "placeholder": "quickfood"
+                        }
+                    },
+                    "target": {
+                        "uri": "https://en.wikipedia.org/wiki/Noodle"
+                    }
+                },
+                {
+                    "id": "featured-2",
+                    "component": {
+                        "id": "default:card",
+                        "category": "card"
+                    },
+                    "text": {
+                        "title": "Hot Dogs",
+                        "description": "Whether you're having a barbeque or just a quick bite - it's awesome."
+                    },
+                    "images": {
+                        "main": {
+                            "uri": "https://spotify.com/image/of/hotdog.jpg",
+                            "placeholder": "quickfood"
+                        }
+                    },
+                    "target": {
+                        "uri": "https://en.wikipedia.org/wiki/Hot_dog"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "sectionHeader",
+            "component": {
+                "id": "default:sectionHeader",
+                "category": "header"
+            },
+            "text": {
+                "title": "Delicious Swedish Food"
+            }
+        },
+        {
+            "id": "row-0",
+            "component": {
+                "id": "default:row",
+                "category": "row"
+            },
+            "text": {
+                "title": "Meatballs & mashed potatoes",
+                "subtitle": "A swedish classic"
+            },
+            "images": {
+                "main": {
+                    "uri": "https://spotify.com/image/of/meatballs.jpg",
+                    "placeholder": "sweden"
+                }
+            },
+            "target": {
+                "uri": "https://en.wikipedia.org/wiki/Meatball"
+            }
+        },
+        {
+            "id": "row-1",
+            "component": {
+                "id": "default:row",
+                "category": "row"
+            },
+            "text": {
+                "title": "Fried herring",
+                "subtitle": "Just be careful of the fermented version!"
+            },
+            "images": {
+                "main": {
+                    "uri": "https://spotify.com/image/of/herring.jpg",
+                    "placeholder": "sweden"
+                }
+            },
+            "target": {
+                "uri": "https://en.wikipedia.org/wiki/Herring"
+            }
+        },
+        {
+            "id": "row-2",
+            "component": {
+                "id": "default:row",
+                "category": "row"
+            },
+            "text": {
+                "title": "Cinnamon bun",
+                "subtitle": "If you're having a stressful day, just take a break for a \"fika!\""
+            },
+            "images": {
+                "main": {
+                    "uri": "https://spotify.com/image/of/cinnamon-bun.jpg",
+                    "placeholder": "sweden"
+                }
+            },
+            "target": {
+                "uri": "https://en.wikipedia.org/wiki/Cinnamon_roll"
+            }
+        }
+    ]
+}
+```
 
 ## Using custom JSON schemas
 
