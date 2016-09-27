@@ -4,19 +4,12 @@
 #import "HUBViewModelImplementation.h"
 
 #import <XCTest/XCTest.h>
-#import <OCMockitoIOS/OCMockitoIOS.h>
-#import <OCHamcrestIOS/OCHamcrestIOS.h>
 
 @interface HUBViewModelDiffTests : XCTestCase
 
 @end
 
 @implementation HUBViewModelDiffTests
-
-- (void)setUp
-{
-    [super setUp];
-}
 
 - (id<HUBComponentModel>)createComponentModelWithIdentifier:(NSString *)identifier
                                                  customData:(nullable NSDictionary *)customData
@@ -57,7 +50,7 @@
 - (void)testInsertions
 {
     id<HUBViewModel> firstViewModel = [self createViewModelWithIdentifier:@"Test"
-                                                            components:@[]];
+                                                               components:@[]];
     NSArray<id<HUBComponentModel>> *secondComponents = @[
         [self createComponentModelWithIdentifier:@"component-1" customData:nil],
         [self createComponentModelWithIdentifier:@"component-2" customData:nil],
@@ -68,10 +61,13 @@
                                                                 components:secondComponents];
 
     HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
-    XCTAssert([diff.insertedIndices containsIndexesInRange:NSMakeRange(0, 4)]);
-    XCTAssert(diff.reloadedIndices.count == 0);
-    XCTAssert(diff.insertedIndices.count == 4);
-    XCTAssert(diff.deletedIndices.count == 0);
+    XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
+    XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:1 inSection:0]]);
+    XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
+    XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:3 inSection:0]]);
+    XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 0);
+    XCTAssert(diff.insertedBodyComponentIndexPaths.count == 4);
+    XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
 }
 
 - (void)testReloads
@@ -94,12 +90,12 @@
                                                                 components:secondComponents];
 
     HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
-    XCTAssert([diff.reloadedIndices containsIndex:0]);
-    XCTAssert([diff.reloadedIndices containsIndex:2]);
+    XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
+    XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
 
-    XCTAssert(diff.reloadedIndices.count == 2);
-    XCTAssert(diff.insertedIndices.count == 0);
-    XCTAssert(diff.deletedIndices.count == 0);
+    XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 2);
+    XCTAssert(diff.insertedBodyComponentIndexPaths.count == 0);
+    XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
 }
 
 - (void)testDeletions
@@ -120,11 +116,11 @@
                                                                 components:secondComponents];
 
     HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
-    XCTAssert([diff.deletedIndices containsIndex:0]);
-    XCTAssert([diff.deletedIndices containsIndex:2]);
-    XCTAssert(diff.reloadedIndices.count == 0);
-    XCTAssert(diff.insertedIndices.count == 0);
-    XCTAssert(diff.deletedIndices.count == 2);
+    XCTAssert([diff.deletedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
+    XCTAssert([diff.deletedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
+    XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 0);
+    XCTAssert(diff.insertedBodyComponentIndexPaths.count == 0);
+    XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
 }
 
 - (void)testComplexChangeSet
@@ -142,7 +138,7 @@
         [self createComponentModelWithIdentifier:@"component-10" customData:nil]
     ];
     id<HUBViewModel> firstViewModel = [self createViewModelWithIdentifier:@"Test"
-                                                            components:firstComponents];
+                                                               components:firstComponents];
     NSArray<id<HUBComponentModel>> *secondComponents = @[
         [self createComponentModelWithIdentifier:@"component-1" customData:nil],
         [self createComponentModelWithIdentifier:@"component-2" customData:@{@"test": @1}],
@@ -159,15 +155,15 @@
                                                                 components:secondComponents];
 
     HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
-    XCTAssert([diff.deletedIndices containsIndex:2]);
-    XCTAssert([diff.deletedIndices containsIndex:7]);
-    XCTAssert([diff.insertedIndices containsIndex:2]);
-    XCTAssert([diff.insertedIndices containsIndex:9]);
-    XCTAssert([diff.reloadedIndices containsIndex:1]);
-    XCTAssert([diff.reloadedIndices containsIndex:7]);
-    XCTAssert(diff.reloadedIndices.count == 2);
-    XCTAssert(diff.insertedIndices.count == 2);
-    XCTAssert(diff.deletedIndices.count == 2);
+    XCTAssert([diff.deletedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
+    XCTAssert([diff.deletedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:7 inSection:0]]);
+    XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
+    XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:9 inSection:0]]);
+    XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:1 inSection:0]]);
+    XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:7 inSection:0]]);
+    XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 2);
+    XCTAssert(diff.insertedBodyComponentIndexPaths.count == 2);
+    XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
 }
 
 @end

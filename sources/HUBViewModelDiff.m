@@ -1,17 +1,34 @@
 #import "HUBViewModelDiff.h"
 #import "HUBComponentModel.h"
 
+#import <UIKit/UIKit.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewModelDiff ()
+static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *indexSet) {
+    NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray arrayWithCapacity:indexSet.count];
 
-@property (nonatomic, strong) NSIndexSet *insertedIndices;
-@property (nonatomic, strong) NSIndexSet *deletedIndices;
-@property (nonatomic, strong) NSIndexSet *reloadedIndices;
+    [indexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        [indexPaths addObject:[NSIndexPath indexPathForItem:(NSInteger)idx inSection:0]];
+    }];
 
-@end
+    return [indexPaths copy];
+}
 
 @implementation HUBViewModelDiff
+
+- (instancetype)initWithInserts:(NSIndexSet *)inserts
+                        deletes:(NSIndexSet *)deletes
+                        reloads:(NSIndexSet *)reloads
+{
+    self = [super init];
+    if (self) {
+        _insertedBodyComponentIndexPaths = HUBIndexSetToIndexPathArray(inserts);
+        _deletedBodyComponentIndexPaths = HUBIndexSetToIndexPathArray(deletes);
+        _reloadedBodyComponentIndexPaths = HUBIndexSetToIndexPathArray(reloads);
+    }
+    return self;
+}
 
 + (NSArray<NSString *> *)componentIdentifiersFromViewModel:(id<HUBViewModel>)viewModel
 {
@@ -99,13 +116,9 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
 
-    HUBViewModelDiff *diff = [HUBViewModelDiff new];
-
-    diff.insertedIndices = [insertions copy];
-    diff.deletedIndices = [deletions copy];
-    diff.reloadedIndices = [reloads copy];
-
-    return diff;
+    return [[HUBViewModelDiff alloc] initWithInserts:[insertions copy]
+                                             deletes:[deletions copy]
+                                             reloads:[reloads copy]];
 }
 
 - (NSString *)debugDescription
@@ -114,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
         deletions: %@\n\
         insertions: %@\n\
         reloads: %@\n\
-    \t}", self.deletedIndices, self.insertedIndices, self.reloadedIndices];
+    \t}", self.deletedBodyComponentIndexPaths, self.insertedBodyComponentIndexPaths, self.reloadedBodyComponentIndexPaths];
 }
 
 @end
