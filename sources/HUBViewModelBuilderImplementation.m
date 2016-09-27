@@ -132,6 +132,18 @@ NS_ASSUME_NONNULL_BEGIN
     return [builders copy];
 }
 
+- (NSArray<id<HUBComponentModelBuilder>> *)allOverlayComponentModelBuilders
+{
+    NSMutableArray<id<HUBComponentModelBuilder>> * const builders = [NSMutableArray new];
+    
+    [self enumerateOverlayComponentModelBuildersWithBlock:^BOOL(id<HUBComponentModelBuilder> builder) {
+        [builders addObject:builder];
+        return YES;
+    }];
+    
+    return [builders copy];
+}
+
 - (id<HUBComponentModelBuilder>)builderForBodyComponentModelWithIdentifier:(NSString *)identifier
 {
     return [self getOrCreateBuilderForBodyComponentModelWithIdentifier:identifier];
