@@ -41,6 +41,7 @@ import HubFramework
         self.registerDefaultComponentFactory()
         self.registerAndOpenRootFeature()
         self.registerGitHubSearchFeature()
+        self.registerPrettyPicturesFeature()
         
         return true
     }
@@ -97,6 +98,19 @@ import HubFramework
         )
         
         self.hubManager.jsonSchemaRegistry.registerGitHubSearchSchema()
+    }
+    
+    private func registerPrettyPicturesFeature() {
+        self.hubManager.featureRegistry.registerFeature(
+            withIdentifier: "prettyPictures",
+            viewURIPredicate: HUBViewURIPredicate(viewURI: .prettyPicturesViewURI),
+            title: "Pretty Pictures",
+            contentOperationFactories: [PrettyPicturesContentOperationFactory()],
+            contentReloadPolicy: nil,
+            customJSONSchemaIdentifier: nil,
+            actionHandler: nil,
+            viewControllerScrollHandler: nil
+        )
     }
     
     @discardableResult private func open(viewURI: URL, animated: Bool) -> Bool {

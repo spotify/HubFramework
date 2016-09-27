@@ -31,6 +31,11 @@ extension URL {
     static var gitHubSearchViewURI: URL {
         return URL(viewURI: "githubsearch")
     }
+    
+    /// The view URI used for the "Pretty pictures" feature
+    static var prettyPicturesViewURI: URL {
+        return URL(viewURI: "prettypictures")
+    }
 }
 
 private extension URL {

@@ -32,7 +32,7 @@ import HubFramework
  *  - mainImageData
  */
 class RowComponent: NSObject, HUBComponentWithImageHandling {
-    var layoutTraits: Set<HUBComponentLayoutTrait> { return [] }
+    var layoutTraits: Set<HUBComponentLayoutTrait> { return [.fullWidth, .stackable] }
     var view: UIView?
     
     private lazy var cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
