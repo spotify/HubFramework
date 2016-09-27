@@ -3,48 +3,51 @@ require_relative 'lib/teamcity'
 opt_out_usage
 default_platform :ios
 
+platform :ios do
 
-desc 'Run unit tests'
-lane :test do
-  reset_simulators
+  desc 'Run unit tests'
+  lane :test do
+    reset_simulators
 
-  scan(
-    :workspace => 'HubFramework.xcworkspace',
-    :scheme => 'HubFramework',
-    :devices => ['iPhone 6'],
-    :derived_data_path => 'build/DerivedData',
-    :output_directory => 'build/tests',
-    :buildlog_path => 'build/logs/tests',
-    :code_coverage => true,
-    :xcargs => 'analyze',
-    :output_types => 'html,junit',
-  )
+    scan(
+      :workspace => 'HubFramework.xcworkspace',
+      :scheme => 'HubFramework',
+      :devices => ['iPhone 6s'],
+      :derived_data_path => 'build/DerivedData',
+      :output_directory => 'build/tests',
+      :buildlog_path => 'build/logs/tests',
+      :code_coverage => true,
+      :xcargs => 'analyze',
+      :output_types => 'html,junit',
+    )
 
-  codecov() if ENV['CODECOV_TOKEN']
-end
-
-
-desc 'Build the demo app'
-lane :demo do
-  xcodebuild(
-    :build => true,
-    :parallelize_targets => true,
-    :workspace => 'HubFramework.xcworkspace',
-    :scheme => 'HubFrameworkDemo',
-    :sdk => 'iphonesimulator',
-    :configuration => 'Release',
-    :derived_data_path => 'build/DerivedData',
-    :buildlog_path => 'build/logs/demo',
-  )
-end
+    codecov() if ENV['CODECOV_TOKEN']
+  end
 
 
-desc 'Run all CI jobs'
-lane :ci_all do
-  tests
-end
+  desc 'Build the demo app'
+  lane :demo do
+    xcodebuild(
+      :build => true,
+      :parallelize_targets => true,
+      :workspace => 'HubFramework.xcworkspace',
+      :scheme => 'HubFrameworkDemo',
+      :sdk => 'iphonesimulator',
+      :configuration => 'Release',
+      :derived_data_path => 'build/DerivedData',
+      :buildlog_path => 'build/logs/demo',
+    )
+  end
 
 
-error do |lane, exception, options|
-  TeamCity.problem("#{lane}: #{exception}")
+  desc 'Run all CI jobs'
+  lane :ci_all do
+    test
+  end
+
+
+  error do |lane, exception, options|
+    TeamCity.problem("#{lane}: #{exception}")
+  end
+
 end

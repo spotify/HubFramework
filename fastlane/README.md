@@ -5,19 +5,20 @@ fastlane documentation
 sudo gem install fastlane
 ```
 # Available Actions
-### test
+## iOS
+### ios test
 ```
-fastlane test
+fastlane ios test
 ```
 Run unit tests
-### demo
+### ios demo
 ```
-fastlane demo
+fastlane ios demo
 ```
 Build the demo app
-### ci_all
+### ios ci_all
 ```
-fastlane ci_all
+fastlane ios ci_all
 ```
 Run all CI jobs
 
