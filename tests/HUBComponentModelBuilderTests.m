@@ -531,6 +531,7 @@
     self.builder.componentName = @"name for copying";
     self.builder.componentCategory = @"category for copying";
     self.builder.preferredIndex = @(33);
+    self.builder.groupIdentifier = @"group identifier";
     self.builder.title = @"title";
     self.builder.subtitle = @"subtitle";
     self.builder.accessoryTitle = @"accessory title";
@@ -552,6 +553,7 @@
     XCTAssertEqualObjects(builderCopy.componentName, @"name for copying");
     XCTAssertEqualObjects(builderCopy.componentCategory, @"category for copying");
     XCTAssertEqualObjects(builderCopy.preferredIndex, @(33));
+    XCTAssertEqualObjects(builderCopy.groupIdentifier, @"group identifier");
     XCTAssertEqualObjects(builderCopy.title, @"title");
     XCTAssertEqualObjects(builderCopy.subtitle, @"subtitle");
     XCTAssertEqualObjects(builderCopy.accessoryTitle, @"accessory title");
