@@ -68,6 +68,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../action-programming-guide.html">action-programming-guide</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../setup-guide.html">setup-guide</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -627,6 +630,59 @@
                           <pre class="highlight"><code><span class="k">@interface</span> <span class="nc">HUBIdentifier</span> <span class="p">:</span> <span class="nc">NSObject</span> <span class="o">&lt;</span><span class="n">NSCopying</span><span class="o">&gt;</span></code></pre>
 
                         </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBIdentifier(im)initWithString:"></a>
+                    <a name="//apple_ref/objc/Method/-initWithString:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBIdentifier(im)initWithString:">-initWithString:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initialize an identifier with a string</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nullable</span> <span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithString</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">string</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="n">convenience</span> <span class="nf">init</span><span class="p">?(</span><span class="nv">string</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>string</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The string to parse into an identifier. The string needs to have the <code>namepsace:name</code>
+        format, otherwise nil is returned.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

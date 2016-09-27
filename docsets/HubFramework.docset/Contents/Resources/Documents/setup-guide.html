@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Layout programming guide  Reference</title>
+    <title>setup-guide  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
   <body>
 
 
-    <a title="Layout programming guide  Reference"></a>
+    <a title="setup-guide  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -40,7 +40,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">HubFramework Reference</a>
       <img class="carat" src="img/carat.png" />
-      Layout programming guide  Reference
+      setup-guide  Reference
     </p>
 
     <div class="content-wrapper">
@@ -368,91 +368,178 @@
         <section class="section">
           <div class="section-content">
             
-            <a href='#layout-programming-guide' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='layout-programming-guide'>Layout Programming Guide</h1>
+            <a href='#setup-guide' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='setup-guide'>Setup Guide</h1>
 
-<p>Welcome to the Hub Framework layout programming guide! This guide aims to help you gain a deeper understanding of how the Hub Framework works in terms of layout.</p>
+<p>Welcome to the Hub Framework setup guide! This guide aims to help you get set up with the framework in either a new or existing application.</p>
+
+<p>Note that you only have to follow this guide when setting up the framework for the first time in your application. To learn how to use the framework in terms of building UIs and features using it - refer to the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html">getting started guide</a>.</p>
+
+<p>Before you proceed with this guide, it’s recommended that you read all of the programming guides, as to familiarize yourself with the various aspects of the framework. You can find links to all the programming guides <a href="https://ghe.spotify.net/iOS/HubFramework#getting-started">in the README</a>.</p>
 
 <p><strong>Table of contents</strong></p>
 
 <ul>
 <li><a href="#introduction">Introduction</a></li>
-<li><a href="#layout-traits">Layout traits</a></li>
-<li><a href="#layout-manager">Layout manager</a></li>
+<li><a href="#creating-a-hubmanager-instance">Creating a <code>HUBManager</code> instance</a></li>
+<li><a href="#setting-up-the-navigation-system">Setting up the navigation system</a></li>
+<li><a href="#further-customization">Further customization</a></li>
 </ul>
 <a href='#introduction' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='introduction'>Introduction</h2>
 
-<p>In order to both support quick iteration &amp; development of components &amp; content, and also be able to ensure consistent layout behavior throughout an application, The Hub Framework uses a centralized layout system - that has information fed into it by components.</p>
+<p>The Hub Framework is built to be easily integrated into apps of any size, with minimal impact on existing code. You don’t need to rewrite your app to start using it, and it has a very modular design that gives you a high degree of flexibility.</p>
 
-<p>There are two key parts to the Hub Framework layout system; <strong>Layout traits</strong> and a <strong>Layout manager</strong>. Those two parts are then used together with <code>UICollectionView</code>, and a custom <code>UICollectionViewLayout</code>.</p>
-<a href='#layout-traits' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='layout-traits'>Layout traits</h2>
+<p>The recommendation is to start with as many defaults as you can, and then pick and choose what to customize after you’re set up.</p>
+<a href='#creating-a-code-hubmanager-code-instance' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='creating-a-code-hubmanager-code-instance'>Creating a <code>HUBManager</code> instance</h2>
 
-<p>Each <code>HUBComponent</code> has the ability to declare a set of layout traits. These traits don&rsquo;t contain information about absolute margins or padding, but rather informs the framework&rsquo;s layout manager how to compute metrics.</p>
+<p>Each application using the Hub Framework will have one instance of the <code>HUBManager</code> class, which manages an instance of the framework. It’s recommended that you create this object early in your application’s lifecycle and keep it somewhere accessible - for example in your <code>AppDelegate</code>.</p>
 
-<p>The Hub Framework ships with a standard library of layout traits, but more can easily be added by applications using the framework (by declaring a new <code>HUBComponentLayoutTrait</code> constant). It&rsquo;s recommended to keep layout traits global in an application, to be able to create clearly defined rules around layout.</p>
+<p>In order to create a <code>HUBManager</code> instance, you need to supply implementations of the following 2 protocols:</p>
 
-<p>An example of a layout trait is <code>HUBComponentLayoutTraitCompactWidth</code>, which is used for components that should have horizontal margin on each side (and not stretch the entire view). The opposite of this trait is <code>HUBComponentLayoutTraitFullWidth</code>, which tells the layout manager that no horizontal margin should be added.</p>
+<ul>
+<li><code>HUBComponentLayoutManager</code>: For calculating margins and other layout attributes for components based on their layout traits.</li>
+<li><code>HUBComponentFallbackHandler</code>: For providing fallback information in case a component model’s component couldn’t be resolved by the framework.</li>
+</ul>
 
-<p>So layout traits are a way do describe layout, rather than specifying hard rules or metrics. The advantage of this approach is that components can be completely unaware of each other, while still being laid out in a predictable way.</p>
-<a href='#layout-manager' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='layout-manager'>Layout manager</h2>
+<p>For an example of how to set up the above, see the <a href="https://ghe.spotify.net/iOS/HubFramework/tree/master/demo">demo app</a> which contains implementations of both of these protocols. Also refer to their individual protocol documentation for more information about their required APIs.</p>
 
-<p>The other key part of the Hub Framework layout system, is <code>HUBComponentLayoutManager</code>. Each instance of the framework has a single layout manager, that does all the computation of margins for components. To be able to make an informed decision, the layout manager is given access to the layout traits for the component(s) that it&rsquo;s computing margins for.</p>
+<p>There are also several optional parameters that you can choose to supply in case you want to further customize how the Hub Framework behaves. For more information about those, see the documentation for <code>HUBManager</code>, or the <a href="#further-customization">Further customization section</a>.</p>
+<a href='#setting-up-the-navigation-system' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='setting-up-the-navigation-system'>Setting up the navigation system</h2>
 
-<p>Let&rsquo;s make a simple implementation of <code>HUBComponentLayoutManager</code>, that uses a <code>15 point</code> vertical margin for all components (except for those with the <code>HUBComponentLayoutTraitStackable</code> trait) and a <code>20 point</code> horizontal margin (except for components with the <code>HUBComponentLayoutTraitFullWidth</code> trait):</p>
-<pre class="highlight plaintext"><code>@implementation LayoutManager
+<p>The Hub Framework encourages the use of a view URI-based navigation system. This enables views to be completely decoupled, as they are no longer creating instances of each other but rather opening a URI, and having the system performing the actual navigation.</p>
+<a href='#using-navigation-by-opening-urls' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='using-navigation-by-opening-urls'>Using navigation by opening URLs</h3>
 
-- (CGFloat)marginBetweenComponentWithLayoutTraits:(NSSet&lt;HUBComponentLayoutTrait *&gt; *)layoutTraits
-                                   andContentEdge:(HUBComponentLayoutContentEdge)contentEdge
+<p>By default, the framework calls <code>[UIApplication openURL:]</code> for any <code>target.URI</code> that a component’s model has, once that component was selected by the user (through a tap).</p>
+
+<p>To make iOS route some/all of those URIs to your app, define what URL types and schemes that your app supports in your <code>Info.plist</code> file. Here&rsquo;s an example where we add support for the <code>hub-demo</code> scheme:</p>
+<pre class="highlight xml"><code><span class="nt">&lt;key&gt;</span>CGBundleURLTypes<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;array&gt;</span>
+    <span class="nt">&lt;dict&gt;</span>
+        <span class="nt">&lt;key&gt;</span>CFBundleURLName<span class="nt">&lt;/key&gt;</span>
+        <span class="nt">&lt;string&gt;</span>com.spotify.hubFrameworkDemo<span class="nt">&lt;/string&gt;</span>
+        <span class="nt">&lt;key&gt;</span>CFBundleURLSchemes<span class="nt">&lt;/key&gt;</span>
+        <span class="nt">&lt;array&gt;</span>
+            <span class="nt">&lt;string&gt;</span>hub-demo<span class="nt">&lt;/string&gt;</span>
+        <span class="nt">&lt;/array&gt;</span>
+    <span class="nt">&lt;/dict&gt;</span>
+<span class="nt">&lt;/array&gt;</span>
+</code></pre>
+
+<p>Once you&rsquo;ve added the appropriate URL information to your <code>Info.plist</code>, any URL matching that information will be routed to your app delegate&rsquo;s <code>application:openURL:options:</code> method. This is an ideal place to perform the actual navigation.</p>
+
+<p>To perform navigation, the first thing you’d want to do is to create a view controller to navigate to. To do that, use <code>HUBViewControllerFactory</code>, available on <code>HUBManager</code>. Then, push any view controller that was created onto your navigation controller, like this:</p>
+<pre class="highlight plaintext"><code>- (BOOL)application:(UIApplication *)app 
+            openURL:(NSURL *)url 
+            options:(NSDictionary&lt;UIApplicationOpenURLOptionsKey,id&gt; *)options
 {
-    switch (contentEdge) {
-        case HUBComponentLayoutContentEdgeTop:
-        case HUBComponentLayoutContentEdgeBottom:
-            return 15;
-        case HUBComponentLayoutContentEdgeLeft:
-        case HUBComponentLayoutContentEdgeRight: {
-            if ([layoutTraits containsObject:HUBComponentLayoutTraitFullWidth]) {
-                return 0;
-            }
+    id&lt;HUBViewControllerFactory&gt; factory = self.hubManager.viewControllerFactory;
+    UIViewController *viewController = [factory createViewControllerForViewURI:url];
 
-            return 20;
+    if (viewController != nil) {
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+}
+</code></pre>
+<a href='#using-custom-navigation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='using-custom-navigation'>Using custom navigation</h3>
+
+<p>In case you either can’t or don’t want to implement navigation like above, you can supply a default <code>HUBActionHandler</code> when setting up <code>HUBManager</code>, which will give you full control to handle all types of actions that are performed from within the framework.</p>
+
+<p>In this example we use a <code>HUBActionHandler</code> to create view controllers, without opening the view URI through the system:</p>
+<pre class="highlight plaintext"><code>@interface SPTDefaultActionHandler: NSObject &lt;HUBActionHandler&gt;
+
+@property (nonatomic, weak) HUBManager *hubManager;
+
+@end
+</code></pre>
+<pre class="highlight plaintext"><code>@implementation SPTDefaultActionHandler
+
+- (BOOL)handleActionWithContext:(id&lt;HUBActionContext&gt;)context
+{
+    // Don't prevent custom actions from being executed
+    if (context.customActionIdentifier != nil) {
+        return NO;
+    }
+
+    NSURL *viewURI = context.componentModel.target.URI;
+
+    if (viewURI != nil) {
+        id&lt;HUBViewControllerFactory&gt; factory = self.hubManager.viewControllerFactory;
+        UIViewController *viewController = [factory createViewControllerForViewURI:url];
+
+        if (viewController != nil) {
+            [self.navigationController pushViewController:viewController animated:YES];
         }
-
-    }
-}
-
-- (CGFloat)verticalMarginBetweenComponentWithLayoutTraits:(NSSet&lt;HUBComponentLayoutTrait *&gt; *)layoutTraits
-                       andHeaderComponentWithLayoutTraits:(NSSet&lt;HUBComponentLayoutTrait *&gt; *)headerLayoutTraits
-{
-    if ([layoutTraits containsObject:HUBComponentLayoutTraitStackable]) {
-        return 0;
     }
 
-    return 15;
-}
-
-- (CGFloat)horizontalMarginForComponentWithLayoutTraits:(NSSet&lt;HUBComponentLayoutTrait *&gt; *)layoutTraits
-                         precedingComponentLayoutTraits:(NSSet&lt;HUBComponentLayoutTrait *&gt; *)precedingComponentLayoutTraits
-{
-    if ([layoutTraits containsObject:HUBComponentLayoutTraitFullWidth]) {
-        return 0;
-    }
-
-    return 20;
-}
-
-- (CGFloat)verticalMarginForComponentWithLayoutTraits:(NSSet&lt;HUBComponentLayoutTrait *&gt; *)layoutTraits
-                       precedingComponentLayoutTraits:(NSSet&lt;HUBComponentLayoutTrait *&gt; *)precedingComponentLayoutTraits
-{
-    if ([layoutTraits containsObject:HUBComponentLayoutTraitStackable] &amp;&amp; [precedingComponentLayoutTraits containsObject:HUBComponentLayoutTraitStackable]) {
-        return 0;
-    }
-
-    return 15;
+    return YES;
 }
 
 @end
 </code></pre>
 
-<p>That&rsquo;s it! Now we&rsquo;ll get proper layout for all components using the above layout traits, and we can easily add new rules (in a central place) whenever new traits are introduced.</p>
+<p>The above is only one of many possible implementations. You could, for example, also use actions (<code>HUBAction</code>) to navigate. However, it’s really recommended to go with the default way of opening URLs through the system APIs. That solution also gives you the additional benefit of making it really easy to add deep linking support to you application.</p>
+<a href='#further-customization' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='further-customization'>Further customization</h2>
+
+<p>You’re now ready to start building UIs using the Hub Framework. Head over to the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html">getting started guide</a> to learn how to register features and how to build content operations &amp; components.</p>
+
+<p>In case you need it, you can also continue customizing the framework, adding support for additional features.</p>
+<a href='#adding-icon-support' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='adding-icon-support'>Adding icon support</h3>
+
+<p>The Hub Framework enables you to easily convert string representations of icon identifiers to <code>UIImages</code> in components, through the <code>HUBIcon</code> API. However, before this API can be used, you need to implement a <code>HUBIconImageResolver</code>, which the framework will use to perform this conversion. The image resolver is then passed as <code>iconImageResolver</code> when setting up <code>HUBManager</code>.</p>
+
+<p>Here is an example implementation:</p>
+<pre class="highlight plaintext"><code>@interface SPTIconImageResolver: NSObject &lt;HUBIconImageResolver&gt;
+
+@end
+</code></pre>
+<pre class="highlight plaintext"><code>@implementation SPTIconImageResolver
+
+- (nullable UIImage *)imageForComponentIconWithIdentifier:(NSString *)iconIdentifier
+                                                     size:(CGSize)size
+                                                    color:(UIColor *)color
+{
+    NSString *imageName = [@"componentImage-" stringByAppendingString:iconIdentifier];
+    UIImage *image = [UIImage imageNamed:imageName];
+    return [image spt_colorizeWithColor:color];
+}
+
+- (nullable UIImage *)imageForPlaceholderIconWithIdentifier:(NSString *)iconIdentifier
+                                                       size:(CGSize)size
+                                                      color:(UIColor *)color
+{
+    NSString *imageName = [@"placeholderImage-" stringByAppendingString:iconIdentifier];
+    UIImage *image = [UIImage imageNamed:imageName];
+    return [image spt_colorizeWithColor:color];
+}
+
+@end
+</code></pre>
+<a href='#defining-a-global-reload-policy' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='defining-a-global-reload-policy'>Defining a global reload policy</h3>
+
+<p>A <code>HUBContentReloadPolicy</code> is used to determine whether a given view should be reloaded when it is about to re-appear on the screen. They can be defined on a per-feature basis, but you also have the option to supply a global one that is used in case a feature didn’t supply its own. You pass a default content reload policy as <code>defaultContentReloadPolicy</code> when setting up <code>HUBManager</code>.</p>
+
+<p>Here is an example reload policy implementation:</p>
+<pre class="highlight plaintext"><code>@interface SPTDefaultReloadPolicy: NSObject &lt;HUBContentReloadPolicy&gt;
+
+@end
+</code></pre>
+<pre class="highlight plaintext"><code>@implementation SPTDefaultReloadPolicy
+
+- (BOOL)shouldReloadContentForViewURI:(NSURL *)viewURI currentViewModel:(id&lt;HUBViewModel&gt;)currentViewModel
+{
+    // This will make a view reload once 1000 seconds have passed
+    NSTimeInterval timeSinceReload = [[NSDate date] timeIntervalSinceDate:currentViewModel.buildDate];
+    return timeSinceReload &gt; 1000;
+}
+
+@end
+</code></pre>
+<a href='#prepended-and-appended-content-operations' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='prepended-and-appended-content-operations'>Prepended and appended content operations</h3>
+
+<p>You can also define system-wide content operations that are either prepended or appended to all views’ content loading chains.</p>
+
+<p>To use this functionality, pass a <code>HUBContentOperationFactory</code> as either <code>prependedContentOperationFactory</code> or <code>appendedContentOperationFactory</code> when setting up <code>HUBManager</code>.</p>
+
+<p>To learn more about the content loading chain and content operations, refer to the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html">content programming guide</a>.</p>
 
           </div>
         </section>

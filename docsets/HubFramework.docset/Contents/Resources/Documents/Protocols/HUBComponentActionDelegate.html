@@ -68,6 +68,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../action-programming-guide.html">action-programming-guide</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../setup-guide.html">setup-guide</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -387,9 +390,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentActionDelegate(im)component:performActionWithIdentifier:"></a>
-                    <a name="//apple_ref/objc/Method/-component:performActionWithIdentifier:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentActionDelegate(im)component:performActionWithIdentifier:">-component:performActionWithIdentifier:</a>
+                    <a name="/c:objc(pl)HUBComponentActionDelegate(im)component:performActionWithIdentifier:customData:"></a>
+                    <a name="//apple_ref/objc/Method/-component:performActionWithIdentifier:customData:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentActionDelegate(im)component:performActionWithIdentifier:customData:">-component:performActionWithIdentifier:customData:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -405,12 +408,14 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">component</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentActionPerformer.html">HUBComponentActionPerformer</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">component</span>
-    <span class="nf">performActionWithIdentifier</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBIdentifier.html">HUBIdentifier</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+    <span class="nf">performActionWithIdentifier</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBIdentifier.html">HUBIdentifier</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span>
+                     <span class="nf">customData</span><span class="p">:</span>
+                         <span class="p">(</span><span class="n">nullable</span> <span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*</span><span class="p">,</span> <span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">customData</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">component</span><span class="p">(</span><span class="nv">component</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBComponentActionPerformer.html">HUBComponentActionPerformer</a></span><span class="p">,</span> <span class="n">performActionWithIdentifier</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt"><a href="../Classes/HUBIdentifier.html">HUBIdentifier</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">component</span><span class="p">(</span><span class="nv">component</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBComponentActionPerformer.html">HUBComponentActionPerformer</a></span><span class="p">,</span> <span class="n">performActionWithIdentifier</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt"><a href="../Classes/HUBIdentifier.html">HUBIdentifier</a></span><span class="p">,</span> <span class="nv">customData</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">AnyObject</span><span class="p">]?)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -440,6 +445,19 @@
                               <td>
                                 <div>
                                   <p>The identifier of the action to perform</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>customData</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any custom data that should be passed to the action</p>
 
                                 </div>
                               </td>
