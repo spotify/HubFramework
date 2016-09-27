@@ -26,7 +26,7 @@ import HubFramework
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var navigationController: UINavigationController?
-    var hubManager: HUBManager?
+    var hubManager: HUBManager!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
@@ -38,7 +38,9 @@ import HubFramework
         window.rootViewController = self.navigationController
         window.makeKeyAndVisible()
         
+        self.registerDefaultComponentFactory()
         self.registerAndOpenRootFeature()
+        self.registerGitHubSearchFeature()
         
         return true
     }
@@ -63,8 +65,12 @@ import HubFramework
         )
     }
     
+    private func registerDefaultComponentFactory() {
+        self.hubManager.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)
+    }
+    
     private func registerAndOpenRootFeature() {
-        self.hubManager?.featureRegistry.registerFeature(
+        self.hubManager.featureRegistry.registerFeature(
             withIdentifier: "root",
             viewURIPredicate: HUBViewURIPredicate(viewURI: .rootViewURI),
             title: "Root feature",
@@ -76,6 +82,21 @@ import HubFramework
         )
         
         self.open(viewURI: .rootViewURI, animated: false)
+    }
+    
+    private func registerGitHubSearchFeature() {
+        self.hubManager.featureRegistry.registerFeature(
+            withIdentifier: "gitHubSearch",
+            viewURIPredicate: HUBViewURIPredicate(viewURI: .gitHubSearchViewURI),
+            title: "GitHub Search",
+            contentOperationFactories: [GitHubSearchContentOperationFactory()],
+            contentReloadPolicy: nil,
+            customJSONSchemaIdentifier: self.hubManager.jsonSchemaRegistry.gitHubSearchSchemaIdentifier,
+            actionHandler: nil,
+            viewControllerScrollHandler: nil
+        )
+        
+        self.hubManager.jsonSchemaRegistry.registerGitHubSearchSchema()
     }
     
     @discardableResult private func open(viewURI: URL, animated: Bool) -> Bool {
