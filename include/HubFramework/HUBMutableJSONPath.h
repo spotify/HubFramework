@@ -31,7 +31,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Block type used when running a custom block as a JSON path operation
-typedef NSObject * _Nullable(^HUBMutableJSONPathBlock)(NSObject *input);
+typedef id _Nullable(^HUBMutableJSONPathBlock)(NSObject *input);
 
 /**
  *  Protocol defining the API of a mutable JSON path, that is used to describe operations to perform to retrieve
