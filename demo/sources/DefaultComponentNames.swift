@@ -27,6 +27,8 @@ struct DefaultComponentNames {
     static var row: String { return "row" }
     /// A label component - maps to `LabelComponent`
     static var label: String { return "label" }
+    /// An image component - maps to `ImageComponent`
+    static var image: String { return "image" }
     /// A search bar component - maps to `SearchBarComponent`
     static var searchBar: String { return "searchBar" }
     /// An activity indicator component - maps to `ActivityIndicatorComponent`
