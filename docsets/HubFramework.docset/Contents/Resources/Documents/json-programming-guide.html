@@ -380,6 +380,7 @@
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#json-schema-hierarchy">JSON schema hierarchy</a></li>
 <li><a href="#default-json-schema">Default JSON schema</a></li>
+<li><a href="#example-json">Example JSON</a></li>
 <li><a href="#using-custom-json-schemas">Using custom JSON schemas</a></li>
 </ul>
 <a href='#introduction' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='introduction'>Introduction</h2>
@@ -637,6 +638,173 @@
 <td><code>customData</code></td>
 </tr>
 </tbody></table>
+<a href='#example-json' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='example-json'>Example JSON</h2>
+
+<p>Below is an example JSON file that shows how to use the default schema. It adds a header component, a carousel, a section header and 3 rows to a view model.</p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"header"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"header"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"component"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default:header"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"header"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Delicious Food"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"subtitle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Discover the tastes of the world"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"background"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://spotify.com/image/of/food.jpg"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"placeholder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"food"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"body"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"featured"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"component"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default:carousel"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"carousel"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Great quick meals"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"children"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"featured-0"</span><span class="p">,</span><span class="w">
+                    </span><span class="nt">"component"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default:card"</span><span class="p">,</span><span class="w">
+                        </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"card"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nt">"text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Hamburger"</span><span class="p">,</span><span class="w">
+                        </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Very popular around the world - and quick both to make and eat!"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"main"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://spotify.com/image/of/hamburger.jpg"</span><span class="p">,</span><span class="w">
+                            </span><span class="nt">"placeholder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"quickfood"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nt">"target"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://en.wikipedia.org/wiki/Hamburger"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"featured-1"</span><span class="p">,</span><span class="w">
+                    </span><span class="nt">"component"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default:card"</span><span class="p">,</span><span class="w">
+                        </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"card"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nt">"text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Noodles"</span><span class="p">,</span><span class="w">
+                        </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Quick to boil - and can be served with many different accessories."</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"main"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://spotify.com/image/of/noodles.jpg"</span><span class="p">,</span><span class="w">
+                            </span><span class="nt">"placeholder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"quickfood"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nt">"target"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://en.wikipedia.org/wiki/Noodle"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"featured-2"</span><span class="p">,</span><span class="w">
+                    </span><span class="nt">"component"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default:card"</span><span class="p">,</span><span class="w">
+                        </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"card"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nt">"text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Hot Dogs"</span><span class="p">,</span><span class="w">
+                        </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Whether you're having a barbeque or just a quick bite - it's awesome."</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"main"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://spotify.com/image/of/hotdog.jpg"</span><span class="p">,</span><span class="w">
+                            </span><span class="nt">"placeholder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"quickfood"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nt">"target"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://en.wikipedia.org/wiki/Hot_dog"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sectionHeader"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"component"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default:sectionHeader"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"header"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Delicious Swedish Food"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"row-0"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"component"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default:row"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"row"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Meatballs &amp; mashed potatoes"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"subtitle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A swedish classic"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"main"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://spotify.com/image/of/meatballs.jpg"</span><span class="p">,</span><span class="w">
+                    </span><span class="nt">"placeholder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sweden"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"target"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://en.wikipedia.org/wiki/Meatball"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"row-1"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"component"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default:row"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"row"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fried herring"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"subtitle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Just be careful of the fermented version!"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"main"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://spotify.com/image/of/herring.jpg"</span><span class="p">,</span><span class="w">
+                    </span><span class="nt">"placeholder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sweden"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"target"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://en.wikipedia.org/wiki/Herring"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"row-2"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"component"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default:row"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"row"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cinnamon bun"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"subtitle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"If you're having a stressful day, just take a break for a \"fika!\""</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"main"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://spotify.com/image/of/cinnamon-bun.jpg"</span><span class="p">,</span><span class="w">
+                    </span><span class="nt">"placeholder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sweden"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"target"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://en.wikipedia.org/wiki/Cinnamon_roll"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 <a href='#using-custom-json-schemas' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='using-custom-json-schemas'>Using custom JSON schemas</h2>
 
 <p>Custom JSON schemas can be used to easily use existing server side data with the Hub Framework. All you need to do is let the framework know how to parse your expected JSON format, and it takes care of the rest.</p>
