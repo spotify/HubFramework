@@ -9,7 +9,7 @@ Before you proceed with this guide, it’s recommended that you read all of the 
 **Table of contents**
 
 - [Introduction](#introduction)
-- [Creating a HUBManager instance](#creating-a-hubmanager-instance)
+- [Creating a `HUBManager` instance](#creating-a-hubmanager-instance)
 - [Setting up the navigation system](#setting-up-the-navigation-system)
 - [Further customization](#further-customization)
 
@@ -19,14 +19,14 @@ The Hub Framework is built to be easily integrated into apps of any size, with m
 
 The recommendation is to start with as many defaults as you can, and then pick and choose what to customize after you’re set up.
 
-## Creating a HUBManager instance
+## Creating a `HUBManager` instance
 
 Each application using the Hub Framework will have one instance of the `HUBManager` class, which manages an instance of the framework. It’s recommended that you create this object early in your application’s lifecycle and keep it somewhere accessible - for example in your `AppDelegate`.
 
 In order to create a `HUBManager` instance, you need to supply implementations of the following 2 protocols:
 
-- `HUBComponentLayoutManager`: Will calculate margins and other layout attributes for components based on their layout traits.
-- `HUBComponentFallbackHandler`: Will provide fallback information in case a component model’s component couldn’t be resolved by the framework.
+- `HUBComponentLayoutManager`: For calculating margins and other layout attributes for components based on their layout traits.
+- `HUBComponentFallbackHandler`: For providing fallback information in case a component model’s component couldn’t be resolved by the framework.
 
 For an example of how to set up the above, see the [demo app](https://ghe.spotify.net/iOS/HubFramework/tree/master/demo) which contains implementations of both of these protocols. Also refer to their individual protocol documentation for more information about their required APIs.
 
