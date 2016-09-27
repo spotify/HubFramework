@@ -10,7 +10,7 @@ module Fastlane
 
         cc_url = "https://codecov.spotify.net"
         cc_token = params[:token]
-        pr = (params[:branch] || '').scan(/pull\/(\d+)\//).flatten.first
+        pr = (Actions::GitBranchAction.run({}) || '').scan(/pull\/(\d+)\//).flatten.first
 
         script = Tempfile.new('codecov')
         begin
@@ -44,11 +44,6 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :derived_data_path,
                                        env_name: "CODECOV_DERIVED_DATA_PATH",
                                        description: "Path to the derived data directory",
-                                       optional: true),
-
-          FastlaneCore::ConfigItem.new(key: :branch,
-                                       env_name: "TEAMCITY_BUILD_BRANCH",
-                                       description: "The current branch",
                                        optional: true),
         ]
       end
