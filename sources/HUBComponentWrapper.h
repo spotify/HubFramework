@@ -82,10 +82,13 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param componentWrapper The wrapper of the component that wants an action to be performed
  *  @param identifier The identifier of the action to perform
+ *  @param customData Any custom data that should be passed to the action
  *
  *  @return A boolean indicating whether an action was successfully performed or not
  */
-- (BOOL)componentWrapper:(HUBComponentWrapper *)componentWrapper performActionWithIdentifier:(HUBIdentifier *)identifier;
+- (BOOL)componentWrapper:(HUBComponentWrapper *)componentWrapper
+        performActionWithIdentifier:(HUBIdentifier *)identifier
+        customData:(nullable NSDictionary<NSString *, id> *)customData;
 
 /**
  *  Send a component wrapper to its reuse pool

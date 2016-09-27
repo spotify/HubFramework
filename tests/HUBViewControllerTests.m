@@ -1580,10 +1580,15 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    BOOL const actionOutcome = [self.component.actionDelegate component:self.component performActionWithIdentifier:actionIdentifier];
+    NSDictionary * const customActionData = @{@"custom": @"data"};
+    
+    BOOL const actionOutcome = [self.component.actionDelegate component:self.component
+                                            performActionWithIdentifier:actionIdentifier
+                                                             customData:customActionData];
     
     XCTAssertTrue(actionOutcome);
     XCTAssertEqualObjects(actionContext.componentModel.identifier, @"A");
+    XCTAssertEqualObjects(actionContext.customData, customActionData);
     XCTAssertEqual(actionContext.trigger, HUBActionTriggerComponent);
     XCTAssertEqualObjects(self.actionHandler.contexts, @[actionContext]);
     XCTAssertEqual(self.contentOperation.actionContext, actionContext);
