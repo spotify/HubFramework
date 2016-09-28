@@ -19,22 +19,19 @@
  *  under the License.
  */
 
-import Foundation
-import HubFramework
+#import "HUBConnectivityStateResolver.h"
 
-/// Connectivity state resolver used when setting up HUBManager
-class ConnectivityStateResolver: NSObject, HUBConnectivityStateResolver {
-    private let observers = NSHashTable<HUBConnectivityStateResolverObserver>.weakObjects()
-    
-    func resolveConnectivityState() -> HUBConnectivityState {
-        return .online
-    }
-    
-    func add(observer: HUBConnectivityStateResolverObserver) {
-        self.observers.add(observer)
-    }
-    
-    func remove(observer: HUBConnectivityStateResolverObserver) {
-        self.observers.remove(observer)
-    }
-}
+/**
+ *  Default connectivity state resolver, used in case an application does not define its own
+ *
+ *  This connectivity resolver uses the SystemConfiguration framework to determine the reachability
+ *  of the device's "zero address", giving an indication of whether or not it can connect to the
+ *  Internet. It also observes this reachability status to notify its observers whenever the state
+ *  was changed.
+ *
+ *  To use a custom connectivity state resolver instead of this one, pass a `connectivityStateResolver`
+ *  when setting up `HUBManager`.
+ */
+@interface HUBDefaultConnectivityStateResolver : NSObject <HUBConnectivityStateResolver>
+
+@end
