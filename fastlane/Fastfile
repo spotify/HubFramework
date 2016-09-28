@@ -43,7 +43,6 @@ platform :ios do
   lane :lint do
     # pod_lib_lint
 
-
     license_header_files = Dir.chdir("..") do
       license_header_files = Dir.glob('{demo/sources/*.swift,include/HubFramework/*.h,sources/*.{h,m},tests/*/*.{h,m},tests/*.m}')
     end
@@ -65,9 +64,9 @@ platform :ios do
   desc ''
   desc '- LINT:           Whether the sources and certain artifacts should be linted'
   desc '                  defaults to `YES`'
-  desc '- RUN_TESTS:      Whether unit tests should be ran, defaults to `YES`'
+  desc '- RUN_TESTS:      Whether unit tests should be run, defaults to `YES`'
   desc '- BUILD_DEMO_APP: Whether the demo app should be built or not, defaults to `YES`'
-  desc '- RUN_DANGER:     Whether Danger should be ran or not, defaults to `NO`'
+  desc '- RUN_DANGER:     Whether Danger should be run or not, defaults to `NO`'
   lane :ci_all do
     ENV['RUN_DANGER'] = 'NO' unless ENV['RUN_DANGER']
 
