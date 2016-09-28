@@ -55,7 +55,7 @@ Update your pods:
 $ pod update
 ```
 
-### Using Carthage
+#### Using Carthage
 
 *To use Carthage, first make sure you have installed it and updated it to the latest version by following their instructions on [their repo](https://github.com/Carthage/Carthage)*
 
@@ -70,6 +70,10 @@ Then, run Carthage:
 ```
 $ carthage update
 ```
+
+#### Link with `SystemConfiguration`
+
+Once you've installed the Hub Framework, link your app with Apple's `SystemConfiguration` framework. This is done by adding it in "Linked Frameworks and Libaries", under the "General" tab in your app's project settings. This framework is used to determine the connectivity state of an app using the Hub Framework.
 
 ## Importing the framework
 
