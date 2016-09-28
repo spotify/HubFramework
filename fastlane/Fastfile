@@ -42,6 +42,7 @@ platform :ios do
   desc 'Run all CI jobs'
   lane :ci_all do
     test
+    demo
   end
 
 end
