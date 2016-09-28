@@ -2,8 +2,9 @@
 
 [![codecov](https://codecov.spotify.net/ghe/iOS/HubFramework/branch/master/graph/badge.svg)](https://codecov.spotify.net/ghe/iOS/HubFramework) [![Documentation website](https://img.shields.io/badge/Documentation-Website-blue.svg)](https://ghe.spotify.net/pages/iOS/HubFramework)
 [![Dash docset feed](https://img.shields.io/badge/Documentation-Dash%20docset%20feed-blue.svg)](dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml)
+[![Spotify FOSS Slack](https://slackin.spotify.com/badge.svg)](https://slackin.spotify.com)
 
-Welcome to the Hub Framework - a toolkit for building native, component-driven UIs. It replaces the long and hard process of building, tweaking and shipping a new UI from scratch with **Components** & **Content Operations**.
+Welcome to the Hub Framework - a toolkit for building native, component-driven UIs on iOS. It replaces the long and hard process of building, tweaking and shipping a new UI from scratch with **Components** & **Content Operations**.
 
 ## Components
 
@@ -23,6 +24,72 @@ Each feature of an application can define its own content operations, and put th
 
 To learn more about content operations, check out the [Content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html).
 
+## Compatibility
+
+The Hub Framework is compatible with **iOS 8 or later**, and can be used from either Objective-C or Swift. In Swift, the API has been annotated to feel Swift-native, with proper nullability and API refinements for Swift 3.
+
+While the framework itself is written entirely in Objective-C, the [demo app](https://ghe.spotify.net/iOS/HubFramework/tree/master/demo) is written in Swift 3.
+
+## Installation
+
+You can choose to install the Hub Framework either manually, or through a dependency manager.
+
+#### Manually
+
+- Clone this repo (for example, add it as a submodule).
+- Drag the project `HubFramework.xcproj` into Xcode as a subproject of your app project.
+- Link with `HubFramework` by adding it in "Linked Frameworks and Libaries", under the "General" tab in your app's project settings.
+
+#### Using CocoaPods
+
+*To use CocoaPods, first make sure you have installed it and updated it to the latest version by following their instructions on [cocoapods.org](cocoapods.org)*
+
+Add `HubFramework` to your `Podfile`:
+
+```
+pod 'HubFramework'
+```
+
+Update your pods:
+
+```
+$ pod update
+```
+
+#### Using Carthage
+
+*To use Carthage, first make sure you have installed it and updated it to the latest version by following their instructions on [their repo](https://github.com/Carthage/Carthage)*
+
+First, add `HubFramework` to your `Cartfile`:
+
+```
+github 'spotify/HubFramework'
+```
+
+Then, run Carthage:
+
+```
+$ carthage update
+```
+
+#### Link with `SystemConfiguration`
+
+Once you've installed the Hub Framework, link your app with Apple's `SystemConfiguration` framework. This is done by adding it in "Linked Frameworks and Libaries", under the "General" tab in your app's project settings. This framework is used to determine the connectivity state of an app using the Hub Framework.
+
+## Importing the framework
+
+In Objective-C:
+
+```objective-c
+#import <HubFramework/HubFramework.h>
+```
+
+In Swift:
+
+```swift
+import HubFramework
+```
+
 ## Getting started
 
 To enable you to quickly get started using the Hub Framework, we've created a [**setup guide**](https://ghe.spotify.net/pages/iOS/HubFramework/setup-guide.html) that walks you through how to set it up in an application, as well as a [**getting started guide**](https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html) that will give you a step-by-step tutorial to building your first view using it.
@@ -35,7 +102,7 @@ There are also a series of **programming guides** that each introduce you to dif
 - [JSON programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/json-programming-guide.html)
 - [Action programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/action-programming-guide.html)
 
-### Documentation
+## Documentation
 
 The Hub Framework’s API is also well documented and we generate both a [documentation website](https://ghe.spotify.net/pages/iOS/HubFramework/) as well as a DocSet for the documentation app [Dash](https://kapeli.com/dash). The documentation is also written in such a way that Xcode will present it on usage.
 
@@ -47,11 +114,11 @@ The Hub Framework contains a set of Xcode file templates that make it easy to cr
 
 To install them, simply copy the `Hub Framework` folder located in `templates/xcode` to `~/Library/Developer/Xcode/Templates/File Templates` (You may need to create the last two folders in that path).
 
-## Need help?
+## Help & Bug Reporting
 
-We're here to help you! If you ever need any assistance with the Hub Framework, or want to get a more hands-on introduction to it - reach out! All questions are welcome, and all feedback is very appreciated. The easiest way to reach the team working on the Hub Framework is to reach out in the `#hubitup` channel on Slack, or email `hubitup@spotify.com`.
+In case you need help or want to report a bug - please [file an issue](https://ghe.spotify.net/iOS/HubFramework/issues/new). Make sure to provide us with as much debuggable information as you can, like iOS version used and any reproduction steps. Sample code also makes it a lot easier for us to help you.
 
-We also offer workshops to help new developers familiarize themselves with the framework. Please reach out if you want to book such a workshop for your team!
+You can also chat with the team behind the Hub Framework directly! The Spotify FOSS community has a [Slack Group](https://slackin.spotify.com/) that you can join. Once you've joined, head over to the `hubframework` channel to chat with us!
 
 ## Contributing
 
