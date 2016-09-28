@@ -112,4 +112,22 @@ static inline NSString * _Nullable HUBSerializeToString(id<HUBSerializable> obje
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
+/**
+ *  Convert an animation curve value into an animation options bitmask
+ *
+ *  @param animationCurve The animation curve to convert
+ */
+static inline UIViewAnimationOptions HUBAnimationOptionsFromCurve(UIViewAnimationCurve animationCurve) {
+    switch (animationCurve) {
+        case UIViewAnimationCurveEaseIn:
+            return UIViewAnimationOptionCurveEaseIn;
+        case UIViewAnimationCurveEaseOut:
+            return UIViewAnimationOptionCurveEaseOut;
+        case UIViewAnimationCurveEaseInOut:
+            return UIViewAnimationOptionCurveEaseInOut;
+        case UIViewAnimationCurveLinear:
+            return UIViewAnimationOptionCurveLinear;
+    }
+}
+
 NS_ASSUME_NONNULL_END

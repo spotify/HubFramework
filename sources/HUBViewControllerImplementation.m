@@ -77,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic) BOOL viewModelIsInitial;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
+@property (nonatomic) CGFloat visibleKeyboardHeight;
 
 @end
 
@@ -175,6 +176,18 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super viewWillAppear:animated];
     
+    NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleKeyboardWillShowNotification:)
+                               name:UIKeyboardWillShowNotification
+                             object:nil];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleKeyboardWillHideNotification:)
+                               name:UIKeyboardWillHideNotification
+                             object:nil];
+    
     if (self.viewModel == nil) {
         self.viewModel = self.viewModelLoader.initialViewModel;
     }
@@ -194,6 +207,15 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super viewDidAppear:animated];
     self.viewHasAppeared = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews
@@ -610,6 +632,21 @@ NS_ASSUME_NONNULL_BEGIN
     return contentRect;
 }
 
+#pragma mark - NSNotification selectors
+
+- (void)handleKeyboardWillShowNotification:(NSNotification *)notification
+{
+    CGRect const keyboardEndFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    self.visibleKeyboardHeight = CGRectGetHeight(keyboardEndFrame);
+    [self updateOverlayComponentCenterPointsWithKeyboardNotification:notification];
+}
+
+- (void)handleKeyboardWillHideNotification:(NSNotification *)notification
+{
+    self.visibleKeyboardHeight = 0;
+    [self updateOverlayComponentCenterPointsWithKeyboardNotification:notification];
+}
+
 #pragma mark - Private utilities
 
 - (HUBComponentWrapper *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
@@ -685,12 +722,33 @@ NS_ASSUME_NONNULL_BEGIN
         
         [self.overlayComponentWrappers addObject:componentWrapper];
         
-        componentWrapper.view.center = self.collectionView.center;
+        componentWrapper.view.center = [self overlayComponentCenterPoint];
     }
     
     for (HUBComponentWrapper * const unusedOverlayComponentWrapper in currentOverlayComponentWrappers) {
         [self removeOverlayComponentWrapper:unusedOverlayComponentWrapper];
     }
+}
+
+- (CGPoint)overlayComponentCenterPoint
+{
+    CGRect frame = self.view.bounds;
+    frame.origin.y = self.collectionView.contentInset.top;
+    frame.size.height -= self.visibleKeyboardHeight + CGRectGetMinY(frame);
+    return CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+}
+
+- (void)updateOverlayComponentCenterPointsWithKeyboardNotification:(NSNotification *)notification
+{
+    NSTimeInterval const animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve const animationCurve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    UIViewAnimationOptions animationOptions = HUBAnimationOptionsFromCurve(animationCurve);
+    
+    [UIView animateWithDuration:animationDuration delay:0 options:animationOptions animations:^{
+        for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
+            overlayComponentWrapper.view.center = [self overlayComponentCenterPoint];
+        }
+    } completion:nil];
 }
 
 - (void)removeOverlayComponentWrapper:(HUBComponentWrapper *)wrapper
