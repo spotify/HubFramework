@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'danger', '~> 3.3'
+gem 'danger-junit'
 gem 'fastlane', '~> 1.104'
 gem 'jazzy', '~> 0.7.2'
 
