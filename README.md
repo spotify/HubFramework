@@ -4,7 +4,9 @@
 [![Dash docset feed](https://img.shields.io/badge/Documentation-Dash%20docset%20feed-blue.svg)](dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml)
 [![Spotify FOSS Slack](https://slackin.spotify.com/badge.svg)](https://slackin.spotify.com)
 
-Welcome to the Hub Framework - a toolkit for building native, component-driven UIs on iOS. It replaces the long and hard process of building, tweaking and shipping a new UI from scratch with **Components** & **Content Operations**.
+Welcome to the Hub Framework - a toolkit for building native, component-driven UIs on iOS. It is designed to enable teams of any size to quickly build, tweak and ship new UI features, in either new or existing apps. It also makes it easy to build backend-driven UIs.
+
+The Hub Framework has two core concepts - **Components** & **Content Operations**.
 
 ## Components
 
@@ -18,11 +20,25 @@ To learn more about components, check out the [Component programming guide](http
 
 ## Content Operations
 
-To match the highly dynamic component-driven UIs, content operations define what content to render in a declarative fashion. Content can either be defined in code, running locally in the application, or through JSON that is provided by a server-side system. This enables you to easily aggregate data from multiple sources, and to release new features directly from the backend.
+To match the highly dynamic component-driven UIs, content operations define what content to render in a declarative fashion. Content can either be defined in code, running locally in the application, or through JSON that is provided by a backend system. This enables you to easily aggregate data from multiple sources, and to change your UI and its content directly from the backend.
 
 Each feature of an application can define its own content operations, and put them together to form a **content loading chain**. Each operation can perform an atomic mutation of the UI state, enabling easy implementation of things like A/B testing or providing system-wide functionality like caching or loading indicators.
 
 To learn more about content operations, check out the [Content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html).
+
+## Background story
+
+So, why did we build this? At Spotify, we love to experiment with our UI, to present content in new exciting ways - and to continue to learn what works and what doesn't.
+
+However, the traditional way of building and shipping UIs on iOS was slowing us down. Always having to write `UIViewControllers` from scratch, hard-wiring behaviors and tying specific models to specific views lead to slow iteration times and a lot of duplicate work.
+
+So, we did what we always do - we started experimenting. The Hub Framework is the result of those experiments. We realized that by building our UIs as *"hubs of content"* using components as building blocks, and by fully decoupling our model code from our UI using content operations - our app became a lot more dynamic and easier to work with. What's more, by letting our backend JSON data contain additional metadata and fully localized strings, we could render responses directly. Instead of having to do lots of custom mapping and transforms in all views.
+
+The result is that we are now free to experiment and try out new UI ideas quicker than ever - all while having a lot less code to maintain. By sharing the Hub Framework with you - the open source community - we hope that more apps and teams can benefit from using this type of architecture.
+
+## How does Spotify use this?
+
+This framework is used in production in the Spotify iOS app, which is used by many millions of users every day. We use it to build views like Browse, Running, Party, Genre Pages and more. Important to note is also that we don't keep an internal mirror of this repo - all development on the Hub Framework is done in the open.
 
 ## Compatibility
 
