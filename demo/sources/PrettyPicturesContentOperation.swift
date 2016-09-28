@@ -37,7 +37,7 @@ class PrettyPicturesContentOperation: NSObject, HUBContentOperation {
         for (index, identifier) in pictureIdentifiers.enumerated() {
             let pictureBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "picture-" + identifier)
             pictureBuilder.componentName = DefaultComponentNames.image
-            pictureBuilder.mainImageURL = URL(string: "https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-\(identifier).jpg")
+            pictureBuilder.mainImageURL = URL(string: "https://spotify.github.io/HubFramework/resources/getting-started-\(identifier).jpg")
             
             if index < 2 {
                 pictureBuilder.customData = [ImageComponentCustomDataKeys.fullWidth: true]
