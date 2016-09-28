@@ -388,11 +388,12 @@
     [self simulateViewControllerLayoutCycle];
     
     id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+    id<HUBImageLoaderDelegate> const imageLoaderDelegate = self.imageLoader.delegate;
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
     XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
     
     [self.component prepareViewForReuse];
@@ -400,7 +401,7 @@
     
     [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
     XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
 }
 
