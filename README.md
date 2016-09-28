@@ -71,6 +71,20 @@ Then, run Carthage:
 $ carthage update
 ```
 
+## Importing the framework
+
+In Objective-C:
+
+```objective-c
+#import <HubFramework/HubFramework.h>
+```
+
+In Swift:
+
+```swift
+import HubFramework
+```
+
 ## Getting started
 
 To enable you to quickly get started using the Hub Framework, we've created a [**setup guide**](https://ghe.spotify.net/pages/iOS/HubFramework/setup-guide.html) that walks you through how to set it up in an application, as well as a [**getting started guide**](https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html) that will give you a step-by-step tutorial to building your first view using it.
