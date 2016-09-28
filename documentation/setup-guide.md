@@ -9,6 +9,7 @@ Before you proceed with this guide, it’s recommended that you read all of the 
 **Table of contents**
 
 - [Introduction](#introduction)
+- [Linking with `SystemConfiguration`](#linking-with-system-configuration)
 - [Creating a `HUBManager` instance](#creating-a-hubmanager-instance)
 - [Setting up the navigation system](#setting-up-the-navigation-system)
 - [Further customization](#further-customization)
@@ -18,6 +19,10 @@ Before you proceed with this guide, it’s recommended that you read all of the 
 The Hub Framework is built to be easily integrated into apps of any size, with minimal impact on existing code. You don’t need to rewrite your app to start using it, and it has a very modular design that gives you a high degree of flexibility.
 
 The recommendation is to start with as many defaults as you can, and then pick and choose what to customize after you’re set up.
+
+## Linking with `SystemConfiguration`
+
+The Hub Framework requires you to link with Apple's `SystemConfiguration` framework in order for its connectivity state resolver to work. To do so, simply add `SystemConfiguration` to your app target's "Linked Frameworks and Libraries" under the "General" tab in your project settings in Xcode.
 
 ## Creating a `HUBManager` instance
 
