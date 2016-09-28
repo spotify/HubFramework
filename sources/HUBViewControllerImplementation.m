@@ -388,6 +388,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     NSArray * const contexts = self.componentImageLoadingContexts[imageURL];
+    self.componentImageLoadingContexts[imageURL] = nil;
     
     for (HUBComponentImageLoadingContext * const context in contexts) {
         [self handleLoadedComponentImage:image forURL:imageURL fromCache:loadedFromCache context:context];
