@@ -5,6 +5,7 @@
 #import "HUBDefaultImageLoader.h"
 #import "HUBURLSessionMock.h"
 #import "HUBURLSessionDataTaskMock.h"
+#import "HUBURLProtocolMock.h"
 
 @interface HUBDefaultImageLoaderTests : XCTestCase <HUBImageLoaderDelegate>
 
@@ -13,6 +14,9 @@
 @property (nonatomic, strong) UIImage *loadedImage;
 @property (nonatomic, strong) NSURL *loadedImageURL;
 @property (nonatomic, strong) NSError *loadingError;
+@property (nonatomic, assign) BOOL loadedImageFromCache;
+
+@property (nonatomic, strong) XCTestExpectation *imageLoadedExpectation;
 
 @end
 
@@ -27,6 +31,14 @@
     self.session = [HUBURLSessionMock new];
     self.imageLoader = [[HUBDefaultImageLoader alloc] initWithSession:self.session];
     self.imageLoader.delegate = self;
+
+    [NSURLProtocol registerClass:[HUBURLProtocolMock class]];
+}
+
+- (void)tearDown
+{
+    [NSURLProtocol unregisterClass:[HUBURLProtocolMock class]];
+    [super tearDown];
 }
 
 #pragma mark - Tests
@@ -109,6 +121,48 @@
     XCTAssertNotNil(self.loadingError);
 }
 
+- (void)testLoadingCachedImage
+{
+    NSURL * const imageURL = [NSURL URLWithString:@"https://image.spotify.com/123"];
+    CGSize const targetSize = CGSizeMake(200, 200);
+
+    __block UIImage *image = nil;
+
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:imageURL
+                                                              statusCode:200
+                                                             HTTPVersion:@"HTTP\1.1"
+                                                            headerFields:@{@"etag": @"123151"}];
+    UIGraphicsBeginImageContext(targetSize);
+    [[UIColor redColor] setFill];
+    UIRectFill(CGRectMake(0, 0, targetSize.width, targetSize.height));
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    
+    NSData * const data = UIImagePNGRepresentation(image);
+
+    // Manually storing the cached response for the image loader
+    NSCachedURLResponse *cachedResponse = [[NSCachedURLResponse alloc] initWithResponse:response data:data];
+    NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
+    [[NSURLCache sharedURLCache] storeCachedResponse:cachedResponse forRequest:request];
+
+    [HUBURLProtocolMock mockRequestsWithURL:imageURL handler:^(NSURLRequest *req, HUBURLProtocolResponseHandler responseHandler, HUBURLProtocolDataHandler dataHandler) {
+        responseHandler(response);
+        dataHandler(data);
+    }];
+
+    self.imageLoader = [[HUBDefaultImageLoader alloc] initWithSession:[NSURLSession sharedSession]];
+    self.imageLoader.delegate = self;
+    [self.imageLoader loadImageForURL:imageURL targetSize:targetSize];
+
+    self.imageLoadedExpectation = [self expectationWithDescription:@"Image finished loading."];
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+
+    XCTAssertTrue(self.loadedImageFromCache);
+    XCTAssertNotNil(self.loadedImage);
+    XCTAssertTrue(CGSizeEqualToSize(self.loadedImage.size, image.size));
+    XCTAssertEqualObjects(self.loadedImageURL, imageURL);
+    XCTAssertNil(self.loadingError);
+}
+
 #pragma mark - HUBImageLoaderDelegate
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache
@@ -117,6 +171,9 @@
     
     self.loadedImage = image;
     self.loadedImageURL = imageURL;
+    self.loadedImageFromCache = loadedFromCache;
+
+    [self.imageLoadedExpectation fulfill];
 }
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didFailLoadingImageForURL:(NSURL *)imageURL error:(NSError *)error
