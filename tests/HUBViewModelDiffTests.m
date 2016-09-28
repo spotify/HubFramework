@@ -188,4 +188,52 @@
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
 }
 
+- (void)testDiffingPerformanceWithShallowComparisons
+{
+    NSUInteger const firstComponentCount = 1000;
+    NSMutableArray<id<HUBComponentModel>> * const firstComponents = [NSMutableArray arrayWithCapacity:firstComponentCount];
+    for (NSUInteger i = 0; i < firstComponentCount; i++) {
+        id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"old-%@", @(i)] customData:nil];
+        [firstComponents addObject:component];
+    }
+
+    NSUInteger const newComponentCount = 700;
+    NSMutableArray<id<HUBComponentModel>> * const newComponents = [NSMutableArray arrayWithCapacity:newComponentCount];
+    for (NSUInteger i = 0; i < newComponentCount; i++) {
+        id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"new-%@", @(i)] customData:nil];
+        [newComponents addObject:component];
+    }
+
+    id<HUBViewModel> firstViewModel = [self createViewModelWithIdentifier:@"First"
+                                                                components:firstComponents];
+
+    id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Second"
+                                                                components:newComponents];
+
+    [self measureBlock:^{
+        [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
+    }];
+}
+
+- (void)testDiffingPerformanceWithDeepComparisons
+{
+    NSUInteger const firstComponentCount = 1000;
+    NSMutableArray<id<HUBComponentModel>> * const firstComponents = [NSMutableArray arrayWithCapacity:firstComponentCount];
+    for (NSUInteger i = 0; i < firstComponentCount; i++) {
+        id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"component-%@", @(i)] customData:nil];
+        [firstComponents addObject:component];
+    }
+
+    NSMutableArray<id<HUBComponentModel>> * const newComponents = [firstComponents copy];
+    id<HUBViewModel> firstViewModel = [self createViewModelWithIdentifier:@"First"
+                                                                components:firstComponents];
+
+    id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Second"
+                                                                components:newComponents];
+
+    [self measureBlock:^{
+        [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
+    }];
+}
+
 @end
