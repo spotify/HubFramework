@@ -28,13 +28,13 @@ extension UIImageView {
         
         if shouldAnimate {
             let animationKey = "hub_imageAnimation"
-            self.layer.removeAnimation(forKey: animationKey)
+            layer.removeAnimation(forKey: animationKey)
             
             let animation = CATransition()
             animation.duration = 0.3
             animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             animation.type = kCATransitionFade
-            self.layer.add(animation, forKey: animationKey)
+            layer.add(animation, forKey: animationKey)
         }
     }
 }

@@ -40,17 +40,17 @@ class GitHubSearchResultsContentOperation: NSObject, HUBContentOperation {
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
         guard let searchString = viewModelBuilder.customData?[GitHubSearchCustomDataKeys.searchString] as? String else {
-            self.finishWithoutPerforming()
+            finishWithoutPerforming()
             return
         }
         
         guard searchString.characters.count > 0 else {
-            self.finishWithoutPerforming()
+            finishWithoutPerforming()
             return
         }
         
-        if let jsonData = self.jsonData {
-            if self.searchString == searchString {
+        if let jsonData = jsonData {
+            if searchString == searchString {
                 viewModelBuilder.addJSONData(jsonData)
                 
                 if viewModelBuilder.allBodyComponentModelBuilders().count == 1 {
@@ -59,20 +59,20 @@ class GitHubSearchResultsContentOperation: NSObject, HUBContentOperation {
                     noResultsLabelBuilder.title = "No results found"
                 }
                 
-                self.delegate?.contentOperationDidFinish(self)
+                delegate?.contentOperationDidFinish(self)
                 return
             }
         }
         
-        self.jsonData = nil
+        jsonData = nil
         self.searchString = searchString
         
         guard let requestURL = URL(string: "https://api.github.com/search/repositories?q=" + searchString) else {
-            self.finishWithoutPerforming()
+            finishWithoutPerforming()
             return
         }
         
-        self.delegate?.contentOperationDidFinish(self)
+        delegate?.contentOperationDidFinish(self)
         
         let dataTask = URLSession.shared.dataTask(with: requestURL) { [weak self] data, _, _ in
             DispatchQueue.main.async {
@@ -92,8 +92,8 @@ class GitHubSearchResultsContentOperation: NSObject, HUBContentOperation {
     }
     
     private func finishWithoutPerforming() {
-        self.jsonData = nil
-        self.searchString = nil
-        self.delegate?.contentOperationDidFinish(self)
+        jsonData = nil
+        searchString = nil
+        delegate?.contentOperationDidFinish(self)
     }
 }

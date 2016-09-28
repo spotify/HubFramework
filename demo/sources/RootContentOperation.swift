@@ -22,6 +22,6 @@ class RootContentOperation: NSObject, HUBContentOperation {
         prettyPicturesRowBuilder.subtitle = "A feature that displays a grid of pictures"
         prettyPicturesRowBuilder.targetBuilder.uri = .prettyPicturesViewURI
         
-        self.delegate?.contentOperationDidFinish(self)
+        delegate?.contentOperationDidFinish(self)
     }
 }

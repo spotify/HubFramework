@@ -52,8 +52,8 @@ class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDele
     }
 
     func loadView() {
-        self.searchBar.delegate = self
-        self.view = self.searchBar
+        searchBar.delegate = self
+        view = searchBar
     }
 
     func preferredViewSize(forDisplaying model: HUBComponentModel, containerViewSize: CGSize) -> CGSize {
@@ -61,34 +61,34 @@ class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDele
     }
 
     func prepareViewForReuse() {
-        self.searchBar.text = nil
+        searchBar.text = nil
     }
 
     func configureView(with model: HUBComponentModel, containerViewSize: CGSize) {
         let placeholderKey = SearchBarComponentCustomDataKeys.placeholder
         let actionIdentifierKey = SearchBarComponentCustomDataKeys.actionIdentifier
         
-        self.searchBar.placeholder = model.customData?[placeholderKey] as? String
+        searchBar.placeholder = model.customData?[placeholderKey] as? String
         
         if let textDidChangeActionIdentifierString = model.customData?[actionIdentifierKey] as? String {
-            self.textDidChangeActionIdentifier = HUBIdentifier(string: textDidChangeActionIdentifierString)
+            textDidChangeActionIdentifier = HUBIdentifier(string: textDidChangeActionIdentifierString)
         } else {
-            self.textDidChangeActionIdentifier = nil
+            textDidChangeActionIdentifier = nil
         }
     }
     
     // MARK: - UISearchBarDelegate
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let actionIdentifier = self.textDidChangeActionIdentifier else {
+        guard let actionIdentifier = textDidChangeActionIdentifier else {
             return
         }
         
-        guard let searchText = self.searchBar.text else {
+        guard let searchText = searchBar.text else {
             return
         }
         
         let customData = [SearchBarComponentCustomDataKeys.text: searchText]
-        self.actionDelegate?.component(self, performActionWith: actionIdentifier, customData: customData)
+        actionDelegate?.component(self, performActionWith: actionIdentifier, customData: customData)
     }
 }

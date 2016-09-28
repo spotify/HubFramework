@@ -46,8 +46,8 @@ class ImageComponent: NSObject, HUBComponentWithImageHandling {
     }
 
     func loadView() {
-        self.imageView.backgroundColor = .lightGray
-        self.view = self.imageView
+        imageView.backgroundColor = .lightGray
+        view = imageView
     }
 
     func preferredViewSize(forDisplaying model: HUBComponentModel, containerViewSize: CGSize) -> CGSize {
@@ -56,7 +56,7 @@ class ImageComponent: NSObject, HUBComponentWithImageHandling {
     }
 
     func prepareViewForReuse() {
-        self.imageView.image = nil
+        imageView.image = nil
     }
 
     func configureView(with model: HUBComponentModel, containerViewSize: CGSize) {
@@ -66,11 +66,11 @@ class ImageComponent: NSObject, HUBComponentWithImageHandling {
     // MARK: - HUBComponentWithImageHandling
     
     func preferredSizeForImage(from imageData: HUBComponentImageData, model: HUBComponentModel, containerViewSize: CGSize) -> CGSize {
-        return self.preferredViewSize(forDisplaying: model, containerViewSize: containerViewSize)
+        return preferredViewSize(forDisplaying: model, containerViewSize: containerViewSize)
     }
     
     func updateView(forLoadedImage image: UIImage, from imageData: HUBComponentImageData, model: HUBComponentModel, animated: Bool) {
-        self.imageView.image = image
+        imageView.image = image
     }
     
     // MARK: - Private

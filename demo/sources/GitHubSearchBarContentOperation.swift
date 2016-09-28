@@ -30,21 +30,21 @@ class GitHubSearchBarContentOperation: NSObject, HUBContentOperationActionObserv
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
         var viewModelCustomData = viewModelBuilder.customData ?? [:]
-        viewModelCustomData[GitHubSearchCustomDataKeys.searchString] = self.searchString
+        viewModelCustomData[GitHubSearchCustomDataKeys.searchString] = searchString
         viewModelBuilder.customData = viewModelCustomData
         
         let searchBarBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "searchBar")
         searchBarBuilder.componentName = DefaultComponentNames.searchBar
         searchBarBuilder.customData = [
             SearchBarComponentCustomDataKeys.placeholder: "Search repositories on GitHub",
-            SearchBarComponentCustomDataKeys.actionIdentifier: self.searchActionIdentifier.identifierString
+            SearchBarComponentCustomDataKeys.actionIdentifier: searchActionIdentifier.identifierString
         ]
         
-        self.delegate?.contentOperationDidFinish(self)
+        delegate?.contentOperationDidFinish(self)
     }
 
     func actionPerformed(with context: HUBActionContext, viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState) {
-        guard context.customActionIdentifier == self.searchActionIdentifier else {
+        guard context.customActionIdentifier == searchActionIdentifier else {
             return
         }
         
@@ -53,6 +53,6 @@ class GitHubSearchBarContentOperation: NSObject, HUBContentOperationActionObserv
         }
         
         self.searchString = searchString
-        self.delegate?.contentOperationRequiresRescheduling(self)
+        delegate?.contentOperationRequiresRescheduling(self)
     }
 }

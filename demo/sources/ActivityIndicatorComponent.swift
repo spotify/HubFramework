@@ -35,7 +35,7 @@ class ActivityIndicatorComponent: NSObject, HUBComponentViewObserver {
     }
 
     func loadView() {
-        self.view = self.activityIndicator
+        view = activityIndicator
     }
 
     func preferredViewSize(forDisplaying model: HUBComponentModel, containerViewSize: CGSize) -> CGSize {
@@ -57,6 +57,6 @@ class ActivityIndicatorComponent: NSObject, HUBComponentViewObserver {
     }
     
     func viewWillAppear() {
-        self.activityIndicator.startAnimating()
+        activityIndicator.startAnimating()
     }
 }
