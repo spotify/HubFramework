@@ -12,10 +12,15 @@ class RootContentOperation: NSObject, HUBContentOperation {
                  previousError: Error?) {
         viewModelBuilder.navigationBarTitle = "Hub Framework Demo App"
         
-        let rowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "row")
-        rowBuilder.title = "GitHub Search"
-        rowBuilder.subtitle = "A feature that enables you to search GitHub"
-        rowBuilder.targetBuilder.uri = .gitHubSearchViewURI
+        let gitHubSearchRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "gitHubSearch")
+        gitHubSearchRowBuilder.title = "GitHub Search"
+        gitHubSearchRowBuilder.subtitle = "A feature that enables you to search GitHub"
+        gitHubSearchRowBuilder.targetBuilder.uri = .gitHubSearchViewURI
+        
+        let prettyPicturesRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "prettyPictures")
+        prettyPicturesRowBuilder.title = "Pretty pictures"
+        prettyPicturesRowBuilder.subtitle = "A feature that displays a grid of pictures"
+        prettyPicturesRowBuilder.targetBuilder.uri = .prettyPicturesViewURI
         
         self.delegate?.contentOperationDidFinish(self)
     }

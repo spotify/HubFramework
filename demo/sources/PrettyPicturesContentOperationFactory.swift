@@ -20,17 +20,11 @@
  */
 
 import Foundation
+import HubFramework
 
-/// The component names that `DefaultComponentFactory` is compatible with
-struct DefaultComponentNames {
-    /// A row component - maps to `RowComponent`
-    static var row: String { return "row" }
-    /// A label component - maps to `LabelComponent`
-    static var label: String { return "label" }
-    /// An image component - maps to `ImageComponent`
-    static var image: String { return "image" }
-    /// A search bar component - maps to `SearchBarComponent`
-    static var searchBar: String { return "searchBar" }
-    /// An activity indicator component - maps to `ActivityIndicatorComponent`
-    static var activityIndicator: String { return "activityIndicator" }
+/// Content operation factory used in the "Pretty pictures" feature
+class PrettyPicturesContentOperationFactory: NSObject, HUBContentOperationFactory {
+    func createContentOperations(forViewURI viewURI: URL) -> [HUBContentOperation] {
+        return [PrettyPicturesContentOperation()]
+    }
 }

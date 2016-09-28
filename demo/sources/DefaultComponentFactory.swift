@@ -29,6 +29,7 @@ class DefaultComponentFactory: NSObject, HUBComponentFactory {
     private lazy var creationMap: [String: () -> HUBComponent] = [
         DefaultComponentNames.row: { RowComponent() },
         DefaultComponentNames.label: { LabelComponent() },
+        DefaultComponentNames.image: { ImageComponent() },
         DefaultComponentNames.searchBar: { SearchBarComponent() },
         DefaultComponentNames.activityIndicator: { ActivityIndicatorComponent() }
     ]
