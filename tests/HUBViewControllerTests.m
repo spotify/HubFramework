@@ -375,6 +375,35 @@
     XCTAssertEqualObjects(componentB.mainImageData.URL, imageURL);
 }
 
+- (void)testReloadingImage
+{
+    NSURL * const imageURL = [NSURL URLWithString:@"https://image.url"];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.mainImageURL = imageURL;
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
+    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
+    
+    [self.component prepareViewForReuse];
+    XCTAssertNil(self.component.mainImageData);
+    
+    [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
+    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
+}
+
 - (void)testImageLoadingForChildComponent
 {
     NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
