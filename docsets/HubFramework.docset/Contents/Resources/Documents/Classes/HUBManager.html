@@ -587,9 +587,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)HUBManager(im)initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:"></a>
-                    <a name="//apple_ref/objc/Method/-initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)HUBManager(im)initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:">-initWithConnectivityStateResolver:componentLayoutManager:componentFallbackHandler:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:</a>
+                    <a name="/c:objc(cs)HUBManager(im)initWithComponentLayoutManager:componentFallbackHandler:connectivityStateResolver:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:"></a>
+                    <a name="//apple_ref/objc/Method/-initWithComponentLayoutManager:componentFallbackHandler:connectivityStateResolver:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(im)initWithComponentLayoutManager:componentFallbackHandler:connectivityStateResolver:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:">-initWithComponentLayoutManager:componentFallbackHandler:connectivityStateResolver:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -605,24 +605,24 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span>
-<span class="nf">initWithConnectivityStateResolver</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">connectivityStateResolver</span>
-           <span class="nf">componentLayoutManager</span><span class="p">:</span>
-               <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentLayoutManager</span>
-         <span class="nf">componentFallbackHandler</span><span class="p">:</span>
-             <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentFallbackHandler</span>
-               <span class="nf">imageLoaderFactory</span><span class="p">:</span>
-                   <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBImageLoaderFactory.html">HUBImageLoaderFactory</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">imageLoaderFactory</span>
-                <span class="nf">iconImageResolver</span><span class="p">:</span>
-                    <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBIconImageResolver.html">HUBIconImageResolver</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">iconImageResolver</span>
-             <span class="nf">defaultActionHandler</span><span class="p">:</span>
-                 <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBActionHandler.html">HUBActionHandler</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">defaultActionHandler</span>
-       <span class="nf">defaultContentReloadPolicy</span><span class="p">:</span>
-           <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">defaultContentReloadPolicy</span>
- <span class="nf">prependedContentOperationFactory</span><span class="p">:</span>
-     <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">prependedContentOperationFactory</span>
-  <span class="nf">appendedContentOperationFactory</span><span class="p">:</span>
-      <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">appendedContentOperationFactory</span><span class="p">;</span></code></pre>
+  <span class="nf">initWithComponentLayoutManager</span><span class="p">:</span>
+      <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentLayoutManager</span>
+        <span class="nf">componentFallbackHandler</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentFallbackHandler</span>
+       <span class="nf">connectivityStateResolver</span><span class="p">:</span>
+           <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">connectivityStateResolver</span>
+              <span class="nf">imageLoaderFactory</span><span class="p">:</span>
+                  <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBImageLoaderFactory.html">HUBImageLoaderFactory</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">imageLoaderFactory</span>
+               <span class="nf">iconImageResolver</span><span class="p">:</span>
+                   <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBIconImageResolver.html">HUBIconImageResolver</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">iconImageResolver</span>
+            <span class="nf">defaultActionHandler</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBActionHandler.html">HUBActionHandler</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">defaultActionHandler</span>
+      <span class="nf">defaultContentReloadPolicy</span><span class="p">:</span>
+          <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">defaultContentReloadPolicy</span>
+<span class="nf">prependedContentOperationFactory</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">prependedContentOperationFactory</span>
+ <span class="nf">appendedContentOperationFactory</span><span class="p">:</span>
+     <span class="p">(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentOperationFactory.html">HUBContentOperationFactory</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">appendedContentOperationFactory</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -630,19 +630,6 @@
                         <h4>Parameters</h4>
                         <table class="graybox">
                           <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>connectivityStateResolver</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>An object responsible for determining the current connectivity state of the application.</p>
-
-                                </div>
-                              </td>
-                            </tr>
                             <tr>
                               <td>
                                 <code>
@@ -667,6 +654,20 @@
                                 <div>
                                   <p>The object to use to fall back to default components in case a component couldn&rsquo;t be
         resolved using the standard mechanism. See <code>HUBComponentFallbackHandler</code> for more information.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>connectivityStateResolver</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An object responsible for determining the current connectivity state of the application.
+        If nil, a default implementation will be used, that uses the SystemConfiguration framework to determine connectivity.</p>
 
                                 </div>
                               </td>

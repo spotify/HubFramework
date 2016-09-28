@@ -380,6 +380,7 @@
 
 <ul>
 <li><a href="#introduction">Introduction</a></li>
+<li><a href="#linking-with-system-configuration">Linking with <code>SystemConfiguration</code></a></li>
 <li><a href="#creating-a-hubmanager-instance">Creating a <code>HUBManager</code> instance</a></li>
 <li><a href="#setting-up-the-navigation-system">Setting up the navigation system</a></li>
 <li><a href="#further-customization">Further customization</a></li>
@@ -389,6 +390,9 @@
 <p>The Hub Framework is built to be easily integrated into apps of any size, with minimal impact on existing code. You don’t need to rewrite your app to start using it, and it has a very modular design that gives you a high degree of flexibility.</p>
 
 <p>The recommendation is to start with as many defaults as you can, and then pick and choose what to customize after you’re set up.</p>
+<a href='#linking-with-code-systemconfiguration-code' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='linking-with-code-systemconfiguration-code'>Linking with <code>SystemConfiguration</code></h2>
+
+<p>The Hub Framework requires you to link with Apple&rsquo;s <code>SystemConfiguration</code> framework in order for its connectivity state resolver to work. To do so, simply add <code>SystemConfiguration</code> to your app target&rsquo;s <q>Linked Frameworks and Libraries</q> under the <q>General</q> tab in your project settings in Xcode.</p>
 <a href='#creating-a-code-hubmanager-code-instance' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='creating-a-code-hubmanager-code-instance'>Creating a <code>HUBManager</code> instance</h2>
 
 <p>Each application using the Hub Framework will have one instance of the <code>HUBManager</code> class, which manages an instance of the framework. It’s recommended that you create this object early in your application’s lifecycle and keep it somewhere accessible - for example in your <code>AppDelegate</code>.</p>
