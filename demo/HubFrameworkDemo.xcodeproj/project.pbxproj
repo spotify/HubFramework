@@ -50,6 +50,13 @@
 			remoteGlobalIDString = 8ADD42991C21CF6500D1A801;
 			remoteInfo = HubFrameworkTests;
 		};
+		DD874DC91D9B1D4400BEF720 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8A07549D1C21A79200AFAD38;
+			remoteInfo = HubFramework;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -243,6 +250,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DD874DCA1D9B1D4400BEF720 /* PBXTargetDependency */,
 			);
 			name = HubFrameworkDemo;
 			productName = HubFrameworkDemo;
@@ -349,6 +357,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DD874DCA1D9B1D4400BEF720 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HubFramework;
+			targetProxy = DD874DC91D9B1D4400BEF720 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		8A42E0AF1D8C3779004FAC33 /* LaunchScreen.storyboard */ = {
