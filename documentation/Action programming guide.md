@@ -7,6 +7,11 @@ If you haven't already - we really recommend that you read the [component progra
 **Table of contents**
 
 - [Introduction](#introduction)
+- [Creating an action](#creating-an-action)
+- [Integrating an action with the framework](#integrating-an-action-with-the-framework)
+- [Triggering an action](#triggering-an-action)
+- [Responding to an action in a content operation](#responding-to-an-action-in-a-content-operation)
+- [Handling actions](#handling-actions)
 
 ## Introduction
 
