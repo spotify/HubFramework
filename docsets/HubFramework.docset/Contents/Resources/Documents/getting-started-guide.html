@@ -23,14 +23,14 @@
       </p>
     
         <p class="header-col header-col--secondary">
-          <a class="header-link" href="https://ghe.spotify.net/iOS/HubFramework">
+          <a class="header-link" href="https://github.com/spotify/HubFramework">
             <img class="header-icon" src="img/gh.png"/>
             View on GitHub
           </a>
         </p>
     
         <p class="header-col header-col--secondary">
-          <a class="header-link" href="dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml">
+          <a class="header-link" href="dash-feed://https%3A%2F%2Fspotify%2Egithub%2Eio%2FHubFramework%2Fdocsets%2FHubFramework%2Exml">
             <img class="header-icon" src="img/dash.png"/>
             Install in Dash
           </a>
@@ -372,11 +372,11 @@
 
 <p>Welcome to the Hub Framework getting started guide! This guide aims to help introduce you to the concepts of the framework, and give you a step-by-step guide to building your first dynamic, component-driven view.</p>
 
-<p>Note that this guide does not involve <em>setting up</em> the Hub Framework in your application - for that, see the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/setup-guide.html">setup guide</a>. This guide requires an application already set up with the Hub Framework, if you don&rsquo;t have your own - you can use the <a href="https://ghe.spotify.net/iOS/HubFramework/tree/master/demo">demo app</a> that is included in the Hub Framework repo.</p>
+<p>Note that this guide does not involve <em>setting up</em> the Hub Framework in your application - for that, see the <a href="https://spotify.github.io/HubFramework/setup-guide.html">setup guide</a>. This guide requires an application already set up with the Hub Framework, if you don&rsquo;t have your own - you can use the <a href="https://ghe.spotify.net/iOS/HubFramework/tree/master/demo">demo app</a> that is included in the Hub Framework repo.</p>
 
 <p>In this guide, we&rsquo;ll be building a new feature called <strong><q>Cities</q></strong>, which will use row &amp; image components to display various cities from around the world. The feature will have only one view, and we&rsquo;ll be building both the content and the components from scratch. The end result will look like this:</p>
 
-<p><img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-final.png" height="300px"></p>
+<p><img alt="Result" src="https://spotify.github.io/HubFramework/resources/getting-started-final.png" height="300px"></p>
 
 <p><strong>Table of contents</strong></p>
 
@@ -425,7 +425,7 @@ HUBViewURIPredicate *viewURIPredicate = [HUBViewURIPredicate predicateWithViewUR
 <p>We&rsquo;ll ignore the rest of the parameters for now, since they connect to optional APIs that can be used to further tweak your feature&rsquo;s various behaviors. Let&rsquo;s jump over to creating our content operation.</p>
 <a href='#creating-a-content-operation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='creating-a-content-operation'>Creating a content operation</h2>
 
-<p>A content operation takes part in the <em>content loading chain</em> for a view and is responsible for building part of (or all) content of a view. If you haven&rsquo;t already, it&rsquo;s recommended to skim through the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html">content programming guide</a> before you continue, as it will help you get a base understanding of content operations and how they work.</p>
+<p>A content operation takes part in the <em>content loading chain</em> for a view and is responsible for building part of (or all) content of a view. If you haven&rsquo;t already, it&rsquo;s recommended to skim through the <a href="https://spotify.github.io/HubFramework/content-programming-guide.html">content programming guide</a> before you continue, as it will help you get a base understanding of content operations and how they work.</p>
 
 <p>You make a content operation by conforming to the <code>HUBContentOperation</code> protocol in a new class, and implementing the single method that it requires:</p>
 <pre class="highlight plaintext"><code>@interface SPTCitiesContentOperation : NSObject &lt;HUBContentOperation&gt;
@@ -512,12 +512,12 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
 
 <p>You should now be able to see an empty view with the navigation bar title <q>Cities</q>, like this:</p>
 
-<p><img alt="Navigation bar title" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-navbar.png" height="300px"></p>
+<p><img alt="Navigation bar title" src="https://spotify.github.io/HubFramework/resources/getting-started-navbar.png" height="300px"></p>
 <a href='#creating-a-row-component' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='creating-a-row-component'>Creating a row component</h2>
 
 <p>Let&rsquo;s now jump over to creating the components that we&rsquo;ll be rendering in our UI. As you can see in the image at the top of this guide, we&rsquo;ll be using two different kinds of components - one rendering as a row and one that renders an image.</p>
 
-<p>Let&rsquo;s start with the row one. If you haven&rsquo;t already - it&rsquo;s recommended that you take a look at the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html">component programming guide</a> before continuing, as it will help you gain a basic understanding of how components work.</p>
+<p>Let&rsquo;s start with the row one. If you haven&rsquo;t already - it&rsquo;s recommended that you take a look at the <a href="https://spotify.github.io/HubFramework/component-programming-guide.html">component programming guide</a> before continuing, as it will help you gain a basic understanding of how components work.</p>
 
 <p>Components are the visual building blocks of any view that is using the Hub Framework. To define one, you create a new class and conform to the <code>HUBComponent</code> protocol.</p>
 <pre class="highlight plaintext"><code>@interface SPTCitiesRowComponent : NSObject &lt;HUBComponent&gt;
@@ -549,7 +549,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
 
 <p>Normally, when deciding how a view acts in terms of layout, you&rsquo;d set up Auto Layout constraints or override <code>layoutSubviews</code> in the view&rsquo;s superview. However, in the Hub Framework, we want components to be as reusable as possible - and really decoupled from the context that they&rsquo;re used in. We also want layout to be consistent throughout an application, and minimize the code duplication needed to setup various layouts.</p>
 
-<p>That means that we have to do layout a bit differently, using something called <em>Layout Traits</em>. To learn more about layout traits and how the framework computes layout for components, it&rsquo;s recommended that you read through the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html">Layout Programming Guide</a> before continuing.</p>
+<p>That means that we have to do layout a bit differently, using something called <em>Layout Traits</em>. To learn more about layout traits and how the framework computes layout for components, it&rsquo;s recommended that you read through the <a href="https://spotify.github.io/HubFramework/layout-programming-guide.html">Layout Programming Guide</a> before continuing.</p>
 
 <p>Layout traits are a more abstract way of defining layout. Instead of specifying absolute margins between elements, you are instead specifying <em>how</em> a component should behave in terms of layout. For our row component, we want it to stretch the entire view, and we want it to be stacked together with other rows, without any margin in between. So we&rsquo;ll use the following 2 layout traits:</p>
 <pre class="highlight plaintext"><code>- (NSSet&lt;HUBComponentLayoutTrait *&gt; *)layoutTraits
@@ -647,7 +647,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
 
 <p>To see our new component in action, head back to your view like you did during the <a href="#opening-the-view">Opening the view</a> section, and you should now see something like this:</p>
 
-<p><img alt="City names" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-hello-world.png" height="300px"></p>
+<p><img alt="City names" src="https://spotify.github.io/HubFramework/resources/getting-started-hello-world.png" height="300px"></p>
 <a href='#adding-multiple-row-components-to-the-view' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='adding-multiple-row-components-to-the-view'>Adding multiple row components to the view</h2>
 
 <p>Everyone enjoys a good <q>Hello world!</q> moment, but it&rsquo;s now time for us to add some real data to our view. Let&rsquo;s add 4 capitals of Europe as our first list of cities. In this example we&rsquo;ll use <em>Madrid</em>, <em>Rome</em>, <em>Berlin</em> and <em>Amsterdam</em> (but you can of course pick other cities if you prefer). For each of those cities, we&rsquo;ll create a row component model with their name as the title and their country as the subtitle. So we&rsquo;ll update our content operation code to look like this:</p>
@@ -683,7 +683,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
 
 <p>If you go back to your view now, you should see this:</p>
 
-<p><img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-cities.png" height="300px"></p>
+<p><img alt="Result" src="https://spotify.github.io/HubFramework/resources/getting-started-cities.png" height="300px"></p>
 <a href='#creating-an-image-component' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='creating-an-image-component'>Creating an image component</h2>
 
 <p>If you go back to the top and look at the expected end result of this guide, you&rsquo;ll see that we not only have rows, but also a grid of images. So let&rsquo;s go ahead and create the component that we&rsquo;ll use to render those.</p>
@@ -811,7 +811,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
 
 <p>As you can see above, the Hub Framework comes with built-in JSON handling, and can parse JSON data directly for you. The framework ships with a default JSON schema (that we&rsquo;ll use for this guide), but you can also define your own.</p>
 
-<p>To read about how JSON works in the Hub Framework, check out the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/json-programming-guide.html">JSON programming guide</a>, which also includes a reference for the default JSON schema.</p>
+<p>To read about how JSON works in the Hub Framework, check out the <a href="https://spotify.github.io/HubFramework/json-programming-guide.html">JSON programming guide</a>, which also includes a reference for the default JSON schema.</p>
 <a href='#creating-the-json-file' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='creating-the-json-file'>Creating the JSON file</h3>
 
 <p>Next up, let&rsquo;s add a local JSON file to our app called <code>city-images.json</code> with the following content:</p>
@@ -824,7 +824,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
             </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image-0"</span><span class="p">,</span><span class="w">
             </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                 </span><span class="nt">"background"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-tokyo.jpg"</span><span class="w">
+                    </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://spotify.github.io/HubFramework/resources/getting-started-tokyo.jpg"</span><span class="w">
                 </span><span class="p">}</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
@@ -835,7 +835,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
             </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image-1"</span><span class="p">,</span><span class="w">
             </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                 </span><span class="nt">"background"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-gothenburg.jpg"</span><span class="w">
+                    </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://spotify.github.io/HubFramework/resources/getting-started-gothenburg.jpg"</span><span class="w">
                 </span><span class="p">}</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
@@ -846,7 +846,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
             </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image-2"</span><span class="p">,</span><span class="w">
             </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                 </span><span class="nt">"background"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-zurich.jpg"</span><span class="w">
+                    </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://spotify.github.io/HubFramework/resources/getting-started-zurich.jpg"</span><span class="w">
                 </span><span class="p">}</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
@@ -857,7 +857,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
             </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image-3"</span><span class="p">,</span><span class="w">
             </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                 </span><span class="nt">"background"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-kiev.jpg"</span><span class="w">
+                    </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://spotify.github.io/HubFramework/resources/getting-started-kiev.jpg"</span><span class="w">
                 </span><span class="p">}</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">}</span><span class="w">
@@ -889,7 +889,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
 
 <p>With that, we have our final view. Open your view again and you&rsquo;ll now be able to see the final result:</p>
 
-<p><img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-final.png" height="300px"></p>
+<p><img alt="Result" src="https://spotify.github.io/HubFramework/resources/getting-started-final.png" height="300px"></p>
 
 <p>We hope this guide helped you gain some basic understanding of the core concepts of the Hub Framework; components &amp; content operations. However, this only scratches the surface of what you can do with the framework - so for more information - make sure you read through all the programming guides as well as refer to the class &amp; symbol documentation available throughout the framework.</p>
 

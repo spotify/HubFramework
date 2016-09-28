@@ -23,14 +23,14 @@
       </p>
     
         <p class="header-col header-col--secondary">
-          <a class="header-link" href="https://ghe.spotify.net/iOS/HubFramework">
+          <a class="header-link" href="https://github.com/spotify/HubFramework">
             <img class="header-icon" src="img/gh.png"/>
             View on GitHub
           </a>
         </p>
     
         <p class="header-col header-col--secondary">
-          <a class="header-link" href="dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml">
+          <a class="header-link" href="dash-feed://https%3A%2F%2Fspotify%2Egithub%2Eio%2FHubFramework%2Fdocsets%2FHubFramework%2Exml">
             <img class="header-icon" src="img/dash.png"/>
             Install in Dash
           </a>
@@ -437,7 +437,7 @@
 
 <p>This is achieved with layout traits. Each component can define a set of layout traits that best describes it in terms of layout.</p>
 
-<p>For more information; see the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html">Layout programming guide</a>.</p>
+<p>For more information; see the <a href="https://spotify.github.io/HubFramework/layout-programming-guide.html">Layout programming guide</a>.</p>
 <a href='#creating-a-component-39-s-view' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='creating-a-component-39-s-view'>Creating a component&rsquo;s view</h3>
 
 <p>Just like a view controller, a component is responsible for creating its own view - using the <code>loadView</code> method. When called, the component should instantiate an appropriate <code>UIView</code> and store it in its <code>view</code> property.</p>
@@ -519,7 +519,7 @@
 
 <p>A factory is responsible for creating new component instances for a given <code>name</code>, or returning <code>nil</code> if the supplied <code>name</code> is not supported by the factory.</p>
 
-<p><em>(For more information about component <code>namespaces</code> and <code>names</code>, see the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html">Content programming guide</a>).</em></p>
+<p><em>(For more information about component <code>namespaces</code> and <code>names</code>, see the <a href="https://spotify.github.io/HubFramework/content-programming-guide.html">Content programming guide</a>).</em></p>
 
 <p>To create a factory implementation, add a new <code>class</code> and make it conform to <code>HUBComponentFactory</code>:</p>
 <pre class="highlight plaintext"><code>@implementation SPTHubComponentFactory

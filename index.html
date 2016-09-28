@@ -23,14 +23,14 @@
       </p>
     
         <p class="header-col header-col--secondary">
-          <a class="header-link" href="https://ghe.spotify.net/iOS/HubFramework">
+          <a class="header-link" href="https://github.com/spotify/HubFramework">
             <img class="header-icon" src="img/gh.png"/>
             View on GitHub
           </a>
         </p>
     
         <p class="header-col header-col--secondary">
-          <a class="header-link" href="dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml">
+          <a class="header-link" href="dash-feed://https%3A%2F%2Fspotify%2Egithub%2Eio%2FHubFramework%2Fdocsets%2FHubFramework%2Exml">
             <img class="header-icon" src="img/dash.png"/>
             Install in Dash
           </a>
@@ -370,8 +370,8 @@
             
             <p><img alt="The Hub Framework" src="readme-banner.jpg" width="100%" max-width=1008></p>
 
-<p><a href="https://codecov.spotify.net/ghe/iOS/HubFramework"><img src="https://codecov.spotify.net/ghe/iOS/HubFramework/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://ghe.spotify.net/pages/iOS/HubFramework"><img src="https://img.shields.io/badge/Documentation-Website-blue.svg" alt="Documentation website"></a>
-<a href="dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml"><img src="https://img.shields.io/badge/Documentation-Dash%20docset%20feed-blue.svg" alt="Dash docset feed"></a>
+<p><a href="https://codecov.io/github/spotify/HubFramework?branch=master"><img src="https://codecov.io/github/spotify/HubFramework/coverage.svg?branch=master" alt="Coverage Status"></a> <a href="https://spotify.github.io/HubFramework"><img src="https://img.shields.io/badge/Documentation-Website-blue.svg" alt="Documentation website"></a>
+<a href="dash-feed://https%3A%2F%2Fspotify%2Egithub%2Eio%2FHubFramework%2Fdocsets%2FHubFramework%2Exml"><img src="https://img.shields.io/badge/Documentation-Dash%20docset%20feed-blue.svg" alt="Dash docset feed"></a>
 <a href="https://slackin.spotify.com"><img src="https://slackin.spotify.com/badge.svg" alt="Spotify FOSS Slack"></a></p>
 
 <p>Welcome to the Hub Framework - a toolkit for building native, component-driven UIs on iOS. It is designed to enable teams of any size to quickly build, tweak and ship new UI features, in either new or existing apps. It also makes it easy to build backend-driven UIs.</p>
@@ -385,14 +385,14 @@
 
 <p>The good news is that you don&rsquo;t have to rewrite your existing <code>UIViews</code> to start using the Hub Framework, instead, the architecture of the framework is completely protocol oriented, making it easy to add compatibility to existing UI.</p>
 
-<p>To learn more about components, check out the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html">Component programming guide</a>.</p>
+<p>To learn more about components, check out the <a href="https://spotify.github.io/HubFramework/component-programming-guide.html">Component programming guide</a>.</p>
 <a href='#content-operations' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='content-operations'>Content Operations</h2>
 
 <p>To match the highly dynamic component-driven UIs, content operations define what content to render in a declarative fashion. Content can either be defined in code, running locally in the application, or through JSON that is provided by a backend system. This enables you to easily aggregate data from multiple sources, and to change your UI and its content directly from the backend.</p>
 
 <p>Each feature of an application can define its own content operations, and put them together to form a <strong>content loading chain</strong>. Each operation can perform an atomic mutation of the UI state, enabling easy implementation of things like A/B testing or providing system-wide functionality like caching or loading indicators.</p>
 
-<p>To learn more about content operations, check out the <a href="https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html">Content programming guide</a>.</p>
+<p>To learn more about content operations, check out the <a href="https://spotify.github.io/HubFramework/content-programming-guide.html">Content programming guide</a>.</p>
 <a href='#background-story' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='background-story'>Background story</h2>
 
 <p>So, why did we build this? At Spotify, we love to experiment with our UI, to present content in new exciting ways - and to continue to learn what works and what doesn&rsquo;t.</p>
@@ -409,7 +409,7 @@
 
 <p>The Hub Framework is compatible with <strong>iOS 8 or later</strong>, and can be used from either Objective-C or Swift. In Swift, the API has been annotated to feel Swift-native, with proper nullability and API refinements for Swift 3.</p>
 
-<p>While the framework itself is written entirely in Objective-C, the <a href="https://ghe.spotify.net/iOS/HubFramework/tree/master/demo">demo app</a> is written in Swift 3.</p>
+<p>While the framework itself is written entirely in Objective-C, the <a href="https://github.com/spotify/HubFramework/tree/master/demo">demo app</a> is written in Swift 3.</p>
 <a href='#installation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='installation'>Installation</h2>
 
 <p>You can choose to install the Hub Framework either manually, or through a dependency manager.</p>
@@ -456,22 +456,22 @@
 </code></pre>
 <a href='#getting-started' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='getting-started'>Getting started</h2>
 
-<p>To enable you to quickly get started using the Hub Framework, we&rsquo;ve created a <a href="https://ghe.spotify.net/pages/iOS/HubFramework/setup-guide.html"><strong>setup guide</strong></a> that walks you through how to set it up in an application, as well as a <a href="https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html"><strong>getting started guide</strong></a> that will give you a step-by-step tutorial to building your first view using it.</p>
+<p>To enable you to quickly get started using the Hub Framework, we&rsquo;ve created a <a href="https://spotify.github.io/HubFramework/setup-guide.html"><strong>setup guide</strong></a> that walks you through how to set it up in an application, as well as a <a href="https://spotify.github.io/HubFramework/getting-started-guide.html"><strong>getting started guide</strong></a> that will give you a step-by-step tutorial to building your first view using it.</p>
 
 <p>There are also a series of <strong>programming guides</strong> that each introduce you to different aspects of the framework.</p>
 
 <ul>
-<li><a href="https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html">Component programming guide</a></li>
-<li><a href="https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html">Content programming guide</a></li>
-<li><a href="https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html">Layout programming guide</a></li>
-<li><a href="https://ghe.spotify.net/pages/iOS/HubFramework/json-programming-guide.html">JSON programming guide</a></li>
-<li><a href="https://ghe.spotify.net/pages/iOS/HubFramework/action-programming-guide.html">Action programming guide</a></li>
+<li><a href="https://spotify.github.io/HubFramework/component-programming-guide.html">Component programming guide</a></li>
+<li><a href="https://spotify.github.io/HubFramework/content-programming-guide.html">Content programming guide</a></li>
+<li><a href="https://spotify.github.io/HubFramework/layout-programming-guide.html">Layout programming guide</a></li>
+<li><a href="https://spotify.github.io/HubFramework/json-programming-guide.html">JSON programming guide</a></li>
+<li><a href="https://spotify.github.io/HubFramework/action-programming-guide.html">Action programming guide</a></li>
 </ul>
 <a href='#documentation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='documentation'>Documentation</h2>
 
-<p>The Hub Framework’s API is also well documented and we generate both a <a href="https://ghe.spotify.net/pages/iOS/HubFramework/">documentation website</a> as well as a DocSet for the documentation app <a href="https://kapeli.com/dash">Dash</a>. The documentation is also written in such a way that Xcode will present it on usage.</p>
+<p>The Hub Framework’s API is also well documented and we generate both a <a href="https://spotify.github.io/HubFramework/">documentation website</a> as well as a DocSet for the documentation app <a href="https://kapeli.com/dash">Dash</a>. The documentation is also written in such a way that Xcode will present it on usage.</p>
 
-<p>The Dash documentation is updated automatically for you on any changes to HubFramework. Get it by subscribing to the <a href="dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml">https://ghe.spotify.net/pages/iOS/HubFramework/docsets/HubFramework.xml</a> feed.</p>
+<p>The Dash documentation is updated automatically for you on any changes to HubFramework. Get it by subscribing to the <a href="dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml">https://spotify.github.io/HubFramework/docsets/HubFramework.xml</a> feed.</p>
 <a href='#xcode-file-templates' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='xcode-file-templates'>Xcode file templates</h2>
 
 <p>The Hub Framework contains a set of Xcode file templates that make it easy to create the boilerplate for components, content operations, etc.</p>
@@ -479,7 +479,7 @@
 <p>To install them, simply copy the <code>Hub Framework</code> folder located in <code>templates/xcode</code> to <code>~/Library/Developer/Xcode/Templates/File Templates</code> (You may need to create the last two folders in that path).</p>
 <a href='#help-amp-bug-reporting' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='help-amp-bug-reporting'>Help &amp; Bug Reporting</h2>
 
-<p>In case you need help or want to report a bug - please <a href="https://ghe.spotify.net/iOS/HubFramework/issues/new">file an issue</a>. Make sure to provide us with as much debuggable information as you can, like iOS version used and any reproduction steps. Sample code also makes it a lot easier for us to help you.</p>
+<p>In case you need help or want to report a bug - please <a href="https://github.com/spotify/HubFramework/issues/new">file an issue</a>. Make sure to provide us with as much debuggable information as you can, like iOS version used and any reproduction steps. Sample code also makes it a lot easier for us to help you.</p>
 
 <p>You can also chat with the team behind the Hub Framework directly! The Spotify FOSS community has a <a href="https://slackin.spotify.com/">Slack Group</a> that you can join. Once you&rsquo;ve joined, head over to the <code>hubframework</code> channel to chat with us!</p>
 <a href='#contributing' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='contributing'>Contributing</h2>
@@ -487,7 +487,7 @@
 <p>Anyone is more than welcome to contribute to the Hub Framework! Together we can make the framework even more capable, and help each other fix any issues that we might find. However, before you contribute, please read <a href="CONTRIBUTING.md">our contribution guidlines</a>.</p>
 <a href='#authors' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='authors'>Authors</h2>
 
-<p>The Hub Framework was built at <a href="www.spotify.com">Spotify</a> by <a href="https://twitter.com/johnsundell">John Sundell</a>, <a href="https://twitter.com/rastersize">Aron Cedercrantz</a>, <a href="https://github.com/Goos">Robin Goos</a> and <a href="graphs/contributors">several others</a>.</p>
+<p>The Hub Framework was built at <a href="www.spotify.com">Spotify</a> by <a href="https://twitter.com/johnsundell">John Sundell</a>, <a href="https://twitter.com/rastersize">Aron Cedercrantz</a>, <a href="https://github.com/Goos">Robin Goos</a> and <a href="https://github.com/spotify/HubFramework/graphs/contributors">several others</a>.</p>
 
           </div>
         </section>
