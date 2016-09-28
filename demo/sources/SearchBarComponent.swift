@@ -39,8 +39,12 @@ struct SearchBarComponentCustomDataKeys {
  *  See `SearchBarComponentCustomKeys` for what keys are used for what data.
  */
 class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDelegate {
+    static let debounceInterval = 0.3
+
     var view: UIView?
     var actionDelegate: HUBComponentActionDelegate?
+
+    var debounceTimer: Timer?
     
     private lazy var searchBar = UISearchBar()
     private var textDidChangeActionIdentifier: HUBIdentifier?
@@ -79,7 +83,7 @@ class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDele
     
     // MARK: - UISearchBarDelegate
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let actionIdentifier = textDidChangeActionIdentifier else {
             return
         }
@@ -87,8 +91,11 @@ class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDele
         guard let searchText = searchBar.text else {
             return
         }
-        
-        let customData = [SearchBarComponentCustomDataKeys.text: searchText]
-        actionDelegate?.component(self, performActionWith: actionIdentifier, customData: customData)
+
+        debounceTimer?.invalidate()
+        self.debounceTimer = Timer.scheduledTimer(withTimeInterval: SearchBarComponent.debounceInterval, repeats: false) { (_) in
+            let customData = [SearchBarComponentCustomDataKeys.text: searchText]
+            self.actionDelegate?.component(self, performActionWith: actionIdentifier, customData: customData)
+        }
     }
 }

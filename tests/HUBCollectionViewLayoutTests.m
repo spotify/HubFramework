@@ -285,7 +285,7 @@
     HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
                                                                                  componentLayoutManager:self.componentLayoutManager];
     
-    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:viewModel];
+    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:viewModel diff:nil];
     
     return layout;
 }

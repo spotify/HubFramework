@@ -43,52 +43,45 @@ class GitHubSearchResultsContentOperation: NSObject, HUBContentOperation {
             finishWithoutPerforming()
             return
         }
-        
+
         guard searchString.characters.count > 0 else {
             finishWithoutPerforming()
             return
         }
-        
-        if let jsonData = jsonData {
-            if searchString == searchString {
-                viewModelBuilder.addJSONData(jsonData)
-                
-                if viewModelBuilder.allBodyComponentModelBuilders().count == 1 {
-                    let noResultsLabelBuilder = viewModelBuilder.builderForOverlayComponentModel(withIdentifier: "noResultsLabel")
-                    noResultsLabelBuilder.componentName = DefaultComponentNames.label
-                    noResultsLabelBuilder.title = "No results found"
+
+        if searchString != self.searchString {
+            self.searchString = searchString
+
+            if let requestURL = URL(string: "https://api.github.com/search/repositories?q=" + searchString) {
+                let dataTask = URLSession.shared.dataTask(with: requestURL) { [weak self] data, _, _ in
+                    DispatchQueue.main.async {
+                        guard let strongSelf = self else {
+                            return
+                        }
+                        
+                        if let data = data {
+                            strongSelf.jsonData = data
+                        }
+                        
+                        strongSelf.delegate?.contentOperationRequiresRescheduling(strongSelf)
+                    }
                 }
                 
-                delegate?.contentOperationDidFinish(self)
-                return
+                dataTask.resume()
             }
         }
         
-        jsonData = nil
-        self.searchString = searchString
-        
-        guard let requestURL = URL(string: "https://api.github.com/search/repositories?q=" + searchString) else {
-            finishWithoutPerforming()
-            return
-        }
-        
-        delegate?.contentOperationDidFinish(self)
-        
-        let dataTask = URLSession.shared.dataTask(with: requestURL) { [weak self] data, _, _ in
-            DispatchQueue.main.async {
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                if let data = data {
-                    strongSelf.jsonData = data
-                }
-                
-                strongSelf.delegate?.contentOperationRequiresRescheduling(strongSelf)
+        if let jsonData = self.jsonData {
+            viewModelBuilder.addJSONData(jsonData)
+            
+            if viewModelBuilder.allBodyComponentModelBuilders().count == 1 {
+                let noResultsLabelBuilder = viewModelBuilder.builderForOverlayComponentModel(withIdentifier: "noResultsLabel")
+                noResultsLabelBuilder.componentName = DefaultComponentNames.label
+                noResultsLabelBuilder.title = "No results found"
             }
         }
-        
-        dataTask.resume()
+
+        self.delegate?.contentOperationDidFinish(self)
     }
     
     private func finishWithoutPerforming() {
