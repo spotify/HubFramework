@@ -139,3 +139,7 @@ You can also chat with the team behind the Hub Framework directly! The Spotify F
 ## Contributing
 
 Anyone is more than welcome to contribute to the Hub Framework! Together we can make the framework even more capable, and help each other fix any issues that we might find. However, before you contribute, please read [our contribution guidlines](CONTRIBUTING.md).
+
+## Authors
+
+The Hub Framework was built at [Spotify](www.spotify.com) by [John Sundell](https://twitter.com/johnsundell), [Aron Cedercrantz](https://twitter.com/rastersize), [Robin Goos](https://github.com/Goos) and [several others](graphs/contributors).
