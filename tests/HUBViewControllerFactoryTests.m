@@ -63,15 +63,15 @@
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
     
-    self.manager = [[HUBManager alloc] initWithConnectivityStateResolver:connectivityStateResolver
-                                                  componentLayoutManager:componentLayoutManager
-                                                componentFallbackHandler:componentFallbackHandler
-                                                      imageLoaderFactory:nil
-                                                       iconImageResolver:nil
-                                                    defaultActionHandler:self.defaultActionHandler
-                                              defaultContentReloadPolicy:self.defaultContentReloadPolicy
-                                        prependedContentOperationFactory:nil
-                                         appendedContentOperationFactory:nil];
+    self.manager = [[HUBManager alloc] initWithComponentLayoutManager:componentLayoutManager
+                                             componentFallbackHandler:componentFallbackHandler
+                                            connectivityStateResolver:connectivityStateResolver
+                                                   imageLoaderFactory:nil
+                                                    iconImageResolver:nil
+                                                 defaultActionHandler:self.defaultActionHandler
+                                           defaultContentReloadPolicy:self.defaultContentReloadPolicy
+                                     prependedContentOperationFactory:nil
+                                      appendedContentOperationFactory:nil];
 }
 
 #pragma mark - Tests
