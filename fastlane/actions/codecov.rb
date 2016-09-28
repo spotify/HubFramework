@@ -17,10 +17,17 @@ module Fastlane
           script_url = "#{cc_url}/bash"
           sh!('curl', '-sf', script_url, '-o', script.path)
           sh!('chmod', '+x', script.path)
-          sh!(
-            script.path, '-v', '-X', 'gcov', '-X', 'coveragepy',
-            '-u', cc_url, '-t', cc_token, '-D', dd_path, '-P', pr
-          )
+
+          invocation_args = [
+            script.path, '-v',
+            '-X', 'gcov', '-X', 'coveragepy',
+            '-u', cc_url,
+            '-D', dd_path,
+            '-P', pr
+          ]
+          # The token is optional for certain CI environments.
+          invocation_args.push('-t', cc_token) unless not cc_token.to_s.empty?
+          Actions.sh(invocation_args)
         ensure
           script.close
           script.unlink
@@ -39,7 +46,8 @@ module Fastlane
         [
           FastlaneCore::ConfigItem.new(key: :token,
                                        env_name: "CODECOV_TOKEN",
-                                       description: "The Codecov upload token"),
+                                       description: "The Codecov upload token, optional in certain CI environments",
+                                       optional: true),
 
           FastlaneCore::ConfigItem.new(key: :url,
                                        env_name: "CODECOV_URL",
