@@ -10,7 +10,3 @@ $LOAD_PATH.unshift File.expand_path('tasks/lib', File.dirname(__FILE__))
 
 # load all rake tasks
 Dir.glob('tasks/*.rake').each { |r| import r }
-
-# default task
-desc 'Alias for ci'
-task :default => ['ci:run']
