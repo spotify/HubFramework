@@ -36,6 +36,6 @@ class GitHubSearchActivityIndicatorContentOperation: NSObject, HUBContentOperati
             }
         }
         
-        self.delegate?.contentOperationDidFinish(self)
+        delegate?.contentOperationDidFinish(self)
     }
 }

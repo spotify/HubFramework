@@ -35,6 +35,6 @@ class DefaultComponentFactory: NSObject, HUBComponentFactory {
     ]
     
     func createComponent(forName name: String) -> HUBComponent? {
-        return self.creationMap[name]?()
+        return creationMap[name]?()
     }
 }

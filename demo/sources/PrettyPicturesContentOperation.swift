@@ -44,6 +44,6 @@ class PrettyPicturesContentOperation: NSObject, HUBContentOperation {
             }
         }
         
-        self.delegate?.contentOperationDidFinish(self)
+        delegate?.contentOperationDidFinish(self)
     }
 }

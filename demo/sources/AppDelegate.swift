@@ -32,22 +32,22 @@ import HubFramework
         let window = UIWindow(frame: UIScreen.main.bounds)
         
         self.window = window
-        self.navigationController = UINavigationController()
-        self.hubManager = self.makeHubManager()
+        navigationController = UINavigationController()
+        hubManager = makeHubManager()
 
-        window.rootViewController = self.navigationController
+        window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
-        self.registerDefaultComponentFactory()
-        self.registerAndOpenRootFeature()
-        self.registerGitHubSearchFeature()
-        self.registerPrettyPicturesFeature()
+        registerDefaultComponentFactory()
+        registerAndOpenRootFeature()
+        registerGitHubSearchFeature()
+        registerPrettyPicturesFeature()
         
         return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        return self.open(viewURI: url, animated: true)
+        return open(viewURI: url, animated: true)
     }
     
     // MARK: - Private
@@ -67,11 +67,11 @@ import HubFramework
     }
     
     private func registerDefaultComponentFactory() {
-        self.hubManager.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)
+        hubManager.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)
     }
     
     private func registerAndOpenRootFeature() {
-        self.hubManager.featureRegistry.registerFeature(
+        hubManager.featureRegistry.registerFeature(
             withIdentifier: "root",
             viewURIPredicate: HUBViewURIPredicate(viewURI: .rootViewURI),
             title: "Root feature",
@@ -82,26 +82,26 @@ import HubFramework
             viewControllerScrollHandler: nil
         )
         
-        self.open(viewURI: .rootViewURI, animated: false)
+        open(viewURI: .rootViewURI, animated: false)
     }
     
     private func registerGitHubSearchFeature() {
-        self.hubManager.featureRegistry.registerFeature(
+        hubManager.featureRegistry.registerFeature(
             withIdentifier: "gitHubSearch",
             viewURIPredicate: HUBViewURIPredicate(viewURI: .gitHubSearchViewURI),
             title: "GitHub Search",
             contentOperationFactories: [GitHubSearchContentOperationFactory()],
             contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: self.hubManager.jsonSchemaRegistry.gitHubSearchSchemaIdentifier,
+            customJSONSchemaIdentifier: hubManager.jsonSchemaRegistry.gitHubSearchSchemaIdentifier,
             actionHandler: nil,
             viewControllerScrollHandler: nil
         )
         
-        self.hubManager.jsonSchemaRegistry.registerGitHubSearchSchema()
+        hubManager.jsonSchemaRegistry.registerGitHubSearchSchema()
     }
     
     private func registerPrettyPicturesFeature() {
-        self.hubManager.featureRegistry.registerFeature(
+        hubManager.featureRegistry.registerFeature(
             withIdentifier: "prettyPictures",
             viewURIPredicate: HUBViewURIPredicate(viewURI: .prettyPicturesViewURI),
             title: "Pretty Pictures",
@@ -114,12 +114,12 @@ import HubFramework
     }
     
     @discardableResult private func open(viewURI: URL, animated: Bool) -> Bool {
-        guard let viewController = self.hubManager?.viewControllerFactory.createViewController(forViewURI: viewURI) else {
+        guard let viewController = hubManager?.viewControllerFactory.createViewController(forViewURI: viewURI) else {
             return false
         }
         
         viewController.view.backgroundColor = .white
-        self.navigationController?.pushViewController(viewController, animated: animated)
+        navigationController?.pushViewController(viewController, animated: animated)
         
         return true
     }
