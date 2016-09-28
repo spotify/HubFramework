@@ -2,7 +2,7 @@
 
 Welcome to the Hub Framework action programming guide! This guide aims to help you gain a deeper understanding of how actions work, how to create them and how you can use them to easily extend the framework with additional functionality.
 
-If you haven't already - we really recommend that you read the [component programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html) and [content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html) before proceeding with this one.
+If you haven't already - we really recommend that you read the [component programming guide](https://spotify.github.io/HubFramework/component-programming-guide.html) and [content programming guide](https://spotify.github.io/HubFramework/content-programming-guide.html) before proceeding with this one.
 
 **Table of contents**
 
@@ -206,4 +206,4 @@ Let's take the "delete a song" example from just before, and add some "protected
 
 By returning `YES` above, we tell the Hub Framework that we've handled the action in our action handler, which means that the action won't be performed.
 
-A global action handler can also be added when setting up `HUBManager`, that will be used for all features that do not implement their own. For more information about setting up Hub Manager, see the [setup guide](https://ghe.spotify.net/pages/iOS/HubFramework/setup-guide.html).
+A global action handler can also be added when setting up `HUBManager`, that will be used for all features that do not implement their own. For more information about setting up Hub Manager, see the [setup guide](https://spotify.github.io/HubFramework/setup-guide.html).

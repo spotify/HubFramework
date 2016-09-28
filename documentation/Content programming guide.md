@@ -19,7 +19,7 @@ The Hub Framework is built around the idea of a "content-driven architecture", w
 
 The way this works is through the use of **view models** and **component models** that each encapsulates content on either the view level, or the component level. Components are the visual buildings blocks of a Hub Framework-powered view, and are used to render the content defined by a component model.
 
-*(For more information about components, see the [Component programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html))*
+*(For more information about components, see the [Component programming guide](https://spotify.github.io/HubFramework/component-programming-guide.html))*
 
 ## Content hierarchy
 
@@ -35,7 +35,7 @@ Component models come in 3 variants; **header**, **body** and **overlay**. While
 
 A **Header component** is rendered at the top of a view. Each view can only have a single header component, although that component can have children nested within it. It will always remain on top of the view, and does not scroll with the rest of the view's content.
 
-**Body components** make up all the standard visual content that is part of the view. They automatically support scrolling when there's an overflow of components outside of the view's bounds, and are laid out next to each other according to their *Layout traits* (for more information see the [Layout programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html)).
+**Body components** make up all the standard visual content that is part of the view. They automatically support scrolling when there's an overflow of components outside of the view's bounds, and are laid out next to each other according to their *Layout traits* (for more information see the [Layout programming guide](https://spotify.github.io/HubFramework/layout-programming-guide.html)).
 
 **Overlay components** are rendered on top of the rest of the view's content, making them suitable for overlays such as loading indicators, popups, notifications, etc. They are always rendered at the center of the screen, stacked on top of each other.
 
@@ -45,15 +45,15 @@ Component models are exposed to components using the `HUBComponentModel` API, an
 
 They contain textual content, like `title`, `subtitle` & `descriptionText`, as well as image data, metadata & the ability for component authors to support `customData` key/value combinations.
 
-For each component model; a `HUBComponent` implementation will be used for rendering. Which implementation to use is determined by the model's `componentNamespace` and `componentName`. For more information about how namespaces and names are resolved; see the [Component programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html).
+For each component model; a `HUBComponent` implementation will be used for rendering. Which implementation to use is determined by the model's `componentNamespace` and `componentName`. For more information about how namespaces and names are resolved; see the [Component programming guide](https://spotify.github.io/HubFramework/component-programming-guide.html).
 
-*For a full list of supported properties, see [`HUBComponentModel`](https://ghe.spotify.net/pages/iOS/HubFramework/Protocols/HUBComponent.html).*
+*For a full list of supported properties, see [`HUBComponentModel`](https://spotify.github.io/HubFramework/Protocols/HUBComponent.html).*
 
 ## Using JSON
 
 One way of adding content to a Hub Framework-powered view is through JSON, which can be used to define a serialized view model. Using the JSON API to define your content means that you can dynamically update a view from a server-side system - fully decoupling your application from the content that is being rendered in it. It could potentially reduce iteration times, and enabling you to release whenever you want - instead of always having to make changes in the client-side code.
 
-The Hub Framework can be used with any JSON schema, but does provide a default one for convenience. For more information; see the [JSON programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/json-programming-guide.html).
+The Hub Framework can be used with any JSON schema, but does provide a default one for convenience. For more information; see the [JSON programming guide](https://spotify.github.io/HubFramework/json-programming-guide.html).
 
 ## Using builders
 
