@@ -16,11 +16,35 @@ Run unit tests
 fastlane ios demo
 ```
 Build the demo app
+### ios lint
+```
+fastlane ios lint
+```
+Lint the source code and other linteable artifacts
+### ios update_docs
+```
+fastlane ios update_docs
+```
+Update documentation and publish them
 ### ios ci_all
 ```
 fastlane ios ci_all
 ```
-Run all CI jobs
+Execute all CI lanes
+
+This action can be configured using the following environment variable:
+
+
+
+- LINT:           Whether the sources and certain artifacts should be linted,
+
+                  defaults to `YES`.
+
+- RUN_TESTS:      Whether unit tests should be ran, defaults to `YES`.
+
+- BUILD_DEMO_APP: Whether the demo app should be built or not, defaults to `YES`.
+
+- RUN_DANGER:     Whether Danger should be ran or not, defaults to `NO`.
 
 ----
 

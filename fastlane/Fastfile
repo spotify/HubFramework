@@ -1,5 +1,3 @@
-require_relative 'lib/teamcity'
-
 opt_out_usage
 default_platform :ios
 
@@ -41,14 +39,45 @@ platform :ios do
   end
 
 
-  desc 'Run all CI jobs'
-  lane :ci_all do
-    test
+  desc 'Lint the source code and other linteable artifacts'
+  lane :lint do
+    # pod_lib_lint
   end
 
 
-  error do |lane, exception, options|
-    TeamCity.problem("#{lane}: #{exception}")
+  desc 'Update documentation and publish them'
+  lane :update_docs do
+    sh "cd .. && rake docs:generate"
+  end
+
+
+  desc 'Execute all CI lanes'
+  desc 'This action can be configured using the following environment variable:'
+  desc ''
+  desc '- LINT:           Whether the sources and certain artifacts should be linted,'
+  desc '                  defaults to `YES`.'
+  desc '- RUN_TESTS:      Whether unit tests should be ran, defaults to `YES`.'
+  desc '- BUILD_DEMO_APP: Whether the demo app should be built or not, defaults to `YES`.'
+  desc '- RUN_DANGER:     Whether Danger should be ran or not, defaults to `NO`.'
+  lane :ci_all do
+    ENV['RUN_DANGER'] = 'NO' unless ENV['RUN_DANGER']
+
+    lint unless shouldSkipStep('LINT')
+    test unless shouldSkipStep('RUN_TESTS')
+    demo unless shouldSkipStep('BUILD_DEMO_APP')
+    danger unless shouldSkipStep('RUN_DANGER')
+  end
+
+
+  # Whether we should execute the step or not.
+  # Looks up the value in the environment variables where a missing, empty, or 'YES' string is
+  # considerered to denote that the step should be ran. Any other value is interpreted as “skip
+  # this step”.
+  def shouldSkipStep(step)
+    value = ENV[step].to_s
+
+    # We should skip if the value isn’t the empty string, or if it’s set to something other than YES
+    not value.empty? and value != 'YES'
   end
 
 end
