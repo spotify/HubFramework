@@ -176,7 +176,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     CGPoint offset = self.collectionView.contentOffset;
     
-    NSInteger topmostVisibleIndex = 0;
+    NSInteger topmostVisibleIndex = NSNotFound;
     for (NSIndexPath *indexPath in [self.collectionView indexPathsForVisibleItems]) {
         topmostVisibleIndex = MIN(topmostVisibleIndex, indexPath.item);
     }

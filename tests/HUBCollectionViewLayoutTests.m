@@ -35,6 +35,8 @@
 #import "HUBComponentDefaults.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBIconImageResolverMock.h"
+#import "HUBCollectionViewMock.h"
+#import "HUBViewModelDiff.h"
 
 @interface HUBCollectionViewLayoutTests : XCTestCase
 
@@ -271,12 +273,98 @@
     XCTAssertEqualWithAccuracy(componentViewFrame2.origin.x, 160, 0.001);
 }
 
+- (void)testProposedContentOffsetWithoutRecomputing
+{
+    for (NSUInteger i = 0; i < 30; i++) {
+        [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier];
+    }
+
+    HUBCollectionViewLayout * const layout = [self computeLayout];
+
+    CGPoint const proposedOffset = CGPointMake(0.0, 1200.0);
+    XCTAssertEqualWithAccuracy([layout targetContentOffsetForProposedContentOffset:proposedOffset].y, proposedOffset.y, 0.001);
+}
+
+- (void)testProposedContentOffsetAfterRecomputing
+{
+    for (NSUInteger i = 0; i < 30; i++) {
+        [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier];
+    }
+
+    id<HUBViewModel> const viewModel = [self.viewModelBuilder build];
+    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                 componentLayoutManager:self.componentLayoutManager];
+
+    CGRect const collectionViewFrame = {.origin = CGPointZero, .size = self.collectionViewSize};
+    HUBCollectionViewMock * const collectionView = [[HUBCollectionViewMock alloc] initWithFrame:collectionViewFrame
+                                                                           collectionViewLayout:layout];
+
+    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:viewModel diff:nil];
+
+    NSUInteger const currentIndex = 25;
+    
+    __block CGFloat deletionHeight = 0.0;
+    __block CGFloat insertionHeight = 0.0;
+    
+    NSRange const removedRange = NSMakeRange(0, 12);
+    NSIndexSet * const removedIndices = [NSIndexSet indexSetWithIndexesInRange:removedRange];
+
+    NSRange const addedRange = NSMakeRange(0, 2);
+    NSIndexSet * const addedIndices = [NSIndexSet indexSetWithIndexesInRange:addedRange];
+
+    [removedIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        [self removeBodyComponentAtIndex:idx];
+        if (idx <= currentIndex) {
+            deletionHeight += self.fullWidthComponent.preferredViewSize.height;
+        }
+    }];
+
+    [addedIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier preferredIndex:idx];
+        if (idx <= currentIndex) {
+            insertionHeight += self.fullWidthComponent.preferredViewSize.height;
+        }
+    }];
+
+    id<HUBViewModel> const newViewModel = [self.viewModelBuilder build];
+    HUBViewModelDiff * const diff = [HUBViewModelDiff diffFromViewModel:viewModel toViewModel:newViewModel];
+
+    NSIndexPath * const topmostIndexPath = [NSIndexPath indexPathForItem:currentIndex inSection:0];
+    collectionView.mockedIndexPathsForVisibleItems = @[topmostIndexPath];
+    
+    UICollectionViewLayoutAttributes * const topmostAttribute = [layout layoutAttributesForItemAtIndexPath:topmostIndexPath];
+    CGPoint const contentOffset = CGPointMake(0.0, CGRectGetMinY(topmostAttribute.frame));
+    collectionView.contentOffset = contentOffset;
+
+    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:newViewModel diff:diff];
+
+    CGFloat expectedOffset = contentOffset.y - deletionHeight + insertionHeight;
+    
+    XCTAssertEqualWithAccuracy([layout targetContentOffsetForProposedContentOffset:contentOffset].y, expectedOffset, 0.001);
+}
+
 #pragma mark - Utilities
+- (void)addBodyComponentWithIdentifier:(HUBIdentifier *)componentIdentifier preferredIndex:(NSUInteger)preferredIndex
+{
+    NSString * const modelIdentifier = [NSUUID UUID].UUIDString;
+    id<HUBComponentModelBuilder> componentBuilder = [self.viewModelBuilder builderForBodyComponentModelWithIdentifier:modelIdentifier];
+    componentBuilder.componentName = componentIdentifier.namePart;
+    componentBuilder.preferredIndex = @(preferredIndex);
+}
 
 - (void)addBodyComponentWithIdentifier:(HUBIdentifier *)componentIdentifier
 {
     NSString * const modelIdentifier = [NSUUID UUID].UUIDString;
     [self.viewModelBuilder builderForBodyComponentModelWithIdentifier:modelIdentifier].componentName = componentIdentifier.namePart;
+}
+
+- (void)removeBodyComponentAtIndex:(NSUInteger)componentIndex
+{
+    NSArray<id<HUBComponentModelBuilder>> *childBuilders = [self.viewModelBuilder allBodyComponentModelBuilders];
+    if (childBuilders.count > componentIndex) {
+        id<HUBComponentModelBuilder> builder = childBuilders[componentIndex];
+        [self.viewModelBuilder removeBuilderForBodyComponentModelWithIdentifier:builder.modelIdentifier];
+    }
 }
 
 - (HUBCollectionViewLayout *)computeLayout
