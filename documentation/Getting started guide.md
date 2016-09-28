@@ -2,11 +2,11 @@
 
 Welcome to the Hub Framework getting started guide! This guide aims to help introduce you to the concepts of the framework, and give you a step-by-step guide to building your first dynamic, component-driven view.
 
-Note that this guide does not involve *setting up* the Hub Framework in your application - for that, see the [setup guide](https://ghe.spotify.net/pages/iOS/HubFramework/setup-guide.html). This guide requires an application already set up with the Hub Framework, if you don't have your own - you can use the [demo app](https://ghe.spotify.net/iOS/HubFramework/tree/master/demo) that is included in the Hub Framework repo.
+Note that this guide does not involve *setting up* the Hub Framework in your application - for that, see the [setup guide](https://spotify.github.io/HubFramework/setup-guide.html). This guide requires an application already set up with the Hub Framework, if you don't have your own - you can use the [demo app](https://ghe.spotify.net/iOS/HubFramework/tree/master/demo) that is included in the Hub Framework repo.
 
 In this guide, we'll be building a new feature called **"Cities"**, which will use row & image components to display various cities from around the world. The feature will have only one view, and we'll be building both the content and the components from scratch. The end result will look like this:
 
-<img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-final.png" height="300px">
+<img alt="Result" src="https://spotify.github.io/HubFramework/resources/getting-started-final.png" height="300px">
 
 **Table of contents**
 
@@ -57,7 +57,7 @@ We'll ignore the rest of the parameters for now, since they connect to optional 
 
 ## Creating a content operation
 
-A content operation takes part in the *content loading chain* for a view and is responsible for building part of (or all) content of a view. If you haven't already, it's recommended to skim through the [content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html) before you continue, as it will help you get a base understanding of content operations and how they work.
+A content operation takes part in the *content loading chain* for a view and is responsible for building part of (or all) content of a view. If you haven't already, it's recommended to skim through the [content programming guide](https://spotify.github.io/HubFramework/content-programming-guide.html) before you continue, as it will help you get a base understanding of content operations and how they work.
 
 You make a content operation by conforming to the `HUBContentOperation` protocol in a new class, and implementing the single method that it requires:
 
@@ -162,13 +162,13 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
 
 You should now be able to see an empty view with the navigation bar title "Cities", like this:
 
-<img alt="Navigation bar title" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-navbar.png" height="300px">
+<img alt="Navigation bar title" src="https://spotify.github.io/HubFramework/resources/getting-started-navbar.png" height="300px">
 
 ## Creating a row component
 
 Let's now jump over to creating the components that we'll be rendering in our UI. As you can see in the image at the top of this guide, we'll be using two different kinds of components - one rendering as a row and one that renders an image.
 
-Let's start with the row one. If you haven't already - it's recommended that you take a look at the [component programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/component-programming-guide.html) before continuing, as it will help you gain a basic understanding of how components work.
+Let's start with the row one. If you haven't already - it's recommended that you take a look at the [component programming guide](https://spotify.github.io/HubFramework/component-programming-guide.html) before continuing, as it will help you gain a basic understanding of how components work.
 
 Components are the visual building blocks of any view that is using the Hub Framework. To define one, you create a new class and conform to the `HUBComponent` protocol.
 
@@ -206,7 +206,7 @@ As you can see above, we've taken quite a lot of inspiration from `UIViewControl
 
 Normally, when deciding how a view acts in terms of layout, you'd set up Auto Layout constraints or override `layoutSubviews` in the view's superview. However, in the Hub Framework, we want components to be as reusable as possible - and really decoupled from the context that they're used in. We also want layout to be consistent throughout an application, and minimize the code duplication needed to setup various layouts.
 
-That means that we have to do layout a bit differently, using something called *Layout Traits*. To learn more about layout traits and how the framework computes layout for components, it's recommended that you read through the [Layout Programming Guide](https://ghe.spotify.net/pages/iOS/HubFramework/layout-programming-guide.html) before continuing.
+That means that we have to do layout a bit differently, using something called *Layout Traits*. To learn more about layout traits and how the framework computes layout for components, it's recommended that you read through the [Layout Programming Guide](https://spotify.github.io/HubFramework/layout-programming-guide.html) before continuing.
 
 Layout traits are a more abstract way of defining layout. Instead of specifying absolute margins between elements, you are instead specifying *how* a component should behave in terms of layout. For our row component, we want it to stretch the entire view, and we want it to be stacked together with other rows, without any margin in between. So we'll use the following 2 layout traits:
 
@@ -326,7 +326,7 @@ We then need to assign the `rowBuilder` the `componentNamespace` and `componentN
 
 To see our new component in action, head back to your view like you did during the [Opening the view](#opening-the-view) section, and you should now see something like this:
 
-<img alt="City names" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-hello-world.png" height="300px">
+<img alt="City names" src="https://spotify.github.io/HubFramework/resources/getting-started-hello-world.png" height="300px">
 
 ## Adding multiple row components to the view
 
@@ -365,7 +365,7 @@ Everyone enjoys a good "Hello world!" moment, but it's now time for us to add so
 
 If you go back to your view now, you should see this:
 
-<img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-cities.png" height="300px">
+<img alt="Result" src="https://spotify.github.io/HubFramework/resources/getting-started-cities.png" height="300px">
 
 ## Creating an image component
 
@@ -512,7 +512,7 @@ Let's create our new content operation, that will use a local JSON file bundled 
 
 As you can see above, the Hub Framework comes with built-in JSON handling, and can parse JSON data directly for you. The framework ships with a default JSON schema (that we'll use for this guide), but you can also define your own.
 
-To read about how JSON works in the Hub Framework, check out the [JSON programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/json-programming-guide.html), which also includes a reference for the default JSON schema.
+To read about how JSON works in the Hub Framework, check out the [JSON programming guide](https://spotify.github.io/HubFramework/json-programming-guide.html), which also includes a reference for the default JSON schema.
 
 ### Creating the JSON file
 
@@ -528,7 +528,7 @@ Next up, let's add a local JSON file to our app called `city-images.json` with t
             "id": "image-0",
             "images": {
                 "background": {
-                    "uri": "https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-tokyo.jpg"
+                    "uri": "https://spotify.github.io/HubFramework/resources/getting-started-tokyo.jpg"
                 }
             }
         },
@@ -539,7 +539,7 @@ Next up, let's add a local JSON file to our app called `city-images.json` with t
             "id": "image-1",
             "images": {
                 "background": {
-                    "uri": "https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-gothenburg.jpg"
+                    "uri": "https://spotify.github.io/HubFramework/resources/getting-started-gothenburg.jpg"
                 }
             }
         },
@@ -550,7 +550,7 @@ Next up, let's add a local JSON file to our app called `city-images.json` with t
             "id": "image-2",
             "images": {
                 "background": {
-                    "uri": "https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-zurich.jpg"
+                    "uri": "https://spotify.github.io/HubFramework/resources/getting-started-zurich.jpg"
                 }
             }
         },
@@ -561,7 +561,7 @@ Next up, let's add a local JSON file to our app called `city-images.json` with t
             "id": "image-3",
             "images": {
                 "background": {
-                    "uri": "https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-kiev.jpg"
+                    "uri": "https://spotify.github.io/HubFramework/resources/getting-started-kiev.jpg"
                 }
             }
         }
@@ -597,7 +597,7 @@ This is what our content operation factory looks like after the update:
 
 With that, we have our final view. Open your view again and you'll now be able to see the final result:
 
-<img alt="Result" src="https://ghe.spotify.net/raw/iOS/HubFramework/master/documentation/resources/getting-started-final.png" height="300px">
+<img alt="Result" src="https://spotify.github.io/HubFramework/resources/getting-started-final.png" height="300px">
 
 We hope this guide helped you gain some basic understanding of the core concepts of the Hub Framework; components & content operations. However, this only scratches the surface of what you can do with the framework - so for more information - make sure you read through all the programming guides as well as refer to the class & symbol documentation available throughout the framework.
 

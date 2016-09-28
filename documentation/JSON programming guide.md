@@ -2,7 +2,7 @@
 
 Welcome to the Hub Framework JSON programming guide! This guide aims to act as a reference to the default JSON schema provided by the framework, and also contain information on how to enable a custom JSON schema to be used with the framework.
 
-Before reading this guide, it's recommended to read the [Content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html), which goes into more detail on how content is built with the Hub Framework.
+Before reading this guide, it's recommended to read the [Content programming guide](https://spotify.github.io/HubFramework/content-programming-guide.html), which goes into more detail on how content is built with the Hub Framework.
 
 **Table of contents**
 
@@ -65,7 +65,7 @@ Here is a reference for the default JSON schema:
 | `id` | `String` | The identifier of the component model. Can be used for logging, or to identify the model in other content operations, various delegate methods, handlers, etc. | `identifier` |
 | `group` | `String` | The identifier of any logical group to put the component model in within its parent. Can be used to associate certain child components with each other. | `groupIdentifier` |
 | `component.id` | `String` | The identifier (`namespace:name`) of the component to use to render the model. | `componentNamespace` and `componentName` |
-| `component.category` | `String` | The category of the component. Used to perform sensible fallbacks for older versions of the application that might not support the requested component. See [component categories](https://ghe.spotify.net/pages/iOS/HubFramework/Constants.html#/c:HUBComponentCategories.h) for possible values. | `componentCategory` |
+| `component.category` | `String` | The category of the component. Used to perform sensible fallbacks for older versions of the application that might not support the requested component. See [component categories](https://spotify.github.io/HubFramework/Constants.html#/c:HUBComponentCategories.h) for possible values. | `componentCategory` |
 | `text.title` | `String` | The title that the component should display. | `title` |
 | `text.subtitle` | `String` | The subtitle that the component should display. | `subtitle` |
 | `text.accessory` | `String` | Any accessory title for the component. Usually used to render some form of metadata or accessory information with less prominence. | `accessoryTitle` |

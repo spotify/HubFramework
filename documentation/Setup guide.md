@@ -2,7 +2,7 @@
 
 Welcome to the Hub Framework setup guide! This guide aims to help you get set up with the framework in either a new or existing application.
 
-Note that you only have to follow this guide when setting up the framework for the first time in your application. To learn how to use the framework in terms of building UIs and features using it - refer to the [getting started guide](https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html).
+Note that you only have to follow this guide when setting up the framework for the first time in your application. To learn how to use the framework in terms of building UIs and features using it - refer to the [getting started guide](https://spotify.github.io/HubFramework/getting-started-guide.html).
 
 Before you proceed with this guide, it’s recommended that you read all of the programming guides, as to familiarize yourself with the various aspects of the framework. You can find links to all the programming guides [in the README](https://ghe.spotify.net/iOS/HubFramework#getting-started).
 
@@ -124,7 +124,7 @@ The above is only one of many possible implementations. You could, for example, 
 
 ## Further customization
 
-You’re now ready to start building UIs using the Hub Framework. Head over to the [getting started guide](https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html) to learn how to register features and how to build content operations & components.
+You’re now ready to start building UIs using the Hub Framework. Head over to the [getting started guide](https://spotify.github.io/HubFramework/getting-started-guide.html) to learn how to register features and how to build content operations & components.
 
 In case you need it, you can also continue customizing the framework, adding support for additional features.
 
@@ -195,4 +195,4 @@ You can also define system-wide content operations that are either prepended or 
 
 To use this functionality, pass a `HUBContentOperationFactory` as either `prependedContentOperationFactory` or `appendedContentOperationFactory` when setting up `HUBManager`.
 
-To learn more about the content loading chain and content operations, refer to the [content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html).
+To learn more about the content loading chain and content operations, refer to the [content programming guide](https://spotify.github.io/HubFramework/content-programming-guide.html).
