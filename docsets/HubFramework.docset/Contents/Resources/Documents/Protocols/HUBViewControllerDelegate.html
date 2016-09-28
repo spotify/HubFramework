@@ -51,6 +51,9 @@
             <a class="nav-group-name-link" href="../Guides.html">Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../action-programming-guide.html">Action programming guide</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../component-programming-guide.html">Component programming guide</a>
               </li>
               <li class="nav-group-task">
@@ -66,10 +69,7 @@
                 <a class="nav-group-task-link" href="../layout-programming-guide.html">Layout programming guide</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../action-programming-guide.html">action-programming-guide</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../setup-guide.html">setup-guide</a>
+                <a class="nav-group-task-link" href="../setup-guide.html">Setup guide</a>
               </li>
             </ul>
           </li>
@@ -480,7 +480,7 @@
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewControllerDidUpdate</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewControllerDidUpdate</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -539,7 +539,7 @@
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewController</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">,</span> <span class="n">didFailToUpdateWithError</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewController</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="n">didFailToUpdateWithError</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -608,7 +608,7 @@
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewControllerDidFinishRendering</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewControllerDidFinishRendering</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -733,8 +733,8 @@
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:</span>
             <span class="p">(</span><span class="n">nonnull</span> <span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
-    <span class="nf">componentWithModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentModel</span>
-  <span class="nf">didDisappearFromView</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">componentView</span><span class="p">;</span></code></pre>
+      <span class="nf">componentWithModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentModel</span>
+    <span class="nf">didDisappearFromView</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">componentView</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
