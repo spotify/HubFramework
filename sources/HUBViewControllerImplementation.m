@@ -238,26 +238,23 @@ NS_ASSUME_NONNULL_BEGIN
         self.lastViewModelDiff = nil;
     } else {
         void (^updateBlock)() = ^{
-            HUBViewModelDiff * const lastDiff = self.lastViewModelDiff;
-            
-            [self.collectionView insertItemsAtIndexPaths:lastDiff.insertedBodyComponentIndexPaths];
-            [self.collectionView deleteItemsAtIndexPaths:lastDiff.deletedBodyComponentIndexPaths];
-            [self.collectionView reloadItemsAtIndexPaths:lastDiff.reloadedBodyComponentIndexPaths];
-        };
-
-        /* Due to how some internal UICollectionView logic, the layout needs to be recomputed after the
-           updates when doing a batch update, but before the updates when skipping the batch update. */
-        if (animated) {
             [self.collectionView performBatchUpdates:^{
-                updateBlock();
+                HUBViewModelDiff * const lastDiff = self.lastViewModelDiff;
+                
+                [self.collectionView insertItemsAtIndexPaths:lastDiff.insertedBodyComponentIndexPaths];
+                [self.collectionView deleteItemsAtIndexPaths:lastDiff.deletedBodyComponentIndexPaths];
+                [self.collectionView reloadItemsAtIndexPaths:lastDiff.reloadedBodyComponentIndexPaths];
+
                 [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel];
             } completion:^(BOOL finished) {
                 self.lastViewModelDiff = nil;
             }];
-        } else {
-            [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel];
+        };
+
+        if (animated) {
             updateBlock();
-            self.lastViewModelDiff = nil;
+        } else {
+            [UIView performWithoutAnimation:updateBlock];
         }
     }
 
