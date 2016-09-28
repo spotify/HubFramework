@@ -42,6 +42,15 @@ platform :ios do
   desc 'Lint the source code and other linteable artifacts'
   lane :lint do
     # pod_lib_lint
+
+
+    license_header_files = Dir.chdir("..") do
+      license_header_files = Dir.glob('{demo/sources/*.swift,include/HubFramework/*.h,sources/*.{h,m},tests/*/*.{h,m},tests/*.m}')
+    end
+    lint_sources_for_license_header(
+      :template => 'other/license_header_template.txt',
+      :files => license_header_files
+    )
   end
 
 
