@@ -109,11 +109,11 @@ The Hub Framework contains a set of Xcode file templates that make it easy to cr
 
 To install them, simply copy the `Hub Framework` folder located in `templates/xcode` to `~/Library/Developer/Xcode/Templates/File Templates` (You may need to create the last two folders in that path).
 
-## Need help?
+## Help & Bug Reporting
 
-We're here to help you! If you ever need any assistance with the Hub Framework, or want to get a more hands-on introduction to it - reach out! All questions are welcome, and all feedback is very appreciated. The easiest way to reach the team working on the Hub Framework is to reach out in the `#hubitup` channel on Slack, or email `hubitup@spotify.com`.
+In case you need help or want to report a bug - please [file an issue](https://ghe.spotify.net/iOS/HubFramework/issues/new). Make sure to provide us with as much debuggable information as you can, like iOS version used and any reproduction steps. Sample code also makes it a lot easier for us to help you.
 
-We also offer workshops to help new developers familiarize themselves with the framework. Please reach out if you want to book such a workshop for your team!
+You can also chat with the team behind the Hub Framework directly! The Spotify FOSS community has a [Slack Group](https://slackin.spotify.com/) that you can join. Once you've joined, head over to the `hubframework` channel to chat with us!
 
 ## Contributing
 
