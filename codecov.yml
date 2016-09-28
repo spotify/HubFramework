@@ -1,0 +1,19 @@
+coverage:
+  ignore:
+  - Applications/Xcode.app/.*
+  - build/.*
+  - demo/.*
+  - documentation/.*
+  - fastlane/.*
+  - tasks/.*
+  - templates/.*
+  - Tests/.*
+  - .*Tests.m$
+  - .*Mock.[hm]$
+  status:
+    patch:
+      default:
+        target: '99'
+    project:
+      default:
+        target: auto
