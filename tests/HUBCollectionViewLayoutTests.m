@@ -282,11 +282,10 @@
 - (HUBCollectionViewLayout *)computeLayout
 {
     id<HUBViewModel> const viewModel = [self.viewModelBuilder build];
-    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
-                                                                              componentRegistry:self.componentRegistry
-                                                                         componentLayoutManager:self.componentLayoutManager];
+    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                 componentLayoutManager:self.componentLayoutManager];
     
-    [layout computeForCollectionViewSize:self.collectionViewSize];
+    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:viewModel];
     
     return layout;
 }

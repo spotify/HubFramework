@@ -35,20 +35,18 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Initialize an instance of this class with its required dependencies
  *
- *  @param viewModel The view model to use to compute the layout
  *  @param componentRegistry The registry to use to retrieve components for calculations
  *  @param componentLayoutManager The manager responsible for component layout
  */
-- (instancetype)initWithViewModel:(id<HUBViewModel>)viewModel
-                componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
-           componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager HUB_DESIGNATED_INITIALIZER;
-
+- (instancetype)initWithComponentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+                   componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager HUB_DESIGNATED_INITIALIZER;
 /**
  *  Compute this layout for a given collection view size
  *
  *  @param collectionViewSize The size of the collection view that will use this layout
+ *  @param viewModel The view model used to compute the layout with
  */
-- (void)computeForCollectionViewSize:(CGSize)collectionViewSize;
+- (void)computeForCollectionViewSize:(CGSize)collectionViewSize viewModel:(id<HUBViewModel>)viewModel;
 
 @end
 

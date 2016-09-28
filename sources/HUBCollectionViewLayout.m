@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBCollectionViewLayout () <HUBComponentChildDelegate>
 
-@property (nonatomic, strong, readonly) id<HUBViewModel> viewModel;
+@property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBIdentifier *, id<HUBComponent>> *componentCache;
@@ -45,14 +45,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBCollectionViewLayout
 
-- (instancetype)initWithViewModel:(id<HUBViewModel>)viewModel
-                componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
-           componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+- (instancetype)initWithComponentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+                   componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
 {
     self = [super init];
     
     if (self) {
-        _viewModel = viewModel;
         _componentRegistry = componentRegistry;
         _componentLayoutManager = componentLayoutManager;
         _componentCache = [NSMutableDictionary new];
@@ -63,8 +61,9 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (void)computeForCollectionViewSize:(CGSize)collectionViewSize
+- (void)computeForCollectionViewSize:(CGSize)collectionViewSize viewModel:(id<HUBViewModel>)viewModel
 {
+    self.viewModel = viewModel;
     [self.layoutAttributesByIndexPath removeAllObjects];
     [self.indexPathsByVerticalGroup removeAllObjects];
     
