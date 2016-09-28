@@ -28,6 +28,7 @@
 #import "HUBComponentWithChildren.h"
 #import "HUBIdentifier.h"
 #import "HUBComponentLayoutManager.h"
+#import "HUBViewModelDiff.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,6 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBIdentifier *, id<HUBComponent>> *componentCache;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *layoutAttributesByIndexPath;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, NSMutableSet<NSIndexPath *> *> *indexPathsByVerticalGroup;
+@property (nonatomic, strong, nullable) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *previousLayoutAttributesByIndexPath;
+@property (nonatomic, strong, nullable) HUBViewModelDiff *lastViewModelDiff;
+
 @property (nonatomic) CGSize contentSize;
 
 @end
@@ -61,9 +65,15 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (void)computeForCollectionViewSize:(CGSize)collectionViewSize viewModel:(id<HUBViewModel>)viewModel
+- (void)computeForCollectionViewSize:(CGSize)collectionViewSize
+                           viewModel:(id<HUBViewModel>)viewModel
+                                diff:(nullable HUBViewModelDiff *)diff
 {
+    self.lastViewModelDiff = diff;
     self.viewModel = viewModel;
+
+    self.previousLayoutAttributesByIndexPath = [self.layoutAttributesByIndexPath copy];
+
     [self.layoutAttributesByIndexPath removeAllObjects];
     [self.indexPathsByVerticalGroup removeAllObjects];
     
@@ -156,6 +166,55 @@ NS_ASSUME_NONNULL_BEGIN
                                      bottomRowComponents:componentsOnCurrentRow
                                      minimumBottomMargin:maxBottomRowHeightWithMargins - maxBottomRowComponentHeight
                                       collectionViewSize:collectionViewSize];
+}
+
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
+{
+    if (self.previousLayoutAttributesByIndexPath == nil || self.lastViewModelDiff == nil) {
+        return proposedContentOffset;
+    }
+
+    CGPoint offset = self.collectionView.contentOffset;
+    
+    NSInteger topmostVisibleIndex = NSNotFound;
+    for (NSIndexPath *indexPath in [self.collectionView indexPathsForVisibleItems]) {
+        topmostVisibleIndex = MIN(topmostVisibleIndex, indexPath.item);
+    }
+    
+    for (NSIndexPath *indexPath in self.lastViewModelDiff.insertedBodyComponentIndexPaths) {
+        if (indexPath.item <= topmostVisibleIndex) {
+            UICollectionViewLayoutAttributes *attributes = self.previousLayoutAttributesByIndexPath[indexPath];
+            offset.y += CGRectGetHeight(attributes.frame);
+        }
+    }
+    
+    for (NSIndexPath *indexPath in self.lastViewModelDiff.deletedBodyComponentIndexPaths) {
+        if (indexPath.item <= topmostVisibleIndex) {
+            UICollectionViewLayoutAttributes *attributes = self.previousLayoutAttributesByIndexPath[indexPath];
+            offset.y -= CGRectGetHeight(attributes.frame);
+        }
+    }
+    
+    for (NSIndexPath *indexPath in self.lastViewModelDiff.reloadedBodyComponentIndexPaths) {
+        if (indexPath.item < topmostVisibleIndex) {
+            UICollectionViewLayoutAttributes *oldAttributes = self.previousLayoutAttributesByIndexPath[indexPath];
+            UICollectionViewLayoutAttributes *newAttributes = self.previousLayoutAttributesByIndexPath[indexPath];
+            CGFloat heightDifference = CGRectGetHeight(oldAttributes.frame) - CGRectGetHeight(newAttributes.frame);
+            offset.y += heightDifference;
+        }
+    }
+    
+    // Making sure the content offset doesn't go through the roof.
+    CGFloat const minContentOffset = -self.collectionView.contentInset.top;
+    offset.y = MAX(minContentOffset, offset.y);
+    // ...or beyond the bottom.
+    CGFloat maxContentOffset = MAX(self.contentSize.height - CGRectGetHeight(self.collectionView.frame), minContentOffset);
+    offset.y = MIN(maxContentOffset, offset.y);
+    
+    self.previousLayoutAttributesByIndexPath = nil;
+    self.lastViewModelDiff = nil;
+    
+    return offset;
 }
 
 #pragma mark - HUBComponentChildDelegate

@@ -27,7 +27,8 @@ class GitHubSearchActivityIndicatorContentOperation: NSObject, HUBContentOperati
     weak var delegate: HUBContentOperationDelegate?
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
-        if viewModelBuilder.customData?[GitHubSearchCustomDataKeys.searchString] != nil {
+        if let searchString = viewModelBuilder.customData?[GitHubSearchCustomDataKeys.searchString] as? String,
+            searchString.characters.count > 0 {
             if viewModelBuilder.allBodyComponentModelBuilders().count == 1 {
                 if viewModelBuilder.allOverlayComponentModelBuilders().isEmpty {
                     let activityIndicatorBuilder = viewModelBuilder.builderForOverlayComponentModel(withIdentifier: "activityIndicator")

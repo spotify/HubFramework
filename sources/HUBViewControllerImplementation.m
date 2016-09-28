@@ -234,7 +234,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (!self.viewHasAppeared || self.lastViewModelDiff == nil) {
         [self.collectionView reloadData];
 
-        [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel];
+        [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
         self.lastViewModelDiff = nil;
     } else {
         void (^updateBlock)() = ^{
@@ -245,7 +245,7 @@ NS_ASSUME_NONNULL_BEGIN
                 [self.collectionView deleteItemsAtIndexPaths:lastDiff.deletedBodyComponentIndexPaths];
                 [self.collectionView reloadItemsAtIndexPaths:lastDiff.reloadedBodyComponentIndexPaths];
 
-                [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel];
+                [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
             } completion:^(BOOL finished) {
                 self.lastViewModelDiff = nil;
             }];

@@ -26,6 +26,7 @@
 @protocol HUBComponentLayoutManager;
 @class HUBComponentRegistryImplementation;
 @class HUBScrollBehaviorWrapper;
+@class HUBViewModelDiff;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -45,8 +46,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param collectionViewSize The size of the collection view that will use this layout
  *  @param viewModel The view model used to compute the layout with
+ *  @param diff The diff between the previous and current data model.
  */
-- (void)computeForCollectionViewSize:(CGSize)collectionViewSize viewModel:(id<HUBViewModel>)viewModel;
+- (void)computeForCollectionViewSize:(CGSize)collectionViewSize
+                           viewModel:(id<HUBViewModel>)viewModel
+                                diff:(nullable HUBViewModelDiff *)diff;
 
 @end
 
