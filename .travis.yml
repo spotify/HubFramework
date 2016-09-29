@@ -4,6 +4,7 @@ branches:
     - /^release-.*$/
 
 language: objective-c
+rvm: 2.0.0
 
 bundler_args: --without documentation --without development --deployment --jobs=3 --retry=3
 
