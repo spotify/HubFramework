@@ -25,14 +25,15 @@ import HubFramework
 /// Content operation that adds 10,000 rows as part of the "Really Long List" feature
 class ReallyLongListContentOperation: NSObject, HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
-    private var hasBeenExecuted = false
+    private var initialRenderingPassPerformed = false
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
         // To enable the navigation bar title to be displayed synchronously,
-        // we finish directly if executed for the first time, then reschedule
-        // ourselves right after that, so that the operation gets run again
-        if !hasBeenExecuted {
-            hasBeenExecuted = true
+        // we finish directly if this operation is being executed for the first
+        // rendering pass, then reschedule it right after that, so that the
+        // operation gets run again (adding all the rows)
+        if !initialRenderingPassPerformed {
+            initialRenderingPassPerformed = true
             delegate?.contentOperationDidFinish(self)
             delegate?.contentOperationRequiresRescheduling(self)
             return
