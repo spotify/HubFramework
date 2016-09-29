@@ -68,18 +68,15 @@ platform :ios do
   desc 'Execute all CI lanes'
   desc 'This action can be configured using the following environment variable:'
   desc ''
-  desc '- LINT:           Whether the sources and certain artifacts should be linted'
-  desc '                  defaults to `YES`'
-  desc '- RUN_TESTS:      Whether unit tests should be run, defaults to `YES`'
-  desc '- BUILD_DEMO_APP: Whether the demo app should be built or not, defaults to `YES`'
-  desc '- RUN_DANGER:     Whether Danger should be run or not, defaults to `NO`'
+  desc '- `LINT`:           Whether the sources and certain artifacts should be linted defaults to `YES`'
+  desc '- `RUN_TESTS`:      Whether unit tests should be run, defaults to `YES`'
+  desc '- `BUILD_DEMO_APP`: Whether the demo app should be built or not, defaults to `YES`'
+  desc '- `RUN_DANGER`:     Whether Danger should be run or not, defaults to `YES`'
   lane :ci_all do
-    ENV['RUN_DANGER'] = 'NO' unless ENV['RUN_DANGER']
-
     lint unless shouldSkipStep('LINT')
     test unless shouldSkipStep('RUN_TESTS')
     demo unless shouldSkipStep('BUILD_DEMO_APP')
-    danger unless shouldSkipStep('RUN_DANGER')
+    danger unless shouldSkipStep('RUN_DANGER') or not is_ci?
   end
 
 

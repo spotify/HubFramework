@@ -36,15 +36,13 @@ This action can be configured using the following environment variable:
 
 
 
-- LINT:           Whether the sources and certain artifacts should be linted
+- `LINT`:           Whether the sources and certain artifacts should be linted defaults to `YES`
 
-                  defaults to `YES`
+- `RUN_TESTS`:      Whether unit tests should be run, defaults to `YES`
 
-- RUN_TESTS:      Whether unit tests should be run, defaults to `YES`
+- `BUILD_DEMO_APP`: Whether the demo app should be built or not, defaults to `YES`
 
-- BUILD_DEMO_APP: Whether the demo app should be built or not, defaults to `YES`
-
-- RUN_DANGER:     Whether Danger should be run or not, defaults to `NO`
+- `RUN_DANGER`:     Whether Danger should be run or not, defaults to `YES`
 
 ----
 
