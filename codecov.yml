@@ -5,9 +5,11 @@ coverage:
   - demo/.*
   - documentation/.*
   - fastlane/.*
+  - other/.*
   - tasks/.*
   - templates/.*
   - Tests/.*
+  - vendor/.*
   - .*Tests.m$
   - .*Mock.[hm]$
   status:
