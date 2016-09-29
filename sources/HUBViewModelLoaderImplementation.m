@@ -30,6 +30,7 @@
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBViewModelImplementation.h"
 #import "HUBContentOperationWrapper.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -166,19 +167,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)contentOperationWrapperDidFinish:(HUBContentOperationWrapper *)operationWrapper
 {
-    self.currentError = nil;
-    [self performFirstContentOperationInQueueAfterFinishingOperation:operationWrapper];
+    HUBPerformOnMainQueue(^{
+        self.currentError = nil;
+        [self performFirstContentOperationInQueueAfterFinishingOperation:operationWrapper];
+    });
 }
 
 - (void)contentOperationWrapper:(HUBContentOperationWrapper *)operationWrapper didFailWithError:(NSError *)error
 {
-    self.currentError = error;
-    [self performFirstContentOperationInQueueAfterFinishingOperation:operationWrapper];
+    HUBPerformOnMainQueue(^{
+        self.currentError = error;
+        [self performFirstContentOperationInQueueAfterFinishingOperation:operationWrapper];
+    });
 }
 
 - (void)contentOperationWrapperRequiresRescheduling:(HUBContentOperationWrapper *)operationWrapper
 {
-    [self scheduleContentOperationsFromIndex:operationWrapper.index];
+    HUBPerformOnMainQueue(^{
+        [self scheduleContentOperationsFromIndex:operationWrapper.index];
+    });
 }
 
 #pragma mark - HUBConnectivityStateResolverObserver
