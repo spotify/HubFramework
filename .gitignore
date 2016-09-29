@@ -4,6 +4,7 @@
 
 ## Build generated
 build/
+vendor/
 DerivedData
 
 ## Various settings
