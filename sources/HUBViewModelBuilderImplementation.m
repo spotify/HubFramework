@@ -80,24 +80,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewModelBuilder
 
-- (nullable NSError *)addJSONData:(NSData *)JSONData
+- (BOOL)isEmpty
 {
-    NSError *error;
-    NSObject *JSONObject = [NSJSONSerialization JSONObjectWithData:JSONData options:NSJSONReadingAllowFragments error:&error];
-    
-    if (error != nil || JSONObject == nil) {
-        return error;
+    if (self.headerComponentModelBuilderImplementation != nil) {
+        return NO;
     }
     
-    if ([JSONObject isKindOfClass:[NSDictionary class]]) {
-        [self addDataFromJSONDictionary:(NSDictionary *)JSONObject];
-    } else if ([JSONObject isKindOfClass:[NSArray class]]) {
-        [self addDataFromJSONArray:(NSArray *)JSONObject];
-    } else {
-        return [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil];
+    if (self.bodyComponentModelBuilders.count > 0) {
+        return NO;
     }
     
-    return nil;
+    if (self.overlayComponentModelBuilders.count > 0) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (NSUInteger)numberOfBodyComponentModelBuilders
+{
+    return self.bodyComponentModelBuilders.count;
+}
+
+- (NSUInteger)numberOfOverlayComponentModelBuilders
+{
+    return self.overlayComponentModelBuilders.count;
 }
 
 - (id<HUBComponentModelBuilder>)headerComponentModelBuilder
@@ -215,23 +222,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (BOOL)isEmpty
-{
-    if (self.headerComponentModelBuilderImplementation != nil) {
-        return NO;
-    }
-    
-    if (self.bodyComponentModelBuilders.count > 0) {
-        return NO;
-    }
-    
-    if (self.overlayComponentModelBuilders.count > 0) {
-        return NO;
-    }
-    
-    return YES;
-}
-
 - (id<HUBViewModel>)build
 {
     id<HUBComponentModel> const headerComponentModel = [self.headerComponentModelBuilderImplementation buildForIndex:0 parent:nil];
@@ -254,6 +244,26 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - HUBJSONCompatibleBuilder
+
+- (nullable NSError *)addJSONData:(NSData *)JSONData
+{
+    NSError *error;
+    NSObject *JSONObject = [NSJSONSerialization JSONObjectWithData:JSONData options:NSJSONReadingAllowFragments error:&error];
+    
+    if (error != nil || JSONObject == nil) {
+        return error;
+    }
+    
+    if ([JSONObject isKindOfClass:[NSDictionary class]]) {
+        [self addDataFromJSONDictionary:(NSDictionary *)JSONObject];
+    } else if ([JSONObject isKindOfClass:[NSArray class]]) {
+        [self addDataFromJSONArray:(NSArray *)JSONObject];
+    } else {
+        return [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil];
+    }
+    
+    return nil;
+}
 
 - (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {

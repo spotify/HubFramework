@@ -98,6 +98,19 @@
     XCTAssertNil(self.builder.headerComponentModelBuilder.title);
 }
 
+- (void)testNumberOfBodyComponentModelBuilders
+{
+    [self.builder builderForBodyComponentModelWithIdentifier:@"A"];
+    [self.builder builderForBodyComponentModelWithIdentifier:@"B"];
+    [self.builder builderForBodyComponentModelWithIdentifier:@"C"];
+    
+    XCTAssertEqual(self.builder.numberOfBodyComponentModelBuilders, (NSUInteger)3);
+    
+    [self.builder removeBuilderForBodyComponentModelWithIdentifier:@"B"];
+    
+    XCTAssertEqual(self.builder.numberOfBodyComponentModelBuilders, (NSUInteger)2);
+}
+
 - (void)testAllBodyComponentModelBuilders
 {
     NSMutableArray * const bodyComponentModelBuilders = [NSMutableArray new];
@@ -107,6 +120,19 @@
     [bodyComponentModelBuilders addObject:[self.builder builderForBodyComponentModelWithIdentifier:@"D"]];
     
     XCTAssertEqualObjects([self.builder allBodyComponentModelBuilders], bodyComponentModelBuilders);
+}
+
+- (void)testNumberOfOverlayComponentModelBuilders
+{
+    [self.builder builderForOverlayComponentModelWithIdentifier:@"A"];
+    [self.builder builderForOverlayComponentModelWithIdentifier:@"B"];
+    [self.builder builderForOverlayComponentModelWithIdentifier:@"C"];
+    
+    XCTAssertEqual(self.builder.numberOfOverlayComponentModelBuilders, (NSUInteger)3);
+    
+    [self.builder removeBuilderForOverlayComponentModelWithIdentifier:@"B"];
+    
+    XCTAssertEqual(self.builder.numberOfOverlayComponentModelBuilders, (NSUInteger)2);
 }
 
 - (void)testAllOverlayComponentModelBuilders
