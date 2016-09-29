@@ -30,6 +30,7 @@
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBComponentDefaults.h"
 #import "HUBComponentFallbackHandler.h"
+#import "HUBDefaultConnectivityStateResolver.h"
 #import "HUBDefaultImageLoaderFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -44,17 +45,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBManager
 
-- (instancetype)initWithConnectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
-                           componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                               imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
-                                iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
-                             defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
-                       defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
-                 prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
-                  appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
+- (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                      componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                     connectivityStateResolver:(nullable id<HUBConnectivityStateResolver>)connectivityStateResolver
+                            imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
+                             iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
+                          defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
+                    defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
+              prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
+               appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
 {
-    NSParameterAssert(connectivityStateResolver != nil);
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentFallbackHandler != nil);
     
@@ -65,7 +65,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                     componentName:componentFallbackHandler.defaultComponentName
                                                                                                 componentCategory:componentFallbackHandler.defaultComponentCategory];
         
-        _connectivityStateResolver = connectivityStateResolver;
+        id<HUBConnectivityStateResolver> const connectivityStateResolverToUse = connectivityStateResolver ?: [HUBDefaultConnectivityStateResolver new];
+        _connectivityStateResolver = connectivityStateResolverToUse;
+        
         _initialViewModelRegistry = [HUBInitialViewModelRegistry new];
         
         HUBFeatureRegistryImplementation * const featureRegistry = [HUBFeatureRegistryImplementation new];

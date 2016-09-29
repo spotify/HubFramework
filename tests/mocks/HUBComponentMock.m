@@ -63,6 +63,8 @@
 - (void)prepareViewForReuse
 {
     self.numberOfReuses++;
+    self.mainImageData = nil;
+    self.backgroundImageData = nil;
 }
 
 - (CGSize)preferredViewSizeForDisplayingModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize

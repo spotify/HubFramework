@@ -39,8 +39,12 @@ struct SearchBarComponentCustomDataKeys {
  *  See `SearchBarComponentCustomKeys` for what keys are used for what data.
  */
 class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDelegate {
+    static let debounceInterval = 0.3
+
     var view: UIView?
     var actionDelegate: HUBComponentActionDelegate?
+
+    var debounceTimer: Timer?
     
     private lazy var searchBar = UISearchBar()
     private var textDidChangeActionIdentifier: HUBIdentifier?
@@ -52,8 +56,8 @@ class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDele
     }
 
     func loadView() {
-        self.searchBar.delegate = self
-        self.view = self.searchBar
+        searchBar.delegate = self
+        view = searchBar
     }
 
     func preferredViewSize(forDisplaying model: HUBComponentModel, containerViewSize: CGSize) -> CGSize {
@@ -61,34 +65,41 @@ class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDele
     }
 
     func prepareViewForReuse() {
-        self.searchBar.text = nil
+        searchBar.text = nil
     }
 
     func configureView(with model: HUBComponentModel, containerViewSize: CGSize) {
         let placeholderKey = SearchBarComponentCustomDataKeys.placeholder
         let actionIdentifierKey = SearchBarComponentCustomDataKeys.actionIdentifier
         
-        self.searchBar.placeholder = model.customData?[placeholderKey] as? String
+        searchBar.placeholder = model.customData?[placeholderKey] as? String
         
         if let textDidChangeActionIdentifierString = model.customData?[actionIdentifierKey] as? String {
-            self.textDidChangeActionIdentifier = HUBIdentifier(string: textDidChangeActionIdentifierString)
+            textDidChangeActionIdentifier = HUBIdentifier(string: textDidChangeActionIdentifierString)
         } else {
-            self.textDidChangeActionIdentifier = nil
+            textDidChangeActionIdentifier = nil
         }
     }
     
     // MARK: - UISearchBarDelegate
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let actionIdentifier = textDidChangeActionIdentifier else {
+            return
+        }
+        
+        guard let searchText = searchBar.text else {
+            return
+        }
+
+        debounceTimer?.invalidate()
+        self.debounceTimer = Timer.scheduledTimer(withTimeInterval: SearchBarComponent.debounceInterval, repeats: false) { (_) in
+            let customData = [SearchBarComponentCustomDataKeys.text: searchText]
+            self.actionDelegate?.component(self, performActionWith: actionIdentifier, customData: customData)
+        }
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let actionIdentifier = self.textDidChangeActionIdentifier else {
-            return
-        }
-        
-        guard let searchText = self.searchBar.text else {
-            return
-        }
-        
-        let customData = [SearchBarComponentCustomDataKeys.text: searchText]
-        self.actionDelegate?.component(self, performActionWith: actionIdentifier, customData: customData)
+        searchBar.resignFirstResponder()
     }
 }

@@ -375,6 +375,36 @@
     XCTAssertEqualObjects(componentB.mainImageData.URL, imageURL);
 }
 
+- (void)testReloadingImage
+{
+    NSURL * const imageURL = [NSURL URLWithString:@"https://image.url"];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.mainImageURL = imageURL;
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+    id<HUBImageLoaderDelegate> const imageLoaderDelegate = self.imageLoader.delegate;
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
+    
+    [self.component prepareViewForReuse];
+    XCTAssertNil(self.component.mainImageData);
+    
+    [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
+}
+
 - (void)testImageLoadingForChildComponent
 {
     NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
@@ -1604,6 +1634,41 @@
     [self simulateViewControllerLayoutCycle];
     
     XCTAssertEqualObjects(self.viewController.title, @"Nav bar title");
+}
+
+- (void)testAdaptingOverlayComponentCenterPointToKeyboard
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"].title = @"Overlay";
+        return YES;
+    };
+    
+    // Sets view controller's view frame to {0, 0, 320, 400}
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqualWithAccuracy(self.component.view.center.x, 160, 0.001);
+    XCTAssertEqualWithAccuracy(self.component.view.center.y, 200, 0.001);
+    
+    CGRect const keyboardEndFrame = CGRectMake(0, 200, 320, 200);
+    NSDictionary * const notificationUserInfo = @{
+        UIKeyboardFrameEndUserInfoKey: [NSValue valueWithCGRect:keyboardEndFrame]
+    };
+    NSNotification * const keyboardNotification = [NSNotification notificationWithName:UIKeyboardWillShowNotification
+                                                                                object:nil
+                                                                              userInfo:notificationUserInfo];
+    
+    // Show keyboard, which should push the overlay component
+    NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotification:keyboardNotification];
+    
+    XCTAssertEqualWithAccuracy(self.component.view.center.x, 160, 0.001);
+    XCTAssertEqualWithAccuracy(self.component.view.center.y, 100, 0.001);
+    
+    // Hide keyboard, which should pull the overlay component back down
+    [notificationCenter postNotificationName:UIKeyboardWillHideNotification object:nil];
+    
+    XCTAssertEqualWithAccuracy(self.component.view.center.x, 160, 0.001);
+    XCTAssertEqualWithAccuracy(self.component.view.center.y, 200, 0.001);
 }
 
 #pragma mark - HUBViewControllerDelegate

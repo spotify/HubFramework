@@ -77,15 +77,19 @@ namespace :docs do
 
         tmp_dir = publish_tmp_dir_path()
 
-        repo_name = "docs-repo"
-        repo_dir = File.join(tmp_dir, repo_name)
-
-        puts "📖  💁️   Creating temporary publishing directory at:"
-        puts "📖   ️     \"#{tmp_dir}\""
+        puts "📖  💁️     Creating temporary publishing directory at:"
+        puts "📖   ️       \"#{tmp_dir}\""
         prepare_publish_dir(tmp_dir)
 
+        puts "📖  💁️     Cloning documentation branch…"
+        repo_name = "docs-repo"
+        repo_dir = File.join(tmp_dir, repo_name)
         git_clone_repo(repo, branch, repo_dir)
+
+        puts "📖  💁️     Commiting and pushing the generated documentation…"
         publish_docs(tmp_dir, repo_dir, branch, docs_path, git_head_hash(repo_dir))
+
+        puts "📖  💁️     Cleaning up…"
         cleanup_publish_dir(tmp_dir)
 
         puts "📖  ✅   Published successfully."
@@ -240,16 +244,16 @@ namespace :docs do
 
     # Clone a repo to the given destination
     def git_clone_repo(repo, branch, destination)
+        abort("📖  ❗️  No branch to clone specified, aborting…") if branch.empty?
+        abort("📖  ❗️  No repo to clone specified, aborting…") if repo.empty?
+        abort("📖  ❗️  No destination where to clone specified, aborting…") if branch.empty?
+
         system('git', 'clone', '--quiet', '-b', branch, repo, destination)
     end
 
     # Returns the URL of the origin rmeote
     def git_origin_remote_url(repo_dir)
-        # Attempt to use the upstream reference if it exists, otherwise use origin.
-        return (
-            `git -C "#{repo_dir}" config --get remote.upstream.url` ||
-            `git -C "#{repo_dir}" config --get remote.origin.url`
-        ).strip
+        `git -C "#{repo_dir}" config --get remote.origin.url`.strip
     end
 
     # Returns the current HEAD’s git hash

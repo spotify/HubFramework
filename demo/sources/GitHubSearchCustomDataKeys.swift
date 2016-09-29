@@ -25,4 +25,7 @@ import Foundation
 struct GitHubSearchCustomDataKeys {
     /// Key used to encode a search string into a view model builder's custom data
     static var searchString: String { return "searchString" }
+    /// Key used to encode a Boolean indicating whether a search is currently in
+    /// progess into a view model builder's custom data
+    static var searchInProgress: String { return "searchInProgress" }
 }

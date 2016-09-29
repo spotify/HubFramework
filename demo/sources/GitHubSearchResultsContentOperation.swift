@@ -35,65 +35,85 @@ import HubFramework
  */
 class GitHubSearchResultsContentOperation: NSObject, HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
+    private var dataTask: URLSessionDataTask?
     private var jsonData: Data?
-    private var searchString: String?
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
+        // If we're offline, we won't be able to call the GitHub web API, so let the user know by adding a label and exit early
+        guard connectivityState == .online else {
+            let offlineLabelBuilder = viewModelBuilder.builderForOverlayComponentModel(withIdentifier: "offlineLabel")
+            offlineLabelBuilder.componentName = DefaultComponentNames.label
+            offlineLabelBuilder.title = "You're offline.\nGo online to search GitHub."
+            
+            finishAndResetState()
+            return
+        }
+        
+        // Exit early in case the user hasn't entered a search string yet (set by `GitHubSearchBarContentOperation`)
         guard let searchString = viewModelBuilder.customData?[GitHubSearchCustomDataKeys.searchString] as? String else {
-            self.finishWithoutPerforming()
+            finishAndResetState()
             return
         }
-        
+
+        // Also exit if the search string is empty (no need to call the GitHub web API)
         guard searchString.characters.count > 0 else {
-            self.finishWithoutPerforming()
+            finishAndResetState()
             return
         }
         
-        if let jsonData = self.jsonData {
-            if self.searchString == searchString {
-                viewModelBuilder.addJSONData(jsonData)
-                
-                if viewModelBuilder.allBodyComponentModelBuilders().count == 1 {
-                    let noResultsLabelBuilder = viewModelBuilder.builderForOverlayComponentModel(withIdentifier: "noResultsLabel")
-                    noResultsLabelBuilder.componentName = DefaultComponentNames.label
-                    noResultsLabelBuilder.title = "No results found"
-                }
-                
-                self.delegate?.contentOperationDidFinish(self)
+        // If we've already downloaded JSON data, add it to the view and flush our state
+        if let jsonData = jsonData {
+            viewModelBuilder.addJSONData(jsonData)
+            
+            // If the data didn't contain any components (we only have 1 = the search bar), add a
+            // "No results found" label as an overlay component
+            if viewModelBuilder.numberOfBodyComponentModelBuilders == 1 {
+                let noResultsLabelBuilder = viewModelBuilder.builderForOverlayComponentModel(withIdentifier: "noResultsLabel")
+                noResultsLabelBuilder.componentName = DefaultComponentNames.label
+                noResultsLabelBuilder.title = "No results found"
+            }
+            
+            finishAndResetState()
+            return
+        }
+        
+        // Abort any currently running data task (since it's now outdated)
+        dataTask?.cancel()
+        
+        // Make sure we have a valid search string (that can be URL encoded)
+        guard let requestURL = URL(string: "https://api.github.com/search/repositories?q=" + searchString) else {
+            finishAndResetState()
+            return
+        }
+        
+        // Create the data task that'll download JSON and save it for the next execution
+        dataTask = URLSession.shared.dataTask(with: requestURL) { [weak self] data, _, _ in
+            guard let strongSelf = self else {
                 return
             }
-        }
-        
-        self.jsonData = nil
-        self.searchString = searchString
-        
-        guard let requestURL = URL(string: "https://api.github.com/search/repositories?q=" + searchString) else {
-            self.finishWithoutPerforming()
-            return
-        }
-        
-        self.delegate?.contentOperationDidFinish(self)
-        
-        let dataTask = URLSession.shared.dataTask(with: requestURL) { [weak self] data, _, _ in
-            DispatchQueue.main.async {
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                if let data = data {
-                    strongSelf.jsonData = data
-                }
-                
-                strongSelf.delegate?.contentOperationRequiresRescheduling(strongSelf)
+            
+            guard let jsonData = data else {
+                return
             }
+            
+            // Once we have data, we'll reschedule our operation to go back to the top and add it to the view
+            strongSelf.jsonData = jsonData
+            strongSelf.delegate?.contentOperationRequiresRescheduling(strongSelf)
         }
         
-        dataTask.resume()
+        // Encode that a search will be performed (will be picked up by `GitHubSearchActivityIndicatorContentOperation`)
+        var customData = viewModelBuilder.customData ?? [:]
+        customData[GitHubSearchCustomDataKeys.searchInProgress] = true
+        viewModelBuilder.customData = customData
+        
+        // Tell our delegate we're done (to enable to UI to be rendered), then start the task
+        delegate?.contentOperationDidFinish(self)
+        dataTask?.resume()
     }
     
-    private func finishWithoutPerforming() {
-        self.jsonData = nil
-        self.searchString = nil
-        self.delegate?.contentOperationDidFinish(self)
+    private func finishAndResetState() {
+        jsonData = nil
+        dataTask = nil
+        delegate?.contentOperationDidFinish(self)
     }
 }

@@ -1,22 +1,22 @@
 author: Spotify
-author_url: https://hubs.spotify.net
+author_url: https://spotify.github.io/HubFramework
 copyright: Copyright © 2015-2016 Spotify AB
 readme: README.md
 
 documentation: documentation/*.md
 
 module: HubFramework
-module_version: v1.0.0
+module_version: v2.0.0
 
 output: documentation/output
 theme: fullwidth
 
-github_url: https://ghe.spotify.net/iOS/HubFramework
-github_file_prefix: https://ghe.spotify.net/iOS/HubFramework/tree/master
+github_url: https://github.com/spotify/HubFramework
+github_file_prefix: https://github.com/spotify/HubFramework/tree/master
 
-root_url: https://ghe.spotify.net/pages/iOS/HubFramework
+root_url: https://spotify.github.io/HubFramework
 docset_icon: documentation/resources/docset-icon@2x.png
-dash_url: https://ghe.spotify.net/pages/iOS/HubFramework/docsets/HubFramework.xml
+dash_url: https://spotify.github.io/HubFramework/docsets/HubFramework.xml
 
 clean: true
 objc: true

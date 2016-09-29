@@ -44,10 +44,14 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Protocol implemented by objects that can resolve an application's current connectivity state
  *
- *  You conform to this protocol in a custom object and supply it when setting up your application's
- *  `HUBManager`. The Hub Framework passes the information provided by its connectivity state resolver
- *  to content operations when they are performed, enabling them to make decisions on whether to attempt
- *  to load remote content or not.
+ *  By default, the Hub Framework provides an implementation of this protocol that uses Apple's
+ *  SystemConfiguration framework. However, you can choose to supply a custom connectivity state
+ *  resolver by conforming to this protocol in a custom object and passing it when setting up your
+ *  application's `HUBManager`.
+ *
+ *  The Hub Framework passes the information provided by its connectivity state resolver to content
+ *  operations when they are performed, enabling them to make decisions on whether to attempt to load
+ *  remote content or not.
  *
  *  The resolver should also support observations; to enable the Hub Framework to react to changes
  *  in connectivity state. Whenever the resolver detected a change, it should call its observers.

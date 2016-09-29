@@ -29,7 +29,7 @@ extension HUBJSONSchemaRegistry {
     
     /// Register the JSON schema for the GitHub search feature
     func registerGitHubSearchSchema() {
-        let schema = self.createNewSchema()
+        let schema = createNewSchema()
         schema.viewModelSchema.bodyComponentModelDictionariesPath = schema.createNewPath().go(to: "items").forEach().dictionaryPath()
         
         schema.componentModelSchema.targetDictionaryPath = schema.createNewPath().dictionaryPath()
@@ -44,6 +44,6 @@ extension HUBJSONSchemaRegistry {
         
         schema.componentTargetSchema.uriPath = schema.createNewPath().go(to: "html_url").urlPath()
         
-        self.registerCustomSchema(schema, forIdentifier: self.gitHubSearchSchemaIdentifier)
+        registerCustomSchema(schema, forIdentifier: gitHubSearchSchemaIdentifier)
     }
 }

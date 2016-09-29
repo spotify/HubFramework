@@ -40,8 +40,9 @@ class LabelComponent: NSObject, HUBComponent {
     }
 
     func loadView() {
-        self.label.font = self.font
-        self.view = self.label
+        label.numberOfLines = 0
+        label.font = font
+        view = label
     }
 
     func preferredViewSize(forDisplaying model: HUBComponentModel, containerViewSize: CGSize) -> CGSize {
@@ -49,7 +50,7 @@ class LabelComponent: NSObject, HUBComponent {
             return CGSize()
         }
         
-        let size = (text as NSString).size(attributes: [NSFontAttributeName: self.font])
+        let size = (text as NSString).size(attributes: [NSFontAttributeName: font])
         return CGSize(width: ceil(size.width), height: ceil(size.height))
     }
 
@@ -58,6 +59,6 @@ class LabelComponent: NSObject, HUBComponent {
     }
 
     func configureView(with model: HUBComponentModel, containerViewSize: CGSize) {
-        self.label.text = model.title
+        label.text = model.title
     }
 }

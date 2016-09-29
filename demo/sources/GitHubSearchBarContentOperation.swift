@@ -29,22 +29,25 @@ class GitHubSearchBarContentOperation: NSObject, HUBContentOperationActionObserv
     private var searchActionIdentifier: HUBIdentifier { return HUBIdentifier(namespace: "github", name: "search") }
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
+        // Encode any search string that was passed from the search bar component
+        // (through an action) into the view model builder's custom data
         var viewModelCustomData = viewModelBuilder.customData ?? [:]
-        viewModelCustomData[GitHubSearchCustomDataKeys.searchString] = self.searchString
+        viewModelCustomData[GitHubSearchCustomDataKeys.searchString] = searchString
         viewModelBuilder.customData = viewModelCustomData
         
+        // Add the search bar
         let searchBarBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "searchBar")
         searchBarBuilder.componentName = DefaultComponentNames.searchBar
         searchBarBuilder.customData = [
             SearchBarComponentCustomDataKeys.placeholder: "Search repositories on GitHub",
-            SearchBarComponentCustomDataKeys.actionIdentifier: self.searchActionIdentifier.identifierString
+            SearchBarComponentCustomDataKeys.actionIdentifier: searchActionIdentifier.identifierString
         ]
         
-        self.delegate?.contentOperationDidFinish(self)
+        delegate?.contentOperationDidFinish(self)
     }
 
     func actionPerformed(with context: HUBActionContext, viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState) {
-        guard context.customActionIdentifier == self.searchActionIdentifier else {
+        guard context.customActionIdentifier == searchActionIdentifier else {
             return
         }
         
@@ -52,7 +55,10 @@ class GitHubSearchBarContentOperation: NSObject, HUBContentOperationActionObserv
             return
         }
         
+        // Save the search sting that was entered, and reschedule this operation to fetch new results
+        // See `GitHubSearchResultsContentOperation`, which comes after this one, for the actual fetching
+        // of results.
         self.searchString = searchString
-        self.delegate?.contentOperationRequiresRescheduling(self)
+        delegate?.contentOperationRequiresRescheduling(self)
     }
 }

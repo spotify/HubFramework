@@ -37,6 +37,10 @@ class ComponentFallbackHandler: NSObject, HUBComponentFallbackHandler {
     }
     
     func createFallbackComponent(forCategory componentCategory: HUBComponentCategory) -> HUBComponent {
+        if componentCategory == .card {
+            return ImageComponent()
+        }
+        
         return RowComponent()
     }
 }

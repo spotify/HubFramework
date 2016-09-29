@@ -46,6 +46,7 @@
 #import "HUBActionContextImplementation.h"
 #import "HUBActionRegistry.h"
 #import "HUBActionHandler.h"
+#import "HUBViewModelDiff.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -72,8 +73,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *componentUIStateManager;
 @property (nonatomic, strong, readonly) HUBComponentReusePool *childComponentReusePool;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
+@property (nonatomic, strong, nullable) HUBViewModelDiff *lastViewModelDiff;
+@property (nonatomic, assign) BOOL viewHasAppeared;
+@property (nonatomic, assign) BOOL viewHasBeenLaidOut;
 @property (nonatomic) BOOL viewModelIsInitial;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
+@property (nonatomic) CGFloat visibleKeyboardHeight;
 
 @end
 
@@ -172,6 +177,18 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super viewWillAppear:animated];
     
+    NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleKeyboardWillShowNotification:)
+                               name:UIKeyboardWillShowNotification
+                             object:nil];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleKeyboardWillHideNotification:)
+                               name:UIKeyboardWillHideNotification
+                             object:nil];
+    
     if (self.viewModel == nil) {
         self.viewModel = self.viewModelLoader.initialViewModel;
     }
@@ -187,37 +204,88 @@ NS_ASSUME_NONNULL_BEGIN
     [self headerAndOverlayComponentViewsWillAppear];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.viewHasAppeared = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    
+    self.viewHasBeenLaidOut = NO;
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     
-    id<HUBViewModel> const viewModel = self.viewModel;
-    
-    if (viewModel == nil) {
-        return;
+    self.viewHasBeenLaidOut = YES;
+
+    if (self.viewModel != nil) {
+        id<HUBViewModel> const viewModel = self.viewModel;
+        [self reloadCollectionViewWithViewModel:viewModel animated:NO];
     }
-    
+}
+
+- (void)reloadCollectionViewWithViewModel:(id<HUBViewModel>)viewModel animated:(BOOL)animated
+{
     if (!self.viewModelHasChangedSinceLastLayoutUpdate) {
         if (CGRectEqualToRect(self.collectionView.frame, self.view.bounds)) {
             return;
         }
     }
-
-    [self saveStatesForVisibleComponents];
-    self.collectionView.frame = self.view.bounds;
-    [self.collectionView reloadData];
-
-    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithViewModel:viewModel
-                                                                              componentRegistry:self.componentRegistry
-                                                                         componentLayoutManager:self.componentLayoutManager];
-
-    [layout computeForCollectionViewSize:self.collectionView.frame.size];
-    self.collectionView.collectionViewLayout = layout;
     
+    self.collectionView.frame = self.view.bounds;
+    
+    [self saveStatesForVisibleComponents];
+    
+    if (![self.collectionView.collectionViewLayout isKindOfClass:[HUBCollectionViewLayout class]]) {
+        self.collectionView.collectionViewLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                       componentLayoutManager:self.componentLayoutManager];
+    }
+    
+    HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)self.collectionView.collectionViewLayout;
+
+    /* Performing batch updates inbetween viewDidLoad and viewDidAppear is seemingly not allowed, as it
+       causes an assertion inside a private UICollectionView method. If no diff exists, fall back to
+       a complete reload. */
+    if (!self.viewHasAppeared || self.lastViewModelDiff == nil) {
+        [self.collectionView reloadData];
+
+        [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
+        self.lastViewModelDiff = nil;
+    } else {
+        void (^updateBlock)() = ^{
+            [self.collectionView performBatchUpdates:^{
+                HUBViewModelDiff * const lastDiff = self.lastViewModelDiff;
+                
+                [self.collectionView insertItemsAtIndexPaths:lastDiff.insertedBodyComponentIndexPaths];
+                [self.collectionView deleteItemsAtIndexPaths:lastDiff.deletedBodyComponentIndexPaths];
+                [self.collectionView reloadItemsAtIndexPaths:lastDiff.reloadedBodyComponentIndexPaths];
+
+                [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
+            } completion:^(BOOL finished) {
+                self.lastViewModelDiff = nil;
+            }];
+        };
+
+        if (animated) {
+            updateBlock();
+        } else {
+            [UIView performWithoutAnimation:updateBlock];
+        }
+    }
+
     [self configureHeaderComponent];
     [self configureOverlayComponents];
     [self headerAndOverlayComponentViewsWillAppear];
-    
+
     self.viewModelHasChangedSinceLastLayoutUpdate = NO;
     [self.delegate viewControllerDidFinishRendering:self];
 }
@@ -306,12 +374,21 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBViewControllerDelegate> const delegate = self.delegate;
     [delegate viewController:self willUpdateWithViewModel:viewModel];
+
+    if (self.viewModel != nil) {
+        id<HUBViewModel> const currentModel = self.viewModel;
+        self.lastViewModelDiff = [HUBViewModelDiff diffFromViewModel:currentModel toViewModel:viewModel];
+    }
     
     self.title = viewModel.navigationBarTitle;
     self.viewModel = viewModel;
     self.viewModelIsInitial = NO;
     self.viewModelHasChangedSinceLastLayoutUpdate = YES;
     [self.view setNeedsLayout];
+    
+    if (self.viewHasBeenLaidOut) {
+        [self reloadCollectionViewWithViewModel:viewModel animated:NO];
+    }
     
     [delegate viewControllerDidUpdate:self];
 }
@@ -330,24 +407,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache
 {
-    if (![NSThread isMainThread]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self imageLoader:imageLoader didLoadImage:image forURL:imageURL fromCache:loadedFromCache];
-        });
+    HUBPerformOnMainQueue(^{
+        NSArray * const contexts = self.componentImageLoadingContexts[imageURL];
+        self.componentImageLoadingContexts[imageURL] = nil;
         
-        return;
-    }
-    
-    NSArray * const contexts = self.componentImageLoadingContexts[imageURL];
-    
-    for (HUBComponentImageLoadingContext * const context in contexts) {
-        [self handleLoadedComponentImage:image forURL:imageURL fromCache:loadedFromCache context:context];
-    }
+        for (HUBComponentImageLoadingContext * const context in contexts) {
+            [self handleLoadedComponentImage:image forURL:imageURL fromCache:loadedFromCache context:context];
+        }
+    });
 }
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didFailLoadingImageForURL:(NSURL *)imageURL error:(NSError *)error
 {
-    self.componentImageLoadingContexts[imageURL] = nil;
+    HUBPerformOnMainQueue(^{
+        self.componentImageLoadingContexts[imageURL] = nil;
+    });
 }
 
 #pragma mark - HUBComponentWrapperDelegate
@@ -560,6 +634,21 @@ NS_ASSUME_NONNULL_BEGIN
     return contentRect;
 }
 
+#pragma mark - NSNotification selectors
+
+- (void)handleKeyboardWillShowNotification:(NSNotification *)notification
+{
+    CGRect const keyboardEndFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    self.visibleKeyboardHeight = CGRectGetHeight(keyboardEndFrame);
+    [self updateOverlayComponentCenterPointsWithKeyboardNotification:notification];
+}
+
+- (void)handleKeyboardWillHideNotification:(NSNotification *)notification
+{
+    self.visibleKeyboardHeight = 0;
+    [self updateOverlayComponentCenterPointsWithKeyboardNotification:notification];
+}
+
 #pragma mark - Private utilities
 
 - (HUBComponentWrapper *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
@@ -635,12 +724,36 @@ NS_ASSUME_NONNULL_BEGIN
         
         [self.overlayComponentWrappers addObject:componentWrapper];
         
-        componentWrapper.view.center = self.collectionView.center;
+        componentWrapper.view.center = [self overlayComponentCenterPoint];
     }
     
     for (HUBComponentWrapper * const unusedOverlayComponentWrapper in currentOverlayComponentWrappers) {
         [self removeOverlayComponentWrapper:unusedOverlayComponentWrapper];
     }
+}
+
+- (CGPoint)overlayComponentCenterPoint
+{
+    CGRect frame = self.view.bounds;
+    frame.origin.y = self.collectionView.contentInset.top;
+    frame.size.height -= self.visibleKeyboardHeight + CGRectGetMinY(frame);
+    return CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+}
+
+- (void)updateOverlayComponentCenterPointsWithKeyboardNotification:(NSNotification *)notification
+{
+    NSTimeInterval const animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve const animationCurve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    [UIView beginAnimations:@"com.spotify.hub.keyboard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    [UIView setAnimationCurve:animationCurve];
+    
+    for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
+        overlayComponentWrapper.view.center = [self overlayComponentCenterPoint];
+    }
+    
+    [UIView commitAnimations];
 }
 
 - (void)removeOverlayComponentWrapper:(HUBComponentWrapper *)wrapper

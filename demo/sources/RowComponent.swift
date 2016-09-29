@@ -38,32 +38,32 @@ class RowComponent: NSObject, HUBComponentWithImageHandling {
     private lazy var cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
     private var cellHeight: CGFloat { return 50 }
     private var imageSize: CGSize {
-        return CGSize(width: self.cellHeight, height: self.cellHeight)
+        return CGSize(width: cellHeight, height: cellHeight)
     }
     
     func loadView() {
-        self.view = self.cell
+        view = cell
     }
     
     func preferredViewSize(forDisplaying model: HUBComponentModel, containerViewSize: CGSize) -> CGSize {
-        return CGSize(width: containerViewSize.width, height: self.cellHeight)
+        return CGSize(width: containerViewSize.width, height: cellHeight)
     }
     
     func configureView(with model: HUBComponentModel, containerViewSize: CGSize) {
-        self.cell.textLabel?.text = model.title
-        self.cell.detailTextLabel?.text = model.subtitle
+        cell.textLabel?.text = model.title
+        cell.detailTextLabel?.text = model.subtitle
         
         if model.mainImageData != nil {
-            UIGraphicsBeginImageContext(self.imageSize)
+            UIGraphicsBeginImageContext(imageSize)
             UIColor.lightGray.setFill()
-            UIRectFill(CGRect(origin: CGPoint(), size: self.imageSize))
-            self.cell.imageView?.image = UIGraphicsGetImageFromCurrentImageContext()
+            UIRectFill(CGRect(origin: CGPoint(), size: imageSize))
+            cell.imageView?.image = UIGraphicsGetImageFromCurrentImageContext()
         }
     }
     
     func prepareViewForReuse() {
-        self.cell.prepareForReuse()
-        self.cell.imageView?.image = nil
+        cell.prepareForReuse()
+        cell.imageView?.image = nil
     }
     
     // MARK: - HUBComponentWithImageHandling
@@ -73,11 +73,11 @@ class RowComponent: NSObject, HUBComponentWithImageHandling {
             return CGSize()
         }
         
-        return self.imageSize
+        return imageSize
     }
     
     func updateView(forLoadedImage image: UIImage, from imageData: HUBComponentImageData, model: HUBComponentModel, animated: Bool) {
-        self.cell.imageView?.setImage(image, animated: animated)
-        self.cell.setNeedsLayout()
+        cell.imageView?.setImage(image, animated: animated)
+        cell.setNeedsLayout()
     }
 }

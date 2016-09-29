@@ -2,13 +2,14 @@
 
 Welcome to the Hub Framework setup guide! This guide aims to help you get set up with the framework in either a new or existing application.
 
-Note that you only have to follow this guide when setting up the framework for the first time in your application. To learn how to use the framework in terms of building UIs and features using it - refer to the [getting started guide](https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html).
+Note that you only have to follow this guide when setting up the framework for the first time in your application. To learn how to use the framework in terms of building UIs and features using it - refer to the [getting started guide](https://spotify.github.io/HubFramework/getting-started-guide.html).
 
 Before you proceed with this guide, it’s recommended that you read all of the programming guides, as to familiarize yourself with the various aspects of the framework. You can find links to all the programming guides [in the README](https://ghe.spotify.net/iOS/HubFramework#getting-started).
 
 **Table of contents**
 
 - [Introduction](#introduction)
+- [Linking with `SystemConfiguration`](#linking-with-system-configuration)
 - [Creating a `HUBManager` instance](#creating-a-hubmanager-instance)
 - [Setting up the navigation system](#setting-up-the-navigation-system)
 - [Further customization](#further-customization)
@@ -18,6 +19,10 @@ Before you proceed with this guide, it’s recommended that you read all of the 
 The Hub Framework is built to be easily integrated into apps of any size, with minimal impact on existing code. You don’t need to rewrite your app to start using it, and it has a very modular design that gives you a high degree of flexibility.
 
 The recommendation is to start with as many defaults as you can, and then pick and choose what to customize after you’re set up.
+
+## Linking with `SystemConfiguration`
+
+The Hub Framework requires you to link with Apple's `SystemConfiguration` framework in order for its connectivity state resolver to work. To do so, simply add `SystemConfiguration` to your app target's "Linked Frameworks and Libraries" under the "General" tab in your project settings in Xcode.
 
 ## Creating a `HUBManager` instance
 
@@ -119,7 +124,7 @@ The above is only one of many possible implementations. You could, for example, 
 
 ## Further customization
 
-You’re now ready to start building UIs using the Hub Framework. Head over to the [getting started guide](https://ghe.spotify.net/pages/iOS/HubFramework/getting-started-guide.html) to learn how to register features and how to build content operations & components.
+You’re now ready to start building UIs using the Hub Framework. Head over to the [getting started guide](https://spotify.github.io/HubFramework/getting-started-guide.html) to learn how to register features and how to build content operations & components.
 
 In case you need it, you can also continue customizing the framework, adding support for additional features.
 
@@ -190,4 +195,4 @@ You can also define system-wide content operations that are either prepended or 
 
 To use this functionality, pass a `HUBContentOperationFactory` as either `prependedContentOperationFactory` or `appendedContentOperationFactory` when setting up `HUBManager`.
 
-To learn more about the content loading chain and content operations, refer to the [content programming guide](https://ghe.spotify.net/pages/iOS/HubFramework/content-programming-guide.html).
+To learn more about the content loading chain and content operations, refer to the [content programming guide](https://spotify.github.io/HubFramework/content-programming-guide.html).

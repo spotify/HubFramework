@@ -38,9 +38,5 @@ fastlane/screenshots
 # Documentation
 documentation/output/
 
-# Ruby, gems and bundler
-vendor/bundle/
-vendor/gem/
-
 # Ignore changes to our project.xcconfig that gets overridden by the build system
 project.xcconfig

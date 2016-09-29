@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable NSSet<NSString *> *)ignoredAutoEquatablePropertyNames
 {
-    return [NSSet setWithObject:NSStringFromSelector(@selector(parent))];
+    return [NSSet setWithObjects:NSStringFromSelector(@selector(parent)), NSStringFromSelector(@selector(index)), nil];
 }
 
 #pragma mark - Initializer

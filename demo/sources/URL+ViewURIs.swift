@@ -36,6 +36,11 @@ extension URL {
     static var prettyPicturesViewURI: URL {
         return URL(viewURI: "prettypictures")
     }
+    
+    /// The view URI used for the "Really long list" feature
+    static var reallyLongListViewURI: URL {
+        return URL(viewURI: "reallylonglist")
+    }
 }
 
 private extension URL {

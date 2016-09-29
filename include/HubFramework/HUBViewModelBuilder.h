@@ -41,9 +41,15 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Whether this builder is currently empty, and does not contain any content
  *
- *  As soon as any header or body component model has been added to this builder, it is no longer considered empty
+ *  As soon as any header, body or overlay component model has been added to this builder, it is no longer considered empty
  */
 @property (nonatomic, readonly) BOOL isEmpty;
+
+/// The number of body component model builders that this builder contains
+@property (nonatomic, readonly) NSUInteger numberOfBodyComponentModelBuilders;
+
+/// The number of overlay component model builders that this builder contains
+@property (nonatomic, readonly) NSUInteger numberOfOverlayComponentModelBuilders;
 
 #pragma mark - Identifier
 
@@ -133,6 +139,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return All the existing body component model builders, in the order that they were created. Note that
  *  any `preferredIndex` set by the component model builders hasn't been resolved at this point, so those
  *  are not taken into account.
+ *
+ *  If you just want to check the current number of body component model builders, it's better to use the
+ *  `numberOfBodyComponentModelBuilders` property, as it's faster.
  */
 - (NSArray<id<HUBComponentModelBuilder>> *)allBodyComponentModelBuilders;
 
@@ -142,6 +151,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return All the existing overlay component model builders, in the order that they were created. Note that
  *  any `preferredIndex` set by the component model builders hasn't been resolved at this point, so those
  *  are not taken into account.
+ *
+ *  If you just want to check the current number of overlay component model builders, it's better to use the
+ *  `numberOfOverlayComponentModelBuilders` property, as it's faster.
  */
 - (NSArray<id<HUBComponentModelBuilder>> *)allOverlayComponentModelBuilders;
 

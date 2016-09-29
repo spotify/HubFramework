@@ -14,10 +14,11 @@
 		8A42E0B21D8C3779004FAC33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */; };
 		8A42E0B31D8C3779004FAC33 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AF1D8C3779004FAC33 /* LaunchScreen.storyboard */; };
 		8A42E1001D8C399D004FAC33 /* libHubFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A42E0BB1D8C37B4004FAC33 /* libHubFramework.a */; };
-		8A42E1F51D8C4153004FAC33 /* ConnectivityStateResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F41D8C4153004FAC33 /* ConnectivityStateResolver.swift */; };
 		8A42E1F71D8C468C004FAC33 /* ComponentLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */; };
 		8A42E1F91D8C476C004FAC33 /* ComponentFallbackHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */; };
 		8A42E1FB1D8C4CEB004FAC33 /* RowComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */; };
+		8ABCCEAA1D9D1AC3005113B5 /* ReallyLongListContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCCEA91D9D1AC3005113B5 /* ReallyLongListContentOperation.swift */; };
+		8ABCCEAC1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCCEAB1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift */; };
 		8AD14FED1D9958A90008E182 /* UIImageView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD14FEC1D9958A90008E182 /* UIImageView+Animation.swift */; };
 		8AD5EDB71D9A7D50004B2CEA /* SearchBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDB61D9A7D50004B2CEA /* SearchBarComponent.swift */; };
 		8AD5EDB91D9A7DEC004B2CEA /* DefaultComponentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDB81D9A7DEC004B2CEA /* DefaultComponentFactory.swift */; };
@@ -33,6 +34,7 @@
 		8AD72F531D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD72F521D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift */; };
 		8AD72F551D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD72F541D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift */; };
 		8AD72F571D9AC22600E4B427 /* ImageComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD72F561D9AC22600E4B427 /* ImageComponent.swift */; };
+		8AD732081D9AD63700E4B427 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD732071D9AD63700E4B427 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,13 @@
 			remoteGlobalIDString = 8ADD42991C21CF6500D1A801;
 			remoteInfo = HubFrameworkTests;
 		};
+		DD874DC91D9B1D4400BEF720 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8A07549D1C21A79200AFAD38;
+			remoteInfo = HubFramework;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -62,10 +71,11 @@
 		8A42E0B01D8C3779004FAC33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A42E0B11D8C3779004FAC33 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HubFramework.xcodeproj; path = ../HubFramework.xcodeproj; sourceTree = "<group>"; };
-		8A42E1F41D8C4153004FAC33 /* ConnectivityStateResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectivityStateResolver.swift; sourceTree = "<group>"; };
 		8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentLayoutManager.swift; sourceTree = "<group>"; };
 		8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentFallbackHandler.swift; sourceTree = "<group>"; };
 		8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowComponent.swift; sourceTree = "<group>"; };
+		8ABCCEA91D9D1AC3005113B5 /* ReallyLongListContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReallyLongListContentOperation.swift; sourceTree = "<group>"; };
+		8ABCCEAB1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReallyLongListContentOperationFactory.swift; sourceTree = "<group>"; };
 		8AD14FEC1D9958A90008E182 /* UIImageView+Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Animation.swift"; sourceTree = "<group>"; };
 		8AD5EDB61D9A7D50004B2CEA /* SearchBarComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarComponent.swift; sourceTree = "<group>"; };
 		8AD5EDB81D9A7DEC004B2CEA /* DefaultComponentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultComponentFactory.swift; sourceTree = "<group>"; };
@@ -81,6 +91,7 @@
 		8AD72F521D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrettyPicturesContentOperation.swift; sourceTree = "<group>"; };
 		8AD72F541D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrettyPicturesContentOperationFactory.swift; sourceTree = "<group>"; };
 		8AD72F561D9AC22600E4B427 /* ImageComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageComponent.swift; sourceTree = "<group>"; };
+		8AD732071D9AD63700E4B427 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AD732081D9AD63700E4B427 /* SystemConfiguration.framework in Frameworks */,
 				8A42E1001D8C399D004FAC33 /* libHubFramework.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -102,6 +114,7 @@
 				8A42E0A81D8C376B004FAC33 /* Sources */,
 				8A42E0AD1D8C3779004FAC33 /* Resources */,
 				8A42E0931D8C36A3004FAC33 /* Products */,
+				8AD732061D9AD63700E4B427 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -146,10 +159,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8ABCCEA71D9D1AAB005113B5 /* Really long list */ = {
+			isa = PBXGroup;
+			children = (
+				8ABCCEAB1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift */,
+				8ABCCEA91D9D1AC3005113B5 /* ReallyLongListContentOperation.swift */,
+			);
+			name = "Really long list";
+			sourceTree = "<group>";
+		};
 		8AD5EDA81D997913004B2CEA /* Hub Manager Setup */ = {
 			isa = PBXGroup;
 			children = (
-				8A42E1F41D8C4153004FAC33 /* ConnectivityStateResolver.swift */,
 				8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */,
 				8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */,
 			);
@@ -176,6 +197,7 @@
 				8AD5EDAD1D997AF8004B2CEA /* Root */,
 				8AD5EDB11D9A7CE4004B2CEA /* GitHub Search */,
 				8AD72F4F1D9ABCDD00E4B427 /* Pretty pictures */,
+				8ABCCEA71D9D1AAB005113B5 /* Really long list */,
 			);
 			name = Features;
 			sourceTree = "<group>";
@@ -220,6 +242,14 @@
 			name = "Pretty pictures";
 			sourceTree = "<group>";
 		};
+		8AD732061D9AD63700E4B427 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8AD732071D9AD63700E4B427 /* SystemConfiguration.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -234,6 +264,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DD874DCA1D9B1D4400BEF720 /* PBXTargetDependency */,
 			);
 			name = HubFrameworkDemo;
 			productName = HubFrameworkDemo;
@@ -321,14 +352,15 @@
 				8AD72F571D9AC22600E4B427 /* ImageComponent.swift in Sources */,
 				8A2729A21D95486A00EF43FC /* URL+ViewURIs.swift in Sources */,
 				8A42E1F91D8C476C004FAC33 /* ComponentFallbackHandler.swift in Sources */,
+				8ABCCEAC1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift in Sources */,
 				8AD5EDCE1D9AA294004B2CEA /* LabelComponent.swift in Sources */,
 				8AD5EDCA1D9A9DBC004B2CEA /* GitHubSearchActivityIndicatorContentOperation.swift in Sources */,
 				8A42E1FB1D8C4CEB004FAC33 /* RowComponent.swift in Sources */,
 				8AD5EDBD1D9A7EC3004B2CEA /* GitHubSearchContentOperationFactory.swift in Sources */,
-				8A42E1F51D8C4153004FAC33 /* ConnectivityStateResolver.swift in Sources */,
 				8A42E0AB1D8C376B004FAC33 /* AppDelegate.swift in Sources */,
 				8AD5EDC41D9A92EC004B2CEA /* GitHubSearchCustomDataKeys.swift in Sources */,
 				8A27299E1D9546ED00EF43FC /* RootContentOperation.swift in Sources */,
+				8ABCCEAA1D9D1AC3005113B5 /* ReallyLongListContentOperation.swift in Sources */,
 				8AD5EDB91D9A7DEC004B2CEA /* DefaultComponentFactory.swift in Sources */,
 				8AD5EDC61D9A9674004B2CEA /* HUBJSONSchemaRegistry+CustomSchemas.swift in Sources */,
 				8AD5EDC81D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift in Sources */,
@@ -341,6 +373,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DD874DCA1D9B1D4400BEF720 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HubFramework;
+			targetProxy = DD874DC91D9B1D4400BEF720 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		8A42E0AF1D8C3779004FAC33 /* LaunchScreen.storyboard */ = {

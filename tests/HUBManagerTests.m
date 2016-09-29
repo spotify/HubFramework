@@ -22,10 +22,8 @@
 #import <XCTest/XCTest.h>
 
 #import "HUBManager.h"
-#import "HUBConnectivityStateResolverMock.h"
 #import "HUBContentOperationFactoryMock.h"
 #import "HUBComponentLayoutManagerMock.h"
-#import "HUBContentReloadPolicyMock.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBComponentDefaults+Testing.h"
 
@@ -41,21 +39,19 @@
 {
     [super setUp];
 
-    id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
-    id<HUBContentReloadPolicy> const defaultContentReloadPolicy = [HUBContentReloadPolicyMock new];
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
     
-    self.manager = [[HUBManager alloc] initWithConnectivityStateResolver:connectivityStateResolver
-                                                  componentLayoutManager:componentLayoutManager
-                                                componentFallbackHandler:componentFallbackHandler
-                                                      imageLoaderFactory:nil
-                                                       iconImageResolver:nil
-                                                    defaultActionHandler:nil
-                                              defaultContentReloadPolicy:defaultContentReloadPolicy
-                                        prependedContentOperationFactory:nil
-                                         appendedContentOperationFactory:nil];
+    self.manager = [[HUBManager alloc] initWithComponentLayoutManager:componentLayoutManager
+                                             componentFallbackHandler:componentFallbackHandler
+                                            connectivityStateResolver:nil
+                                                   imageLoaderFactory:nil
+                                                    iconImageResolver:nil
+                                                 defaultActionHandler:nil
+                                           defaultContentReloadPolicy:nil
+                                     prependedContentOperationFactory:nil
+                                      appendedContentOperationFactory:nil];
 }
 
 - (void)testRegistriesCreated
