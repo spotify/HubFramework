@@ -20,7 +20,7 @@ platform :ios do
       :output_types => 'html,junit',
     )
 
-    codecov() if ENV['CODECOV_TOKEN']
+    codecov() if ENV['CODECOV_TOKEN'] or ENV['TRAVIS'] == 'true'
   end
 
 
