@@ -27,15 +27,15 @@ class GitHubSearchActivityIndicatorContentOperation: NSObject, HUBContentOperati
     weak var delegate: HUBContentOperationDelegate?
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
-        if let searchString = viewModelBuilder.customData?[GitHubSearchCustomDataKeys.searchString] as? String,
-            searchString.characters.count > 0 {
-            if viewModelBuilder.allBodyComponentModelBuilders().count == 1 {
-                if viewModelBuilder.allOverlayComponentModelBuilders().isEmpty {
-                    let activityIndicatorBuilder = viewModelBuilder.builderForOverlayComponentModel(withIdentifier: "activityIndicator")
-                    activityIndicatorBuilder.componentName = DefaultComponentNames.activityIndicator
-                }
-            }
+        // If no search is in progress, there's no need for an activity indicator
+        guard viewModelBuilder.customData?[GitHubSearchCustomDataKeys.searchInProgress] as? Bool == true else {
+            delegate?.contentOperationDidFinish(self)
+            return
         }
+        
+        // Add an activity indicator overlay component
+        let activityIndicatorBuilder = viewModelBuilder.builderForOverlayComponentModel(withIdentifier: "activityIndicator")
+        activityIndicatorBuilder.componentName = DefaultComponentNames.activityIndicator
         
         delegate?.contentOperationDidFinish(self)
     }
