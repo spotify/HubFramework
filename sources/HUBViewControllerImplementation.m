@@ -742,13 +742,16 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSTimeInterval const animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     UIViewAnimationCurve const animationCurve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
-    UIViewAnimationOptions animationOptions = HUBAnimationOptionsFromCurve(animationCurve);
     
-    [UIView animateWithDuration:animationDuration delay:0 options:animationOptions animations:^{
-        for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
-            overlayComponentWrapper.view.center = [self overlayComponentCenterPoint];
-        }
-    } completion:nil];
+    [UIView beginAnimations:@"com.spotify.hub.keyboard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    [UIView setAnimationCurve:animationCurve];
+    
+    for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
+        overlayComponentWrapper.view.center = [self overlayComponentCenterPoint];
+    }
+    
+    [UIView commitAnimations];
 }
 
 - (void)removeOverlayComponentWrapper:(HUBComponentWrapper *)wrapper
