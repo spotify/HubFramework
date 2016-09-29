@@ -75,6 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic, strong, nullable) HUBViewModelDiff *lastViewModelDiff;
 @property (nonatomic, assign) BOOL viewHasAppeared;
+@property (nonatomic, assign) BOOL viewHasBeenLaidOut;
 @property (nonatomic) BOOL viewModelIsInitial;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
 @property (nonatomic) CGFloat visibleKeyboardHeight;
@@ -216,31 +217,32 @@ NS_ASSUME_NONNULL_BEGIN
     NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    
+    self.viewHasBeenLaidOut = NO;
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     
-    id<HUBViewModel> const viewModel = self.viewModel;
-    
-    if (viewModel == nil) {
-        return;
+    self.viewHasBeenLaidOut = YES;
+
+    if (self.viewModel != nil) {
+        id<HUBViewModel> const viewModel = self.viewModel;
+        [self reloadCollectionViewWithViewModel:viewModel animated:NO];
     }
-    
+}
+
+- (void)reloadCollectionViewWithViewModel:(id<HUBViewModel>)viewModel animated:(BOOL)animated
+{
     if (!self.viewModelHasChangedSinceLastLayoutUpdate) {
         if (CGRectEqualToRect(self.collectionView.frame, self.view.bounds)) {
             return;
         }
     }
-
+    
     self.collectionView.frame = self.view.bounds;
-
-    [self reloadCollectionViewWithViewModel:viewModel animated:NO];
-}
-
-- (void)reloadCollectionViewWithViewModel:(id<HUBViewModel>)viewModel animated:(BOOL)animated
-{
+    
     [self saveStatesForVisibleComponents];
     
     if (![self.collectionView.collectionViewLayout isKindOfClass:[HUBCollectionViewLayout class]]) {
@@ -383,6 +385,10 @@ NS_ASSUME_NONNULL_BEGIN
     self.viewModelIsInitial = NO;
     self.viewModelHasChangedSinceLastLayoutUpdate = YES;
     [self.view setNeedsLayout];
+    
+    if (self.viewHasBeenLaidOut) {
+        [self reloadCollectionViewWithViewModel:viewModel animated:NO];
+    }
     
     [delegate viewControllerDidUpdate:self];
 }
