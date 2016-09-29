@@ -47,6 +47,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  framework of its outcome. Note that this method can only be called once per execution - multiple calls will
  *  be ignored. To be able to update the operation's state - first call `-contentOperationRequiresRescheduling:`
  *  to get the Hub Framework to reschedule and re-execute the operation.
+ *
+ *  It's safe to call this method from any thread, as the framework will automatically dispatch to the main
+ *  queue in case it's called from a background thread.
  */
 - (void)contentOperationDidFinish:(id<HUBContentOperation>)operation;
 
@@ -61,6 +64,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  `previousContentOperationError`. If the next content operation manages to recover, the error is silenced. If no
  *  additional content operations were able to recover, the error will block the creation of a view model and a
  *  visual representation of it will be rendered instead of content.
+ *
+ *  It's safe to call this method from any thread, as the framework will automatically dispatch to the main
+ *  queue in case it's called from a background thread.
  */
 - (void)contentOperation:(id<HUBContentOperation>)operation didFailWithError:(NSError *)error;
 
@@ -73,6 +79,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  underlying data model or after a certain period of time has passed. When this is called, the framework will put
  *  the operation - as well as any subsequent operations after it in the content loading chain - in its content loading
  *  queue, and will execute it as soon as possible.
+ *
+ *  It's safe to call this method from any thread, as the framework will automatically dispatch to the main
+ *  queue in case it's called from a background thread.
  */
 - (void)contentOperationRequiresRescheduling:(id<HUBContentOperation>)operation;
 
