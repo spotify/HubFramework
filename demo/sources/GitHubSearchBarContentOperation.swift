@@ -29,10 +29,13 @@ class GitHubSearchBarContentOperation: NSObject, HUBContentOperationActionObserv
     private var searchActionIdentifier: HUBIdentifier { return HUBIdentifier(namespace: "github", name: "search") }
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
+        // Encode any search string that was passed from the search bar component
+        // (through an action) into the view model builder's custom data
         var viewModelCustomData = viewModelBuilder.customData ?? [:]
         viewModelCustomData[GitHubSearchCustomDataKeys.searchString] = searchString
         viewModelBuilder.customData = viewModelCustomData
         
+        // Add the search bar
         let searchBarBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "searchBar")
         searchBarBuilder.componentName = DefaultComponentNames.searchBar
         searchBarBuilder.customData = [
@@ -52,6 +55,9 @@ class GitHubSearchBarContentOperation: NSObject, HUBContentOperationActionObserv
             return
         }
         
+        // Save the search sting that was entered, and reschedule this operation to fetch new results
+        // See `GitHubSearchResultsContentOperation`, which comes after this one, for the actual fetching
+        // of results.
         self.searchString = searchString
         delegate?.contentOperationRequiresRescheduling(self)
     }
