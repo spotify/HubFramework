@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize view = _view;
 
-- (NSSet<HUBComponentLayoutTrait *> *)layoutTraits
+- (NSSet<HUBComponentLayoutTrait> *)layoutTraits
 {
     // Return a set of layout traits that describe your component's UI style
     return [NSSet new];
