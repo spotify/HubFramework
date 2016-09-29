@@ -4,7 +4,7 @@ if github.pr_body.length < 5
 end
 
 # Just to let people know
-warn("PR is classed as Work in Progress") if github.pr_title.include? "[WIP]"
+warn("PR is classed as Work in Progress") if github.pr_title.include? "WIP"
 
 # Make a note about contributors not in the organization
 unless github.api.organization_member?('spotify', github.pr_author)
