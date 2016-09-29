@@ -23,7 +23,6 @@ env:
   global:
     - LC_CTYPE=en_US.UTF-8
     - LANG=en_US.UTF-8
-    - IS_MASTER_BRANCH="$([[ "$TRAVIS_BRANCH" == "master" ]] && echo -n "YES")"
      # Make fastlane open the simulator before running tests. A workaround for error 65.
     - FASTLANE_EXPLICIT_OPEN_SIMULATOR=2
     - TEST_DEVICE_NAME="iPhone 6s"
@@ -33,12 +32,10 @@ matrix:
   include:
     # Main job; builds and runs everything.
     - osx_image: xcode8
+      env: UPDATE_DOCUMENTATION=YES
     # Compatibility job; makes sure the library is buildable by Xcode 7.3.1
     - osx_image: xcode7.3
-      env: LINT=NO      BUILD_DEMO_APP=NO
-    # Update our documentation. Only true on a push to master build.
-    - osx_image: xcode8
-      env: SKIP_CI=YES  UPDATE_DOCUMENTATION="$IS_MASTER_BRANCH"
+      env: BUILD_DEMO_APP=NO
 
 cache: bundler
 
