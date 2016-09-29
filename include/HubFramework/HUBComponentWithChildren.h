@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Delegate protocol used to send events related to a component's children back to the Hub Framework
  *
- *  You don't implement this protocol yourself. Instead, you @synthesize your component's `childDelegate`
+ *  You don't implement this protocol yourself. Instead, you \@synthesize your component's `childDelegate`
  *  property, and may choose to send any of these methods to it to notify it of events, as well as creating
  *  child component instances.
  *
@@ -104,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The object that acts as a delegate for events related to the component's children
  *
- *  Don't assign any custom objects to this property. Instead, just @sythensize it, so that the Hub Framework can
+ *  Don't assign any custom objects to this property. Instead, just \@sythensize it, so that the Hub Framework can
  *  assign an internal object to this property, to enable you to send events for the component's children back from
  *  the component to the framework, as well as creating child component instances.
  */
