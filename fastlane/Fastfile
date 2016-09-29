@@ -8,10 +8,13 @@ platform :ios do
     system('pkill', '-9', '-x', 'Simulator')
     UI.success('Simulator app killed')
 
+    device = ENV['TEST_DEVICE_NAME'] || 'iPhone 6s'
+    UI.message("Simulator testing device set to '#{device}'")
+
     scan(
       :workspace => 'HubFramework.xcworkspace',
       :scheme => 'HubFramework',
-      :devices => ['iPhone 6s'],
+      :devices => [device],
       :derived_data_path => 'build/DerivedData',
       :output_directory => 'build/tests',
       :buildlog_path => 'build/logs/tests',
