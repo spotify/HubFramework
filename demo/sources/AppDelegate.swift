@@ -42,6 +42,7 @@ import HubFramework
         registerAndOpenRootFeature()
         registerGitHubSearchFeature()
         registerPrettyPicturesFeature()
+        registerReallyLongListFeature()
         
         return true
     }
@@ -69,6 +70,8 @@ import HubFramework
     private func registerDefaultComponentFactory() {
         hubManager.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)
     }
+    
+    // MARK: - Feature registrations
     
     private func registerAndOpenRootFeature() {
         hubManager.featureRegistry.registerFeature(
@@ -112,6 +115,21 @@ import HubFramework
             viewControllerScrollHandler: nil
         )
     }
+    
+    private func registerReallyLongListFeature() {
+        hubManager.featureRegistry.registerFeature(
+            withIdentifier: "reallyLongList",
+            viewURIPredicate: HUBViewURIPredicate(viewURI: .reallyLongListViewURI),
+            title: "Really Long List",
+            contentOperationFactories: [ReallyLongListContentOperationFactory()],
+            contentReloadPolicy: nil,
+            customJSONSchemaIdentifier: nil,
+            actionHandler: nil,
+            viewControllerScrollHandler: nil
+        )
+    }
+    
+    // MARK: - Opening view URIs
     
     @discardableResult private func open(viewURI: URL, animated: Bool) -> Bool {
         guard let viewController = hubManager?.viewControllerFactory.createViewController(forViewURI: viewURI) else {
