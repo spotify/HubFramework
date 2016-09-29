@@ -98,4 +98,8 @@ class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDele
             self.actionDelegate?.component(self, performActionWith: actionIdentifier, customData: customData)
         }
     }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
 }
