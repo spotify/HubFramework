@@ -126,7 +126,7 @@ To see an example implementation of the Hub Framework, open up the [demo app](ht
 
 The Hub Framework’s API is well documented and we generate both a [documentation website](https://spotify.github.io/HubFramework/) as well as a DocSet for the documentation app [Dash](https://kapeli.com/dash). The documentation is also written in such a way that Xcode will present it on usage.
 
-The Dash documentation is updated automatically for you on any changes to the framework. Get it by subscribing to the [https://spotify.github.io/HubFramework/docsets/HubFramework.xml](dash-feed://https%3A%2F%2Fghe%2Espotify%2Enet%2Fpages%2FiOS%2FHubFramework%2Fdocsets%2FHubFramework%2Exml) feed.
+The Dash documentation is updated automatically for you on any changes to the framework. Get it by subscribing to the [https://spotify.github.io/HubFramework/docsets/HubFramework.xml](dash-feed://https%3A%2F%2Fspotify%2Egithub%2Eio%2FHubFramework%2Fdocsets%2FHubFramework%2Exml) feed.
 
 ## Xcode file templates
 
