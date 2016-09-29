@@ -112,4 +112,21 @@ static inline NSString * _Nullable HUBSerializeToString(id<HUBSerializable> obje
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
+/**
+ *  Run a block on the main queue
+ *
+ *  @param block The block to run
+ *
+ *  The given block will be run synchronously in case this function is called on the main thread,
+ *  or asynchronously if it's not.
+ */
+static inline void HUBPerformOnMainQueue(dispatch_block_t block) {
+    if ([NSThread isMainThread]) {
+        block();
+        return;
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), block);
+}
+
 NS_ASSUME_NONNULL_END

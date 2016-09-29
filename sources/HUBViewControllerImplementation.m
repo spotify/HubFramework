@@ -401,25 +401,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache
 {
-    if (![NSThread isMainThread]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self imageLoader:imageLoader didLoadImage:image forURL:imageURL fromCache:loadedFromCache];
-        });
+    HUBPerformOnMainQueue(^{
+        NSArray * const contexts = self.componentImageLoadingContexts[imageURL];
+        self.componentImageLoadingContexts[imageURL] = nil;
         
-        return;
-    }
-    
-    NSArray * const contexts = self.componentImageLoadingContexts[imageURL];
-    self.componentImageLoadingContexts[imageURL] = nil;
-    
-    for (HUBComponentImageLoadingContext * const context in contexts) {
-        [self handleLoadedComponentImage:image forURL:imageURL fromCache:loadedFromCache context:context];
-    }
+        for (HUBComponentImageLoadingContext * const context in contexts) {
+            [self handleLoadedComponentImage:image forURL:imageURL fromCache:loadedFromCache context:context];
+        }
+    });
 }
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didFailLoadingImageForURL:(NSURL *)imageURL error:(NSError *)error
 {
-    self.componentImageLoadingContexts[imageURL] = nil;
+    HUBPerformOnMainQueue(^{
+        self.componentImageLoadingContexts[imageURL] = nil;
+    });
 }
 
 #pragma mark - HUBComponentWrapperDelegate
