@@ -1067,6 +1067,7 @@
 		8A0754961C21A79200AFAD38 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = HUB;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Spotify;
 				TargetAttributes = {
