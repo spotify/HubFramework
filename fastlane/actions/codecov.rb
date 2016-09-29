@@ -19,7 +19,7 @@ module Fastlane
           sh!('chmod', '+x', script.path)
 
           invocation_args = [
-            script.path, '-v',
+            script.path,
             '-X', 'gcov', '-X', 'coveragepy',
             '-u', cc_url,
             '-D', dd_path,
