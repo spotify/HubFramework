@@ -412,7 +412,7 @@
                       <div class="abstract">
                         <p>Whether this builder is currently empty, and does not contain any content</p>
 
-<p>As soon as any header or body component model has been added to this builder, it is no longer considered empty</p>
+<p>As soon as any header, body or overlay component model has been added to this builder, it is no longer considered empty</p>
 
                       </div>
                       <div class="declaration">
@@ -425,6 +425,70 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="k">var</span> <span class="nv">isEmpty</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(py)numberOfBodyComponentModelBuilders"></a>
+                    <a name="//apple_ref/objc/Property/numberOfBodyComponentModelBuilders" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(py)numberOfBodyComponentModelBuilders">numberOfBodyComponentModelBuilders</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The number of body component model builders that this builder contains</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSUInteger</span> <span class="n">numberOfBodyComponentModelBuilders</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">numberOfBodyComponentModelBuilders</span><span class="p">:</span> <span class="kt">UInt</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(py)numberOfOverlayComponentModelBuilders"></a>
+                    <a name="//apple_ref/objc/Property/numberOfOverlayComponentModelBuilders" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(py)numberOfOverlayComponentModelBuilders">numberOfOverlayComponentModelBuilders</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The number of overlay component model builders that this builder contains</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSUInteger</span> <span class="n">numberOfOverlayComponentModelBuilders</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">numberOfOverlayComponentModelBuilders</span><span class="p">:</span> <span class="kt">UInt</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -824,6 +888,9 @@
                       <div class="abstract">
                         <p>Return all current body component model builders</p>
 
+<p>If you just want to check the current number of body component model builders, it&rsquo;s better to use the
+  <code><a href="../Protocols/HUBViewModelBuilder.html#/c:objc(pl)HUBViewModelBuilder(py)numberOfBodyComponentModelBuilders">numberOfBodyComponentModelBuilders</a></code> property, as it&rsquo;s faster.</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -858,6 +925,9 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Return all current overlay component model builders</p>
+
+<p>If you just want to check the current number of overlay component model builders, it&rsquo;s better to use the
+  <code><a href="../Protocols/HUBViewModelBuilder.html#/c:objc(pl)HUBViewModelBuilder(py)numberOfOverlayComponentModelBuilders">numberOfOverlayComponentModelBuilders</a></code> property, as it&rsquo;s faster.</p>
 
                       </div>
                       <div class="declaration">

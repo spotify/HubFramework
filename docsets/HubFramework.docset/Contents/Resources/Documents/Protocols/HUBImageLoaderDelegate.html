@@ -403,6 +403,9 @@
                       <div class="abstract">
                         <p>Notify the Hub Framework that an image loader finished loading an image</p>
 
+<p>It&rsquo;s safe to call this method from any thread, as the framework will automatically dispatch to the main
+  queue in case it&rsquo;s called from a background thread.</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -498,6 +501,9 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Notify the Hub Framework that an image loader failed to load an image because of an error</p>
+
+<p>It&rsquo;s safe to call this method from any thread, as the framework will automatically dispatch to the main
+  queue in case it&rsquo;s called from a background thread.</p>
 
                       </div>
                       <div class="declaration">

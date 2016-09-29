@@ -408,6 +408,9 @@
   be ignored. To be able to update the operation&rsquo;s state - first call <code><a href="../Protocols/HUBContentOperationDelegate.html#/c:objc(pl)HUBContentOperationDelegate(im)contentOperationRequiresRescheduling:">-contentOperationRequiresRescheduling:</a></code>
   to get the Hub Framework to reschedule and re-execute the operation.</p>
 
+<p>It&rsquo;s safe to call this method from any thread, as the framework will automatically dispatch to the main
+  queue in case it&rsquo;s called from a background thread.</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -465,6 +468,9 @@
   <code>previousContentOperationError</code>. If the next content operation manages to recover, the error is silenced. If no
   additional content operations were able to recover, the error will block the creation of a view model and a
   visual representation of it will be rendered instead of content.</p>
+
+<p>It&rsquo;s safe to call this method from any thread, as the framework will automatically dispatch to the main
+  queue in case it&rsquo;s called from a background thread.</p>
 
                       </div>
                       <div class="declaration">
@@ -536,6 +542,9 @@
   underlying data model or after a certain period of time has passed. When this is called, the framework will put
   the operation - as well as any subsequent operations after it in the content loading chain - in its content loading
   queue, and will execute it as soon as possible.</p>
+
+<p>It&rsquo;s safe to call this method from any thread, as the framework will automatically dispatch to the main
+  queue in case it&rsquo;s called from a background thread.</p>
 
                       </div>
                       <div class="declaration">
