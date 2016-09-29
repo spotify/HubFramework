@@ -40,6 +40,7 @@ class LabelComponent: NSObject, HUBComponent {
     }
 
     func loadView() {
+        label.numberOfLines = 0
         label.font = font
         view = label
     }
