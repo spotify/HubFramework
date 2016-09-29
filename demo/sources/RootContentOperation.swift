@@ -43,6 +43,11 @@ class RootContentOperation: NSObject, HUBContentOperation {
         prettyPicturesRowBuilder.subtitle = "A feature that displays a grid of pictures"
         prettyPicturesRowBuilder.targetBuilder.uri = .prettyPicturesViewURI
         
+        let reallyLongListRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "reallyLongList")
+        reallyLongListRowBuilder.title = "Really long list"
+        reallyLongListRowBuilder.subtitle = "A feature that renders 10,000 rows"
+        reallyLongListRowBuilder.targetBuilder.uri = .reallyLongListViewURI
+        
         delegate?.contentOperationDidFinish(self)
     }
 }

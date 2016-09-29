@@ -20,31 +20,11 @@
  */
 
 import Foundation
+import HubFramework
 
-extension URL {
-    /// The view URI used for the "Root" feature
-    static var rootViewURI: URL {
-        return URL(viewURI: "root")
-    }
-    
-    // The view URI used for the "GitHub search" feature
-    static var gitHubSearchViewURI: URL {
-        return URL(viewURI: "githubsearch")
-    }
-    
-    /// The view URI used for the "Pretty pictures" feature
-    static var prettyPicturesViewURI: URL {
-        return URL(viewURI: "prettypictures")
-    }
-    
-    /// The view URI used for the "Really long list" feature
-    static var reallyLongListViewURI: URL {
-        return URL(viewURI: "reallylonglist")
-    }
-}
-
-private extension URL {
-    init(viewURI: String) {
-        self.init(string: "hub-demo:" + viewURI)!
+/// Content operation factory used for the "Really Long List" feature
+class ReallyLongListContentOperationFactory: NSObject, HUBContentOperationFactory {
+    func createContentOperations(forViewURI viewURI: URL) -> [HUBContentOperation] {
+        return [ReallyLongListContentOperation()]
     }
 }
