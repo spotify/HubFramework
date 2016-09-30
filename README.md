@@ -1,6 +1,6 @@
 <img alt="The Hub Framework" src="readme-banner.jpg" width="100%" max-width=1008>
 
-[![Build Status](https://travis-ci.org/spotify/HubFramework.svg?branch=master)](https://travis-ci.org/spotify/HubFramework)
+[![Build Status](https://travis-ci.org/spotify/HubFramework.svg?branch=master)](https://travis-ci.org/spotify/HubFramework/branches)
 [![Coverage Status](https://codecov.io/github/spotify/HubFramework/coverage.svg?branch=master)](https://codecov.io/github/spotify/HubFramework?branch=master)
 [![Documentation website](https://img.shields.io/badge/Documentation-website-blue.svg)](https://spotify.github.io/HubFramework)
 [![Spotify FOSS Slack](https://slackin.spotify.com/badge.svg)](https://slackin.spotify.com)
