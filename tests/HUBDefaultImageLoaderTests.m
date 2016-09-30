@@ -53,8 +53,6 @@
     self.session = [HUBURLSessionMock new];
     self.imageLoader = [[HUBDefaultImageLoader alloc] initWithSession:self.session];
     self.imageLoader.delegate = self;
-
-    [NSURLProtocol registerClass:[HUBURLProtocolMock class]];
 }
 
 - (void)tearDown
@@ -143,7 +141,7 @@
     XCTAssertNotNil(self.loadingError);
 }
 
-- (void)DISABLED_testLoadingCachedImage
+- (void)testLoadingCachedImage
 {
     NSURL * const imageURL = [NSURL URLWithString:@"https://image.spotify.com/123"];
     CGSize const targetSize = CGSizeMake(200, 200);
@@ -171,18 +169,27 @@
         dataHandler(data);
     }];
 
-    self.imageLoader = [[HUBDefaultImageLoader alloc] initWithSession:[NSURLSession sharedSession]];
+    self.imageLoader = [[HUBDefaultImageLoader alloc] initWithSession:[self customURLSession]];
     self.imageLoader.delegate = self;
     [self.imageLoader loadImageForURL:imageURL targetSize:targetSize];
 
     self.imageLoadedExpectation = [self expectationWithDescription:@"Image finished loading."];
-    [self waitForExpectationsWithTimeout:1 handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
 
     XCTAssertTrue(self.loadedImageFromCache);
     XCTAssertNotNil(self.loadedImage);
     XCTAssertTrue(CGSizeEqualToSize(self.loadedImage.size, image.size));
     XCTAssertEqualObjects(self.loadedImageURL, imageURL);
     XCTAssertNil(self.loadingError);
+}
+
+#pragma mark - Utilities
+
+- (NSURLSession *)customURLSession
+{
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    configuration.protocolClasses = @[HUBURLProtocolMock.class];
+    return [NSURLSession sessionWithConfiguration:configuration];
 }
 
 #pragma mark - HUBImageLoaderDelegate
