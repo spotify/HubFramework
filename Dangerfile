@@ -17,7 +17,7 @@ unless github.api.organization_member?('spotify', github.pr_author)
   end
 end
 
-# Fail if the project.xcconfig file is modified since that’s not supported.
+# Fail if the project.xcconfig file is modified since that's not supported.
 if git.modified_files.include?("project.xcconfig")
 	fail "The project.xcconfig must not be modified, please change spotify_os.xcconfig instead"
 end
