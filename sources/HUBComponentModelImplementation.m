@@ -28,6 +28,7 @@
 #import "HUBViewModel.h"
 #import "HUBUtilities.h"
 #import "HUBIcon.h"
+#import "HUBKeyPath.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -64,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable NSSet<NSString *> *)ignoredAutoEquatablePropertyNames
 {
-    return [NSSet setWithObjects:NSStringFromSelector(@selector(parent)), NSStringFromSelector(@selector(index)), nil];
+    return [NSSet setWithObjects:HUBKeyPath((id<HUBComponentModel>)nil, parent), HUBKeyPath((id<HUBComponentModel>)nil, index), nil];
 }
 
 #pragma mark - Initializer
