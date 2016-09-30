@@ -8,6 +8,7 @@ language: objective-c
 bundler_args: --without documentation --without development --deployment --jobs=3 --retry=3
 
 script:
+  - echo "TRAVIS_PULL_REQUEST_BRANCH: $TRAVIS_PULL_REQUEST_BRANCH"
   - if [[ "$LINT" == "YES" ]];                 then fastlane lint; fi
   - if [[ "$RUN_TESTS" == "YES" ]];            then fastlane test; fi
   - if [[ "$BUILD_DEMO_APP" == "YES" ]];       then fastlane demo; fi
