@@ -2,7 +2,7 @@
 
 Welcome to the Hub Framework getting started guide! This guide aims to help introduce you to the concepts of the framework, and give you a step-by-step guide to building your first dynamic, component-driven view.
 
-Note that this guide does not involve *setting up* the Hub Framework in your application - for that, see the [setup guide](https://spotify.github.io/HubFramework/setup-guide.html). This guide requires an application already set up with the Hub Framework, if you don't have your own - you can use the [demo app](https://ghe.spotify.net/iOS/HubFramework/tree/master/demo) that is included in the Hub Framework repo.
+Note that this guide does not involve *setting up* the Hub Framework in your application - for that, see the [setup guide](https://spotify.github.io/HubFramework/setup-guide.html). This guide requires an application already set up with the Hub Framework, if you don't have your own - you can use the [demo app](https://github.com/spotify/HubFramework/tree/master/demo) that is included in the Hub Framework repo.
 
 In this guide, we'll be building a new feature called **"Cities"**, which will use row & image components to display various cities from around the world. The feature will have only one view, and we'll be building both the content and the components from scratch. The end result will look like this:
 
@@ -146,7 +146,7 @@ To open your view, make the app that you're working in open the URI `cities:over
 
 If you're working on the Spotify app, you can go to Search and paste the URI into the search field and press Enter.
 
-If you're working in the [demo app](https://ghe.spotify.net/iOS/HubFramework/tree/master/demo) included in the Hub Framework repo, you can easily add the following line to the App Delegate's `app:didFinishLaunchingWithOptions:` method:
+If you're working in the [demo app](https://github.com/spotify/HubFramework/tree/master/demo) included in the Hub Framework repo, you can easily add the following line to the App Delegate's `app:didFinishLaunchingWithOptions:` method:
 
 ```swift
 self.open(viewURI: URL(string: "cities:overview")!, animated: false)
