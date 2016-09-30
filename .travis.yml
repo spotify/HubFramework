@@ -4,7 +4,6 @@ branches:
     - /^release-.*$/
 
 language: objective-c
-rvm: 2.0.0
 
 bundler_args: --without documentation --without development --deployment --jobs=3 --retry=3
 
@@ -32,9 +31,11 @@ matrix:
   include:
     # Main job; builds and runs everything.
     - osx_image: xcode8
+      rvm: 2.0.0
       env: UPDATE_DOCUMENTATION=YES
     # Compatibility job; makes sure the library is buildable by Xcode 7.3.1
     - osx_image: xcode7.3
+      rvm: 2.0.0
       env: BUILD_DEMO_APP=NO
 
 cache: bundler
