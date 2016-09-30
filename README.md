@@ -149,3 +149,4 @@ Anyone is more than welcome to contribute to the Hub Framework! Together we can 
 ## Authors
 
 The Hub Framework was built at [Spotify](www.spotify.com) by [John Sundell](https://twitter.com/johnsundell), [Aron Cedercrantz](https://twitter.com/rastersize), [Robin Goos](https://github.com/Goos) and [several others](https://github.com/spotify/HubFramework/graphs/contributors).
+foo
