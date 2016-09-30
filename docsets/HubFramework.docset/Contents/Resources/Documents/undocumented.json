@@ -23,21 +23,21 @@
     },
     {
       "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBManager.h",
-      "line": 107,
+      "line": 121,
       "symbol": "HUBManager.+new",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
     },
     {
       "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBManager.h",
-      "line": 107,
+      "line": 121,
       "symbol": "HUBManager.-init",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBManager.h",
-      "line": 107,
+      "line": 121,
       "symbol": "HUBManager.-initWithCoder:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"

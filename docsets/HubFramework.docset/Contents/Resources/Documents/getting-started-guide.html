@@ -372,7 +372,7 @@
 
 <p>Welcome to the Hub Framework getting started guide! This guide aims to help introduce you to the concepts of the framework, and give you a step-by-step guide to building your first dynamic, component-driven view.</p>
 
-<p>Note that this guide does not involve <em>setting up</em> the Hub Framework in your application - for that, see the <a href="https://spotify.github.io/HubFramework/setup-guide.html">setup guide</a>. This guide requires an application already set up with the Hub Framework, if you don&rsquo;t have your own - you can use the <a href="https://ghe.spotify.net/iOS/HubFramework/tree/master/demo">demo app</a> that is included in the Hub Framework repo.</p>
+<p>Note that this guide does not involve <em>setting up</em> the Hub Framework in your application - for that, see the <a href="https://spotify.github.io/HubFramework/setup-guide.html">setup guide</a>. This guide requires an application already set up with the Hub Framework, if you don&rsquo;t have your own - you can use the <a href="https://github.com/spotify/HubFramework/tree/master/demo">demo app</a> that is included in the Hub Framework repo.</p>
 
 <p>In this guide, we&rsquo;ll be building a new feature called <strong><q>Cities</q></strong>, which will use row &amp; image components to display various cities from around the world. The feature will have only one view, and we&rsquo;ll be building both the content and the components from scratch. The end result will look like this:</p>
 
@@ -500,7 +500,7 @@ HUBViewURIPredicate *viewURIPredicate = [HUBViewURIPredicate predicateWithViewUR
 
 <p>If you&rsquo;re working on the Spotify app, you can go to Search and paste the URI into the search field and press Enter.</p>
 
-<p>If you&rsquo;re working in the <a href="https://ghe.spotify.net/iOS/HubFramework/tree/master/demo">demo app</a> included in the Hub Framework repo, you can easily add the following line to the App Delegate&rsquo;s <code>app:didFinishLaunchingWithOptions:</code> method:</p>
+<p>If you&rsquo;re working in the <a href="https://github.com/spotify/HubFramework/tree/master/demo">demo app</a> included in the Hub Framework repo, you can easily add the following line to the App Delegate&rsquo;s <code>app:didFinishLaunchingWithOptions:</code> method:</p>
 <pre class="highlight swift"><code><span class="k">self</span><span class="o">.</span><span class="nf">open</span><span class="p">(</span><span class="nv">viewURI</span><span class="p">:</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"cities:overview"</span><span class="p">)</span><span class="o">!</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
 </code></pre>
 
