@@ -59,7 +59,7 @@ platform :ios do
   desc 'Update documentation and publish them'
   lane :update_docs do
     if git_branch == "master"
-      sh 'cd .. && rake docs:generate'
+      # sh 'cd .. && rake docs:generate'
       # sh 'cd .. && rake docs:publish'
     end
   end
