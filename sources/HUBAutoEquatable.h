@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Abstract base class for types that are automatically checked for equality
  *
- *  This class imlements `-isEqual:` using reflection and KVC, and determines whether
+ *  This class implements `-isEqual:` using reflection and KVC, and determines whether
  *  two instances of the same class are equal by inspecting each individual key/value
  *  and checking them for equality. Two objects are only considered equal if all their
  *  key/value pairs are equal.
