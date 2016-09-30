@@ -10,7 +10,6 @@ module Fastlane
 
         cc_url = params[:url]
         cc_token = params[:token]
-        branch = Actions::GitBranchAction.run({})
         pr = (branch || '').scan(/pull\/(\d+)\//).flatten.first
 
         UI.message("Collecting coverage for the branch '#{branch}'")
@@ -36,6 +35,12 @@ module Fastlane
           script.close
           script.unlink
         end
+      end
+
+      def self.branch
+        pr_branch = ENV['TRAVIS_PULL_REQUEST_BRANCH'].to_s
+        return pr_branch if not pr_branch.empty? and pr_branch != "false"
+        return Actions::GitBranchAction.run({})
       end
 
       def self.sh!(*args)
