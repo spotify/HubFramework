@@ -29,48 +29,59 @@
 
 @interface HUBManagerTests : XCTestCase
 
-@property (nonatomic, strong) HUBManager *manager;
-
 @end
 
 @implementation HUBManagerTests
 
-- (void)setUp
-{
-    [super setUp];
+#pragma mark - Tests
 
+- (void)testUsingDesignatedInitializer
+{
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
     
-    self.manager = [[HUBManager alloc] initWithComponentLayoutManager:componentLayoutManager
-                                             componentFallbackHandler:componentFallbackHandler
-                                            connectivityStateResolver:nil
-                                                   imageLoaderFactory:nil
-                                                    iconImageResolver:nil
-                                                 defaultActionHandler:nil
-                                           defaultContentReloadPolicy:nil
-                                     prependedContentOperationFactory:nil
-                                      appendedContentOperationFactory:nil];
+    HUBManager * const manager = [[HUBManager alloc] initWithComponentLayoutManager:componentLayoutManager
+                                                           componentFallbackHandler:componentFallbackHandler
+                                                          connectivityStateResolver:nil
+                                                                 imageLoaderFactory:nil
+                                                                  iconImageResolver:nil
+                                                               defaultActionHandler:nil
+                                                         defaultContentReloadPolicy:nil
+                                                   prependedContentOperationFactory:nil
+                                                    appendedContentOperationFactory:nil];
+    
+    [self verifyManager:manager];
 }
 
-- (void)testRegistriesCreated
+- (void)testUsingConvenienceInitializer
 {
-    XCTAssertNotNil(self.manager.featureRegistry);
-    XCTAssertNotNil(self.manager.componentRegistry);
-    XCTAssertNotNil(self.manager.actionRegistry);
-    XCTAssertNotNil(self.manager.JSONSchemaRegistry);
+    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
+    id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
+    
+    HUBManager * const manager = [[HUBManager alloc] initWithComponentLayoutManager:componentLayoutManager
+                                                           componentFallbackHandler:componentFallbackHandler];
+    
+    [self verifyManager:manager];
 }
 
-- (void)testFactoriesCreated
-{
-    XCTAssertNotNil(self.manager.viewModelLoaderFactory);
-    XCTAssertNotNil(self.manager.viewControllerFactory);
-}
+#pragma mark - Utilities
 
-- (void)testComponentShowcaseManagerCreated
+- (void)verifyManager:(HUBManager *)manager
 {
-    XCTAssertNotNil(self.manager.componentShowcaseManager);
+    // All registeries should be created
+    XCTAssertNotNil(manager.featureRegistry);
+    XCTAssertNotNil(manager.componentRegistry);
+    XCTAssertNotNil(manager.actionRegistry);
+    XCTAssertNotNil(manager.JSONSchemaRegistry);
+    
+    // All factories should be created
+    XCTAssertNotNil(manager.viewModelLoaderFactory);
+    XCTAssertNotNil(manager.viewControllerFactory);
+    
+    // Showcase manager should be created
+    XCTAssertNotNil(manager.componentShowcaseManager);
 }
 
 @end

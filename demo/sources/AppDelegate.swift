@@ -56,14 +56,7 @@ import HubFramework
     private func makeHubManager() -> HUBManager {
         return HUBManager(
             componentLayoutManager: ComponentLayoutManager(),
-            componentFallbackHandler: ComponentFallbackHandler(),
-            connectivityStateResolver: nil,
-            imageLoaderFactory: nil,
-            iconImageResolver: nil,
-            defaultActionHandler: nil,
-            defaultContentReloadPolicy: nil,
-            prependedContentOperationFactory: nil,
-            appendedContentOperationFactory: nil
+            componentFallbackHandler: ComponentFallbackHandler()
         )
     }
     
