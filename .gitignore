@@ -4,7 +4,11 @@
 
 ## Build generated
 build/
+vendor/
 DerivedData
+
+## Code coverage related
+HubFrameworkTests.xctest.coverage.txt
 
 ## Various settings
 *.pbxuser
