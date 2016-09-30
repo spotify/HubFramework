@@ -141,7 +141,7 @@
     XCTAssertNotNil(self.loadingError);
 }
 
-- (void)testLoadingCachedImage
+- (void)DISABLED_testLoadingCachedImage
 {
     NSURL * const imageURL = [NSURL URLWithString:@"https://image.spotify.com/123"];
     CGSize const targetSize = CGSizeMake(200, 200);
