@@ -50,7 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
 {
     return [self initWithComponentLayoutManager:componentLayoutManager
                        componentFallbackHandler:componentFallbackHandler
-                      connectivityStateResolver:nil imageLoaderFactory:nil
+                      connectivityStateResolver:nil
+                             imageLoaderFactory:nil
                               iconImageResolver:nil
                            defaultActionHandler:nil
                      defaultContentReloadPolicy:nil
