@@ -118,6 +118,7 @@
 		DDBCF3701C68DE5000693038 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36B1C68DD2300693038 /* UIKit.framework */; };
 		F66658D91D9925CC0097929F /* HUBViewModelDiff.m in Sources */ = {isa = PBXBuildFile; fileRef = F66658D81D9925CC0097929F /* HUBViewModelDiff.m */; };
 		F6665AA71D9947E00097929F /* HUBViewModelDiffTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6665AA61D9947E00097929F /* HUBViewModelDiffTests.m */; };
+		F6B6B7561D9A8E7E0000D7AF /* HUBURLProtocolMock.m in Sources */ = {isa = PBXBuildFile; fileRef = F6B6B7551D9A8E7E0000D7AF /* HUBURLProtocolMock.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1265,6 +1266,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1275,6 +1277,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

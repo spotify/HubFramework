@@ -34,12 +34,13 @@
 @implementation HUBViewModelDiffTests
 
 - (id<HUBComponentModel>)createComponentModelWithIdentifier:(NSString *)identifier
+                                                      index:(NSUInteger)index
                                                  customData:(nullable NSDictionary *)customData
 {
     HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
                                                                   type:HUBComponentTypeBody
-                                                                 index:0
+                                                                 index:index
                                                        groupIdentifier:nil
                                                    componentIdentifier:componentIdentifier
                                                      componentCategory:HUBComponentCategoryBanner
@@ -74,10 +75,10 @@
     id<HUBViewModel> firstViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                components:@[]];
     NSArray<id<HUBComponentModel>> *secondComponents = @[
-        [self createComponentModelWithIdentifier:@"component-1" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-2" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-3" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-4" customData:nil]
+        [self createComponentModelWithIdentifier:@"component-1" index:0 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-2" index:1 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-3" index:2 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-4" index:3 customData:nil]
     ];
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
@@ -95,18 +96,18 @@
 - (void)testReloads
 {
     NSArray<id<HUBComponentModel>> *firstComponents = @[
-        [self createComponentModelWithIdentifier:@"component-1" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-2" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-3" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-4" customData:nil]
+        [self createComponentModelWithIdentifier:@"component-1" index:0 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-2" index:1 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-3" index:2 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-4" index:3 customData:nil]
     ];
     id<HUBViewModel> firstViewModel = [self createViewModelWithIdentifier:@"Test"
                                                             components:firstComponents];
     NSArray<id<HUBComponentModel>> *secondComponents = @[
-        [self createComponentModelWithIdentifier:@"component-1" customData:@{@"test": @5}],
-        [self createComponentModelWithIdentifier:@"component-2" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-3" customData:@{@"test": @6}],
-        [self createComponentModelWithIdentifier:@"component-4" customData:nil]
+        [self createComponentModelWithIdentifier:@"component-1" index:0 customData:@{@"test": @5}],
+        [self createComponentModelWithIdentifier:@"component-2" index:1 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-3" index:2 customData:@{@"test": @6}],
+        [self createComponentModelWithIdentifier:@"component-4" index:3 customData:nil]
     ];
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
@@ -123,16 +124,16 @@
 - (void)testDeletions
 {
     NSArray<id<HUBComponentModel>> *firstComponents = @[
-        [self createComponentModelWithIdentifier:@"component-1" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-2" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-3" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-4" customData:nil]
+        [self createComponentModelWithIdentifier:@"component-1" index:0 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-2" index:1 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-3" index:2 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-4" index:3 customData:nil]
     ];
     id<HUBViewModel> firstViewModel = [self createViewModelWithIdentifier:@"Test"
                                                             components:firstComponents];
     NSArray<id<HUBComponentModel>> *secondComponents = @[
-        [self createComponentModelWithIdentifier:@"component-2" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-4" customData:nil]
+        [self createComponentModelWithIdentifier:@"component-2" index:0 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-4" index:1 customData:nil]
     ];
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
@@ -148,30 +149,30 @@
 - (void)testComplexChangeSet
 {
     NSArray<id<HUBComponentModel>> *firstComponents = @[
-        [self createComponentModelWithIdentifier:@"component-1" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-2" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-3" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-4" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-5" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-6" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-7" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-8" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-9" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-10" customData:nil]
+        [self createComponentModelWithIdentifier:@"component-1" index:0 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-2" index:1 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-3" index:2 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-4" index:3 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-5" index:4 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-6" index:5 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-7" index:6 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-8" index:7 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-9" index:8 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-10" index:9 customData:nil]
     ];
     id<HUBViewModel> firstViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                components:firstComponents];
     NSArray<id<HUBComponentModel>> *secondComponents = @[
-        [self createComponentModelWithIdentifier:@"component-1" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-2" customData:@{@"test": @1}],
-        [self createComponentModelWithIdentifier:@"component-30" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-4" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-5" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-6" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-7" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-9" customData:@{@"test": @2}],
-        [self createComponentModelWithIdentifier:@"component-10" customData:nil],
-        [self createComponentModelWithIdentifier:@"component-13" customData:nil]
+        [self createComponentModelWithIdentifier:@"component-1" index:0 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-2" index:1 customData:@{@"test": @1}],
+        [self createComponentModelWithIdentifier:@"component-30"index:2 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-4" index:3 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-5" index:4 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-6" index:5 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-7" index:6 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-9" index:7 customData:@{@"test": @2}],
+        [self createComponentModelWithIdentifier:@"component-10" index:8 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-13" index:9 customData:nil]
     ];
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
@@ -193,14 +194,14 @@
     NSUInteger const firstComponentCount = 1000;
     NSMutableArray<id<HUBComponentModel>> * const firstComponents = [NSMutableArray arrayWithCapacity:firstComponentCount];
     for (NSUInteger i = 0; i < firstComponentCount; i++) {
-        id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"old-%@", @(i)] customData:nil];
+        id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"old-%@", @(i)] index:i customData:nil];
         [firstComponents addObject:component];
     }
 
     NSUInteger const newComponentCount = 700;
     NSMutableArray<id<HUBComponentModel>> * const newComponents = [NSMutableArray arrayWithCapacity:newComponentCount];
     for (NSUInteger i = 0; i < newComponentCount; i++) {
-        id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"new-%@", @(i)] customData:nil];
+        id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"new-%@", @(i)] index:i customData:nil];
         [newComponents addObject:component];
     }
 
@@ -220,7 +221,7 @@
     NSUInteger const firstComponentCount = 1000;
     NSMutableArray<id<HUBComponentModel>> * const firstComponents = [NSMutableArray arrayWithCapacity:firstComponentCount];
     for (NSUInteger i = 0; i < firstComponentCount; i++) {
-        id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"component-%@", @(i)] customData:nil];
+        id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"component-%@", @(i)] index:i customData:nil];
         [firstComponents addObject:component];
     }
 
