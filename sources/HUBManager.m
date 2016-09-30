@@ -47,6 +47,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                       componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+{
+    return [self initWithComponentLayoutManager:componentLayoutManager
+                       componentFallbackHandler:componentFallbackHandler
+                      connectivityStateResolver:nil imageLoaderFactory:nil
+                              iconImageResolver:nil
+                           defaultActionHandler:nil
+                     defaultContentReloadPolicy:nil
+               prependedContentOperationFactory:nil
+                appendedContentOperationFactory:nil];
+}
+
+- (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                      componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
                      connectivityStateResolver:(nullable id<HUBConnectivityStateResolver>)connectivityStateResolver
                             imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
                              iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver

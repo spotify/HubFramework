@@ -77,6 +77,20 @@ NS_ASSUME_NONNULL_BEGIN
  *         See `HUBComponentLayoutManager` for more information.
  *  @param componentFallbackHandler The object to use to fall back to default components in case a component couldn't be
  *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
+ *
+ *  This is a convenience initializer, to enable you to easily setup this class with the least amount of options. For more
+ *  customization options, see this class' designated initializer.
+ */
+- (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                      componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler;
+
+/**
+ *  Initialize an instance of this class with all available customization options
+ *
+ *  @param componentLayoutManager The object to use to manage layout for components, computing margins using layout traits.
+ *         See `HUBComponentLayoutManager` for more information.
+ *  @param componentFallbackHandler The object to use to fall back to default components in case a component couldn't be
+ *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
  *  @param connectivityStateResolver An object responsible for determining the current connectivity state of the application.
  *         If nil, a default implementation will be used, that uses the SystemConfiguration framework to determine connectivity.
  *  @param imageLoaderFactory Any custom factory that creates image loaders that are used to load remote images for components.
