@@ -1292,6 +1292,7 @@
 				WARNING_CFLAGS = (
 					"$(inherited)",
 					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
+					"-Wno-documentation-unknown-command",
 				);
 			};
 			name = Debug;
@@ -1308,6 +1309,7 @@
 				WARNING_CFLAGS = (
 					"$(inherited)",
 					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
+					"-Wno-documentation-unknown-command",
 				);
 			};
 			name = Release;

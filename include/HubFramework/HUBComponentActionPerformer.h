@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Delegate protocol used to perform Hub Framework actions from a component
  *
- *  You don't implement this protocol yourself. Instead, you @synthesize your component's `actionDelegate` property,
+ *  You don't implement this protocol yourself. Instead, you \@synthesize your component's `actionDelegate` property,
  *  and may choose to use this API to perform actions from your component implementation.
  */
 @protocol HUBComponentActionDelegate <NSObject>
@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The object that acts as a delegate for performing actions on behalf of the component
  *
- *  Don't assign any custom objects to this property. Instead, just @sythensize it, so that the Hub Framework can
+ *  Don't assign any custom objects to this property. Instead, just \@sythensize it, so that the Hub Framework can
  *  assign an internal object to this property, to enable you to perform actions from the component.
  */
 @property (nonatomic, weak, nullable) id<HUBComponentActionDelegate> actionDelegate;
