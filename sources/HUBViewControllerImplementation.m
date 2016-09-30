@@ -150,23 +150,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - UIViewController
 
-- (void)createCollectionViewIfNeeded
-{
-    if (self.collectionView != nil) {
-        return;
-    }
-    
-    UICollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
-    self.collectionView = collectionView;
-    collectionView.showsVerticalScrollIndicator = [self.scrollHandler shouldShowScrollIndicatorsInViewController:self];
-    collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;
-    collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
-    collectionView.dataSource = self;
-    collectionView.delegate = self;
-    
-    [self.view insertSubview:collectionView atIndex:0];
-}
-
 - (void)loadView
 {
     self.view = [[HUBContainerView alloc] initWithFrame:CGRectZero];
@@ -230,71 +213,6 @@ NS_ASSUME_NONNULL_BEGIN
     if (self.viewModel != nil) {
         id<HUBViewModel> const viewModel = self.viewModel;
         [self reloadCollectionViewWithViewModel:viewModel animated:NO];
-    }
-}
-
-- (void)reloadCollectionViewWithViewModel:(id<HUBViewModel>)viewModel animated:(BOOL)animated
-{
-    if (!self.viewModelHasChangedSinceLastLayoutUpdate) {
-        if (CGRectEqualToRect(self.collectionView.frame, self.view.bounds)) {
-            return;
-        }
-    }
-    
-    self.collectionView.frame = self.view.bounds;
-    
-    [self saveStatesForVisibleComponents];
-    
-    if (![self.collectionView.collectionViewLayout isKindOfClass:[HUBCollectionViewLayout class]]) {
-        self.collectionView.collectionViewLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
-                                                                                       componentLayoutManager:self.componentLayoutManager];
-    }
-    
-    HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)self.collectionView.collectionViewLayout;
-
-    /* Performing batch updates inbetween viewDidLoad and viewDidAppear is seemingly not allowed, as it
-       causes an assertion inside a private UICollectionView method. If no diff exists, fall back to
-       a complete reload. */
-    if (!self.viewHasAppeared || self.lastViewModelDiff == nil) {
-        [self.collectionView reloadData];
-
-        [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
-        self.lastViewModelDiff = nil;
-    } else {
-        void (^updateBlock)() = ^{
-            [self.collectionView performBatchUpdates:^{
-                HUBViewModelDiff * const lastDiff = self.lastViewModelDiff;
-                
-                [self.collectionView insertItemsAtIndexPaths:lastDiff.insertedBodyComponentIndexPaths];
-                [self.collectionView deleteItemsAtIndexPaths:lastDiff.deletedBodyComponentIndexPaths];
-                [self.collectionView reloadItemsAtIndexPaths:lastDiff.reloadedBodyComponentIndexPaths];
-
-                [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
-            } completion:^(BOOL finished) {
-                self.lastViewModelDiff = nil;
-            }];
-        };
-
-        if (animated) {
-            updateBlock();
-        } else {
-            [UIView performWithoutAnimation:updateBlock];
-        }
-    }
-
-    [self configureHeaderComponent];
-    [self configureOverlayComponents];
-    [self headerAndOverlayComponentViewsWillAppear];
-
-    self.viewModelHasChangedSinceLastLayoutUpdate = NO;
-    [self.delegate viewControllerDidFinishRendering:self];
-}
-
-- (void)saveStatesForVisibleComponents
-{
-    for (HUBComponentCollectionViewCell *cell in self.collectionView.visibleCells) {
-        HUBComponentWrapper *wrapper = [self componentWrapperFromCell:cell];
-        [wrapper saveComponentUIState];
     }
 }
 
@@ -650,6 +568,88 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Private utilities
+
+- (void)createCollectionViewIfNeeded
+{
+    if (self.collectionView != nil) {
+        return;
+    }
+    
+    UICollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
+    self.collectionView = collectionView;
+    collectionView.showsVerticalScrollIndicator = [self.scrollHandler shouldShowScrollIndicatorsInViewController:self];
+    collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;
+    collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    
+    [self.view insertSubview:collectionView atIndex:0];
+}
+
+- (void)reloadCollectionViewWithViewModel:(id<HUBViewModel>)viewModel animated:(BOOL)animated
+{
+    if (!self.viewModelHasChangedSinceLastLayoutUpdate) {
+        if (CGRectEqualToRect(self.collectionView.frame, self.view.bounds)) {
+            return;
+        }
+    }
+    
+    self.collectionView.frame = self.view.bounds;
+    
+    [self saveStatesForVisibleComponents];
+    
+    if (![self.collectionView.collectionViewLayout isKindOfClass:[HUBCollectionViewLayout class]]) {
+        self.collectionView.collectionViewLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                       componentLayoutManager:self.componentLayoutManager];
+    }
+    
+    HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)self.collectionView.collectionViewLayout;
+    
+    /* Performing batch updates inbetween viewDidLoad and viewDidAppear is seemingly not allowed, as it
+     causes an assertion inside a private UICollectionView method. If no diff exists, fall back to
+     a complete reload. */
+    if (!self.viewHasAppeared || self.lastViewModelDiff == nil) {
+        [self.collectionView reloadData];
+        
+        [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
+        self.lastViewModelDiff = nil;
+    } else {
+        void (^updateBlock)() = ^{
+            [self.collectionView performBatchUpdates:^{
+                HUBViewModelDiff * const lastDiff = self.lastViewModelDiff;
+                
+                [self.collectionView insertItemsAtIndexPaths:lastDiff.insertedBodyComponentIndexPaths];
+                [self.collectionView deleteItemsAtIndexPaths:lastDiff.deletedBodyComponentIndexPaths];
+                [self.collectionView reloadItemsAtIndexPaths:lastDiff.reloadedBodyComponentIndexPaths];
+                
+                [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
+            } completion:^(BOOL finished) {
+                self.lastViewModelDiff = nil;
+            }];
+        };
+        
+        if (animated) {
+            updateBlock();
+        } else {
+            [UIView performWithoutAnimation:updateBlock];
+        }
+    }
+    
+    [self configureHeaderComponent];
+    [self configureOverlayComponents];
+    [self headerAndOverlayComponentViewsWillAppear];
+    
+    self.viewModelHasChangedSinceLastLayoutUpdate = NO;
+    [self.delegate viewControllerDidFinishRendering:self];
+}
+
+- (void)saveStatesForVisibleComponents
+{
+    for (HUBComponentCollectionViewCell *cell in self.collectionView.visibleCells) {
+        HUBComponentWrapper *wrapper = [self componentWrapperFromCell:cell];
+        [wrapper saveComponentUIState];
+    }
+}
 
 - (HUBComponentWrapper *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
 {
