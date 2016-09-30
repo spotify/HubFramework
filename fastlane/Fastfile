@@ -55,6 +55,11 @@ platform :ios do
     )
   end
 
+  desc 'Validate changes according to a set of rules'
+  lane :validate_changes do
+    danger
+  end
+
 
   desc 'Update documentation and publish them'
   lane :update_docs do
@@ -62,33 +67,6 @@ platform :ios do
       # sh 'cd .. && rake docs:generate'
       # sh 'cd .. && rake docs:publish'
     end
-  end
-
-
-  desc 'Execute all CI lanes'
-  desc 'This action can be configured using the following environment variable:'
-  desc ''
-  desc '- `LINT`:           Whether the sources and certain artifacts should be linted defaults to `YES`'
-  desc '- `RUN_TESTS`:      Whether unit tests should be run, defaults to `YES`'
-  desc '- `BUILD_DEMO_APP`: Whether the demo app should be built or not, defaults to `YES`'
-  desc '- `RUN_DANGER`:     Whether Danger should be run or not, defaults to `YES`'
-  lane :ci_all do
-    lint unless shouldSkipStep('LINT')
-    test unless shouldSkipStep('RUN_TESTS')
-    demo unless shouldSkipStep('BUILD_DEMO_APP')
-    danger unless shouldSkipStep('RUN_DANGER') or not is_ci?
-  end
-
-
-  # Whether we should execute the step or not.
-  # Looks up the value in the environment variables where a missing, empty, or 'YES' string is
-  # considerered to denote that the step should be ran. Any other value is interpreted as 'skip
-  # this step'.
-  def shouldSkipStep(step)
-    value = ENV[step].to_s
-
-    # We should skip if the value isn't the empty string, or if it's set to something other than YES
-    not value.empty? and value != 'YES'
   end
 
 end
