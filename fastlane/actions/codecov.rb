@@ -10,10 +10,6 @@ module Fastlane
 
         cc_url = params[:url]
         cc_token = params[:token]
-        pr = (branch || '').scan(/pull\/(\d+)\//).flatten.first
-
-        UI.message("Collecting coverage for the branch '#{branch}'")
-        UI.message("Branch is for PR##{pr}") if not pr.to_s.empty?
 
         script = Tempfile.new('codecov')
         begin
@@ -25,8 +21,7 @@ module Fastlane
             script.path,
             '-X', 'gcov', '-X', 'coveragepy',
             '-u', cc_url,
-            '-D', dd_path,
-            '-P', pr
+            '-D', dd_path
           ]
           # The token is optional for certain CI environments.
           invocation_args.push('-t', cc_token) unless not cc_token.to_s.empty?
@@ -35,12 +30,6 @@ module Fastlane
           script.close
           script.unlink
         end
-      end
-
-      def self.branch
-        pr_branch = ENV['TRAVIS_PULL_REQUEST_BRANCH'].to_s
-        return pr_branch if not pr_branch.empty? and pr_branch != "false"
-        return Actions::GitBranchAction.run({})
       end
 
       def self.sh!(*args)
