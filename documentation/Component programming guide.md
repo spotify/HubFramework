@@ -22,7 +22,7 @@ There are very few constraints on how a component may be implemented. You can, f
 
 ## The basics
 
-To start creating a component, create a new class and make it conform to `HUBComponent`. There are a [few different templates](https://ghe.spotify.net/iOS/HubFramework/tree/master/templates/xcode/Hub%20Framework) that you can use as a starting point, if you want to.
+To start creating a component, create a new class and make it conform to `HUBComponent`. There are a [few different templates](https://github.com/spotify/HubFramework/tree/master/templates/xcode/Hub%20Framework) that you can use as a starting point, if you want to.
 
 Initially, the implementation will look something like this:
 

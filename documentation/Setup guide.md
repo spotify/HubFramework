@@ -4,7 +4,7 @@ Welcome to the Hub Framework setup guide! This guide aims to help you get set up
 
 Note that you only have to follow this guide when setting up the framework for the first time in your application. To learn how to use the framework in terms of building UIs and features using it - refer to the [getting started guide](https://spotify.github.io/HubFramework/getting-started-guide.html).
 
-Before you proceed with this guide, it’s recommended that you read all of the programming guides, as to familiarize yourself with the various aspects of the framework. You can find links to all the programming guides [in the README](https://ghe.spotify.net/iOS/HubFramework#getting-started).
+Before you proceed with this guide, it’s recommended that you read all of the programming guides, as to familiarize yourself with the various aspects of the framework. You can find links to all the programming guides [in the README](https://github.com/spotify/HubFramework#getting-started).
 
 **Table of contents**
 
@@ -33,7 +33,7 @@ In order to create a `HUBManager` instance, you need to supply implementations o
 - `HUBComponentLayoutManager`: For calculating margins and other layout attributes for components based on their layout traits.
 - `HUBComponentFallbackHandler`: For providing fallback information in case a component model’s component couldn’t be resolved by the framework.
 
-For an example of how to set up the above, see the [demo app](https://ghe.spotify.net/iOS/HubFramework/tree/master/demo) which contains implementations of both of these protocols. Also refer to their individual protocol documentation for more information about their required APIs.
+For an example of how to set up the above, see the [demo app](https://github.com/spotify/HubFramework/tree/master/demo) which contains implementations of both of these protocols. Also refer to their individual protocol documentation for more information about their required APIs.
 
 There are also several optional parameters that you can choose to supply in case you want to further customize how the Hub Framework behaves. For more information about those, see the documentation for `HUBManager`, or the [Further customization section](#further-customization).
 
