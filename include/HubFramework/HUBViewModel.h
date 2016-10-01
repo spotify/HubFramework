@@ -20,6 +20,7 @@
  */
 
 #import "HUBSerializable.h"
+#import <UIKit/UIKit.h>
 
 @protocol HUBComponentModel;
 
@@ -47,11 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly, nullable) NSString *identifier;
 
 /**
- *  The title that should be displayed in the view's navigation bar
- *
- *  The value of this property will be assigned to the view controller's title property
+ *  The navigation item that the view should use when presented in a `UINavigationController`
  */
-@property (nonatomic, copy, readonly, nullable) NSString *navigationBarTitle;
+@property (nonatomic, copy, readonly, nullable) UINavigationItem *navigationItem;
 
 #pragma mark - Component models
 

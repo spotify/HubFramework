@@ -37,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
 @property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
+@property (nonatomic, strong, nullable) UINavigationItem *navigationItemImplementation;
 @property (nonatomic, strong, nullable) HUBComponentModelBuilderImplementation *headerComponentModelBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *bodyComponentModelBuilders;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *overlayComponentModelBuilders;
@@ -50,7 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Property synthesization
 
 @synthesize viewIdentifier = _viewIdentifier;
-@synthesize navigationBarTitle = _navigationBarTitle;
 @synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
 
@@ -105,6 +105,31 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSUInteger)numberOfOverlayComponentModelBuilders
 {
     return self.overlayComponentModelBuilders.count;
+}
+
+- (nullable NSString *)navigationBarTitle
+{
+    return self.navigationItemImplementation.title;
+}
+
+- (void)setNavigationBarTitle:(nullable NSString *)navigationBarTitle
+{
+    if (navigationBarTitle != nil) {
+        self.navigationItem.title = navigationBarTitle;
+        return;
+    }
+    
+    self.navigationItemImplementation.title = nil;
+}
+
+- (UINavigationItem *)navigationItem
+{
+    if (self.navigationItemImplementation == nil) {
+        self.navigationItemImplementation = [UINavigationItem new];
+    }
+    
+    UINavigationItem * const navigationItem = self.navigationItemImplementation;
+    return navigationItem;
 }
 
 - (id<HUBComponentModelBuilder>)headerComponentModelBuilder
@@ -235,7 +260,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                 parent:nil];
     
     return [[HUBViewModelImplementation alloc] initWithIdentifier:self.viewIdentifier
-                                               navigationBarTitle:self.navigationBarTitle
+                                                   navigationItem:self.navigationItemImplementation
                                              headerComponentModel:headerComponentModel
                                               bodyComponentModels:bodyComponentModels
                                            overlayComponentModels:overlayComponentModels
@@ -339,8 +364,11 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                  componentDefaults:self.componentDefaults
                                                                                                  iconImageResolver:self.iconImageResolver];
     
+    if (self.navigationItemImplementation != nil) {
+        HUBCopyNavigationItemProperties(copy.navigationItem, self.navigationItemImplementation);
+    }
+    
     copy.viewIdentifier = self.viewIdentifier;
-    copy.navigationBarTitle = self.navigationBarTitle;
     copy.extensionURL = self.extensionURL;
     copy.customData = self.customData;
     copy.headerComponentModelBuilderImplementation = [self.headerComponentModelBuilderImplementation copy];

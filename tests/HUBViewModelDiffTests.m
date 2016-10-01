@@ -60,8 +60,10 @@
 
 - (id<HUBViewModel>)createViewModelWithIdentifier:(NSString *)identifier components:(NSArray<id<HUBComponentModel>> *)components
 {
+    UINavigationItem * const navigationItem = [[UINavigationItem alloc] initWithTitle:@"Title"];
+    
     return [[HUBViewModelImplementation alloc] initWithIdentifier:identifier
-                                               navigationBarTitle:@"Title"
+                                                   navigationItem:navigationItem
                                              headerComponentModel:nil
                                               bodyComponentModels:components
                                            overlayComponentModels:@[]

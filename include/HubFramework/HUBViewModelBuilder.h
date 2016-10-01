@@ -20,6 +20,7 @@
  */
 
 #import "HUBJSONCompatibleBuilder.h"
+#import <UIKit/UIKit.h>
 
 @protocol HUBComponentModelBuilder;
 
@@ -68,9 +69,17 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The title that the view should have in the navigation bar
  *
- *  The value of this property will be assigned to the view controller's title property
+ *  This property is an alias for `navigationItem.title`.
  */
 @property (nonatomic, copy, nullable) NSString *navigationBarTitle;
+
+/**
+ *  The navigation item that the view should use when presented in a `UINavigationController`
+ *
+ *  You can use this navigation item to set what title, bar buttons etc that the view's navigation bar
+ *  should contain. Only relevant when the view's controller is added to a container view controller.
+ */
+@property (nonatomic, strong, readonly) UINavigationItem *navigationItem;
 
 /**
  *  The builder to use to build a model for the view's header component

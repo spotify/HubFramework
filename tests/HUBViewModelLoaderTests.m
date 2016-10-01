@@ -90,11 +90,11 @@
                           connectivityState:HUBConnectivityStateOnline
                            initialViewModel:nil];
     
-    XCTAssertEqualObjects(self.loader.initialViewModel.navigationBarTitle, @"A title");
+    XCTAssertEqualObjects(self.loader.initialViewModel.navigationItem.title, @"A title");
     
     // The initial view model should now be cached, so accessing it shouldn't increment the request count
-    XCTAssertEqualObjects(self.loader.initialViewModel.navigationBarTitle, @"A title");
-    XCTAssertEqualObjects(self.loader.initialViewModel.navigationBarTitle, @"A title");
+    XCTAssertEqualObjects(self.loader.initialViewModel.navigationItem.title, @"A title");
+    XCTAssertEqualObjects(self.loader.initialViewModel.navigationItem.title, @"A title");
     
     XCTAssertEqual(numberOfInitialViewModelRequests, (NSUInteger)1);
 }
@@ -124,7 +124,7 @@
                           connectivityState:HUBConnectivityStateOnline
                            initialViewModel:initialViewModel];
     
-    XCTAssertEqualObjects(self.loader.initialViewModel.navigationBarTitle, @"Pre-computed title");
+    XCTAssertEqualObjects(self.loader.initialViewModel.navigationItem.title, @"Pre-computed title");
     XCTAssertFalse(contentOperationCalled);
 }
 
@@ -143,7 +143,7 @@
     [self.loader loadViewModel];
     [contentOperation.delegate contentOperationDidFinish:contentOperation];
     
-    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle, @"A title");
+    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationItem.title, @"A title");
     XCTAssertNil(self.errorFromFailureDelegateMethod);
 }
 
@@ -194,7 +194,7 @@
     XCTAssertEqualObjects(contentOperationB.previousContentOperationError, error);
     [contentOperationB.delegate contentOperationDidFinish:contentOperationB];
     
-    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle, @"A title");
+    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationItem.title, @"A title");
     XCTAssertNil(self.errorFromFailureDelegateMethod);
 }
 
@@ -250,19 +250,19 @@
     
     [contentOperationDelegate contentOperationDidFinish:contentOperation];
     
-    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle, @"A title");
+    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationItem.title, @"A title");
     XCTAssertNil(self.errorFromFailureDelegateMethod);
     
     viewModelBuilder.navigationBarTitle = @"Another title";
     [contentOperationDelegate contentOperationDidFinish:contentOperation];
     
-    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle, @"A title");
+    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationItem.title, @"A title");
     XCTAssertNil(self.errorFromFailureDelegateMethod);
 
     NSError * const error = [NSError errorWithDomain:@"domain" code:7 userInfo:nil];
     [contentOperationDelegate contentOperation:contentOperation didFailWithError:error];
     
-    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle, @"A title");
+    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationItem.title, @"A title");
     XCTAssertNil(self.errorFromFailureDelegateMethod);
 }
 
@@ -635,8 +635,8 @@
     
     [self.loader loadViewModel];
     
-    XCTAssertNotNil(self.viewModelFromSuccessDelegateMethod.navigationBarTitle);
-    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationBarTitle,
+    XCTAssertNotNil(self.viewModelFromSuccessDelegateMethod.navigationItem.title);
+    XCTAssertEqualObjects(self.viewModelFromSuccessDelegateMethod.navigationItem.title,
                           self.featureInfo.title);
 }
 

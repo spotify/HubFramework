@@ -298,7 +298,8 @@ NS_ASSUME_NONNULL_BEGIN
         self.lastViewModelDiff = [HUBViewModelDiff diffFromViewModel:currentModel toViewModel:viewModel];
     }
     
-    self.title = viewModel.navigationBarTitle;
+    HUBCopyNavigationItemProperties(self.navigationItem, viewModel.navigationItem);
+    
     self.viewModel = viewModel;
     self.viewModelIsInitial = NO;
     self.viewModelHasChangedSinceLastLayoutUpdate = YES;

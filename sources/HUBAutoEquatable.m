@@ -23,6 +23,8 @@
 
 #import <objc/runtime.h>
 
+#import "HUBUtilities.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef BOOL(^HUBAutoEquatableComparisonBlock)(NSObject *, NSObject *);
@@ -92,14 +94,7 @@ typedef NSMutableDictionary<NSString *, HUBAutoEquatableComparisonBlock> HUBAuto
             }
             
             mutableComparisonMap[propertyName] = ^(NSObject * const objectA, NSObject * const objectB) {
-                NSObject * const valueA = [objectA valueForKey:propertyName];
-                NSObject * const valueB = [objectB valueForKey:propertyName];
-                
-                if (valueA == nil && valueB == nil) {
-                    return YES;
-                }
-                
-                return [valueA isEqual:valueB];
+                return HUBPropertyIsEqual(objectA, objectB, propertyName);
             };
         }
         
