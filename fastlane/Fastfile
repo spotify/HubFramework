@@ -12,7 +12,7 @@ platform :ios do
     UI.message("Simulator testing device set to '#{device}'")
 
     scan(
-      :workspace => 'HubFramework.xcworkspace',
+      :project => 'HubFramework.xcodeproj',
       :scheme => 'HubFramework',
       :devices => [device],
       :derived_data_path => 'build/DerivedData',
