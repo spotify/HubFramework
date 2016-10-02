@@ -60,7 +60,7 @@ You can choose to install the Hub Framework either manually, or through a depend
 
 #### Using CocoaPods
 
-*To use CocoaPods, first make sure you have installed it and updated it to the latest version by following their instructions on [cocoapods.org](cocoapods.org)*
+*To use CocoaPods, first make sure you have installed it and updated it to the latest version by following their instructions on [cocoapods.org](https://cocoapods.org)*
 
 Add `HubFramework` to your `Podfile`:
 
