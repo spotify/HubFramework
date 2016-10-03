@@ -19,7 +19,6 @@ platform :ios do
       :output_directory => 'build/tests',
       :buildlog_path => 'build/logs/tests',
       :code_coverage => true,
-      :xcargs => 'analyze',
       :output_types => 'html,junit',
     )
 
