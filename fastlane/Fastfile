@@ -11,15 +11,25 @@ platform :ios do
     device = ENV['TEST_DEVICE_NAME'] || 'iPhone 6s'
     UI.message("Simulator testing device set to '#{device}'")
 
+    build_directory = 'build'
+    output_directory = build_directory + '/tests'
+
     scan(
       :workspace => 'HubFramework.xcworkspace',
       :scheme => 'HubFramework',
       :devices => [device],
-      :derived_data_path => 'build/DerivedData',
-      :output_directory => 'build/tests',
-      :buildlog_path => 'build/logs/tests',
+      :derived_data_path => build_directory + '/DerivedData',
+      :output_directory => output_directory,
+      :buildlog_path => build_directory + '/logs/tests',
       :code_coverage => true,
-      :output_types => 'html,junit',
+      :output_types => 'html',
+      :fail_build => false,
+    )
+
+    trainer(
+      path: build_directory,
+      output_directory: output_directory,
+      extension: '.junit'
     )
 
     codecov() if ENV['CODECOV_TOKEN'] or ENV['TRAVIS'] == 'true'
