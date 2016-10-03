@@ -22,7 +22,7 @@ platform :ios do
       :output_directory => output_directory,
       :buildlog_path => build_directory + '/logs/tests',
       :code_coverage => true,
-      :output_types => 'html',
+      :output_types => '',
       :fail_build => false,
     )
 
