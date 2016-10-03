@@ -75,7 +75,7 @@
     id<HUBComponentTarget> const target = [self.builder build];
     
     XCTAssertEqualObjects(target.URI, URI);
-    XCTAssertEqualObjects(target.initialViewModel.navigationBarTitle, initialViewModelNavigationBarTitle);
+    XCTAssertEqualObjects(target.initialViewModel.navigationItem.title, initialViewModelNavigationBarTitle);
     XCTAssertEqualObjects(target.actionIdentifiers, @[actionIdentifier]);
     XCTAssertEqualObjects(target.customData, customData);
     
@@ -83,7 +83,7 @@
     id<HUBComponentTarget> const copiedBuilderTarget = [copiedBuilder build];
     
     XCTAssertEqualObjects(copiedBuilderTarget.URI, URI);
-    XCTAssertEqualObjects(copiedBuilderTarget.initialViewModel.navigationBarTitle, initialViewModelNavigationBarTitle);
+    XCTAssertEqualObjects(copiedBuilderTarget.initialViewModel.navigationItem.title, initialViewModelNavigationBarTitle);
     XCTAssertEqualObjects(copiedBuilderTarget.actionIdentifiers, @[actionIdentifier]);
     XCTAssertEqualObjects(copiedBuilderTarget.customData, customData);
 }

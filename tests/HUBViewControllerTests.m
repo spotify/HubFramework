@@ -200,7 +200,7 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleA);
+    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationItem.title, viewModelNavBarTitleA);
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
         builder.navigationBarTitle = viewModelNavBarTitleB;
@@ -210,7 +210,7 @@
     self.contentReloadPolicy.shouldReload = YES;
     [self.viewController viewWillAppear:YES];
     
-    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationBarTitle, viewModelNavBarTitleB);
+    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationItem.title, viewModelNavBarTitleB);
 }
 
 - (void)testDelegateNotifiedOfViewModelUpdateError
@@ -1624,16 +1624,20 @@
     XCTAssertEqual(self.contentOperation.actionContext, actionContext);
 }
 
-- (void)testAssigningTitle
+- (void)testAssigningNavigationItemProperties
 {
+    UIBarButtonItem * const rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIView new]];
+    
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         viewModelBuilder.navigationBarTitle = @"Nav bar title";
+        viewModelBuilder.navigationItem.rightBarButtonItem = rightBarButtonItem;
         return YES;
     };
     
     [self simulateViewControllerLayoutCycle];
     
-    XCTAssertEqualObjects(self.viewController.title, @"Nav bar title");
+    XCTAssertEqualObjects(self.viewController.navigationItem.title, @"Nav bar title");
+    XCTAssertEqualObjects(self.viewController.navigationItem.rightBarButtonItem, rightBarButtonItem);
 }
 
 - (void)testAdaptingOverlayComponentCenterPointToKeyboard

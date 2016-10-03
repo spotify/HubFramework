@@ -24,8 +24,29 @@
 #import "HUBComponent.h"
 #import "HUBJSONCompatibleBuilder.h"
 #import "HUBSerializable.h"
+#import "HUBKeyPath.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+/**
+ *  Return whether two properties are considered equal
+ *
+ *  @param objectA The first object
+ *  @param objectB The second object
+ *  @param propertyName The name of the property to compare
+ *
+ *  Two nil values are considered equal.
+ */
+static inline BOOL HUBPropertyIsEqual(NSObject * _Nullable objectA, NSObject * _Nullable objectB, NSString *propertyName) {
+    NSObject * const valueA = [objectA valueForKey:propertyName];
+    NSObject * const valueB = [objectB valueForKey:propertyName];
+    
+    if (valueA == nil && valueB == nil) {
+        return YES;
+    }
+    
+    return [valueA isEqual:valueB];
+}
 
 /**
  *  Load the view for a component if it hasn't been loaded already
@@ -92,6 +113,76 @@ static inline NSDictionary<NSString *, id> * _Nullable HUBMergeDictionaries(NSDi
     NSMutableDictionary<NSString *, id> * const mergedDictionary = [dictionaryA mutableCopy];
     [mergedDictionary addEntriesFromDictionary:(NSDictionary *)dictionaryB];
     return [mergedDictionary copy];
+}
+
+/**
+ *  Return the property names that should be taken into account when handling a `UINavigationItem`
+ *
+ *  This function is used to determine which properties should be compared or copied. Note that
+ *  `HUBAutoEquatable` is not used here, since we don't control the implementation of the class.
+ */
+static inline NSArray<NSString *> *HUBNavigationItemPropertyNames() {
+    return @[
+        HUBKeyPath((UINavigationItem *)nil, title),
+        HUBKeyPath((UINavigationItem *)nil, titleView),
+        HUBKeyPath((UINavigationItem *)nil, prompt),
+        HUBKeyPath((UINavigationItem *)nil, backBarButtonItem),
+        HUBKeyPath((UINavigationItem *)nil, hidesBackButton),
+        HUBKeyPath((UINavigationItem *)nil, leftBarButtonItems),
+        HUBKeyPath((UINavigationItem *)nil, rightBarButtonItems),
+        HUBKeyPath((UINavigationItem *)nil, leftItemsSupplementBackButton)
+    ];
+}
+
+/**
+ *  Return whether two `UINavigationItem` instances are equal
+ *
+ *  @param navigationItemA The first navigation item
+ *  @param navigationItemB The second navigation item
+ *
+ *  The two instances are considered equal if all properties which have names included in the array
+ *  obtained by calling `HUBNavigationItemPropertyNames()` are equal.
+ */
+static inline BOOL HUBNavigationItemEqualToNavigationItem(UINavigationItem *navigationItemA, UINavigationItem *navigationItemB) {
+    for (NSString * const propertyName in HUBNavigationItemPropertyNames()) {
+        if (!HUBPropertyIsEqual(navigationItemA, navigationItemB, propertyName)) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
+/**
+ *  Copy the properties from an instance of `UINavigationItem` into another
+ *
+ *  @param navigationItemA The navigation item to copy values into
+ *  @param navigationItemB Any navigation item to copy values from
+ *
+ *  @return navigationItemA
+ *
+ *  If `navigationItemB` is nil, all `navigationItemA` properties will be reset to `nil`. To determine
+ *  which properties that should be handled, `HUBNavigationItemPropertyNames()` is called.
+ */
+static inline UINavigationItem *HUBCopyNavigationItemProperties(UINavigationItem *navigationItemA, UINavigationItem * _Nullable navigationItemB) {
+    NSSet<NSString *> * const boolPropertyNames = [NSSet setWithObjects:HUBKeyPath(navigationItemA, hidesBackButton),
+                                                                        HUBKeyPath(navigationItemA, leftItemsSupplementBackButton),
+                                                                        nil];
+    
+    for (NSString * const propertyName in HUBNavigationItemPropertyNames()) {
+        id const value = [navigationItemB valueForKey:propertyName];
+        
+        if (value == nil) {
+            if ([boolPropertyNames containsObject:propertyName]) {
+                navigationItemA.hidesBackButton = NO;
+                continue;
+            }
+        }
+        
+        [navigationItemA setValue:value forKey:propertyName];
+    }
+    
+    return navigationItemA;
 }
 
 /**

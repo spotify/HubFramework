@@ -41,7 +41,7 @@
 - (void)testRegisteringRetrievingAndRemovingInitialViewModel
 {
     id<HUBViewModel> const viewModel = [[HUBViewModelImplementation alloc] initWithIdentifier:@"id"
-                                                                           navigationBarTitle:nil
+                                                                               navigationItem:nil
                                                                          headerComponentModel:nil
                                                                           bodyComponentModels:@[]
                                                                        overlayComponentModels:@[]

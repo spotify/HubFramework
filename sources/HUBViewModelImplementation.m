@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBViewModelImplementation
 
 @synthesize identifier = _identifier;
-@synthesize navigationBarTitle = _navigationBarTitle;
+@synthesize navigationItem = _navigationItem;
 @synthesize headerComponentModel = _headerComponentModel;
 @synthesize bodyComponentModels = _bodyComponentModels;
 @synthesize overlayComponentModels = _overlayComponentModels;
@@ -43,13 +43,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable NSSet<NSString *> *)ignoredAutoEquatablePropertyNames
 {
-    return [NSSet setWithObject:HUBKeyPath((id<HUBViewModel>)nil, buildDate)];
+    return [NSSet setWithObjects:HUBKeyPath((id<HUBViewModel>)nil, buildDate),
+                                 HUBKeyPath((id<HUBViewModel>)nil, navigationItem),
+                                 nil];
 }
 
 #pragma mark - Initializer
 
 - (instancetype)initWithIdentifier:(nullable NSString *)identifier
-                navigationBarTitle:(nullable NSString *)navigationBarTitle
+                    navigationItem:(nullable UINavigationItem *)navigationItem
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
             overlayComponentModels:(NSArray<id<HUBComponentModel>> *)overlayComponentModels
@@ -60,19 +62,41 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self) {
         _identifier = [identifier copy];
-        _navigationBarTitle = [navigationBarTitle copy];
         _headerComponentModel = headerComponentModel;
         _bodyComponentModels = bodyComponentModels;
         _overlayComponentModels = overlayComponentModels;
         _extensionURL = [extensionURL copy];
         _customData = customData;
         _buildDate = [NSDate date];
+        
+        if (navigationItem != nil) {
+            _navigationItem = HUBCopyNavigationItemProperties([UINavigationItem new], navigationItem);
+        }
     }
     
     return self;
 }
 
 #pragma mark - NSObject
+
+- (BOOL)isEqual:(id)object
+{
+    BOOL const superValue = [super isEqual:object];
+    
+    if (!superValue) {
+        return NO;
+    }
+    
+    HUBViewModelImplementation * const viewModel = object;
+    
+    if (self.navigationItem == nil || viewModel.navigationItem == nil) {
+        return (self.navigationItem == nil && viewModel.navigationItem == nil);
+    }
+    
+    UINavigationItem * const navigationItem = self.navigationItem;
+    UINavigationItem * const otherNavigationItem = viewModel.navigationItem;
+    return HUBNavigationItemEqualToNavigationItem(navigationItem, otherNavigationItem);
+}
 
 - (NSString *)debugDescription
 {
@@ -85,7 +109,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> * const serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyIdentifier] = self.identifier;
-    serialization[HUBJSONKeyTitle] = self.navigationBarTitle;
+    serialization[HUBJSONKeyTitle] = self.navigationItem.title;
     serialization[HUBJSONKeyHeader] = [self.headerComponentModel serialize];
     serialization[HUBJSONKeyBody] = [self serializeComponentModels:self.bodyComponentModels];
     serialization[HUBJSONKeyOverlays] = [self serializeComponentModels:self.overlayComponentModels];

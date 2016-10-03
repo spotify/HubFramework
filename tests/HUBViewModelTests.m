@@ -59,10 +59,11 @@
                                                                         parent:nil];
         };
         
+        UINavigationItem * const navigationItem = [[UINavigationItem alloc] initWithTitle:@"title"];
         NSURL * const extensionURL = [NSURL URLWithString:@"https://spotify.com/viewmodelextension"];
         
         return [[HUBViewModelImplementation alloc] initWithIdentifier:@"identifier"
-                                                   navigationBarTitle:@"title"
+                                                       navigationItem:navigationItem
                                                  headerComponentModel:createComponentModel()
                                                   bodyComponentModels:@[createComponentModel()]
                                                overlayComponentModels:@[createComponentModel()]
@@ -101,10 +102,11 @@
         };
         
         NSString * const title = [NSUUID UUID].UUIDString;
+        UINavigationItem * const navigationItem = [[UINavigationItem alloc] initWithTitle:title];
         NSURL * const extensionURL = [NSURL URLWithString:@"https://spotify.com/viewmodelextension"];
         
         return [[HUBViewModelImplementation alloc] initWithIdentifier:@"identifier"
-                                                   navigationBarTitle:title
+                                                       navigationItem:navigationItem
                                                  headerComponentModel:createComponentModel()
                                                   bodyComponentModels:@[createComponentModel()]
                                                overlayComponentModels:@[createComponentModel()]
