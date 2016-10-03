@@ -20,9 +20,9 @@
  */
 
 #import "HUBJSONCompatibleBuilder.h"
-#import <UIKit/UIKit.h>
 
 @protocol HUBComponentModelBuilder;
+@class UINavigationItem;
 
 NS_ASSUME_NONNULL_BEGIN
 

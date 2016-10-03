@@ -20,9 +20,9 @@
  */
 
 #import "HUBSerializable.h"
-#import <UIKit/UIKit.h>
 
 @protocol HUBComponentModel;
+@class UINavigationItem;
 
 NS_ASSUME_NONNULL_BEGIN
 
