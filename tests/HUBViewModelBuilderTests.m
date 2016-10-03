@@ -70,9 +70,27 @@
     id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqualObjects(model.identifier, self.builder.viewIdentifier);
-    XCTAssertEqualObjects(model.navigationBarTitle, self.builder.navigationBarTitle);
+    XCTAssertEqualObjects(model.navigationItem.title, self.builder.navigationBarTitle);
     XCTAssertEqualObjects(model.extensionURL, self.builder.extensionURL);
     XCTAssertEqualObjects(model.customData, self.builder.customData);
+}
+
+- (void)testNavigationItemLazyInit
+{
+    XCTAssertNil([self.builder build].navigationItem);
+    
+    self.builder.navigationItem.title = @"Title";
+    XCTAssertEqualObjects([self.builder build].navigationItem.title, @"Title");
+}
+
+- (void)testNavigationItemCopiedWhenModelIsBuilt
+{
+    UIView * const titleView = [UIView new];
+    self.builder.navigationItem.titleView = titleView;
+    
+    id<HUBViewModel> const model = [self.builder build];
+    XCTAssertNotEqual(model.navigationItem, self.builder.navigationItem);
+    XCTAssertEqual(model.navigationItem.titleView, titleView);
 }
 
 - (void)testHeaderComponentBuilder
@@ -354,7 +372,7 @@
     id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqualObjects(model.identifier, viewIdentifier);
-    XCTAssertEqualObjects(model.navigationBarTitle, navigationBarTitle);
+    XCTAssertEqualObjects(model.navigationItem.title, navigationBarTitle);
     XCTAssertEqualObjects(model.headerComponentModel.componentIdentifier, headerComponentIdentifier);
     XCTAssertEqualObjects(model.headerComponentModel.componentCategory, @"headerCategory");
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentIdentifier, bodyComponentIdentifier);
@@ -467,8 +485,16 @@
 
 - (void)testCopying
 {
-    self.builder.viewIdentifier = @"id";
+    UIView * const titleView = [UIView new];
+    UIBarButtonItem * const leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIView new]];
+    NSArray<UIBarButtonItem *> * const rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:[UIView new]]];
+    
     self.builder.navigationBarTitle = @"title";
+    self.builder.navigationItem.titleView = titleView;
+    self.builder.navigationItem.leftBarButtonItem = leftBarButtonItem;
+    self.builder.navigationItem.rightBarButtonItems = rightBarButtonItems;
+    
+    self.builder.viewIdentifier = @"id";
     self.builder.extensionURL = [NSURL URLWithString:@"https://spotify.extension.com"];
     self.builder.customData = @{@"custom": @"data"};
     self.builder.headerComponentModelBuilder.title = @"headerTitle";
@@ -479,8 +505,14 @@
     HUBViewModelBuilderImplementation * const builderCopy = [self.builder copy];
     XCTAssertNotEqual(self.builder, builderCopy);
     
-    XCTAssertEqualObjects(builderCopy.viewIdentifier, @"id");
+    XCTAssertNotEqual(self.builder.navigationItem, builderCopy.navigationItem);
+    XCTAssertEqualObjects(builderCopy.navigationItem.title, @"title");
     XCTAssertEqualObjects(builderCopy.navigationBarTitle, @"title");
+    XCTAssertEqual(builderCopy.navigationItem.titleView, titleView);
+    XCTAssertEqual(builderCopy.navigationItem.leftBarButtonItem, leftBarButtonItem);
+    XCTAssertEqualObjects(builderCopy.navigationItem.rightBarButtonItems, rightBarButtonItems);
+    
+    XCTAssertEqualObjects(builderCopy.viewIdentifier, @"id");
     XCTAssertEqualObjects(builderCopy.extensionURL, [NSURL URLWithString:@"https://spotify.extension.com"]);
     XCTAssertEqualObjects(builderCopy.customData, @{@"custom": @"data"});
     

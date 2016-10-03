@@ -406,7 +406,7 @@
     XCTAssertEqualObjects(model.customImageData[customImageIdentifier].placeholderIcon.identifier, customImagePlaceholderIdentifier);
     XCTAssertEqualObjects(model.icon.identifier, iconIdentifier);
     XCTAssertEqualObjects(model.target.URI, targetURL);
-    XCTAssertEqualObjects(model.target.initialViewModel.navigationBarTitle, targetTitle);
+    XCTAssertEqualObjects(model.target.initialViewModel.navigationItem.title, targetTitle);
     XCTAssertEqual(model.target.actionIdentifiers.count, (NSUInteger)1);
     XCTAssertEqualObjects(model.target.actionIdentifiers.firstObject, targetActionIdentifier);
     

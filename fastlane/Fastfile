@@ -11,16 +11,25 @@ platform :ios do
     device = ENV['TEST_DEVICE_NAME'] || 'iPhone 6s'
     UI.message("Simulator testing device set to '#{device}'")
 
+    build_directory = 'build'
+    output_directory = build_directory + '/tests'
+
     scan(
       :workspace => 'HubFramework.xcworkspace',
       :scheme => 'HubFramework',
       :devices => [device],
-      :derived_data_path => 'build/DerivedData',
-      :output_directory => 'build/tests',
-      :buildlog_path => 'build/logs/tests',
+      :derived_data_path => build_directory + '/DerivedData',
+      :output_directory => output_directory,
+      :buildlog_path => build_directory + '/logs/tests',
       :code_coverage => true,
-      :xcargs => 'analyze',
-      :output_types => 'html,junit',
+      :output_types => '',
+      :fail_build => false,
+    )
+
+    trainer(
+      path: build_directory,
+      output_directory: output_directory,
+      extension: '.junit'
     )
 
     codecov() if ENV['CODECOV_TOKEN'] or ENV['TRAVIS'] == 'true'
@@ -55,8 +64,13 @@ platform :ios do
     )
   end
 
+  desc 'Validate changes according to a set of rules'
+  lane :validate_changes do
+    danger
+  end
 
-  desc 'Update documentation and publish them'
+
+  desc 'Update the framework documentation and publish it'
   lane :update_docs do
     if git_branch == "master"
       # sh 'cd .. && rake docs:generate'
@@ -66,22 +80,16 @@ platform :ios do
 
 
   desc 'Execute all CI lanes'
-  desc 'This action can be configured using the following environment variable:'
+  desc 'This action can be configured using the following environment variable (valid values are `YES` and `NO`):'
   desc ''
-  desc '- LINT:           Whether the sources and certain artifacts should be linted'
-  desc '                  defaults to `YES`'
-  desc '- RUN_TESTS:      Whether unit tests should be run, defaults to `YES`'
-  desc '- BUILD_DEMO_APP: Whether the demo app should be built or not, defaults to `YES`'
-  desc '- RUN_DANGER:     Whether Danger should be run or not, defaults to `NO`'
+  desc '- `LINT`:           Whether the sources and certain artifacts should be linted defaults to `YES`'
+  desc '- `RUN_TESTS`:      Whether unit tests should be run, defaults to `YES`'
+  desc '- `BUILD_DEMO_APP`: Whether the demo app should be built or not, defaults to `YES`'
   lane :ci_all do
-    ENV['RUN_DANGER'] = 'NO' unless ENV['RUN_DANGER']
-
     lint unless shouldSkipStep('LINT')
     test unless shouldSkipStep('RUN_TESTS')
     demo unless shouldSkipStep('BUILD_DEMO_APP')
-    danger unless shouldSkipStep('RUN_DANGER')
   end
-
 
   # Whether we should execute the step or not.
   # Looks up the value in the environment variables where a missing, empty, or 'YES' string is

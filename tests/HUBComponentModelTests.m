@@ -77,7 +77,7 @@
         
         NSURL * const targetURI = [NSURL URLWithString:@"spotify:hub:framework"];
         HUBViewModelImplementation * const targetInitialViewModel = [[HUBViewModelImplementation alloc] initWithIdentifier:nil
-                                                                                                        navigationBarTitle:nil
+                                                                                                            navigationItem:nil
                                                                                                       headerComponentModel:nil
                                                                                                        bodyComponentModels:@[]
                                                                                                     overlayComponentModels:@[]
