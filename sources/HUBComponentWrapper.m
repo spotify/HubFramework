@@ -169,6 +169,7 @@ NS_ASSUME_NONNULL_BEGIN
             return;
         }
         
+        [self saveComponentUIState];
         [self.component prepareViewForReuse];
     }
     
@@ -183,7 +184,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)prepareViewForReuse
 {
-    [self saveComponentUIState];
     NSNumber * const index = @(self.model.index);
     
     HUBComponentWrapper * const parent = self.parent;
