@@ -8,11 +8,13 @@ language: objective-c
 bundler_args: --without documentation --without development --deployment --jobs=3 --retry=3
 
 script:
-  - if [[ "$LINT" == "YES" ]];                 then fastlane lint; fi
-  - if [[ "$RUN_TESTS" == "YES" ]];            then fastlane test; fi
-  - if [[ "$BUILD_DEMO_APP" == "YES" ]];       then fastlane demo; fi
-  - if [[ "$RUN_DANGER" == "YES" ]];           then fastlane validate_changes; fi
-  - if [[ "$UPDATE_DOCUMENTATION" == "YES" ]]; then fastlane update_docs; fi
+  - fastlane ci_all
+  - if [[ "$RUN_DANGER" == "YES" ]]; then
+      fastlane validate_changes;
+    fi
+  - if [[ "$UPDATE_DOCUMENTATION" == "YES" ]]; then
+      fastlane update_docs;
+    fi
   # This is a workaround for a Travis-CI bug where the log might get cut-off.
   # See the [Travis-CI issue #4716](https://github.com/travis-ci/travis-ci/issues/4716).
   - sleep 3
@@ -28,15 +30,15 @@ env:
 matrix:
   fast_finish: true
   include:
-    # Main job; builds and runs everything.
+    # Main job; builds, tests, validates the changes and updates our documentation.
     - osx_image: xcode8
-      rvm: 2.0.0
+      rvm: 2.2.5
       env: LINT=YES  RUN_TESTS=YES  RUN_DANGER=YES  BUILD_DEMO_APP=YES  UPDATE_DOCUMENTATION=YES
     # Compatibility job; makes sure the library is buildable by Xcode 7.3.1. The demo app requires
     # Xcode 8 to build and link so skip it.
     - osx_image: xcode7.3
-      rvm: 2.0.0
-      env: LINT=YES  RUN_TESTS=YES  RUN_DANGER=YES  BUILD_DEMO_APP=NO   UPDATE_DOCUMENTATION=NO
+      rvm: 2.2.5
+      env: LINT=YES  RUN_TESTS=YES  RUN_DANGER=NO   BUILD_DEMO_APP=NO   UPDATE_DOCUMENTATION=NO
 
 cache: bundler
 

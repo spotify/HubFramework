@@ -30,7 +30,22 @@ Validate changes according to a set of rules
 ```
 fastlane ios update_docs
 ```
-Update documentation and publish them
+Update the framework documentation and publish it
+### ios ci_all
+```
+fastlane ios ci_all
+```
+Execute all CI lanes
+
+This action can be configured using the following environment variable (valid values are `YES` and `NO`):
+
+
+
+- `LINT`:           Whether the sources and certain artifacts should be linted defaults to `YES`
+
+- `RUN_TESTS`:      Whether unit tests should be run, defaults to `YES`
+
+- `BUILD_DEMO_APP`: Whether the demo app should be built or not, defaults to `YES`
 
 ----
 
