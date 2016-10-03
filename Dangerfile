@@ -23,5 +23,10 @@ if git.modified_files.include?("project.xcconfig")
 end
 
 # Give inline test fail reports
-junit.parse "build/tests/report.junit"
-junit.report
+junit_report_path = Dir.glob("build/tests/*TestSummaries.junit").first
+if junit_report_path
+	junit.parse junit_report_path
+	junit.report
+else
+	warn "Couldn't find the (junit) unit test report file in 'build/tests/'. Make sure the tests were actually ran."
+end
