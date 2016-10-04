@@ -28,6 +28,7 @@
 @protocol HUBViewModelLoaderFactory;
 @protocol HUBViewControllerFactory;
 @protocol HUBComponentShowcaseManager;
+@protocol HUBLiveService;
 @protocol HUBConnectivityStateResolver;
 @protocol HUBDataLoaderFactory;
 @protocol HUBImageLoaderFactory;
@@ -69,6 +70,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The manager used to create component showcases. See `HUBComponentShowcaseManager` for more info.
 @property (nonatomic, strong, readonly) id<HUBComponentShowcaseManager> componentShowcaseManager;
+
+/// The service that can be used to enable live editing of Hub Framework-powered view controllers. Always `nil` in release builds.
+@property (nonatomic, strong, readonly, nullable) id<HUBLiveService> liveService;
 
 /**
  *  Initialize an instance of this class with its required dependencies
