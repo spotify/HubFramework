@@ -29,34 +29,51 @@
 
 @interface HUBComponentWrapperTests : XCTestCase <HUBComponentWrapperDelegate>
 
+@property (nonatomic, strong) HUBComponentUIStateManager *UIStateManager;
+
 @end
 
 @implementation HUBComponentWrapperTests
 
+#pragma mark - XCTest
+
+- (void)setUp
+{
+    [super setUp];
+    self.UIStateManager = [HUBComponentUIStateManager new];
+}
+
+#pragma mark - Tests
+
 - (void)testComponentStateRestoring
 {
-    HUBComponentUIStateManager *stateManager = [HUBComponentUIStateManager new];
     HUBComponentMock *component = [HUBComponentMock new];
     id<HUBComponentModel> model = [self componentModelWithIdentifier:@"model"];
     
-    HUBComponentWrapper *componentWrapper = [[HUBComponentWrapper alloc] initWithComponent:component
-                                                                                     model:model
-                                                                            UIStateManager:stateManager
-                                                                                  delegate:self
-                                                                                    parent:nil];
+    HUBComponentWrapper *componentWrapper = [self componentWrapperForComponent:component model:model];
     component.currentUIState = @"Funky";
     component.supportsRestorableUIState = YES;
     [componentWrapper loadView];
     [componentWrapper configureViewWithModel:model containerViewSize:CGSizeMake(320.0, 480.0)];
-    XCTAssertNil([stateManager restoreUIStateForComponentModel:model], @"State shouldn't be saved before the first configuration");
+    XCTAssertNil([self.UIStateManager restoreUIStateForComponentModel:model], @"State shouldn't be saved before the first configuration");
     
     id<HUBComponentModel> newModel = [self componentModelWithIdentifier:@"new-model"];
     component.currentUIState = @"Groovy";
     [componentWrapper configureViewWithModel:newModel containerViewSize:CGSizeMake(320.0, 480.0)];
-    XCTAssertEqualObjects([stateManager restoreUIStateForComponentModel:model], @"Groovy");
+    XCTAssertEqualObjects([self.UIStateManager restoreUIStateForComponentModel:model], @"Groovy");
 }
 
 #pragma mark - Utility
+
+- (HUBComponentWrapper *)componentWrapperForComponent:(id<HUBComponent>)component
+                                                model:(id<HUBComponentModel>)model
+{
+    return [[HUBComponentWrapper alloc] initWithComponent:component
+                                                    model:model
+                                           UIStateManager:self.UIStateManager
+                                                 delegate:self
+                                                   parent:nil];
+}
 
 - (id<HUBComponentModel>)componentModelWithIdentifier:(NSString *)identifier
 {
@@ -101,7 +118,13 @@
 
 - (HUBComponentWrapper *)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponentForModel:(id<HUBComponentModel>)model
 {
-    return nil;
+    HUBComponentMock * const component = [HUBComponentMock new];
+    
+    return [[HUBComponentWrapper alloc] initWithComponent:component
+                                                    model:model
+                                           UIStateManager:self.UIStateManager
+                                                 delegate:self
+                                                   parent:nil];
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponentWithView:(UIView *)childComponentView willAppearAtIndex:(NSUInteger)childIndex
