@@ -839,6 +839,10 @@ NS_ASSUME_NONNULL_BEGIN
     
     [wrapper viewWillAppear];
     [self.delegate viewController:self componentWithModel:wrapper.model willAppearInView:cell];
+    
+    if (wrapper.isContentOffsetObserver) {
+        [wrapper updateViewForChangedContentOffset:self.collectionView.contentOffset];
+    }
 }
 
 - (void)headerAndOverlayComponentViewsWillAppear
@@ -847,6 +851,10 @@ NS_ASSUME_NONNULL_BEGIN
     
     for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
         [overlayComponentWrapper viewWillAppear];
+        
+        if (overlayComponentWrapper.isContentOffsetObserver) {
+            [overlayComponentWrapper updateViewForChangedContentOffset:self.collectionView.contentOffset];
+        }
     }
 }
 

@@ -1370,6 +1370,51 @@
     XCTAssertTrue(self.collectionView.appliedScrollViewOffsetAnimatedFlag);
 }
 
+- (void)testComponentNotifiedOfContentOffsetChange
+{
+    self.component.isContentOffsetObserver = YES;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
+    id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
+    [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
+    
+    self.collectionView.cells[indexPath] = cell;
+    self.collectionView.mockedIndexPathsForVisibleItems = @[indexPath];
+    [self.viewController viewWillAppear:NO];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    
+    const CGPoint expectedContentOffset = CGPointMake(99, 77);
+    [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+}
+
+- (void)testOverlayComponentNotifiedOfContentOffsetChange
+{
+    self.component.isContentOffsetObserver = YES;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
+    
+    const CGPoint expectedContentOffset = CGPointMake(99, 77);
+    [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+}
+
 - (void)testCollectionViewCreatedInLoadView
 {
     XCTAssertEqual(self.viewController.view.subviews[0], self.collectionView);
