@@ -343,7 +343,49 @@
     XCTAssertEqualWithAccuracy([layout targetContentOffsetForProposedContentOffset:contentOffset].y, expectedOffset, 0.001);
 }
 
+- (void)testProposedContentOffsetBeyondBounds
+{
+    CGRect const collectionViewFrame = {.origin = CGPointZero, .size = self.collectionViewSize};
+    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                 componentLayoutManager:self.componentLayoutManager];
+    HUBCollectionViewMock * const collectionView = [[HUBCollectionViewMock alloc] initWithFrame:collectionViewFrame
+                                                                           collectionViewLayout:layout];
+    collectionView.contentInset = UIEdgeInsetsMake(27.0, 0.0, 34.0, 0.0);
+
+    id<HUBViewModel> const firstViewModel = [self.viewModelBuilder build];
+    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:firstViewModel diff:nil];
+    
+    for (NSUInteger i = 0; i < 10; i++) {
+        [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier];
+    }
+
+    id<HUBViewModel> const secondViewModel = [self.viewModelBuilder build];
+    HUBViewModelDiff * const firstDiff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
+    
+    collectionView.mockedIndexPathsForVisibleItems = @[[NSIndexPath indexPathForItem:9 inSection:0]];
+    collectionView.contentOffset = CGPointMake(0.0, 400.0);
+    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:secondViewModel diff:firstDiff];
+
+    CGFloat expectedOffset = layout.collectionViewContentSize.height + collectionView.contentInset.bottom - self.collectionViewSize.height;
+    XCTAssertEqualWithAccuracy([layout targetContentOffsetForProposedContentOffset:collectionView.contentOffset].y, expectedOffset, 0.001);
+
+    for (NSUInteger i = 0; i < 10; i++) {
+        [self removeBodyComponentAtIndex:i];
+    }
+
+    id<HUBViewModel> const newViewModel = [self.viewModelBuilder build];
+    HUBViewModelDiff * const secondDiff = [HUBViewModelDiff diffFromViewModel:secondViewModel toViewModel:newViewModel];
+
+    collectionView.mockedIndexPathsForVisibleItems = @[[NSIndexPath indexPathForItem:9 inSection:0]];
+    collectionView.contentOffset = CGPointZero;
+    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:newViewModel diff:secondDiff];
+
+    expectedOffset = -collectionView.contentInset.top;
+    XCTAssertEqualWithAccuracy([layout targetContentOffsetForProposedContentOffset:collectionView.contentOffset].y, expectedOffset, 0.001);
+}
+
 #pragma mark - Utilities
+
 - (void)addBodyComponentWithIdentifier:(HUBIdentifier *)componentIdentifier preferredIndex:(NSUInteger)preferredIndex
 {
     NSString * const modelIdentifier = [NSUUID UUID].UUIDString;

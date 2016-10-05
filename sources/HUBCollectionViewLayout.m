@@ -183,7 +183,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     for (NSIndexPath *indexPath in self.lastViewModelDiff.insertedBodyComponentIndexPaths) {
         if (indexPath.item <= topmostVisibleIndex) {
-            UICollectionViewLayoutAttributes *attributes = self.previousLayoutAttributesByIndexPath[indexPath];
+            UICollectionViewLayoutAttributes *attributes = self.layoutAttributesByIndexPath[indexPath];
             offset.y += CGRectGetHeight(attributes.frame);
         }
     }
@@ -198,7 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
     for (NSIndexPath *indexPath in self.lastViewModelDiff.reloadedBodyComponentIndexPaths) {
         if (indexPath.item < topmostVisibleIndex) {
             UICollectionViewLayoutAttributes *oldAttributes = self.previousLayoutAttributesByIndexPath[indexPath];
-            UICollectionViewLayoutAttributes *newAttributes = self.previousLayoutAttributesByIndexPath[indexPath];
+            UICollectionViewLayoutAttributes *newAttributes = self.layoutAttributesByIndexPath[indexPath];
             CGFloat heightDifference = CGRectGetHeight(oldAttributes.frame) - CGRectGetHeight(newAttributes.frame);
             offset.y += heightDifference;
         }
