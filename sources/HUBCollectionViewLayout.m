@@ -208,7 +208,7 @@ NS_ASSUME_NONNULL_BEGIN
     CGFloat const minContentOffset = -self.collectionView.contentInset.top;
     offset.y = MAX(minContentOffset, offset.y);
     // ...or beyond the bottom.
-    CGFloat maxContentOffset = MAX(self.contentSize.height - CGRectGetHeight(self.collectionView.frame), minContentOffset);
+    CGFloat maxContentOffset = MAX(self.contentSize.height + self.collectionView.contentInset.bottom - CGRectGetHeight(self.collectionView.frame), minContentOffset);
     offset.y = MIN(maxContentOffset, offset.y);
     
     self.previousLayoutAttributesByIndexPath = nil;
