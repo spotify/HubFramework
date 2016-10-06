@@ -30,6 +30,7 @@
 @property (nonatomic, readwrite) NSUInteger numberOfResizes;
 @property (nonatomic, readwrite) NSUInteger numberOfAppearances;
 @property (nonatomic, readwrite) NSUInteger numberOfReuses;
+@property (nonatomic, readwrite) NSUInteger numberOfContentOffsetChanges;
 @property (nonatomic, strong, readonly) NSMutableArray<id> *mutableRestoredUIStates;
 
 @end
@@ -120,6 +121,12 @@
     self.numberOfAppearances++;
 }
 
+#pragma mark - HUBComponentContentOffsetObserver
+
+- (void)updateViewForChangedContentOffset:(CGPoint)contentOffset {
+    self.numberOfContentOffsetChanges++;
+}
+
 #pragma mark - Property overrides
 
 - (NSArray<id> *)restoredUIStates
@@ -141,6 +148,10 @@
     
     if (protocol == @protocol(HUBComponentViewObserver)) {
         return self.isViewObserver;
+    }
+    
+    if (protocol == @protocol(HUBComponentContentOffsetObserver)) {
+        return self.isContentOffsetObserver;
     }
     
     return [super conformsToProtocol:protocol];

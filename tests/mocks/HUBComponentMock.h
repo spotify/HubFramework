@@ -23,6 +23,7 @@
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentWithRestorableUIState.h"
 #import "HUBComponentViewObserver.h"
+#import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentActionPerformer.h"
 
 @protocol HUBComponentImageData;
@@ -35,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentWithImageHandling,
     HUBComponentWithRestorableUIState,
     HUBComponentViewObserver,
+    HUBComponentContentOffsetObserver,
     HUBComponentActionPerformer
 >
 
@@ -74,6 +76,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The number of times `prepareViewForReuse` has been called on this component
 @property (nonatomic, readonly) NSUInteger numberOfReuses;
 
+/// The number of times `updateViewForChangedContentOffset` has been called on this component
+@property (nonatomic, readonly) NSUInteger numberOfContentOffsetChanges;
+
 /// Whether the component should act like it can handle images or not
 @property (nonatomic) BOOL canHandleImages;
 
@@ -82,6 +87,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Whether the component should act like it is a view observer or not
 @property (nonatomic) BOOL isViewObserver;
+
+/// Whether the component should act like it is a content offset observer or not
+@property (nonatomic) BOOL isContentOffsetObserver;
 
 @end
 
