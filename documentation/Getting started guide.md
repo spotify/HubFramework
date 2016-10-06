@@ -575,7 +575,7 @@ The JSON above specifies that we want to add 4 body components that use our new 
 
 We're now finished with our second content operation, and we're ready to integrate it into our content loading chain. To do that, we'll add it to the array of content operations that our content operation factory returns.
 
-The order of the returned array determines the loading order. In our case it doesn't really matter, since both of our content operations deal with separate component models - but if you wanted to continuosly mutate a component model throughout different operations - the order will probably matter.
+The order of the returned array determines the loading order. In our case it doesn't really matter, since both of our content operations deal with separate component models - but if you wanted to continuously mutate a component model throughout different operations - the order will probably matter.
 
 This is what our content operation factory looks like after the update:
 
