@@ -131,7 +131,7 @@ We're now ready to go back to our feature registration code and update it to inc
 [featureRegistry registerFeatureWithIdentifier:@"cities"
                              viewURIPredicate:viewURIPredicate
                                         title:NSLocalizedString(@"Cities", @"Title of the Cities feature")
-                    contentOperationFactories:@[[SPTCitiesContentOperationFactory new]  
+                    contentOperationFactories:@[[SPTCitiesContentOperationFactory new]]  
                           contentReloadPolicy:nil
                    customJSONSchemaIdentifier:nil
                                 actionHandler:nil
@@ -217,7 +217,7 @@ Layout traits are a more abstract way of defining layout. Instead of specifying 
 }
 ```
 
-The other piece of the layout puzzle is sizing. Here the Hub Framework gives you more direct control and asks you to returned the *preferred* view size for your component. Note that this is not neccessarily the final size, as other factors such as the layout traits, the size of the screen, etc must also be taken into account before the final size is computed.
+The other piece of the layout puzzle is sizing. Here the Hub Framework gives you more direct control and asks you to returned the *preferred* view size for your component. Note that this is not necessarily the final size, as other factors such as the layout traits, the size of the screen, etc must also be taken into account before the final size is computed.
 
 For our row, we'll return that we'd prefer it to be the same width as its container, and 50 points tall:
 
@@ -575,7 +575,7 @@ The JSON above specifies that we want to add 4 body components that use our new 
 
 We're now finished with our second content operation, and we're ready to integrate it into our content loading chain. To do that, we'll add it to the array of content operations that our content operation factory returns.
 
-The order of the returned array determines the loading order. In our case it doesn't really matter, since both of our content operations deal with separate component models - but if you wanted to continously mutate a component model throughout different operations - the order will probably matter.
+The order of the returned array determines the loading order. In our case it doesn't really matter, since both of our content operations deal with separate component models - but if you wanted to continuously mutate a component model throughout different operations - the order will probably matter.
 
 This is what our content operation factory looks like after the update:
 
