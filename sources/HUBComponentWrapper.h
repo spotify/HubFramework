@@ -54,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param childIndex The index of the child component that is about to appear
  */
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
-  childComponentWithView:(UIView *)childComponentView
+          childComponent:(HUBComponentWrapper *)childComponent
        willAppearAtIndex:(NSUInteger)childIndex;
 
 /**
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param childIndex The index of the child component that disappared
  */
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
-  childComponentWithView:(UIView *)childComponentView
+          childComponent:(HUBComponentWrapper *)childComponent
      didDisappearAtIndex:(NSUInteger)childIndex;
 
 /**

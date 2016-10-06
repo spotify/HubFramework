@@ -227,7 +227,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     for (NSNumber * const childIndex in self.visibleChildViewsByIndex) {
-        UIView * const childView = self.visibleChildViewsByIndex[childIndex];
         HUBComponentWrapper * const childComponent = self.childrenByIndex[childIndex];
         
         if (childComponent != nil) {
@@ -235,7 +234,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
         
         [self.delegate componentWrapper:self
-                 childComponentWithView:childView
+                         childComponent:childComponent
                       willAppearAtIndex:childIndex.unsignedIntegerValue];
     }
     
@@ -273,7 +272,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     self.visibleChildViewsByIndex[@(childIndex)] = childView;
-    [self.delegate componentWrapper:self childComponentWithView:childView willAppearAtIndex:childIndex];
+    [self.delegate componentWrapper:self childComponent:childComponent willAppearAtIndex:childIndex];
 }
 
 - (void)component:(id<HUBComponentWithChildren>)component didStopDisplayingChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView
@@ -282,8 +281,9 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
+    HUBComponentWrapper * const childComponent = self.childrenByIndex[@(childIndex)];
     self.visibleChildViewsByIndex[@(childIndex)] = nil;
-    [self.delegate componentWrapper:self childComponentWithView:childView didDisappearAtIndex:childIndex];
+    [self.delegate componentWrapper:self childComponent:childComponent didDisappearAtIndex:childIndex];
 }
 
 - (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex
