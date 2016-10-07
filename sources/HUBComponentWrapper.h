@@ -50,22 +50,26 @@ NS_ASSUME_NONNULL_BEGIN
  *  Notify the delegate that one of the wrapped component's children is about to appear on the screen
  *
  *  @param componentWrapper The wrapper of the component in which the event occured
+ *  @param childComponent The child component that is about to appear
  *  @param childComponentView The view of the child component that is about to appear
  *  @param childIndex The index of the child component that is about to appear
  */
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
-  childComponentWithView:(UIView *)childComponentView
+          childComponent:(nullable HUBComponentWrapper *)childComponent
+               childView:(UIView *)childComponentView
        willAppearAtIndex:(NSUInteger)childIndex;
 
 /**
  *  Notify the delegate that one of the wrapped component's children disappeared from the screen
  *
  *  @param componentWrapper The wrapper of the component in which the event occured
- *  @param childComponentView The view of the child component that disappared
- *  @param childIndex The index of the child component that disappared
+ *  @param childComponent The child component that disappeared
+ *  @param childComponentView The view of the child component that disappeared
+ *  @param childIndex The index of the child component that disappeared
  */
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
-  childComponentWithView:(UIView *)childComponentView
+          childComponent:(nullable HUBComponentWrapper *)childComponent
+               childView:(UIView *)childComponentView
      didDisappearAtIndex:(NSUInteger)childIndex;
 
 /**

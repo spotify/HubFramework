@@ -127,11 +127,11 @@
                                                    parent:nil];
 }
 
-- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponentWithView:(UIView *)childComponentView willAppearAtIndex:(NSUInteger)childIndex
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponent:(HUBComponentWrapper *)childComponent childView:(UIView *)childView willAppearAtIndex:(NSUInteger)childIndex
 {
 }
 
-- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponentWithView:(UIView *)childComponentView didDisappearAtIndex:(NSUInteger)childIndex
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponent:(HUBComponentWrapper *)childComponent childView:(UIView *)childView didDisappearAtIndex:(NSUInteger)childIndex
 {
 }
 
