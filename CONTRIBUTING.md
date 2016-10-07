@@ -1,7 +1,7 @@
 # Contributing guidelines
 Anyone is more than welcome to contribute to the Hub Framework! Together we can make the framework even more capable, and help each other fix any issues that we might find.
 
-Before you send a PR, however, please make sure you change complies with these quick guidelines:
+Before you send a PR, however, please make sure your change complies with these quick guidelines:
 
 - Always fully unit test your code.
 - Always fully document APIs, in a way that makes new users of those APIs understand how they work, and highlight things that are good to keep in mind when using them.
