@@ -1335,7 +1335,7 @@
     XCTAssertEqualObjects(self.viewController.view.subviews, expectedSubviews);
 }
 
-- (void)testSetScrollOffsetForwrdsOffsetToCollectionView
+- (void)testSetScrollOffsetForwardsOffsetToCollectionView
 {
     [self simulateViewControllerLayoutCycle];
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
@@ -1415,6 +1415,52 @@
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
 }
 
+- (void)testChildComponentNotifiedOfContentOffsetChange
+{
+    NSString * const componentNamespace = @"childComponentSelection";
+    NSString * const componentName = @"component";
+    NSString * const childComponentName = @"componentB";
+    HUBComponentMock * const component = [HUBComponentMock new];
+    HUBComponentMock * const childComponent = [HUBComponentMock new];
+    childComponent.isContentOffsetObserver = YES;
+
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        componentName: component,
+        childComponentName: childComponent
+    }];
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.componentNamespace = componentNamespace;
+        componentModelBuilder.componentName = componentName;
+
+        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildWithIdentifier:@"child"];
+        childComponentModelBuilder.componentNamespace = componentNamespace;
+        childComponentModelBuilder.componentName = childComponentName;
+
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
+    NSArray<id<HUBComponentModel>> * const children = componentModel.children;
+
+    id<HUBComponentModel> const childComponentModel = children.firstObject;
+
+    UIView *childView = childComponent.view;
+    id<HUBComponentChildDelegate> childDelegate = component.childDelegate;
+    [childDelegate component:component childComponentForModel:childComponentModel];
+    [childDelegate component:component willDisplayChildAtIndex:0 view:childView];
+
+    const CGPoint expectedContentOffset = CGPointMake(99, 77);
+    [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
+    XCTAssertEqual(childComponent.numberOfContentOffsetChanges, (NSUInteger)1);
+}
+
 - (void)testCollectionViewCreatedInLoadView
 {
     XCTAssertEqual(self.viewController.view.subviews[0], self.collectionView);
@@ -1438,7 +1484,7 @@
 - (void)testCorrectContentRectSentToScrollHandler
 {
     [self simulateViewControllerLayoutCycle];
-    
+
     self.collectionView.frame = CGRectMake(0, 0, 320, 480);
     self.collectionView.contentOffset = CGPointMake(0, 200);
     self.collectionView.contentSize = CGSizeMake(320, 1600);

@@ -369,7 +369,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
-  childComponentWithView:(UIView *)childComponentView
+          childComponent:(nullable HUBComponentWrapper *)childComponent
+               childView:(UIView *)childView
        willAppearAtIndex:(NSUInteger)childIndex
 {
     id<HUBComponentModel> const componentModel = componentWrapper.model;
@@ -377,14 +378,19 @@ NS_ASSUME_NONNULL_BEGIN
     if (childIndex >= componentModel.children.count) {
         return;
     }
-    
+
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
     [self loadImagesForComponentWrapper:componentWrapper childIndex:@(childIndex)];
-    [self.delegate viewController:self componentWithModel:childComponentModel willAppearInView:childComponentView];
+    [self.delegate viewController:self componentWithModel:childComponentModel willAppearInView:childView];
+
+    if (childComponent.isContentOffsetObserver) {
+        [self.contentOffsetObservingComponentWrappers addObject:childComponent];
+    }
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
-  childComponentWithView:(UIView *)childComponentView
+          childComponent:(nullable HUBComponentWrapper *)childComponent
+               childView:(UIView *)childView
      didDisappearAtIndex:(NSUInteger)childIndex
 {
     id<HUBComponentModel> const componentModel = componentWrapper.model;
@@ -392,9 +398,14 @@ NS_ASSUME_NONNULL_BEGIN
     if (childIndex >= componentModel.children.count) {
         return;
     }
-    
+
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
-    [self.delegate viewController:self componentWithModel:childComponentModel didDisappearFromView:childComponentView];
+    [self.delegate viewController:self componentWithModel:childComponentModel didDisappearFromView:childView];
+
+    if (childComponent.isContentOffsetObserver) {
+        [self.contentOffsetObservingComponentWrappers removeObject:childComponent];
+    }
+    
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
@@ -463,11 +474,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     [self loadImagesForComponentWrapper:componentWrapper
                              childIndex:nil];
-    
-    if (componentWrapper.isContentOffsetObserver) {
-        [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
-    }
-    
+
     return cell;
 }
 
@@ -485,6 +492,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [self collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell
               ignorePreviousAppearance:self.collectionViewIsScrolling];
+    
+    HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell];
+    if (componentWrapper.isContentOffsetObserver) {
+        [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView
@@ -493,6 +505,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentModel> const componentModel = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell].model;
     [self.delegate viewController:self componentWithModel:componentModel didDisappearFromView:cell];
+    
+    HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell];
+    if (componentWrapper.isContentOffsetObserver) {
+        [self.contentOffsetObservingComponentWrappers removeObject:componentWrapper];
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
