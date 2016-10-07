@@ -24,6 +24,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Type of block used by `HUBBlockContentOperationFactory` to create content operations
+typedef NSArray<id<HUBContentOperation>> * _Nonnull (^HUBContentOperationFactoryBlock)(NSURL *);
+
 /**
  *  A concrete content opereation factory implementation that uses a block
  *
@@ -40,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
  *         be the view URI that content operations should be created for. This block will be copied
  *         and called every time this factory is asked to create content operations.
  */
-- (instancetype)initWithBlock:(NSArray<id<HUBContentOperation>> *(^)(NSURL *))block HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBlock:(HUBContentOperationFactoryBlock)block HUB_DESIGNATED_INITIALIZER;
 
 @end
 
