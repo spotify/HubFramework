@@ -76,6 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) HUBViewModelDiff *lastViewModelDiff;
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
+@property (nonatomic) BOOL hasPerformedInitialReload;
 @property (nonatomic) BOOL viewModelIsInitial;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
 @property (nonatomic) CGFloat visibleKeyboardHeight;
@@ -609,11 +610,18 @@ NS_ASSUME_NONNULL_BEGIN
     /* Performing batch updates inbetween viewDidLoad and viewDidAppear is seemingly not allowed, as it
      causes an assertion inside a private UICollectionView method. If no diff exists, fall back to
      a complete reload. */
-    if (!self.viewHasAppeared || self.lastViewModelDiff == nil) {
+    if (!self.hasPerformedInitialReload || !self.viewHasAppeared || self.lastViewModelDiff == nil) {
         [self.collectionView reloadData];
         
         [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
+        
+        /* Forcing a re-layout as the reloadData-call doesn't trigger the numberOfItemsInSection:-calls 
+           by itself, and batch update calls don't play well without having an initial item count. */
+        [self.collectionView setNeedsLayout];
+        [self.collectionView layoutIfNeeded];
+        
         self.lastViewModelDiff = nil;
+        self.hasPerformedInitialReload = YES;
     } else {
         void (^updateBlock)() = ^{
             [self.collectionView performBatchUpdates:^{
