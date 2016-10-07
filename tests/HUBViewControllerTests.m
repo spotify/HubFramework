@@ -188,6 +188,28 @@
     XCTAssertTrue(contentLoaded);
 }
 
+- (void)testThatComponentsAreLoadedIfViewWasLaidOutBeforeItAppeared
+{
+    // the content loading is async and is triggered on `viewWillAppear:`
+    // so it is likely that the loading will finish after the `viewDidAppear:` was called
+    __weak __typeof(self.viewController) weakViewController = self.viewController;
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [weakViewController viewDidAppear:YES];
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].title = @"One";
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"two"].title = @"Two";
+        return YES;
+    };
+
+    [self.viewController loadView];
+    [self.viewController viewDidLoad];
+    self.viewController.view.frame = CGRectMake(0, 0, 320, 400);
+    [self.viewController viewDidLayoutSubviews];
+
+    [self.viewController viewWillAppear:YES];
+
+    XCTAssertEqual([self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:0], 2);
+}
+
 - (void)testDelegateNotifiedOfUpdatedViewModel
 {
     NSString * const viewModelNavBarTitleA = @"View model A";
