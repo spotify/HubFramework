@@ -1451,8 +1451,10 @@
 
     id<HUBComponentModel> const childComponentModel = children.firstObject;
 
-    [component.childDelegate component:component childComponentForModel:childComponentModel];
-    [component.childDelegate component:component willDisplayChildAtIndex:0 view:childComponent.view];
+    UIView *childView = childComponent.view;
+    id<HUBComponentChildDelegate> childDelegate = component.childDelegate;
+    [childDelegate component:component childComponentForModel:childComponentModel];
+    [childDelegate component:component willDisplayChildAtIndex:0 view:childView];
 
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
     [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];

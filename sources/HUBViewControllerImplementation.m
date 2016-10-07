@@ -369,7 +369,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
-          childComponent:(HUBComponentWrapper *)childComponent
+          childComponent:(nullable HUBComponentWrapper *)childComponent
+               childView:(UIView *)childView
        willAppearAtIndex:(NSUInteger)childIndex
 {
     id<HUBComponentModel> const componentModel = componentWrapper.model;
@@ -380,7 +381,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
     [self loadImagesForComponentWrapper:componentWrapper childIndex:@(childIndex)];
-    [self.delegate viewController:self componentWithModel:childComponentModel willAppearInView:childComponent.view];
+    [self.delegate viewController:self componentWithModel:childComponentModel willAppearInView:childView];
 
     if (childComponent.isContentOffsetObserver) {
         [self.contentOffsetObservingComponentWrappers addObject:childComponent];
@@ -388,7 +389,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
-          childComponent:(HUBComponentWrapper *)childComponent
+          childComponent:(nullable HUBComponentWrapper *)childComponent
+               childView:(UIView *)childView
      didDisappearAtIndex:(NSUInteger)childIndex
 {
     id<HUBComponentModel> const componentModel = componentWrapper.model;
@@ -398,7 +400,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
-    [self.delegate viewController:self componentWithModel:childComponentModel didDisappearFromView:childComponent.view];
+    [self.delegate viewController:self componentWithModel:childComponentModel didDisappearFromView:childView];
 
     if (childComponent.isContentOffsetObserver) {
         [self.contentOffsetObservingComponentWrappers removeObject:childComponent];
