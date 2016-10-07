@@ -22,6 +22,7 @@
 #import <UIKIt/UIKit.h>
 
 @protocol HUBViewController;
+@protocol HUBContentOperation;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -46,16 +47,36 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)canCreateViewControllerForViewURI:(NSURL *)viewURI;
 
 /**
- *  Create a view controller for a certain view URI
+ *  Create a view controller for a certain pre-registered view URI
  *
- *  @param viewURI The view URI to create a view controller for
+ *  @param viewURI The view URI to create a view controller for. The URI should match a feature that
+ *         was previously registered with `HUBFeatureRegistry`.
  *
  *  @return A Hub Framework-powered view controller used for rendering content provided by a feature’s
  *  content operations, using a User Interface consisting of `HUBComponent` views. If a view controller
  *  could not be created for the supplied viewURI (because a feature registration could not be resolved
  *  for it), this method returns `nil`.
+ *
+ *  To be able to create a view controller without creating a feature, you can use the other view controller
+ *  creation method available on this protocol.
  */
 - (nullable UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI;
+
+/**
+ *  Create a view controller without a feature registration
+ *
+ *  @param viewURI The URI of the view controller to create. This view URI will not be looked up in the
+ *         Hub Framework's feature registry, it will simply be assigned to the view controller.
+ *  @param contentOperations The content operations to use to load the content for the view controller.
+ *  @param featureIdentifier The identifier of the feature that the view controller will belong to. Will
+ *         be made available to content operations as part of `HUBFeatureInfo`.
+ *  @param featureTitle The title of the feature that the view controller will belong to. Used for its
+ *         default title, and also made available to contnet operations as part of `HUBFeatureInfo`.
+ */
+- (UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI
+                                                      contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+                                                      featureIdentifier:(NSString *)featureIdentifier
+                                                           featureTitle:(NSString *)featureTitle;
 
 @end
 

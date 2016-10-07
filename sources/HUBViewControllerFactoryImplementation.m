@@ -32,6 +32,8 @@
 #import "HUBViewControllerDefaultScrollHandler.h"
 #import "HUBActionHandlerWrapper.h"
 #import "HUBViewModelLoaderImplementation.h"
+#import "HUBViewURIPredicate.h"
+#import "HUBBlockContentOperationFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -97,6 +99,33 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
+    return [self createViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
+}
+
+- (UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI
+                                                      contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+                                                      featureIdentifier:(NSString *)featureIdentifier
+                                                           featureTitle:(NSString *)featureTitle
+{
+    HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithViewURI:viewURI];
+    id<HUBContentOperationFactory> const contentOperationFactory = [[HUBBlockContentOperationFactory alloc] initWithBlock:^NSArray<id<HUBContentOperation>> *(NSURL *_) {
+        return contentOperations;
+    }];
+    
+    HUBFeatureRegistration * const featureRegistration = [[HUBFeatureRegistration alloc] initWithFeatureIdentifier:featureIdentifier
+                                                                                                             title:featureTitle
+                                                                                                  viewURIPredicate:viewURIPredicate
+                                                                                         contentOperationFactories:@[contentOperationFactory]
+                                                                                               contentReloadPolicy:nil customJSONSchemaIdentifier:nil actionHandler:nil viewControllerScrollHandler:nil];
+    
+    return [self createViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
+}
+
+#pragma mark - Private utilities
+
+- (UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI
+                                                    featureRegistration:(HUBFeatureRegistration *)featureRegistration
+{
     HUBViewModelLoaderImplementation * const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI
                                                                                                         featureRegistration:featureRegistration];
     
