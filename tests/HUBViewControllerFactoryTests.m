@@ -103,6 +103,30 @@
     XCTAssertNil([self.manager.viewControllerFactory createViewControllerForViewURI:viewURI]);
 }
 
+- (void)testCreatingViewControllerWithoutFeatureRegistration
+{
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    
+    __block BOOL contentOperationCalled = NO;
+    
+    contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        contentOperationCalled = YES;
+        return YES;
+    };
+    
+    UIViewController<HUBViewController> * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI
+                                                                                                                  contentOperations:@[contentOperation]
+                                                                                                                  featureIdentifier:@"identifier"
+                                                                                                                       featureTitle:@"Title"];
+    
+    [viewController viewWillAppear:NO];
+    
+    XCTAssertTrue(contentOperationCalled);
+    XCTAssertEqualObjects(viewController.featureIdentifier, @"identifier");
+    XCTAssertEqualObjects(viewController.navigationItem.title, @"Title");
+}
+
 - (void)testDefaultContentReloadPolicyUsedIfFeatureDidNotSupplyOne
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
