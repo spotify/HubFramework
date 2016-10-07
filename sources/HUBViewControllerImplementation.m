@@ -299,15 +299,14 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     HUBCopyNavigationItemProperties(self.navigationItem, viewModel.navigationItem);
-
+    
+    self.viewModel = viewModel;
     self.viewModelIsInitial = NO;
     self.viewModelHasChangedSinceLastLayoutUpdate = YES;
     [self.view setNeedsLayout];
     
     if (self.viewHasBeenLaidOut) {
         [self reloadCollectionViewWithViewModel:viewModel animated:NO];
-    } else {
-        self.viewModel = viewModel;
     }
     
     [delegate viewControllerDidUpdate:self];
@@ -628,7 +627,6 @@ NS_ASSUME_NONNULL_BEGIN
      causes an assertion inside a private UICollectionView method. If no diff exists, fall back to
      a complete reload. */
     if (!self.viewHasAppeared || self.lastViewModelDiff == nil) {
-        self.viewModel = viewModel;
         [self.collectionView reloadData];
         
         [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
@@ -643,7 +641,6 @@ NS_ASSUME_NONNULL_BEGIN
                 [self.collectionView reloadItemsAtIndexPaths:lastDiff.reloadedBodyComponentIndexPaths];
                 
                 [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
-                self.viewModel = viewModel;
             } completion:^(BOOL finished) {
                 self.lastViewModelDiff = nil;
             }];
