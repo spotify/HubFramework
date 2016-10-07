@@ -630,6 +630,14 @@ NS_ASSUME_NONNULL_BEGIN
         [self.collectionView reloadData];
         
         [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
+
+        if (self.viewHasAppeared) {
+            /* Forcing a re-layout as the reloadData-call doesn't trigger the numberOfItemsInSection:-calls
+             by itself, and batch update calls don't play well without having an initial item count. */
+            [self.collectionView setNeedsLayout];
+            [self.collectionView layoutIfNeeded];
+        }
+        
         self.lastViewModelDiff = nil;
     } else {
         void (^updateBlock)() = ^{

@@ -210,6 +210,30 @@
     XCTAssertEqual([self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:0], 2);
 }
 
+- (void)testUpdatingComponentsWithBatchUpdateDoesntCrash
+{
+    __weak __typeof(self.viewController) weakViewController = self.viewController;
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [weakViewController viewDidAppear:YES];
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].title = @"One";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    id<UICollectionViewDataSource> dataSource = self.collectionView.dataSource;
+    XCTAssertEqual([dataSource collectionView:self.collectionView numberOfItemsInSection:0], 1);
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].title = @"One";
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"two"].title = @"Two";
+        return YES;
+    };
+
+    [self.contentOperation.delegate contentOperationRequiresRescheduling:self.contentOperation];
+    XCTAssertEqual([dataSource collectionView:self.collectionView numberOfItemsInSection:0], 2);
+}
+
 - (void)testDelegateNotifiedOfUpdatedViewModel
 {
     NSString * const viewModelNavBarTitleA = @"View model A";
