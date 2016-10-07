@@ -293,7 +293,7 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBViewControllerDelegate> const delegate = self.delegate;
     [delegate viewController:self willUpdateWithViewModel:viewModel];
 
-    if (self.viewModel != nil) {
+    if (self.viewModel != nil && !self.viewModelIsInitial) {
         id<HUBViewModel> const currentModel = self.viewModel;
         self.lastViewModelDiff = [HUBViewModelDiff diffFromViewModel:currentModel toViewModel:viewModel];
     }
