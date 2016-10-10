@@ -285,6 +285,33 @@
     XCTAssertEqualWithAccuracy([layout targetContentOffsetForProposedContentOffset:proposedOffset].y, proposedOffset.y, 0.001);
 }
 
+- (void)testProposedContentOffsetForInitiallyAddedComponents
+{
+    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                 componentLayoutManager:self.componentLayoutManager];
+    
+    CGRect const collectionViewFrame = {.origin = CGPointZero, .size = self.collectionViewSize};
+    HUBCollectionViewMock * const collectionView = [[HUBCollectionViewMock alloc] initWithFrame:collectionViewFrame
+                                                                           collectionViewLayout:layout];
+    
+    collectionView.mockedIndexPathsForVisibleItems = @[];
+    
+    id<HUBViewModel> const viewModelA = [self.viewModelBuilder build];
+    [layout computeForCollectionViewSize:collectionViewFrame.size viewModel:viewModelA diff:nil];
+    
+    for (NSUInteger componentIndex = 0; componentIndex < 20; componentIndex++) {
+        NSString * const componentIdentifier = [NSString stringWithFormat:@"%@", @(componentIndex)];
+        [self.viewModelBuilder builderForBodyComponentModelWithIdentifier:componentIdentifier].title = @"Component";
+    }
+    
+    id<HUBViewModel> const viewModelB = [self.viewModelBuilder build];
+    HUBViewModelDiff * const diff = [HUBViewModelDiff diffFromViewModel:viewModelA toViewModel:viewModelB];
+    [layout computeForCollectionViewSize:collectionViewFrame.size viewModel:viewModelB diff:diff];
+    
+    CGPoint const targetContentOffset = [layout targetContentOffsetForProposedContentOffset:CGPointZero];
+    XCTAssertTrue(CGPointEqualToPoint(targetContentOffset, CGPointZero));
+}
+
 - (void)testProposedContentOffsetAfterRecomputing
 {
     for (NSUInteger i = 0; i < 30; i++) {
