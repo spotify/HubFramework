@@ -1444,6 +1444,22 @@
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
 }
 
+- (void)testHeaderComponentNotifiedOfContentOffsetChange
+{
+    self.component.isContentOffsetObserver = YES;
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
+    
+    [self.viewController scrollToContentOffset:CGPointMake(0, 100) animated:NO];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+}
+
 - (void)testOverlayComponentNotifiedOfContentOffsetChange
 {
     self.component.isContentOffsetObserver = YES;

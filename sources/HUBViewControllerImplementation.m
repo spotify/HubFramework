@@ -862,24 +862,28 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
-    [wrapper viewWillAppear];
+    [self componentWrapperWillAppear:wrapper];
     [self.delegate viewController:self componentWithModel:wrapper.model willAppearInView:cell];
-    
-    if (wrapper.isContentOffsetObserver) {
-        [wrapper updateViewForChangedContentOffset:self.collectionView.contentOffset];
-    }
 }
 
 - (void)headerAndOverlayComponentViewsWillAppear
 {
-    [self.headerComponentWrapper viewWillAppear];
+    if (self.headerComponentWrapper != nil) {
+        HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
+        [self componentWrapperWillAppear:headerComponentWrapper];
+    }
     
     for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
-        [overlayComponentWrapper viewWillAppear];
-        
-        if (overlayComponentWrapper.isContentOffsetObserver) {
-            [overlayComponentWrapper updateViewForChangedContentOffset:self.collectionView.contentOffset];
-        }
+        [self componentWrapperWillAppear:overlayComponentWrapper];
+    }
+}
+
+- (void)componentWrapperWillAppear:(HUBComponentWrapper *)componentWrapper
+{
+    [componentWrapper viewWillAppear];
+    
+    if (componentWrapper.isContentOffsetObserver) {
+        [componentWrapper updateViewForChangedContentOffset:self.collectionView.contentOffset];
     }
 }
 
