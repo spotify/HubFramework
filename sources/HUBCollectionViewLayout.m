@@ -177,12 +177,17 @@ NS_ASSUME_NONNULL_BEGIN
     CGPoint offset = self.collectionView.contentOffset;
     
     NSInteger topmostVisibleIndex = NSNotFound;
+    
     for (NSIndexPath *indexPath in [self.collectionView indexPathsForVisibleItems]) {
         topmostVisibleIndex = MIN(topmostVisibleIndex, indexPath.item);
     }
     
+    if (topmostVisibleIndex == NSNotFound) {
+        topmostVisibleIndex = 0;
+    }
+    
     for (NSIndexPath *indexPath in self.lastViewModelDiff.insertedBodyComponentIndexPaths) {
-        if (indexPath.item <= topmostVisibleIndex) {
+        if (indexPath.item < topmostVisibleIndex) {
             UICollectionViewLayoutAttributes *attributes = self.layoutAttributesByIndexPath[indexPath];
             offset.y += CGRectGetHeight(attributes.frame);
         }
