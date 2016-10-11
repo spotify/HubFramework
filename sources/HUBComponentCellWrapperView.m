@@ -36,6 +36,22 @@
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
 {
+    UIView * const viewAtPoint = [self.componentView hitTest:point withEvent:event];
+    
+    if (viewAtPoint == self.componentView) {
+        return NO;
+    }
+    
+    if ([self.componentView isKindOfClass:[UICollectionViewCell class]]) {
+        UICollectionViewCell * const cell = (UICollectionViewCell *)self.componentView;
+        return viewAtPoint != cell.contentView;
+    }
+    
+    if ([self.componentView isKindOfClass:[UITableViewCell class]]) {
+        UITableViewCell * const cell = (UITableViewCell *)self.componentView;
+        return viewAtPoint != cell.contentView;
+    }
+    
     return NO;
 }
 
