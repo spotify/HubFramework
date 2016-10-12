@@ -95,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
         [sortedBuilders addObject:builder];
     }
 
-    NSArray *sortedPreferredIndexes = [[buildersByPreferredIndex allKeys] sortedArrayUsingSelector: @selector(compare:)];
+    NSArray *sortedPreferredIndexes = [[buildersByPreferredIndex allKeys] sortedArrayUsingSelector:@selector(compare:)];
     for (NSNumber * const preferredIndex in sortedPreferredIndexes) {
         HUBComponentModelBuilderImplementation * const builder = buildersByPreferredIndex[preferredIndex];
         NSUInteger decodedPreferredIndex = preferredIndex.unsignedIntegerValue;
