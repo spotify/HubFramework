@@ -217,20 +217,38 @@
     
     NSString * const childIdentifierA = @"componentA";
     id<HUBComponentModelBuilder> const childBuilderA = [self.builder builderForChildWithIdentifier:childIdentifierA];
-    childBuilderA.preferredIndex = @1;
+    childBuilderA.preferredIndex = @2;
     childBuilderA.componentName = @"component";
-    
-    NSString * const childIdentifierB = @"componentB";
+
+    NSString * const childIdentifierB= @"componentB";
     id<HUBComponentModelBuilder> const childBuilderB = [self.builder builderForChildWithIdentifier:childIdentifierB];
-    childBuilderB.preferredIndex = @0;
     childBuilderB.componentName = @"component";
-    
+
+    NSString * const childIdentifierC = @"componentC";
+    id<HUBComponentModelBuilder> const childBuilderC = [self.builder builderForChildWithIdentifier:childIdentifierC];
+    childBuilderC.preferredIndex = @3;
+    childBuilderC.componentName = @"component";
+
+    NSString * const childIdentifierD = @"componentD";
+    id<HUBComponentModelBuilder> const childBuilderD = [self.builder builderForChildWithIdentifier:childIdentifierD];
+    childBuilderD.preferredIndex = @1;
+    childBuilderD.componentName = @"component";
+
+    NSString * const childIdentifierE = @"componentE";
+    id<HUBComponentModelBuilder> const childBuilderE = [self.builder builderForChildWithIdentifier:childIdentifierE];
+    childBuilderE.preferredIndex = @0;
+    childBuilderE.componentName = @"component";
+
     id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
-    XCTAssertEqual(model.children.count, (NSUInteger)2);
-    XCTAssertEqualObjects(model.children[0].identifier, childIdentifierB);
+    XCTAssertEqual(model.children.count, (NSUInteger)5);
+    XCTAssertEqualObjects(model.children[0].identifier, childIdentifierE);
     XCTAssertEqual(model.children[0].index, (NSUInteger)0);
-    XCTAssertEqualObjects(model.children[1].identifier, childIdentifierA);
+    XCTAssertEqualObjects(model.children[1].identifier, childIdentifierD);
     XCTAssertEqual(model.children[1].index, (NSUInteger)1);
+    XCTAssertEqualObjects(model.children[2].identifier, childIdentifierA);
+    XCTAssertEqual(model.children[2].index, (NSUInteger)2);
+    XCTAssertEqualObjects(model.children[3].identifier, childIdentifierC);
+    XCTAssertEqual(model.children[3].index, (NSUInteger)3);
 }
 
 - (void)testChildOutOfBoundsPreferredIndexHandled
