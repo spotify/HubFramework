@@ -1,6 +1,27 @@
 {
   "warnings": [
     {
+      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBBlockContentOperationFactory.h",
+      "line": 46,
+      "symbol": "HUBBlockContentOperationFactory.+new",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBBlockContentOperationFactory.h",
+      "line": 46,
+      "symbol": "HUBBlockContentOperationFactory.-init",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBBlockContentOperationFactory.h",
+      "line": 46,
+      "symbol": "HUBBlockContentOperationFactory.-initWithCoder:",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBIdentifier.h",
       "line": 55,
       "symbol": "HUBIdentifier.+new",

@@ -77,6 +77,9 @@
             <a class="nav-group-name-link" href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HUBBlockContentOperationFactory.html">HUBBlockContentOperationFactory</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/HUBComponentCollectionViewCell.html">HUBComponentCollectionViewCell</a>
               </li>
               <li class="nav-group-task">
@@ -358,6 +361,9 @@
                 <a class="nav-group-task-link" href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Type Definitions.html#/c:HUBBlockContentOperationFactory.h@T@HUBContentOperationFactoryBlock">HUBContentOperationFactoryBlock</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type Definitions.html#/c:HUBMutableJSONPath.h@T@HUBMutableJSONPathBlock">HUBMutableJSONPathBlock</a>
               </li>
             </ul>
@@ -457,7 +463,10 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Create a view controller for a certain view URI</p>
+                        <p>Create a view controller for a certain pre-registered view URI</p>
+
+<p>To be able to create a view controller without creating a feature, you can use the other view controller
+  creation method available on this protocol.</p>
 
                       </div>
                       <div class="declaration">
@@ -486,7 +495,8 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The view URI to create a view controller for</p>
+                                  <p>The view URI to create a view controller for. The URI should match a feature that
+        was previously registered with <code>HUBFeatureRegistry</code>.</p>
 
                                 </div>
                               </td>
@@ -501,6 +511,105 @@
  could not be created for the supplied viewURI (because a feature registration could not be resolved
  for it), this method returns <code>nil</code>.</p>
 
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewControllerFactory(im)createViewControllerForViewURI:contentOperations:featureIdentifier:featureTitle:"></a>
+                    <a name="//apple_ref/objc/Method/-createViewControllerForViewURI:contentOperations:featureIdentifier:featureTitle:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewControllerFactory(im)createViewControllerForViewURI:contentOperations:featureIdentifier:featureTitle:">-createViewControllerForViewURI:contentOperations:featureIdentifier:featureTitle:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a view controller without a feature registration</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span>
+<span class="nf">createViewControllerForViewURI</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewURI</span>
+             <span class="nf">contentOperations</span><span class="p">:</span>
+                 <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentOperation.html">HUBContentOperation</a></span><span class="o">&gt;&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">contentOperations</span>
+             <span class="nf">featureIdentifier</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">featureIdentifier</span>
+                  <span class="nf">featureTitle</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">featureTitle</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">createViewController</span><span class="p">(</span><span class="n">forViewURI</span> <span class="nv">viewURI</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">contentOperations</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">featureIdentifier</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">featureTitle</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Any</span><span class="o">!</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewURI</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The URI of the view controller to create. This view URI will not be looked up in the
+        Hub Framework&rsquo;s feature registry, it will simply be assigned to the view controller.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>contentOperations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The content operations to use to load the content for the view controller.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>featureIdentifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier of the feature that the view controller will belong to. Will
+        be made available to content operations as part of <code>HUBFeatureInfo</code>.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>featureTitle</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The title of the feature that the view controller will belong to. Used for its
+        default title, and also made available to contnet operations as part of <code>HUBFeatureInfo</code>.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

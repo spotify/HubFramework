@@ -76,6 +76,9 @@
             <a class="nav-group-name-link" href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/HUBBlockContentOperationFactory.html">HUBBlockContentOperationFactory</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/HUBComponentCollectionViewCell.html">HUBComponentCollectionViewCell</a>
               </li>
               <li class="nav-group-task">
@@ -357,6 +360,9 @@
                 <a class="nav-group-task-link" href="Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type Definitions.html#/c:HUBBlockContentOperationFactory.h@T@HUBContentOperationFactoryBlock">HUBContentOperationFactoryBlock</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type Definitions.html#/c:HUBMutableJSONPath.h@T@HUBMutableJSONPathBlock">HUBMutableJSONPathBlock</a>
               </li>
             </ul>
@@ -486,7 +492,7 @@ HUBViewURIPredicate *viewURIPredicate = [HUBViewURIPredicate predicateWithViewUR
 <pre class="highlight plaintext"><code>[featureRegistry registerFeatureWithIdentifier:@"cities"
                              viewURIPredicate:viewURIPredicate
                                         title:NSLocalizedString(@"Cities", @"Title of the Cities feature")
-                    contentOperationFactories:@[[SPTCitiesContentOperationFactory new]  
+                    contentOperationFactories:@[[SPTCitiesContentOperationFactory new]]  
                           contentReloadPolicy:nil
                    customJSONSchemaIdentifier:nil
                                 actionHandler:nil
@@ -500,8 +506,11 @@ HUBViewURIPredicate *viewURIPredicate = [HUBViewURIPredicate predicateWithViewUR
 
 <p>If you&rsquo;re working on the Spotify app, you can go to Search and paste the URI into the search field and press Enter.</p>
 
-<p>If you&rsquo;re working in the <a href="https://github.com/spotify/HubFramework/tree/master/demo">demo app</a> included in the Hub Framework repo, you can easily add the following line to the App Delegate&rsquo;s <code>app:didFinishLaunchingWithOptions:</code> method:</p>
-<pre class="highlight swift"><code><span class="k">self</span><span class="o">.</span><span class="nf">open</span><span class="p">(</span><span class="nv">viewURI</span><span class="p">:</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"cities:overview"</span><span class="p">)</span><span class="o">!</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
+<p>If you&rsquo;re working in the <a href="https://github.com/spotify/HubFramework/tree/master/demo">demo app</a> included in the Hub Framework repo, you can easily add the following lines to the RootContentOperation <code>perform(forViewURI:featureInfo:connectivityState:viewModelBuilder:previousError:)</code> method:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">citiesRowBuilder</span> <span class="o">=</span> <span class="n">viewModelBuilder</span><span class="o">.</span><span class="nf">builderForBodyComponentModel</span><span class="p">(</span><span class="nv">withIdentifier</span><span class="p">:</span> <span class="s">"cities"</span><span class="p">)</span>
+<span class="n">citiesRowBuilder</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">"Cities"</span>
+<span class="n">citiesRowBuilder</span><span class="o">.</span><span class="n">subtitle</span> <span class="o">=</span> <span class="s">"A feature that renders beautiful cities"</span>
+<span class="n">citiesRowBuilder</span><span class="o">.</span><span class="n">targetBuilder</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">viewURI</span><span class="p">:</span> <span class="s">"cities:overview"</span><span class="p">)</span>
 </code></pre>
 
 <p>If your app doesn&rsquo;t include an easy way to open any given URI, you can create and push a view controller onto your navigation controller using <code>HUBViewControllerFactory</code>, available on <code>HUBManager</code>:</p>
@@ -558,7 +567,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
 }
 </code></pre>
 
-<p>The other piece of the layout puzzle is sizing. Here the Hub Framework gives you more direct control and asks you to returned the <em>preferred</em> view size for your component. Note that this is not neccessarily the final size, as other factors such as the layout traits, the size of the screen, etc must also be taken into account before the final size is computed.</p>
+<p>The other piece of the layout puzzle is sizing. Here the Hub Framework gives you more direct control and asks you to returned the <em>preferred</em> view size for your component. Note that this is not necessarily the final size, as other factors such as the layout traits, the size of the screen, etc must also be taken into account before the final size is computed.</p>
 
 <p>For our row, we&rsquo;ll return that we&rsquo;d prefer it to be the same width as its container, and 50 points tall:</p>
 <pre class="highlight plaintext"><code>- (CGSize)preferredViewSizeForDisplayingModel:(id&lt;HUBComponentModel&gt;)model
@@ -791,6 +800,8 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
 <p>Let&rsquo;s create our new content operation, that will use a local JSON file bundled with the application:</p>
 <pre class="highlight plaintext"><code>@interface SPTCitiesImageContentOperation &lt;HUBContentOperation&gt;
 
+@synthesize delegate = _delegate;
+
 @end
 </code></pre>
 <pre class="highlight plaintext"><code>@implementation SPTCitiesImageContentOperation
@@ -804,6 +815,8 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
     NSURL *jsonURL = [[NSBundle mainBundle] URLForResource:@"city-images" withExtension:@"json"];
     NSData *jsonData = [NSData dataWithContentsOfURL:jsonURL];
     [viewModelBuilder addJSONData:jsonData];
+
+    [self.delegate contentOperationDidFinish:self];
 }
 
 @end
@@ -870,7 +883,7 @@ UIViewController *viewController = [viewControllerFactory createViewControllerFo
 
 <p>We&rsquo;re now finished with our second content operation, and we&rsquo;re ready to integrate it into our content loading chain. To do that, we&rsquo;ll add it to the array of content operations that our content operation factory returns.</p>
 
-<p>The order of the returned array determines the loading order. In our case it doesn&rsquo;t really matter, since both of our content operations deal with separate component models - but if you wanted to continously mutate a component model throughout different operations - the order will probably matter.</p>
+<p>The order of the returned array determines the loading order. In our case it doesn&rsquo;t really matter, since both of our content operations deal with separate component models - but if you wanted to continuously mutate a component model throughout different operations - the order will probably matter.</p>
 
 <p>This is what our content operation factory looks like after the update:</p>
 <pre class="highlight plaintext"><code>@implementation SPTCitiesContentOperationFactory
