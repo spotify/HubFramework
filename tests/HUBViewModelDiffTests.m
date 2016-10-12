@@ -165,11 +165,11 @@
     NSArray<id<HUBComponentModel>> *secondComponents = @[
         [self createComponentModelWithIdentifier:@"component-1" index:0 customData:nil],
         [self createComponentModelWithIdentifier:@"component-2" index:1 customData:@{@"test": @1}],
-        [self createComponentModelWithIdentifier:@"component-30"index:2 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-30" index:2 customData:nil],
         [self createComponentModelWithIdentifier:@"component-4" index:3 customData:nil],
-        [self createComponentModelWithIdentifier:@"component-5" index:4 customData:nil],
-        [self createComponentModelWithIdentifier:@"component-6" index:5 customData:nil],
-        [self createComponentModelWithIdentifier:@"component-7" index:6 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-7" index:4 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-5" index:5 customData:nil],
+        [self createComponentModelWithIdentifier:@"component-6" index:6 customData:nil],
         [self createComponentModelWithIdentifier:@"component-9" index:7 customData:@{@"test": @2}],
         [self createComponentModelWithIdentifier:@"component-10" index:8 customData:nil],
         [self createComponentModelWithIdentifier:@"component-13" index:9 customData:nil]
@@ -183,7 +183,8 @@
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:9 inSection:0]]);
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:1 inSection:0]]);
-    XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:7 inSection:0]]);
+    HUBMoveIndexPath *moved = [[HUBMoveIndexPath alloc] initWithFrom:[NSIndexPath indexPathForItem:6 inSection:0] to:[NSIndexPath indexPathForItem:4 inSection:0]];
+    XCTAssert([diff.movedBodyComponentIndexPaths containsObject:moved]);
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 2);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 2);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
@@ -191,14 +192,14 @@
 
 - (void)testDiffingPerformanceWithShallowComparisons
 {
-    NSUInteger const firstComponentCount = 1000;
+    NSUInteger const firstComponentCount = 10000;
     NSMutableArray<id<HUBComponentModel>> * const firstComponents = [NSMutableArray arrayWithCapacity:firstComponentCount];
     for (NSUInteger i = 0; i < firstComponentCount; i++) {
         id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"old-%@", @(i)] index:i customData:nil];
         [firstComponents addObject:component];
     }
 
-    NSUInteger const newComponentCount = 700;
+    NSUInteger const newComponentCount = 7000;
     NSMutableArray<id<HUBComponentModel>> * const newComponents = [NSMutableArray arrayWithCapacity:newComponentCount];
     for (NSUInteger i = 0; i < newComponentCount; i++) {
         id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"new-%@", @(i)] index:i customData:nil];
@@ -218,7 +219,7 @@
 
 - (void)testDiffingPerformanceWithDeepComparisons
 {
-    NSUInteger const firstComponentCount = 1000;
+    NSUInteger const firstComponentCount = 10000;
     NSMutableArray<id<HUBComponentModel>> * const firstComponents = [NSMutableArray arrayWithCapacity:firstComponentCount];
     for (NSUInteger i = 0; i < firstComponentCount; i++) {
         id<HUBComponentModel> component = [self createComponentModelWithIdentifier:[NSString stringWithFormat:@"component-%@", @(i)] index:i customData:nil];

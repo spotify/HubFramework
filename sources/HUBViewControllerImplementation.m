@@ -268,6 +268,10 @@ NS_ASSUME_NONNULL_BEGIN
                 [self.collectionView insertItemsAtIndexPaths:lastDiff.insertedBodyComponentIndexPaths];
                 [self.collectionView deleteItemsAtIndexPaths:lastDiff.deletedBodyComponentIndexPaths];
                 [self.collectionView reloadItemsAtIndexPaths:lastDiff.reloadedBodyComponentIndexPaths];
+                
+                for (HUBMoveIndexPath *move in lastDiff.movedBodyComponentIndexPaths) {
+                    [self.collectionView moveItemAtIndexPath:move.fromIndexPath toIndexPath:move.toIndexPath];
+                }
 
                 [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
             } completion:^(BOOL finished) {

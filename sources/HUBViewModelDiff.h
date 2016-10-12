@@ -21,6 +21,7 @@
 
 
 #import "HUBViewModel.h"
+#import "HUBMoveIndexPath.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,7 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
  * The @c HUBViewModelDiff class provides a way to visualise changes between
  * two different view models.
  */
-
 @interface HUBViewModelDiff : NSObject
 
 /// The index paths of any body components that were added in the new view model. 
@@ -39,6 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The index paths of any body components that were modified in the new view model. 
 @property (nonatomic, strong, readonly) NSArray<NSIndexPath *> *reloadedBodyComponentIndexPaths;
+
+/// The index paths of any body components that were modified moved between the two moddels. 
+@property (nonatomic, strong, readonly) NSArray<HUBMoveIndexPath *> *movedBodyComponentIndexPaths;
 
 /**
  * Initializes a @c HUBViewModelDiff using the two view models by finding the longest common subsequence
