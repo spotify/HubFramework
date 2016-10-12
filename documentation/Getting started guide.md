@@ -146,10 +146,13 @@ To open your view, make the app that you're working in open the URI `cities:over
 
 If you're working on the Spotify app, you can go to Search and paste the URI into the search field and press Enter.
 
-If you're working in the [demo app](https://github.com/spotify/HubFramework/tree/master/demo) included in the Hub Framework repo, you can easily add the following line to the App Delegate's `app:didFinishLaunchingWithOptions:` method:
+If you're working in the [demo app](https://github.com/spotify/HubFramework/tree/master/demo) included in the Hub Framework repo, you can easily add the following lines to the RootContentOperation `perform(forViewURI:featureInfo:connectivityState:viewModelBuilder:previousError:)` method:
 
 ```swift
-self.open(viewURI: URL(string: "cities:overview")!, animated: false)
+let citiesRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "cities")
+citiesRowBuilder.title = "Cities"
+citiesRowBuilder.subtitle = "A feature that renders beautiful cities"
+citiesRowBuilder.targetBuilder.uri = URL(viewURI: "cities:overview")
 ```
 
 If your app doesn't include an easy way to open any given URI, you can create and push a view controller onto your navigation controller using `HUBViewControllerFactory`, available on `HUBManager`:
@@ -490,6 +493,8 @@ Let's create our new content operation, that will use a local JSON file bundled 
 ```objective-c
 @interface SPTCitiesImageContentOperation <HUBContentOperation>
 
+@synthesize delegate = _delegate;
+
 @end
 ```
 
@@ -505,6 +510,8 @@ Let's create our new content operation, that will use a local JSON file bundled 
     NSURL *jsonURL = [[NSBundle mainBundle] URLForResource:@"city-images" withExtension:@"json"];
     NSData *jsonData = [NSData dataWithContentsOfURL:jsonURL];
     [viewModelBuilder addJSONData:jsonData];
+
+    [self.delegate contentOperationDidFinish:self];
 }
 
 @end
