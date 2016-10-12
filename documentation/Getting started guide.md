@@ -493,6 +493,8 @@ Let's create our new content operation, that will use a local JSON file bundled 
 ```objective-c
 @interface SPTCitiesImageContentOperation <HUBContentOperation>
 
+@synthesize delegate = _delegate;
+
 @end
 ```
 
@@ -508,6 +510,8 @@ Let's create our new content operation, that will use a local JSON file bundled 
     NSURL *jsonURL = [[NSBundle mainBundle] URLForResource:@"city-images" withExtension:@"json"];
     NSData *jsonData = [NSData dataWithContentsOfURL:jsonURL];
     [viewModelBuilder addJSONData:jsonData];
+
+    [self.delegate contentOperationDidFinish:self];
 }
 
 @end
