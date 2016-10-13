@@ -371,7 +371,7 @@
 - (void)testMissingImageLoadingContextHandled
 {
     NSURL * const imageURL = [NSURL URLWithString:@"http://image.com"];
-    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
 }
 
 - (void)testImageLoadingForMultipleComponentsSharingTheSameImageURL
@@ -415,7 +415,7 @@
     self.collectionView.cells[indexPathA] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
     self.collectionView.cells[indexPathB] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
     
-    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
     
     XCTAssertEqualObjects(componentA.mainImageData.URL, imageURL);
     XCTAssertEqualObjects(componentB.mainImageData.URL, imageURL);
@@ -439,7 +439,7 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
     XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
     
     [self.component prepareViewForReuse];
@@ -447,7 +447,7 @@
     
     [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
     XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
 }
 
