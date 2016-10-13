@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D28E5011DAF99C1007A0792 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D28E5001DAF99C1007A0792 /* QuartzCore.framework */; };
+		1D28E5021DAF99D2007A0792 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D28E5001DAF99C1007A0792 /* QuartzCore.framework */; };
 		52977ACA1DA7D0B40064629E /* HUBBlockContentOperationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 52977AC91DA7D0B40064629E /* HUBBlockContentOperationFactory.m */; };
 		52E7FC661D9C78700053EECF /* HUBActionFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6525321D802DCD007B1A15 /* HUBActionFactoryMock.m */; };
 		52E7FC671D9C78730053EECF /* HUBActionMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6525351D802E3F007B1A15 /* HUBActionMock.m */; };
@@ -145,6 +147,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1D28E5001DAF99C1007A0792 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentFactoryMock.m; sourceTree = "<group>"; };
 		2932EAD3C06CBB869669B382 /* HUBComponentFactoryMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactoryMock.h; sourceTree = "<group>"; };
 		52977AC61DA7D0890064629E /* HUBBlockContentOperationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBBlockContentOperationFactory.h; sourceTree = "<group>"; };
@@ -410,6 +413,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D28E5011DAF99C1007A0792 /* QuartzCore.framework in Frameworks */,
 				8AD733601D9BE6F800E4B427 /* SystemConfiguration.framework in Frameworks */,
 				DDBCF36E1C68DE2C00693038 /* CoreGraphics.framework in Frameworks */,
 				DDBCF36C1C68DD2300693038 /* UIKit.framework in Frameworks */,
@@ -420,6 +424,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D28E5021DAF99D2007A0792 /* QuartzCore.framework in Frameworks */,
 				8AD733611D9BE71300E4B427 /* SystemConfiguration.framework in Frameworks */,
 				DDBCF3701C68DE5000693038 /* UIKit.framework in Frameworks */,
 				DDBCF36F1C68DE4900693038 /* CoreGraphics.framework in Frameworks */,
@@ -923,6 +928,7 @@
 		8AD7335E1D9BE6F800E4B427 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1D28E5001DAF99C1007A0792 /* QuartzCore.framework */,
 				8AD7335F1D9BE6F800E4B427 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
