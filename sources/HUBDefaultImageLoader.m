@@ -24,24 +24,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static inline BOOL HUBURLResponseIsEqualToResponse(NSHTTPURLResponse *firstResponse, NSHTTPURLResponse *secondResponse) {
-    NSDictionary *firstHeaderFields = [firstResponse allHeaderFields];
-    NSDictionary *secondHeaderFields = [secondResponse allHeaderFields];
-
-    NSString *firstEtag = firstHeaderFields[@"etag"];
-    NSString *secondEtag = secondHeaderFields[@"etag"];
-    NSString *firstModified = firstHeaderFields[@"modified-date"];
-    NSString *secondModified = secondHeaderFields[@"modified-date"];
-
-    if (firstEtag != nil && [firstEtag isEqualToString:secondEtag]) {
-        return YES;
-    } else if (firstModified != nil && [firstModified isEqualToString:secondModified]) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
 @interface HUBDefaultImageLoader ()
 
 @property (nonatomic, strong, readonly) NSURLSession *session;
@@ -73,10 +55,6 @@ static inline BOOL HUBURLResponseIsEqualToResponse(NSHTTPURLResponse *firstRespo
 {
     __weak __typeof(self) weakSelf = self;
 
-    NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
-    NSCachedURLResponse *cachedResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
-    NSHTTPURLResponse *cachedHTTPResponse = (NSHTTPURLResponse *)cachedResponse.response;
-
     NSURLSessionTask * const task = [self.session dataTaskWithURL:imageURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         __typeof(self) strongSelf = weakSelf;
         id<HUBImageLoaderDelegate> const delegate = strongSelf.delegate;
@@ -104,9 +82,7 @@ static inline BOOL HUBURLResponseIsEqualToResponse(NSHTTPURLResponse *firstRespo
             UIGraphicsEndImageContext();
         }
 
-        NSHTTPURLResponse * const httpResponse = (NSHTTPURLResponse *)response;
-        BOOL const loadedFromCache = HUBURLResponseIsEqualToResponse(httpResponse, cachedHTTPResponse);
-        [delegate imageLoader:strongSelf didLoadImage:image forURL:imageURL fromCache:loadedFromCache];
+        [delegate imageLoader:strongSelf didLoadImage:image forURL:imageURL];
     }];
 
     [task resume];

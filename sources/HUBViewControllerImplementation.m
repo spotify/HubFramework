@@ -324,14 +324,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBImageLoaderDelegate
 
-- (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache
+- (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL
 {
     HUBPerformOnMainQueue(^{
         NSArray * const contexts = self.componentImageLoadingContexts[imageURL];
         self.componentImageLoadingContexts[imageURL] = nil;
         
         for (HUBComponentImageLoadingContext * const context in contexts) {
-            [self handleLoadedComponentImage:image forURL:imageURL fromCache:loadedFromCache context:context];
+            [self handleLoadedComponentImage:image forURL:imageURL context:context];
         }
     });
 }
@@ -976,7 +976,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (void)handleLoadedComponentImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache context:(HUBComponentImageLoadingContext *)context
+- (void)handleLoadedComponentImage:(UIImage *)image forURL:(NSURL *)imageURL context:(HUBComponentImageLoadingContext *)context
 {
     id<HUBViewModel> const viewModel = self.viewModel;
     
@@ -1020,11 +1020,13 @@ NS_ASSUME_NONNULL_BEGIN
     if (![imageData.URL isEqual:imageURL]) {
         return;
     }
-    
+
+    // TODO: animated based on a timer
+    BOOL animated = YES;
     [componentWrapper updateViewForLoadedImage:image
                                       fromData:imageData
                                          model:componentModel
-                                      animated:!loadedFromCache];
+                                      animated:animated];
 }
 
 - (BOOL)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel cellIndexPath:(nullable NSIndexPath *)cellIndexPath
