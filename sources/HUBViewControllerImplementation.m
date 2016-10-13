@@ -48,6 +48,8 @@
 #import "HUBActionHandler.h"
 #import "HUBViewModelDiff.h"
 
+CFTimeInterval const kDownloadingTimeTreshold = 0.07;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewControllerImplementation () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, HUBComponentWrapperDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
@@ -956,14 +958,15 @@ NS_ASSUME_NONNULL_BEGIN
     if (CGSizeEqualToSize(preferredSize, CGSizeZero)) {
         return;
     }
-    
+
     HUBComponentImageLoadingContext * const context = [[HUBComponentImageLoadingContext alloc] initWithImageType:imageData.type
                                                                                                  imageIdentifier:imageData.identifier
                                                                                                wrapperIdentifier:componentWrapper.identifier
-                                                                                                      childIndex:childIndex];
+                                                                                                      childIndex:childIndex
+                                                                                                       timestamp:CACurrentMediaTime()];
     
     NSMutableArray *contextsForURL = self.componentImageLoadingContexts[imageURL];
-    
+
     if (contextsForURL == nil) {
         contextsForURL = [NSMutableArray arrayWithObject:context];
         self.componentImageLoadingContexts[imageURL] = contextsForURL;
@@ -1021,8 +1024,9 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
-    // TODO: animated based on a timer
-    BOOL animated = YES;
+    CFTimeInterval downloadingTime = CACurrentMediaTime() - context.timestamp;
+    BOOL animated = downloadingTime > kDownloadingTimeTreshold;
+
     [componentWrapper updateViewForLoadedImage:image
                                       fromData:imageData
                                          model:componentModel
