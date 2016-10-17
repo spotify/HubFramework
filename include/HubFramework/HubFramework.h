@@ -93,6 +93,7 @@
 #import "HUBAction.h"
 #import "HUBActionFactory.h"
 #import "HUBActionRegistry.h"
+#import "HUBActionPerformer.h"
 #import "HUBActionHandler.h"
 #import "HUBActionContext.h"
 #import "HUBActionTrigger.h"

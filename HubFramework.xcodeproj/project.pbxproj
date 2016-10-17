@@ -340,6 +340,7 @@
 		8AD151801D9966080008E182 /* HUBURLSessionMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBURLSessionMock.m; sourceTree = "<group>"; };
 		8AD151821D9968390008E182 /* HUBURLSessionDataTaskMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBURLSessionDataTaskMock.h; sourceTree = "<group>"; };
 		8AD151831D9968390008E182 /* HUBURLSessionDataTaskMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBURLSessionDataTaskMock.m; sourceTree = "<group>"; };
+		8AD585B51DB4D38700DB7606 /* HUBActionPerformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBActionPerformer.h; sourceTree = "<group>"; };
 		8AD732011D9AD30100E4B427 /* HUBDefaultConnectivityStateResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBDefaultConnectivityStateResolver.h; sourceTree = "<group>"; };
 		8AD732021D9AD30100E4B427 /* HUBDefaultConnectivityStateResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBDefaultConnectivityStateResolver.m; sourceTree = "<group>"; };
 		8AD7335F1D9BE6F800E4B427 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -526,6 +527,7 @@
 				8A2A72EE1D4B749600141619 /* HUBAction.h */,
 				8A0C356C1D7DB656007C32D9 /* HUBActionFactory.h */,
 				8A2A72ED1D4B744A00141619 /* HUBActionRegistry.h */,
+				8AD585B51DB4D38700DB7606 /* HUBActionPerformer.h */,
 				8A6529F51D82D1C7007B1A15 /* HUBActionHandler.h */,
 				F663FE7C1D10BECE003E19B6 /* HUBActionContext.h */,
 				8A6529F61D82D7BE007B1A15 /* HUBActionTrigger.h */,

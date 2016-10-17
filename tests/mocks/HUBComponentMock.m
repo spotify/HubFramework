@@ -41,7 +41,7 @@
 
 @synthesize view = _view;
 @synthesize childDelegate = _childDelegate;
-@synthesize actionDelegate = _actionDelegate;
+@synthesize actionPerformer = _actionPerformer;
 
 - (instancetype)init
 {

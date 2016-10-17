@@ -55,6 +55,7 @@
 #import "HUBActionContext.h"
 #import "HUBActionFactoryMock.h"
 #import "HUBActionMock.h"
+#import "HUBActionPerformer.h"
 #import "HUBViewControllerScrollHandlerMock.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBUtilities.h"
@@ -1823,9 +1824,8 @@
     
     NSDictionary * const customActionData = @{@"custom": @"data"};
     
-    BOOL const actionOutcome = [self.component.actionDelegate component:self.component
-                                            performActionWithIdentifier:actionIdentifier
-                                                             customData:customActionData];
+    BOOL const actionOutcome = [self.component.actionPerformer performActionWithIdentifier:actionIdentifier
+                                                                                customData:customActionData];
     
     XCTAssertTrue(actionOutcome);
     XCTAssertEqualObjects(actionContext.componentModel.identifier, @"A");
