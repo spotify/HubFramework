@@ -47,7 +47,7 @@ They contain textual content, like `title`, `subtitle` & `descriptionText`, as w
 
 For each component model; a `HUBComponent` implementation will be used for rendering. Which implementation to use is determined by the model's `componentNamespace` and `componentName`. For more information about how namespaces and names are resolved; see the [Component programming guide](https://spotify.github.io/HubFramework/component-programming-guide.html).
 
-*For a full list of supported properties, see [`HUBComponentModel`](https://spotify.github.io/HubFramework/Protocols/HUBComponent.html).*
+*For a full list of supported properties, see [`HUBComponentModel`](https://spotify.github.io/HubFramework/Protocols/HUBComponentModel.html).*
 
 ## Using JSON
 
