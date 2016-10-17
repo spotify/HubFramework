@@ -38,12 +38,11 @@ NS_ASSUME_NONNULL_BEGIN
                      customData:(nullable NSDictionary<NSString *, id> *)customData
                         viewURI:(NSURL *)viewURI
                       viewModel:(id<HUBViewModel>)viewModel
-                 componentModel:(id<HUBComponentModel>)componentModel
+                 componentModel:(nullable id<HUBComponentModel>)componentModel
                  viewController:(UIViewController *)viewController
 {
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(viewModel != nil);
-    NSParameterAssert(componentModel != nil);
     NSParameterAssert(viewController != nil);
 
     self = [super init];

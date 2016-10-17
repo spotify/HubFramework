@@ -27,5 +27,7 @@ typedef NS_ENUM(NSUInteger, HUBActionTrigger) {
     /// The action was triggered by that a component was selected
     HUBActionTriggerSelection,
     /// The action was triggered manually by a component
-    HUBActionTriggerComponent
+    HUBActionTriggerComponent,
+    /// The action was triggered manually by a content operation
+    HUBActionTriggerContentOperation
 };

@@ -22,7 +22,7 @@
 #import "HUBViewControllerImplementation.h"
 
 #import "HUBIdentifier.h"
-#import "HUBViewModelLoader.h"
+#import "HUBViewModelLoaderImplementation.h"
 #import "HUBViewModel.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentImageData.h"
@@ -46,6 +46,7 @@
 #import "HUBActionContextImplementation.h"
 #import "HUBActionRegistry.h"
 #import "HUBActionHandler.h"
+#import "HUBActionPerformer.h"
 #import "HUBViewModelDiff.h"
 #import "HUBComponentGestureRecognizer.h"
 
@@ -53,7 +54,7 @@ static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewControllerImplementation () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, HUBComponentWrapperDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate>
+@interface HUBViewControllerImplementation () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, HUBComponentWrapperDelegate, HUBActionPerformer, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
@@ -96,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
-                viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
+                viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
@@ -140,8 +141,9 @@ NS_ASSUME_NONNULL_BEGIN
     _childComponentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:_componentRegistry
                                                                          UIStateManager:_componentUIStateManager];
     
-    _viewModelLoader.delegate = self;
-    _imageLoader.delegate = self;
+    viewModelLoader.delegate = self;
+    viewModelLoader.actionPerformer = self;
+    imageLoader.delegate = self;
     
     self.automaticallyAdjustsScrollViewInsets = [_scrollHandler shouldAutomaticallyAdjustContentInsetsInViewController:self];
     
@@ -519,6 +521,16 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (!componentWrapper.isRootComponent) {
         [self.childComponentReusePool addComponentWrappper:componentWrapper];
     }
+}
+
+#pragma mark - HUBActionPerformer
+
+- (BOOL)performActionWithIdentifier:(HUBIdentifier *)identifier customData:(nullable NSDictionary<NSString *, id> *)customData
+{
+    return [self performActionForTrigger:HUBActionTriggerContentOperation
+                        customIdentifier:identifier
+                              customData:customData
+                          componentModel:nil];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -1154,7 +1166,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 - (BOOL)performActionForTrigger:(HUBActionTrigger)trigger
                customIdentifier:(nullable HUBIdentifier *)customIdentifier
                      customData:(nullable NSDictionary<NSString *, id> *)customData
-                 componentModel:(id<HUBComponentModel>)componentModel
+                 componentModel:(nullable id<HUBComponentModel>)componentModel
 {
     if (self.viewModel == nil) {
         return NO;

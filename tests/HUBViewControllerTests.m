@@ -1835,6 +1835,30 @@
     XCTAssertEqual(self.contentOperation.actionContext, actionContext);
 }
 
+- (void)testPerformingActionFromContentOperation
+{
+    __block id<HUBActionContext> actionContext = nil;
+    
+    self.actionHandler.block = ^(id<HUBActionContext> context) {
+        actionContext = context;
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"contentOperation" name:@"action"];
+    NSDictionary * const customActionData = @{@"custom": @"data"};
+    BOOL const actionOutcome = [self.contentOperation.actionPerformer performActionWithIdentifier:actionIdentifier
+                                                                                       customData:customActionData];
+    
+    XCTAssertTrue(actionOutcome);
+    XCTAssertNil(actionContext.componentModel);
+    XCTAssertEqualObjects(actionContext.customData, customActionData);
+    XCTAssertEqual(actionContext.trigger, HUBActionTriggerContentOperation);
+    XCTAssertEqualObjects(self.actionHandler.contexts, @[actionContext]);
+    XCTAssertEqual(self.contentOperation.actionContext, actionContext);
+}
+
 - (void)testAssigningNavigationItemProperties
 {
     UIBarButtonItem * const rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIView new]];

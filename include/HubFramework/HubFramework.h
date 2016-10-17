@@ -43,6 +43,7 @@
 #import "HUBContentOperation.h"
 #import "HUBContentOperationWithInitialContent.h"
 #import "HUBContentOperationActionObserver.h"
+#import "HUBContentOperationActionPerformer.h"
 #import "HUBContentReloadPolicy.h"
 #import "HUBBlockContentOperationFactory.h"
 
