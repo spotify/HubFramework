@@ -23,6 +23,7 @@
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentWithRestorableUIState.h"
+#import "HUBComponentWithSelectionState.h"
 #import "HUBHeaderMacros.h"
 
 @protocol HUBComponent;
@@ -36,6 +37,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Delegate protocol for `HUBComponentWrapper`
 @protocol HUBComponentWrapperDelegate <NSObject>
+
+/**
+ *  Notify the delegate that a component wrapper updated its selection state
+ *
+ *  @param componentWrapper The component wrapper that updated its selection state
+ *  @param selectionState The selection state that the component wrapper entered
+ */
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+ didUpdateSelectionState:(HUBComponentSelectionState)selectionState;
 
 /**
  *  Return a child component wrapper for a given model
@@ -110,7 +120,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBComponentWrapper : NSObject <
     HUBComponentWithImageHandling,
     HUBComponentViewObserver,
-    HUBComponentContentOffsetObserver
+    HUBComponentContentOffsetObserver,
+    HUBComponentWithSelectionState
 >
 
 /// A unique identifier for this component wrapper. Can be used to track it accross various operations.
@@ -153,8 +164,8 @@ NS_ASSUME_NONNULL_BEGIN
                            parent:(nullable HUBComponentWrapper *)parent HUB_DESIGNATED_INITIALIZER;
 
 /** 
- * Manually saves the underlying component's UI state. This is normally called before the component
- * is prepared for reuse.
+ *  Manually saves the underlying component's UI state. This is normally called before the component
+ *  is prepared for reuse.
  */
 - (void)saveComponentUIState;
 

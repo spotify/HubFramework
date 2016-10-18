@@ -30,11 +30,12 @@
 #import "HUBComponentModel.h"
 #import "HUBComponentUIStateManager.h"
 #import "HUBComponentResizeObservingView.h"
+#import "HUBComponentGestureRecognizer.h"
 #import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBComponentWrapper () <HUBComponentChildDelegate, HUBComponentActionDelegate, HUBComponentResizeObservingViewDelegate>
+@interface HUBComponentWrapper () <HUBComponentChildDelegate, HUBComponentActionDelegate, HUBComponentResizeObservingViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong, readwrite) id<HUBComponentModel> model;
 @property (nonatomic, assign) BOOL viewHasAppearedSinceLastModelChange;
@@ -42,7 +43,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBComponentWrapper *> *childrenByIndex;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, UIView *> *visibleChildViewsByIndex;
+@property (nonatomic, strong, nullable) HUBComponentGestureRecognizer *gestureRecognizer;
 @property (nonatomic, assign) BOOL hasBeenConfigured;
+@property (nonatomic, assign) BOOL shouldHighlight;
+@property (nonatomic, assign) HUBComponentSelectionState selectionState;
 
 @end
 
@@ -154,6 +158,11 @@ NS_ASSUME_NONNULL_BEGIN
             resizeObservingView.delegate = self;
             [view addSubview:resizeObservingView];
         }
+        
+        HUBComponentGestureRecognizer * const gestureRecognizer = [[HUBComponentGestureRecognizer alloc] initWithTarget:self action:@selector(handleGestureRecognizer:)];
+        gestureRecognizer.delegate = self;
+        [view addGestureRecognizer:gestureRecognizer];
+        self.gestureRecognizer = gestureRecognizer;
     }
 }
 
@@ -252,6 +261,28 @@ NS_ASSUME_NONNULL_BEGIN
     [(id<HUBComponentViewObserver>)self.component viewDidResize];
 }
 
+#pragma mark - HUBComponentWithSelectionState
+
+- (void)updateViewForSelectionState:(HUBComponentSelectionState)selectionState
+{
+    if (self.selectionState == selectionState) {
+        return;
+    }
+    
+    self.selectionState = selectionState;
+    
+    if ([self.component conformsToProtocol:@protocol(HUBComponentWithSelectionState)]) {
+        [(id<HUBComponentWithSelectionState>)self.component updateViewForSelectionState:selectionState];
+    }
+    
+    [self.delegate componentWrapper:self didUpdateSelectionState:selectionState];
+    self.shouldHighlight = NO;
+    
+    if (selectionState == HUBComponentSelectionStateNone) {
+        [self.gestureRecognizer cancel];
+    }
+}
+
 #pragma mark - HUBComponentChildDelegate
 
 - (id<HUBComponent>)component:(id<HUBComponentWithChildren>)component childComponentForModel:(id<HUBComponentModel>)childComponentModel
@@ -315,11 +346,51 @@ NS_ASSUME_NONNULL_BEGIN
     return [self.delegate componentWrapper:self performActionWithIdentifier:identifier customData:customData];
 }
 
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
 #pragma mark - HUBComponentResizeObservingViewDelegate
 
 - (void)resizeObservingViewDidResize:(HUBComponentResizeObservingView *)view
 {
     [(id<HUBComponentViewObserver>)self.component viewDidResize];
+}
+
+#pragma mark - Gesture recognizer handling
+
+- (void)handleGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+{
+    switch (gestureRecognizer.state) {
+        case UIGestureRecognizerStatePossible:
+        case UIGestureRecognizerStateChanged:
+            break;
+        case UIGestureRecognizerStateBegan: {
+            self.shouldHighlight = YES;
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (!self.shouldHighlight) {
+                    return;
+                }
+                
+                [self updateViewForSelectionState:HUBComponentSelectionStateHighlighted];
+            });
+            
+            break;
+        }
+        case UIGestureRecognizerStateEnded: {
+            [self updateViewForSelectionState:HUBComponentSelectionStateSelected];
+            break;
+        }
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed: {
+            [self updateViewForSelectionState:HUBComponentSelectionStateNone];
+            break;
+        }
+    }
 }
 
 #pragma mark - Private utilities

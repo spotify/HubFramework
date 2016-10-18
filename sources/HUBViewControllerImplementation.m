@@ -47,10 +47,11 @@
 #import "HUBActionRegistry.h"
 #import "HUBActionHandler.h"
 #import "HUBViewModelDiff.h"
+#import "HUBComponentGestureRecognizer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewControllerImplementation () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, HUBComponentWrapperDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface HUBViewControllerImplementation () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, HUBComponentWrapperDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
@@ -70,8 +71,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableArray<HUBComponentWrapper *> *overlayComponentWrappers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByCellIdentifier;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentWrapper *> *componentWrappersByModelIdentifier;
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *componentUIStateManager;
 @property (nonatomic, strong, readonly) HUBComponentReusePool *childComponentReusePool;
+@property (nonatomic, strong, nullable) HUBComponentWrapper *highlightedComponentWrapper;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic, strong, nullable) HUBViewModelDiff *lastViewModelDiff;
 @property (nonatomic, assign) BOOL viewHasAppeared;
@@ -130,6 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
     _overlayComponentWrappers = [NSMutableArray new];
     _componentWrappersByIdentifier = [NSMutableDictionary new];
     _componentWrappersByCellIdentifier = [NSMutableDictionary new];
+    _componentWrappersByModelIdentifier = [NSMutableDictionary new];
     _componentUIStateManager = [HUBComponentUIStateManager new];
     _childComponentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:_componentRegistry
                                                                          UIStateManager:_componentUIStateManager];
@@ -319,7 +323,46 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel
 {
-    return [self handleSelectionForComponentWithModel:componentModel cellIndexPath:nil];
+    HUBComponentWrapper * const componentWrapper = self.componentWrappersByModelIdentifier[componentModel.identifier];
+    
+    if (componentWrapper != nil) {
+        [componentWrapper updateViewForSelectionState:HUBComponentSelectionStateSelected];
+        
+        // Delay deselection until the next rendering pass, so that the user can see it for a few miliseconds
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [componentWrapper updateViewForSelectionState:HUBComponentSelectionStateNone];
+        });
+        
+        if (componentWrapper == self.highlightedComponentWrapper) {
+            self.highlightedComponentWrapper = nil;
+        }
+    }
+    
+    BOOL selectionHandled = NO;
+    
+    for (HUBIdentifier * const identifier in componentModel.target.actionIdentifiers) {
+        selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
+                                        customIdentifier:identifier
+                                              customData:nil
+                                          componentModel:componentModel];
+        
+        if (selectionHandled) {
+            break;
+        }
+    }
+    
+    if (!selectionHandled) {
+        selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
+                                        customIdentifier:nil
+                                              customData:nil
+                                          componentModel:componentModel];
+    }
+    
+    if (selectionHandled) {
+        [self.delegate viewController:self componentSelectedWithModel:componentModel];
+    }
+    
+    return selectionHandled;
 }
 
 #pragma mark - HUBImageLoaderDelegate
@@ -344,6 +387,25 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - HUBComponentWrapperDelegate
+
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+ didUpdateSelectionState:(HUBComponentSelectionState)selectionState
+{
+    switch (selectionState) {
+        case HUBComponentSelectionStateNone:
+            if (componentWrapper == (HUBComponentWrapper *)self.highlightedComponentWrapper) {
+                self.highlightedComponentWrapper = nil;
+            }
+            break;
+        case HUBComponentSelectionStateHighlighted:
+            [self.highlightedComponentWrapper updateViewForSelectionState:HUBComponentSelectionStateNone];
+            self.highlightedComponentWrapper = componentWrapper;
+            break;
+        case HUBComponentSelectionStateSelected:
+            [self selectComponentWithModel:componentWrapper.model];
+            break;
+    }
+}
 
 - (HUBComponentWrapper *)componentWrapper:(HUBComponentWrapper *)componentWrapper
                    childComponentForModel:(id<HUBComponentModel>)model
@@ -418,7 +480,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
-    [self handleSelectionForComponentWithModel:childComponentModel cellIndexPath:nil];
+    [self selectComponentWithModel:childComponentModel];
 }
 
 - (BOOL)componentWrapper:(HUBComponentWrapper *)componentWrapper performActionWithIdentifier:(HUBIdentifier *)identifier customData:(nullable NSDictionary<NSString *, id> *)customData
@@ -431,11 +493,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
 {
-    if (componentWrapper.isRootComponent) {
-        return;
-    }
+    self.componentWrappersByModelIdentifier[componentWrapper.model.identifier] = nil;
     
-    [self.childComponentReusePool addComponentWrappper:componentWrapper];
+    if (!componentWrapper.isRootComponent) {
+        [self.childComponentReusePool addComponentWrappper:componentWrapper];
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -471,6 +533,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:cell];
     [componentWrapper configureViewWithModel:componentModel containerViewSize:collectionView.frame.size];
+    self.componentWrappersByModelIdentifier[componentModel.identifier] = componentWrapper;
     
     [self loadImagesForComponentWrapper:componentWrapper
                              childIndex:nil];
@@ -479,12 +542,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - UICollectionViewDelegate
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
-    [self handleSelectionForComponentWithModel:componentModel cellIndexPath:indexPath];
-}
 
 - (void)collectionView:(UICollectionView *)collectionView
        willDisplayCell:(UICollectionViewCell *)cell
@@ -519,6 +576,8 @@ NS_ASSUME_NONNULL_BEGIN
     for (HUBComponentWrapper * const componentWrapper in self.contentOffsetObservingComponentWrappers) {
         [componentWrapper updateViewForChangedContentOffset:scrollView.contentOffset];
     }
+    
+    [self.highlightedComponentWrapper updateViewForSelectionState:HUBComponentSelectionStateNone];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -570,7 +629,14 @@ NS_ASSUME_NONNULL_BEGIN
     return contentRect;
 }
 
-#pragma mark - NSNotification selectors
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
+#pragma mark - Notification handling
 
 - (void)handleKeyboardWillShowNotification:(NSNotification *)notification
 {
@@ -693,6 +759,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     wrapper.delegate = self;
     self.componentWrappersByIdentifier[wrapper.identifier] = wrapper;
+    self.componentWrappersByModelIdentifier[wrapper.model.identifier] = wrapper;
 }
 
 - (nullable HUBComponentWrapper *)componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell
@@ -814,6 +881,8 @@ NS_ASSUME_NONNULL_BEGIN
     UIView * const componentView = HUBComponentLoadViewIfNeeded(componentWrapper);
     [componentWrapper configureViewWithModel:componentModel containerViewSize:containerViewSize];
     componentView.frame = CGRectMake(0, 0, componentViewSize.width, componentViewSize.height);
+    
+    self.componentWrappersByModelIdentifier[componentModel.identifier] = componentWrapper;
     
     [self loadImagesForComponentWrapper:componentWrapper
                              childIndex:nil];
@@ -1025,41 +1094,6 @@ NS_ASSUME_NONNULL_BEGIN
                                       fromData:imageData
                                          model:componentModel
                                       animated:!loadedFromCache];
-}
-
-- (BOOL)handleSelectionForComponentWithModel:(id<HUBComponentModel>)componentModel cellIndexPath:(nullable NSIndexPath *)cellIndexPath
-{
-    if (cellIndexPath != nil) {
-        NSIndexPath * const indexPath = cellIndexPath;
-        [self.collectionView cellForItemAtIndexPath:indexPath].highlighted = NO;
-        [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    }
-    
-    BOOL selectionHandled = NO;
-    
-    for (HUBIdentifier * const identifier in componentModel.target.actionIdentifiers) {
-        selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
-                                        customIdentifier:identifier
-                                              customData:nil
-                                          componentModel:componentModel];
-        
-        if (selectionHandled) {
-            break;
-        }
-    }
-    
-    if (!selectionHandled) {
-        selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
-                                        customIdentifier:nil
-                                              customData:nil
-                                          componentModel:componentModel];
-    }
-    
-    if (selectionHandled) {
-        [self.delegate viewController:self componentSelectedWithModel:componentModel];
-    }
-    
-    return selectionHandled;
 }
 
 - (nullable id<HUBComponentModel>)childModelAtIndex:(NSUInteger)childIndex fromComponentWrapper:(HUBComponentWrapper *)componentWrapper

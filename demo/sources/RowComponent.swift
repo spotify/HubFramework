@@ -31,7 +31,7 @@ import HubFramework
  *  - subtitle
  *  - mainImageData
  */
-class RowComponent: NSObject, HUBComponentWithImageHandling {
+class RowComponent: NSObject, HUBComponentWithImageHandling, HUBComponentWithSelectionState, UIGestureRecognizerDelegate {
     var layoutTraits: Set<HUBComponentLayoutTrait> { return [.fullWidth, .stackable] }
     var view: UIView?
     
@@ -79,5 +79,21 @@ class RowComponent: NSObject, HUBComponentWithImageHandling {
     func updateView(forLoadedImage image: UIImage, from imageData: HUBComponentImageData, model: HUBComponentModel, animated: Bool) {
         cell.imageView?.setImage(image, animated: animated)
         cell.setNeedsLayout()
+    }
+    
+    // MARK: - HUBComponentWithSelectionState
+    
+    func updateViewForSelectionState(_ selectionState: HUBComponentSelectionState) {
+        switch selectionState {
+        case .none:
+            cell.isHighlighted = false
+            cell.isSelected = false
+        case .highlighted:
+            cell.isHighlighted = true
+            cell.isSelected = false
+        case .selected:
+            cell.isHighlighted = false
+            cell.isSelected = true
+        }
     }
 }

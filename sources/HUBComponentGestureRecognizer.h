@@ -19,9 +19,17 @@
  *  under the License.
  */
 
-#import "HUBTouchForwardingTarget.h"
+#import <UIKit/UIKit.h>
+#import "HUBHeaderMacros.h"
 
-/// Category making `UIGestureRecognizer` a touch forwarding target
-@interface UIGestureRecognizer (HUBTouchForwardingTarget) <HUBTouchForwardingTarget>
+NS_ASSUME_NONNULL_BEGIN
+
+/// Gesture recognizer used to recognize highlights & selections for a component
+@interface HUBComponentGestureRecognizer : UIGestureRecognizer
+
+/// Cancel any current gesture that it being recognized (will set the state to cancelled).
+- (void)cancel;
 
 @end
+
+NS_ASSUME_NONNULL_END
