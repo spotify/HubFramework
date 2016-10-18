@@ -4,13 +4,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBComponentGestureRecognizer ()
-
-@property (nonatomic, assign) CGPoint touchOrigin;
-@property (nonatomic, assign) BOOL tapFailed;
-
-@end
-
 @implementation HUBComponentGestureRecognizer
 
 #pragma mark - API
@@ -25,12 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
-    
     self.state = UIGestureRecognizerStateBegan;
-    
-    UITouch * const touch = [touches anyObject];
-    self.touchOrigin = [touch locationInView:self.view];
-    self.tapFailed = NO;
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -41,10 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
     CGPoint const touchLocation = [touch locationInView:self.view];
     
     if (touchLocation.y < 0 || touchLocation.y > CGRectGetHeight(self.view.bounds)) {
-        self.tapFailed = YES;
         self.state = UIGestureRecognizerStateFailed;
     } else if (touchLocation.x < 0 || touchLocation.x > CGRectGetWidth(self.view.bounds)) {
-        self.tapFailed = YES;
+        self.state = UIGestureRecognizerStateFailed;
     }
 }
 
@@ -52,9 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super touchesEnded:touches withEvent:event];
     
-    if (self.tapFailed) {
-        self.state = UIGestureRecognizerStateFailed;
-    } else if (self.state != UIGestureRecognizerStateCancelled) {
+    if (self.state != UIGestureRecognizerStateCancelled) {
         self.state = UIGestureRecognizerStateEnded;
     }
 }
