@@ -371,6 +371,7 @@ NS_ASSUME_NONNULL_BEGIN
         case UIGestureRecognizerStateBegan: {
             self.shouldHighlight = YES;
             
+            // Delay highlight for a short time, to prevent the UI from flashing when the user scrolls over multiple components
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 if (!self.shouldHighlight) {
                     return;
