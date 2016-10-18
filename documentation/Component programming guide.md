@@ -9,6 +9,7 @@ Welcome to the Hub Framework component programming guide! This guide aims to hel
 - [Image handling](#image-handling)
 - [Managing child components](#managing-child-components)
 - [Saving and restoring UI state](#saving-and-restoring-ui-state)
+- [Responding to user interactions](#responding-to-user-interactions)
 - [Integrating a component with the framework](#integrating-a-component-with-the-framework)
 - [Best practices](#best-practices)
 
@@ -157,6 +158,36 @@ You can use any type to model your UI state. For example, in the case of a scrol
 Once your component has started to render a model for which a UI state was previously saved, the framework will call `restoreUIState:` on your component with the saved state, allowing the component to restore it.
 
 Thanks to this API, you can hide the fact that components are reused for your users, as from their perspective it will look like the component was there all along.
+
+## Responding to user interactions
+
+If you want your component to adapts its appearance when the user interacts with it, such as when highlighting or selecting a `UITableViewCell`, you can make it conform to `HUBComponentWithSelectionState`.
+
+The Hub Framework supports two selection states; `Highlighted` and `Selected`. Your component will automatically be called and asked to update its view for a new selection state when the user either touches it (highlight), or taps it (selection).
+
+Here we are implementing a component using a `UITableViewCell`, and updating its `highlighted` and `selected` properties in response to a selection state change:
+
+```objective-c
+- (void)updateViewForSelectionState:(HUBComponentSelectionState)selectionState
+{
+    UITableViewCell *cell = self.view;
+    
+    switch (selectionState) {
+        case HUBComponentSelectionStateNone:
+            cell.highlighted = NO;
+            cell.selected = NO;
+            break;
+        case HUBComponentSelectionStateHighlighted:
+            cell.highlighted = YES;
+            cell.selected = NO;
+            break;
+        case HUBComponentSelectionStateSelected:
+            cell.highlighted = NO;
+            cell.selected = YES;
+            break;
+    }
+}
+```
 
 ## Integrating a component with the framework
 
