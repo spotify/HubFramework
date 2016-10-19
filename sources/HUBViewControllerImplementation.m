@@ -262,7 +262,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addComponentWrapper:(HUBComponentWrapper *)componentWrapper toArray:(NSMutableArray<HUBComponentWrapper *> *)array
 {
     [array addObject:componentWrapper];
-    for (HUBComponentWrapper *childComponentWrapper in [componentWrapper visibleChildren]) {
+    for (HUBComponentWrapper *childComponentWrapper in componentWrapper.visibleChildren) {
         [self addComponentWrapper:childComponentWrapper toArray:array];
     }
 }
