@@ -230,6 +230,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  The index path of this component in the `HUBComponentModel` hierarchy.
+ *
+ *  @discussion This is a computed property so shouldn't be accessed multiple times in the same block.
  */
 @property (nonatomic, strong, readonly) NSIndexPath *indexPath;
 

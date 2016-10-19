@@ -137,6 +137,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether the wrapped component's view has appeared since the model was last changed
 @property (nonatomic, readonly) BOOL viewHasAppearedSinceLastModelChange;
 
+/// Returns an array of all direct child component wrappers that are currently being displayed.
+@property (nonatomic, readonly) NSArray<HUBComponentWrapper *> *visibleChildren;
+
 /**
  *  Initialize an instance of this class with a component to wrap and its identifier
  *
@@ -157,13 +160,6 @@ NS_ASSUME_NONNULL_BEGIN
  * is prepared for reuse.
  */
 - (void)saveComponentUIState;
-
-/**
- *  Returns an array of all child component wrappers that are currently being displayed.
- *
- *  @discussion Only direct descendents will be returned. Visible children of children won't be returned.
- */
-- (NSArray<HUBComponentWrapper *> *)visibleChildren;
 
 @end
 
