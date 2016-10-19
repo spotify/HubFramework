@@ -48,7 +48,7 @@
 #import "HUBActionHandler.h"
 #import "HUBViewModelDiff.h"
 
-CFTimeInterval const kDownloadingTimeTreshold = 0.07;
+static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -963,7 +963,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                  imageIdentifier:imageData.identifier
                                                                                                wrapperIdentifier:componentWrapper.identifier
                                                                                                       childIndex:childIndex
-                                                                                                       timestamp:CACurrentMediaTime()];
+                                                                                                       timestamp:[NSDate date].timeIntervalSinceReferenceDate];
     
     NSMutableArray *contextsForURL = self.componentImageLoadingContexts[imageURL];
 
@@ -1024,8 +1024,8 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
-    CFTimeInterval downloadingTime = CACurrentMediaTime() - context.timestamp;
-    BOOL animated = downloadingTime > kDownloadingTimeTreshold;
+    NSTimeInterval downloadTime = [NSDate date].timeIntervalSinceReferenceDate - context.timestamp;
+    BOOL animated = downloadTime > HUBImageDownloadTimeThreshold;
 
     [componentWrapper updateViewForLoadedImage:image
                                       fromData:imageData

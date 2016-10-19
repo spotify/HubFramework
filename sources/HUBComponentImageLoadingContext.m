@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
                   imageIdentifier:(nullable NSString *)imageIdentifier
                 wrapperIdentifier:(NSUUID *)wrapperIdentifier
                        childIndex:(nullable NSNumber *)childIndex
-                        timestamp:(CFTimeInterval)timestamp
+                        timestamp:(NSTimeInterval)timestamp
 {
     self = [super init];
     
