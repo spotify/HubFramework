@@ -328,8 +328,8 @@ NS_ASSUME_NONNULL_BEGIN
     if (componentWrapper != nil) {
         [componentWrapper updateViewForSelectionState:HUBComponentSelectionStateSelected];
         
-        // Delay deselection until the next rendering pass, so that the user can see it for a few miliseconds
-        dispatch_async(dispatch_get_main_queue(), ^{
+        // Deselect after a short time, to enable the user to see the selection for a brief time
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [componentWrapper updateViewForSelectionState:HUBComponentSelectionStateNone];
         });
         
@@ -424,7 +424,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                                                         parent:componentWrapper];
     
     UIView * const childComponentView = HUBComponentLoadViewIfNeeded(childComponentWrapper);
-    [childComponentWrapper configureViewWithModel:model containerViewSize:containerViewSize];
+    [self configureComponentWrapper:childComponentWrapper withModel:model containerViewSize:containerViewSize];
     [self didAddComponentWrapper:childComponentWrapper];
     
     CGSize const preferredViewSize = [childComponentWrapper preferredViewSizeForDisplayingModel:model
@@ -500,8 +500,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
 {
-    self.componentWrappersByModelIdentifier[componentWrapper.model.identifier] = nil;
-    
     if (!componentWrapper.isRootComponent) {
         [self.childComponentReusePool addComponentWrappper:componentWrapper];
     }
@@ -540,8 +538,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
     
     HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:cell];
-    [componentWrapper configureViewWithModel:componentModel containerViewSize:collectionView.frame.size];
-    self.componentWrappersByModelIdentifier[componentModel.identifier] = componentWrapper;
+    [self configureComponentWrapper:componentWrapper withModel:componentModel containerViewSize:collectionView.frame.size];
     
     [self loadImagesForComponentWrapper:componentWrapper
                              childIndex:nil];
@@ -769,7 +766,18 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     wrapper.delegate = self;
     self.componentWrappersByIdentifier[wrapper.identifier] = wrapper;
-    self.componentWrappersByModelIdentifier[wrapper.model.identifier] = wrapper;
+}
+
+- (void)configureComponentWrapper:(HUBComponentWrapper *)wrapper withModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
+{
+    NSString * const currentModelIdentifier = wrapper.model.identifier;
+    
+    if (self.componentWrappersByModelIdentifier[currentModelIdentifier] == wrapper) {
+        self.componentWrappersByModelIdentifier[currentModelIdentifier] = nil;
+    }
+    
+    [wrapper configureViewWithModel:model containerViewSize:containerViewSize];
+    self.componentWrappersByModelIdentifier[model.identifier] = wrapper;
 }
 
 - (nullable HUBComponentWrapper *)componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell
@@ -889,10 +897,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                          containerViewSize:containerViewSize];
     
     UIView * const componentView = HUBComponentLoadViewIfNeeded(componentWrapper);
-    [componentWrapper configureViewWithModel:componentModel containerViewSize:containerViewSize];
+    [self configureComponentWrapper:componentWrapper withModel:componentModel containerViewSize:containerViewSize];
     componentView.frame = CGRectMake(0, 0, componentViewSize.width, componentViewSize.height);
-    
-    self.componentWrappersByModelIdentifier[componentModel.identifier] = componentWrapper;
     
     [self loadImagesForComponentWrapper:componentWrapper
                              childIndex:nil];
