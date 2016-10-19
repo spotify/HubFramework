@@ -291,7 +291,7 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    [self performAsynchronousTestWithBlock:^{
+    [self performAsynchronousTestWithDelay:0 block:^{
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
@@ -329,7 +329,7 @@
     XCTAssertEqual(self.component.mainImageData.localImage, localMainImage);
     XCTAssertNil(self.component.backgroundImageData);
     
-    [self performAsynchronousTestWithBlock:^{
+    [self performAsynchronousTestWithDelay:0 block:^{
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
@@ -361,7 +361,7 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    [self performAsynchronousTestWithBlock:^{
+    [self performAsynchronousTestWithDelay:0 block:^{
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
@@ -492,7 +492,7 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     [component.childDelegate component:component willDisplayChildAtIndex:0 view:[UIView new]];
     
-    [self performAsynchronousTestWithBlock:^{
+    [self performAsynchronousTestWithDelay:0 block:^{
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
@@ -748,7 +748,7 @@
     
     XCTAssertEqual(self.component.selectionState, HUBComponentSelectionStateSelected);
     
-    [self performAsynchronousTestWithBlock:^{
+    [self performAsynchronousTestWithDelay:1 block:^{
         XCTAssertEqual(self.component.selectionState, HUBComponentSelectionStateNone);
     }];
 }
@@ -774,7 +774,7 @@
     
     XCTAssertEqual(self.component.selectionState, HUBComponentSelectionStateSelected);
     
-    [self performAsynchronousTestWithBlock:^{
+    [self performAsynchronousTestWithDelay:1 block:^{
         XCTAssertEqual(self.component.selectionState, HUBComponentSelectionStateNone);
     }];
 }
@@ -1900,15 +1900,15 @@
     }
 }
 
-- (void)performAsynchronousTestWithBlock:(void(^)(void))block
+- (void)performAsynchronousTestWithDelay:(NSTimeInterval)delay block:(void(^)(void))block
 {
     XCTestExpectation * const expectation = [self expectationWithDescription:@"Async test"];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [expectation fulfill];
     });
     
-    [self waitForExpectationsWithTimeout:10 handler:^(NSError * _Nullable error) {
+    [self waitForExpectationsWithTimeout:MAX(delay, 5) * 2 handler:^(NSError * _Nullable error) {
         XCTAssertNil(error);
         block();
     }];
