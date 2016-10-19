@@ -133,8 +133,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, nullable, readonly) id<HUBViewModel> viewModel;
 
-/// The views of the root body components that are currently visible on screen, keyed by their index
-@property (nonatomic, strong, readonly) NSDictionary<NSNumber *, UIView *> *visibleBodyComponentViews;
+/// The views of the root body components that are currently visible on screen, keyed by their index paths
+@property (nonatomic, strong, readonly) NSDictionary<NSIndexPath *, UIView *> *visibleBodyComponentViewIndexPaths;
 
 /**
  *  Return the frame used to render a body component at a given index

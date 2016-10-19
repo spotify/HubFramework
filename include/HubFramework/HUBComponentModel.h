@@ -229,6 +229,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable, readonly) NSArray<id<HUBComponentModel>> *children;
 
 /**
+ *  The index path of this component in the `HUBComponentModel` hierarchy.
+ */
+@property (nonatomic, strong, readonly) NSIndexPath *indexPath;
+
+/**
  *  Return a child component model for a given index, or `nil` if an invalid index was supplied
  *
  *  @param childIndex The index to return a child component model for

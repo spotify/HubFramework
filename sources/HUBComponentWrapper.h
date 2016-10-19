@@ -158,6 +158,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)saveComponentUIState;
 
+/**
+ *  Returns an array of all child component wrappers that are currently being displayed.
+ *
+ *  @discussion Only direct descendents will be returned. Visible children of children won't be returned.
+ */
+- (NSArray<HUBComponentWrapper *> *)visibleChildren;
+
 @end
 
 NS_ASSUME_NONNULL_END

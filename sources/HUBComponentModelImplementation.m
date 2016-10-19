@@ -190,6 +190,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentModel
 
+- (NSIndexPath *)indexPath
+{
+    // Since we're traversing from this model through the parents, we will record the indices in reverse order.
+    // Capture them in a mutable array for easy reversal.
+    NSMutableArray<NSNumber *> *reversedIndexPath = [NSMutableArray array];
+    [reversedIndexPath addObject:@(self.index)];
+
+    id<HUBComponentModel> parent = self.parent;
+    while (parent) {
+        [reversedIndexPath addObject:@(parent.index)];
+        parent = parent.parent;
+    }
+
+    NSIndexPath *indexPath = nil;
+    for  (NSNumber *index in reversedIndexPath.reverseObjectEnumerator) {
+        if (indexPath == nil) {
+            indexPath = [NSIndexPath indexPathWithIndex:index.unsignedIntegerValue];
+        } else {
+            indexPath = [indexPath indexPathByAddingIndex:index.unsignedIntegerValue];
+        }
+    }
+
+    return indexPath;
+}
+
 - (nullable id<HUBComponentModel>)childAtIndex:(NSUInteger)childIndex
 {
     if (childIndex >= self.children.count) {

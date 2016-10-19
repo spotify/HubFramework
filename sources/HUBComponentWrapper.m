@@ -109,6 +109,18 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+- (NSArray<HUBComponentWrapper *> *)visibleChildren
+{
+    NSMutableArray<HUBComponentWrapper *> *visibleChildren = [NSMutableArray array];
+    for (NSNumber *visibleViewID in self.visibleChildViewsByIndex) {
+        HUBComponentWrapper *childComponentWrapper = self.childrenByIndex[visibleViewID];
+        if (childComponentWrapper) {
+            [visibleChildren addObject:childComponentWrapper];
+        }
+    }
+    return [visibleChildren copy];
+}
+
 #pragma mark - Property overrides
 
 - (BOOL)handlesImages
