@@ -389,6 +389,14 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - HUBComponentWrapperDelegate
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+willUpdateSelectionState:(HUBComponentSelectionState)selectionState
+{
+    if (selectionState == HUBComponentSelectionStateHighlighted) {
+        self.highlightedComponentWrapper = componentWrapper;
+    }
+}
+
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
  didUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     switch (selectionState) {
@@ -396,10 +404,9 @@ NS_ASSUME_NONNULL_BEGIN
             if (componentWrapper == (HUBComponentWrapper *)self.highlightedComponentWrapper) {
                 self.highlightedComponentWrapper = nil;
             }
+            
             break;
         case HUBComponentSelectionStateHighlighted:
-            [self.highlightedComponentWrapper updateViewForSelectionState:HUBComponentSelectionStateNone];
-            self.highlightedComponentWrapper = componentWrapper;
             break;
         case HUBComponentSelectionStateSelected:
             [self selectComponentWithModel:componentWrapper.model];
@@ -529,6 +536,7 @@ NS_ASSUME_NONNULL_BEGIN
         HUBComponentWrapper * const componentWrapper = [self wrapComponent:component withModel:componentModel];
         self.componentWrappersByCellIdentifier[cell.identifier] = componentWrapper;
         cell.component = componentWrapper;
+        [componentWrapper viewDidMoveToSuperview:cell];
     }
     
     HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:cell];
@@ -585,6 +593,8 @@ NS_ASSUME_NONNULL_BEGIN
     CGRect const contentRect = [self contentRectForScrollView:scrollView];
     [self.scrollHandler scrollingWillStartInViewController:self currentContentRect:contentRect];
     self.collectionViewIsScrolling = YES;
+    
+    [self.highlightedComponentWrapper updateViewForSelectionState:HUBComponentSelectionStateNone];
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
@@ -856,7 +866,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (HUBComponentWrapper *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
-                                                                previousComponentWrapper:(nullable HUBComponentWrapper *)previousComponentWrapper
+                                                  previousComponentWrapper:(nullable HUBComponentWrapper *)previousComponentWrapper
 {
     BOOL const shouldReuseCurrentComponent = [previousComponentWrapper.model.componentIdentifier isEqual:componentModel.componentIdentifier];
     HUBComponentWrapper *componentWrapper;
@@ -889,6 +899,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (!shouldReuseCurrentComponent) {
         [self.view addSubview:componentView];
+        [componentWrapper viewDidMoveToSuperview:self.view];
     }
     
     if (componentWrapper.isContentOffsetObserver) {

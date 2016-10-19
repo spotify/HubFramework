@@ -39,6 +39,15 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HUBComponentWrapperDelegate <NSObject>
 
 /**
+ *  Notify the delegate that a component wrapper will update its selection state
+ *
+ *  @param componentWrapper The component wrapper that is about to update its selection state
+ *  @param selectionState The new selection state that the component wrapper will enter
+ */
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
+
+/**
  *  Notify the delegate that a component wrapper updated its selection state
  *
  *  @param componentWrapper The component wrapper that updated its selection state
@@ -162,6 +171,13 @@ NS_ASSUME_NONNULL_BEGIN
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
                            parent:(nullable HUBComponentWrapper *)parent HUB_DESIGNATED_INITIALIZER;
+
+/**
+ *  Notify the component wrapper that its view was added to a new superview
+ *
+ *  @param superview The new superview of the component's view
+ */
+- (void)viewDidMoveToSuperview:(UIView *)superview;
 
 /** 
  *  Manually saves the underlying component's UI state. This is normally called before the component
