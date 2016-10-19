@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *componentUIStateManager;
 @property (nonatomic, strong, readonly) HUBComponentReusePool *childComponentReusePool;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
-@property (nonatomic, strong, nullable) HUBViewModelDiff *lastViewModelDiff;
+@property (nonatomic, strong, nullable) NSArray<HUBViewModelDiff *> *pendingDiffs;
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
 @property (nonatomic) BOOL viewModelIsInitial;
@@ -130,10 +130,11 @@ NS_ASSUME_NONNULL_BEGIN
     _overlayComponentWrappers = [NSMutableArray new];
     _componentWrappersByIdentifier = [NSMutableDictionary new];
     _componentWrappersByCellIdentifier = [NSMutableDictionary new];
+    _pendingDiffs = [NSArray array];
     _componentUIStateManager = [HUBComponentUIStateManager new];
     _childComponentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:_componentRegistry
                                                                          UIStateManager:_componentUIStateManager];
-    
+
     _viewModelLoader.delegate = self;
     _imageLoader.delegate = self;
     
@@ -295,7 +296,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     if (self.viewModel != nil && !self.viewModelIsInitial) {
         id<HUBViewModel> const currentModel = self.viewModel;
-        self.lastViewModelDiff = [HUBViewModelDiff diffFromViewModel:currentModel toViewModel:viewModel];
+        self.pendingDiffs = [self.pendingDiffs arrayByAddingObject:[HUBViewModelDiff diffFromViewModel:currentModel toViewModel:viewModel]];
     }
     
     HUBCopyNavigationItemProperties(self.navigationItem, viewModel.navigationItem);
@@ -626,10 +627,10 @@ NS_ASSUME_NONNULL_BEGIN
     /* Performing batch updates inbetween viewDidLoad and viewDidAppear is seemingly not allowed, as it
      causes an assertion inside a private UICollectionView method. If no diff exists, fall back to
      a complete reload. */
-    if (!self.viewHasAppeared || self.lastViewModelDiff == nil) {
+    if (!self.viewHasAppeared || self.pendingDiffs.count == 0) {
         [self.collectionView reloadData];
         
-        [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
+        [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.pendingDiffs.lastObject];
 
         if (self.viewHasAppeared) {
             /* Forcing a re-layout as the reloadData-call doesn't trigger the numberOfItemsInSection:-calls
@@ -638,19 +639,19 @@ NS_ASSUME_NONNULL_BEGIN
             [self.collectionView layoutIfNeeded];
         }
         
-        self.lastViewModelDiff = nil;
+        self.pendingDiffs = @[];
     } else {
         void (^updateBlock)() = ^{
             [self.collectionView performBatchUpdates:^{
-                HUBViewModelDiff * const lastDiff = self.lastViewModelDiff;
+                for (HUBViewModelDiff *diff in self.pendingDiffs) {
+                    [self.collectionView insertItemsAtIndexPaths:diff.insertedBodyComponentIndexPaths];
+                    [self.collectionView deleteItemsAtIndexPaths:diff.deletedBodyComponentIndexPaths];
+                    [self.collectionView reloadItemsAtIndexPaths:diff.reloadedBodyComponentIndexPaths];
+                }
                 
-                [self.collectionView insertItemsAtIndexPaths:lastDiff.insertedBodyComponentIndexPaths];
-                [self.collectionView deleteItemsAtIndexPaths:lastDiff.deletedBodyComponentIndexPaths];
-                [self.collectionView reloadItemsAtIndexPaths:lastDiff.reloadedBodyComponentIndexPaths];
-                
-                [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
+                [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.pendingDiffs.lastObject];
             } completion:^(BOOL finished) {
-                self.lastViewModelDiff = nil;
+                self.pendingDiffs = @[];
             }];
         };
         
