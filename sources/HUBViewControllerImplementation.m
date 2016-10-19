@@ -49,6 +49,7 @@
 #import "HUBActionPerformer.h"
 #import "HUBViewModelDiff.h"
 #import "HUBComponentGestureRecognizer.h"
+#import "HUBViewModelRenderer.h"
 
 static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
@@ -74,6 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, nullable, readonly) id<HUBImageLoader> imageLoader;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
+@property (nonatomic, strong, nullable) HUBViewModelRenderer *viewModelRenderer;
 @property (nonatomic, assign) BOOL collectionViewIsScrolling;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
@@ -87,10 +89,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentReusePool *childComponentReusePool;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *highlightedComponentWrapper;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
-@property (nonatomic, strong, nullable) HUBViewModelDiff *lastViewModelDiff;
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
-@property (nonatomic) BOOL viewModelIsInitial;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
 @property (nonatomic) CGFloat visibleKeyboardHeight;
 
@@ -137,7 +137,6 @@ NS_ASSUME_NONNULL_BEGIN
     _actionHandler = actionHandler;
     _scrollHandler = scrollHandler;
     _imageLoader = imageLoader;
-    _viewModelIsInitial = YES;
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     _componentImageLoadingContexts = [NSMutableDictionary new];
     _contentOffsetObservingComponentWrappers = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
@@ -227,9 +226,12 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.viewHasBeenLaidOut = YES;
 
-    if (self.viewModel != nil) {
-        id<HUBViewModel> const viewModel = self.viewModel;
-        [self reloadCollectionViewWithViewModel:viewModel animated:NO];
+    if (self.viewModel != nil && self.viewModelHasChangedSinceLastLayoutUpdate) {
+        if (!CGRectEqualToRect(self.collectionView.frame, self.view.bounds)) {
+            self.collectionView.frame = self.view.bounds;
+            id<HUBViewModel> const viewModel = self.viewModel;
+            [self reloadCollectionViewWithViewModel:viewModel animated:NO];
+        }
     }
 }
 
@@ -351,16 +353,10 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBViewControllerDelegate> const delegate = self.delegate;
     [delegate viewController:self willUpdateWithViewModel:viewModel];
-
-    if (self.viewModel != nil && !self.viewModelIsInitial) {
-        id<HUBViewModel> const currentModel = self.viewModel;
-        self.lastViewModelDiff = [HUBViewModelDiff diffFromViewModel:currentModel toViewModel:viewModel];
-    }
     
     HUBCopyNavigationItemProperties(self.navigationItem, viewModel.navigationItem);
     
     self.viewModel = viewModel;
-    self.viewModelIsInitial = NO;
     self.viewModelHasChangedSinceLastLayoutUpdate = YES;
     [self.view setNeedsLayout];
     
@@ -761,67 +757,30 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (void)reloadCollectionViewWithViewModel:(id<HUBViewModel>)viewModel animated:(BOOL)animated
 {
-    if (!self.viewModelHasChangedSinceLastLayoutUpdate) {
-        if (CGRectEqualToRect(self.collectionView.frame, self.view.bounds)) {
-            return;
-        }
-    }
-    
-    self.collectionView.frame = self.view.bounds;
-    
-    [self saveStatesForVisibleComponents];
-    
     if (![self.collectionView.collectionViewLayout isKindOfClass:[HUBCollectionViewLayout class]]) {
         self.collectionView.collectionViewLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
                                                                                        componentLayoutManager:self.componentLayoutManager];
     }
-    
-    HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)self.collectionView.collectionViewLayout;
-    
-    /* Performing batch updates inbetween viewDidLoad and viewDidAppear is seemingly not allowed, as it
-     causes an assertion inside a private UICollectionView method. If no diff exists, fall back to
-     a complete reload. */
-    if (!self.viewHasAppeared || self.lastViewModelDiff == nil) {
-        [self.collectionView reloadData];
-        
-        [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
 
-        if (self.viewHasAppeared) {
-            /* Forcing a re-layout as the reloadData-call doesn't trigger the numberOfItemsInSection:-calls
-             by itself, and batch update calls don't play well without having an initial item count. */
-            [self.collectionView setNeedsLayout];
-            [self.collectionView layoutIfNeeded];
-        }
-        
-        self.lastViewModelDiff = nil;
-    } else {
-        void (^updateBlock)() = ^{
-            [self.collectionView performBatchUpdates:^{
-                HUBViewModelDiff * const lastDiff = self.lastViewModelDiff;
-                
-                [self.collectionView insertItemsAtIndexPaths:lastDiff.insertedBodyComponentIndexPaths];
-                [self.collectionView deleteItemsAtIndexPaths:lastDiff.deletedBodyComponentIndexPaths];
-                [self.collectionView reloadItemsAtIndexPaths:lastDiff.reloadedBodyComponentIndexPaths];
-                
-                [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:self.lastViewModelDiff];
-            } completion:^(BOOL finished) {
-                self.lastViewModelDiff = nil;
-            }];
-        };
-        
-        if (animated) {
-            updateBlock();
-        } else {
-            [UIView performWithoutAnimation:updateBlock];
-        }
+    if (self.viewModelRenderer == nil) {
+        UICollectionView * const nonnullCollectionView = self.collectionView;
+        self.viewModelRenderer = [[HUBViewModelRenderer alloc] initWithCollectionView:nonnullCollectionView];
     }
+
+    [self saveStatesForVisibleComponents];
+
+    [self.viewModelRenderer renderViewModel:viewModel
+                          usingBatchUpdates:self.viewHasAppeared
+                                   animated:animated
+                                 completion:^{
+        [self.delegate viewControllerDidFinishRendering:self];
+    }];
     
     [self configureHeaderComponent];
     [self configureOverlayComponents];
     [self headerAndOverlayComponentViewsWillAppear];
     
     self.viewModelHasChangedSinceLastLayoutUpdate = NO;
-    [self.delegate viewControllerDidFinishRendering:self];
 }
 
 - (void)saveStatesForVisibleComponents
