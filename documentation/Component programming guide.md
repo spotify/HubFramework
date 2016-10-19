@@ -161,29 +161,24 @@ Thanks to this API, you can hide the fact that components are reused for your us
 
 ## Responding to user interactions
 
-If you want your component to adapt its appearance when the user interacts with it, such as when highlighting or selecting a `UITableViewCell`, you can make it conform to `HUBComponentWithSelectionState`.
+If you want your component to adapt its appearance when the user interacts with it (mimicking the behavior as when highlighting or selecting a `UITableViewCell`), you can make it conform to `HUBComponentWithSelectionState`.
 
 The Hub Framework supports two selection states; `Highlighted` and `Selected`. Your component will automatically be called and asked to update its view for a new selection state when the user either touches it (highlight), or taps it (selection).
 
-Here we are implementing a component using a `UITableViewCell`, and updating its `highlighted` and `selected` properties in response to a selection state change:
+Here we are implementing a component and modifying its view's `alpha` in response to user interactions:
 
 ```objective-c
 - (void)updateViewForSelectionState:(HUBComponentSelectionState)selectionState
 {
-    UITableViewCell *cell = self.view;
-    
     switch (selectionState) {
         case HUBComponentSelectionStateNone:
-            cell.highlighted = NO;
-            cell.selected = NO;
+            self.view.alpha = 1;
             break;
         case HUBComponentSelectionStateHighlighted:
-            cell.highlighted = YES;
-            cell.selected = NO;
+            self.view.alpha = 0.7;
             break;
         case HUBComponentSelectionStateSelected:
-            cell.highlighted = NO;
-            cell.selected = YES;
+            self.view.alpha = 0.5;
             break;
     }
 }
