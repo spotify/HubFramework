@@ -197,7 +197,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     id<HUBComponentModel> parent = self.parent;
     while (parent != nil) {
-        // At the next index at the start of the array as we're traversing up the hierarchy.
+        // Add the next index at the start of the array as we're traversing up the hierarchy.
         [indices insertObject:@(parent.index) atIndex:0];
         parent = parent.parent;
     }
