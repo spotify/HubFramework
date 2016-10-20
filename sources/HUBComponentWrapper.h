@@ -157,6 +157,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
 /// Whether the wrapped component's view has appeared since the model was last changed
 @property (nonatomic, readonly) BOOL viewHasAppearedSinceLastModelChange;
 
+/// Returns an array of all direct child component wrappers that are currently being displayed.
+@property (nonatomic, readonly) NSArray<HUBComponentWrapper *> *visibleChildren;
+
 /**
  *  Initialize an instance of this class with a component to wrap and its identifier
  *

@@ -245,16 +245,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewController
 
-- (NSDictionary<NSNumber *, UIView *> *)visibleBodyComponentViews
+- (NSDictionary<NSIndexPath *, UIView *> *)visibleBodyComponentViewIndexPaths
 {
-    NSMutableDictionary<NSNumber *, UIView *> * const visibleViews = [NSMutableDictionary new];
-    
+    NSMutableDictionary<NSIndexPath *, UIView *> * const visibleViewIndexPaths = [NSMutableDictionary new];
+    NSMutableArray<HUBComponentWrapper *> *visibleComponents = [NSMutableArray array];
+
     for (HUBComponentCollectionViewCell * const cell in self.collectionView.visibleCells) {
         HUBComponentWrapper * const wrapper = [self componentWrapperFromCell:cell];
-        visibleViews[@(wrapper.model.index)] = HUBComponentLoadViewIfNeeded(wrapper);
+        [self addComponentWrapper:wrapper toArray:visibleComponents];
     }
-    
-    return [visibleViews copy];
+
+    for (HUBComponentWrapper *visibleComponent in visibleComponents) {
+        NSIndexPath *indexPath = visibleComponent.model.indexPath;
+        visibleViewIndexPaths[indexPath] = HUBComponentLoadViewIfNeeded(visibleComponent);
+    }
+
+    return [visibleViewIndexPaths copy];
+}
+
+- (void)addComponentWrapper:(HUBComponentWrapper *)componentWrapper toArray:(NSMutableArray<HUBComponentWrapper *> *)array
+{
+    [array addObject:componentWrapper];
+    for (HUBComponentWrapper *childComponentWrapper in componentWrapper.visibleChildren) {
+        [self addComponentWrapper:childComponentWrapper toArray:array];
+    }
 }
 
 - (CGRect)frameForBodyComponentAtIndex:(NSUInteger)index
