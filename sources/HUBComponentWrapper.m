@@ -287,57 +287,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateViewForSelectionState:(HUBComponentSelectionState)selectionState
 {
-    if (selectionState == HUBComponentSelectionStateNone) {
-        [self.gestureRecognizer cancel];
-    }
-    
-    self.shouldPerformDelayedHighlight = NO;
-    
-    if (self.selectionState == selectionState) {
-        return;
-    }
-    
-    self.selectionState = selectionState;
-    
-    if ([self.component conformsToProtocol:@protocol(HUBComponentWithSelectionState)]) {
-        [(id<HUBComponentWithSelectionState>)self.component updateViewForSelectionState:selectionState];
-    } else if ([self.view isKindOfClass:[UITableViewCell class]]) {
-        UITableViewCell * const tableViewCell = self.view;
-        
-        switch (selectionState) {
-            case HUBComponentSelectionStateNone:
-                tableViewCell.highlighted = NO;
-                tableViewCell.selected = NO;
-                break;
-            case HUBComponentSelectionStateHighlighted:
-                tableViewCell.highlighted = YES;
-                tableViewCell.selected = NO;
-                break;
-            case HUBComponentSelectionStateSelected:
-                tableViewCell.highlighted = NO;
-                tableViewCell.selected = YES;
-                break;
-        }
-    } else if ([self.view isKindOfClass:[UICollectionViewCell class]]) {
-        UICollectionViewCell * const collectionViewCell = self.view;
-        
-        switch (selectionState) {
-            case HUBComponentSelectionStateNone:
-                collectionViewCell.highlighted = NO;
-                collectionViewCell.selected = NO;
-                break;
-            case HUBComponentSelectionStateHighlighted:
-                collectionViewCell.highlighted = YES;
-                collectionViewCell.selected = NO;
-                break;
-            case HUBComponentSelectionStateSelected:
-                collectionViewCell.highlighted = NO;
-                collectionViewCell.selected = YES;
-                break;
-        }
-    }
-    
-    [self.delegate componentWrapper:self didUpdateSelectionState:selectionState];
+    [self updateViewForSelectionState:selectionState notifyDelegate:NO];
 }
 
 #pragma mark - HUBComponentChildDelegate
@@ -437,20 +387,20 @@ NS_ASSUME_NONNULL_BEGIN
                     return;
                 }
                 
-                [self updateViewForSelectionState:HUBComponentSelectionStateHighlighted];
+                [self updateViewForSelectionState:HUBComponentSelectionStateHighlighted notifyDelegate:YES];
             });
             
             break;
         }
         case UIGestureRecognizerStateEnded: {
             [delegate componentWrapper:self willUpdateSelectionState:HUBComponentSelectionStateHighlighted];
-            [self updateViewForSelectionState:HUBComponentSelectionStateSelected];
+            [self updateViewForSelectionState:HUBComponentSelectionStateSelected notifyDelegate:YES];
             break;
         }
         case UIGestureRecognizerStateCancelled:
         case UIGestureRecognizerStateFailed: {
             [delegate componentWrapper:self willUpdateSelectionState:HUBComponentSelectionStateHighlighted];
-            [self updateViewForSelectionState:HUBComponentSelectionStateNone];
+            [self updateViewForSelectionState:HUBComponentSelectionStateNone notifyDelegate:YES];
             break;
         }
     }
@@ -468,6 +418,63 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (restoredUIState != nil) {
         [(id<HUBComponentWithRestorableUIState>)self.component restoreUIState:restoredUIState];
+    }
+}
+
+- (void)updateViewForSelectionState:(HUBComponentSelectionState)selectionState notifyDelegate:(BOOL)notifyDelegate
+{
+    if (selectionState == HUBComponentSelectionStateNone) {
+        [self.gestureRecognizer cancel];
+    }
+    
+    self.shouldPerformDelayedHighlight = NO;
+    
+    if (self.selectionState == selectionState) {
+        return;
+    }
+    
+    self.selectionState = selectionState;
+    
+    if ([self.component conformsToProtocol:@protocol(HUBComponentWithSelectionState)]) {
+        [(id<HUBComponentWithSelectionState>)self.component updateViewForSelectionState:selectionState];
+    } else if ([self.view isKindOfClass:[UITableViewCell class]]) {
+        UITableViewCell * const tableViewCell = self.view;
+        
+        switch (selectionState) {
+            case HUBComponentSelectionStateNone:
+                tableViewCell.highlighted = NO;
+                tableViewCell.selected = NO;
+                break;
+            case HUBComponentSelectionStateHighlighted:
+                tableViewCell.highlighted = YES;
+                tableViewCell.selected = NO;
+                break;
+            case HUBComponentSelectionStateSelected:
+                tableViewCell.highlighted = NO;
+                tableViewCell.selected = YES;
+                break;
+        }
+    } else if ([self.view isKindOfClass:[UICollectionViewCell class]]) {
+        UICollectionViewCell * const collectionViewCell = self.view;
+        
+        switch (selectionState) {
+            case HUBComponentSelectionStateNone:
+                collectionViewCell.highlighted = NO;
+                collectionViewCell.selected = NO;
+                break;
+            case HUBComponentSelectionStateHighlighted:
+                collectionViewCell.highlighted = YES;
+                collectionViewCell.selected = NO;
+                break;
+            case HUBComponentSelectionStateSelected:
+                collectionViewCell.highlighted = NO;
+                collectionViewCell.selected = YES;
+                break;
+        }
+    }
+    
+    if (notifyDelegate) {
+        [self.delegate componentWrapper:self didUpdateSelectionState:selectionState];
     }
 }
 

@@ -1019,6 +1019,9 @@
     
     [self simulateViewControllerLayoutCycle];
     
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    
     self.actionHandler.block = ^(id<HUBActionContext> context) {
         return YES;
     };
