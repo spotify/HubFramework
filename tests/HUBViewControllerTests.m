@@ -56,6 +56,7 @@
 #import "HUBActionFactoryMock.h"
 #import "HUBActionMock.h"
 #import "HUBViewControllerScrollHandlerMock.h"
+#import "HUBComponentCollectionViewCell.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -1863,6 +1864,7 @@
       willAppearInView:(UIView *)componentView
 {
     XCTAssertEqual(viewController, self.viewController);
+    XCTAssertFalse([componentView isKindOfClass:[HUBComponentCollectionViewCell class]]);
     [self.componentModelsFromAppearanceDelegateMethod addObject:componentModel];
 }
 
