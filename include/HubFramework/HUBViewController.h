@@ -137,8 +137,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  The views of the body components that are currently visible on screen, keyed by their index path
  *
  *  The index paths used for keys contains the indexes for the components' views, starting from the root. For example,
- *  a root body component at index 4 will have an index path with just the index 4, while the 3rd child of that component
- *  will have an index path with the indexes 4 and 2.
+ *  a root body component at index 4 will have an index path with just the index 4, while the child at index 2 of that
+ *  component will have an index path with the indexes 4 and 2.
  */
 @property (nonatomic, strong, readonly) NSDictionary<NSIndexPath *, UIView *> *visibleBodyComponentViews;
 
