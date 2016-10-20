@@ -49,6 +49,7 @@
         _layoutTraits = [NSMutableSet new];
         _canHandleImages = YES;
         _mutableRestoredUIStates = [NSMutableArray new];
+        _isImageAnimated = NO;
     }
     
     return self;
@@ -89,6 +90,8 @@
 
 - (void)updateViewForLoadedImage:(UIImage *)image fromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model animated:(BOOL)animated
 {
+    self.isImageAnimated = animated;
+
     switch (imageData.type) {
         case HUBComponentImageTypeMain:
             self.mainImageData = imageData;

@@ -451,6 +451,52 @@
     XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
 }
 
+- (void)testDownloadFromNetworkImageAnimation
+{
+    NSURL * const imageURL = [NSURL URLWithString:@"https://image.url"];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.mainImageURL = imageURL;
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+    id<HUBImageLoaderDelegate> const imageLoaderDelegate = self.imageLoader.delegate;
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+    NSTimeInterval downloadFromNetworkTime = 2;
+    [NSThread sleepForTimeInterval:downloadFromNetworkTime];
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
+    XCTAssertTrue(self.component.isImageAnimated);
+}
+
+- (void)testDownloadFromCacheImageAnimation
+{
+    NSURL * const imageURL = [NSURL URLWithString:@"https://image.url"];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.mainImageURL = imageURL;
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+    id<HUBImageLoaderDelegate> const imageLoaderDelegate = self.imageLoader.delegate;
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
+    XCTAssertFalse(self.component.isImageAnimated);
+}
+
 - (void)testImageLoadingForChildComponent
 {
     NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
