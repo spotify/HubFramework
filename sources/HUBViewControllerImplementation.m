@@ -963,7 +963,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
     
     [self componentWrapperWillAppear:wrapper];
-    [self.delegate viewController:self componentWithModel:wrapper.model willAppearInView:cell];
+
+    UIView * const component = HUBComponentLoadViewIfNeeded(cell.component);
+    [self.delegate viewController:self componentWithModel:wrapper.model willAppearInView:component];
 }
 
 - (void)headerAndOverlayComponentViewsWillAppear
