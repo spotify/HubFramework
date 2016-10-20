@@ -22,6 +22,7 @@
 #import "HUBComponentWithChildren.h"
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentWithRestorableUIState.h"
+#import "HUBComponentWithSelectionState.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentActionPerformer.h"
@@ -35,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentWithChildren,
     HUBComponentWithImageHandling,
     HUBComponentWithRestorableUIState,
+    HUBComponentWithSelectionState,
     HUBComponentViewObserver,
     HUBComponentContentOffsetObserver,
     HUBComponentActionPerformer
@@ -54,6 +56,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The UI states that have been passed to this component when restored
 @property (nonatomic, strong, readonly) NSArray<id> *restoredUIStates;
+
+/// The current selection state of the component
+@property (nonatomic, assign, readonly) HUBComponentSelectionState selectionState;
 
 /// The model that the component is currently configured with
 @property (nonatomic, strong, readonly, nullable) id<HUBComponentModel> model;

@@ -19,9 +19,12 @@
  *  under the License.
  */
 
-#import "HUBTouchForwardingTarget.h"
+#import <UIKit/UIKit.h>
 
-/// Category making `UIGestureRecognizer` a touch forwarding target
-@interface UIGestureRecognizer (HUBTouchForwardingTarget) <HUBTouchForwardingTarget>
+/// Mocked touch object, for use in unit tests only
+@interface HUBTouchMock : UITouch
+
+/// Any mocked location that the touch should return from `locationInView:`
+@property (nonatomic) CGPoint location;
 
 @end

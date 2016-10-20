@@ -19,39 +19,56 @@
  *  under the License.
  */
 
-#import "HUBGestureRecognizerMock.h"
-#import <UIKit/UIGestureRecognizerSubclass.h>
+#import "HUBComponentGestureRecognizer.h"
 
-#import "HUBTouchPhase.h"
+#import <UIKit/UIGestureRecognizerSubclass.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBGestureRecognizerMock ()
+@implementation HUBComponentGestureRecognizer
 
-@property (nonatomic, strong, nullable, readwrite) NSValue *touchPhaseValue;
+#pragma mark - API
 
-@end
+- (void)cancel
+{
+    self.state = UIGestureRecognizerStateCancelled;
+}
 
-@implementation HUBGestureRecognizerMock
+#pragma mark - UIGestureRecognizer
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    self.touchPhaseValue = @(HUBTouchPhaseBegan);
+    [super touchesBegan:touches withEvent:event];
+    self.state = UIGestureRecognizerStateBegan;
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    self.touchPhaseValue = @(HUBTouchPhaseMoved);
+    [super touchesMoved:touches withEvent:event];
+    
+    UITouch * const touch = [touches anyObject];
+    CGPoint const touchLocation = [touch locationInView:self.view];
+    
+    if (touchLocation.y < 0 || touchLocation.y > CGRectGetHeight(self.view.bounds)) {
+        self.state = UIGestureRecognizerStateFailed;
+    } else if (touchLocation.x < 0 || touchLocation.x > CGRectGetWidth(self.view.bounds)) {
+        self.state = UIGestureRecognizerStateFailed;
+    }
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    self.touchPhaseValue = @(HUBTouchPhaseEnded);
+    [super touchesEnded:touches withEvent:event];
+    
+    if (self.state != UIGestureRecognizerStateCancelled) {
+        self.state = UIGestureRecognizerStateEnded;
+    }
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    self.touchPhaseValue = @(HUBTouchPhaseCancelled);
+    [super touchesCancelled:touches withEvent:event];
+    self.state = UIGestureRecognizerStateCancelled;
 }
 
 @end

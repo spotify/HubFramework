@@ -24,6 +24,7 @@
 
 @interface HUBComponentMock ()
 
+@property (nonatomic, assign, readwrite) HUBComponentSelectionState selectionState;
 @property (nonatomic, strong, readwrite, nullable) id<HUBComponentModel> model;
 @property (nonatomic, strong, readwrite, nullable) id<HUBComponentImageData> mainImageData;
 @property (nonatomic, strong, readwrite, nullable) id<HUBComponentImageData> backgroundImageData;
@@ -109,6 +110,15 @@
     [self.mutableRestoredUIStates addObject:state];
 }
 
+#pragma mark - HUBComponentWithSelectionState
+
+- (void)updateViewForSelectionState:(HUBComponentSelectionState)selectionState
+{
+    // This assert ensures that components are never asked to update their view for the same selection state twice
+    NSParameterAssert(selectionState != self.selectionState);
+    self.selectionState = selectionState;
+}
+
 #pragma mark - HUBComponentViewObserver
 
 - (void)viewDidResize
@@ -123,7 +133,8 @@
 
 #pragma mark - HUBComponentContentOffsetObserver
 
-- (void)updateViewForChangedContentOffset:(CGPoint)contentOffset {
+- (void)updateViewForChangedContentOffset:(CGPoint)contentOffset
+{
     self.numberOfContentOffsetChanges++;
 }
 

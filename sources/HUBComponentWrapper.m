@@ -30,11 +30,12 @@
 #import "HUBComponentModel.h"
 #import "HUBComponentUIStateManager.h"
 #import "HUBComponentResizeObservingView.h"
+#import "HUBComponentGestureRecognizer.h"
 #import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBComponentWrapper () <HUBComponentChildDelegate, HUBComponentActionDelegate, HUBComponentResizeObservingViewDelegate>
+@interface HUBComponentWrapper () <HUBComponentChildDelegate, HUBComponentActionDelegate, HUBComponentResizeObservingViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong, readwrite) id<HUBComponentModel> model;
 @property (nonatomic, assign) BOOL viewHasAppearedSinceLastModelChange;
@@ -42,7 +43,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBComponentWrapper *> *childrenByIndex;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, UIView *> *visibleChildViewsByIndex;
+@property (nonatomic, strong, nullable) HUBComponentGestureRecognizer *gestureRecognizer;
 @property (nonatomic, assign) BOOL hasBeenConfigured;
+@property (nonatomic, assign) BOOL shouldPerformDelayedHighlight;
+@property (nonatomic, assign) HUBComponentSelectionState selectionState;
 
 @end
 
@@ -85,13 +89,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (void)updateViewForChangedContentOffset:(CGPoint)contentOffset
+- (void)viewDidMoveToSuperview:(UIView *)superview
 {
-    if (![self.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
-        return;
+    if (self.gestureRecognizer != nil) {
+        UIGestureRecognizer * const existingGestureRecognizer = self.gestureRecognizer;
+        [existingGestureRecognizer.view removeGestureRecognizer:existingGestureRecognizer];
     }
     
-    [(id<HUBComponentContentOffsetObserver>)self.component updateViewForChangedContentOffset:contentOffset];
+    HUBComponentGestureRecognizer * const gestureRecognizer = [[HUBComponentGestureRecognizer alloc] initWithTarget:self action:@selector(handleGestureRecognizer:)];
+    gestureRecognizer.delegate = self;
+    [superview addGestureRecognizer:gestureRecognizer];
+    self.gestureRecognizer = gestureRecognizer;
 }
 
 - (void)saveComponentUIState
@@ -264,6 +272,74 @@ NS_ASSUME_NONNULL_BEGIN
     [(id<HUBComponentViewObserver>)self.component viewDidResize];
 }
 
+#pragma mark - HUBComponentContentOffsetObserver
+
+- (void)updateViewForChangedContentOffset:(CGPoint)contentOffset
+{
+    if (![self.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
+        return;
+    }
+    
+    [(id<HUBComponentContentOffsetObserver>)self.component updateViewForChangedContentOffset:contentOffset];
+}
+
+#pragma mark - HUBComponentWithSelectionState
+
+- (void)updateViewForSelectionState:(HUBComponentSelectionState)selectionState
+{
+    if (selectionState == HUBComponentSelectionStateNone) {
+        [self.gestureRecognizer cancel];
+    }
+    
+    self.shouldPerformDelayedHighlight = NO;
+    
+    if (self.selectionState == selectionState) {
+        return;
+    }
+    
+    self.selectionState = selectionState;
+    
+    if ([self.component conformsToProtocol:@protocol(HUBComponentWithSelectionState)]) {
+        [(id<HUBComponentWithSelectionState>)self.component updateViewForSelectionState:selectionState];
+    } else if ([self.view isKindOfClass:[UITableViewCell class]]) {
+        UITableViewCell * const tableViewCell = self.view;
+        
+        switch (selectionState) {
+            case HUBComponentSelectionStateNone:
+                tableViewCell.highlighted = NO;
+                tableViewCell.selected = NO;
+                break;
+            case HUBComponentSelectionStateHighlighted:
+                tableViewCell.highlighted = YES;
+                tableViewCell.selected = NO;
+                break;
+            case HUBComponentSelectionStateSelected:
+                tableViewCell.highlighted = NO;
+                tableViewCell.selected = YES;
+                break;
+        }
+    } else if ([self.view isKindOfClass:[UICollectionViewCell class]]) {
+        UICollectionViewCell * const collectionViewCell = self.view;
+        
+        switch (selectionState) {
+            case HUBComponentSelectionStateNone:
+                collectionViewCell.highlighted = NO;
+                collectionViewCell.selected = NO;
+                break;
+            case HUBComponentSelectionStateHighlighted:
+                collectionViewCell.highlighted = YES;
+                collectionViewCell.selected = NO;
+                break;
+            case HUBComponentSelectionStateSelected:
+                collectionViewCell.highlighted = NO;
+                collectionViewCell.selected = YES;
+                break;
+        }
+    }
+    
+    [self.delegate componentWrapper:self didUpdateSelectionState:selectionState];
+}
+
 #pragma mark - HUBComponentChildDelegate
 
 - (id<HUBComponent>)component:(id<HUBComponentWithChildren>)component childComponentForModel:(id<HUBComponentModel>)childComponentModel
@@ -327,11 +403,57 @@ NS_ASSUME_NONNULL_BEGIN
     return [self.delegate componentWrapper:self performActionWithIdentifier:identifier customData:customData];
 }
 
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
 #pragma mark - HUBComponentResizeObservingViewDelegate
 
 - (void)resizeObservingViewDidResize:(HUBComponentResizeObservingView *)view
 {
     [(id<HUBComponentViewObserver>)self.component viewDidResize];
+}
+
+#pragma mark - Gesture recognizer handling
+
+- (void)handleGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+{
+    id<HUBComponentWrapperDelegate> const delegate = self.delegate;
+    
+    switch (gestureRecognizer.state) {
+        case UIGestureRecognizerStatePossible:
+        case UIGestureRecognizerStateChanged:
+            break;
+        case UIGestureRecognizerStateBegan: {
+            self.shouldPerformDelayedHighlight = YES;
+            [delegate componentWrapper:self willUpdateSelectionState:HUBComponentSelectionStateHighlighted];
+            
+            // Delay highlight for a short time, to prevent the UI from flashing when the user scrolls over multiple components
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (!self.shouldPerformDelayedHighlight) {
+                    return;
+                }
+                
+                [self updateViewForSelectionState:HUBComponentSelectionStateHighlighted];
+            });
+            
+            break;
+        }
+        case UIGestureRecognizerStateEnded: {
+            [delegate componentWrapper:self willUpdateSelectionState:HUBComponentSelectionStateHighlighted];
+            [self updateViewForSelectionState:HUBComponentSelectionStateSelected];
+            break;
+        }
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed: {
+            [delegate componentWrapper:self willUpdateSelectionState:HUBComponentSelectionStateHighlighted];
+            [self updateViewForSelectionState:HUBComponentSelectionStateNone];
+            break;
+        }
+    }
 }
 
 #pragma mark - Private utilities

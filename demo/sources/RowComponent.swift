@@ -31,7 +31,7 @@ import HubFramework
  *  - subtitle
  *  - mainImageData
  */
-class RowComponent: NSObject, HUBComponentWithImageHandling {
+class RowComponent: NSObject, HUBComponentWithImageHandling, UIGestureRecognizerDelegate {
     var layoutTraits: Set<HUBComponentLayoutTrait> { return [.fullWidth, .stackable] }
     var view: UIView?
     
