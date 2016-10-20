@@ -41,17 +41,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param imageLoader The image loader that finished loading
  *  @param image The image that was loaded
  *  @param imageURL The URL of the image that was loaded
- *  @param loadedFromCache Whether the image was loaded from cache, or over the network. If loaded from cache,
- *         the Hub Framework won't ask the component that the image is for to apply an animation when displaying
- *         the image.
  *
  *  It's safe to call this method from any thread, as the framework will automatically dispatch to the main
  *  queue in case it's called from a background thread.
  */
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader
        didLoadImage:(UIImage *)image
-             forURL:(NSURL *)imageURL
-          fromCache:(BOOL)loadedFromCache;
+             forURL:(NSURL *)imageURL;
 
 /**
  *  Notify the Hub Framework that an image loader failed to load an image because of an error
