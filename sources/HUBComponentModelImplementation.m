@@ -192,7 +192,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSIndexPath *)indexPath
 {
-    NSMutableArray<NSNumber *> *indices = [NSMutableArray array];
+    NSMutableArray<NSNumber *> * const indices = [NSMutableArray array];
     [indices addObject:@(self.index)];
 
     id<HUBComponentModel> parent = self.parent;
