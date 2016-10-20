@@ -40,6 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Any index of a child component that the image is for
 @property (nonatomic, copy, readonly, nullable) NSNumber *childIndex;
 
+/// The creation timestamp
+@property (nonatomic, assign, readonly) NSTimeInterval timestamp;
+
 /**
  *  Initialize an instance of this class with its required values
  *
@@ -47,11 +50,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param imageIdentifier Any identifier for the image that this object is for
  *  @param wrapperIdentifier The identifier of the wrapper for the component that the image is for
  *  @param childIndex Any index of a child component that the image is for
+ *  @param timestamp The creation timestamp
  */
 - (instancetype)initWithImageType:(HUBComponentImageType)imageType
                   imageIdentifier:(nullable NSString *)imageIdentifier
                 wrapperIdentifier:(NSUUID *)wrapperIdentifier
-                       childIndex:(nullable NSNumber *)childIndex HUB_DESIGNATED_INITIALIZER;
+                       childIndex:(nullable NSNumber *)childIndex
+                        timestamp:(NSTimeInterval)timestamp HUB_DESIGNATED_INITIALIZER;
 
 @end
 
