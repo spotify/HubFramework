@@ -247,18 +247,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewController
 
-- (NSDictionary<NSIndexPath *, UIView *> *)visibleBodyComponentViewIndexPaths
+- (NSDictionary<NSIndexPath *, UIView *> *)visibleBodyComponentViews
 {
     NSMutableDictionary<NSIndexPath *, UIView *> * const visibleViewIndexPaths = [NSMutableDictionary new];
-    NSMutableArray<HUBComponentWrapper *> *visibleComponents = [NSMutableArray array];
+    NSMutableArray<HUBComponentWrapper *> * const visibleComponents = [NSMutableArray array];
 
     for (HUBComponentCollectionViewCell * const cell in self.collectionView.visibleCells) {
         HUBComponentWrapper * const wrapper = [self componentWrapperFromCell:cell];
         [self addComponentWrapper:wrapper toArray:visibleComponents];
     }
 
-    for (HUBComponentWrapper *visibleComponent in visibleComponents) {
-        NSIndexPath *indexPath = visibleComponent.model.indexPath;
+    for (HUBComponentWrapper * const visibleComponent in visibleComponents) {
+        NSIndexPath * const indexPath = visibleComponent.model.indexPath;
         visibleViewIndexPaths[indexPath] = HUBComponentLoadViewIfNeeded(visibleComponent);
     }
 
