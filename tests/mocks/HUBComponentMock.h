@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL isContentOffsetObserver;
 
 /// Whether the component's image was recently animated
-@property (nonatomic) BOOL isImageAnimated;
+@property (nonatomic, readonly) BOOL imageWasAnimated;
 
 @end
 

@@ -472,7 +472,7 @@
     NSTimeInterval downloadFromNetworkTime = 2;
     [NSThread sleepForTimeInterval:downloadFromNetworkTime];
     [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
-    XCTAssertTrue(self.component.isImageAnimated);
+    XCTAssertTrue(self.component.imageWasAnimated);
 }
 
 - (void)testDownloadFromCacheImageAnimation
@@ -494,7 +494,7 @@
     self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
 
     [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
-    XCTAssertFalse(self.component.isImageAnimated);
+    XCTAssertFalse(self.component.imageWasAnimated);
 }
 
 - (void)testImageLoadingForChildComponent
