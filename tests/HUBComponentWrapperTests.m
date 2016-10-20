@@ -103,6 +103,14 @@
 
 // Below methods are all no-ops implemented out of necessity.
 
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper willUpdateSelectionState:(HUBComponentSelectionState)selectionState
+{
+}
+
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper didUpdateSelectionState:(HUBComponentSelectionState)selectionState
+{
+}
+
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childSelectedAtIndex:(NSUInteger)childIndex
 {
 }

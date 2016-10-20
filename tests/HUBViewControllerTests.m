@@ -291,7 +291,7 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    [self performAsynchronousTestWithBlock:^{
+    [self performAsynchronousTestWithDelay:0 block:^{
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
@@ -329,7 +329,7 @@
     XCTAssertEqual(self.component.mainImageData.localImage, localMainImage);
     XCTAssertNil(self.component.backgroundImageData);
     
-    [self performAsynchronousTestWithBlock:^{
+    [self performAsynchronousTestWithDelay:0 block:^{
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
@@ -361,7 +361,7 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    [self performAsynchronousTestWithBlock:^{
+    [self performAsynchronousTestWithDelay:0 block:^{
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
@@ -538,7 +538,7 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     [component.childDelegate component:component willDisplayChildAtIndex:0 view:[UIView new]];
     
-    [self performAsynchronousTestWithBlock:^{
+    [self performAsynchronousTestWithDelay:0 block:^{
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
         XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
@@ -771,8 +771,8 @@
         return YES;
     };
     
-    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    [self.collectionView.delegate collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
+    [self.viewController selectComponentWithModel:componentModel];
     
     XCTAssertEqualObjects(targetInitialViewModel.identifier, initialViewModelIdentifier);
 }
@@ -786,13 +786,17 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-    [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionCenteredVertically];
-    [self.collectionView.delegate collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+    NSIndexPath * const cellIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:cellIndexPath];
     
-    XCTAssertEqualObjects(self.collectionView.selectedIndexPaths, [NSSet setWithObject:indexPath]);
-    XCTAssertEqualObjects(self.collectionView.deselectedIndexPaths, [NSSet setWithObject:indexPath]);
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
+    [self.viewController selectComponentWithModel:componentModel];
+    
+    XCTAssertEqual(self.component.selectionState, HUBComponentSelectionStateSelected);
+    
+    [self performAsynchronousTestWithDelay:1 block:^{
+        XCTAssertEqual(self.component.selectionState, HUBComponentSelectionStateNone);
+    }];
 }
 
 - (void)testComponentDeselectedAfterCustomSelectionHandling
@@ -808,13 +812,17 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-    [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionCenteredVertically];
-    [self.collectionView.delegate collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+    NSIndexPath * const cellIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:cellIndexPath];
     
-    XCTAssertEqualObjects(self.collectionView.selectedIndexPaths, [NSSet setWithObject:indexPath]);
-    XCTAssertEqualObjects(self.collectionView.deselectedIndexPaths, [NSSet setWithObject:indexPath]);
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
+    [self.viewController selectComponentWithModel:componentModel];
+    
+    XCTAssertEqual(self.component.selectionState, HUBComponentSelectionStateSelected);
+    
+    [self performAsynchronousTestWithDelay:1 block:^{
+        XCTAssertEqual(self.component.selectionState, HUBComponentSelectionStateNone);
+    }];
 }
 
 - (void)testCreatingAndReusingChildComponent
@@ -909,14 +917,12 @@
         return [context.componentModel.identifier isEqualToString:selectableIdentifier];
     };
     
-    id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
-    
-    NSIndexPath * const nonSelectableIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    [collectionViewDelegate collectionView:self.collectionView didSelectItemAtIndexPath:nonSelectableIndexPath];
+    id<HUBComponentModel> const nonSelectableComponentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
+    [self.viewController selectComponentWithModel:nonSelectableComponentModel];
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)0);
     
-    NSIndexPath * const selectableIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
-    [collectionViewDelegate collectionView:self.collectionView didSelectItemAtIndexPath:selectableIndexPath];
+    id<HUBComponentModel> const selectableComponentModel = self.viewModelFromDelegateMethod.bodyComponentModels[1];
+    [self.viewController selectComponentWithModel:selectableComponentModel];
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].identifier, selectableIdentifier);
     
@@ -925,7 +931,7 @@
         return YES;
     };
     
-    [collectionViewDelegate collectionView:self.collectionView didSelectItemAtIndexPath:selectableIndexPath];
+    [self.viewController selectComponentWithModel:selectableComponentModel];
     XCTAssertEqual(self.actionHandler.contexts.count, (NSUInteger)1);
 
     id<HUBActionContext> actionContext = self.actionHandler.contexts.firstObject;
@@ -1749,11 +1755,11 @@
     
     self.collectionView.mockedVisibleCells = @[cellA, cellB, cellC];
     
-    NSDictionary<NSNumber *, UIView *> * const visibleViews = self.viewController.visibleBodyComponentViews;
+    NSDictionary<NSIndexPath *, UIView *> * const visibleViews = self.viewController.visibleBodyComponentViewIndexPaths;
     XCTAssertEqual(visibleViews.count, (NSUInteger)3);
-    XCTAssertEqual(visibleViews[@0], componentA.view);
-    XCTAssertEqual(visibleViews[@1], componentB.view);
-    XCTAssertEqual(visibleViews[@2], componentC.view);
+    XCTAssertEqual(visibleViews[[NSIndexPath indexPathWithIndex:0]], componentA.view);
+    XCTAssertEqual(visibleViews[[NSIndexPath indexPathWithIndex:1]], componentB.view);
+    XCTAssertEqual(visibleViews[[NSIndexPath indexPathWithIndex:2]], componentC.view);
 }
 
 - (void)testContentOperationNotifiedOfSelectionAction
@@ -1772,10 +1778,8 @@
         return YES;
     };
     
-    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-    [self.collectionView.delegate collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
-    
+    id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
+    [self.viewController selectComponentWithModel:componentModel];
     XCTAssertEqual(self.contentOperation.actionContext, actionContext);
 }
 
@@ -1942,15 +1946,15 @@
     }
 }
 
-- (void)performAsynchronousTestWithBlock:(void(^)(void))block
+- (void)performAsynchronousTestWithDelay:(NSTimeInterval)delay block:(void(^)(void))block
 {
     XCTestExpectation * const expectation = [self expectationWithDescription:@"Async test"];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [expectation fulfill];
     });
     
-    [self waitForExpectationsWithTimeout:10 handler:^(NSError * _Nullable error) {
+    [self waitForExpectationsWithTimeout:MAX(delay, 5) * 2 handler:^(NSError * _Nullable error) {
         XCTAssertNil(error);
         block();
     }];

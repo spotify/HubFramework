@@ -188,14 +188,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  doesn't already exist, use the `-builderExistsForChildComponentModelWithIdentifier:` API instead if you simply
  *  wish to check for the existance of a builder.
  */
-- (id<HUBComponentModelBuilder>)builderForChildWithIdentifier:(NSString *)identifier;
+- (id<HUBComponentModelBuilder>)builderForChildWithIdentifier:(NSString *)identifier NS_SWIFT_NAME(builderForChild(withIdentifier:));
 
 /**
  *  Remove a builder for a child component model with a certain identifier
  *
  *  @param identifier The identifier of the child component model builder to remove
  */
-- (void)removeBuilderForChildWithIdentifier:(NSString *)identifier;
+- (void)removeBuilderForChildWithIdentifier:(NSString *)identifier NS_SWIFT_NAME(removeBuilderForChild(withIdentifier:));
 
 /**
  *  Remove all builders for child component models contained within this builder

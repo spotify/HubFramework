@@ -20,14 +20,15 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "HUBHeaderMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Mocked gesture recognizer, for use in unit tests only
-@interface HUBGestureRecognizerMock : UIGestureRecognizer
+/// Gesture recognizer used to recognize highlights & selections for a component
+@interface HUBComponentGestureRecognizer : UIGestureRecognizer
 
-/// A value containing any current touch phase of the recognizer. Contains a `HUBTouchPhase` value.
-@property (nonatomic, strong, nullable, readonly) NSValue *touchPhaseValue;
+/// Cancel any current gesture that it being recognized (will set the state to cancelled).
+- (void)cancel;
 
 @end
 

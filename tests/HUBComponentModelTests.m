@@ -159,9 +159,36 @@
     XCTAssertNil([parent childWithIdentifier:@"noChild"]);
 }
 
+- (void)testIndexPaths
+{
+    HUBComponentModelImplementation * const parent = [self createComponentModelWithIdentifier:@"parent" index:0];
+    HUBComponentModelImplementation * const childA = [self createComponentModelWithIdentifier:@"childA" index:0 parent:parent];
+    HUBComponentModelImplementation * const childB = [self createComponentModelWithIdentifier:@"childB" index:1 parent:parent];
+    HUBComponentModelImplementation * const grandchild = [self createComponentModelWithIdentifier:@"grandchild" index:0 parent:childB];
+
+    parent.children = @[childA, childB];
+    childB.children = @[grandchild];
+
+    XCTAssertEqual(parent.indexPath, [NSIndexPath indexPathWithIndex:0]);
+
+    NSUInteger childAIndexPathArray[] = {0,0};
+    XCTAssertEqual(childA.indexPath, [NSIndexPath indexPathWithIndexes:childAIndexPathArray length:2]);
+
+    NSUInteger childBIndexPathArray[] = {0,1};
+    XCTAssertEqual(childB.indexPath, [NSIndexPath indexPathWithIndexes:childBIndexPathArray length:2]);
+
+    NSUInteger grandchildIndexPathArray[] = {0,1,0};
+    XCTAssertEqual(grandchild.indexPath, [NSIndexPath indexPathWithIndexes:grandchildIndexPathArray length:3]);
+}
+
 #pragma mark - Utilities
 
 - (HUBComponentModelImplementation *)createComponentModelWithIdentifier:(NSString *)identifier index:(NSUInteger)index
+{
+    return [self createComponentModelWithIdentifier:identifier index:index parent:nil];
+}
+
+- (HUBComponentModelImplementation *)createComponentModelWithIdentifier:(NSString *)identifier index:(NSUInteger)index parent:(nullable HUBComponentModelImplementation *)parent
 {
     HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
     HUBComponentTargetImplementation * const target = [[HUBComponentTargetImplementation alloc] initWithURI:nil
@@ -187,7 +214,7 @@
                                                               metadata:nil
                                                            loggingData:nil
                                                             customData:nil
-                                                                parent:nil];
+                                                                parent:parent];
 }
 
 @end

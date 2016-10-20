@@ -19,9 +19,13 @@
  *  under the License.
  */
 
-#import "UIGestureRecognizer+HUBTouchForwardingTarget.h"
-#import <UIKit/UIGestureRecognizerSubclass.h>
+#import "HUBTouchMock.h"
 
-@implementation UIGestureRecognizer (HUBTouchForwardingTarget)
+@implementation HUBTouchMock
+
+- (CGPoint)locationInView:(UIView *)view
+{
+    return self.location;
+}
 
 @end

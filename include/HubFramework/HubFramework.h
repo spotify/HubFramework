@@ -61,6 +61,7 @@
 #import "HUBComponentWithChildren.h"
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentWithRestorableUIState.h"
+#import "HUBComponentWithSelectionState.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentActionPerformer.h"

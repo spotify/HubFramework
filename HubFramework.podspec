@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name         = "HubFramework"
-    s.version      = "2.0.1"
+    s.version      = "2.0.3"
     s.summary      = "Spotify's component-driven UI framework for iOS"
 
     s.description  = <<-DESC
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
     }
 
     s.source                = { :git => "https://github.com/spotify/HubFramework.git", :tag => s.version }
-    s.source_files          = "include/HubFramework/*.h", "HubFramework/*.{h,m}"
+    s.source_files          = "include/HubFramework/*.h", "sources/*.{h,m}"
     s.public_header_files   = "include/HubFramework/*.h"
     s.frameworks            = "UIKit", "SystemConfiguration"
     s.xcconfig              = {

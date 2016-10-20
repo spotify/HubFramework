@@ -23,6 +23,7 @@
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentWithRestorableUIState.h"
+#import "HUBComponentWithSelectionState.h"
 #import "HUBHeaderMacros.h"
 
 @protocol HUBComponent;
@@ -36,6 +37,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Delegate protocol for `HUBComponentWrapper`
 @protocol HUBComponentWrapperDelegate <NSObject>
+
+/**
+ *  Notify the delegate that a component wrapper will update its selection state
+ *
+ *  @param componentWrapper The component wrapper that is about to update its selection state
+ *  @param selectionState The new selection state that the component wrapper will enter
+ */
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
+
+/**
+ *  Notify the delegate that a component wrapper updated its selection state
+ *
+ *  @param componentWrapper The component wrapper that updated its selection state
+ *  @param selectionState The selection state that the component wrapper entered
+ */
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+ didUpdateSelectionState:(HUBComponentSelectionState)selectionState;
 
 /**
  *  Return a child component wrapper for a given model
@@ -110,7 +129,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBComponentWrapper : NSObject <
     HUBComponentWithImageHandling,
     HUBComponentViewObserver,
-    HUBComponentContentOffsetObserver
+    HUBComponentContentOffsetObserver,
+    HUBComponentWithSelectionState
 >
 
 /// A unique identifier for this component wrapper. Can be used to track it accross various operations.
@@ -137,6 +157,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether the wrapped component's view has appeared since the model was last changed
 @property (nonatomic, readonly) BOOL viewHasAppearedSinceLastModelChange;
 
+/// Returns an array of all direct child component wrappers that are currently being displayed.
+@property (nonatomic, readonly) NSArray<HUBComponentWrapper *> *visibleChildren;
+
 /**
  *  Initialize an instance of this class with a component to wrap and its identifier
  *
@@ -152,9 +175,16 @@ NS_ASSUME_NONNULL_BEGIN
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
                            parent:(nullable HUBComponentWrapper *)parent HUB_DESIGNATED_INITIALIZER;
 
+/**
+ *  Notify the component wrapper that its view was added to a new superview
+ *
+ *  @param superview The new superview of the component's view
+ */
+- (void)viewDidMoveToSuperview:(UIView *)superview;
+
 /** 
- * Manually saves the underlying component's UI state. This is normally called before the component
- * is prepared for reuse.
+ *  Manually saves the underlying component's UI state. This is normally called before the component
+ *  is prepared for reuse.
  */
 - (void)saveComponentUIState;
 
