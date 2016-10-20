@@ -192,24 +192,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSIndexPath *)indexPath
 {
-    // Since we're traversing from this model through the parents, we will record the indices in reverse order.
-    // Capture them in a mutable array for easy reversal.
-    NSMutableArray<NSNumber *> *reversedIndices = [NSMutableArray array];
-    [reversedIndices addObject:@(self.index)];
+    NSMutableArray<NSNumber *> *indices = [NSMutableArray array];
+    [indices addObject:@(self.index)];
 
     id<HUBComponentModel> parent = self.parent;
     while (parent != nil) {
-        [reversedIndices addObject:@(parent.index)];
+        // At the next index at the start of the array as we're traversing up the hierarchy.
+        [indices insertObject:@(parent.index) atIndex:0];
         parent = parent.parent;
     }
 
-    NSIndexPath *indexPath = nil;
-    for  (NSNumber *index in reversedIndices.reverseObjectEnumerator) {
-        if (indexPath == nil) {
-            indexPath = [NSIndexPath indexPathWithIndex:index.unsignedIntegerValue];
-        } else {
-            indexPath = [indexPath indexPathByAddingIndex:index.unsignedIntegerValue];
-        }
+    NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:indices.firstObject.unsignedIntegerValue];
+    for (NSUInteger i = 1; i < indices.count; i++) {
+        indexPath = [indexPath indexPathByAddingIndex:indices[i].unsignedIntegerValue];
     }
 
     return indexPath;
