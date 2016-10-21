@@ -57,6 +57,7 @@
 #import "HUBActionMock.h"
 #import "HUBViewControllerScrollHandlerMock.h"
 #import "HUBComponentCollectionViewCell.h"
+#import "HUBUtilities.h"
 
 @interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -82,6 +83,7 @@
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromAppearanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromDisapperanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromSelectionDelegateMethod;
+@property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromApperanceDelegateMethod;
 @property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
 
 
@@ -171,6 +173,7 @@
     self.componentModelsFromAppearanceDelegateMethod = [NSMutableArray new];
     self.componentModelsFromDisapperanceDelegateMethod = [NSMutableArray new];
     self.componentModelsFromSelectionDelegateMethod = [NSMutableArray new];
+    self.componentViewsFromApperanceDelegateMethod = [NSMutableArray new];
 }
 
 #pragma mark - Tests
@@ -1076,7 +1079,8 @@
     XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
     XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, (NSUInteger)1);
     XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod[0].title, @"title");
-    
+    XCTAssertEqualObjects(self.componentViewsFromApperanceDelegateMethod, @[self.component.view]);
+
     self.collectionView.mockedIndexPathsForVisibleItems = @[indexPath];
     [self.viewController viewWillAppear:NO];
     
@@ -1520,7 +1524,7 @@
 
     id<HUBComponentModel> const childComponentModel = children.firstObject;
 
-    UIView *childView = childComponent.view;
+    UIView *childView = HUBComponentLoadViewIfNeeded(childComponent);
     id<HUBComponentChildDelegate> childDelegate = component.childDelegate;
     [childDelegate component:component childComponentForModel:childComponentModel];
     [childDelegate component:component willDisplayChildAtIndex:0 view:childView];
@@ -1865,6 +1869,8 @@
 {
     XCTAssertEqual(viewController, self.viewController);
     XCTAssertFalse([componentView isKindOfClass:[HUBComponentCollectionViewCell class]]);
+
+    [self.componentViewsFromApperanceDelegateMethod addObject:componentView];
     [self.componentModelsFromAppearanceDelegateMethod addObject:componentModel];
 }
 
