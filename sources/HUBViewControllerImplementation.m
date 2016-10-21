@@ -49,6 +49,8 @@
 #import "HUBViewModelDiff.h"
 #import "HUBComponentGestureRecognizer.h"
 
+static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewControllerImplementation () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, HUBComponentWrapperDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate>
@@ -245,18 +247,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewController
 
-- (NSDictionary<NSIndexPath *, UIView *> *)visibleBodyComponentViewIndexPaths
+- (NSDictionary<NSIndexPath *, UIView *> *)visibleBodyComponentViews
 {
     NSMutableDictionary<NSIndexPath *, UIView *> * const visibleViewIndexPaths = [NSMutableDictionary new];
-    NSMutableArray<HUBComponentWrapper *> *visibleComponents = [NSMutableArray array];
+    NSMutableArray<HUBComponentWrapper *> * const visibleComponents = [NSMutableArray array];
 
     for (HUBComponentCollectionViewCell * const cell in self.collectionView.visibleCells) {
         HUBComponentWrapper * const wrapper = [self componentWrapperFromCell:cell];
         [self addComponentWrapper:wrapper toArray:visibleComponents];
     }
 
-    for (HUBComponentWrapper *visibleComponent in visibleComponents) {
-        NSIndexPath *indexPath = visibleComponent.model.indexPath;
+    for (HUBComponentWrapper * const visibleComponent in visibleComponents) {
+        NSIndexPath * const indexPath = visibleComponent.model.indexPath;
         visibleViewIndexPaths[indexPath] = HUBComponentLoadViewIfNeeded(visibleComponent);
     }
 
@@ -381,14 +383,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBImageLoaderDelegate
 
-- (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache
+- (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL
 {
     HUBPerformOnMainQueue(^{
         NSArray * const contexts = self.componentImageLoadingContexts[imageURL];
         self.componentImageLoadingContexts[imageURL] = nil;
         
         for (HUBComponentImageLoadingContext * const context in contexts) {
-            [self handleLoadedComponentImage:image forURL:imageURL fromCache:loadedFromCache context:context];
+            [self handleLoadedComponentImage:image forURL:imageURL context:context];
         }
     });
 }
@@ -1063,14 +1065,15 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (CGSizeEqualToSize(preferredSize, CGSizeZero)) {
         return;
     }
-    
+
     HUBComponentImageLoadingContext * const context = [[HUBComponentImageLoadingContext alloc] initWithImageType:imageData.type
                                                                                                  imageIdentifier:imageData.identifier
                                                                                                wrapperIdentifier:componentWrapper.identifier
-                                                                                                      childIndex:childIndex];
+                                                                                                      childIndex:childIndex
+                                                                                                       timestamp:[NSDate date].timeIntervalSinceReferenceDate];
     
     NSMutableArray *contextsForURL = self.componentImageLoadingContexts[imageURL];
-    
+
     if (contextsForURL == nil) {
         contextsForURL = [NSMutableArray arrayWithObject:context];
         self.componentImageLoadingContexts[imageURL] = contextsForURL;
@@ -1083,7 +1086,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
 }
 
-- (void)handleLoadedComponentImage:(UIImage *)image forURL:(NSURL *)imageURL fromCache:(BOOL)loadedFromCache context:(HUBComponentImageLoadingContext *)context
+- (void)handleLoadedComponentImage:(UIImage *)image forURL:(NSURL *)imageURL context:(HUBComponentImageLoadingContext *)context
 {
     id<HUBViewModel> const viewModel = self.viewModel;
     
@@ -1127,11 +1130,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (![imageData.URL isEqual:imageURL]) {
         return;
     }
-    
+
+    NSTimeInterval downloadTime = [NSDate date].timeIntervalSinceReferenceDate - context.timestamp;
+    BOOL animated = downloadTime > HUBImageDownloadTimeThreshold;
+
     [componentWrapper updateViewForLoadedImage:image
                                       fromData:imageData
                                          model:componentModel
-                                      animated:!loadedFromCache];
+                                      animated:animated];
 }
 
 - (nullable id<HUBComponentModel>)childModelAtIndex:(NSUInteger)childIndex fromComponentWrapper:(HUBComponentWrapper *)componentWrapper

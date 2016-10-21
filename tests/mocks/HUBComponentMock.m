@@ -33,6 +33,7 @@
 @property (nonatomic, readwrite) NSUInteger numberOfReuses;
 @property (nonatomic, readwrite) NSUInteger numberOfContentOffsetChanges;
 @property (nonatomic, strong, readonly) NSMutableArray<id> *mutableRestoredUIStates;
+@property (nonatomic, readwrite) BOOL imageWasAnimated;
 
 @end
 
@@ -50,6 +51,7 @@
         _layoutTraits = [NSMutableSet new];
         _canHandleImages = YES;
         _mutableRestoredUIStates = [NSMutableArray new];
+        _imageWasAnimated = NO;
     }
     
     return self;
@@ -90,6 +92,8 @@
 
 - (void)updateViewForLoadedImage:(UIImage *)image fromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model animated:(BOOL)animated
 {
+    self.imageWasAnimated = animated;
+
     switch (imageData.type) {
         case HUBComponentImageTypeMain:
             self.mainImageData = imageData;

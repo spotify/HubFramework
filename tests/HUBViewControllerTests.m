@@ -375,7 +375,7 @@
 - (void)testMissingImageLoadingContextHandled
 {
     NSURL * const imageURL = [NSURL URLWithString:@"http://image.com"];
-    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
 }
 
 - (void)testImageLoadingForMultipleComponentsSharingTheSameImageURL
@@ -419,7 +419,7 @@
     self.collectionView.cells[indexPathA] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
     self.collectionView.cells[indexPathB] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
     
-    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
     
     XCTAssertEqualObjects(componentA.mainImageData.URL, imageURL);
     XCTAssertEqualObjects(componentB.mainImageData.URL, imageURL);
@@ -443,7 +443,7 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
     XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
     
     [self.component prepareViewForReuse];
@@ -451,8 +451,54 @@
     
     [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL fromCache:NO];
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
     XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
+}
+
+- (void)testDownloadFromNetworkImageAnimation
+{
+    NSURL * const imageURL = [NSURL URLWithString:@"https://image.url"];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.mainImageURL = imageURL;
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+    id<HUBImageLoaderDelegate> const imageLoaderDelegate = self.imageLoader.delegate;
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+    NSTimeInterval downloadFromNetworkTime = 2;
+    [NSThread sleepForTimeInterval:downloadFromNetworkTime];
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
+    XCTAssertTrue(self.component.imageWasAnimated);
+}
+
+- (void)testDownloadFromCacheImageAnimation
+{
+    NSURL * const imageURL = [NSURL URLWithString:@"https://image.url"];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
+        componentModelBuilder.mainImageURL = imageURL;
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+    id<HUBImageLoaderDelegate> const imageLoaderDelegate = self.imageLoader.delegate;
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
+    XCTAssertFalse(self.component.imageWasAnimated);
 }
 
 - (void)testImageLoadingForChildComponent
@@ -976,6 +1022,9 @@
     };
     
     [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
     self.actionHandler.block = ^(id<HUBActionContext> context) {
         return YES;
@@ -1714,7 +1763,7 @@
     
     self.collectionView.mockedVisibleCells = @[cellA, cellB, cellC];
     
-    NSDictionary<NSIndexPath *, UIView *> * const visibleViews = self.viewController.visibleBodyComponentViewIndexPaths;
+    NSDictionary<NSIndexPath *, UIView *> * const visibleViews = self.viewController.visibleBodyComponentViews;
     XCTAssertEqual(visibleViews.count, (NSUInteger)3);
     XCTAssertEqual(visibleViews[[NSIndexPath indexPathWithIndex:0]], componentA.view);
     XCTAssertEqual(visibleViews[[NSIndexPath indexPathWithIndex:1]], componentB.view);
