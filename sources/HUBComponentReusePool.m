@@ -25,6 +25,7 @@
 #import "HUBIdentifier.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentRegistryImplementation.h"
+#import "HUBComponentGestureRecognizer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -86,6 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                     model:model
                                            UIStateManager:self.UIStateManager
                                                  delegate:delegate
+                                        gestureRecognizer:[HUBComponentGestureRecognizer new]
                                                    parent:parent];
 }
 
