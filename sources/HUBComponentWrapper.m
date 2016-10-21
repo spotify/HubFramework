@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBComponentWrapper *> *childrenByIndex;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, UIView *> *visibleChildViewsByIndex;
-@property (nonatomic, strong, nullable) HUBComponentGestureRecognizer *gestureRecognizer;
+@property (nonatomic, strong, readonly) HUBComponentGestureRecognizer *gestureRecognizer;
 @property (nonatomic, assign) BOOL hasBeenConfigured;
 @property (nonatomic, assign) BOOL shouldPerformDelayedHighlight;
 @property (nonatomic, assign) HUBComponentSelectionState selectionState;
@@ -56,11 +56,13 @@ NS_ASSUME_NONNULL_BEGIN
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
+                gestureRecognizer:(HUBComponentGestureRecognizer *)gestureRecognizer
                            parent:(nullable HUBComponentWrapper *)parent
 {
     NSParameterAssert(component != nil);
     NSParameterAssert(model != nil);
     NSParameterAssert(UIStateManager != nil);
+    NSParameterAssert(gestureRecognizer != nil);
     NSParameterAssert(delegate != nil);
     
     self = [super init];
@@ -70,11 +72,15 @@ NS_ASSUME_NONNULL_BEGIN
         _model = model;
         _component = component;
         _UIStateManager = UIStateManager;
+        _gestureRecognizer = gestureRecognizer;
         _delegate = delegate;
         _parent = parent;
         _childrenByIndex = [NSMutableDictionary new];
         _visibleChildViewsByIndex = [NSMutableDictionary new];
 
+        _gestureRecognizer.delegate = self;
+        [_gestureRecognizer addTarget:self action:@selector(handleGestureRecognizer:)];
+        
         if ([_component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
             ((id<HUBComponentWithChildren>)_component).childDelegate = self;
         }
@@ -91,15 +97,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewDidMoveToSuperview:(UIView *)superview
 {
-    if (self.gestureRecognizer != nil) {
-        UIGestureRecognizer * const existingGestureRecognizer = self.gestureRecognizer;
-        [existingGestureRecognizer.view removeGestureRecognizer:existingGestureRecognizer];
-    }
-    
-    HUBComponentGestureRecognizer * const gestureRecognizer = [[HUBComponentGestureRecognizer alloc] initWithTarget:self action:@selector(handleGestureRecognizer:)];
-    gestureRecognizer.delegate = self;
-    [superview addGestureRecognizer:gestureRecognizer];
-    self.gestureRecognizer = gestureRecognizer;
+    [self.gestureRecognizer.view removeGestureRecognizer:self.gestureRecognizer];
+    [superview addGestureRecognizer:self.gestureRecognizer];
 }
 
 - (void)saveComponentUIState
@@ -393,13 +392,13 @@ NS_ASSUME_NONNULL_BEGIN
             break;
         }
         case UIGestureRecognizerStateEnded: {
-            [delegate componentWrapper:self willUpdateSelectionState:HUBComponentSelectionStateHighlighted];
+            [delegate componentWrapper:self willUpdateSelectionState:HUBComponentSelectionStateSelected];
             [self updateViewForSelectionState:HUBComponentSelectionStateSelected notifyDelegate:YES];
             break;
         }
         case UIGestureRecognizerStateCancelled:
         case UIGestureRecognizerStateFailed: {
-            [delegate componentWrapper:self willUpdateSelectionState:HUBComponentSelectionStateHighlighted];
+            [delegate componentWrapper:self willUpdateSelectionState:HUBComponentSelectionStateNone];
             [self updateViewForSelectionState:HUBComponentSelectionStateNone notifyDelegate:YES];
             break;
         }

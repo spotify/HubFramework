@@ -20,16 +20,32 @@
  */
 
 #import <XCTest/XCTest.h>
+#import <UIKit/UIGestureRecognizerSubclass.h>
 
 #import "HUBComponentModelImplementation.h"
 #import "HUBComponentUIStateManager.h"
+#import "HUBComponentGestureRecognizer.h"
 #import "HUBComponentWrapper.h"
 #import "HUBComponentMock.h"
 #import "HUBIdentifier.h"
 
+/**
+ *  Class extension used to expose the method that the component wrapper uses to handle its gesture recognizer
+ *  This is very ugly, but needed since there seems to be no way to get a gesture recognizer to call its targets
+ *  during a unit test.
+ */
+@interface HUBComponentWrapper ()
+
+- (void)handleGestureRecognizer:(HUBComponentGestureRecognizer *)gestureRecognizer;
+
+@end
+
 @interface HUBComponentWrapperTests : XCTestCase <HUBComponentWrapperDelegate>
 
 @property (nonatomic, strong) HUBComponentUIStateManager *UIStateManager;
+@property (nonatomic, strong) HUBComponentGestureRecognizer *gestureRecognizer;
+@property (nonatomic, assign) HUBComponentSelectionState selectionStateFromWillUpdateDelegateMethod;
+@property (nonatomic, assign) HUBComponentSelectionState selectionStateFromDidUpdateDelegateMethod;
 
 @end
 
@@ -40,7 +56,9 @@
 - (void)setUp
 {
     [super setUp];
+    
     self.UIStateManager = [HUBComponentUIStateManager new];
+    self.gestureRecognizer = [HUBComponentGestureRecognizer new];
 }
 
 #pragma mark - Tests
@@ -63,6 +81,55 @@
     XCTAssertEqualObjects([self.UIStateManager restoreUIStateForComponentModel:model], @"Groovy");
 }
 
+- (void)testHighlight
+{
+    HUBComponentMock * const component = [HUBComponentMock new];
+    id<HUBComponentModel> const model = [self componentModelWithIdentifier:@"model"];
+    HUBComponentWrapper * const componentWrapper = [self componentWrapperForComponent:component model:model];
+    UIView * const superview = [[UIView alloc] initWithFrame:CGRectZero];
+    [componentWrapper viewDidMoveToSuperview:superview];
+    
+    [self.gestureRecognizer touchesBegan:[NSSet setWithObject:[UITouch new]] withEvent:[UIEvent new]];
+    [componentWrapper handleGestureRecognizer:self.gestureRecognizer];
+    XCTAssertEqual(self.selectionStateFromWillUpdateDelegateMethod, HUBComponentSelectionStateHighlighted);
+    XCTAssertEqual(self.selectionStateFromDidUpdateDelegateMethod, HUBComponentSelectionStateNone);
+    
+    XCTestExpectation * const expectation = [self expectationWithDescription:@"Waiting for highlight"];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [expectation fulfill];
+    });
+    
+    [self waitForExpectationsWithTimeout:10 handler:^(NSError * _Nullable error) {
+        XCTAssertNil(error);
+        XCTAssertEqual(self.selectionStateFromDidUpdateDelegateMethod, HUBComponentSelectionStateHighlighted);
+        
+        // Cancelled touches should reset the selection state
+        [self.gestureRecognizer touchesCancelled:[NSSet setWithObject:[UITouch new]] withEvent:[UIEvent new]];
+        [componentWrapper handleGestureRecognizer:self.gestureRecognizer];
+        XCTAssertEqual(self.selectionStateFromWillUpdateDelegateMethod, HUBComponentSelectionStateNone);
+        XCTAssertEqual(self.selectionStateFromDidUpdateDelegateMethod, HUBComponentSelectionStateNone);
+    }];
+}
+
+- (void)testSelection
+{
+    HUBComponentMock * const component = [HUBComponentMock new];
+    id<HUBComponentModel> const model = [self componentModelWithIdentifier:@"model"];
+    HUBComponentWrapper * const componentWrapper = [self componentWrapperForComponent:component model:model];
+    UIView * const superview = [[UIView alloc] initWithFrame:CGRectZero];
+    [componentWrapper viewDidMoveToSuperview:superview];
+    
+    [self.gestureRecognizer touchesBegan:[NSSet setWithObject:[UITouch new]] withEvent:[UIEvent new]];
+    [componentWrapper handleGestureRecognizer:self.gestureRecognizer];
+    
+    [self.gestureRecognizer touchesEnded:[NSSet setWithObject:[UITouch new]] withEvent:[UIEvent new]];
+    [componentWrapper handleGestureRecognizer:self.gestureRecognizer];
+    
+    XCTAssertEqual(self.selectionStateFromWillUpdateDelegateMethod, HUBComponentSelectionStateSelected);
+    XCTAssertEqual(self.selectionStateFromDidUpdateDelegateMethod, HUBComponentSelectionStateSelected);
+}
+
 #pragma mark - Utility
 
 - (HUBComponentWrapper *)componentWrapperForComponent:(id<HUBComponent>)component
@@ -72,6 +139,7 @@
                                                     model:model
                                            UIStateManager:self.UIStateManager
                                                  delegate:self
+                                        gestureRecognizer:self.gestureRecognizer
                                                    parent:nil];
 }
 
@@ -101,18 +169,19 @@
 
 #pragma mark - HUBComponentWrapperDelegate
 
-// Below methods are all no-ops implemented out of necessity.
-
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
+    self.selectionStateFromWillUpdateDelegateMethod = selectionState;
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper didUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
+    self.selectionStateFromDidUpdateDelegateMethod = selectionState;
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childSelectedAtIndex:(NSUInteger)childIndex
 {
+    // No-op
 }
 
 - (BOOL)componentWrapper:(HUBComponentWrapper *)componentWrapper performActionWithIdentifier:(HUBIdentifier *)identifier customData:(NSDictionary<NSString *,id> *)customData
@@ -122,6 +191,7 @@
 
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
 {
+    // No-op
 }
 
 - (HUBComponentWrapper *)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponentForModel:(id<HUBComponentModel>)model
@@ -132,15 +202,18 @@
                                                     model:model
                                            UIStateManager:self.UIStateManager
                                                  delegate:self
+                                        gestureRecognizer:self.gestureRecognizer
                                                    parent:nil];
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponent:(HUBComponentWrapper *)childComponent childView:(UIView *)childView willAppearAtIndex:(NSUInteger)childIndex
 {
+    // No-op
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponent:(HUBComponentWrapper *)childComponent childView:(UIView *)childView didDisappearAtIndex:(NSUInteger)childIndex
 {
+    // No-op
 }
 
 @end

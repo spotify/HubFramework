@@ -32,6 +32,7 @@
 @class HUBIdentifier;
 @class HUBComponentWrapper;
 @class HUBComponentUIStateManager;
+@class HUBComponentGestureRecognizer;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -167,12 +168,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
  *  @param model The model that the component wrapper will represent
  *  @param UIStateManager The manager to use to save & restore UI states for the component
  *  @param delegate The object that will act as the component wrapper's delegate
+ *  @param gestureRecognizer The gesture recognizer to use to detect touches & taps for highlight & selection
  *  @param parent The parent component wrapper if this component wrapper is a child component
  */
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
+                gestureRecognizer:(HUBComponentGestureRecognizer *)gestureRecognizer
                            parent:(nullable HUBComponentWrapper *)parent HUB_DESIGNATED_INITIALIZER;
 
 /**
