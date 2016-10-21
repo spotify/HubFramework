@@ -197,6 +197,7 @@
 		8A4C28151DB5120400152429 /* HUBComponentGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentGestureRecognizer.h; sourceTree = "<group>"; };
 		8A4C28161DB5120400152429 /* HUBComponentGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentGestureRecognizer.m; sourceTree = "<group>"; };
 		8A4C28191DB6464B00152429 /* HUBComponentWithSelectionState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentWithSelectionState.h; sourceTree = "<group>"; };
+		8A4EB8B01DBA47E90004588C /* HUBAsyncAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBAsyncAction.h; sourceTree = "<group>"; };
 		8A58E0E21C5A77C700F41A5C /* HUBJSONPathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBJSONPathTests.m; sourceTree = "<group>"; };
 		8A58E1461C5B79A900F41A5C /* HUBMutableJSONPathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBMutableJSONPathTests.m; sourceTree = "<group>"; };
 		8A58E1481C5FA62E00F41A5C /* HUBComponentImageDataBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentImageDataBuilderTests.m; sourceTree = "<group>"; };
@@ -526,6 +527,7 @@
 			isa = PBXGroup;
 			children = (
 				8A2A72EE1D4B749600141619 /* HUBAction.h */,
+				8A4EB8B01DBA47E90004588C /* HUBAsyncAction.h */,
 				8A0C356C1D7DB656007C32D9 /* HUBActionFactory.h */,
 				8A2A72ED1D4B744A00141619 /* HUBActionRegistry.h */,
 				8AD585B51DB4D38700DB7606 /* HUBActionPerformer.h */,

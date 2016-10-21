@@ -45,7 +45,7 @@
 #import "HUBComponentReusePool.h"
 #import "HUBActionContextImplementation.h"
 #import "HUBActionRegistry.h"
-#import "HUBActionHandler.h"
+#import "HUBActionHandlerWrapper.h"
 #import "HUBActionPerformer.h"
 #import "HUBViewModelDiff.h"
 #import "HUBComponentGestureRecognizer.h"
@@ -54,7 +54,15 @@ static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewControllerImplementation () <HUBViewModelLoaderDelegate, HUBImageLoaderDelegate, HUBComponentWrapperDelegate, HUBActionPerformer, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface HUBViewControllerImplementation () <
+    HUBViewModelLoaderDelegate,
+    HUBImageLoaderDelegate,
+    HUBComponentWrapperDelegate,
+    HUBActionPerformer,
+    HUBActionHandlerWrapperDelegate,
+    UICollectionViewDataSource,
+    UICollectionViewDelegate
+>
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
@@ -101,7 +109,7 @@ NS_ASSUME_NONNULL_BEGIN
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                  actionHandler:(id<HUBActionHandler>)actionHandler
+                  actionHandler:(HUBActionHandlerWrapper *)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader
 
@@ -144,6 +152,7 @@ NS_ASSUME_NONNULL_BEGIN
     viewModelLoader.delegate = self;
     viewModelLoader.actionPerformer = self;
     imageLoader.delegate = self;
+    actionHandler.delegate = self;
     
     self.automaticallyAdjustsScrollViewInsets = [_scrollHandler shouldAutomaticallyAdjustContentInsetsInViewController:self];
     
@@ -531,6 +540,23 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                         customIdentifier:identifier
                               customData:customData
                           componentModel:nil];
+}
+
+#pragma mark - HUBActionHandlerWrapperDelegate
+
+- (id<HUBActionContext>)actionHandler:(HUBActionHandlerWrapper *)actionHandler
+                        provideContextForActionWithIdentifier:(HUBIdentifier *)actionIdentifier
+                           customData:(nullable NSDictionary<NSString *, id> *)customData
+{
+    id<HUBViewModel> const viewModel = self.viewModel;
+    
+    return [[HUBActionContextImplementation alloc] initWithTrigger:HUBActionTriggerChained
+                                            customActionIdentifier:actionIdentifier
+                                                        customData:customData
+                                                           viewURI:self.viewURI
+                                                         viewModel:viewModel
+                                                    componentModel:nil
+                                                    viewController:self];
 }
 
 #pragma mark - UICollectionViewDataSource

@@ -24,19 +24,22 @@
 #import "HUBActionRegistryImplementation.h"
 #import "HUBActionContext.h"
 #import "HUBAction.h"
+#import "HUBAsyncAction.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentTarget.h"
 #import "HUBViewModelLoaderImplementation.h"
+#import "HUBActionPerformer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBActionHandlerWrapper ()
+@interface HUBActionHandlerWrapper () <HUBAsyncActionDelegate>
 
 @property (nonatomic, strong, readonly, nullable) id<HUBActionHandler> actionHandler;
 @property (nonatomic, strong, readonly) HUBActionRegistryImplementation *actionRegistry;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong, readonly) HUBViewModelLoaderImplementation *viewModelLoader;
+@property (nonatomic, strong, readonly) NSMutableSet<id<HUBAsyncAction>> *ongoingAsyncActions;
 
 @end
 
@@ -60,6 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
         _actionRegistry = actionRegistry;
         _initialViewModelRegistry = initialViewModelRegistry;
         _viewModelLoader = viewModelLoader;
+        _ongoingAsyncActions = [NSMutableSet new];
     }
     
     return self;
@@ -91,6 +95,12 @@ NS_ASSUME_NONNULL_BEGIN
     if ([self.actionHandler handleActionWithContext:context]) {
         actionPerformed = YES;
     } else {
+        if ([action conformsToProtocol:@protocol(HUBAsyncAction)]) {
+            id<HUBAsyncAction> const asyncAction = (id<HUBAsyncAction>)action;
+            asyncAction.delegate = self;
+            [self.ongoingAsyncActions addObject:asyncAction];
+        }
+        
         actionPerformed = [action performWithContext:context];
     }
     
@@ -102,6 +112,26 @@ NS_ASSUME_NONNULL_BEGIN
     [self.viewModelLoader actionPerformedWithContext:context];
     
     return actionPerformed;
+}
+
+#pragma mark - HUBAsyncActionDelegate
+
+- (void)actionDidFinish:(id<HUBAsyncAction>)action
+        chainToActionWithIdentifier:(nullable HUBIdentifier *)nextActionIdentifier
+        customData:(nullable NSDictionary<NSString *, id> *)nextActionCustomData
+{
+    [self.ongoingAsyncActions removeObject:action];
+    
+    if (nextActionIdentifier != nil) {
+        HUBIdentifier * const chainedActionIdentifier = nextActionIdentifier;
+        id<HUBActionContext> const chainedActionContext = [self.delegate actionHandler:self
+                                                 provideContextForActionWithIdentifier:chainedActionIdentifier
+                                                                            customData:nextActionCustomData];
+        
+        if (chainedActionContext != nil) {
+            [self handleActionWithContext:chainedActionContext];
+        }
+    }
 }
 
 @end

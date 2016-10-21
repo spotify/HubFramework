@@ -92,6 +92,7 @@
 
 // Actions
 #import "HUBAction.h"
+#import "HUBAsyncAction.h"
 #import "HUBActionFactory.h"
 #import "HUBActionRegistry.h"
 #import "HUBActionPerformer.h"

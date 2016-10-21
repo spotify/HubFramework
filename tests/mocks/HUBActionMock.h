@@ -19,16 +19,19 @@
  *  under the License.
  */
 
-#import "HUBAction.h"
+#import "HUBAsyncAction.h"
 #import "HUBHeaderMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Mocked action, for use in unit tests only
-@interface HUBActionMock : NSObject <HUBAction>
+@interface HUBActionMock : NSObject <HUBAsyncAction>
 
 /// Any block to run when the action is performed
 @property (nonatomic, copy, nullable) BOOL(^block)(id<HUBActionContext>);
+
+/// Whether this action should act like it's asynchronous or not
+@property (nonatomic, assign) BOOL isAsync;
 
 /**
  *  Initialize an instance of this class
