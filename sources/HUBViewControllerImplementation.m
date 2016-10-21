@@ -964,8 +964,13 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     [self componentWrapperWillAppear:wrapper];
 
-    UIView * const component = HUBComponentLoadViewIfNeeded(cell.component);
-    [self.delegate viewController:self componentWithModel:wrapper.model willAppearInView:component];
+    id<HUBComponent> component = cell.component;
+    if (component == nil) {
+        return;
+    }
+
+    UIView * const componentView = HUBComponentLoadViewIfNeeded(component);
+    [self.delegate viewController:self componentWithModel:wrapper.model willAppearInView:componentView];
 }
 
 - (void)headerAndOverlayComponentViewsWillAppear

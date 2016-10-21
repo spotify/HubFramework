@@ -55,7 +55,7 @@ static inline BOOL HUBPropertyIsEqual(NSObject * _Nullable objectA, NSObject * _
  *
  *  This function asserts that a view has been loaded after -loadView was sent to the component.
  */
-static inline UIView *HUBComponentLoadViewIfNeeded(id<HUBComponent> _Nullable component) {
+static inline UIView *HUBComponentLoadViewIfNeeded(id<HUBComponent> component) {
     if (component.view == nil) {
         [component loadView];
     }
