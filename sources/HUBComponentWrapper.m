@@ -361,11 +361,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    if ([touch.view isKindOfClass:[UIButton class]]) {
-        return NO;
-    }
-    
-    return YES;
+    return ![touch.view isKindOfClass:[UIButton class]];
 }
 
 #pragma mark - HUBComponentResizeObservingViewDelegate
