@@ -384,8 +384,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     return YES;
 }
-#pragma mark - HUBActionPerformer
 
+#pragma mark - HUBActionPerformer
 
 - (BOOL)performActionWithIdentifier:(HUBIdentifier *)identifier customData:(nullable NSDictionary<NSString *, id> *)customData
 {
