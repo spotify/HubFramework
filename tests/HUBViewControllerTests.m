@@ -1779,17 +1779,17 @@
     self.collectionView.mockedVisibleCells = @[cellA, cellB, cellC];
 
     NSDictionary<NSIndexPath *, UIView *> * const visibleHeaderViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeHeader];
-    XCTAssertEqual(visibleHeaderViews.count, (NSUInteger)1);
+    XCTAssertEqual(visibleHeaderViews.count, 1u);
     XCTAssertEqual(visibleHeaderViews[[NSIndexPath indexPathWithIndex:0]], headerComponent.view);
 
     NSDictionary<NSIndexPath *, UIView *> * const visibleBodyViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeBody];
-    XCTAssertEqual(visibleBodyViews.count, (NSUInteger)3);
+    XCTAssertEqual(visibleBodyViews.count, 3u);
     XCTAssertEqual(visibleBodyViews[[NSIndexPath indexPathWithIndex:0]], componentA.view);
     XCTAssertEqual(visibleBodyViews[[NSIndexPath indexPathWithIndex:1]], componentB.view);
     XCTAssertEqual(visibleBodyViews[[NSIndexPath indexPathWithIndex:2]], componentC.view);
 
     NSDictionary<NSIndexPath *, UIView *> * const visibleOverlayViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeOverlay];
-    XCTAssertEqual(visibleOverlayViews.count, (NSUInteger)2);
+    XCTAssertEqual(visibleOverlayViews.count, 2u);
     XCTAssertEqual(visibleOverlayViews[[NSIndexPath indexPathWithIndex:0]], component1.view);
     XCTAssertEqual(visibleOverlayViews[[NSIndexPath indexPathWithIndex:1]], component2.view);
 }
