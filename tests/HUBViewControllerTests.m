@@ -1726,8 +1726,11 @@
     XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(200, 1000)], NSNotFound);
 }
 
-- (void)testVisibleBodyComponents
+- (void)testVisibleComponents
 {
+    HUBComponentMock * const headerComponent = [HUBComponentMock new];
+    headerComponent.view = [[UIView alloc] initWithFrame:CGRectZero];
+
     HUBComponentMock * const componentA = [HUBComponentMock new];
     componentA.view = [[UIView alloc] initWithFrame:CGRectZero];
     
@@ -1737,14 +1740,26 @@
     HUBComponentMock * const componentC = [HUBComponentMock new];
     componentC.view = [[UIView alloc] initWithFrame:CGRectZero];
     
+    HUBComponentMock * const component1 = [HUBComponentMock new];
+    component1.view = [[UIView alloc] initWithFrame:CGRectZero];
+
+    HUBComponentMock * const component2 = [HUBComponentMock new];
+    component2.view = [[UIView alloc] initWithFrame:CGRectZero];
+
+    self.componentFactory.components[@"Header"] = headerComponent;
     self.componentFactory.components[@"A"] = componentA;
     self.componentFactory.components[@"B"] = componentB;
     self.componentFactory.components[@"C"] = componentC;
-    
+    self.componentFactory.components[@"1"] = component1;
+    self.componentFactory.components[@"2"] = component2;
+
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder headerComponentModelBuilder].componentName = @"Header";
         [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"A"].componentName = @"A";
         [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"B"].componentName = @"B";
         [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"C"].componentName = @"C";
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"1"].componentName = @"1";
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"2"].componentName = @"2";
         return YES;
     };
     
@@ -1762,12 +1777,36 @@
     UICollectionViewCell * const cellC = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathC];
     
     self.collectionView.mockedVisibleCells = @[cellA, cellB, cellC];
-    
-    NSDictionary<NSIndexPath *, UIView *> * const visibleViews = self.viewController.visibleBodyComponentViews;
-    XCTAssertEqual(visibleViews.count, (NSUInteger)3);
-    XCTAssertEqual(visibleViews[[NSIndexPath indexPathWithIndex:0]], componentA.view);
-    XCTAssertEqual(visibleViews[[NSIndexPath indexPathWithIndex:1]], componentB.view);
-    XCTAssertEqual(visibleViews[[NSIndexPath indexPathWithIndex:2]], componentC.view);
+
+    NSDictionary<NSIndexPath *, UIView *> * const visibleHeaderViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeHeader];
+    XCTAssertEqual(visibleHeaderViews.count, 1u);
+    XCTAssertEqual(visibleHeaderViews[[NSIndexPath indexPathWithIndex:0]], headerComponent.view);
+
+    NSDictionary<NSIndexPath *, UIView *> * const visibleBodyViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeBody];
+    XCTAssertEqual(visibleBodyViews.count, 3u);
+    XCTAssertEqual(visibleBodyViews[[NSIndexPath indexPathWithIndex:0]], componentA.view);
+    XCTAssertEqual(visibleBodyViews[[NSIndexPath indexPathWithIndex:1]], componentB.view);
+    XCTAssertEqual(visibleBodyViews[[NSIndexPath indexPathWithIndex:2]], componentC.view);
+
+    NSDictionary<NSIndexPath *, UIView *> * const visibleOverlayViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeOverlay];
+    XCTAssertEqual(visibleOverlayViews.count, 2u);
+    XCTAssertEqual(visibleOverlayViews[[NSIndexPath indexPathWithIndex:0]], component1.view);
+    XCTAssertEqual(visibleOverlayViews[[NSIndexPath indexPathWithIndex:1]], component2.view);
+}
+
+- (void)testNoVisibleComponents
+{
+    [self simulateViewControllerLayoutCycle];
+
+    self.collectionView.mockedVisibleCells = @[];
+
+    NSDictionary<NSIndexPath *, UIView *> * const visibleHeaderViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeHeader];
+    NSDictionary<NSIndexPath *, UIView *> * const visibleBodyViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeBody];
+    NSDictionary<NSIndexPath *, UIView *> * const visibleOverlayViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeOverlay];
+
+    XCTAssertEqual(visibleHeaderViews.count, 0u);
+    XCTAssertEqual(visibleBodyViews.count, 0u);
+    XCTAssertEqual(visibleOverlayViews.count, 0u);
 }
 
 - (void)testContentOperationNotifiedOfSelectionAction
