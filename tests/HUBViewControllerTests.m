@@ -1763,7 +1763,7 @@
     
     self.collectionView.mockedVisibleCells = @[cellA, cellB, cellC];
     
-    NSDictionary<NSIndexPath *, UIView *> * const visibleViews = self.viewController.visibleBodyComponentViews;
+    NSDictionary<NSIndexPath *, UIView *> * const visibleViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeBody];
     XCTAssertEqual(visibleViews.count, (NSUInteger)3);
     XCTAssertEqual(visibleViews[[NSIndexPath indexPathWithIndex:0]], componentA.view);
     XCTAssertEqual(visibleViews[[NSIndexPath indexPathWithIndex:1]], componentB.view);
