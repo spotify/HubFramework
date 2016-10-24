@@ -810,6 +810,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                                    model:model
                                                                           UIStateManager:self.componentUIStateManager
                                                                                 delegate:self
+                                                                       gestureRecognizer:[HUBComponentGestureRecognizer new]
                                                                                   parent:nil];
     
     [self didAddComponentWrapper:wrapper];
