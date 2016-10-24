@@ -43,6 +43,7 @@ import HubFramework
         registerGitHubSearchFeature()
         registerPrettyPicturesFeature()
         registerReallyLongListFeature()
+        registerTodoListFeature()
         
         return true
     }
@@ -120,6 +121,25 @@ import HubFramework
             actionHandler: nil,
             viewControllerScrollHandler: nil
         )
+    }
+    
+    private func registerTodoListFeature() {
+        let contentOperationFactory = HUBBlockContentOperationFactory() { _ in
+            return [TodoListContentOperation()]
+        }
+        
+        hubManager.featureRegistry.registerFeature(
+            withIdentifier: "todoList",
+            viewURIPredicate: HUBViewURIPredicate(viewURI: .todoListViewURI),
+            title: "Todo List",
+            contentOperationFactories: [contentOperationFactory],
+            contentReloadPolicy: nil,
+            customJSONSchemaIdentifier: nil,
+            actionHandler: nil,
+            viewControllerScrollHandler: nil
+        )
+        
+        hubManager.actionRegistry.register(TodoListActionFactory(), forNamespace: TodoListActionFactory.namespace)
     }
     
     // MARK: - Opening view URIs

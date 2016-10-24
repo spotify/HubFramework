@@ -48,6 +48,11 @@ class RootContentOperation: NSObject, HUBContentOperation {
         reallyLongListRowBuilder.subtitle = "A feature that renders 10,000 rows"
         reallyLongListRowBuilder.targetBuilder.uri = .reallyLongListViewURI
         
+        let todoListRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "todoList")
+        todoListRowBuilder.title = "Todo list"
+        todoListRowBuilder.subtitle = "A feature for adding todo items to a list"
+        todoListRowBuilder.targetBuilder.uri = .todoListViewURI
+        
         delegate?.contentOperationDidFinish(self)
     }
 }
