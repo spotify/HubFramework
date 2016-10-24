@@ -269,24 +269,21 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableArray<HUBComponentWrapper *> * const rootComponentWrappers = [NSMutableArray array];
 
     switch (componentType) {
-        case HUBComponentTypeHeader:
-        {
+        case HUBComponentTypeHeader: {
             if (self.headerComponentWrapper != nil) {
                 HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
                 [rootComponentWrappers addObject:headerComponentWrapper];
             }
             break;
         }
-        case HUBComponentTypeBody:
-        {
+        case HUBComponentTypeBody: {
             for (HUBComponentCollectionViewCell * const cell in self.collectionView.visibleCells) {
                 HUBComponentWrapper * const wrapper = [self componentWrapperFromCell:cell];
                 [rootComponentWrappers addObject:wrapper];
             }
             break;
         }
-        case HUBComponentTypeOverlay:
-        {
+        case HUBComponentTypeOverlay: {
             // All root overlay components are implicitly visible.
             [rootComponentWrappers addObjectsFromArray:self.overlayComponentWrappers];
             break;
