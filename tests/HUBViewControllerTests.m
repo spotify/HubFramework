@@ -1384,12 +1384,13 @@
     XCTAssertTrue(CGSizeEqualToSize(self.component.currentContainerViewSize, self.collectionView.bounds.size));
 }
 
-- (void)testContainerViewSizeForChildComponentsAreParerentComponentsViewSize
+- (void)testContainerViewSizeForChildComponentsAreParentComponentsViewSize
 {
     NSString * const componentNamespace = @"childComponentSelection";
     NSString * const componentName = @"component";
     NSString * const childComponentName = @"componentB";
     HUBComponentMock * const component = [HUBComponentMock new];
+    component.preferredViewSize = CGSizeMake(200, 200);
     HUBComponentMock * const childComponent = [HUBComponentMock new];
 
     HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
@@ -1416,9 +1417,6 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
 
-    const CGRect expectedParentFrame = CGRectMake(0, 0, 88, 88);
-    component.view.frame = expectedParentFrame;
-
     id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
 
     id<HUBComponentModel> const childComponentModelA = [component.model childAtIndex:0];
@@ -1426,7 +1424,9 @@
 
     [childDelegate component:component childComponentForModel:childComponentModelA];
 
-    XCTAssertTrue(CGSizeEqualToSize(childComponent.currentContainerViewSize, expectedParentFrame.size));
+    CGSize const expectedContainerViewSize = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].frame.size;
+    XCTAssertTrue(CGSizeEqualToSize(expectedContainerViewSize, CGSizeMake(200, 200)));
+    XCTAssertTrue(CGSizeEqualToSize(childComponent.currentContainerViewSize, expectedContainerViewSize));
 }
 
 - (void)testCollectionViewNotAddedOnTopOfInitialOverlayComponent
