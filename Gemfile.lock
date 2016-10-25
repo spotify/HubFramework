@@ -74,6 +74,10 @@ GEM
     danger-junit (0.7.1)
       danger (> 2.0)
       ox (~> 2.0)
+    danger-plugin-api (1.0.0)
+      danger (> 2.0)
+    danger-xcode_summary (0.1.0)
+      danger-plugin-api (~> 1.0)
     deliver (1.14.5)
       credentials_manager (>= 0.16.2, < 1.0.0)
       fastimage (~> 1.6)
@@ -338,6 +342,7 @@ DEPENDENCIES
   activesupport (~> 4.0)
   danger (~> 3.5)
   danger-junit
+  danger-xcode_summary
   fastlane (~> 1.106)
   fastlane-plugin-trainer
   jazzy (~> 0.7.2)

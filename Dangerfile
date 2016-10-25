@@ -27,6 +27,10 @@ if git.modified_files.include?("LICENSE")
   fail "The license file was modified."
 end
 
+# Give inline build results (compile and link time warnings and errors)
+xcode_summary.report 'build/tests/summary.json' if File.file?('build/tests/summary.json')
+xcode_summary.report 'build/demo/summary.json' if File.file?('build/demo/summary.json')
+
 # Give inline test fail reports
 junit_report_path = Dir.glob("build/tests/*TestSummaries.junit").first
 if junit_report_path
