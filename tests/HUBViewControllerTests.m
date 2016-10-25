@@ -55,6 +55,7 @@
 #import "HUBActionContext.h"
 #import "HUBActionFactoryMock.h"
 #import "HUBActionMock.h"
+#import "HUBActionPerformer.h"
 #import "HUBViewControllerScrollHandlerMock.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBUtilities.h"
@@ -1862,9 +1863,8 @@
     
     NSDictionary * const customActionData = @{@"custom": @"data"};
     
-    BOOL const actionOutcome = [self.component.actionDelegate component:self.component
-                                            performActionWithIdentifier:actionIdentifier
-                                                             customData:customActionData];
+    BOOL const actionOutcome = [self.component.actionPerformer performActionWithIdentifier:actionIdentifier
+                                                                                customData:customActionData];
     
     XCTAssertTrue(actionOutcome);
     XCTAssertEqualObjects(actionContext.componentModel.identifier, @"A");
@@ -1872,6 +1872,80 @@
     XCTAssertEqual(actionContext.trigger, HUBActionTriggerComponent);
     XCTAssertEqualObjects(self.actionHandler.contexts, @[actionContext]);
     XCTAssertEqual(self.contentOperation.actionContext, actionContext);
+}
+
+- (void)testPerformingActionFromContentOperation
+{
+    __block id<HUBActionContext> actionContext = nil;
+    
+    self.actionHandler.block = ^(id<HUBActionContext> context) {
+        actionContext = context;
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"contentOperation" name:@"action"];
+    NSDictionary * const customActionData = @{@"custom": @"data"};
+    BOOL const actionOutcome = [self.contentOperation.actionPerformer performActionWithIdentifier:actionIdentifier
+                                                                                       customData:customActionData];
+    
+    XCTAssertTrue(actionOutcome);
+    XCTAssertNil(actionContext.componentModel);
+    XCTAssertEqualObjects(actionContext.customData, customActionData);
+    XCTAssertEqual(actionContext.trigger, HUBActionTriggerContentOperation);
+    XCTAssertEqualObjects(self.actionHandler.contexts, @[actionContext]);
+    XCTAssertEqual(self.contentOperation.actionContext, actionContext);
+}
+
+- (void)testPerformingAsyncAction
+{
+    HUBActionMock *action = [[HUBActionMock alloc] initWithBlock:^(id<HUBActionContext> context) {
+        return YES;
+    }];
+    action.isAsync = YES;
+    
+    HUBActionFactoryMock *actionFactory = [[HUBActionFactoryMock alloc] initWithActions:@{@"name": action}];
+    [self.actionRegistry registerActionFactory:actionFactory forNamespace:@"namespace"];
+    
+    __weak HUBActionMock *actionWeakRef = action;
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+    BOOL const actionOutcome = [self.contentOperation.actionPerformer performActionWithIdentifier:actionIdentifier
+                                                                                       customData:nil];
+    
+    // Here we unregister the action factory, to release our mocked reference to the action
+    // We also nil out our local reference, to be able to assert that the Hub Framework is retaining it
+    [self.actionRegistry unregisterActionFactoryForNamespace:@"namespace"];
+    actionFactory = nil;
+    action = nil;
+    
+    XCTAssertTrue(actionOutcome);
+    XCTAssertNotNil(actionWeakRef);
+    
+    // Capture action strongly again, to avoid compiler error
+    action = actionWeakRef;
+    
+    __block id<HUBActionContext> chainedActionContext = nil;
+    
+    self.actionHandler.block = ^(id<HUBActionContext> context) {
+        chainedActionContext = context;
+        return YES;
+    };
+    
+    HUBIdentifier * const chainedActionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"chained" name:@"action"];
+    NSDictionary * const chainedActionCustomData = @{@"custom": @"data"};
+    [action.delegate actionDidFinish:action chainToActionWithIdentifier:chainedActionIdentifier customData:chainedActionCustomData];
+    
+    // Action should now be fully released, since we are done with it
+    action = nil;
+    XCTAssertNil(actionWeakRef);
+    
+    XCTAssertNotNil(chainedActionContext);
+    XCTAssertEqualObjects(chainedActionContext.customActionIdentifier, chainedActionIdentifier);
+    XCTAssertEqualObjects(chainedActionContext.customData, chainedActionCustomData);
 }
 
 - (void)testAssigningNavigationItemProperties

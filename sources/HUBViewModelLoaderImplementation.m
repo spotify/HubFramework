@@ -25,6 +25,8 @@
 #import "HUBConnectivityStateResolver.h"
 #import "HUBContentOperationWithInitialContent.h"
 #import "HUBContentOperationActionObserver.h"
+#import "HUBContentOperationActionPerformer.h"
+#import "HUBActionPerformer.h"
 #import "HUBContentReloadPolicy.h"
 #import "HUBJSONSchema.h"
 #import "HUBViewModelBuilderImplementation.h"
@@ -121,6 +123,21 @@ NS_ASSUME_NONNULL_BEGIN
                                                                              viewURI:self.viewURI
                                                                          featureInfo:self.featureInfo
                                                                    connectivityState:self.connectivityState];
+    }
+}
+
+#pragma mark - Accessor overrides
+
+- (void)setActionPerformer:(nullable id<HUBActionPerformer>)actionPerformer
+{
+    _actionPerformer = actionPerformer;
+    
+    for (id<HUBContentOperation> const operation in self.contentOperations) {
+        if (![operation conformsToProtocol:@protocol(HUBContentOperationActionPerformer)]) {
+            continue;
+        }
+        
+        ((id<HUBContentOperationActionPerformer>)operation).actionPerformer = actionPerformer;
     }
 }
 

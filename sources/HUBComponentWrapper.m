@@ -30,12 +30,13 @@
 #import "HUBComponentModel.h"
 #import "HUBComponentUIStateManager.h"
 #import "HUBComponentResizeObservingView.h"
+#import "HUBActionPerformer.h"
 #import "HUBComponentGestureRecognizer.h"
 #import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBComponentWrapper () <HUBComponentChildDelegate, HUBComponentActionDelegate, HUBComponentResizeObservingViewDelegate, UIGestureRecognizerDelegate>
+@interface HUBComponentWrapper () <HUBComponentChildDelegate, HUBComponentResizeObservingViewDelegate, HUBActionPerformer, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong, readwrite) id<HUBComponentModel> model;
 @property (nonatomic, assign) BOOL viewHasAppearedSinceLastModelChange;
@@ -86,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
         
         if ([_component conformsToProtocol:@protocol(HUBComponentActionPerformer)]) {
-            ((id<HUBComponentActionPerformer>)_component).actionDelegate = self;
+            ((id<HUBComponentActionPerformer>)_component).actionPerformer = self;
         }
     }
     
@@ -341,15 +342,11 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate componentWrapper:self childSelectedAtIndex:childIndex];
 }
 
-#pragma mark - HUBComponentActionDelegate
+#pragma mark - HUBComponentResizeObservingViewDelegate
 
-- (BOOL)component:(id<HUBComponentActionPerformer>)component performActionWithIdentifier:(HUBIdentifier *)identifier customData:(nullable NSDictionary<NSString *, id> *)customData
+- (void)resizeObservingViewDidResize:(HUBComponentResizeObservingView *)view
 {
-    if (self.component != component) {
-        return NO;
-    }
-    
-    return [self.delegate componentWrapper:self performActionWithIdentifier:identifier customData:customData];
+    [(id<HUBComponentViewObserver>)self.component viewDidResize];
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -388,11 +385,11 @@ NS_ASSUME_NONNULL_BEGIN
     return YES;
 }
 
-#pragma mark - HUBComponentResizeObservingViewDelegate
+#pragma mark - HUBActionPerformer
 
-- (void)resizeObservingViewDidResize:(HUBComponentResizeObservingView *)view
+- (BOOL)performActionWithIdentifier:(HUBIdentifier *)identifier customData:(nullable NSDictionary<NSString *, id> *)customData
 {
-    [(id<HUBComponentViewObserver>)self.component viewDidResize];
+    return [self.delegate componentWrapper:self performActionWithIdentifier:identifier customData:customData];
 }
 
 #pragma mark - Gesture recognizer handling

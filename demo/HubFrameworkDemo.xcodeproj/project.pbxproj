@@ -10,6 +10,9 @@
 		8A27299A1D9546BB00EF43FC /* RootContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2729991D9546BB00EF43FC /* RootContentOperationFactory.swift */; };
 		8A27299E1D9546ED00EF43FC /* RootContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A27299D1D9546ED00EF43FC /* RootContentOperation.swift */; };
 		8A2729A21D95486A00EF43FC /* URL+ViewURIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2729A11D95486A00EF43FC /* URL+ViewURIs.swift */; };
+		8A374CFF1DBE659E0013E592 /* TodoListActionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFC1DBE659E0013E592 /* TodoListActionFactory.swift */; };
+		8A374D001DBE659E0013E592 /* TodoListAddAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFD1DBE659E0013E592 /* TodoListAddAction.swift */; };
+		8A374D011DBE659E0013E592 /* TodoListContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFE1DBE659E0013E592 /* TodoListContentOperation.swift */; };
 		8A42E0AB1D8C376B004FAC33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E0A91D8C376B004FAC33 /* AppDelegate.swift */; };
 		8A42E0B21D8C3779004FAC33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */; };
 		8A42E0B31D8C3779004FAC33 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AF1D8C3779004FAC33 /* LaunchScreen.storyboard */; };
@@ -65,6 +68,9 @@
 		8A2729991D9546BB00EF43FC /* RootContentOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootContentOperationFactory.swift; sourceTree = "<group>"; };
 		8A27299D1D9546ED00EF43FC /* RootContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootContentOperation.swift; sourceTree = "<group>"; };
 		8A2729A11D95486A00EF43FC /* URL+ViewURIs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+ViewURIs.swift"; sourceTree = "<group>"; };
+		8A374CFC1DBE659E0013E592 /* TodoListActionFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoListActionFactory.swift; sourceTree = "<group>"; };
+		8A374CFD1DBE659E0013E592 /* TodoListAddAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoListAddAction.swift; sourceTree = "<group>"; };
+		8A374CFE1DBE659E0013E592 /* TodoListContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoListContentOperation.swift; sourceTree = "<group>"; };
 		8A42E0921D8C36A3004FAC33 /* HubFrameworkDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HubFrameworkDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A42E0A91D8C376B004FAC33 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -107,6 +113,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A374CFA1DBE65920013E592 /* Todo list */ = {
+			isa = PBXGroup;
+			children = (
+				8A374CFC1DBE659E0013E592 /* TodoListActionFactory.swift */,
+				8A374CFD1DBE659E0013E592 /* TodoListAddAction.swift */,
+				8A374CFE1DBE659E0013E592 /* TodoListContentOperation.swift */,
+			);
+			name = "Todo list";
+			sourceTree = "<group>";
+		};
 		8A42E0891D8C36A3004FAC33 = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +214,7 @@
 				8AD5EDB11D9A7CE4004B2CEA /* GitHub Search */,
 				8AD72F4F1D9ABCDD00E4B427 /* Pretty pictures */,
 				8ABCCEA71D9D1AAB005113B5 /* Really long list */,
+				8A374CFA1DBE65920013E592 /* Todo list */,
 			);
 			name = Features;
 			sourceTree = "<group>";
@@ -352,6 +369,7 @@
 				8AD72F571D9AC22600E4B427 /* ImageComponent.swift in Sources */,
 				8A2729A21D95486A00EF43FC /* URL+ViewURIs.swift in Sources */,
 				8A42E1F91D8C476C004FAC33 /* ComponentFallbackHandler.swift in Sources */,
+				8A374D001DBE659E0013E592 /* TodoListAddAction.swift in Sources */,
 				8ABCCEAC1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift in Sources */,
 				8AD5EDCE1D9AA294004B2CEA /* LabelComponent.swift in Sources */,
 				8AD5EDCA1D9A9DBC004B2CEA /* GitHubSearchActivityIndicatorContentOperation.swift in Sources */,
@@ -360,12 +378,14 @@
 				8A42E0AB1D8C376B004FAC33 /* AppDelegate.swift in Sources */,
 				8AD5EDC41D9A92EC004B2CEA /* GitHubSearchCustomDataKeys.swift in Sources */,
 				8A27299E1D9546ED00EF43FC /* RootContentOperation.swift in Sources */,
+				8A374CFF1DBE659E0013E592 /* TodoListActionFactory.swift in Sources */,
 				8ABCCEAA1D9D1AC3005113B5 /* ReallyLongListContentOperation.swift in Sources */,
 				8AD5EDB91D9A7DEC004B2CEA /* DefaultComponentFactory.swift in Sources */,
 				8AD5EDC61D9A9674004B2CEA /* HUBJSONSchemaRegistry+CustomSchemas.swift in Sources */,
 				8AD5EDC81D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift in Sources */,
 				8AD72F551D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift in Sources */,
 				8AD5EDC21D9A90F7004B2CEA /* GitHubSearchResultsContentOperation.swift in Sources */,
+				8A374D011DBE659E0013E592 /* TodoListContentOperation.swift in Sources */,
 				8AD14FED1D9958A90008E182 /* UIImageView+Animation.swift in Sources */,
 				8A42E1F71D8C468C004FAC33 /* ComponentLayoutManager.swift in Sources */,
 				8AD72F531D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift in Sources */,

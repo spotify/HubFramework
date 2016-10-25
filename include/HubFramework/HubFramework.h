@@ -43,6 +43,7 @@
 #import "HUBContentOperation.h"
 #import "HUBContentOperationWithInitialContent.h"
 #import "HUBContentOperationActionObserver.h"
+#import "HUBContentOperationActionPerformer.h"
 #import "HUBContentReloadPolicy.h"
 #import "HUBBlockContentOperationFactory.h"
 
@@ -91,8 +92,10 @@
 
 // Actions
 #import "HUBAction.h"
+#import "HUBAsyncAction.h"
 #import "HUBActionFactory.h"
 #import "HUBActionRegistry.h"
+#import "HUBActionPerformer.h"
 #import "HUBActionHandler.h"
 #import "HUBActionContext.h"
 #import "HUBActionTrigger.h"

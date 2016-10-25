@@ -41,6 +41,11 @@ extension URL {
     static var reallyLongListViewURI: URL {
         return URL(viewURI: "reallylonglist")
     }
+    
+    /// The view URI used for the "Todo list" feature
+    static var todoListViewURI: URL {
+        return URL(viewURI: "todoList")
+    }
 }
 
 private extension URL {

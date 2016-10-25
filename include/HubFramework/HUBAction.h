@@ -19,7 +19,6 @@
  *  under the License.
  */
 
-
 #import <Foundation/Foundation.h>
 
 @protocol HUBActionContext;
