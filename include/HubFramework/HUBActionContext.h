@@ -62,8 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The view model of the view that the action is being performed in
 @property (nonatomic, strong, readonly) id<HUBViewModel> viewModel;
 
-/// The model of the component that the action is being performed for
-@property (nonatomic, strong, readonly) id<HUBComponentModel> componentModel;
+/// The model of any component that the action is being performed for (nil if performed by a content operation)
+@property (nonatomic, strong, readonly, nullable) id<HUBComponentModel> componentModel;
 
 /// The view controller that the action is being performed in
 @property (nonatomic, strong, readonly) UIViewController *viewController;

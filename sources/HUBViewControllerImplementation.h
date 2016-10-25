@@ -22,16 +22,16 @@
 #import "HUBViewController.h"
 #import "HUBHeaderMacros.h"
 
-@protocol HUBViewModelLoader;
 @protocol HUBImageLoader;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
-@protocol HUBActionHandler;
 @protocol HUBViewControllerScrollHandler;
+@class HUBViewModelLoaderImplementation;
 @class HUBCollectionViewFactory;
 @class HUBComponentRegistryImplementation;
 @class HUBInitialViewModelRegistry;
 @class HUBActionRegistryImplementation;
+@class HUBActionHandlerWrapper;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -53,11 +53,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
-                viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
+                viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                  actionHandler:(id<HUBActionHandler>)actionHandler
+                  actionHandler:(HUBActionHandlerWrapper *)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader HUB_DESIGNATED_INITIALIZER;
 

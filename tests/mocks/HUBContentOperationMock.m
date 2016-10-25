@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBContentOperationMock
 
 @synthesize delegate = _delegate;
+@synthesize actionPerformer = _actionPerformer;
 
 #pragma mark - HUBContentOperation
 

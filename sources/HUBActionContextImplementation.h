@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param customData Any custom data that should be passed to the action
  *  @param viewURI The URI of the view that the action is for
  *  @param viewModel The model of the view that the action is for
- *  @param componentModel The model of the component that the action is for
+ *  @param componentModel The model of any component that the action is for
  *  @param viewController The view controller presenting the view that the action is for
  */
 - (instancetype)initWithTrigger:(HUBActionTrigger)trigger
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
                      customData:(nullable NSDictionary<NSString *, id> *)customData
                         viewURI:(NSURL *)viewURI
                       viewModel:(id<HUBViewModel>)viewModel
-                 componentModel:(id<HUBComponentModel>)componentModel
+                 componentModel:(nullable id<HUBComponentModel>)componentModel
                  viewController:(UIViewController *)viewController HUB_DESIGNATED_INITIALIZER;
 
 @end

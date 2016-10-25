@@ -42,7 +42,7 @@ class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDele
     static let debounceInterval = 0.3
 
     var view: UIView?
-    var actionDelegate: HUBComponentActionDelegate?
+    weak var actionPerformer: HUBActionPerformer?
 
     var debounceTimer: Timer?
     
@@ -95,7 +95,7 @@ class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDele
         debounceTimer?.invalidate()
         self.debounceTimer = Timer.scheduledTimer(withTimeInterval: SearchBarComponent.debounceInterval, repeats: false) { (_) in
             let customData = [SearchBarComponentCustomDataKeys.text: searchText]
-            self.actionDelegate?.component(self, performActionWith: actionIdentifier, customData: customData)
+            self.actionPerformer?.performAction(withIdentifier: actionIdentifier, customData: customData)
         }
     }
     

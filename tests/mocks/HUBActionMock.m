@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBActionMock
 
+@synthesize delegate = _delegate;
+
 #pragma mark - Initializer
 
 - (instancetype)initWithBlock:(BOOL(^_Nullable)(id<HUBActionContext>))block
@@ -43,6 +45,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)performWithContext:(id<HUBActionContext>)context
 {
     return self.block != nil ? self.block(context) : NO;
+}
+
+#pragma mark - NSObject
+
+- (BOOL)conformsToProtocol:(Protocol *)protocol
+{
+    if (protocol == @protocol(HUBAsyncAction)) {
+        return self.isAsync;
+    }
+    
+    return [super conformsToProtocol:protocol];
 }
 
 @end

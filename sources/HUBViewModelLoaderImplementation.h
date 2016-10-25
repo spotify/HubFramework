@@ -29,12 +29,16 @@
 @protocol HUBConnectivityStateResolver;
 @protocol HUBIconImageResolver;
 @protocol HUBActionContext;
+@protocol HUBActionPerformer;
 @class HUBComponentDefaults;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBViewModelLoader` API
 @interface HUBViewModelLoaderImplementation : NSObject <HUBViewModelLoader>
+
+/// Any object that performs actions on behalf of this view model loader
+@property (nonatomic, weak, nullable) id<HUBActionPerformer> actionPerformer;
 
 /**
  *  Initialize an instance of this class with its required dependencies & values
