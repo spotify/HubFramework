@@ -226,8 +226,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.viewHasBeenLaidOut = YES;
 
-    if (self.viewModel != nil && self.viewModelHasChangedSinceLastLayoutUpdate) {
-        if (!CGRectEqualToRect(self.collectionView.frame, self.view.bounds)) {
+    if (self.viewModel != nil) {
+        if (self.viewModelHasChangedSinceLastLayoutUpdate || !CGRectEqualToRect(self.collectionView.frame, self.view.bounds)) {
             self.collectionView.frame = self.view.bounds;
             id<HUBViewModel> const viewModel = self.viewModel;
             [self reloadCollectionViewWithViewModel:viewModel animated:NO];

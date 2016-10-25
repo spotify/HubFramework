@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBViewModelRenderer ()
 
 @property (nonatomic, strong, readonly) UICollectionView *collectionView;
-@property (nonatomic, strong) id<HUBViewModel> lastRenderedViewModel;
+@property (nonatomic, strong, nullable) id<HUBViewModel> lastRenderedViewModel;
 
 @end
 
@@ -50,7 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
 {
     HUBViewModelDiff *diff;
     if (self.lastRenderedViewModel != nil) {
-        diff = [HUBViewModelDiff diffFromViewModel:self.lastRenderedViewModel toViewModel:viewModel];
+        id<HUBViewModel> nonnullViewModel = self.lastRenderedViewModel;
+        diff = [HUBViewModelDiff diffFromViewModel:nonnullViewModel toViewModel:viewModel];
     }
 
     HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)self.collectionView.collectionViewLayout;
@@ -60,10 +61,18 @@ NS_ASSUME_NONNULL_BEGIN
         
         [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:diff];
 
-        /* Forcing a re-layout as the reloadData-call doesn't trigger the numberOfItemsInSection:-calls
-         by itself, and batch update calls don't play well without having an initial item count. */
-        [self.collectionView setNeedsLayout];
-        [self.collectionView layoutIfNeeded];
+        /* Below is a workaround for an issue caused by UICollectionView not asking for numberOfItemsInSection
+           before viewDidAppear is called or instantly after a call to reloadData. If reloadData is called
+           after viewDidAppear has been called, followed by a call to performBatchUpdates, UICollectionView will
+           ask for the initial number of items right before the batch updates, and for the new count while inside
+           the update block. This will often trigger an assertion if there are any insertions / deletions, as
+           the data model has already changed before the update. Forcing a layoutSubviews however, manually
+           triggers the numberOfItems call.
+         */
+        if (usingBatchUpdates && diff == nil) {
+            [self.collectionView setNeedsLayout];
+            [self.collectionView layoutIfNeeded];
+        }
         completionBlock();
     } else {
         void (^updateBlock)() = ^{

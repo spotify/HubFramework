@@ -41,8 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
  * Renders the provided view model in the collection view.
  * 
  * @param viewModel The view model to render.
- * @param usingBatchUpdates @c YES if the renderer should render using batch updates, @c NO otherwise.
- * @param animated @c YES if the renderer should render with animations, @c NO otherwise.
+ * @param usingBatchUpdates Whether the renderer should render using batch updates or not.
+ * @param animated Whether the renderer should render with animations or not.
  * @param completionBlock The block to be called once the rendering is completed.
  */
 - (void)renderViewModel:(id<HUBViewModel>)viewModel
