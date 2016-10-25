@@ -45,7 +45,7 @@ platform :ios do
       :target => 'HubFrameworkDemo',
       :sdk => 'iphonesimulator',
       :configuration => 'Release',
-      :derived_data_path => 'build/DerivedData',
+      :derivedDataPath => 'build/DerivedData',
       :buildlog_path => 'build/logs/demo',
     )
   end
