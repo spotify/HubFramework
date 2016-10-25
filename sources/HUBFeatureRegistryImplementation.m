@@ -99,6 +99,18 @@ NS_ASSUME_NONNULL_BEGIN
     [self.registrationIdentifierOrder addObject:registration.featureIdentifier];
 }
 
+- (void)registerFeature:(HUBFeatureRegistration *)feature
+{
+    [self registerFeatureWithIdentifier:feature.featureIdentifier
+                       viewURIPredicate:feature.viewURIPredicate
+                                  title:feature.featureTitle
+              contentOperationFactories:feature.contentOperationFactories
+                    contentReloadPolicy:feature.contentReloadPolicy
+             customJSONSchemaIdentifier:feature.customJSONSchemaIdentifier
+                          actionHandler:feature.actionHandler
+            viewControllerScrollHandler:feature.viewControllerScrollHandler];
+}
+
 - (void)unregisterFeatureWithIdentifier:(NSString *)featureIdentifier
 {
     HUBFeatureRegistration * const registration = self.registrationsByIdentifier[featureIdentifier];
