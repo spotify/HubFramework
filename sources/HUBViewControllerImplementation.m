@@ -468,7 +468,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 - (HUBComponentWrapper *)componentWrapper:(HUBComponentWrapper *)componentWrapper
                    childComponentForModel:(id<HUBComponentModel>)model
 {
-    CGSize const containerViewSize = HUBComponentLoadViewIfNeeded(componentWrapper).frame.size;
+    CGSize const containerViewSize = [self childComponentContainerViewSizeForParentWrapper:componentWrapper];
     
     HUBComponentWrapper * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model
                                                                                                       delegate:self
@@ -820,6 +820,16 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     [wrapper configureViewWithModel:model containerViewSize:containerViewSize];
     self.componentWrappersByModelIdentifier[model.identifier] = wrapper;
+}
+
+- (CGSize)childComponentContainerViewSizeForParentWrapper:(HUBComponentWrapper *)parentWrapper
+{
+    if (parentWrapper.isRootComponent && parentWrapper.model.type == HUBComponentTypeBody) {
+        NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:(NSInteger)parentWrapper.model.index inSection:0];
+        return [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].frame.size;
+    }
+    
+    return HUBComponentLoadViewIfNeeded(parentWrapper).frame.size;
 }
 
 - (nullable HUBComponentWrapper *)componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell
