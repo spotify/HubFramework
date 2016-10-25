@@ -33,4 +33,6 @@ struct DefaultComponentNames {
     static var searchBar: String { return "searchBar" }
     /// An activity indicator component - maps to `ActivityIndicatorComponent`
     static var activityIndicator: String { return "activityIndicator" }
+    /// A carousel component - maps to `CarouselComponent`
+    static var carousel: String { return "carousel" }
 }
