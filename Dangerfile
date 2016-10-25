@@ -22,6 +22,11 @@ if git.modified_files.include?("project.xcconfig")
 	fail "The project.xcconfig must not be modified, please change spotify_os.xcconfig instead"
 end
 
+# Fail if the LICENSE file was modified
+if git.modified_files.include?("LICENSE")
+  fail "The license file was modified."
+end
+
 # Give inline test fail reports
 junit_report_path = Dir.glob("build/tests/*TestSummaries.junit").first
 if junit_report_path
