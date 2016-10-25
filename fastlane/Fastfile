@@ -11,23 +11,24 @@ platform :ios do
     device = ENV['TEST_DEVICE_NAME'] || 'iPhone 6s'
     UI.message("Simulator testing device set to '#{device}'")
 
-    build_directory = 'build'
-    output_directory = build_directory + '/tests'
+    output_directory = 'build/tests'
+    ENV['XCPRETTY_JSON_FILE_OUTPUT'] = "#{output_directory}/summary.json"
 
     scan(
       :workspace => 'HubFramework.xcworkspace',
       :scheme => 'HubFramework',
       :devices => [device],
-      :derived_data_path => build_directory + '/DerivedData',
+      :derived_data_path => 'build/DerivedData',
       :output_directory => output_directory,
-      :buildlog_path => build_directory + '/logs/tests',
+      :buildlog_path => 'build/logs/tests',
       :code_coverage => true,
       :output_types => '',
       :fail_build => false,
+      :formatter => 'xcpretty-json-formatter'
     )
 
     trainer(
-      path: build_directory,
+      path: 'build',
       output_directory: output_directory,
       extension: '.junit'
     )
@@ -38,15 +39,21 @@ platform :ios do
 
   desc 'Build the demo app'
   lane :demo do
+    ENV['XCPRETTY_JSON_FILE_OUTPUT'] = 'build/demo/summary.json'
+    demo_project = 'demo/HubFrameworkDemo.xcodeproj'
+
+    recreate_schemes(project: demo_project)
+
     xcodebuild(
       :build => true,
       :parallelize_targets => true,
-      :project => 'demo/HubFrameworkDemo.xcodeproj',
-      :target => 'HubFrameworkDemo',
+      :project => demo_project,
+      :scheme => 'HubFrameworkDemo',
       :sdk => 'iphonesimulator',
       :configuration => 'Release',
       :derivedDataPath => 'build/DerivedData',
       :buildlog_path => 'build/logs/demo',
+      :xcpretty_output => 'formatter `xcpretty-json-formatter`',
     )
   end
 
