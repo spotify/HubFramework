@@ -40,7 +40,7 @@ class RootContentOperation: NSObject, HUBContentOperation {
         
         let prettyPicturesRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "prettyPictures")
         prettyPicturesRowBuilder.title = "Pretty pictures"
-        prettyPicturesRowBuilder.subtitle = "A feature that displays a grid of pictures"
+        prettyPicturesRowBuilder.subtitle = "A feature that displays a carousel & grid of pictures"
         prettyPicturesRowBuilder.targetBuilder.uri = .prettyPicturesViewURI
         
         let reallyLongListRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "reallyLongList")

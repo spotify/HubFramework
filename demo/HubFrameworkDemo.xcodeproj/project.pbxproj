@@ -20,6 +20,7 @@
 		8A42E1F71D8C468C004FAC33 /* ComponentLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */; };
 		8A42E1F91D8C476C004FAC33 /* ComponentFallbackHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */; };
 		8A42E1FB1D8C4CEB004FAC33 /* RowComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */; };
+		8AB850961DBF9DE300AFAFD0 /* CarouselComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */; };
 		8ABCCEAA1D9D1AC3005113B5 /* ReallyLongListContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCCEA91D9D1AC3005113B5 /* ReallyLongListContentOperation.swift */; };
 		8ABCCEAC1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCCEAB1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift */; };
 		8AD14FED1D9958A90008E182 /* UIImageView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD14FEC1D9958A90008E182 /* UIImageView+Animation.swift */; };
@@ -80,6 +81,7 @@
 		8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentLayoutManager.swift; sourceTree = "<group>"; };
 		8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentFallbackHandler.swift; sourceTree = "<group>"; };
 		8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowComponent.swift; sourceTree = "<group>"; };
+		8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselComponent.swift; sourceTree = "<group>"; };
 		8ABCCEA91D9D1AC3005113B5 /* ReallyLongListContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReallyLongListContentOperation.swift; sourceTree = "<group>"; };
 		8ABCCEAB1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReallyLongListContentOperationFactory.swift; sourceTree = "<group>"; };
 		8AD14FEC1D9958A90008E182 /* UIImageView+Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Animation.swift"; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				8AD72F561D9AC22600E4B427 /* ImageComponent.swift */,
 				8AD5EDB61D9A7D50004B2CEA /* SearchBarComponent.swift */,
 				8AD5EDC71D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift */,
+				8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				8AD72F571D9AC22600E4B427 /* ImageComponent.swift in Sources */,
 				8A2729A21D95486A00EF43FC /* URL+ViewURIs.swift in Sources */,
 				8A42E1F91D8C476C004FAC33 /* ComponentFallbackHandler.swift in Sources */,
+				8AB850961DBF9DE300AFAFD0 /* CarouselComponent.swift in Sources */,
 				8A374D001DBE659E0013E592 /* TodoListAddAction.swift in Sources */,
 				8ABCCEAC1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift in Sources */,
 				8AD5EDCE1D9AA294004B2CEA /* LabelComponent.swift in Sources */,

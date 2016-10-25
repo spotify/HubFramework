@@ -34,10 +34,21 @@ class PrettyPicturesContentOperation: NSObject, HUBContentOperation {
             "zurich"
         ]
         
+        let carouselBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "carousel")
+        carouselBuilder.componentName = DefaultComponentNames.carousel
+        
+        for identifier in pictureIdentifiers {
+            let pictureBuilder = carouselBuilder.builderForChild(withIdentifier: "carousel-picture-" + identifier)
+            pictureBuilder.componentName = DefaultComponentNames.image
+            pictureBuilder.mainImageURL = imageURL(forPictureIdentifier: identifier)
+            pictureBuilder.targetBuilder.uri = targetURI(forPictureIdentifier: identifier)
+        }
+        
         for (index, identifier) in pictureIdentifiers.enumerated() {
             let pictureBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "picture-" + identifier)
             pictureBuilder.componentName = DefaultComponentNames.image
-            pictureBuilder.mainImageURL = URL(string: "https://spotify.github.io/HubFramework/resources/getting-started-\(identifier).jpg")
+            pictureBuilder.mainImageURL = imageURL(forPictureIdentifier: identifier)
+            pictureBuilder.targetBuilder.uri = targetURI(forPictureIdentifier: identifier)
             
             if index < 2 {
                 pictureBuilder.customData = [ImageComponentCustomDataKeys.fullWidth: true]
@@ -45,5 +56,13 @@ class PrettyPicturesContentOperation: NSObject, HUBContentOperation {
         }
         
         delegate?.contentOperationDidFinish(self)
+    }
+    
+    private func imageURL(forPictureIdentifier identifier: String) -> URL {
+        return URL(string: "https://spotify.github.io/HubFramework/resources/getting-started-\(identifier).jpg")!
+    }
+    
+    private func targetURI(forPictureIdentifier identifier: String) -> URL {
+        return URL(string: "https://en.wikipedia.org/wiki/" + identifier)!
     }
 }
