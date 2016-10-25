@@ -258,14 +258,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewController
 
-- (NSDictionary<NSIndexPath *, UIView *> *)visibleBodyComponentViews
+- (NSDictionary<NSIndexPath *, UIView *> *)visibleComponentViewsForComponentType:(HUBComponentType)componentType
 {
     NSMutableDictionary<NSIndexPath *, UIView *> * const visibleViewIndexPaths = [NSMutableDictionary new];
     NSMutableArray<HUBComponentWrapper *> * const visibleComponents = [NSMutableArray array];
 
-    for (HUBComponentCollectionViewCell * const cell in self.collectionView.visibleCells) {
-        HUBComponentWrapper * const wrapper = [self componentWrapperFromCell:cell];
-        [self addComponentWrapper:wrapper toArray:visibleComponents];
+    for (HUBComponentWrapper * const rootComponentWrapper in [self rootComponentWrappersForComponentType:componentType]) {
+        [self addComponentWrapper:rootComponentWrapper toArray:visibleComponents];
     }
 
     for (HUBComponentWrapper * const visibleComponent in visibleComponents) {
@@ -274,6 +273,35 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     return [visibleViewIndexPaths copy];
+}
+
+- (NSArray<HUBComponentWrapper *> *)rootComponentWrappersForComponentType:(HUBComponentType)componentType
+{
+    NSMutableArray<HUBComponentWrapper *> * const rootComponentWrappers = [NSMutableArray array];
+
+    switch (componentType) {
+        case HUBComponentTypeHeader: {
+            if (self.headerComponentWrapper != nil) {
+                HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
+                [rootComponentWrappers addObject:headerComponentWrapper];
+            }
+            break;
+        }
+        case HUBComponentTypeBody: {
+            for (HUBComponentCollectionViewCell * const cell in self.collectionView.visibleCells) {
+                HUBComponentWrapper * const wrapper = [self componentWrapperFromCell:cell];
+                [rootComponentWrappers addObject:wrapper];
+            }
+            break;
+        }
+        case HUBComponentTypeOverlay: {
+            // All root overlay components are implicitly visible.
+            [rootComponentWrappers addObjectsFromArray:self.overlayComponentWrappers];
+            break;
+        }
+    }
+
+    return rootComponentWrappers;
 }
 
 - (void)addComponentWrapper:(HUBComponentWrapper *)componentWrapper toArray:(NSMutableArray<HUBComponentWrapper *> *)array

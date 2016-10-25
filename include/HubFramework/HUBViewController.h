@@ -21,6 +21,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "HUBComponentType.h"
+
 @protocol HUBViewController;
 @protocol HUBViewModel;
 @protocol HUBComponent;
@@ -134,15 +136,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, readonly) id<HUBViewModel> viewModel;
 
 /**
- *  The views of the body components that are currently visible on screen, keyed by their index path
- *
- *  The index paths used for keys contains the indexes for the components' views, starting from the root. For example,
- *  a root body component at index 4 will have an index path with just the index 4, while the child at index 2 of that
- *  component will have an index path with the indexes 4 and 2.
- */
-@property (nonatomic, strong, readonly) NSDictionary<NSIndexPath *, UIView *> *visibleBodyComponentViews;
-
-/**
  *  Return the frame used to render a body component at a given index
  *
  *  @param index The index of the body component to get the frame for
@@ -168,6 +161,19 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param animated Defines if scrolling should be animated.
  */
 - (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
+
+/**
+ *  Returns the views of the components of the given type that are currently visible on screen, keyed by their index path
+ *
+ *  The index paths used for keys contains the indexes for the components' views, starting from the root. For example,
+ *  a root body component at index 4 will have an index path with just the index 4, while the child at index 2 of that
+ *  component will have an index path with the indexes 4 and 2.
+ *
+ *  @param componentType The type of component to check for visiblilty.
+ *
+ *  @return A dictionary of index paths and visible views at that index path.
+ */
+- (NSDictionary<NSIndexPath *, UIView *> *)visibleComponentViewsForComponentType:(HUBComponentType)componentType;
 
 /**
  *  Perform a programmatic selection of a component with a given model
