@@ -338,7 +338,7 @@ DEPENDENCIES
   activesupport (~> 4.0)
   danger (~> 3.5)
   danger-junit
-  fastlane (~> 1.104)
+  fastlane (~> 1.106)
   fastlane-plugin-trainer
   jazzy (~> 0.7.2)
   xcpretty-json-formatter

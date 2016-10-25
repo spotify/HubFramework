@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'danger', '~> 3.5'
 gem 'danger-junit'
-gem 'fastlane', '~> 1.104'
+gem 'fastlane', '~> 1.106'
 gem 'jazzy', '~> 0.7.2'
 gem 'xcpretty-json-formatter'
 
