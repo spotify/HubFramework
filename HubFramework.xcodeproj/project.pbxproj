@@ -143,6 +143,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1D98E5BC1DC09FB500607097 /* HUBComponentActionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentActionObserver.h; sourceTree = "<group>"; };
 		2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentFactoryMock.m; sourceTree = "<group>"; };
 		2932EAD3C06CBB869669B382 /* HUBComponentFactoryMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactoryMock.h; sourceTree = "<group>"; };
 		52977AC61DA7D0890064629E /* HUBBlockContentOperationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBBlockContentOperationFactory.h; sourceTree = "<group>"; };
@@ -930,6 +931,7 @@
 			isa = PBXGroup;
 			children = (
 				8A0754AC1C21A7C700AFAD38 /* HUBComponent.h */,
+				1D98E5BC1DC09FB500607097 /* HUBComponentActionObserver.h */,
 				8A1585961C8F003C0008FDF9 /* HUBComponentWithChildren.h */,
 				8A1585941C8EFF1E0008FDF9 /* HUBComponentWithImageHandling.h */,
 				8AFD984F1D09BCA500AFF898 /* HUBComponentWithRestorableUIState.h */,
