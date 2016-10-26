@@ -22,6 +22,7 @@
 #import <UIKit/UIKit.h>
 
 #import "HUBComponentType.h"
+#import "HUBComponentLayoutTraits.h"
 
 @protocol HUBViewController;
 @protocol HUBViewModel;
@@ -86,10 +87,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewController The view controller in which a component is about to appear
  *  @param componentModel The model of the component that is about to appear
+ *  @param layoutTraits The layou traits of the component that is about to appear
  *  @param componentView The view that the component is about to appear in
  */
 - (void)viewController:(UIViewController<HUBViewController> *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
+          layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
       willAppearInView:(UIView *)componentView;
 
 /**
@@ -97,10 +100,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewController The view controller in which a component disappeared
  *  @param componentModel The model of the component that disappeared
+ *  @param layoutTraits The layou traits of the component that disappeared
  *  @param componentView The view that the component disappeared from
  */
 - (void)viewController:(UIViewController<HUBViewController> *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
+          layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
   didDisappearFromView:(UIView *)componentView;
 
 /**
