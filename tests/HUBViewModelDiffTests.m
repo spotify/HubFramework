@@ -190,21 +190,21 @@
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
 }
 
-- (void)testInsertionOfComponentModelAtStartWithDataChanges
+- (void)testInsertionOfSingleComponentModelAtStartWithDataChanges
 {
     NSArray<id<HUBComponentModel>> *firstComponents = @[
-                                                        [self createComponentModelWithIdentifier:@"component-1" customData:nil],
-                                                        [self createComponentModelWithIdentifier:@"component-2" customData:nil],
-                                                        [self createComponentModelWithIdentifier:@"component-3" customData:nil]
-                                                        ];
+        [self createComponentModelWithIdentifier:@"component-1" customData:nil],
+        [self createComponentModelWithIdentifier:@"component-2" customData:nil],
+        [self createComponentModelWithIdentifier:@"component-3" customData:nil]
+    ];
     id<HUBViewModel> firstViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                components:firstComponents];
     NSArray<id<HUBComponentModel>> *secondComponents = @[
-                                                         [self createComponentModelWithIdentifier:@"component-0" customData:nil],
-                                                         [self createComponentModelWithIdentifier:@"component-1" customData:@{@"test": @1}],
-                                                         [self createComponentModelWithIdentifier:@"component-2" customData:@{@"test": @1}],
-                                                         [self createComponentModelWithIdentifier:@"component-3" customData:@{@"test": @1}]
-                                                         ];
+        [self createComponentModelWithIdentifier:@"component-0" customData:nil],
+        [self createComponentModelWithIdentifier:@"component-1" customData:@{@"test": @1}],
+        [self createComponentModelWithIdentifier:@"component-2" customData:@{@"test": @1}],
+        [self createComponentModelWithIdentifier:@"component-3" customData:@{@"test": @1}]
+    ];
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
 
@@ -218,22 +218,22 @@
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
 }
 
-- (void)testInsertionOfComponentModelsAtStartWithDataChanges
+- (void)testInsertionOfMultipleComponentModelsAtStartWithDataChanges
 {
     NSArray<id<HUBComponentModel>> *firstComponents = @[
-                                                        [self createComponentModelWithIdentifier:@"component-1" customData:nil],
-                                                        [self createComponentModelWithIdentifier:@"component-2" customData:nil],
-                                                        [self createComponentModelWithIdentifier:@"component-3" customData:nil]
-                                                        ];
+        [self createComponentModelWithIdentifier:@"component-1" customData:nil],
+        [self createComponentModelWithIdentifier:@"component-2" customData:nil],
+        [self createComponentModelWithIdentifier:@"component-3" customData:nil]
+    ];
     id<HUBViewModel> firstViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                components:firstComponents];
     NSArray<id<HUBComponentModel>> *secondComponents = @[
-                                                         [self createComponentModelWithIdentifier:@"component-0" customData:nil],
-                                                         [self createComponentModelWithIdentifier:@"component-00" customData:nil],
-                                                         [self createComponentModelWithIdentifier:@"component-1" customData:@{@"test": @1}],
-                                                         [self createComponentModelWithIdentifier:@"component-2" customData:@{@"test": @1}],
-                                                         [self createComponentModelWithIdentifier:@"component-3" customData:@{@"test": @1}]
-                                                         ];
+        [self createComponentModelWithIdentifier:@"component-0" customData:nil],
+        [self createComponentModelWithIdentifier:@"component-00" customData:nil],
+        [self createComponentModelWithIdentifier:@"component-1" customData:@{@"test": @1}],
+        [self createComponentModelWithIdentifier:@"component-2" customData:@{@"test": @1}],
+        [self createComponentModelWithIdentifier:@"component-3" customData:@{@"test": @1}]
+    ];
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
 
