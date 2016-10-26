@@ -50,6 +50,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Property overrides
 
+- (BOOL)isDragging
+{
+    return self.mockedIsDragging;
+}
+
 - (NSSet<NSIndexPath *> *)selectedIndexPaths
 {
     return [self.mutableSelectedIndexPaths copy];
