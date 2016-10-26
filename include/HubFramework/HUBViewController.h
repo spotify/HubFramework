@@ -168,15 +168,29 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Returns the views of the components of the given type that are currently visible on screen, keyed by their index path
  *
+ *  @param componentType The type of component to check for visiblilty.
+ *
  *  The index paths used for keys contains the indexes for the components' views, starting from the root. For example,
  *  a root body component at index 4 will have an index path with just the index 4, while the child at index 2 of that
  *  component will have an index path with the indexes 4 and 2.
  *
- *  @param componentType The type of component to check for visiblilty.
+ *  Note that if you are only interested in a single component's visible view, use the API that only returns a single view
+ *  instead, since it has a lot faster lookup time.
  *
  *  @return A dictionary of index paths and visible views at that index path.
  */
 - (NSDictionary<NSIndexPath *, UIView *> *)visibleComponentViewsForComponentType:(HUBComponentType)componentType;
+
+/**
+ *  Return any currently visible view of a single component
+ *
+ *  @param componentType The type of component to check for visibility.
+ *  @param indexPath The index path of the component to check for visibility.
+ *
+ *  This method provides a fast way of looking up just a single component's visible view, but if you're interested in
+ *  getting all currently visible component views - use `visibleComponentViewsForComponentType:` instead.
+ */
+- (nullable UIView *)visibleViewForComponentOfType:(HUBComponentType)componentType indexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Perform a programmatic selection of a component with a given model
