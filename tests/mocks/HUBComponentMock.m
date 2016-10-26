@@ -176,6 +176,10 @@
     if (protocol == @protocol(HUBComponentContentOffsetObserver)) {
         return self.isContentOffsetObserver;
     }
+
+    if (protocol == @protocol(HUBComponentActionObserver)) {
+        return self.isComponentActionObserver;
+    }
     
     return [super conformsToProtocol:protocol];
 }
