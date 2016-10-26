@@ -1717,14 +1717,19 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(10, 10)], (NSUInteger)0);
-    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(299, 199)], (NSUInteger)0);
+    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(10, 10)], 0u);
+    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(299, 199)], 0u);
     
-    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(10, 210)], (NSUInteger)1);
-    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(99, 299)], (NSUInteger)1);
+    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(10, 210)], 1u);
+    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(99, 299)], 1u);
     
     XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(-10, -10)], NSNotFound);
     XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(200, 1000)], NSNotFound);
+    
+    // Make sure we take content offset into account
+    self.collectionView.contentOffset = CGPointMake(0, 250);
+    XCTAssertEqual([self.viewController indexOfBodyComponentAtPoint:CGPointMake(10, 10)], 1u);
+    
 }
 
 - (void)testVisibleComponents
