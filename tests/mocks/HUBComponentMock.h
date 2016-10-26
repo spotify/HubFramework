@@ -103,7 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL isContentOffsetObserver;
 
 /// Whether the component should act like it is a component action observer or not
-@property (nonatomic) BOOL isComponentActionObserver;
+@property (nonatomic) BOOL isActionObserver;
 
 /// Whether the component's image was recently animated
 @property (nonatomic, readonly) BOOL imageWasAnimated;

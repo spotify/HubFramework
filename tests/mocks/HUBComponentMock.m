@@ -178,7 +178,7 @@
     }
 
     if (protocol == @protocol(HUBComponentActionObserver)) {
-        return self.isComponentActionObserver;
+        return self.isActionObserver;
     }
     
     return [super conformsToProtocol:protocol];

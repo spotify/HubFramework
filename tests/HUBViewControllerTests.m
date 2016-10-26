@@ -1876,7 +1876,7 @@
 
 - (void)testObservingActionsByComponent
 {
-    self.component.isComponentActionObserver = YES;
+    self.component.isActionObserver = YES;
 
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         viewModelBuilder.headerComponentModelBuilder.title = @"header";
