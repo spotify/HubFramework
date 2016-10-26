@@ -188,6 +188,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel;
 
+/**
+ *  Cancel any ongoing component selection - including both highlights & selection
+ *
+ *  If no component is currently being selected, this method does nothing.
+ */
+- (void)cancelComponentSelection;
+
 @end
 
 NS_ASSUME_NONNULL_END
