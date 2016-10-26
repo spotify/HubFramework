@@ -22,6 +22,7 @@
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentContentOffsetObserver.h"
+#import "HUBComponentActionObserver.h"
 #import "HUBComponentWithRestorableUIState.h"
 #import "HUBComponentWithSelectionState.h"
 #import "HUBHeaderMacros.h"
@@ -131,6 +132,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
     HUBComponentWithImageHandling,
     HUBComponentViewObserver,
     HUBComponentContentOffsetObserver,
+    HUBComponentActionObserver,
     HUBComponentWithSelectionState
 >
 

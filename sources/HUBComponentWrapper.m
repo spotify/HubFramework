@@ -289,6 +289,13 @@ NS_ASSUME_NONNULL_BEGIN
     [(id<HUBComponentContentOffsetObserver>)self.component updateViewForChangedContentOffset:contentOffset];
 }
 
+#pragma mark - HUBComponentActionObserver
+
+- (void)actionPerformedWithContext:(id<HUBActionContext>)context viewURI:(NSURL *)viewURI
+{
+    // TODO
+}
+
 #pragma mark - HUBComponentWithSelectionState
 
 - (void)updateViewForSelectionState:(HUBComponentSelectionState)selectionState

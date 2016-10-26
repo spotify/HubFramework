@@ -50,6 +50,7 @@
 #import "HUBViewModelDiff.h"
 #import "HUBComponentGestureRecognizer.h"
 #import "HUBViewModelRenderer.h"
+#import "HUBComponentActionObserver.h"
 
 static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
@@ -80,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponentWrappers;
+@property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentActionObserver>> *actionObservingComponentWrappers;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *headerComponentWrapper;
 @property (nonatomic, strong, readonly) NSMutableArray<HUBComponentWrapper *> *overlayComponentWrappers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
@@ -140,6 +142,7 @@ NS_ASSUME_NONNULL_BEGIN
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     _componentImageLoadingContexts = [NSMutableDictionary new];
     _contentOffsetObservingComponentWrappers = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
+    _actionObservingComponentWrappers = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     _overlayComponentWrappers = [NSMutableArray new];
     _componentWrappersByIdentifier = [NSMutableDictionary new];
     _componentWrappersByCellIdentifier = [NSMutableDictionary new];
@@ -506,6 +509,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (childComponent.isContentOffsetObserver) {
         [self.contentOffsetObservingComponentWrappers addObject:childComponent];
     }
+
+    if (childComponent.isActionObserver) {
+        [self.actionObservingComponentWrappers addObject:childComponent];
+    }
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
@@ -525,7 +532,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (childComponent.isContentOffsetObserver) {
         [self.contentOffsetObservingComponentWrappers removeObject:childComponent];
     }
-    
+
+    if (childComponent.isActionObserver) {
+        [self.actionObservingComponentWrappers addObject:childComponent];
+    }
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
@@ -637,6 +647,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (componentWrapper.isContentOffsetObserver) {
         [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
     }
+
+    if (componentWrapper.isActionObserver) {
+        [self.actionObservingComponentWrappers addObject:componentWrapper];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView
@@ -649,6 +663,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell];
     if (componentWrapper.isContentOffsetObserver) {
         [self.contentOffsetObservingComponentWrappers removeObject:componentWrapper];
+    }
+
+    if (componentWrapper.isActionObserver) {
+        [self.actionObservingComponentWrappers removeObject:componentWrapper];
     }
 }
 
@@ -962,6 +980,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     if (componentWrapper.isContentOffsetObserver) {
         [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
+    }
+
+    if (componentWrapper.isActionObserver) {
+        [self.actionObservingComponentWrappers addObject:componentWrapper];
     }
     
     return componentWrapper;

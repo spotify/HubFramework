@@ -20,13 +20,14 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "HUBComponent.h"
 
 @protocol HUBAction;
 @protocol HUBActionContext;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol HUBComponentActionObserver <NSObject>
+@protocol HUBComponentActionObserver <HUBComponent>
 
 - (void)actionPerformedWithContext:(id<HUBActionContext>)context
                            viewURI:(NSURL *)viewURI;
