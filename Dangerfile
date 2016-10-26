@@ -37,5 +37,5 @@ if junit_report_path
   junit.parse junit_report_path
   junit.report
 else
-	warn "Couldn't find the (junit) unit test report file in 'build/tests/'. Make sure the tests were actually run."
+  warn "Couldn't find the (junit) unit test report file in 'build/tests/'. Make sure the tests were actually run."
 end
