@@ -1908,7 +1908,7 @@
                                                                                 customData:customActionData];
 
     XCTAssertTrue(actionOutcome);
-    XCTAssertNotNil(self.component.latestObservedActionContext)
+    XCTAssertNotNil(self.component.latestObservedActionContext);
     XCTAssertEqualObjects(actionContext, self.component.latestObservedActionContext);
     XCTAssertEqualObjects(actionContext.componentModel.identifier, @"header");
     XCTAssertEqualObjects(actionContext.customData, customActionData);
