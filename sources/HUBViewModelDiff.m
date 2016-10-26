@@ -93,10 +93,16 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
         }
     }
 
+    NSMutableIndexSet *reloads = [NSMutableIndexSet indexSet];
+
     // Finding the longest common subsequence
     NSMutableIndexSet *commonIndexSet = [NSMutableIndexSet indexSet];
     for (NSUInteger i = 0, j = 0 ; i < fromViewModelCount && j < toViewModelCount; ) {
         if ([firstIdentifiers[i] isEqualToString:secondIdentifiers[j]]) {
+            if (![fromViewModel.bodyComponentModels[i] isEqual:toViewModel.bodyComponentModels[j]]) {
+                [reloads addIndex:i];
+            }
+
             [commonIndexSet addIndex:i];
             i++;
             j++;
@@ -111,7 +117,6 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
     
     NSMutableIndexSet *insertions = [NSMutableIndexSet indexSet];
     NSMutableIndexSet *deletions = [NSMutableIndexSet indexSet];
-    NSMutableIndexSet *reloads = [NSMutableIndexSet indexSet];
 
     // Comparing the first model indices to the common indices to find deletions
     for (NSUInteger i = 0; i < fromViewModelCount; i++) {
@@ -127,9 +132,6 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
     for (NSUInteger i = 0, j = 0; i < commonObjects.count || j < toViewModelCount; ) {
         if (i < commonObjects.count && j < toViewModelCount &&
             [commonObjects[i].identifier isEqualToString:secondIdentifiers[j]]) {
-            if (![commonObjects[i] isEqual:toViewModel.bodyComponentModels[j]]) {
-                [reloads addIndex:j];
-            }
             i++;
             j++;
         } else {
