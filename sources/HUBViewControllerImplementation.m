@@ -506,13 +506,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     [self loadImagesForComponentWrapper:componentWrapper childIndex:@(childIndex)];
     [self.delegate viewController:self componentWithModel:childComponentModel willAppearInView:childView];
 
-    if (childComponent.isContentOffsetObserver) {
-        [self.contentOffsetObservingComponentWrappers addObject:childComponent];
-    }
-
-    if (childComponent.isActionObserver) {
-        [self.actionObservingComponentWrappers addObject:childComponent];
-    }
+    [self addComponentWrapperToLookupTables:childComponent];
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
@@ -529,13 +523,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
     [self.delegate viewController:self componentWithModel:childComponentModel didDisappearFromView:childView];
 
-    if (childComponent.isContentOffsetObserver) {
-        [self.contentOffsetObservingComponentWrappers removeObject:childComponent];
-    }
-
-    if (childComponent.isActionObserver) {
-        [self.actionObservingComponentWrappers addObject:childComponent];
-    }
+    [self removeComponentWrapperFromLookupTables:childComponent];
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
@@ -644,13 +632,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
               ignorePreviousAppearance:self.collectionViewIsScrolling];
     
     HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell];
-    if (componentWrapper.isContentOffsetObserver) {
-        [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
-    }
 
-    if (componentWrapper.isActionObserver) {
-        [self.actionObservingComponentWrappers addObject:componentWrapper];
-    }
+    [self addComponentWrapperToLookupTables:componentWrapper];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView
@@ -661,13 +644,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     [self.delegate viewController:self componentWithModel:componentModel didDisappearFromView:cell];
     
     HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell];
-    if (componentWrapper.isContentOffsetObserver) {
-        [self.contentOffsetObservingComponentWrappers removeObject:componentWrapper];
-    }
-
-    if (componentWrapper.isActionObserver) {
-        [self.actionObservingComponentWrappers removeObject:componentWrapper];
-    }
+    [self removeComponentWrapperFromLookupTables:componentWrapper];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -977,15 +954,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         [self.view addSubview:componentView];
         [componentWrapper viewDidMoveToSuperview:self.view];
     }
-    
-    if (componentWrapper.isContentOffsetObserver) {
-        [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
-    }
 
-    if (componentWrapper.isActionObserver) {
-        [self.actionObservingComponentWrappers addObject:componentWrapper];
-    }
-    
+    [self addComponentWrapperToLookupTables:componentWrapper];
+
     return componentWrapper;
 }
 
@@ -1236,6 +1207,28 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
 
     return isActionHandled;
+}
+
+- (void)addComponentWrapperToLookupTables:(nullable HUBComponentWrapper *)componentWrapper
+{
+    if (componentWrapper.isContentOffsetObserver) {
+        [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
+    }
+
+    if (componentWrapper.isActionObserver) {
+        [self.actionObservingComponentWrappers addObject:componentWrapper];
+    }
+}
+
+- (void)removeComponentWrapperFromLookupTables:(nullable HUBComponentWrapper *)componentWrapper
+{
+    if (componentWrapper.isContentOffsetObserver) {
+        [self.contentOffsetObservingComponentWrappers removeObject:componentWrapper];
+    }
+
+    if (componentWrapper.isActionObserver) {
+        [self.actionObservingComponentWrappers removeObject:componentWrapper];
+    }
 }
 
 @end
