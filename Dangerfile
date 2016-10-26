@@ -19,7 +19,7 @@ end
 
 # Fail if the project.xcconfig file is modified since that's not supported.
 if git.modified_files.include?("project.xcconfig")
-	fail "The project.xcconfig must not be modified, please change spotify_os.xcconfig instead"
+  fail "The project.xcconfig must not be modified, please change spotify_os.xcconfig instead"
 end
 
 # Fail if the LICENSE file was modified
@@ -34,8 +34,8 @@ xcode_summary.report 'build/demo/summary.json' if File.file?('build/demo/summary
 # Give inline test fail reports
 junit_report_path = Dir.glob("build/tests/*TestSummaries.junit").first
 if junit_report_path
-	junit.parse junit_report_path
-	junit.report
+  junit.parse junit_report_path
+  junit.report
 else
-	warn "Couldn't find the (junit) unit test report file in 'build/tests/'. Make sure the tests were actually run."
+  warn "Couldn't find the (junit) unit test report file in 'build/tests/'. Make sure the tests were actually run."
 end
