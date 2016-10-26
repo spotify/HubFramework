@@ -29,8 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol HUBComponentActionObserver <HUBComponent>
 
-- (void)actionPerformedWithContext:(id<HUBActionContext>)context
-                           viewURI:(NSURL *)viewURI;
+- (void)actionPerformedWithContext:(id<HUBActionContext>)context;
 
 @end
 
