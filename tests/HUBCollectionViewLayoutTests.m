@@ -315,7 +315,7 @@
 - (void)testProposedContentOffsetAfterRecomputing
 {
     for (NSUInteger i = 0; i < 30; i++) {
-        [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier];
+        [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier preferredIndex:i];
     }
 
     id<HUBViewModel> const viewModel = [self.viewModelBuilder build];
@@ -339,17 +339,17 @@
     NSRange const addedRange = NSMakeRange(0, 2);
     NSIndexSet * const addedIndices = [NSIndexSet indexSetWithIndexesInRange:addedRange];
 
+    [addedIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier preferredIndex:idx];
+        if (idx < currentIndex) {
+            insertionHeight += self.fullWidthComponent.preferredViewSize.height;
+        }
+    }];
+
     [removedIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
         [self removeBodyComponentAtIndex:idx];
         if (idx <= currentIndex) {
             deletionHeight += self.fullWidthComponent.preferredViewSize.height;
-        }
-    }];
-
-    [addedIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier preferredIndex:idx];
-        if (idx <= currentIndex) {
-            insertionHeight += self.fullWidthComponent.preferredViewSize.height;
         }
     }];
 
@@ -383,7 +383,7 @@
     [layout computeForCollectionViewSize:self.collectionViewSize viewModel:firstViewModel diff:nil];
     
     for (NSUInteger i = 0; i < 10; i++) {
-        [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier];
+        [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier preferredIndex:i];
     }
 
     id<HUBViewModel> const secondViewModel = [self.viewModelBuilder build];
@@ -430,9 +430,12 @@
 - (void)removeBodyComponentAtIndex:(NSUInteger)componentIndex
 {
     NSArray<id<HUBComponentModelBuilder>> *childBuilders = [self.viewModelBuilder allBodyComponentModelBuilders];
-    if (childBuilders.count > componentIndex) {
-        id<HUBComponentModelBuilder> builder = childBuilders[componentIndex];
-        [self.viewModelBuilder removeBuilderForBodyComponentModelWithIdentifier:builder.modelIdentifier];
+
+    for (id<HUBComponentModelBuilder> builder in childBuilders) {
+        if (builder.preferredIndex.unsignedIntegerValue == componentIndex) {
+            [self.viewModelBuilder removeBuilderForBodyComponentModelWithIdentifier:builder.modelIdentifier];
+            break;
+        }
     }
 }
 
