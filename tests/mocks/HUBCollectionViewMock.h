@@ -47,6 +47,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The animated flag applied when offet is scrolled to.
 @property (nonatomic) BOOL appliedScrollViewOffsetAnimatedFlag;
 
+/// Whether the collection view should act like the user is dragging its content
+@property (nonatomic) BOOL mockedIsDragging;
+
 @end
 
 NS_ASSUME_NONNULL_END
