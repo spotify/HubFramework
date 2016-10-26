@@ -19,7 +19,6 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
 #import "HUBComponent.h"
 
 @protocol HUBAction;
@@ -27,8 +26,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  Extended component protocol that adds the ability to observe whenever an action was performed
+ *
+ *  You can use this protocol to be able to react to an action being performed in your component.
+ *
+ *  See `HUBComponent` and `HUBAction` for more information.
+ */
 @protocol HUBComponentActionObserver <HUBComponent>
 
+/**
+ *  Sent to a component whenever an action was performed in the view that it is being used in
+ *
+ *  @param context The contextual object that the action was performed with
+ *
+ *  The Hub Framework will call this method on your component every time that an action was performed
+ *  in the view that it is being used in, including both default selection actions & custom ones.
+ */
 - (void)actionPerformedWithContext:(id<HUBActionContext>)context;
 
 @end

@@ -157,7 +157,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
 /// Whether the wrapped component is observing the container view's content offset
 @property (nonatomic, readonly) BOOL isContentOffsetObserver;
 
-/// Whether the wrapped component is observing the actions
+/// Whether the wrapped component is observing actions
 @property (nonatomic, readonly) BOOL isActionObserver;
 
 /// Whether the wrapped component's view has appeared since the model was last changed
