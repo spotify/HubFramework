@@ -135,6 +135,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, nullable, readonly) id<HUBViewModel> viewModel;
 
+/// Whether the view controller's content view is currently being scrolled
+@property (nonatomic, assign, readonly) BOOL isViewScrolling;
+
 /**
  *  Return the frame used to render a body component at a given index
  *

@@ -1658,6 +1658,15 @@
     XCTAssertEqualWithAccuracy(targetContentOffset.y, 500, 0.001);
 }
 
+- (void)testIsViewScrolling
+{
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertFalse(self.viewController.isViewScrolling);
+    self.collectionView.mockedIsDragging = YES;
+    XCTAssertTrue(self.viewController.isViewScrolling);
+}
+
 - (void)testFrameForBodyComponentAtIndex
 {
     HUBComponentMock * const componentA = [HUBComponentMock new];
