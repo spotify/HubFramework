@@ -260,6 +260,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBViewController
 
+- (BOOL)isViewScrolling
+{
+    return self.collectionView.isDragging || self.collectionView.isDecelerating;
+}
+
 - (NSDictionary<NSIndexPath *, UIView *> *)visibleComponentViewsForComponentType:(HUBComponentType)componentType
 {
     NSMutableDictionary<NSIndexPath *, UIView *> * const visibleViewIndexPaths = [NSMutableDictionary new];
