@@ -1658,6 +1658,15 @@
     XCTAssertEqualWithAccuracy(targetContentOffset.y, 500, 0.001);
 }
 
+- (void)testIsViewScrolling
+{
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertFalse(self.viewController.isViewScrolling);
+    self.collectionView.mockedIsDragging = YES;
+    XCTAssertTrue(self.viewController.isViewScrolling);
+}
+
 - (void)testFrameForBodyComponentAtIndex
 {
     HUBComponentMock * const componentA = [HUBComponentMock new];
@@ -1868,6 +1877,51 @@
     
     XCTAssertTrue(actionOutcome);
     XCTAssertEqualObjects(actionContext.componentModel.identifier, @"A");
+    XCTAssertEqualObjects(actionContext.customData, customActionData);
+    XCTAssertEqual(actionContext.trigger, HUBActionTriggerComponent);
+    XCTAssertEqualObjects(self.actionHandler.contexts, @[actionContext]);
+    XCTAssertEqual(self.contentOperation.actionContext, actionContext);
+}
+
+- (void)testObservingActionsByComponent
+{
+    self.component.isActionObserver = YES;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"header";
+        return YES;
+    };
+
+    __block id<HUBActionContext> actionContext = nil;
+
+    HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"component" name:@"action"];
+
+    HUBActionMock * const action = [[HUBActionMock alloc] initWithBlock:^BOOL(id<HUBActionContext> context) {
+        actionContext = context;
+        return YES;
+    }];
+
+    HUBActionFactoryMock * const actionFactory = [[HUBActionFactoryMock alloc] initWithActions:@{
+        actionIdentifier.namePart: action
+    }];
+
+    [self.actionRegistry registerActionFactory:actionFactory forNamespace:actionIdentifier.namespacePart];
+
+    self.actionHandler.block = ^(id<HUBActionContext> context) {
+        return NO;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    NSDictionary * const customActionData = @{@"custom": @"data"};
+
+    BOOL const actionOutcome = [self.component.actionPerformer performActionWithIdentifier:actionIdentifier
+                                                                                customData:customActionData];
+
+    XCTAssertTrue(actionOutcome);
+    XCTAssertNotNil(self.component.latestObservedActionContext);
+    XCTAssertEqualObjects(actionContext, self.component.latestObservedActionContext);
+    XCTAssertEqualObjects(actionContext.componentModel.identifier, @"header");
     XCTAssertEqualObjects(actionContext.customData, customActionData);
     XCTAssertEqual(actionContext.trigger, HUBActionTriggerComponent);
     XCTAssertEqualObjects(self.actionHandler.contexts, @[actionContext]);

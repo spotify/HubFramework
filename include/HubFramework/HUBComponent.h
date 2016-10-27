@@ -58,6 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  `HUBComponentViewObserver`: For components that observe their view for various events.
  *
  *  `HUBComponentActionPerformer`: For components that can perform actions (see `HUBAction`).
+ *
+ *  `HUBComponentActionObserver`: For components that can observe actions (see `HUBAction`).
  */
 @protocol HUBComponent <NSObject>
 

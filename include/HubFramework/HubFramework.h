@@ -65,6 +65,7 @@
 #import "HUBComponentWithSelectionState.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
+#import "HUBComponentActionObserver.h"
 #import "HUBComponentActionPerformer.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBComponentFactory.h"

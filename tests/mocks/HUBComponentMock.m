@@ -32,6 +32,7 @@
 @property (nonatomic, readwrite) NSUInteger numberOfAppearances;
 @property (nonatomic, readwrite) NSUInteger numberOfReuses;
 @property (nonatomic, readwrite) NSUInteger numberOfContentOffsetChanges;
+@property (nonatomic, strong, readwrite, nullable) id<HUBActionContext> latestObservedActionContext;
 @property (nonatomic, strong, readonly) NSMutableArray<id> *mutableRestoredUIStates;
 @property (nonatomic, readwrite) BOOL imageWasAnimated;
 
@@ -142,6 +143,13 @@
     self.numberOfContentOffsetChanges++;
 }
 
+#pragma mark - HUBComponentActionObserver
+
+- (void)actionPerformedWithContext:(id<HUBActionContext>)context
+{
+    self.latestObservedActionContext = context;
+}
+
 #pragma mark - Property overrides
 
 - (NSArray<id> *)restoredUIStates
@@ -167,6 +175,10 @@
     
     if (protocol == @protocol(HUBComponentContentOffsetObserver)) {
         return self.isContentOffsetObserver;
+    }
+
+    if (protocol == @protocol(HUBComponentActionObserver)) {
+        return self.isActionObserver;
     }
     
     return [super conformsToProtocol:protocol];

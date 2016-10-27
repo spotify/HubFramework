@@ -200,15 +200,6 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
-    for (NSIndexPath *indexPath in self.lastViewModelDiff.reloadedBodyComponentIndexPaths) {
-        if (indexPath.item < topmostVisibleIndex) {
-            UICollectionViewLayoutAttributes *oldAttributes = self.previousLayoutAttributesByIndexPath[indexPath];
-            UICollectionViewLayoutAttributes *newAttributes = self.layoutAttributesByIndexPath[indexPath];
-            CGFloat heightDifference = CGRectGetHeight(oldAttributes.frame) - CGRectGetHeight(newAttributes.frame);
-            offset.y += heightDifference;
-        }
-    }
-    
     // Making sure the content offset doesn't go through the roof.
     CGFloat const minContentOffset = -self.collectionView.contentInset.top;
     offset.y = MAX(minContentOffset, offset.y);
