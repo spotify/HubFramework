@@ -50,6 +50,7 @@
 #import "HUBViewModelDiff.h"
 #import "HUBComponentGestureRecognizer.h"
 #import "HUBViewModelRenderer.h"
+#import "HUBComponentActionObserver.h"
 
 static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
@@ -80,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponentWrappers;
+@property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentActionObserver>> *actionObservingComponentWrappers;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *headerComponentWrapper;
 @property (nonatomic, strong, readonly) NSMutableArray<HUBComponentWrapper *> *overlayComponentWrappers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
@@ -140,6 +142,7 @@ NS_ASSUME_NONNULL_BEGIN
     _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     _componentImageLoadingContexts = [NSMutableDictionary new];
     _contentOffsetObservingComponentWrappers = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
+    _actionObservingComponentWrappers = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     _overlayComponentWrappers = [NSMutableArray new];
     _componentWrappersByIdentifier = [NSMutableDictionary new];
     _componentWrappersByCellIdentifier = [NSMutableDictionary new];
@@ -508,9 +511,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     [self loadImagesForComponentWrapper:componentWrapper childIndex:@(childIndex)];
     [self.delegate viewController:self componentWithModel:childComponentModel willAppearInView:childView];
 
-    if (childComponent.isContentOffsetObserver) {
-        [self.contentOffsetObservingComponentWrappers addObject:childComponent];
-    }
+    [self addComponentWrapperToLookupTables:childComponent];
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
@@ -527,10 +528,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
     [self.delegate viewController:self componentWithModel:childComponentModel didDisappearFromView:childView];
 
-    if (childComponent.isContentOffsetObserver) {
-        [self.contentOffsetObservingComponentWrappers removeObject:childComponent];
-    }
-    
+    [self removeComponentWrapperFromLookupTables:childComponent];
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
@@ -639,9 +637,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
               ignorePreviousAppearance:self.collectionViewIsScrolling];
     
     HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell];
-    if (componentWrapper.isContentOffsetObserver) {
-        [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
-    }
+
+    [self addComponentWrapperToLookupTables:componentWrapper];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView
@@ -652,9 +649,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     [self.delegate viewController:self componentWithModel:componentModel didDisappearFromView:cell];
     
     HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell];
-    if (componentWrapper.isContentOffsetObserver) {
-        [self.contentOffsetObservingComponentWrappers removeObject:componentWrapper];
-    }
+    [self removeComponentWrapperFromLookupTables:componentWrapper];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -964,11 +959,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         [self.view addSubview:componentView];
         [componentWrapper viewDidMoveToSuperview:self.view];
     }
-    
-    if (componentWrapper.isContentOffsetObserver) {
-        [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
-    }
-    
+
+    [self addComponentWrapperToLookupTables:componentWrapper];
+
     return componentWrapper;
 }
 
@@ -1210,8 +1203,37 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                                        viewModel:viewModel
                                                                                   componentModel:componentModel
                                                                                   viewController:self];
-    
-    return [self.actionHandler handleActionWithContext:context];
+
+    BOOL actionWasHandled = [self.actionHandler handleActionWithContext:context];
+
+    for (HUBComponentWrapper *componentWrapper in self.actionObservingComponentWrappers) {
+        id<HUBComponentActionObserver> observer = componentWrapper;
+        [observer actionPerformedWithContext:context];
+    }
+
+    return actionWasHandled;
+}
+
+- (void)addComponentWrapperToLookupTables:(nullable HUBComponentWrapper *)componentWrapper
+{
+    if (componentWrapper.isContentOffsetObserver) {
+        [self.contentOffsetObservingComponentWrappers addObject:componentWrapper];
+    }
+
+    if (componentWrapper.isActionObserver) {
+        [self.actionObservingComponentWrappers addObject:componentWrapper];
+    }
+}
+
+- (void)removeComponentWrapperFromLookupTables:(nullable HUBComponentWrapper *)componentWrapper
+{
+    if (componentWrapper.isContentOffsetObserver) {
+        [self.contentOffsetObservingComponentWrappers removeObject:componentWrapper];
+    }
+
+    if (componentWrapper.isActionObserver) {
+        [self.actionObservingComponentWrappers removeObject:componentWrapper];
+    }
 }
 
 @end

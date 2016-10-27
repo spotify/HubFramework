@@ -26,6 +26,7 @@
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentContentOffsetObserver.h"
+#import "HUBComponentActionObserver.h"
 #import "HUBComponentActionPerformer.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentUIStateManager.h"
@@ -139,6 +140,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isContentOffsetObserver
 {
     return [self.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)];
+}
+
+- (BOOL)isActionObserver
+{
+    return [self.component conformsToProtocol:@protocol(HUBComponentActionObserver)];
 }
 
 - (BOOL)isRootComponent
@@ -281,6 +287,17 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     [(id<HUBComponentContentOffsetObserver>)self.component updateViewForChangedContentOffset:contentOffset];
+}
+
+#pragma mark - HUBComponentActionObserver
+
+- (void)actionPerformedWithContext:(id<HUBActionContext>)context
+{
+    if (![self.component conformsToProtocol:@protocol(HUBComponentActionObserver)]) {
+        return;
+    }
+    
+    [(id<HUBComponentActionObserver>)self.component actionPerformedWithContext:context];
 }
 
 #pragma mark - HUBComponentWithSelectionState
