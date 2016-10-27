@@ -22,6 +22,7 @@
 #import <UIKit/UIKit.h>
 
 #import "HUBComponentType.h"
+#import "HUBComponentLayoutTraits.h"
 
 @protocol HUBViewController;
 @protocol HUBViewModel;
@@ -86,10 +87,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewController The view controller in which a component is about to appear
  *  @param componentModel The model of the component that is about to appear
+ *  @param layoutTraits The layout traits of the component that is about to appear
  *  @param componentView The view that the component is about to appear in
  */
 - (void)viewController:(UIViewController<HUBViewController> *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
+          layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
       willAppearInView:(UIView *)componentView;
 
 /**
@@ -97,10 +100,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewController The view controller in which a component disappeared
  *  @param componentModel The model of the component that disappeared
+ *  @param layoutTraits The layout traits of the component that disappeared
  *  @param componentView The view that the component disappeared from
  */
 - (void)viewController:(UIViewController<HUBViewController> *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
+          layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
   didDisappearFromView:(UIView *)componentView;
 
 /**
@@ -168,15 +173,29 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Returns the views of the components of the given type that are currently visible on screen, keyed by their index path
  *
+ *  @param componentType The type of component to check for visiblilty.
+ *
  *  The index paths used for keys contains the indexes for the components' views, starting from the root. For example,
  *  a root body component at index 4 will have an index path with just the index 4, while the child at index 2 of that
  *  component will have an index path with the indexes 4 and 2.
  *
- *  @param componentType The type of component to check for visiblilty.
+ *  Note that if you are only interested in a single component's visible view, use the API that only returns a single view
+ *  instead, since it has a lot faster lookup time.
  *
  *  @return A dictionary of index paths and visible views at that index path.
  */
 - (NSDictionary<NSIndexPath *, UIView *> *)visibleComponentViewsForComponentType:(HUBComponentType)componentType;
+
+/**
+ *  Return any currently visible view of a single component
+ *
+ *  @param componentType The type of component to check for visibility.
+ *  @param indexPath The index path of the component to check for visibility.
+ *
+ *  This method provides a fast way of looking up just a single component's visible view, but if you're interested in
+ *  getting all currently visible component views - use `visibleComponentViewsForComponentType:` instead.
+ */
+- (nullable UIView *)visibleViewForComponentOfType:(HUBComponentType)componentType indexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Perform a programmatic selection of a component with a given model
@@ -190,6 +209,13 @@ NS_ASSUME_NONNULL_BEGIN
  *          was executed as a result of the selection.
  */
 - (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel;
+
+/**
+ *  Cancel any ongoing component selection - including both highlights & selection
+ *
+ *  If no component is currently being selected, this method does nothing.
+ */
+- (void)cancelComponentSelection;
 
 @end
 
