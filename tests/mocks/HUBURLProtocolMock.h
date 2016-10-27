@@ -61,7 +61,7 @@ typedef BOOL(^HUBURLProtocolRequestPredicate)(NSURLRequest *request);
  * @param predicate The predicate that determines if a request should be handled by the mock or not.
  * @param requestHandler The request handler that will be called once a request with a matching URL goes out.
  */
-+ (void (^)())mockRequestsMatchingPredicate:(HUBURLProtocolRequestPredicate)predicate handler:(HUBURLProtocolRequestHandler)requestHandler;
++ (void (^)(void))mockRequestsMatchingPredicate:(HUBURLProtocolRequestPredicate)predicate handler:(HUBURLProtocolRequestHandler)requestHandler;
 
 @end
 
