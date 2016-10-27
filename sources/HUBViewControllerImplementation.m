@@ -424,6 +424,11 @@ NS_ASSUME_NONNULL_BEGIN
     return selectionHandled;
 }
 
+- (void)cancelComponentSelection
+{
+    [self.highlightedComponentWrapper updateViewForSelectionState:HUBComponentSelectionStateNone];
+}
+
 #pragma mark - HUBImageLoaderDelegate
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL
