@@ -65,7 +65,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable NSSet<NSString *> *)ignoredAutoEquatablePropertyNames
 {
-    return [NSSet setWithObjects:HUBKeyPath((id<HUBComponentModel>)nil, parent), HUBKeyPath((id<HUBComponentModel>)nil, index), nil];
+    return [NSSet setWithObjects:HUBKeyPath((id<HUBComponentModel>)nil, parent),
+        HUBKeyPath((id<HUBComponentModel>)nil, index),
+        HUBKeyPath((id<HUBComponentModel>)nil, indexPath),
+        nil];
 }
 
 #pragma mark - Initializer
