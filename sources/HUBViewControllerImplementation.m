@@ -387,6 +387,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSUInteger)indexOfBodyComponentAtPoint:(CGPoint)point
 {
+    point.y += self.collectionView.contentOffset.y;
+    
     NSIndexPath * const indexPath = [self.collectionView indexPathForItemAtPoint:point];
     
     if (indexPath == nil) {
@@ -564,10 +566,16 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (childIndex >= componentModel.children.count) {
         return;
     }
+    
+    [self loadImagesForComponentWrapper:componentWrapper childIndex:@(childIndex)];
 
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
-    [self loadImagesForComponentWrapper:componentWrapper childIndex:@(childIndex)];
-    [self.delegate viewController:self componentWithModel:childComponentModel willAppearInView:childView];
+    NSSet<HUBComponentLayoutTrait> * const layoutTraits = childComponent.layoutTraits ?: [NSSet new];
+    
+    [self.delegate viewController:self
+               componentWithModel:childComponentModel
+                     layoutTraits:layoutTraits
+                 willAppearInView:childView];
 
     [self addComponentWrapperToLookupTables:childComponent];
 }
@@ -584,7 +592,12 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
 
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
-    [self.delegate viewController:self componentWithModel:childComponentModel didDisappearFromView:childView];
+    NSSet<HUBComponentLayoutTrait> * const layoutTraits = childComponent.layoutTraits ?: [NSSet new];
+    
+    [self.delegate viewController:self
+               componentWithModel:childComponentModel
+                     layoutTraits:layoutTraits
+             didDisappearFromView:childView];
 
     [self removeComponentWrapperFromLookupTables:childComponent];
 }
@@ -703,10 +716,13 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
   didEndDisplayingCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<HUBComponentModel> const componentModel = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell].model;
-    [self.delegate viewController:self componentWithModel:componentModel didDisappearFromView:cell];
-    
     HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell];
+    
+    [self.delegate viewController:self
+               componentWithModel:componentWrapper.model
+                     layoutTraits:componentWrapper.layoutTraits
+             didDisappearFromView:cell];
+
     [self removeComponentWrapperFromLookupTables:componentWrapper];
 }
 
@@ -1058,13 +1074,18 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     [self componentWrapperWillAppear:wrapper];
 
-    id<HUBComponent> component = cell.component;
+    id<HUBComponent> const component = cell.component;
+    
     if (component == nil) {
         return;
     }
 
     UIView * const componentView = HUBComponentLoadViewIfNeeded(component);
-    [self.delegate viewController:self componentWithModel:wrapper.model willAppearInView:componentView];
+    
+    [self.delegate viewController:self
+               componentWithModel:wrapper.model
+                     layoutTraits:wrapper.layoutTraits
+                 willAppearInView:componentView];
 }
 
 - (void)headerAndOverlayComponentViewsWillAppear
