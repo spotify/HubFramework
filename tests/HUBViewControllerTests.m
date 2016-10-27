@@ -1805,16 +1805,31 @@
     UICollectionViewCell * const cellC = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathC];
     
     self.collectionView.mockedVisibleCells = @[cellA, cellB, cellC];
+    self.collectionView.cells[indexPathA] = cellA;
+    self.collectionView.cells[indexPathB] = cellB;
+    self.collectionView.cells[indexPathC] = cellC;
 
     NSDictionary<NSIndexPath *, UIView *> * const visibleHeaderViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeHeader];
     XCTAssertEqual(visibleHeaderViews.count, 1u);
     XCTAssertEqual(visibleHeaderViews[[NSIndexPath indexPathWithIndex:0]], headerComponent.view);
+    
+    NSIndexPath * const headerIndexPath = [NSIndexPath indexPathWithIndex:0];
+    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeHeader indexPath:headerIndexPath], headerComponent.view);
 
     NSDictionary<NSIndexPath *, UIView *> * const visibleBodyViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeBody];
     XCTAssertEqual(visibleBodyViews.count, 3u);
-    XCTAssertEqual(visibleBodyViews[[NSIndexPath indexPathWithIndex:0]], componentA.view);
-    XCTAssertEqual(visibleBodyViews[[NSIndexPath indexPathWithIndex:1]], componentB.view);
-    XCTAssertEqual(visibleBodyViews[[NSIndexPath indexPathWithIndex:2]], componentC.view);
+    
+    NSIndexPath * const bodyIndexPathA = [NSIndexPath indexPathWithIndex:0];
+    NSIndexPath * const bodyIndexPathB = [NSIndexPath indexPathWithIndex:1];
+    NSIndexPath * const bodyIndexPathC = [NSIndexPath indexPathWithIndex:2];
+    
+    XCTAssertEqual(visibleBodyViews[bodyIndexPathA], componentA.view);
+    XCTAssertEqual(visibleBodyViews[bodyIndexPathB], componentB.view);
+    XCTAssertEqual(visibleBodyViews[bodyIndexPathC], componentC.view);
+    
+    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:bodyIndexPathA], componentA.view);
+    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:bodyIndexPathB], componentB.view);
+    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:bodyIndexPathC], componentC.view);
 
     NSDictionary<NSIndexPath *, UIView *> * const visibleOverlayViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeOverlay];
     XCTAssertEqual(visibleOverlayViews.count, 2u);
@@ -1835,6 +1850,12 @@
     XCTAssertEqual(visibleHeaderViews.count, 0u);
     XCTAssertEqual(visibleBodyViews.count, 0u);
     XCTAssertEqual(visibleOverlayViews.count, 0u);
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:0];
+    
+    XCTAssertNil([self.viewController visibleViewForComponentOfType:HUBComponentTypeHeader indexPath:indexPath]);
+    XCTAssertNil([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPath]);
+    XCTAssertNil([self.viewController visibleViewForComponentOfType:HUBComponentTypeOverlay indexPath:indexPath]);
 }
 
 - (void)testContentOperationNotifiedOfSelectionAction

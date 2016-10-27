@@ -285,6 +285,59 @@ NS_ASSUME_NONNULL_BEGIN
     return [visibleViewIndexPaths copy];
 }
 
+- (nullable UIView *)visibleViewForComponentOfType:(HUBComponentType)componentType indexPath:(NSIndexPath *)indexPath
+{
+    NSUInteger const rootIndex = [indexPath indexAtPosition:0];
+    
+    if (rootIndex == NSNotFound) {
+        return nil;
+    }
+    
+    HUBComponentWrapper *componentWrapper;
+    
+    switch (componentType) {
+        case HUBComponentTypeHeader:
+            componentWrapper = self.headerComponentWrapper;
+            break;
+        case HUBComponentTypeBody: {
+            NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)rootIndex inSection:0];
+            HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:rootIndexPath];
+            
+            if (cell == nil) {
+                return nil;
+            }
+            
+            componentWrapper = [self componentWrapperFromCell:cell];
+            break;
+        }
+        case HUBComponentTypeOverlay: {
+            if (rootIndex >= self.overlayComponentWrappers.count) {
+                return nil;
+            }
+            
+            componentWrapper = self.overlayComponentWrappers[rootIndex];
+            break;
+        }
+    }
+    
+    if (indexPath.length == 1) {
+        return componentWrapper.view;
+    }
+    
+    for (NSUInteger indexPosition = 1; indexPosition < indexPath.length; indexPosition++) {
+        NSArray<HUBComponentWrapper *> * const visibleChildren = componentWrapper.visibleChildren;
+        NSUInteger const childIndex = [indexPath indexAtPosition:indexPosition];
+        
+        if (childIndex >= visibleChildren.count) {
+            return nil;
+        }
+        
+        componentWrapper = visibleChildren[childIndex];
+    }
+    
+    return componentWrapper.view;
+}
+
 - (NSArray<HUBComponentWrapper *> *)rootComponentWrappersForComponentType:(HUBComponentType)componentType
 {
     NSMutableArray<HUBComponentWrapper *> * const rootComponentWrappers = [NSMutableArray array];
