@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)renderViewModel:(id<HUBViewModel>)viewModel
       usingBatchUpdates:(BOOL)usingBatchUpdates
                animated:(BOOL)animated
-             completion:(void (^)())completionBlock
+             completion:(void (^)(void))completionBlock
 {
     HUBViewModelDiff *diff;
     if (self.lastRenderedViewModel != nil) {

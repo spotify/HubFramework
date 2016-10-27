@@ -22,6 +22,7 @@
 #import <UIKit/UIKit.h>
 
 #import "HUBComponentType.h"
+#import "HUBComponentLayoutTraits.h"
 
 @protocol HUBViewController;
 @protocol HUBViewModel;
@@ -86,10 +87,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewController The view controller in which a component is about to appear
  *  @param componentModel The model of the component that is about to appear
+ *  @param layoutTraits The layout traits of the component that is about to appear
  *  @param componentView The view that the component is about to appear in
  */
 - (void)viewController:(UIViewController<HUBViewController> *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
+          layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
       willAppearInView:(UIView *)componentView;
 
 /**
@@ -97,10 +100,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param viewController The view controller in which a component disappeared
  *  @param componentModel The model of the component that disappeared
+ *  @param layoutTraits The layout traits of the component that disappeared
  *  @param componentView The view that the component disappeared from
  */
 - (void)viewController:(UIViewController<HUBViewController> *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
+          layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
   didDisappearFromView:(UIView *)componentView;
 
 /**
@@ -134,6 +139,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  method. You can also use `-viewControllerDidUpdate`, which gets called once a new view model has been assigned.
  */
 @property (nonatomic, nullable, readonly) id<HUBViewModel> viewModel;
+
+/// Whether the view controller's content view is currently being scrolled
+@property (nonatomic, assign, readonly) BOOL isViewScrolling;
 
 /**
  *  Return the frame used to render a body component at a given index
@@ -187,6 +195,13 @@ NS_ASSUME_NONNULL_BEGIN
  *          was executed as a result of the selection.
  */
 - (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel;
+
+/**
+ *  Cancel any ongoing component selection - including both highlights & selection
+ *
+ *  If no component is currently being selected, this method does nothing.
+ */
+- (void)cancelComponentSelection;
 
 @end
 

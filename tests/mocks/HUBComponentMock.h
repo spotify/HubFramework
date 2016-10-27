@@ -26,6 +26,8 @@
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentActionPerformer.h"
+#import "HUBComponentActionObserver.h"
+#import "HUBActionContext.h"
 
 @protocol HUBComponentImageData;
 
@@ -39,7 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentWithSelectionState,
     HUBComponentViewObserver,
     HUBComponentContentOffsetObserver,
-    HUBComponentActionPerformer
+    HUBComponentActionPerformer,
+    HUBComponentActionObserver
 >
 
 /// The layout traits the component should act like it's having
@@ -84,6 +87,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The number of times `updateViewForChangedContentOffset` has been called on this component
 @property (nonatomic, readonly) NSUInteger numberOfContentOffsetChanges;
 
+/// The latest action context which was observed by this component
+@property (nonatomic, strong, readonly, nullable) id<HUBActionContext> latestObservedActionContext;
+
 /// Whether the component should act like it can handle images or not
 @property (nonatomic) BOOL canHandleImages;
 
@@ -95,6 +101,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Whether the component should act like it is a content offset observer or not
 @property (nonatomic) BOOL isContentOffsetObserver;
+
+/// Whether the component should act like it is a component action observer or not
+@property (nonatomic) BOOL isActionObserver;
 
 /// Whether the component's image was recently animated
 @property (nonatomic, readonly) BOOL imageWasAnimated;

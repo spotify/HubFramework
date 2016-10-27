@@ -181,6 +181,23 @@
     XCTAssertEqual(grandchild.indexPath, [NSIndexPath indexPathWithIndexes:grandchildIndexPathArray length:3]);
 }
 
+- (void)testPropertiesThatDoNotAffectEquality
+{
+    HUBComponentModelImplementation * const parent1 = [self createComponentModelWithIdentifier:@"parent1" index:0];
+    HUBComponentModelImplementation * const child1 = [self createComponentModelWithIdentifier:@"child" index:0 parent:parent1];
+    parent1.children = @[child1];
+    HUBComponentModelImplementation * const parent2 = [self createComponentModelWithIdentifier:@"parent2" index:1];
+    HUBComponentModelImplementation * const child2 = [self createComponentModelWithIdentifier:@"child" index:1 parent:parent2];
+    parent2.children = @[child2];
+
+    XCTAssertNotEqualObjects(child1.parent, child2.parent);
+    XCTAssertNotEqual(child1.index, child2.index);
+    XCTAssertNotEqualObjects(child1.indexPath, child2.indexPath);
+
+    // The parents, indices and index paths should not affect the children's equality.
+    XCTAssertEqualObjects(child1, child2);
+}
+
 #pragma mark - Utilities
 
 - (HUBComponentModelImplementation *)createComponentModelWithIdentifier:(NSString *)identifier index:(NSUInteger)index
