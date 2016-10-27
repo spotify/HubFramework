@@ -334,6 +334,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSUInteger)indexOfBodyComponentAtPoint:(CGPoint)point
 {
+    point.y += self.collectionView.contentOffset.y;
+    
     NSIndexPath * const indexPath = [self.collectionView indexPathForItemAtPoint:point];
     
     if (indexPath == nil) {
