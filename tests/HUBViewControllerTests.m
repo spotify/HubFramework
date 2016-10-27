@@ -88,7 +88,7 @@
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromSelectionDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromApperanceDelegateMethod;
 @property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
-
+@property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 
 @end
 
@@ -2092,6 +2092,42 @@
     XCTAssertEqualWithAccuracy(self.component.view.center.y, 200, 0.001);
 }
 
+- (void)testScrollingToComponentAfterViewModelFinishesRendering
+{
+    HUBComponentMock * const componentA = [HUBComponentMock new];
+    componentA.preferredViewSize = CGSizeMake(300, 200);
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{@"A": componentA}];
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:@"frameForBodyComponent"];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"header";
+
+        for (NSUInteger i = 0; i < 4; i++) {
+            id<HUBComponentModelBuilder> builder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:[NSString stringWithFormat:@"%@", @(i)]];
+            builder.componentNamespace = @"frameForBodyComponent";
+            builder.componentName = @"A";
+        }
+
+        return YES;
+    };
+
+    self.scrollHandler.contentInsets = UIEdgeInsetsMake(100, 30, 40, 200);
+
+    __weak HUBViewControllerTests *weakSelf = self;
+    __block CGPoint expectedOffset = CGPointZero;
+    self.viewControllerDidFinishRenderingBlock = ^{
+        HUBViewControllerTests *strongSelf = weakSelf;
+        CGRect componentFrame = [strongSelf.viewController frameForBodyComponentAtIndex:3];
+        CGPoint offset = CGPointMake(0.0, CGRectGetMinY(componentFrame));
+        expectedOffset = CGPointMake(offset.x, offset.y - strongSelf.scrollHandler.contentInsets.top);
+        [strongSelf.viewController scrollToContentOffset:offset animated:NO];
+    };
+
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertTrue(CGPointEqualToPoint(expectedOffset, self.collectionView.appliedScrollViewOffset));
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
@@ -2116,6 +2152,10 @@
 {
     XCTAssertEqual(viewController, self.viewController);
     self.didReceiveViewControllerDidFinishRendering = YES;
+
+    if (self.viewControllerDidFinishRenderingBlock) {
+        self.viewControllerDidFinishRenderingBlock();
+    }
 }
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController
