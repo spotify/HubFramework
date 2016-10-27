@@ -82,7 +82,9 @@
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromAppearanceDelegateMethod;
+@property (nonatomic, strong) NSMutableArray<NSSet<HUBComponentLayoutTrait> *> *componentLayoutTraitsFromAppearanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromDisapperanceDelegateMethod;
+@property (nonatomic, strong) NSMutableArray<NSSet<HUBComponentLayoutTrait> *> *componentLayoutTraitsFromDisapperanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromSelectionDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromApperanceDelegateMethod;
 @property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
@@ -172,7 +174,9 @@
     
     self.viewModelFromDelegateMethod = nil;
     self.componentModelsFromAppearanceDelegateMethod = [NSMutableArray new];
+    self.componentLayoutTraitsFromAppearanceDelegateMethod = [NSMutableArray new];
     self.componentModelsFromDisapperanceDelegateMethod = [NSMutableArray new];
+    self.componentLayoutTraitsFromDisapperanceDelegateMethod = [NSMutableArray new];
     self.componentModelsFromSelectionDelegateMethod = [NSMutableArray new];
     self.componentViewsFromApperanceDelegateMethod = [NSMutableArray new];
 }
@@ -1107,6 +1111,7 @@
 
 - (void)testComponentNotifiedOfViewWillAppearWhenCellIsDisplayed
 {
+    [self.component.layoutTraits addObject:HUBComponentLayoutTraitCentered];
     self.component.isViewObserver = YES;
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
@@ -1126,17 +1131,21 @@
     [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
     [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
     
-    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
-    XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfAppearances, 1u);
+    XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, 1u);
     XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod[0].title, @"title");
     XCTAssertEqualObjects(self.componentViewsFromApperanceDelegateMethod, @[self.component.view]);
+    XCTAssertEqual(self.componentLayoutTraitsFromAppearanceDelegateMethod.count, 1u);
+    XCTAssertEqualObjects(self.componentLayoutTraitsFromAppearanceDelegateMethod[0], [NSSet setWithObject:HUBComponentLayoutTraitCentered]);
 
     self.collectionView.mockedIndexPathsForVisibleItems = @[indexPath];
     [self.viewController viewWillAppear:NO];
     
-    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)2);
-    XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, (NSUInteger)2);
+    XCTAssertEqual(self.component.numberOfAppearances, 2u);
+    XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, 2u);
     XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod[1].title, @"title");
+    XCTAssertEqual(self.componentLayoutTraitsFromAppearanceDelegateMethod.count, 2u);
+    XCTAssertEqualObjects(self.componentLayoutTraitsFromAppearanceDelegateMethod[1], [NSSet setWithObject:HUBComponentLayoutTraitCentered]);
 }
 
 - (void)testChildComponentsNotifiedWhenParentComponentIsDisplayed
@@ -1210,6 +1219,8 @@
 
 - (void)testDelegateNotifiedWhenRootComponentDisappeared
 {
+    [self.component.layoutTraits addObject:HUBComponentLayoutTraitStackable];
+    
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].title = @"Title";
         return YES;
@@ -1221,8 +1232,10 @@
     UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     [self.collectionView.delegate collectionView:self.collectionView didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
     
-    XCTAssertEqual(self.componentModelsFromDisapperanceDelegateMethod.count, (NSUInteger)1);
+    XCTAssertEqual(self.componentModelsFromDisapperanceDelegateMethod.count, 1u);
     XCTAssertEqualObjects(self.componentModelsFromDisapperanceDelegateMethod[0].title, @"Title");
+    XCTAssertEqual(self.componentLayoutTraitsFromDisapperanceDelegateMethod.count, 1u);
+    XCTAssertEqualObjects(self.componentLayoutTraitsFromDisapperanceDelegateMethod[0], [NSSet setWithObject:HUBComponentLayoutTraitStackable]);
 }
 
 - (void)testDelegateNotifiedWhenChildComponentDisappeared
@@ -2081,21 +2094,26 @@
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
-      willAppearInView:(UIView *)componentView
+          layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
+      willAppearInView:(nonnull UIView *)componentView
 {
     XCTAssertEqual(viewController, self.viewController);
     XCTAssertFalse([componentView isKindOfClass:[HUBComponentCollectionViewCell class]]);
 
     [self.componentViewsFromApperanceDelegateMethod addObject:componentView];
     [self.componentModelsFromAppearanceDelegateMethod addObject:componentModel];
+    [self.componentLayoutTraitsFromAppearanceDelegateMethod addObject:layoutTraits];
 }
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
+          layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
   didDisappearFromView:(UIView *)componentView
 {
     XCTAssertEqual(viewController, self.viewController);
+    
     [self.componentModelsFromDisapperanceDelegateMethod addObject:componentModel];
+    [self.componentLayoutTraitsFromDisapperanceDelegateMethod addObject:layoutTraits];
 }
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
