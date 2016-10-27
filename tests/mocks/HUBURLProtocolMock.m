@@ -120,7 +120,7 @@ static NSArray<HUBRequestFilter *> *urlFilters = nil;
     [self setFilters:[mutableFilters copy]];
 }
 
-+ (void (^)())mockRequestsMatchingPredicate:(HUBURLProtocolRequestPredicate)predicate handler:(HUBURLProtocolRequestHandler)requestHandler
++ (void (^)(void))mockRequestsMatchingPredicate:(HUBURLProtocolRequestPredicate)predicate handler:(HUBURLProtocolRequestHandler)requestHandler
 {
     HUBRequestFilter *filter = [[HUBRequestFilter alloc] initWithURL:nil predicate:predicate requestHandler:requestHandler];
     [self addRequestFilter:filter];
