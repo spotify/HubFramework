@@ -19,7 +19,7 @@
  *  under the License.
  */
 
-#if DEBUG
+#ifdef DEBUG
 
 #import "HUBLiveServiceImplementation.h"
 
