@@ -26,8 +26,15 @@
 
 @protocol HUBComponentImageDataBuilder;
 @protocol HUBComponentTargetBuilder;
+@protocol HUBComponentModelBuilder;
 
 NS_ASSUME_NONNULL_BEGIN
+
+@protocol HUBComponentModelBuilderDelegate <NSObject>
+
+- (void)componentModelBuilder:(id<HUBComponentModelBuilder>)componentModelBuilder groupIdentifierDidChange:(nullable NSString *)groupIdentifier oldGroupIdentifier:(nullable NSString *)oldGroupIdentifier;
+
+@end
 
 /**
  *  Protocol defining the public API for a builder that builds component model objects
@@ -40,6 +47,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  protocol definition.
  */
 @protocol HUBComponentModelBuilder <HUBJSONCompatibleBuilder>
+
+#pragma mark - Delegate
+
+@property (nonatomic, weak) id<HUBComponentModelBuilderDelegate> delegate;
 
 #pragma mark - Identifiers
 
@@ -189,6 +200,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  wish to check for the existance of a builder.
  */
 - (id<HUBComponentModelBuilder>)builderForChildWithIdentifier:(NSString *)identifier NS_SWIFT_NAME(builderForChild(withIdentifier:));
+
+/**
+ *  Return child component model builders with a certain group identifier
+ *
+ *  @return All the existing child component model builders with the same group identifier, in the order that they were created.
+ */
+- (nullable NSArray<id<HUBComponentModelBuilder>> *)buildersForChildrenInGroupWithIdentifier:(NSString *)groupIdentifier;
 
 /**
  *  Remove a builder for a child component model with a certain identifier
