@@ -40,7 +40,7 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
         delegate?.contentOperationDidFinish(self)
     }
     
-    func actionPerformed(with context: HUBActionContext, viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState) {
+    func actionPerformed(with context: HUBActionContext, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState) {
         guard context.customActionIdentifier == HUBIdentifier(namespace: TodoListActionFactory.namespace, name: TodoListActionNames.addCompleted) else {
             return
         }
