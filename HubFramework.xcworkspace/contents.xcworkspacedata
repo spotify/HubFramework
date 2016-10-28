@@ -5,6 +5,9 @@
       location = "group:HubFramework.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:live/HubFrameworkLive.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:demo/HubFrameworkDemo.xcodeproj">
    </FileRef>
 </Workspace>
