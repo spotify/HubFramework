@@ -23,18 +23,21 @@ import UIKit
 import HubFramework
 
 /// The delegate of the application
-@UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
+@UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate, HUBLiveServiceDelegate {
     var window: UIWindow?
     var navigationController: UINavigationController?
     var hubManager: HUBManager!
+    
+    // MARK: - UIApplicationDelegate
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
         
         self.window = window
         navigationController = UINavigationController()
+        
         hubManager = makeHubManager()
-
+        
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
@@ -44,12 +47,27 @@ import HubFramework
         registerPrettyPicturesFeature()
         registerReallyLongListFeature()
         registerTodoListFeature()
+        startLiveService()
         
         return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         return open(viewURI: url, animated: true)
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        startLiveService()
+    }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        hubManager.liveService?.stop()
+    }
+    
+    // MARK: - HUBLiveServiceDelegate
+    
+    func liveService(_ liveService: HUBLiveService, didCreateViewController viewController: UIViewController) {
+        prepareAndPush(viewController: viewController, animated: true)
     }
     
     // MARK: - Private
@@ -142,6 +160,13 @@ import HubFramework
         hubManager.actionRegistry.register(TodoListActionFactory(), forNamespace: TodoListActionFactory.namespace)
     }
     
+    private func startLiveService() {
+        #if DEBUG
+        hubManager.liveService?.delegate = self
+        hubManager.liveService?.start(onPort: 7777)
+        #endif
+    }
+    
     // MARK: - Opening view URIs
     
     @discardableResult private func open(viewURI: URL, animated: Bool) -> Bool {
@@ -149,10 +174,16 @@ import HubFramework
             return false
         }
         
-        viewController.view.backgroundColor = .white
-        navigationController?.pushViewController(viewController, animated: animated)
+        prepareAndPush(viewController: viewController, animated: animated)
         
         return true
+    }
+    
+    // MARK: - View controller handling
+    
+    private func prepareAndPush(viewController: UIViewController, animated: Bool) {
+        viewController.view.backgroundColor = .white
+        navigationController?.pushViewController(viewController, animated: animated)
     }
 }
 
