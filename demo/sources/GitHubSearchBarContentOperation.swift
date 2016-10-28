@@ -46,7 +46,7 @@ class GitHubSearchBarContentOperation: NSObject, HUBContentOperationActionObserv
         delegate?.contentOperationDidFinish(self)
     }
 
-    func actionPerformed(with context: HUBActionContext, viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState) {
+    func actionPerformed(with context: HUBActionContext, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState) {
         guard context.customActionIdentifier == searchActionIdentifier else {
             return
         }

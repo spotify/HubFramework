@@ -165,7 +165,6 @@ Finally, we observe actions being performed in our content operation, and re-sch
 @implementation SPTSongContentOperation
 
 - (void)actionPerformedWithContext:(id<HUBActionContext>)context
-                           viewURI:(NSURL *)viewURI
                        featureInfo:(id<HUBFeatureInfo>)featureInfo
                  connectivityState:(HUBConnectivityState)connectivityState
 {

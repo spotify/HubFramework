@@ -120,7 +120,6 @@ NS_ASSUME_NONNULL_BEGIN
         }
         
         [(id<HUBContentOperationActionObserver>)operation actionPerformedWithContext:context
-                                                                             viewURI:self.viewURI
                                                                          featureInfo:self.featureInfo
                                                                    connectivityState:self.connectivityState];
     }

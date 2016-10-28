@@ -39,7 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  Sent to a content operation whenever an action was performed in the view that it is being used in
  *
  *  @param context The contextual object that the action was performed with
- *  @param viewURI The URI of the view that the action was performed in
  *  @param featureInfo The information for the feature that the action was performed in
  *  @param connectivityState The current connectivity state of the application
  *
@@ -49,7 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  content that is being displayed in the view.
  */
 - (void)actionPerformedWithContext:(id<HUBActionContext>)context
-                           viewURI:(NSURL *)viewURI
                        featureInfo:(id<HUBFeatureInfo>)featureInfo
                  connectivityState:(HUBConnectivityState)connectivityState;
 
