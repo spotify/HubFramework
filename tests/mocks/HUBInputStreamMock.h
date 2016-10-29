@@ -21,6 +21,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Mocked input stream, for use in unit tests only
 @interface HUBInputStreamMock : NSInputStream
 
@@ -28,3 +30,5 @@
 @property (nonatomic, strong, nullable) NSData *data;
 
 @end
+
+NS_ASSUME_NONNULL_END
