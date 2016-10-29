@@ -161,7 +161,7 @@ import HubFramework
     }
     
     private func startLiveService() {
-        #if HUB_DEBUG
+        #if DEBUG
         hubManager.liveService?.delegate = self
         hubManager.liveService?.start(onPort: 7777)
         #endif
