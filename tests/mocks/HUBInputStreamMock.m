@@ -51,7 +51,8 @@ NS_ASSUME_NONNULL_BEGIN
     // Required to override method
 }
 
-- (void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSRunLoopMode)mode
+// In an earlier version of the SDK (used by Xcode 7), `mode` is typed as `NSString` (instead of `NSRunLoopMode`), so `id` is used here
+- (void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(id)mode
 {
     // Required to override method
 }
