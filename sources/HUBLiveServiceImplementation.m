@@ -70,13 +70,11 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.netService.delegate = self;
     [self.netService publishWithOptions:NSNetServiceListenForConnections];
-    [self.netService scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 }
 
 - (void)stop
 {
     [self.netService stop];
-    [self.netService removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [self closeStream];
 }
 
