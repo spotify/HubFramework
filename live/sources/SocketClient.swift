@@ -64,12 +64,16 @@ class SocketClient {
             return
         }
         
+        if !stream.hasSpaceAvailable {
+            printError()
+        }
+        
         let result = data.withUnsafeBytes { bytes in
             return stream.write(bytes, maxLength: data.count)
         }
         
         if result <= 0 {
-            "Could not send JSON data to application".print(withColor: .red)
+            printError()
         }
     }
     
@@ -93,5 +97,9 @@ class SocketClient {
         case .error(let message):
             throw LiveError.couldNotConnect(message)
         }
+    }
+    
+    private func printError() {
+        "Could not send JSON data to application".print(withColor: .red)
     }
 }
