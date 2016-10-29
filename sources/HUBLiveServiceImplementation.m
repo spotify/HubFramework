@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize delegate = _delegate;
 
-#pragma mark - Initializer
+#pragma mark - Lifecycle
 
 - (instancetype)initWithViewControllerFactory:(id<HUBViewControllerFactory>)viewControllerFactory
 {
@@ -55,6 +55,11 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [self stop];
 }
 
 #pragma mark - HUBLiveService
