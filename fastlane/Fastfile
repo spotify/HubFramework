@@ -63,7 +63,7 @@ platform :ios do
     pod_lib_lint(:quick => true)
 
     license_header_files = Dir.chdir("..") do
-      license_header_files = Dir.glob('{demo/sources/*.swift,include/HubFramework/*.h,sources/*.{h,m},tests/*/*.{h,m},tests/*.m}')
+      license_header_files = Dir.glob('{live/sources/*.swift,demo/sources/*.swift,include/HubFramework/*.h,sources/*.{h,m},tests/*/*.{h,m},tests/*.m}')
     end
     lint_sources_for_license_header(
       :template => 'other/license_header_template.txt',
