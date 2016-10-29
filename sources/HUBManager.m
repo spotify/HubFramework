@@ -32,6 +32,7 @@
 #import "HUBComponentFallbackHandler.h"
 #import "HUBDefaultConnectivityStateResolver.h"
 #import "HUBDefaultImageLoaderFactory.h"
+#import "HUBLiveServiceImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -44,6 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation HUBManager
+
+@synthesize liveService = _liveService;
 
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                       componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
@@ -134,6 +137,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBComponentShowcaseManager>)componentShowcaseManager
 {
     return self.componentRegistryImplementation;
+}
+
+- (nullable id<HUBLiveService>)liveService
+{
+#if HUB_DEBUG
+    if (_liveService == nil) {
+        _liveService = [[HUBLiveServiceImplementation alloc] initWithViewControllerFactory:self.viewControllerFactory];
+    }
+#endif
+    
+    return _liveService;
 }
 
 @end
