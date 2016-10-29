@@ -84,7 +84,7 @@
     XCTAssertNotNil(manager.componentShowcaseManager);
     
     // Live service should be created if not DEBUG
-#ifdef DEBUG
+#if HUB_DEBUG
     XCTAssertNotNil(manager.liveService);
 #else
     XCTAssertNil(manager.liveService);

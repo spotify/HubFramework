@@ -31,7 +31,7 @@
 #import "HUBViewModel.h"
 #import "HUBComponentModel.h"
 
-#ifdef DEBUG
+#if HUB_DEBUG
 
 @interface HUBLiveServiceTests : XCTestCase <HUBLiveServiceDelegate>
 

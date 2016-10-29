@@ -19,10 +19,10 @@
  *  under the License.
  */
 
-#ifdef DEBUG
-
 #import "HUBContentOperation.h"
 #import "HUBHeaderMacros.h"
+
+#if HUB_DEBUG
 
 NS_ASSUME_NONNULL_BEGIN
 

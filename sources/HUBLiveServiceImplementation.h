@@ -19,10 +19,10 @@
  *  under the License.
  */
 
-#ifdef DEBUG
-
 #import "HUBLiveService.h"
 #import "HUBHeaderMacros.h"
+
+#if HUB_DEBUG
 
 @protocol HUBViewControllerFactory;
 

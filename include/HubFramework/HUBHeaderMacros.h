@@ -35,3 +35,10 @@
 #ifndef NS_EXTENSIBLE_STRING_ENUM
     #define NS_EXTENSIBLE_STRING_ENUM
 #endif
+
+/// Define an explicit `HUB_DEBUG` macro for conditionally compiling debug code
+#ifdef DEBUG
+    #define HUB_DEBUG DEBUG
+#else
+    #define HUB_DEBUG 0
+#endif

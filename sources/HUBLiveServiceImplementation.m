@@ -19,12 +19,12 @@
  *  under the License.
  */
 
-#ifdef DEBUG
-
 #import "HUBLiveServiceImplementation.h"
 
 #import "HUBViewControllerFactory.h"
 #import "HUBLiveContentOperation.h"
+
+#if HUB_DEBUG
 
 NS_ASSUME_NONNULL_BEGIN
 

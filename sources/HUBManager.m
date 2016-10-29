@@ -141,7 +141,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id<HUBLiveService>)liveService
 {
-#ifdef DEBUG
+#if HUB_DEBUG
     if (_liveService == nil) {
         _liveService = [[HUBLiveServiceImplementation alloc] initWithViewControllerFactory:self.viewControllerFactory];
     }
