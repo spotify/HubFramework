@@ -82,6 +82,13 @@
     
     // Showcase manager should be created
     XCTAssertNotNil(manager.componentShowcaseManager);
+    
+    // Live service should be created if not DEBUG
+#ifdef DEBUG
+    XCTAssertNotNil(manager.liveService);
+#else
+    XCTAssertNil(manager.liveService);
+#endif
 }
 
 @end
