@@ -31,6 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Concrete implementation of the `HUBLiveService` API
 @interface HUBLiveServiceImplementation : NSObject <HUBLiveService>
 
+/// The net service that the live service is using. Set up when the service is started.
+@property (nonatomic, strong, readonly, nullable) NSNetService *netService;
+
 /**
  *  Initialize an instance of this class
  *

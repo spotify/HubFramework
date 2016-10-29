@@ -30,8 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBLiveServiceImplementation () <NSNetServiceDelegate, NSStreamDelegate>
 
+@property (nonatomic, strong, readwrite, nullable) NSNetService *netService;
 @property (nonatomic, strong, readonly) id<HUBViewControllerFactory> viewControllerFactory;
-@property (nonatomic, strong, nullable) NSNetService *netService;
 @property (nonatomic, strong, nullable) NSInputStream *stream;
 @property (nonatomic, weak, nullable) UIViewController<HUBViewController> *viewController;
 @property (nonatomic, strong, nullable) HUBLiveContentOperation *contentOperation;
