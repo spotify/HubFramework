@@ -70,10 +70,13 @@
     XCTAssertNil(self.service.netService);
 }
 
-- (void)testNetServiceSetupOnceStarted
+- (void)testStartingAndStoppingService
 {
     [self.service startOnPort:7777];
     XCTAssertEqual(self.service.netService.port, 7777);
+    
+    [self.service stop];
+    XCTAssertNil(self.service.netService);
 }
 
 - (void)testCreatingAndReusingViewController

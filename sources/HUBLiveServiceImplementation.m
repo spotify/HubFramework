@@ -80,6 +80,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)stop
 {
     [self.netService stop];
+    self.netService = nil;
+    
     [self closeStream];
 }
 
