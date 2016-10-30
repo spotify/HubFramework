@@ -130,6 +130,10 @@ The Hub Framework’s API is well documented and we generate both a [documentati
 
 The Dash documentation is updated automatically for you on any changes to the framework. Get it by subscribing to the [https://spotify.github.io/HubFramework/docsets/HubFramework.xml](dash-feed://https%3A%2F%2Fspotify%2Egithub%2Eio%2FHubFramework%2Fdocsets%2FHubFramework%2Exml) feed.
 
+## Live editing
+
+Since the Hub Framework enables UIs to be defined using JSON data, it also enables you to quickly build or prototype UIs using a local JSON file. It includes a command line tool (`hublive`) that, when run, enables you to see changes you make in that local JSON file rendered live in your application. For more information about how to use live editing, see the [Live editing guide](https://spotify.github.io/HubFramework/live-editing-guide.html)
+
 ## Xcode file templates
 
 The Hub Framework contains a set of Xcode file templates that make it easy to create the boilerplate for components, content operations, etc.
