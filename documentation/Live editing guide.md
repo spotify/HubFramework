@@ -16,7 +16,7 @@ We built live editing into the Hub Framework to enable developers, designers and
 
 Live editing is opt-in, so you'll need to set it up in your application before you can start using it. In the [demo app](https://github.com/spotify/HubFramework/tree/master/demo) that the Hub Framework comes with, live editing is already set up (as long as the app is compiled for `DEBUG`). Enabling live editing is easy, and involves three simple steps:
 
-### Start `HUBLiveService`
+**Start `HUBLiveService`**
 
 The application that you wish to live edit in needs to start the Hub Framework live service through the `HUBLiveService` API. This is done with a single method call:
 
@@ -26,11 +26,11 @@ The application that you wish to live edit in needs to start the Hub Framework l
 
 Once called, the live service will start accepting connections on the given port, which enables the `hublive` command line tool to connect to it.
 
-### Implement `HUBLiveServiceDelegate`
+**Implement `HUBLiveServiceDelegate`**
 
 To get notified whenever the live service has created a view controller for live editing, you need to assign an object to be its delegate, by conforming to `HUBLiveServiceDelegate`.
 
-### Push any created live editing view controllers onto your application's navigation stack
+**Push any created live editing view controllers onto your application's navigation stack**
 
 Once the live service has created a view controller, push that view controller onto the navigation stack:
 
