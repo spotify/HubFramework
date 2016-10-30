@@ -418,17 +418,20 @@
 <a href='#enabling-live-editing-in-your-app' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='enabling-live-editing-in-your-app'>Enabling live editing in your app</h2>
 
 <p>Live editing is opt-in, so you&rsquo;ll need to set it up in your application before you can start using it. In the <a href="https://github.com/spotify/HubFramework/tree/master/demo">demo app</a> that the Hub Framework comes with, live editing is already set up (as long as the app is compiled for <code>DEBUG</code>). Enabling live editing is easy, and involves three simple steps:</p>
-<a href='#start-code-hubliveservice-code' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='start-code-hubliveservice-code'>Start <code>HUBLiveService</code></h3>
+
+<p><strong>Start <code>HUBLiveService</code></strong></p>
 
 <p>The application that you wish to live edit in needs to start the Hub Framework live service through the <code>HUBLiveService</code> API. This is done with a single method call:</p>
 <pre class="highlight plaintext"><code>[hubManager.liveService startOnPort:7777];
 </code></pre>
 
 <p>Once called, the live service will start accepting connections on the given port, which enables the <code>hublive</code> command line tool to connect to it.</p>
-<a href='#implement-code-hubliveservicedelegate-code' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='implement-code-hubliveservicedelegate-code'>Implement <code>HUBLiveServiceDelegate</code></h3>
+
+<p><strong>Implement <code>HUBLiveServiceDelegate</code></strong></p>
 
 <p>To get notified whenever the live service has created a view controller for live editing, you need to assign an object to be its delegate, by conforming to <code>HUBLiveServiceDelegate</code>.</p>
-<a href='#push-any-created-live-editing-view-controllers-onto-your-application-39-s-navigation-stack' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='push-any-created-live-editing-view-controllers-onto-your-application-39-s-navigation-stack'>Push any created live editing view controllers onto your application&rsquo;s navigation stack</h3>
+
+<p><strong>Push any created live editing view controllers onto your application&rsquo;s navigation stack</strong></p>
 
 <p>Once the live service has created a view controller, push that view controller onto the navigation stack:</p>
 <pre class="highlight plaintext"><code>- (void)liveService:(id&lt;HUBLiveService&gt;)liveService
