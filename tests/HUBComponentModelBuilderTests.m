@@ -604,9 +604,13 @@
     id<HUBComponentModelBuilder> const childBuilder2 = [self.builder builderForChildWithIdentifier:secondChildModelIdentifier];
     childBuilder2.groupIdentifier = secondChildGroupIdentifier;
 
-    NSArray *buildersForChildrenInGroup = [self.builder buildersForChildrenInGroupWithIdentifier:firstChildGroupIdentifier];
-    XCTAssertTrue(buildersForChildrenInGroup.count == 1);
-    XCTAssertEqualObjects(buildersForChildrenInGroup.firstObject, childBuilder);
+    NSArray *buildersForFirstGroup = [self.builder buildersForChildrenInGroupWithIdentifier:firstChildGroupIdentifier];
+    NSArray *buildersForSecondGroup = [self.builder buildersForChildrenInGroupWithIdentifier:secondChildGroupIdentifier];
+
+    XCTAssertTrue(buildersForFirstGroup.count == 1);
+    XCTAssertEqualObjects(buildersForFirstGroup.firstObject, childBuilder);
+    XCTAssertTrue(buildersForSecondGroup.count == 1);
+    XCTAssertEqualObjects(buildersForSecondGroup.firstObject, childBuilder2);
 }
 
 - (void)testBuildersForChildrenInGroupWhenRemovingChildBuilder
@@ -626,7 +630,7 @@
     NSArray *buildersForFirstGroup = [self.builder buildersForChildrenInGroupWithIdentifier:firstChildGroupIdentifier];
     NSArray *buildersForSecondGroup = [self.builder buildersForChildrenInGroupWithIdentifier:secondChildGroupIdentifier];
 
-    XCTAssertTrue(buildersForFirstGroup.count == 0);
+    XCTAssertNil(buildersForFirstGroup);
     XCTAssertTrue(buildersForSecondGroup.count == 1);
     XCTAssertEqualObjects(buildersForSecondGroup.firstObject, childBuilder2);
 }
@@ -648,32 +652,32 @@
     NSArray *buildersInFirstGroup = [self.builder buildersForChildrenInGroupWithIdentifier:firstChildGroupIdentifier];
     NSArray *buildersInSecondGroup = [self.builder buildersForChildrenInGroupWithIdentifier:secondChildGroupIdentifier];
 
-    XCTAssertTrue(buildersInFirstGroup.count == 0);
-    XCTAssertTrue(buildersInSecondGroup.count == 0);
+    XCTAssertNil(buildersInFirstGroup);
+    XCTAssertNil(buildersInSecondGroup);
 }
 
-- (void)testBuildersForChildrenInGroupWhenChangingGroupIdentifierToChild
+- (void)testBuildersForChildrenInGroupWhenChangingGroupIdentifierOfChild
 {
-    NSString * const firstChildModelIdentifier = @"firstIdentifier";
-    NSString * const firstChildGroupIdentifier = @"firstGroup";
-    NSString * const secondChildGroupIdentifier = @"secondGroup";
+    NSString * const childModelIdentifier = @"identifier";
+    NSString * const firstGroupIdentifier = @"firstGroup";
+    NSString * const secondGroupIdentifier = @"secondGroup";
 
-    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildWithIdentifier:firstChildModelIdentifier];
-    childBuilder.groupIdentifier = firstChildGroupIdentifier;
+    id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildWithIdentifier:childModelIdentifier];
+    childBuilder.groupIdentifier = firstGroupIdentifier;
 
-    NSArray *buildersInFirstGroup = [self.builder buildersForChildrenInGroupWithIdentifier:firstChildGroupIdentifier];
-    NSArray *buildersInSecondGroup = [self.builder buildersForChildrenInGroupWithIdentifier:secondChildGroupIdentifier];
+    NSArray *buildersInFirstGroup = [self.builder buildersForChildrenInGroupWithIdentifier:firstGroupIdentifier];
+    NSArray *buildersInSecondGroup = [self.builder buildersForChildrenInGroupWithIdentifier:secondGroupIdentifier];
     XCTAssertTrue(buildersInFirstGroup.count == 1);
     XCTAssertEqualObjects(buildersInFirstGroup.firstObject, childBuilder);
-    XCTAssertTrue(buildersInSecondGroup.count == 0);
+    XCTAssertNil(buildersInSecondGroup);
 
-    childBuilder.groupIdentifier = secondChildGroupIdentifier;
+    childBuilder.groupIdentifier = secondGroupIdentifier;
 
-    buildersInFirstGroup = [self.builder buildersForChildrenInGroupWithIdentifier:firstChildGroupIdentifier];
-    buildersInSecondGroup = [self.builder buildersForChildrenInGroupWithIdentifier:secondChildGroupIdentifier];
+    buildersInFirstGroup = [self.builder buildersForChildrenInGroupWithIdentifier:firstGroupIdentifier];
+    buildersInSecondGroup = [self.builder buildersForChildrenInGroupWithIdentifier:secondGroupIdentifier];
     XCTAssertTrue(buildersInSecondGroup.count == 1);
     XCTAssertEqualObjects(buildersInSecondGroup.firstObject, childBuilder);
-    XCTAssertTrue(buildersInFirstGroup.count == 0);
+    XCTAssertNil(buildersInFirstGroup);
 }
 
 @end

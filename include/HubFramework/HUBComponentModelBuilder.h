@@ -31,25 +31,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Protocol defining the public delegate API for a builder that builds component model objects
- *
- *  This delegate protocol can be implemented to react to changes happening to a 
- *  component model builder.
- */
-@protocol HUBComponentModelBuilderDelegate <NSObject>
-
-/**
- *  Notifies the delegate that the group identifier for a component model builder did change
- *
- *  @param componentModelBuilder The component model builder whose group identifier did change
- *  @param groupIdentifier The new group identifier
- *  @param oldGroupIdentifier The old group identifier
- */
-- (void)componentModelBuilder:(id<HUBComponentModelBuilder>)componentModelBuilder groupIdentifierDidChange:(nullable NSString *)groupIdentifier oldGroupIdentifier:(nullable NSString *)oldGroupIdentifier;
-
-@end
-
-/**
  *  Protocol defining the public API for a builder that builds component model objects
  *
  *  This builder acts like a mutable model counterpart for `HUBComponentModel`, with the key
@@ -60,10 +41,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  protocol definition.
  */
 @protocol HUBComponentModelBuilder <HUBJSONCompatibleBuilder>
-
-#pragma mark - Delegate
-
-@property (nonatomic, weak) id<HUBComponentModelBuilderDelegate> delegate;
 
 #pragma mark - Identifiers
 
@@ -216,6 +193,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Return child component model builders with a certain group identifier
+ *
+ *  @param groupIdentifier The desired group identifier  
  *
  *  @return All the existing child component model builders with the same group identifier, in the order that they were created.
  */

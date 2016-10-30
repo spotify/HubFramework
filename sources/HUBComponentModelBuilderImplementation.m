@@ -36,8 +36,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol HUBComponentModelBuilderDelegate <NSObject>
+
+- (void)componentModelBuilder:(id<HUBComponentModelBuilder>)componentModelBuilder groupIdentifierDidChange:(nullable NSString *)newGroupIdentifier oldGroupIdentifier:(nullable NSString *)oldGroupIdentifier;
+
+@end
+
 @interface HUBComponentModelBuilderImplementation () <HUBComponentModelBuilderDelegate>
 
+@property (nonatomic, weak) id<HUBComponentModelBuilderDelegate> delegate;
 @property (nonatomic, assign, readonly) HUBComponentType type;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
@@ -48,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) HUBComponentTargetBuilderImplementation *targetBuilderImplementation;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentModelBuilderImplementation *> *childBuilders;
 @property (nonatomic, strong, readonly) NSMutableArray<NSString *> *childIdentifierOrder;
-@property (nonatomic, strong, nullable) NSMutableDictionary<NSString *, NSMutableArray<id<HUBComponentModelBuilder>> *> *childBuildersByGroupIdentifier;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, NSMutableArray<id<HUBComponentModelBuilder>> *> *childBuildersByGroupIdentifier;
 
 @end
 
@@ -275,10 +282,15 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBComponentModelBuilder> builder = self.childBuilders[identifier];
     self.childBuilders[identifier] = nil;
     [self.childIdentifierOrder removeObject:identifier];
+
     for (NSString *groupIdentifier in self.childBuildersByGroupIdentifier) {
         NSMutableArray *childBuilders = self.childBuildersByGroupIdentifier[groupIdentifier];
+
         if ([childBuilders containsObject:builder]) {
             [childBuilders removeObject:builder];
+            if (childBuilders.count == 0) {
+                self.childBuildersByGroupIdentifier[groupIdentifier] = nil;
+            }
             break;
         }
     }
@@ -455,21 +467,20 @@ NS_ASSUME_NONNULL_BEGIN
     for (NSString * const customImageIdentifier in self.customImageDataBuilders) {
         copy.customImageDataBuilders[customImageIdentifier] = [self.customImageDataBuilders[customImageIdentifier] copy];
     }
-    
-    for (NSString * const childIdentifier in self.childBuilders) {
-        copy.childBuilders[childIdentifier] = [self.childBuilders[childIdentifier] copy];
-    }
 
-    for (NSString * const groupIdentifier in self.childBuildersByGroupIdentifier) {
-        NSArray *childBuildersInGroup = self.childBuildersByGroupIdentifier[groupIdentifier];
-        NSMutableArray *childBuildersInGroupToSet = [NSMutableArray array];
-        for (id<HUBComponentModelBuilder> childBuilder in childBuildersInGroup) {
-            id<HUBComponentModelBuilder> builderToAdd = copy.childBuilders[childBuilder.modelIdentifier];
-            if (builderToAdd) {
-                [childBuildersInGroupToSet addObject:builderToAdd];
-            }
+    for (NSString * const childIdentifier in self.childBuilders) {
+        HUBComponentModelBuilderImplementation *childBuilder = self.childBuilders[childIdentifier];
+        HUBComponentModelBuilderImplementation *childBuilderCopy = [childBuilder copy];
+        copy.childBuilders[childIdentifier] = childBuilderCopy;
+
+        NSString *groupIdentifier = childBuilder.groupIdentifier;
+
+        if (groupIdentifier && copy.childBuildersByGroupIdentifier[groupIdentifier] == nil) {
+            copy.childBuildersByGroupIdentifier[groupIdentifier] = [NSMutableArray array];
         }
-        self.childBuildersByGroupIdentifier[groupIdentifier] = childBuildersInGroupToSet;
+
+        [copy.childBuildersByGroupIdentifier[groupIdentifier] addObject:childBuilderCopy];
+
     }
 
     [copy.childIdentifierOrder addObjectsFromArray:self.childIdentifierOrder];
@@ -562,19 +573,20 @@ NS_ASSUME_NONNULL_BEGIN
     return newBuilder;
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdirect-ivar-access"
 
 - (void)setGroupIdentifier:(nullable NSString *)groupIdentifier
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdirect-ivar-access"
+
     NSString *oldGroupIdentifier = _groupIdentifier;
 
     _groupIdentifier = groupIdentifier;
 
+#pragma clang diagnostic pop
+
     [self.delegate componentModelBuilder:self groupIdentifierDidChange:self.groupIdentifier oldGroupIdentifier:oldGroupIdentifier];
 }
-
-#pragma clang diagnostic pop
 
 - (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForChildWithIdentifier:(nullable NSString *)identifier groupIdentifier:(nullable NSString *)groupIdentifier
 {
@@ -598,14 +610,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.childBuilders[newBuilder.modelIdentifier] = newBuilder;
     [self.childIdentifierOrder addObject:newBuilder.modelIdentifier];
-    if (groupIdentifier) {
-        NSString *nonNilGroupIdentifier = groupIdentifier;
-        if (!self.childBuildersByGroupIdentifier[nonNilGroupIdentifier]) {
-            self.childBuildersByGroupIdentifier[nonNilGroupIdentifier] = [NSMutableArray array];
-        }
-        
-        [self.childBuildersByGroupIdentifier[nonNilGroupIdentifier] addObject:newBuilder];
-    }
     
     return newBuilder;
 }
@@ -629,16 +633,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBComponentModelBuilderDelegate
 
-- (void)componentModelBuilder:(id<HUBComponentModelBuilder>)componentModelBuilder groupIdentifierDidChange:(nullable NSString *)groupIdentifier oldGroupIdentifier:(nullable NSString *)oldGroupIdentifier
+- (void)componentModelBuilder:(id<HUBComponentModelBuilder>)componentModelBuilder groupIdentifierDidChange:(nullable NSString *)newGroupIdentifier oldGroupIdentifier:(nullable NSString *)oldGroupIdentifier
 {
-    if (oldGroupIdentifier) {
+    if (oldGroupIdentifier != nil) {
         NSString *nonNilOldGroupIdentifier = oldGroupIdentifier;
         NSMutableArray *childBuildersInOldGroup = self.childBuildersByGroupIdentifier[nonNilOldGroupIdentifier];
         [childBuildersInOldGroup removeObject:componentModelBuilder];
+        if (childBuildersInOldGroup.count == 0) {
+            self.childBuildersByGroupIdentifier[nonNilOldGroupIdentifier] = nil;
+        }
     }
 
-    if  (groupIdentifier) {
-        NSString *nonNilGroupIdentifier = groupIdentifier;
+    if  (newGroupIdentifier != nil) {
+        NSString *nonNilGroupIdentifier = newGroupIdentifier;
         if (!self.childBuildersByGroupIdentifier[nonNilGroupIdentifier]) {
             self.childBuildersByGroupIdentifier[nonNilGroupIdentifier] = [NSMutableArray array];
         }
