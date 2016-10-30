@@ -60,4 +60,4 @@ Before runnning `hublive`, ensure that your application is already running in th
 
 As soon as you start `hublive`, a new view controller will be pushed in your app, and as soon as you change and save your JSON file - that view controller will be updated with new content. Here is a simple demo showing it running:
 
-![Demo gif](https://spotify.github.io/HubFramework/resources/live-editing.gif)
+<img src="https://spotify.github.io/HubFramework/resources/live-editing.gif" alt="Demo gif" width="100%"/>
