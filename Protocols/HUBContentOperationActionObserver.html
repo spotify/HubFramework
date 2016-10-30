@@ -69,6 +69,9 @@
                 <a class="nav-group-task-link" href="../layout-programming-guide.html">Layout programming guide</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../live-editing-guide.html">Live editing guide</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../setup-guide.html">Setup guide</a>
               </li>
             </ul>
@@ -141,6 +144,9 @@
                 <a class="nav-group-task-link" href="../Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/HUBComponentSelectionState.html">HUBComponentSelectionState</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/HUBComponentType.html">HUBComponentType</a>
               </li>
               <li class="nav-group-task">
@@ -164,13 +170,22 @@
                 <a class="nav-group-task-link" href="../Protocols/HUBActionHandler.html">HUBActionHandler</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionPerformer.html">HUBActionPerformer</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBActionRegistry.html">HUBActionRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBAsyncAction.html">HUBAsyncAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBAsyncActionDelegate.html">HUBAsyncActionDelegate</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponent.html">HUBComponent</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBComponentActionDelegate.html">HUBComponentActionDelegate</a>
+                <a class="nav-group-task-link" href="../Protocols/HUBComponentActionObserver.html">HUBComponentActionObserver</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentActionPerformer.html">HUBComponentActionPerformer</a>
@@ -242,6 +257,9 @@
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBComponentWithSelectionState.html">HUBComponentWithSelectionState</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
               </li>
               <li class="nav-group-task">
@@ -252,6 +270,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBContentOperationActionObserver.html">HUBContentOperationActionObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBContentOperationActionPerformer.html">HUBContentOperationActionPerformer</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a>
@@ -312,6 +333,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBLiveService.html">HUBLiveService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBLiveServiceDelegate.html">HUBLiveServiceDelegate</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a>
@@ -397,9 +424,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBContentOperationActionObserver(im)actionPerformedWithContext:viewURI:featureInfo:connectivityState:"></a>
-                    <a name="//apple_ref/objc/Method/-actionPerformedWithContext:viewURI:featureInfo:connectivityState:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBContentOperationActionObserver(im)actionPerformedWithContext:viewURI:featureInfo:connectivityState:">-actionPerformedWithContext:viewURI:featureInfo:connectivityState:</a>
+                    <a name="/c:objc(pl)HUBContentOperationActionObserver(im)actionPerformedWithContext:featureInfo:connectivityState:"></a>
+                    <a name="//apple_ref/objc/Method/-actionPerformedWithContext:featureInfo:connectivityState:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBContentOperationActionObserver(im)actionPerformedWithContext:featureInfo:connectivityState:">-actionPerformedWithContext:featureInfo:connectivityState:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -420,7 +447,6 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">actionPerformedWithContext</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBActionContext.html">HUBActionContext</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">context</span>
-                           <span class="nf">viewURI</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewURI</span>
                        <span class="nf">featureInfo</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBFeatureInfo.html">HUBFeatureInfo</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">featureInfo</span>
                  <span class="nf">connectivityState</span><span class="p">:(</span><span class="n"><a href="../Enums/HUBConnectivityState.html">HUBConnectivityState</a></span><span class="p">)</span><span class="nv">connectivityState</span><span class="p">;</span></code></pre>
 
@@ -439,19 +465,6 @@
                               <td>
                                 <div>
                                   <p>The contextual object that the action was performed with</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>viewURI</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The URI of the view that the action was performed in</p>
 
                                 </div>
                               </td>

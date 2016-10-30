@@ -69,6 +69,9 @@
                 <a class="nav-group-task-link" href="../layout-programming-guide.html">Layout programming guide</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../live-editing-guide.html">Live editing guide</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../setup-guide.html">Setup guide</a>
               </li>
             </ul>
@@ -141,6 +144,9 @@
                 <a class="nav-group-task-link" href="../Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/HUBComponentSelectionState.html">HUBComponentSelectionState</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/HUBComponentType.html">HUBComponentType</a>
               </li>
               <li class="nav-group-task">
@@ -164,13 +170,22 @@
                 <a class="nav-group-task-link" href="../Protocols/HUBActionHandler.html">HUBActionHandler</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBActionPerformer.html">HUBActionPerformer</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBActionRegistry.html">HUBActionRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBAsyncAction.html">HUBAsyncAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBAsyncActionDelegate.html">HUBAsyncActionDelegate</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponent.html">HUBComponent</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBComponentActionDelegate.html">HUBComponentActionDelegate</a>
+                <a class="nav-group-task-link" href="../Protocols/HUBComponentActionObserver.html">HUBComponentActionObserver</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentActionPerformer.html">HUBComponentActionPerformer</a>
@@ -242,6 +257,9 @@
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBComponentWithSelectionState.html">HUBComponentWithSelectionState</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
               </li>
               <li class="nav-group-task">
@@ -252,6 +270,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBContentOperationActionObserver.html">HUBContentOperationActionObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBContentOperationActionPerformer.html">HUBContentOperationActionPerformer</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a>
@@ -312,6 +333,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBLiveService.html">HUBLiveService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBLiveServiceDelegate.html">HUBLiveServiceDelegate</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a>
@@ -569,15 +596,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The model of the component that the action is being performed for</p>
+                        <p>The model of any component that the action is being performed for (nil if performed by a content operation)</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">componentModel</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span>
+    <span class="n">componentModel</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>

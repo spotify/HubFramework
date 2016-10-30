@@ -1,89 +1,89 @@
 {
   "warnings": [
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBBlockContentOperationFactory.h",
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBBlockContentOperationFactory.h",
       "line": 46,
       "symbol": "HUBBlockContentOperationFactory.+new",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBBlockContentOperationFactory.h",
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBBlockContentOperationFactory.h",
       "line": 46,
       "symbol": "HUBBlockContentOperationFactory.-init",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBBlockContentOperationFactory.h",
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBBlockContentOperationFactory.h",
       "line": 46,
       "symbol": "HUBBlockContentOperationFactory.-initWithCoder:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBIdentifier.h",
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBIdentifier.h",
       "line": 55,
       "symbol": "HUBIdentifier.+new",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBIdentifier.h",
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBIdentifier.h",
       "line": 55,
       "symbol": "HUBIdentifier.-init",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBIdentifier.h",
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBIdentifier.h",
       "line": 55,
       "symbol": "HUBIdentifier.-initWithCoder:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBManager.h",
-      "line": 121,
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBManager.h",
+      "line": 125,
       "symbol": "HUBManager.+new",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBManager.h",
-      "line": 121,
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBManager.h",
+      "line": 125,
       "symbol": "HUBManager.-init",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBManager.h",
-      "line": 121,
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBManager.h",
+      "line": 125,
       "symbol": "HUBManager.-initWithCoder:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBViewURIPredicate.h",
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBViewURIPredicate.h",
       "line": 88,
       "symbol": "HUBViewURIPredicate.+new",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBViewURIPredicate.h",
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBViewURIPredicate.h",
       "line": 88,
       "symbol": "HUBViewURIPredicate.-init",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/cedercra/Projects/Spotify/HubFramework/include/HubFramework/HUBViewURIPredicate.h",
+      "file": "/Users/John/Code/HubFramework/include/HubFramework/HUBViewURIPredicate.h",
       "line": 88,
       "symbol": "HUBViewURIPredicate.-initWithCoder:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     }
   ],
-  "source_directory": "/Users/cedercra/Projects/Spotify/HubFramework/sources"
+  "source_directory": "/Users/John/Code/HubFramework/sources"
 }

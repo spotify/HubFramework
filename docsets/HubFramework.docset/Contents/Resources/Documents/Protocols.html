@@ -68,6 +68,9 @@
                 <a class="nav-group-task-link" href="layout-programming-guide.html">Layout programming guide</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="live-editing-guide.html">Live editing guide</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="setup-guide.html">Setup guide</a>
               </li>
             </ul>
@@ -140,6 +143,9 @@
                 <a class="nav-group-task-link" href="Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/HUBComponentSelectionState.html">HUBComponentSelectionState</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/HUBComponentType.html">HUBComponentType</a>
               </li>
               <li class="nav-group-task">
@@ -163,13 +169,22 @@
                 <a class="nav-group-task-link" href="Protocols/HUBActionHandler.html">HUBActionHandler</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBActionPerformer.html">HUBActionPerformer</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBActionRegistry.html">HUBActionRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBAsyncAction.html">HUBAsyncAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBAsyncActionDelegate.html">HUBAsyncActionDelegate</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBComponent.html">HUBComponent</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/HUBComponentActionDelegate.html">HUBComponentActionDelegate</a>
+                <a class="nav-group-task-link" href="Protocols/HUBComponentActionObserver.html">HUBComponentActionObserver</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBComponentActionPerformer.html">HUBComponentActionPerformer</a>
@@ -241,6 +256,9 @@
                 <a class="nav-group-task-link" href="Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBComponentWithSelectionState.html">HUBComponentWithSelectionState</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
               </li>
               <li class="nav-group-task">
@@ -251,6 +269,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBContentOperationActionObserver.html">HUBContentOperationActionObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBContentOperationActionPerformer.html">HUBContentOperationActionPerformer</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a>
@@ -311,6 +332,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBLiveService.html">HUBLiveService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBLiveServiceDelegate.html">HUBLiveServiceDelegate</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a>
@@ -560,6 +587,54 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/c:objc(pl)HUBActionPerformer"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBActionPerformer" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBActionPerformer">HUBActionPerformer</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Protocol defining the public API of an object that performs Hub Framework actions</p>
+
+<p>You use this API to manually perform actions from either a component (conforming to
+  <code><a href="Protocols/HUBComponentActionPerformer.html">HUBComponentActionPerformer</a></code>) or content operation (conforming to
+  <code><a href="Protocols/HUBContentOperationActionPerformer.html">HUBContentOperationActionPerformer</a></code>).</p>
+
+<p>Actions are used to define custom behavior and/or to communicate between the parts
+  that make up a Hub Framework-powered view.</p>
+
+<p>You don&rsquo;t conform to this protocol yourself. Instead, the Hub Framework will assign
+  an object conforming to this protocol to the <code>actionPerformer</code> property of either a
+  component or content operation.</p>
+
+                        <a href="Protocols/HUBActionPerformer.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBActionPerformer</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBActionPerformer</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/c:objc(pl)HUBActionRegistry"></a>
                     <a name="//apple_ref/objc/Protocol/HUBActionRegistry" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)HUBActionRegistry">HUBActionRegistry</a>
@@ -591,6 +666,81 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBActionRegistry</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBAsyncActionDelegate"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBAsyncActionDelegate" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBAsyncActionDelegate">HUBAsyncActionDelegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Delegate protocol used by <code><a href="Protocols/HUBAsyncAction.html">HUBAsyncAction</a></code> types to notify the Hub Framework when they finish</p>
+
+                        <a href="Protocols/HUBAsyncActionDelegate.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBAsyncActionDelegate</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBAsyncActionDelegate</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBAsyncAction"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBAsyncAction" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBAsyncAction">HUBAsyncAction</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Extended action protocol used to define actions that are asynchronous</p>
+
+<p>Asynchronous actions enable you to perform work even after the main <code>performWithContext:</code>
+  method has returned. Once you&rsquo;re done performing an async action, call its delegate. The
+  Hub Framework will automatically retain any performed asynchronous actions until they have
+  been completed.</p>
+
+                        <a href="Protocols/HUBAsyncAction.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBAsyncAction</span> <span class="o">&lt;</span><span class="n"><a href="Protocols/HUBAction.html">HUBAction</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBAsyncAction</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBAction.html">HUBAction</a></span></code></pre>
 
                         </div>
                       </div>
@@ -637,11 +787,15 @@
 
 <p><code><a href="Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a></code>: For saving &amp; restoring the UI state of a component.</p>
 
+<p><code><a href="Protocols/HUBComponentWithSelectionState.html">HUBComponentWithSelectionState</a></code>: For responding to highlight &amp; selection events in a component.</p>
+
 <p><code><a href="Protocols/HUBComponentContentOffsetObserver.html">HUBComponentContentOffsetObserver</a></code>: For components that react to the view&rsquo;s content offset.</p>
 
 <p><code><a href="Protocols/HUBComponentViewObserver.html">HUBComponentViewObserver</a></code>: For components that observe their view for various events.</p>
 
 <p><code><a href="Protocols/HUBComponentActionPerformer.html">HUBComponentActionPerformer</a></code>: For components that can perform actions (see <code><a href="Protocols/HUBAction.html">HUBAction</a></code>).</p>
+
+<p><code><a href="Protocols/HUBComponentActionObserver.html">HUBComponentActionObserver</a></code>: For components that can observe actions (see <code><a href="Protocols/HUBAction.html">HUBAction</a></code>).</p>
 
                         <a href="Protocols/HUBComponent.html" class="slightly-smaller">See more</a>
                       </div>
@@ -668,9 +822,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentActionDelegate"></a>
-                    <a name="//apple_ref/objc/Protocol/HUBComponentActionDelegate" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentActionDelegate">HUBComponentActionDelegate</a>
+                    <a name="/c:objc(pl)HUBComponentActionObserver"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBComponentActionObserver" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentActionObserver">HUBComponentActionObserver</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -678,29 +832,34 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Delegate protocol used to perform Hub Framework actions from a component</p>
+                        <p>Extended component protocol that adds the ability to observe whenever an action was performed</p>
 
-<p>You don&rsquo;t implement this protocol yourself. Instead, you \@synthesize your component&rsquo;s <code>actionDelegate</code> property,
-  and may choose to use this API to perform actions from your component implementation.</p>
+<p>You can use this protocol to be able to react to an action being performed in your component.</p>
 
-                        <a href="Protocols/HUBComponentActionDelegate.html" class="slightly-smaller">See more</a>
+<p>See <code><a href="Protocols/HUBComponent.html">HUBComponent</a></code> and <code><a href="Protocols/HUBAction.html">HUBAction</a></code> for more information.</p>
+
+                        <a href="Protocols/HUBComponentActionObserver.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentActionDelegate</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentActionObserver</span> <span class="o">&lt;</span><span class="n"><a href="Protocols/HUBComponent.html">HUBComponent</a></span><span class="o">&gt;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentActionDelegate</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentActionObserver</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBComponent.html">HUBComponent</a></span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -1724,6 +1883,50 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/c:objc(pl)HUBComponentWithSelectionState"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBComponentWithSelectionState" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentWithSelectionState">HUBComponentWithSelectionState</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Extended Hub component protocol that adds the ability to respond to selection events</p>
+
+<p>Use this protocol if your component adjusts its appearance when the user interacts with it,
+  such as when the user highlights it through a touch down, or selects it through a tap. A
+  normal use case for this protocol is when a component is implemented using a table- or
+  collection view cell, and you wish to update the cell&rsquo;s highlighted/selected status.</p>
+
+<p>For more information, see <code><a href="Protocols/HUBComponent.html">HUBComponent</a></code> and <code><a href="Enums/HUBComponentSelectionState.html">HUBComponentSelectionState</a></code>.</p>
+
+                        <a href="Protocols/HUBComponentWithSelectionState.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentWithSelectionState</span> <span class="o">&lt;</span><span class="n"><a href="Protocols/HUBComponent.html">HUBComponent</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBComponentWithSelectionState</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBComponent.html">HUBComponent</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/c:objc(pl)HUBConnectivityStateResolverObserver"></a>
                     <a name="//apple_ref/objc/Protocol/HUBConnectivityStateResolverObserver" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)HUBConnectivityStateResolverObserver">HUBConnectivityStateResolverObserver</a>
@@ -1939,6 +2142,52 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBContentOperationActionObserver</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBContentOperation.html">HUBContentOperation</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBContentOperationActionPerformer"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBContentOperationActionPerformer" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBContentOperationActionPerformer">HUBContentOperationActionPerformer</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Extended content operation protocol that adds the ability to perform actions</p>
+
+<p>Use this protocol whenever you want one of your content operations to be able to perform
+  actions. Actions can be used to perform small, atomic tasks and provide a lightweight way
+  to extend the Hub Framework with additional functionality.</p>
+
+<p>For more information about actions, see <code><a href="Protocols/HUBAction.html">HUBAction</a></code>, as well as the <q>Action programming
+  guide</q> available at <a href="https://spotify.github.io/HubFramework/action-programming-guide.html">https://spotify.github.io/HubFramework/action-programming-guide.html</a>.</p>
+
+<p>For more information about content operations, see <code><a href="Protocols/HUBContentOperation.html">HUBContentOperation</a></code>.</p>
+
+                        <a href="Protocols/HUBContentOperationActionPerformer.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBContentOperationActionPerformer</span> <span class="o">&lt;</span><span class="n"><a href="Protocols/HUBContentOperation.html">HUBContentOperation</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBContentOperationActionPerformer</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBContentOperation.html">HUBContentOperation</a></span></code></pre>
 
                         </div>
                       </div>
@@ -2790,6 +3039,91 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/c:objc(pl)HUBLiveServiceDelegate"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBLiveServiceDelegate" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBLiveServiceDelegate">HUBLiveServiceDelegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Delegate protocol for <code><a href="Protocols/HUBLiveService.html">HUBLiveService</a></code></p>
+
+<p>Implement this to recieve view controllers created by the service (using JSON passed from the
+  <code>hublive</code> command line application).</p>
+
+                        <a href="Protocols/HUBLiveServiceDelegate.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBLiveServiceDelegate</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBLiveServiceDelegate</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBLiveService"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBLiveService" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBLiveService">HUBLiveService</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Protocol defining the public API for the Hub Framework Live service</p>
+
+<p>The live service enables live editing of Hub Framework-powered view controllers, using the <code>hublive</code>
+  command line application (you can find it in the /live folder of the Hub Framework repo).</p>
+
+<p>To start the service, simply call <code>startOnPort:</code> with a port number that you wish to enable the
+  <code>hublive</code> application to connect on (the same port should then be supplied when starting <code>hublive</code>).
+  The service will then call its delegate once it has created a view controller for any JSON data that
+  was passed from <code>hublive</code>.</p>
+
+<p>You don&rsquo;t implement this protocol yourself, instead the Hub Framework contains an implementation of it.
+  Note though that this implementation is only compiled when the application hosting the framework is
+  compiled for DEBUG.</p>
+
+                        <a href="Protocols/HUBLiveService.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBLiveService</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBLiveService</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/c:objc(pl)HUBMutableJSONPath"></a>
                     <a name="//apple_ref/objc/Protocol/HUBMutableJSONPath" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)HUBMutableJSONPath">HUBMutableJSONPath</a>
@@ -2914,7 +3248,7 @@
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBViewControllerDelegate</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBViewControllerDelegate</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
 
                         </div>
                       </div>
@@ -2950,7 +3284,7 @@
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBViewController</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBViewController</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
 
                         </div>
                       </div>

@@ -68,6 +68,9 @@
                 <a class="nav-group-task-link" href="layout-programming-guide.html">Layout programming guide</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="live-editing-guide.html">Live editing guide</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="setup-guide.html">Setup guide</a>
               </li>
             </ul>
@@ -140,6 +143,9 @@
                 <a class="nav-group-task-link" href="Enums/HUBComponentLayoutContentEdge.html">HUBComponentLayoutContentEdge</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/HUBComponentSelectionState.html">HUBComponentSelectionState</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/HUBComponentType.html">HUBComponentType</a>
               </li>
               <li class="nav-group-task">
@@ -163,13 +169,22 @@
                 <a class="nav-group-task-link" href="Protocols/HUBActionHandler.html">HUBActionHandler</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBActionPerformer.html">HUBActionPerformer</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBActionRegistry.html">HUBActionRegistry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBAsyncAction.html">HUBAsyncAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBAsyncActionDelegate.html">HUBAsyncActionDelegate</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBComponent.html">HUBComponent</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/HUBComponentActionDelegate.html">HUBComponentActionDelegate</a>
+                <a class="nav-group-task-link" href="Protocols/HUBComponentActionObserver.html">HUBComponentActionObserver</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBComponentActionPerformer.html">HUBComponentActionPerformer</a>
@@ -241,6 +256,9 @@
                 <a class="nav-group-task-link" href="Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBComponentWithSelectionState.html">HUBComponentWithSelectionState</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a>
               </li>
               <li class="nav-group-task">
@@ -251,6 +269,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBContentOperationActionObserver.html">HUBContentOperationActionObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBContentOperationActionPerformer.html">HUBContentOperationActionPerformer</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a>
@@ -311,6 +332,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBJSONURLPath.html">HUBJSONURLPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBLiveService.html">HUBLiveService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBLiveServiceDelegate.html">HUBLiveServiceDelegate</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a>
@@ -386,6 +413,7 @@
 <li><a href="#image-handling">Image handling</a></li>
 <li><a href="#managing-child-components">Managing child components</a></li>
 <li><a href="#saving-and-restoring-ui-state">Saving and restoring UI state</a></li>
+<li><a href="#responding-to-user-interactions">Responding to user interactions</a></li>
 <li><a href="#integrating-a-component-with-the-framework">Integrating a component with the framework</a></li>
 <li><a href="#best-practices">Best practices</a></li>
 </ul>
@@ -517,6 +545,28 @@
 <p>Once your component has started to render a model for which a UI state was previously saved, the framework will call <code>restoreUIState:</code> on your component with the saved state, allowing the component to restore it.</p>
 
 <p>Thanks to this API, you can hide the fact that components are reused for your users, as from their perspective it will look like the component was there all along.</p>
+<a href='#responding-to-user-interactions' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='responding-to-user-interactions'>Responding to user interactions</h2>
+
+<p>If you want your component to adapt its appearance when the user interacts with it (mimicking the behavior as when highlighting or selecting a <code>UITableViewCell</code>), you can make it conform to <code>HUBComponentWithSelectionState</code>.</p>
+
+<p>The Hub Framework supports two selection states; <code>Highlighted</code> and <code>Selected</code>. Your component will automatically be called and asked to update its view for a new selection state when the user either touches it (highlight), or taps it (selection).</p>
+
+<p>Here we are implementing a component and modifying its view&rsquo;s <code>alpha</code> in response to user interactions:</p>
+<pre class="highlight plaintext"><code>- (void)updateViewForSelectionState:(HUBComponentSelectionState)selectionState
+{
+    switch (selectionState) {
+        case HUBComponentSelectionStateNone:
+            self.view.alpha = 1;
+            break;
+        case HUBComponentSelectionStateHighlighted:
+            self.view.alpha = 0.7;
+            break;
+        case HUBComponentSelectionStateSelected:
+            self.view.alpha = 0.5;
+            break;
+    }
+}
+</code></pre>
 <a href='#integrating-a-component-with-the-framework' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='integrating-a-component-with-the-framework'>Integrating a component with the framework</h2>
 
 <p>Components are integrated with the Hub Framework through a <code>HUBComponentFactory</code> implementation. Usually each feature that supplies components into the framework will have its own factory implementation.</p>
