@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name         = "HubFramework"
-    s.version      = "2.0.4"
+    s.version      = "2.0.5"
     s.summary      = "Spotify's component-driven UI framework for iOS"
 
     s.description  = <<-DESC
