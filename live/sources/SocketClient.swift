@@ -25,6 +25,7 @@ import Foundation
 class SocketClient {
     private let port: Int
     private var stream: OutputStream?
+    private lazy var asyncQueue: DispatchQueue = .init(label: "SocketClient.async")
     
     /**
      *  Initialize an instance of this class
@@ -68,7 +69,7 @@ class SocketClient {
         case .notOpen:
             printError(message: "Stream is not open")
         case .opening, .writing:
-            DispatchQueue(label: "Awaiting stream setup").async {
+            self.asyncQueue.async {
                 self.send(data: data)
             }
             
