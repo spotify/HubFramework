@@ -64,8 +64,28 @@ class SocketClient {
             return
         }
         
+        switch stream.streamStatus {
+        case .notOpen:
+            printError(message: "Stream is not open")
+        case .opening, .writing:
+            DispatchQueue(label: "Awaiting stream setup").async {
+                self.send(data: data)
+            }
+            
+            return
+        case .open, .reading, .atEnd:
+            break
+        case .closed:
+            printError(message: "Stream has been closed")
+            return
+        case .error:
+            printError(message: "An error occured. Make sure your app is running in the iOS Simulator")
+            return
+        }
+        
         if !stream.hasSpaceAvailable {
-            printError()
+            printError(message: "No space available in stream")
+            return
         }
         
         let result = data.withUnsafeBytes { bytes in
@@ -73,7 +93,7 @@ class SocketClient {
         }
         
         if result <= 0 {
-            printError()
+            printError(message: "No data could be written")
         }
     }
     
@@ -99,7 +119,7 @@ class SocketClient {
         }
     }
     
-    private func printError() {
-        "Could not send JSON data to application".print(withColor: .red)
+    private func printError(message: String) {
+        "Could not send JSON data to application. \(message).".print(withColor: .red)
     }
 }
