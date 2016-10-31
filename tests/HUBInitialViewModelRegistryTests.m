@@ -45,7 +45,6 @@
                                                                          headerComponentModel:nil
                                                                           bodyComponentModels:@[]
                                                                        overlayComponentModels:@[]
-                                                                                 extensionURL:nil
                                                                                    customData:nil];
     
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];

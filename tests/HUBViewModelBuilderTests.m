@@ -64,14 +64,12 @@
     
     self.builder.viewIdentifier = @"view";
     self.builder.navigationBarTitle = @"nav title";
-    self.builder.extensionURL = [NSURL URLWithString:@"www.spotify.com"];
     self.builder.customData = @{@"custom": @"data"};
     
     id<HUBViewModel> const model = [self.builder build];
     
     XCTAssertEqualObjects(model.identifier, self.builder.viewIdentifier);
     XCTAssertEqualObjects(model.navigationItem.title, self.builder.navigationBarTitle);
-    XCTAssertEqualObjects(model.extensionURL, self.builder.extensionURL);
     XCTAssertEqualObjects(model.customData, self.builder.customData);
 }
 
@@ -331,7 +329,6 @@
     NSString * const bodyComponentModelIdentifier = @"body model";
     HUBIdentifier * const bodyComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"body" name:@"component"];
     HUBIdentifier * const overlayComponentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"overlay" name:@"component"];
-    NSURL * const extensionURL = [NSURL URLWithString:@"https://spotify.com/extension"];
     NSDictionary * const customData = @{@"custom": @"data"};
     
     NSDictionary * const dictionary = @{
@@ -362,7 +359,6 @@
                 }
             }
         ],
-        @"extension": extensionURL.absoluteString,
         @"custom": customData
     };
     
@@ -379,7 +375,6 @@
     XCTAssertEqualObjects([model.bodyComponentModels firstObject].componentCategory, @"bodyCategory");
     XCTAssertEqualObjects([model.overlayComponentModels firstObject].componentIdentifier, overlayComponentIdentifier);
     XCTAssertEqualObjects([model.overlayComponentModels firstObject].componentCategory, @"overlayCategory");
-    XCTAssertEqualObjects(model.extensionURL, extensionURL);
     XCTAssertEqualObjects(model.customData, customData);
     
     // Serializing should produce an identical dictionary as was passed as JSON data
@@ -424,7 +419,6 @@
     self.builder.viewIdentifier = @"view";
     self.builder.navigationBarTitle = @"title";
     self.builder.headerComponentModelBuilder.title = @"header title";
-    self.builder.extensionURL = [NSURL URLWithString:@"http://spotify.extension.com"];
     self.builder.customData = @{@"custom": @"data"};
     [self.builder builderForBodyComponentModelWithIdentifier:@"component"].title = @"body title";
     
@@ -434,7 +428,6 @@
     XCTAssertEqualObjects(self.builder.viewIdentifier, @"view");
     XCTAssertEqualObjects(self.builder.navigationBarTitle, @"title");
     XCTAssertEqualObjects(self.builder.headerComponentModelBuilder.title, @"header title");
-    XCTAssertEqualObjects(self.builder.extensionURL, [NSURL URLWithString:@"http://spotify.extension.com"]);
     XCTAssertEqualObjects(self.builder.customData, @{@"custom" : @"data"});
     XCTAssertTrue([self.builder builderExistsForBodyComponentModelWithIdentifier:@"component"]);
 }
@@ -495,7 +488,6 @@
     self.builder.navigationItem.rightBarButtonItems = rightBarButtonItems;
     
     self.builder.viewIdentifier = @"id";
-    self.builder.extensionURL = [NSURL URLWithString:@"https://spotify.extension.com"];
     self.builder.customData = @{@"custom": @"data"};
     self.builder.headerComponentModelBuilder.title = @"headerTitle";
     
@@ -513,7 +505,6 @@
     XCTAssertEqualObjects(builderCopy.navigationItem.rightBarButtonItems, rightBarButtonItems);
     
     XCTAssertEqualObjects(builderCopy.viewIdentifier, @"id");
-    XCTAssertEqualObjects(builderCopy.extensionURL, [NSURL URLWithString:@"https://spotify.extension.com"]);
     XCTAssertEqualObjects(builderCopy.customData, @{@"custom": @"data"});
     
     XCTAssertNotEqual(builderCopy.headerComponentModelBuilder, self.builder.headerComponentModelBuilder);

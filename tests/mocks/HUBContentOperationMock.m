@@ -79,7 +79,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - HUBContentOperationActionObserver
 
 - (void)actionPerformedWithContext:(id<HUBActionContext>)context
-                           viewURI:(NSURL *)viewURI
                        featureInfo:(id<HUBFeatureInfo>)featureInfo
                  connectivityState:(HUBConnectivityState)connectivityState
 {

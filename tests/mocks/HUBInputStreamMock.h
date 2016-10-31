@@ -19,26 +19,16 @@
  *  under the License.
  */
 
-
 #import <Foundation/Foundation.h>
 
-/// Macro that marks an initializer as designated, and also makes the default Foundation initializers unavailable
-#define HUB_DESIGNATED_INITIALIZER NS_DESIGNATED_INITIALIZER; \
-    /** Unavailable. Use the designated initializer instead */ \
-    + (instancetype)new NS_UNAVAILABLE; \
-    /** Unavailable. Use the designated initializer instead */ \
-    - (instancetype)init NS_UNAVAILABLE; \
-    /** Unavailable. Use the designated initializer instead */ \
-    - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+NS_ASSUME_NONNULL_BEGIN
 
-/// This macro was introduced in Xcode 8, so adding this here for now (if not defined) to support Xcode 7 as well
-#ifndef NS_EXTENSIBLE_STRING_ENUM
-    #define NS_EXTENSIBLE_STRING_ENUM
-#endif
+/// Mocked input stream, for use in unit tests only
+@interface HUBInputStreamMock : NSInputStream
 
-/// Define an explicit `HUB_DEBUG` macro for conditionally compiling debug code
-#ifdef DEBUG
-    #define HUB_DEBUG DEBUG
-#else
-    #define HUB_DEBUG 0
-#endif
+/// The data that the stream should act like it contains
+@property (nonatomic, strong, nullable) NSData *data;
+
+@end
+
+NS_ASSUME_NONNULL_END

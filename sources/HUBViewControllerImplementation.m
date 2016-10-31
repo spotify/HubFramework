@@ -847,12 +847,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                           usingBatchUpdates:self.viewHasAppeared
                                    animated:animated
                                  completion:^{
+        [self configureHeaderComponent];
+        [self configureOverlayComponents];
+        [self headerAndOverlayComponentViewsWillAppear];
         [self.delegate viewControllerDidFinishRendering:self];
     }];
-    
-    [self configureHeaderComponent];
-    [self configureOverlayComponents];
-    [self headerAndOverlayComponentViewsWillAppear];
     
     self.viewModelHasChangedSinceLastLayoutUpdate = NO;
 }

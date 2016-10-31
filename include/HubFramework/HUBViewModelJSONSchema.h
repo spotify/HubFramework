@@ -77,9 +77,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> overlayComponentModelDictionariesPath;
 
-/// The path to follow to extract a view model extension URL. Maps to `extensionURL`.
-@property (nonatomic, strong) id<HUBJSONURLPath> extensionURLPath;
-
 /// The path to follow to extract custom data for a view model. Maps to `customData`.
 @property (nonatomic, strong) id<HUBJSONDictionaryPath> customDataPath;
 

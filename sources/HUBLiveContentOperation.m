@@ -19,25 +19,28 @@
  *  under the License.
  */
 
-#import "HUBComponentCollectionViewCell.h"
+#import "HUBLiveContentOperation.h"
 
-#import <UIKit/UIGestureRecognizerSubclass.h>
+#import "HUBViewModelBuilder.h"
 
-#import "HUBComponent.h"
-#import "HUBUtilities.h"
+#if HUB_DEBUG
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation HUBComponentCollectionViewCell
+@implementation HUBLiveContentOperation
+
+@synthesize delegate = _delegate;
 
 #pragma mark - Initializer
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithJSONData:(NSData *)JSONData
 {
-    self = [super initWithFrame:frame];
+    NSParameterAssert(JSONData != nil);
+    
+    self = [super init];
     
     if (self) {
-        _identifier = [NSUUID UUID];
+        _JSONData = JSONData;
     }
     
     return self;
@@ -45,37 +48,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Property overrides
 
-- (void)setComponent:(nullable id<HUBComponent>)component
+- (void)setJSONData:(NSData *)JSONData
 {
-    if (_component == component) {
-        return;
-    }
-    
-    [_component.view removeFromSuperview];
-    _component = component;
-    
-    if (component == nil) {
-        return;
-    }
-    
-    id<HUBComponent> const nonNilComponent = component;
-    [self.contentView addSubview:HUBComponentLoadViewIfNeeded(nonNilComponent)];
+    _JSONData = JSONData;
+    [self.delegate contentOperationRequiresRescheduling:self];
 }
 
-#pragma mark - UICollectionViewCell
+#pragma mark - HUBContentOperation
 
-- (void)prepareForReuse
+- (void)performForViewURI:(NSURL *)viewURI
+              featureInfo:(id<HUBFeatureInfo>)featureInfo
+        connectivityState:(HUBConnectivityState)connectivityState
+         viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
+            previousError:(nullable NSError *)previousError
 {
-    [self.component prepareViewForReuse];
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    self.component.view.frame = self.contentView.bounds;
+    [viewModelBuilder addJSONData:self.JSONData];
+    [self.delegate contentOperationDidFinish:self];
 }
 
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // DEBUG

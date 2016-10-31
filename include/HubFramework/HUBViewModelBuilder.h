@@ -103,16 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) BOOL headerComponentModelBuilderExists;
 
-#pragma mark - Metadata
-
-/**
- *  Any HTTP URL from which data can be downloaded to extend the view model
- *
- *  You can use this property to implement pagination for your view's content. When the user has scrolled to the bottom
- *  of a view, and that view model's extension URL != nil, the Hub Framework will automatically ask its content operations
- *  to extend the view model with data from this URL.
- */
-@property (nonatomic, copy, nullable) NSURL *extensionURL;
+#pragma mark - Custom data
 
 /**
  *  Any custom data that should be associated with the view model
