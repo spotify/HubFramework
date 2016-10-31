@@ -473,14 +473,15 @@ NS_ASSUME_NONNULL_BEGIN
         HUBComponentModelBuilderImplementation *childBuilderCopy = [childBuilder copy];
         copy.childBuilders[childIdentifier] = childBuilderCopy;
 
-        NSString *groupIdentifier = childBuilder.groupIdentifier;
+        if (childBuilder.groupIdentifier) {
+            NSString *groupIdentifier = childBuilder.groupIdentifier;
 
-        if (groupIdentifier && copy.childBuildersByGroupIdentifier[groupIdentifier] == nil) {
-            copy.childBuildersByGroupIdentifier[groupIdentifier] = [NSMutableArray array];
+            if (copy.childBuildersByGroupIdentifier[groupIdentifier] == nil) {
+                copy.childBuildersByGroupIdentifier[groupIdentifier] = [NSMutableArray array];
+            }
+
+            [copy.childBuildersByGroupIdentifier[groupIdentifier] addObject:childBuilderCopy];
         }
-
-        [copy.childBuildersByGroupIdentifier[groupIdentifier] addObject:childBuilderCopy];
-
     }
 
     [copy.childIdentifierOrder addObjectsFromArray:self.childIdentifierOrder];
