@@ -638,6 +638,7 @@ NS_ASSUME_NONNULL_BEGIN
         NSString *nonNilOldGroupIdentifier = oldGroupIdentifier;
         NSMutableArray *childBuildersInOldGroup = self.childBuildersByGroupIdentifier[nonNilOldGroupIdentifier];
         [childBuildersInOldGroup removeObject:componentModelBuilder];
+
         if (childBuildersInOldGroup.count == 0) {
             self.childBuildersByGroupIdentifier[nonNilOldGroupIdentifier] = nil;
         }
@@ -645,6 +646,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     if  (newGroupIdentifier != nil) {
         NSString *nonNilGroupIdentifier = newGroupIdentifier;
+
         if (!self.childBuildersByGroupIdentifier[nonNilGroupIdentifier]) {
             self.childBuildersByGroupIdentifier[nonNilGroupIdentifier] = [NSMutableArray array];
         }
