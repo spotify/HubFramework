@@ -51,9 +51,6 @@ static NSString * const HUBJSONKeyDate = @"date";
 /// JSON key used to encode a description text
 static NSString * const HUBJSONKeyDescription = @"description";
 
-/// JSON key used to encode extension information
-static NSString * const HUBJSONKeyExtension = @"extension";
-
 /// JSON key used to encode a feature identifier
 static NSString * const HUBJSONKeyFeature = @"feature";
 

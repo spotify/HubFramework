@@ -35,7 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize headerComponentModel = _headerComponentModel;
 @synthesize bodyComponentModels = _bodyComponentModels;
 @synthesize overlayComponentModels = _overlayComponentModels;
-@synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
 @synthesize buildDate = _buildDate;
 
@@ -55,7 +54,6 @@ NS_ASSUME_NONNULL_BEGIN
               headerComponentModel:(nullable id<HUBComponentModel>)headerComponentModel
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
             overlayComponentModels:(NSArray<id<HUBComponentModel>> *)overlayComponentModels
-                      extensionURL:(nullable NSURL *)extensionURL
                         customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     self = [super init];
@@ -65,7 +63,6 @@ NS_ASSUME_NONNULL_BEGIN
         _headerComponentModel = headerComponentModel;
         _bodyComponentModels = bodyComponentModels;
         _overlayComponentModels = overlayComponentModels;
-        _extensionURL = [extensionURL copy];
         _customData = customData;
         _buildDate = [NSDate date];
         
@@ -113,7 +110,6 @@ NS_ASSUME_NONNULL_BEGIN
     serialization[HUBJSONKeyHeader] = [self.headerComponentModel serialize];
     serialization[HUBJSONKeyBody] = [self serializeComponentModels:self.bodyComponentModels];
     serialization[HUBJSONKeyOverlays] = [self serializeComponentModels:self.overlayComponentModels];
-    serialization[HUBJSONKeyExtension] = self.extensionURL.absoluteString;
     serialization[HUBJSONKeyCustom] = self.customData;
     
     return [serialization copy];

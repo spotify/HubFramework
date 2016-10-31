@@ -81,7 +81,6 @@
                                                                                                       headerComponentModel:nil
                                                                                                        bodyComponentModels:@[]
                                                                                                     overlayComponentModels:@[]
-                                                                                                              extensionURL:nil
                                                                                                                 customData:nil];
         
         HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];

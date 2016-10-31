@@ -67,7 +67,6 @@
                                              headerComponentModel:nil
                                               bodyComponentModels:components
                                            overlayComponentModels:@[]
-                                                     extensionURL:nil
                                                        customData:@{@"custom": @"data"}];
 }
 
