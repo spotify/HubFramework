@@ -191,6 +191,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<HUBComponentModelBuilder>)builderForChildWithIdentifier:(NSString *)identifier NS_SWIFT_NAME(builderForChild(withIdentifier:));
 
 /**
+ *  Return child component model builders with a certain group identifier
+ *
+ *  @param groupIdentifier The desired group identifier  
+ *
+ *  @return All the existing child component model builders with the same group identifier, in the order that they were created.
+ */
+- (nullable NSArray<id<HUBComponentModelBuilder>> *)buildersForChildrenInGroupWithIdentifier:(NSString *)groupIdentifier;
+
+/**
  *  Remove a builder for a child component model with a certain identifier
  *
  *  @param identifier The identifier of the child component model builder to remove
