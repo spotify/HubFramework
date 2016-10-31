@@ -26,7 +26,6 @@
 
 @protocol HUBComponentImageDataBuilder;
 @protocol HUBComponentTargetBuilder;
-@protocol HUBComponentModelBuilder;
 
 NS_ASSUME_NONNULL_BEGIN
 

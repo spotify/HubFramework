@@ -38,7 +38,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol HUBComponentModelBuilderDelegate <NSObject>
 
-- (void)componentModelBuilder:(id<HUBComponentModelBuilder>)componentModelBuilder groupIdentifierDidChange:(nullable NSString *)newGroupIdentifier oldGroupIdentifier:(nullable NSString *)oldGroupIdentifier;
+- (void)componentModelBuilder:(id<HUBComponentModelBuilder>)componentModelBuilder
+     groupIdentifierDidChange:(nullable NSString *)newGroupIdentifier
+           oldGroupIdentifier:(nullable NSString *)oldGroupIdentifier;
 
 @end
 
@@ -269,7 +271,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponentModelBuilder>)builderForChildWithIdentifier:(NSString *)identifier
 {
-    return [self getOrCreateBuilderForChildWithIdentifier:identifier groupIdentifier:nil];
+    return [self getOrCreateBuilderForChildWithIdentifier:identifier];
 }
 
 - (nullable NSArray<id<HUBComponentModelBuilder>> *)buildersForChildrenInGroupWithIdentifier:(NSString *)groupIdentifier
@@ -283,15 +285,13 @@ NS_ASSUME_NONNULL_BEGIN
     self.childBuilders[identifier] = nil;
     [self.childIdentifierOrder removeObject:identifier];
 
-    for (NSString *groupIdentifier in self.childBuildersByGroupIdentifier) {
-        NSMutableArray *childBuilders = self.childBuildersByGroupIdentifier[groupIdentifier];
+    if (builder.groupIdentifier) {
+        NSString *groupIdentifier = builder.groupIdentifier;
+        NSMutableArray *childBuildersInGroup = self.childBuildersByGroupIdentifier[groupIdentifier];
+        [childBuildersInGroup removeObject:builder];
 
-        if ([childBuilders containsObject:builder]) {
-            [childBuilders removeObject:builder];
-            if (childBuilders.count == 0) {
-                self.childBuildersByGroupIdentifier[groupIdentifier] = nil;
-            }
-            break;
+        if (childBuildersInGroup.count == 0) {
+            self.childBuildersByGroupIdentifier[groupIdentifier] = nil;
         }
     }
 }
@@ -420,8 +420,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     for (NSDictionary * const childDictionary in childDictionaries) {
         NSString * const childModelIdentifier = [componentModelSchema.identifierPath stringFromJSONDictionary:childDictionary];
-        NSString * const childModelGroupIdentifier = [componentModelSchema.groupIdentifierPath stringFromJSONDictionary:childDictionary];
-        HUBComponentModelBuilderImplementation * const childModelBuilder = [self getOrCreateBuilderForChildWithIdentifier:childModelIdentifier groupIdentifier:childModelGroupIdentifier];
+        HUBComponentModelBuilderImplementation * const childModelBuilder = [self getOrCreateBuilderForChildWithIdentifier:childModelIdentifier];
         [childModelBuilder addDataFromJSONDictionary:childDictionary];
     }
 }
@@ -469,18 +468,17 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     for (NSString * const childIdentifier in self.childBuilders) {
-        HUBComponentModelBuilderImplementation *childBuilder = self.childBuilders[childIdentifier];
-        HUBComponentModelBuilderImplementation *childBuilderCopy = [childBuilder copy];
-        copy.childBuilders[childIdentifier] = childBuilderCopy;
+        HUBComponentModelBuilderImplementation *childBuilder = [self.childBuilders[childIdentifier] copy];
+        copy.childBuilders[childIdentifier] = childBuilder;
 
-        if (childBuilder.groupIdentifier) {
+        if (childBuilder.groupIdentifier != nil) {
             NSString *groupIdentifier = childBuilder.groupIdentifier;
 
             if (copy.childBuildersByGroupIdentifier[groupIdentifier] == nil) {
                 copy.childBuildersByGroupIdentifier[groupIdentifier] = [NSMutableArray array];
             }
 
-            [copy.childBuildersByGroupIdentifier[groupIdentifier] addObject:childBuilderCopy];
+            [copy.childBuildersByGroupIdentifier[groupIdentifier] addObject:childBuilder];
         }
     }
 
@@ -589,7 +587,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate componentModelBuilder:self groupIdentifierDidChange:self.groupIdentifier oldGroupIdentifier:oldGroupIdentifier];
 }
 
-- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForChildWithIdentifier:(nullable NSString *)identifier groupIdentifier:(nullable NSString *)groupIdentifier
+- (HUBComponentModelBuilderImplementation *)getOrCreateBuilderForChildWithIdentifier:(nullable NSString *)identifier
 {
     if (identifier != nil) {
         NSString * const existingBuilderIdentifier = identifier;
