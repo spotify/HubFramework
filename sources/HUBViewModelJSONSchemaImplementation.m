@@ -31,7 +31,6 @@
 @synthesize headerComponentModelDictionaryPath = _headerComponentModelDictionaryPath;
 @synthesize bodyComponentModelDictionariesPath = _bodyComponentModelDictionariesPath;
 @synthesize overlayComponentModelDictionariesPath = _overlayComponentModelDictionariesPath;
-@synthesize extensionURLPath = _extensionURLPath;
 @synthesize customDataPath = _customDataPath;
 
 #pragma mark - Initializers
@@ -43,7 +42,6 @@
      headerComponentModelDictionaryPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyHeader] dictionaryPath]
      bodyComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyBody] forEach] dictionaryPath]
   overlayComponentModelDictionariesPath:[[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyOverlays] forEach] dictionaryPath]
-                       extensionURLPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyExtension] URLPath]
                          customDataPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyCustom] dictionaryPath]];
 }
 
@@ -52,7 +50,6 @@
     headerComponentModelDictionaryPath:(id<HUBJSONDictionaryPath>)headerComponentModelDictionaryPath
     bodyComponentModelDictionariesPath:(id<HUBJSONDictionaryPath>)bodyComponentModelDictionariesPath
  overlayComponentModelDictionariesPath:(id<HUBJSONDictionaryPath>)overlayComponentModelDictionariesPath
-                      extensionURLPath:(id<HUBJSONURLPath>)extensionURLPath
                         customDataPath:(id<HUBJSONDictionaryPath>)customDataPath
 {
     self = [super init];
@@ -63,7 +60,6 @@
         _headerComponentModelDictionaryPath = headerComponentModelDictionaryPath;
         _bodyComponentModelDictionariesPath = bodyComponentModelDictionariesPath;
         _overlayComponentModelDictionariesPath = overlayComponentModelDictionariesPath;
-        _extensionURLPath = extensionURLPath;
         _customDataPath = customDataPath;
     }
     
@@ -79,7 +75,6 @@
                                              headerComponentModelDictionaryPath:self.headerComponentModelDictionaryPath
                                              bodyComponentModelDictionariesPath:self.bodyComponentModelDictionariesPath
                                           overlayComponentModelDictionariesPath:self.overlayComponentModelDictionariesPath
-                                                               extensionURLPath:self.extensionURLPath
                                                                  customDataPath:self.customDataPath];
 }
 

@@ -51,7 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Property synthesization
 
 @synthesize viewIdentifier = _viewIdentifier;
-@synthesize extensionURL = _extensionURL;
 @synthesize customData = _customData;
 
 #pragma mark - Initializer
@@ -264,7 +263,6 @@ NS_ASSUME_NONNULL_BEGIN
                                              headerComponentModel:headerComponentModel
                                               bodyComponentModels:bodyComponentModels
                                            overlayComponentModels:overlayComponentModels
-                                                     extensionURL:self.extensionURL
                                                        customData:[self.customData copy]];
 }
 
@@ -304,12 +302,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (navigationBarTitle != nil) {
         self.navigationBarTitle = navigationBarTitle;
-    }
-    
-    NSURL * const extensionURL = [viewModelSchema.extensionURLPath URLFromJSONDictionary:dictionary];
-    
-    if (extensionURL != nil) {
-        self.extensionURL = extensionURL;
     }
     
     NSDictionary * const customData = [viewModelSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
@@ -369,7 +361,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     copy.viewIdentifier = self.viewIdentifier;
-    copy.extensionURL = self.extensionURL;
     copy.customData = self.customData;
     copy.headerComponentModelBuilderImplementation = [self.headerComponentModelBuilderImplementation copy];
     

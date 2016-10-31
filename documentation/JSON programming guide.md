@@ -45,7 +45,6 @@ Here is a reference for the default JSON schema:
 | `header` | `Dictionary -> ComponentModel` | Dictionary for a component model that should be used as the view's header component. Will be parsed using the schema for component models. | `headerComponentModel` |
 | `body` | `[Dictionary] -> [ComponentModel]` | An array of dictionaries for the component models that should be used for the view's body components. Will be parsed using the schema for component models. | `bodyComponentModels` |
 | `overlays` | `[Dictionary] -> [ComponentModel]` | An array of dictionaries for the component models that should be used for the view's overlay components. Will be parsed using the schema for component models. | `overlayComponentModels` |
-| `extension` | `String -> URL` | Any URI to use to extend this view model. This can be used to easily implement content pagination. | `extensionURL` |
 | `custom` | `Dictionary` | Any custom (free-form) data to associate with the view model. | `customData` |
 
 ### Component model schema

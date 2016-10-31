@@ -81,14 +81,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Metadata
 
 /**
- *  Any HTTP URL from which data can be downloaded to extend this view model
- *
- *  When a view has content that should be paginated, the URL of this property points to a JSON endpoint that describes
- *  the "next page". Once downloaded, the content of this URL will be appended to this view model.
- */
-@property (nonatomic, copy, readonly, nullable) NSURL *extensionURL;
-
-/**
  *  Any custom data that is associated with the view
  *
  *  This dictionary contains any custom data passed from the server side, or added in the local content loading process.
