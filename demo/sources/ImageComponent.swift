@@ -47,6 +47,7 @@ class ImageComponent: NSObject, HUBComponentWithImageHandling, HUBComponentWithS
 
     func loadView() {
         imageView.backgroundColor = .lightGray
+        imageView.isUserInteractionEnabled = true
         view = imageView
     }
 
