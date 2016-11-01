@@ -110,6 +110,19 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, weak, nullable) id<HUBComponentChildDelegate> childDelegate;
 
+/**
+ * Called when programmatically scrolling to a child within this parent component.
+ *
+ * @param childIndex The index of the component that is being scrolled to.
+ * @param scrollPosition The preferred position of the component after scrolling.
+ * @param animated Whether or not the scrolling should be animated.
+ * @param completionHandler The block to call once the component is visible.
+ */
+- (void)scrollToComponentAtIndex:(NSUInteger)childIndex
+                atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                        animated:(BOOL)animated
+                      completion:(void (^)())completionHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END

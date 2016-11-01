@@ -171,6 +171,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
 
 /**
+ *  Scroll to a desired content offset.
+ *
+ *  @param componentIndexPath The index path of the component to scroll to.
+ *  @param scrollPosition The preferred position of the component after scrolling.
+ *  @param animated Whether or not the scrolling should be animated.
+ */
+- (void)scrollToComponentAtIndexPath:(NSIndexPath *)componentIndexPath
+                    atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                            animated:(BOOL)animated;
+
+/**
  *  Returns the views of the components of the given type that are currently visible on screen, keyed by their index path
  *
  *  @param componentType The type of component to check for visiblilty.

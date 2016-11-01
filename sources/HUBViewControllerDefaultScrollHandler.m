@@ -20,6 +20,7 @@
  */
 
 #import "HUBViewControllerDefaultScrollHandler.h"
+#import "HUBViewController.h"
 
 #import <UIKit/UIKit.h>
 
@@ -66,6 +67,26 @@ NS_ASSUME_NONNULL_BEGIN
                                        proposedContentOffset:(CGPoint)proposedContentOffset
 {
     return proposedContentOffset;
+}
+
+- (CGPoint)contentOffsetForDisplayingComponentAtIndex:(NSUInteger)componentIndex
+                                     atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                                     inViewController:(UIViewController<HUBViewController> *)viewController
+{
+    CGRect const componentFrame = [viewController frameForBodyComponentAtIndex:componentIndex];
+    CGFloat const viewHeight = CGRectGetHeight(viewController.view.frame);
+    CGFloat targetOffset = 0.0;
+
+    if (scrollPosition & UICollectionViewScrollPositionCenteredVertically) {
+        targetOffset = CGRectGetMidY(componentFrame) - (viewHeight / 2.0);
+    } else if (scrollPosition & UICollectionViewScrollPositionBottom) {
+        targetOffset = CGRectGetMinY(componentFrame) - viewHeight;
+    } else {
+        // Default to putting it at the top unless a proper position is provided
+        targetOffset = CGRectGetMinY(componentFrame);
+    }
+
+    return CGPointMake(0.0, floor(targetOffset));
 }
 
 @end

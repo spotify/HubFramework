@@ -110,4 +110,15 @@
                                         currentContentOffset:(CGPoint)currentContentOffset
                                        proposedContentOffset:(CGPoint)proposedContentOffset;
 
+/**
+ * Return the content offset for displaying a component at a certain scroll position.
+ * 
+ * @param componentIndex The index of the component to display.
+ * @param scrollPosition The position to display the component at.
+ * @param viewController The view controller in question.
+ */
+- (CGPoint)contentOffsetForDisplayingComponentAtIndex:(NSUInteger)componentIndex
+                                     atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                                     inViewController:(UIViewController<HUBViewController> *)viewController;
+
 @end

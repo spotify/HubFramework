@@ -54,6 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBComponentWrapper
 
+@synthesize childDelegate;
+
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
@@ -116,6 +118,11 @@ NS_ASSUME_NONNULL_BEGIN
     } else {
         [self.UIStateManager saveUIState:currentUIState forComponentModel:self.model];
     }
+}
+
+- (nullable HUBComponentWrapper *)childComponentAtIndex:(NSUInteger)index
+{
+    return self.childrenByIndex[@(index)];
 }
 
 - (NSArray<HUBComponentWrapper *> *)visibleChildren
@@ -305,6 +312,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateViewForSelectionState:(HUBComponentSelectionState)selectionState
 {
     [self updateViewForSelectionState:selectionState notifyDelegate:NO];
+}
+
+#pragma mark - HUBComponentWithChildren
+
+- (void)scrollToComponentAtIndex:(NSUInteger)childIndex
+                atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                        animated:(BOOL)animated
+                      completion:(void (^)())completionHandler
+{
+    if ([self.component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
+        [(id<HUBComponentWithChildren>)self.component scrollToComponentAtIndex:childIndex
+                                                              atScrollPosition:scrollPosition
+                                                                      animated:animated
+                                                                    completion:completionHandler];
+    }
 }
 
 #pragma mark - HUBComponentChildDelegate
