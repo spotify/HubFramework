@@ -25,7 +25,7 @@
 #import "HUBComponentActionObserver.h"
 #import "HUBComponentWithRestorableUIState.h"
 #import "HUBComponentWithSelectionState.h"
-#import "HUBComponentWithChildren.h"
+#import "HUBComponentWithScrolling.h"
 #import "HUBHeaderMacros.h"
 
 @protocol HUBComponent;
@@ -135,7 +135,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
     HUBComponentContentOffsetObserver,
     HUBComponentActionObserver,
     HUBComponentWithSelectionState,
-    HUBComponentWithChildren
+    HUBComponentWithScrolling
 >
 
 /// A unique identifier for this component wrapper. Can be used to track it accross various operations.
@@ -200,6 +200,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
 
 /** 
  *  Returns the child component wrapper located at the provided index – if visible. 
+ *  @param index The index of the component to retrieve.
  */
 - (nullable HUBComponentWrapper *)childComponentAtIndex:(NSUInteger)index;
 

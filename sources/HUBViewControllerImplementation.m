@@ -413,7 +413,8 @@ NS_ASSUME_NONNULL_BEGIN
                             animated:(BOOL)animated
 {
     NSUInteger const rootIndex = [componentIndexPath indexAtPosition:0];
-    if (rootIndex == NSNotFound || rootIndex >= [self.collectionView numberOfItemsInSection:0]) {
+    NSUInteger const componentCount = [self.collectionView numberOfItemsInSection:0];
+    if (rootIndex == NSNotFound || rootIndex >= componentCount) {
         return;
     }
 
@@ -422,15 +423,16 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                 atScrollPosition:scrollPosition
                                                                                 inViewController:self];
 
-    __weak typeof(self) weakSelf = self;
+    __weak HUBViewControllerImplementation *weakSelf = self;
     void (^scrollToRemainingIndices)(void) = ^{
-        HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[weakSelf.collectionView cellForItemAtIndexPath:rootIndexPath];
+        HUBViewControllerImplementation *strongSelf = weakSelf;
+        HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[strongSelf.collectionView cellForItemAtIndexPath:rootIndexPath];
         
         if (cell == nil) {
             return;
         }
                 
-        __block HUBComponentWrapper *component = [weakSelf componentWrapperFromCell:cell];
+        __block HUBComponentWrapper *component = [strongSelf componentWrapperFromCell:cell];
 
         [self scrollToRemainingIndexesStartingAtPosition:1 inIndexPath:componentIndexPath inComponent:component atScrollPosition:scrollPosition animated:animated];
     };
@@ -1381,7 +1383,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     void (^completionHandler)() = ^{
         HUBComponentWrapper *childComponentWrapper = [componentWrapper childComponentAtIndex:childIndex];
 
-        NSUInteger nextPosition = indexPosition + 1;
+        NSUInteger const nextPosition = indexPosition + 1;
         if (childComponentWrapper != nil && nextPosition < indexPath.length) {
             [self scrollToRemainingIndexesStartingAtPosition:nextPosition
                                                  inIndexPath:indexPath
@@ -1393,16 +1395,15 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
     if (animated) {
         [componentWrapper scrollToComponentAtIndex:childIndex
-                                  atScrollPosition:scrollPosition
                                           animated:animated
                                         completion:completionHandler];
     } else {
         [componentWrapper scrollToComponentAtIndex:childIndex
-                                  atScrollPosition:scrollPosition
                                           animated:animated
-                                        completion:^{}];
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
-        completionHandler();
+                                        completion:^{
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+            completionHandler();
+        }];
     }
 }
 

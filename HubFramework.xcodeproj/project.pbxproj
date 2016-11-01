@@ -407,6 +407,7 @@
 		DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F64C5C2B1DB82CA30077E619 /* HUBViewModelRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewModelRenderer.h; sourceTree = "<group>"; };
 		F64C5C2C1DB82CA30077E619 /* HUBViewModelRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBViewModelRenderer.m; sourceTree = "<group>"; };
+		F65C149A1DC93AEB0030958D /* HUBComponentWithScrolling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentWithScrolling.h; sourceTree = "<group>"; };
 		F663FE7C1D10BECE003E19B6 /* HUBActionContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBActionContext.h; sourceTree = "<group>"; };
 		F66658D71D9925CC0097929F /* HUBViewModelDiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewModelDiff.h; sourceTree = "<group>"; };
 		F66658D81D9925CC0097929F /* HUBViewModelDiff.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBViewModelDiff.m; sourceTree = "<group>"; };
@@ -977,6 +978,7 @@
 				8A0754AC1C21A7C700AFAD38 /* HUBComponent.h */,
 				1D98E5BC1DC09FB500607097 /* HUBComponentActionObserver.h */,
 				8A1585961C8F003C0008FDF9 /* HUBComponentWithChildren.h */,
+				F65C149A1DC93AEB0030958D /* HUBComponentWithScrolling.h */,
 				8A1585941C8EFF1E0008FDF9 /* HUBComponentWithImageHandling.h */,
 				8AFD984F1D09BCA500AFF898 /* HUBComponentWithRestorableUIState.h */,
 				8A4C28191DB6464B00152429 /* HUBComponentWithSelectionState.h */,

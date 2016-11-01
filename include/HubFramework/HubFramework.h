@@ -60,6 +60,7 @@
 // Components
 #import "HUBComponent.h"
 #import "HUBComponentWithChildren.h"
+#import "HUBComponentWithScrolling.h"
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentWithRestorableUIState.h"
 #import "HUBComponentWithSelectionState.h"

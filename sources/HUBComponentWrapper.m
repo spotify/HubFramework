@@ -314,16 +314,14 @@ NS_ASSUME_NONNULL_BEGIN
     [self updateViewForSelectionState:selectionState notifyDelegate:NO];
 }
 
-#pragma mark - HUBComponentWithChildren
+#pragma mark - HUBComponentWithScrolling
 
 - (void)scrollToComponentAtIndex:(NSUInteger)childIndex
-                atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
                         animated:(BOOL)animated
                       completion:(void (^)())completionHandler
 {
-    if ([self.component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
-        [(id<HUBComponentWithChildren>)self.component scrollToComponentAtIndex:childIndex
-                                                              atScrollPosition:scrollPosition
+    if ([self.component conformsToProtocol:@protocol(HUBComponentWithScrolling)]) {
+        [(id<HUBComponentWithScrolling>)self.component scrollToComponentAtIndex:childIndex
                                                                       animated:animated
                                                                     completion:completionHandler];
     }
