@@ -566,7 +566,7 @@
     HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
     contentOperationB.contentLoadingBlock = ^BOOL(id<HUBViewModelBuilder> viewModelBuilder) {
         [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"final"].title = @"Final component";
-        return NO;
+        return YES;
     };
     
     [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
@@ -672,6 +672,254 @@
     [self.loader loadViewModel];
     
     XCTAssertEqual(contentOperation.performCount, (NSUInteger)3);
+}
+
+- (void)testAppendingPaginatedContent
+{
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
+    
+    __block id<HUBViewModelBuilder> firstViewModelBuilderA;
+    __block id<HUBViewModelBuilder> firstViewModelBuilderB;
+    
+    contentOperationA.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        firstViewModelBuilderA = builder;
+        [builder builderForBodyComponentModelWithIdentifier:@"A-0"].title = @"First component A";
+        return YES;
+    };
+    
+    contentOperationA.paginatedContentLoadingBlock = ^(id<HUBViewModelBuilder> builder, NSUInteger pageIndex) {
+        XCTAssertNotNil(firstViewModelBuilderA);
+        XCTAssertNotNil(firstViewModelBuilderB);
+        XCTAssertNotEqual(builder, firstViewModelBuilderA);
+        XCTAssertNotEqual(builder, firstViewModelBuilderB);
+        XCTAssertEqual(pageIndex, 1u);
+        
+        id<HUBComponentModelBuilder> const existingComponentModelBuilderA = [builder builderForBodyComponentModelWithIdentifier:@"A-0"];
+        XCTAssertEqualObjects(existingComponentModelBuilderA.title, @"First component A");
+        
+        id<HUBComponentModelBuilder> const existingComponentModelBuilderB = [builder builderForBodyComponentModelWithIdentifier:@"B-0"];
+        XCTAssertEqualObjects(existingComponentModelBuilderB.title, @"First component B");
+        
+        [builder builderForBodyComponentModelWithIdentifier:@"A-1"].title = @"Second component A";
+        return YES;
+    };
+    
+    contentOperationB.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        firstViewModelBuilderB = builder;
+        [builder builderForBodyComponentModelWithIdentifier:@"B-0"].title = @"First component B";
+        return YES;
+    };
+    
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    
+    NSArray<id<HUBComponentModel>> * const componentModelsA = self.viewModelFromSuccessDelegateMethod.bodyComponentModels;
+    XCTAssertEqual(componentModelsA.count, 2u);
+    XCTAssertEqualObjects(componentModelsA[0].title, @"First component A");
+    XCTAssertEqualObjects(componentModelsA[1].title, @"First component B");
+    
+    [self.loader loadNextPageForCurrentViewModel];
+    
+    NSArray<id<HUBComponentModel>> * const componentModelsB = self.viewModelFromSuccessDelegateMethod.bodyComponentModels;
+    XCTAssertEqual(componentModelsB.count, 3u);
+    XCTAssertEqualObjects(componentModelsB[0].title, @"First component A");
+    XCTAssertEqualObjects(componentModelsB[1].title, @"First component B");
+    XCTAssertEqualObjects(componentModelsB[2].title, @"Second component A");
+}
+
+- (void)testPageIndexIncrementedForEachPaginatedLoadingChain
+{
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    
+    __block NSUInteger pageIndex = 0;
+    
+    contentOperation.paginatedContentLoadingBlock = ^(id<HUBViewModelBuilder> builder, NSUInteger newPageIndex) {
+        pageIndex = newPageIndex;
+        return YES;
+    };
+    
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    
+    [self.loader loadNextPageForCurrentViewModel];
+    XCTAssertEqual(pageIndex, 1u);
+    
+    [self.loader loadNextPageForCurrentViewModel];
+    XCTAssertEqual(pageIndex, 2u);
+    
+    [self.loader loadNextPageForCurrentViewModel];
+    XCTAssertEqual(pageIndex, 3u);
+}
+
+- (void)testLoadingPaginatedContentMultipleTimesAppendsToQueue
+{
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    
+    contentOperation.paginatedContentLoadingBlock = ^(id<HUBViewModelBuilder> builder, NSUInteger pageIndex) {
+        NSString * const componentIdentifier = [NSString stringWithFormat:@"%@", @(pageIndex)];
+        [builder builderForBodyComponentModelWithIdentifier:componentIdentifier].title = @"Component";
+        return NO;
+    };
+    
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    [self.loader loadNextPageForCurrentViewModel];
+    [self.loader loadNextPageForCurrentViewModel];
+    [self.loader loadNextPageForCurrentViewModel];
+    
+    id<HUBContentOperationDelegate> const contentOperationDelegate = contentOperation.delegate;
+    [contentOperationDelegate contentOperationDidFinish:contentOperation];
+    [contentOperationDelegate contentOperationDidFinish:contentOperation];
+    
+    // Make sure that we don't have any component models until the last operation is finished
+    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, 0u);
+    
+    // The 3rd time the delegate is called, the content loading chain is finished
+    [contentOperationDelegate contentOperationDidFinish:contentOperation];
+    
+    NSArray<id<HUBComponentModel>> * const componentModels = self.viewModelFromSuccessDelegateMethod.bodyComponentModels;
+    XCTAssertEqual(componentModels.count, 3u);
+    XCTAssertEqualObjects(componentModels[0].identifier, @"1");
+    XCTAssertEqualObjects(componentModels[1].identifier, @"2");
+    XCTAssertEqualObjects(componentModels[2].identifier, @"3");
+}
+
+- (void)testAppendedContentOperationChaining
+{
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
+    
+    contentOperationA.paginatedContentLoadingBlock = ^(id<HUBViewModelBuilder> builder, NSUInteger pageIndex) {
+        NSString * const componentIdentifier = [NSString stringWithFormat:@"A-%@", @(pageIndex)];
+        [builder builderForBodyComponentModelWithIdentifier:componentIdentifier].title = @"Component from operation A";
+        return YES;
+    };
+    
+    contentOperationB.paginatedContentLoadingBlock = ^(id<HUBViewModelBuilder> builder, NSUInteger pageIndex) {
+        NSString * const componentIdentifier = [NSString stringWithFormat:@"B-%@", @(pageIndex)];
+        [builder builderForBodyComponentModelWithIdentifier:componentIdentifier].title = @"Component from operation B";
+        return YES;
+    };
+    
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    [self.loader loadNextPageForCurrentViewModel];
+    
+    NSArray<id<HUBComponentModel>> * const componentModelsA = self.viewModelFromSuccessDelegateMethod.bodyComponentModels;
+    XCTAssertEqual(componentModelsA.count, 2u);
+    XCTAssertEqualObjects(componentModelsA[0].identifier, @"A-1");
+    XCTAssertEqualObjects(componentModelsA[1].identifier, @"B-1");
+    
+    [self.loader loadNextPageForCurrentViewModel];
+    
+    NSArray<id<HUBComponentModel>> * const componentModelsB = self.viewModelFromSuccessDelegateMethod.bodyComponentModels;
+    XCTAssertEqual(componentModelsB.count, 4u);
+    XCTAssertEqualObjects(componentModelsB[0].identifier, @"A-1");
+    XCTAssertEqualObjects(componentModelsB[1].identifier, @"B-1");
+    XCTAssertEqualObjects(componentModelsB[2].identifier, @"A-2");
+    XCTAssertEqualObjects(componentModelsB[3].identifier, @"B-2");
+}
+
+- (void)testAppendedContentOperationErrorForwarding
+{
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
+    
+    contentOperationA.error = [NSError errorWithDomain:@"A" code:15 userInfo:nil];
+    contentOperationB.error = [NSError errorWithDomain:@"B" code:19 userInfo:nil];
+    
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    
+    XCTAssertNil(contentOperationA.previousContentOperationError);
+    XCTAssertEqualObjects(contentOperationB.previousContentOperationError, [NSError errorWithDomain:@"A" code:15 userInfo:nil]);
+    XCTAssertEqualObjects(self.errorFromFailureDelegateMethod, [NSError errorWithDomain:@"B" code:19 userInfo:nil]);
+    
+    [self.loader loadNextPageForCurrentViewModel];
+    
+    XCTAssertNil(contentOperationA.previousContentOperationError);
+    XCTAssertEqualObjects(contentOperationB.previousContentOperationError, [NSError errorWithDomain:@"A" code:15 userInfo:nil]);
+    XCTAssertEqualObjects(self.errorFromFailureDelegateMethod, [NSError errorWithDomain:@"B" code:19 userInfo:nil]);
+}
+
+- (void)testLoadingPaginatedContentBeforeMainContentDoesNothing
+{
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    
+    contentOperation.paginatedContentLoadingBlock = ^(id<HUBViewModelBuilder> builder, NSUInteger pageIndex) {
+        XCTFail(@"Should never have been called");
+        return NO;
+    };
+    
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    // Since we haven't called [self.loader loadViewModel] these calls should do nothing
+    [self.loader loadNextPageForCurrentViewModel];
+    [self.loader loadNextPageForCurrentViewModel];
+    [self.loader loadNextPageForCurrentViewModel];
+    
+    XCTAssertEqual(contentOperation.performCount, 0u);
+    XCTAssertNil(self.viewModelFromSuccessDelegateMethod);
+}
+
+- (void)testContentOperationReschedulingResetsAppendedContent
+{
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
+    
+    contentOperationA.paginatedContentLoadingBlock = ^(id<HUBViewModelBuilder> builder, NSUInteger pageIndex) {
+        XCTAssertEqual(pageIndex, 1u);
+        [builder builderForBodyComponentModelWithIdentifier:@"A-0"].title = @"Component from operation A";
+        return YES;
+    };
+    
+    contentOperationB.paginatedContentLoadingBlock = ^(id<HUBViewModelBuilder> builder, NSUInteger pageIndex) {
+        XCTAssertEqual(pageIndex, 1u);
+        [builder builderForBodyComponentModelWithIdentifier:@"B-0"].title = @"Component from operation B";
+        return YES;
+    };
+    
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    [self.loader loadViewModel];
+    [self.loader loadNextPageForCurrentViewModel];
+    
+    contentOperationA.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        [builder builderForBodyComponentModelWithIdentifier:@"A-1"].title = @"Component from rescheduled operation A";
+        return YES;
+    };
+    
+    contentOperationB.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        [builder builderForBodyComponentModelWithIdentifier:@"B-1"].title = @"Component from rescheduled operation B";
+        return YES;
+    };
+    
+    [contentOperationA.delegate contentOperationRequiresRescheduling:contentOperationA];
+    
+    NSArray<id<HUBComponentModel>> * const componentModels = self.viewModelFromSuccessDelegateMethod.bodyComponentModels;
+    XCTAssertEqual(componentModels.count, 2u);
+    XCTAssertEqualObjects(componentModels[0].identifier, @"A-1");
+    XCTAssertEqualObjects(componentModels[1].identifier, @"B-1");
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
