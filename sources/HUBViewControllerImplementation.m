@@ -1351,19 +1351,30 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     CGPoint const contentOffset = [self.scrollHandler contentOffsetForDisplayingComponentAtIndex:componentIndex
                                                                                   scrollPosition:scrollPosition
                                                                                   viewController:self];
+
+    CGRect const contentRect = [self contentRectForScrollView:self.collectionView];
+    [self.scrollHandler scrollingWillStartInViewController:self currentContentRect:contentRect];
+
+    __weak HUBViewControllerImplementation *weakSelf = self;
+    void (^completionWrapper)() = ^{
+        HUBViewControllerImplementation *strongSelf = weakSelf;
+        CGRect const contentRect = [strongSelf contentRectForScrollView:strongSelf.collectionView];
+        [strongSelf.scrollHandler scrollingDidEndInViewController:self currentContentRect:contentRect];
+        completionHandler();
+    };
     
     [self.collectionView setContentOffset:contentOffset animated:animated];
 
     // If the component is already visible, the completion handler can be called instantly.
     if ([self.collectionView.indexPathsForVisibleItems containsObject:rootIndexPath]) {
-        completionHandler();
+        completionWrapper();
     // If the scrolling is animated, the animation has to end before the new component can be retrieved.
     } else if (animated) {
-        self.pendingScrollAnimationCallback = completionHandler;
+        self.pendingScrollAnimationCallback = completionWrapper;
     // If there's no animations, the UICollectionView will still defer updating the content offset to the next runloop cycle.
     } else {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
-        completionHandler();
+        completionWrapper();
     }
 }
 
@@ -1390,7 +1401,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         
         HUBComponentWrapper *childComponentWrapper = nil;
         if (indexPosition == 0) {
-            NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSUInteger)childIndex inSection:0u];
+            NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)childIndex inSection:0];
             HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[strongSelf.collectionView cellForItemAtIndexPath:rootIndexPath];
             childComponentWrapper = [strongSelf componentWrapperFromCell:cell];
         } else {
