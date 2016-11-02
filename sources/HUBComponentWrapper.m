@@ -317,11 +317,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - HUBComponentWithScrolling
 
 - (void)scrollToComponentAtIndex:(NSUInteger)childIndex
+                  scrollPosition:(UICollectionViewScrollPosition)scrollPosition
                         animated:(BOOL)animated
                       completion:(void (^)())completionHandler
 {
     if ([self.component conformsToProtocol:@protocol(HUBComponentWithScrolling)]) {
         [(id<HUBComponentWithScrolling>)self.component scrollToComponentAtIndex:childIndex
+                                                                 scrollPosition:scrollPosition
                                                                       animated:animated
                                                                     completion:completionHandler];
     }

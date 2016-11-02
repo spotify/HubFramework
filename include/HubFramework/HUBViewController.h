@@ -176,10 +176,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentIndexPath The index path of the component to scroll to.
  *  @param scrollPosition The preferred position of the component after scrolling.
  *  @param animated Whether or not the scrolling should be animated.
+ *  @param completionHandler A block that is called once the component at the provided index path is visible.
  */
 - (void)scrollToComponentAtIndexPath:(NSIndexPath *)componentIndexPath
-                    atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
-                            animated:(BOOL)animated;
+                      scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                            animated:(BOOL)animated
+                          completion:(void (^ _Nullable)())completionHandler;
 
 /**
  *  Returns the views of the components of the given type that are currently visible on screen, keyed by their index path

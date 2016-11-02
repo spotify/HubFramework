@@ -409,47 +409,16 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)scrollToComponentAtIndexPath:(NSIndexPath *)componentIndexPath
-                    atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                      scrollPosition:(UICollectionViewScrollPosition)scrollPosition
                             animated:(BOOL)animated
+                          completion:(void (^ _Nullable)())completionHandler
 {
-    NSUInteger const rootIndex = [componentIndexPath indexAtPosition:0];
-    NSUInteger const componentCount = [self.collectionView numberOfItemsInSection:0];
-    if (rootIndex == NSNotFound || rootIndex >= componentCount) {
-        return;
-    }
-
-    NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)rootIndex inSection:0];
-    CGPoint const contentOffset = [self.scrollHandler contentOffsetForDisplayingComponentAtIndex:rootIndex
-                                                                                atScrollPosition:scrollPosition
-                                                                                inViewController:self];
-
-    __weak HUBViewControllerImplementation *weakSelf = self;
-    void (^scrollToRemainingIndices)(void) = ^{
-        HUBViewControllerImplementation *strongSelf = weakSelf;
-        HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[strongSelf.collectionView cellForItemAtIndexPath:rootIndexPath];
-        
-        if (cell == nil) {
-            return;
-        }
-                
-        __block HUBComponentWrapper *component = [strongSelf componentWrapperFromCell:cell];
-
-        [self scrollToRemainingIndexesStartingAtPosition:1 inIndexPath:componentIndexPath inComponent:component atScrollPosition:scrollPosition animated:animated];
-    };
-
-    if ([self.collectionView.indexPathsForVisibleItems containsObject:rootIndexPath]) {
-        [self.collectionView setContentOffset:contentOffset animated:animated];
-        scrollToRemainingIndices();
-    // Unless the component is already visible, the animation has to end before the new component can be retrieved.
-    } else if (animated) {
-        [self.collectionView setContentOffset:contentOffset animated:animated];
-        self.pendingScrollAnimationCallback = scrollToRemainingIndices;
-    // If there's no animations, the UICollectionView will still defer updating the content offset to the next runloop cycle.
-    } else {
-        [self.collectionView setContentOffset:contentOffset animated:animated];
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
-        scrollToRemainingIndices();
-    }
+    [self scrollToRemainingComponentsStartingAtPosition:0
+                                              indexPath:componentIndexPath
+                                              component:nil
+                                         scrollPosition:scrollPosition
+                                               animated:animated
+                                             completion:completionHandler];
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
@@ -1368,42 +1337,89 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
 }
 
-- (void)scrollToRemainingIndexesStartingAtPosition:(NSUInteger)indexPosition
-                                       inIndexPath:(NSIndexPath *)indexPath
-                                       inComponent:(HUBComponentWrapper *)componentWrapper
-                                  atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
-                                          animated:(BOOL)animated
+- (void)scrollToRootComponentAtIndex:(NSUInteger)componentIndex
+                      scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                            animated:(BOOL)animated
+                          completion:(void (^)())completionHandler
 {
-    NSUInteger const childIndex = [indexPath indexAtPosition:indexPosition];
-
-    if (childIndex >= componentWrapper.model.children.count) {
+    NSUInteger const componentCount = (NSUInteger)[self.collectionView numberOfItemsInSection:0];
+    if (componentIndex == NSNotFound || componentIndex >= componentCount) {
         return;
     }
 
-    void (^completionHandler)() = ^{
-        HUBComponentWrapper *childComponentWrapper = [componentWrapper childComponentAtIndex:childIndex];
+    NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)componentIndex inSection:0];
+    CGPoint const contentOffset = [self.scrollHandler contentOffsetForDisplayingComponentAtIndex:componentIndex
+                                                                                  scrollPosition:scrollPosition
+                                                                                  viewController:self];
+    
+    [self.collectionView setContentOffset:contentOffset animated:animated];
+
+    // If the component is already visible, the completion handler can be called instantly.
+    if ([self.collectionView.indexPathsForVisibleItems containsObject:rootIndexPath]) {
+        completionHandler();
+    // If the scrolling is animated, the animation has to end before the new component can be retrieved.
+    } else if (animated) {
+        self.pendingScrollAnimationCallback = completionHandler;
+    // If there's no animations, the UICollectionView will still defer updating the content offset to the next runloop cycle.
+    } else {
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+        completionHandler();
+    }
+}
+
+- (void)scrollToRemainingComponentsStartingAtPosition:(NSUInteger)indexPosition
+                                            indexPath:(NSIndexPath *)indexPath
+                                            component:(nullable HUBComponentWrapper *)componentWrapper
+                                       scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                                             animated:(BOOL)animated
+                                           completion:(void (^ _Nullable)())completionHandler
+{
+    NSUInteger const childIndex = [indexPath indexAtPosition:indexPosition];
+
+    if (indexPosition > 0 && childIndex >= componentWrapper.model.children.count) {
+        return;
+    }
+
+    __weak HUBViewControllerImplementation *weakSelf = self;
+    void (^stepCompletionHandler)() = ^{
+        HUBViewControllerImplementation *strongSelf = weakSelf;
+        // If the scrolling isn't animated we have to wait for a runloop cycle, as scrolling is deferred.
+        if (!animated) {
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+        }
+        
+        HUBComponentWrapper *childComponentWrapper = nil;
+        if (indexPosition == 0) {
+            NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSUInteger)childIndex inSection:0u];
+            HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[strongSelf.collectionView cellForItemAtIndexPath:rootIndexPath];
+            childComponentWrapper = [strongSelf componentWrapperFromCell:cell];
+        } else {
+            childComponentWrapper = [componentWrapper childComponentAtIndex:childIndex];
+        }
 
         NSUInteger const nextPosition = indexPosition + 1;
         if (childComponentWrapper != nil && nextPosition < indexPath.length) {
-            [self scrollToRemainingIndexesStartingAtPosition:nextPosition
-                                                 inIndexPath:indexPath
-                                                 inComponent:childComponentWrapper
-                                            atScrollPosition:scrollPosition
-                                                    animated:animated];
+            [strongSelf scrollToRemainingComponentsStartingAtPosition:nextPosition
+                                                            indexPath:indexPath
+                                                            component:childComponentWrapper
+                                                       scrollPosition:scrollPosition
+                                                             animated:animated
+                                                           completion:completionHandler];
+        } else if (completionHandler != nil) {
+            completionHandler();
         }
     };
 
-    if (animated) {
-        [componentWrapper scrollToComponentAtIndex:childIndex
-                                          animated:animated
-                                        completion:completionHandler];
+    if (indexPosition == 0) {
+        [self scrollToRootComponentAtIndex:childIndex
+                            scrollPosition:scrollPosition
+                                  animated:animated
+                                completion:stepCompletionHandler];
     } else {
         [componentWrapper scrollToComponentAtIndex:childIndex
+                                    scrollPosition:scrollPosition
                                           animated:animated
-                                        completion:^{
-            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
-            completionHandler();
-        }];
+                                        completion:stepCompletionHandler];
     }
 }
 

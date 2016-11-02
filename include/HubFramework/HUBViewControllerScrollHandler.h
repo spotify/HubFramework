@@ -118,7 +118,7 @@
  * @param viewController The view controller in question.
  */
 - (CGPoint)contentOffsetForDisplayingComponentAtIndex:(NSUInteger)componentIndex
-                                     atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
-                                     inViewController:(UIViewController<HUBViewController> *)viewController;
+                                       scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                                       viewController:(UIViewController<HUBViewController> *)viewController;
 
 @end
