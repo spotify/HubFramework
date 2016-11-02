@@ -30,7 +30,7 @@
 #import "HUBComponentWithScrolling.h"
 #import "HUBActionContext.h"
 
-typedef void(^HUBComponentMockScrollToComponentHandler)(NSUInteger index, UICollectionViewScrollPosition position, BOOL animated);
+typedef void(^HUBComponentMockScrollToComponentHandler)(NSUInteger index, HUBScrollPosition position, BOOL animated);
 
 @protocol HUBComponentImageData;
 

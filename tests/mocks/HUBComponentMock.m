@@ -153,9 +153,9 @@
 #pragma mark - HUBComponentWithScrolling
 
 - (void)scrollToComponentAtIndex:(NSUInteger)childIndex
-                  scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                  scrollPosition:(HUBScrollPosition)scrollPosition
                         animated:(BOOL)animated
-                      completion:(void (^)())completionHandler
+                      completion:(void (^)(void))completionHandler
 {
     UIView * const childView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.childDelegate component:self willDisplayChildAtIndex:childIndex view:childView];

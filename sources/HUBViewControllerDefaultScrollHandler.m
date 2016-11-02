@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (CGPoint)contentOffsetForDisplayingComponentAtIndex:(NSUInteger)componentIndex
-                                       scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                                       scrollPosition:(HUBScrollPosition)scrollPosition
                                          contentInset:(UIEdgeInsets)contentInset
                                           contentSize:(CGSize)contentSize
                                        viewController:(UIViewController<HUBViewController> *)viewController
@@ -79,9 +79,9 @@ NS_ASSUME_NONNULL_BEGIN
     CGFloat const viewHeight = CGRectGetHeight(viewController.view.frame);
     CGFloat targetOffset = 0.0;
 
-    if (scrollPosition & UICollectionViewScrollPositionCenteredVertically) {
-        targetOffset = CGRectGetMidY(componentFrame) - (viewHeight / 2.0);
-    } else if (scrollPosition & UICollectionViewScrollPositionBottom) {
+    if (scrollPosition & HUBScrollPositionCenteredVertically) {
+        targetOffset = CGRectGetMidY(componentFrame) - (viewHeight / 2.0f);
+    } else if (scrollPosition & HUBScrollPositionBottom) {
         targetOffset = CGRectGetMaxY(componentFrame) - viewHeight;
     } else {
         // Default to putting it at the top unless a proper position is provided
@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     targetOffset = MAX(-contentInset.top, MIN(contentSize.height - viewHeight, targetOffset));
-    return CGPointMake(0.0, floor(targetOffset));
+    return CGPointMake(0.0, (CGFloat)floor((double)targetOffset));
 }
 
 @end

@@ -120,9 +120,13 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (nullable HUBComponentWrapper *)childComponentAtIndex:(NSUInteger)index
+- (nullable HUBComponentWrapper *)visibleChildComponentAtIndex:(NSUInteger)index
 {
-    return self.childrenByIndex[@(index)];
+    NSNumber * const boxedIndex = @(index);
+    if (self.visibleChildViewsByIndex[boxedIndex] != nil) {
+        return self.childrenByIndex[boxedIndex];
+    }
+    return nil;
 }
 
 - (NSArray<HUBComponentWrapper *> *)visibleChildren
@@ -317,15 +321,15 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - HUBComponentWithScrolling
 
 - (void)scrollToComponentAtIndex:(NSUInteger)childIndex
-                  scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                  scrollPosition:(HUBScrollPosition)scrollPosition
                         animated:(BOOL)animated
-                      completion:(void (^)())completionHandler
+                      completion:(void (^)(void))completion
 {
     if ([self.component conformsToProtocol:@protocol(HUBComponentWithScrolling)]) {
         [(id<HUBComponentWithScrolling>)self.component scrollToComponentAtIndex:childIndex
                                                                  scrollPosition:scrollPosition
                                                                        animated:animated
-                                                                    completion:completionHandler];
+                                                                     completion:completion];
     }
 }
 

@@ -1506,7 +1506,7 @@
     XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
     NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
     [self.viewController scrollToComponentAtIndexPath:indexPath
-                                       scrollPosition:UICollectionViewScrollPositionTop
+                                       scrollPosition:HUBScrollPositionTop
                                              animated:YES
                                            completion:^{
         [scrollingCompletedExpectation fulfill];
@@ -1541,7 +1541,7 @@
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
     [self.viewController scrollToComponentAtIndexPath:indexPath
-                                       scrollPosition:UICollectionViewScrollPositionTop
+                                       scrollPosition:HUBScrollPositionTop
                                              animated:YES
                                            completion:nil];
 
@@ -1567,15 +1567,15 @@
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
 
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        for (NSUInteger i = 0; i < 20; i++) {
+        for (NSInteger i = 0; i < 20; i++) {
             NSString * const identifier = [NSString stringWithFormat:@"component-%@", @(i)];
             id<HUBComponentModelBuilder> const componentBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:identifier];
             componentBuilder.componentNamespace = componentNamespace;
             componentBuilder.componentName = componentName;
 
-            for (NSUInteger i = 0; i < 10; i++) {
-                NSString * const identifier = [NSString stringWithFormat:@"childComponent-%@", @(i)];
-                id<HUBComponentModelBuilder> const childBuilder = [componentBuilder builderForChildWithIdentifier:identifier];
+            for (NSInteger j = 0; j < 10; j++) {
+                NSString * const childIdentifier = [NSString stringWithFormat:@"childComponent-%@", @(j)];
+                id<HUBComponentModelBuilder> const childBuilder = [componentBuilder builderForChildWithIdentifier:childIdentifier];
                 childBuilder.componentNamespace = componentNamespace;
                 childBuilder.componentName = childComponentName;
             }
@@ -1592,24 +1592,22 @@
     self.scrollHandler.targetContentOffset = CGPointMake(0.0, 1200);
 
     NSUInteger indexes[2] = {6, 7};
-    NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+    NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2u];
 
-    NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:indexes[0] inSection:0];
+    NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)indexes[0] inSection:0];
     UICollectionViewCell *cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:rootIndexPath];
     self.collectionView.cells[rootIndexPath] = cell;
     self.collectionView.mockedVisibleCells = @[cell];
 
     XCTestExpectation * const componentScrollExpectation = [self expectationWithDescription:@"The component should be asked to scroll to its child component"];
-    __weak HUBViewControllerTests *weakSelf = self;
-    component.scrollToComponentHandler = ^(NSUInteger childIndex, UICollectionViewScrollPosition position, BOOL animated) {
-        HUBViewControllerTests *self = weakSelf;
+    component.scrollToComponentHandler = ^(NSUInteger childIndex, HUBScrollPosition position, BOOL animated) {
         [componentScrollExpectation fulfill];
         XCTAssertEqual([indexPath indexAtPosition:1], childIndex);
     };
 
     XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
     [self.viewController scrollToComponentAtIndexPath:indexPath
-                                       scrollPosition:UICollectionViewScrollPositionTop
+                                       scrollPosition:HUBScrollPositionTop
                                              animated:YES
                                            completion:^{
         [scrollingCompletedExpectation fulfill];

@@ -200,9 +200,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
 
 /** 
  *  Returns the child component wrapper located at the provided index – if visible. 
+ *
  *  @param index The index of the component to retrieve.
  */
-- (nullable HUBComponentWrapper *)childComponentAtIndex:(NSUInteger)index;
+- (nullable HUBComponentWrapper *)visibleChildComponentAtIndex:(NSUInteger)index;
 
 @end
 

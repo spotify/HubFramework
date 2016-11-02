@@ -409,16 +409,16 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)scrollToComponentAtIndexPath:(NSIndexPath *)componentIndexPath
-                      scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                      scrollPosition:(HUBScrollPosition)scrollPosition
                             animated:(BOOL)animated
-                          completion:(void (^ _Nullable)())completionHandler
+                          completion:(void (^ _Nullable)(void))completion
 {
     [self scrollToRemainingComponentsStartingAtPosition:0
                                               indexPath:componentIndexPath
                                               component:nil
                                          scrollPosition:scrollPosition
                                                animated:animated
-                                             completion:completionHandler];
+                                             completion:completion];
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
@@ -1338,14 +1338,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 }
 
 - (void)scrollToRootComponentAtIndex:(NSUInteger)componentIndex
-                      scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                      scrollPosition:(HUBScrollPosition)scrollPosition
                             animated:(BOOL)animated
-                          completion:(void (^)())completionHandler
+                          completion:(void (^)())completion
 {
-    NSUInteger const componentCount = (NSUInteger)[self.collectionView numberOfItemsInSection:0];
-
-    NSParameterAssert(componentIndex != NSNotFound);
-    NSParameterAssert(componentIndex <= componentCount);
+    NSParameterAssert(componentIndex <= (NSUInteger)[self.collectionView numberOfItemsInSection:0]);
 
     NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)componentIndex inSection:0];
     CGPoint const contentOffset = [self.scrollHandler contentOffsetForDisplayingComponentAtIndex:componentIndex
@@ -1354,15 +1351,16 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                                      contentSize:self.collectionView.contentSize
                                                                                   viewController:self];
 
-    CGRect const initialContentRect = [self contentRectForScrollView:self.collectionView];
+    UICollectionView * const nonnullCollectionView = self.collectionView;
+    CGRect const initialContentRect = [self contentRectForScrollView:nonnullCollectionView];
     [self.scrollHandler scrollingWillStartInViewController:self currentContentRect:initialContentRect];
 
     __weak HUBViewControllerImplementation *weakSelf = self;
     void (^completionWrapper)() = ^{
         HUBViewControllerImplementation *strongSelf = weakSelf;
-        CGRect const destinationContentRect = [strongSelf contentRectForScrollView:strongSelf.collectionView];
+        CGRect const destinationContentRect = [strongSelf contentRectForScrollView:nonnullCollectionView];
         [strongSelf.scrollHandler scrollingDidEndInViewController:strongSelf currentContentRect:destinationContentRect];
-        completionHandler();
+        completion();
     };
     
     // If the component is already visible, the completion handler can be called instantly.
@@ -1385,13 +1383,13 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 - (void)scrollToRemainingComponentsStartingAtPosition:(NSUInteger)indexPosition
                                             indexPath:(NSIndexPath *)indexPath
                                             component:(nullable HUBComponentWrapper *)componentWrapper
-                                       scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                                       scrollPosition:(HUBScrollPosition)scrollPosition
                                              animated:(BOOL)animated
                                            completion:(void (^ _Nullable)())completionHandler
 {
     NSUInteger const childIndex = [indexPath indexAtPosition:indexPosition];
-
     NSParameterAssert(childIndex != NSNotFound);
+
     if (indexPosition > 0) {
         NSParameterAssert(childIndex < componentWrapper.model.children.count);
     }
@@ -1406,7 +1404,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
             HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[strongSelf.collectionView cellForItemAtIndexPath:rootIndexPath];
             childComponentWrapper = [strongSelf componentWrapperFromCell:cell];
         } else {
-            childComponentWrapper = [componentWrapper childComponentAtIndex:childIndex];
+            childComponentWrapper = [componentWrapper visibleChildComponentAtIndex:childIndex];
         }
 
         NSUInteger const nextPosition = indexPosition + 1;

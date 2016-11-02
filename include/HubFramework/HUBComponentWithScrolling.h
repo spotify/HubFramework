@@ -20,6 +20,7 @@
  */
 
 #import "HUBComponentWithChildren.h"
+#import "HUBScrollPosition.h"
 
 /**
  * Extended Hub component protocol that adds the ability scroll between child components.
@@ -35,11 +36,11 @@
  * @param childIndex The index of the component that is being scrolled to.
  * @param scrollPosition The preferred position of the component after scrolling.
  * @param animated Whether or not the scrolling should be animated.
- * @param completionHandler The block to call once the component is visible.
+ * @param completion The block to call once the component is visible.
  */
 - (void)scrollToComponentAtIndex:(NSUInteger)childIndex
-                  scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                  scrollPosition:(HUBScrollPosition)scrollPosition
                         animated:(BOOL)animated
-                      completion:(void (^)())completionHandler;
+                      completion:(void (^)(void))completion;
 
 @end
