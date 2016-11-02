@@ -1350,6 +1350,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)componentIndex inSection:0];
     CGPoint const contentOffset = [self.scrollHandler contentOffsetForDisplayingComponentAtIndex:componentIndex
                                                                                   scrollPosition:scrollPosition
+                                                                                    contentInset:self.collectionView.contentInset
+                                                                                     contentSize:self.collectionView.contentSize
                                                                                   viewController:self];
 
     CGRect const initialContentRect = [self contentRectForScrollView:self.collectionView];
@@ -1371,10 +1373,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     } else if (animated) {
         self.pendingScrollAnimationCallback = completionWrapper;
         [self.collectionView setContentOffset:contentOffset animated:animated];
-    // If there's no animations, the UICollectionView will still defer updating the content offset to the next runloop cycle.
+    // If there's no animations, the UICollectionView will still not update its visible cells until having layouted.
     } else {
         [self.collectionView setContentOffset:contentOffset animated:animated];
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+        [self.collectionView setNeedsLayout];
+        [self.collectionView layoutIfNeeded];
         completionWrapper();
     }
 }
@@ -1390,17 +1393,13 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
     NSParameterAssert(childIndex != NSNotFound);
     if (indexPosition > 0) {
-        NSParameterAssert(childIndex <= componentWrapper.model.children.count);
+        NSParameterAssert(childIndex < componentWrapper.model.children.count);
     }
 
     __weak HUBViewControllerImplementation *weakSelf = self;
     void (^stepCompletionHandler)() = ^{
         HUBViewControllerImplementation *strongSelf = weakSelf;
-        // If the scrolling isn't animated we have to wait for a runloop cycle, as scrolling is deferred.
-        if (!animated) {
-            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
-        }
-        
+
         HUBComponentWrapper *childComponentWrapper = nil;
         if (indexPosition == 0) {
             NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)childIndex inSection:0];
@@ -1432,7 +1431,15 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         [componentWrapper scrollToComponentAtIndex:childIndex
                                     scrollPosition:scrollPosition
                                           animated:animated
-                                        completion:stepCompletionHandler];
+                                        completion:^{
+            /* This solves a case where the UICollectionView hasn't updated its visible cells until the next cycle
+               when changing the content offset without animations. */
+            if (!animated) {
+                dispatch_async(dispatch_get_main_queue(), stepCompletionHandler);
+            } else {
+                stepCompletionHandler();
+            }
+        }];
     }
 }
 

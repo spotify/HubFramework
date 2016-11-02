@@ -71,6 +71,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGPoint)contentOffsetForDisplayingComponentAtIndex:(NSUInteger)componentIndex
                                        scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                                         contentInset:(UIEdgeInsets)contentInset
+                                          contentSize:(CGSize)contentSize
                                        viewController:(UIViewController<HUBViewController> *)viewController
 {
     CGRect const componentFrame = [viewController frameForBodyComponentAtIndex:componentIndex];
@@ -86,6 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
         targetOffset = CGRectGetMinY(componentFrame);
     }
 
+    targetOffset = MAX(-contentInset.top, MIN(contentSize.height - viewHeight, targetOffset));
     return CGPointMake(0.0, floor(targetOffset));
 }
 

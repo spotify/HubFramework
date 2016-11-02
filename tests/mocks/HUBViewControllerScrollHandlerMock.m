@@ -85,6 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGPoint)contentOffsetForDisplayingComponentAtIndex:(NSUInteger)componentIndex
                                        scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                                         contentInset:(UIEdgeInsets)contentInset
+                                          contentSize:(CGSize)contentSize
                                        viewController:(UIViewController<HUBViewController> *)viewController
 {
     return self.targetContentOffset;
