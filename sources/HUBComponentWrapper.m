@@ -324,7 +324,7 @@ NS_ASSUME_NONNULL_BEGIN
     if ([self.component conformsToProtocol:@protocol(HUBComponentWithScrolling)]) {
         [(id<HUBComponentWithScrolling>)self.component scrollToComponentAtIndex:childIndex
                                                                  scrollPosition:scrollPosition
-                                                                      animated:animated
+                                                                       animated:animated
                                                                     completion:completionHandler];
     }
 }

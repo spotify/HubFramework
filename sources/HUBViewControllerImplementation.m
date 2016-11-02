@@ -1343,36 +1343,37 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                           completion:(void (^)())completionHandler
 {
     NSUInteger const componentCount = (NSUInteger)[self.collectionView numberOfItemsInSection:0];
-    if (componentIndex == NSNotFound || componentIndex >= componentCount) {
-        return;
-    }
+
+    NSParameterAssert(componentIndex != NSNotFound);
+    NSParameterAssert(componentIndex <= componentCount);
 
     NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)componentIndex inSection:0];
     CGPoint const contentOffset = [self.scrollHandler contentOffsetForDisplayingComponentAtIndex:componentIndex
                                                                                   scrollPosition:scrollPosition
                                                                                   viewController:self];
 
-    CGRect const contentRect = [self contentRectForScrollView:self.collectionView];
-    [self.scrollHandler scrollingWillStartInViewController:self currentContentRect:contentRect];
+    CGRect const initialContentRect = [self contentRectForScrollView:self.collectionView];
+    [self.scrollHandler scrollingWillStartInViewController:self currentContentRect:initialContentRect];
 
     __weak HUBViewControllerImplementation *weakSelf = self;
     void (^completionWrapper)() = ^{
         HUBViewControllerImplementation *strongSelf = weakSelf;
-        CGRect const contentRect = [strongSelf contentRectForScrollView:strongSelf.collectionView];
-        [strongSelf.scrollHandler scrollingDidEndInViewController:self currentContentRect:contentRect];
+        CGRect const destinationContentRect = [strongSelf contentRectForScrollView:strongSelf.collectionView];
+        [strongSelf.scrollHandler scrollingDidEndInViewController:strongSelf currentContentRect:destinationContentRect];
         completionHandler();
     };
     
-    [self.collectionView setContentOffset:contentOffset animated:animated];
-
     // If the component is already visible, the completion handler can be called instantly.
     if ([self.collectionView.indexPathsForVisibleItems containsObject:rootIndexPath]) {
+        [self.collectionView setContentOffset:contentOffset animated:animated];
         completionWrapper();
     // If the scrolling is animated, the animation has to end before the new component can be retrieved.
     } else if (animated) {
         self.pendingScrollAnimationCallback = completionWrapper;
+        [self.collectionView setContentOffset:contentOffset animated:animated];
     // If there's no animations, the UICollectionView will still defer updating the content offset to the next runloop cycle.
     } else {
+        [self.collectionView setContentOffset:contentOffset animated:animated];
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
         completionWrapper();
     }
@@ -1387,8 +1388,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     NSUInteger const childIndex = [indexPath indexAtPosition:indexPosition];
 
-    if (indexPosition > 0 && childIndex >= componentWrapper.model.children.count) {
-        return;
+    NSParameterAssert(childIndex != NSNotFound);
+    if (indexPosition > 0) {
+        NSParameterAssert(childIndex <= componentWrapper.model.children.count);
     }
 
     __weak HUBViewControllerImplementation *weakSelf = self;

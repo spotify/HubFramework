@@ -58,12 +58,20 @@ NS_ASSUME_NONNULL_BEGIN
                         currentContentRect:(CGRect)currentContentRect
 {
     self.startContentRect = currentContentRect;
+
+    if (self.scrollingWillStartHandler) {
+        self.scrollingWillStartHandler(currentContentRect);
+    }
 }
 
 - (void)scrollingDidEndInViewController:(UIViewController<HUBViewController> *)viewController
                      currentContentRect:(CGRect)currentContentRect
 {
     self.endContentRect = currentContentRect;
+
+    if (self.scrollingDidEndHandler) {
+        self.scrollingDidEndHandler(currentContentRect);
+    }
 }
 
 - (CGPoint)targetContentOffsetForEndedScrollInViewController:(UIViewController<HUBViewController> *)viewController
@@ -71,6 +79,13 @@ NS_ASSUME_NONNULL_BEGIN
                                                 contentInset:(UIEdgeInsets)contentInset
                                         currentContentOffset:(CGPoint)currentContentOffset
                                        proposedContentOffset:(CGPoint)proposedContentOffset
+{
+    return self.targetContentOffset;
+}
+
+- (CGPoint)contentOffsetForDisplayingComponentAtIndex:(NSUInteger)componentIndex
+                                       scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                                       viewController:(UIViewController<HUBViewController> *)viewController
 {
     return self.targetContentOffset;
 }

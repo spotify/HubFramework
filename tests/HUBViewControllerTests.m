@@ -1490,6 +1490,134 @@
     XCTAssertTrue(self.collectionView.appliedScrollViewOffsetAnimatedFlag);
 }
 
+- (void)testScrollingToRootComponentUsesScrollHandler
+{
+    [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
+                                       componentSize:CGSizeMake(200.0, 200.0)
+                                      componentCount:20];
+
+    [self simulateViewControllerLayoutCycle];
+    // Makes sure the collection view updates its content size
+    [self.collectionView setNeedsLayout];
+    [self.collectionView layoutIfNeeded];
+
+    self.scrollHandler.targetContentOffset = CGPointMake(0.0, 1400);
+
+    XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
+    NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
+    [self.viewController scrollToComponentAtIndexPath:indexPath
+                                       scrollPosition:UICollectionViewScrollPositionTop
+                                             animated:YES
+                                           completion:^{
+        [scrollingCompletedExpectation fulfill];
+        XCTAssertTrue(CGPointEqualToPoint(self.scrollHandler.targetContentOffset, self.collectionView.contentOffset));
+    }];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
+- (void)testScrollingToRootComponentNotifiesScrollHandler
+{
+    [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
+                                       componentSize:CGSizeMake(200.0, 200.0)
+                                      componentCount:20];
+
+    [self simulateViewControllerLayoutCycle];
+    // Makes sure the collection view updates its content size
+    [self.collectionView setNeedsLayout];
+    [self.collectionView layoutIfNeeded];
+
+    self.scrollHandler.targetContentOffset = CGPointMake(0.0, 1400);
+
+    XCTestExpectation * const scrollingWillBeginExpectation = [self expectationWithDescription:@"scroll handler should be notified when scrolling starts"];
+    self.scrollHandler.scrollingWillStartHandler = ^(CGRect contentRect) {
+        [scrollingWillBeginExpectation fulfill];
+    };
+
+    XCTestExpectation * const scrollingDidEndExpectation = [self expectationWithDescription:@"scroll handler should be notified when scrolling ends"];
+    self.scrollHandler.scrollingDidEndHandler = ^(CGRect contentRect) {
+        [scrollingDidEndExpectation fulfill];
+    };
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
+    [self.viewController scrollToComponentAtIndexPath:indexPath
+                                       scrollPosition:UICollectionViewScrollPositionTop
+                                             animated:YES
+                                           completion:nil];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
+- (void)testScrollingToNestedChildComponent
+{
+    NSString * const componentNamespace = @"scrollToChildComponent";
+    NSString * const componentName = @"component";
+    NSString * const childComponentName = @"childComponent";
+    HUBComponentMock * const component = [HUBComponentMock new];
+    component.preferredViewSize = CGSizeMake(200, 200);
+
+    HUBComponentMock * const childComponent = [HUBComponentMock new];
+    childComponent.preferredViewSize = CGSizeMake(200, 200);
+
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        componentName: component,
+        childComponentName: childComponent,
+    }];
+
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        for (NSUInteger i = 0; i < 20; i++) {
+            NSString * const identifier = [NSString stringWithFormat:@"component-%@", @(i)];
+            id<HUBComponentModelBuilder> const componentBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:identifier];
+            componentBuilder.componentNamespace = componentNamespace;
+            componentBuilder.componentName = componentName;
+
+            for (NSUInteger i = 0; i < 10; i++) {
+                NSString * const identifier = [NSString stringWithFormat:@"childComponent-%@", @(i)];
+                id<HUBComponentModelBuilder> const childBuilder = [componentBuilder builderForChildWithIdentifier:identifier];
+                childBuilder.componentNamespace = componentNamespace;
+                childBuilder.componentName = childComponentName;
+            }
+        }
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    // Makes sure the collection view updates its content size
+    [self.collectionView setNeedsLayout];
+    [self.collectionView layoutIfNeeded];
+
+    self.scrollHandler.targetContentOffset = CGPointMake(0.0, 1200);
+
+    NSUInteger indexes[2] = {6, 7};
+    NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+
+    NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:indexes[0] inSection:0];
+    UICollectionViewCell *cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:rootIndexPath];
+    self.collectionView.cells[rootIndexPath] = cell;
+    self.collectionView.mockedVisibleCells = @[cell];
+
+    XCTestExpectation * const componentScrollExpectation = [self expectationWithDescription:@"The component should be asked to scroll to its child component"];
+    __weak HUBViewControllerTests *weakSelf = self;
+    component.scrollToComponentHandler = ^(NSUInteger childIndex, UICollectionViewScrollPosition position, BOOL animated) {
+        HUBViewControllerTests *self = weakSelf;
+        [componentScrollExpectation fulfill];
+        XCTAssertEqual([indexPath indexAtPosition:1], childIndex);
+    };
+
+    XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
+    [self.viewController scrollToComponentAtIndexPath:indexPath
+                                       scrollPosition:UICollectionViewScrollPositionTop
+                                             animated:YES
+                                           completion:^{
+        [scrollingCompletedExpectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
 - (void)testComponentNotifiedOfContentOffsetChange
 {
     self.component.isContentOffsetObserver = YES;
@@ -2211,7 +2339,7 @@
 - (void)performAsynchronousTestWithDelay:(NSTimeInterval)delay block:(void(^)(void))block
 {
     XCTestExpectation * const expectation = [self expectationWithDescription:@"Async test"];
-    
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [expectation fulfill];
     });
@@ -2220,6 +2348,32 @@
         XCTAssertNil(error);
         block();
     }];
+}
+
+- (void)registerAndGenerateComponentsWithNamespace:(NSString *)namespace
+                                     componentSize:(CGSize)componentSize
+                                    componentCount:(NSUInteger)componentCount
+{
+    NSString * const componentNamespace = namespace;
+    NSString * const componentName = @"component";
+    HUBComponentMock * const component = [HUBComponentMock new];
+    component.preferredViewSize = componentSize;
+
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        componentName: component,
+    }];
+
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        for (NSUInteger i = 0; i < componentCount; i++) {
+            NSString * const identifier = [NSString stringWithFormat:@"component-%@", @(i)];
+            id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:identifier];
+            componentModelBuilder.componentNamespace = componentNamespace;
+            componentModelBuilder.componentName = componentName;
+        }
+        return YES;
+    };
 }
 
 @end

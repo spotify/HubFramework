@@ -27,7 +27,10 @@
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentActionPerformer.h"
 #import "HUBComponentActionObserver.h"
+#import "HUBComponentWithScrolling.h"
 #import "HUBActionContext.h"
+
+typedef void(^HUBComponentMockScrollToComponentHandler)(NSUInteger index, UICollectionViewScrollPosition position, BOOL animated);
 
 @protocol HUBComponentImageData;
 
@@ -42,7 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
     HUBComponentViewObserver,
     HUBComponentContentOffsetObserver,
     HUBComponentActionPerformer,
-    HUBComponentActionObserver
+    HUBComponentActionObserver,
+    HUBComponentWithScrolling
 >
 
 /// The layout traits the component should act like it's having
@@ -107,6 +111,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Whether the component's image was recently animated
 @property (nonatomic, readonly) BOOL imageWasAnimated;
+
+@property (nonatomic, copy, nullable) HUBComponentMockScrollToComponentHandler scrollToComponentHandler;
 
 @end
 
