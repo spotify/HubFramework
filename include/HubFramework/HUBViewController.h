@@ -222,6 +222,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Perform a programmatic selection of a component with a given model
  *
  *  @param componentModel The model of the component to select
+ *  @param customData Any custom data to use when the selection is handled. Will be available on the `HUBActionContext` passed to any actions handling the selection.
  *
  *  Note that this method won't actually simulate a user interaction on a component view, but rather
  *  run the exact same code that gets run whenever that happens.
@@ -229,7 +230,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return A boolean indicating whether selection handling was performed, that is if any target URI or action
  *          was executed as a result of the selection.
  */
-- (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel;
+- (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel customData:(nullable NSDictionary<NSString *, id> *)customData;
 
 /**
  *  Cancel any ongoing component selection - including both highlights & selection

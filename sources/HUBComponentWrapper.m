@@ -376,13 +376,13 @@ NS_ASSUME_NONNULL_BEGIN
                 didDisappearAtIndex:childIndex];
 }
 
-- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex
+- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     if (self.component != component) {
         return;
     }
     
-    [self.delegate componentWrapper:self childSelectedAtIndex:childIndex];
+    [self.delegate componentWrapper:self childSelectedAtIndex:childIndex customData:customData];
 }
 
 #pragma mark - HUBComponentResizeObservingViewDelegate

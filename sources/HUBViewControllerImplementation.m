@@ -450,7 +450,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate viewController:self didFailToUpdateWithError:error];
 }
 
-- (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel
+- (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     HUBComponentWrapper * const componentWrapper = self.componentWrappersByModelIdentifier[componentModel.identifier];
     
@@ -472,7 +472,7 @@ NS_ASSUME_NONNULL_BEGIN
     for (HUBIdentifier * const identifier in componentModel.target.actionIdentifiers) {
         selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
                                         customIdentifier:identifier
-                                              customData:nil
+                                              customData:customData
                                           componentModel:componentModel];
         
         if (selectionHandled) {
@@ -483,7 +483,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (!selectionHandled) {
         selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
                                         customIdentifier:nil
-                                              customData:nil
+                                              customData:customData
                                           componentModel:componentModel];
     }
     
@@ -543,7 +543,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         case HUBComponentSelectionStateHighlighted:
             break;
         case HUBComponentSelectionStateSelected:
-            [self selectComponentWithModel:componentWrapper.model];
+            [self selectComponentWithModel:componentWrapper.model customData:nil];
             break;
     }
 }
@@ -619,6 +619,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
     childSelectedAtIndex:(NSUInteger)childIndex
+              customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     id<HUBComponentModel> const componentModel = componentWrapper.model;
     
@@ -627,7 +628,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
     
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
-    [self selectComponentWithModel:childComponentModel];
+    [self selectComponentWithModel:childComponentModel customData:customData];
 }
 
 - (BOOL)componentWrapper:(HUBComponentWrapper *)componentWrapper performActionWithIdentifier:(HUBIdentifier *)identifier customData:(nullable NSDictionary<NSString *, id> *)customData
