@@ -19,6 +19,7 @@
  *  under the License.
  */
 
+#import "HUBAutoEquatable.h"
 #import "HUBIcon.h"
 #import "HUBHeaderMacros.h"
 
@@ -27,7 +28,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concerete implementation of the `HUBIcon` protocol
-@interface HUBIconImplementation : NSObject <HUBIcon>
+@interface HUBIconImplementation : HUBAutoEquatable <HUBIcon>
 
 /**
  *  Initialize an instance of this class with its required data
