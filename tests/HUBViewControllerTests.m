@@ -781,7 +781,7 @@
     };
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
-    [self.viewController selectComponentWithModel:componentModel];
+    [self.viewController selectComponentWithModel:componentModel customData:nil];
     
     XCTAssertEqualObjects(targetInitialViewModel.identifier, initialViewModelIdentifier);
 }
@@ -799,7 +799,7 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:cellIndexPath];
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
-    [self.viewController selectComponentWithModel:componentModel];
+    [self.viewController selectComponentWithModel:componentModel customData:nil];
     
     XCTAssertEqual(self.component.selectionState, HUBComponentSelectionStateSelected);
     
@@ -825,7 +825,7 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:cellIndexPath];
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
-    [self.viewController selectComponentWithModel:componentModel];
+    [self.viewController selectComponentWithModel:componentModel customData:nil];
     
     XCTAssertEqual(self.component.selectionState, HUBComponentSelectionStateSelected);
     
@@ -927,11 +927,11 @@
     };
     
     id<HUBComponentModel> const nonSelectableComponentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
-    [self.viewController selectComponentWithModel:nonSelectableComponentModel];
+    [self.viewController selectComponentWithModel:nonSelectableComponentModel customData:nil];
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)0);
     
     id<HUBComponentModel> const selectableComponentModel = self.viewModelFromDelegateMethod.bodyComponentModels[1];
-    [self.viewController selectComponentWithModel:selectableComponentModel];
+    [self.viewController selectComponentWithModel:selectableComponentModel customData:nil];
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].identifier, selectableIdentifier);
     
@@ -940,7 +940,7 @@
         return YES;
     };
     
-    [self.viewController selectComponentWithModel:selectableComponentModel];
+    [self.viewController selectComponentWithModel:selectableComponentModel customData:nil];
     XCTAssertEqual(self.actionHandler.contexts.count, (NSUInteger)1);
 
     id<HUBActionContext> actionContext = self.actionHandler.contexts.firstObject;
@@ -994,7 +994,8 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
     id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
-    [childDelegate component:component childSelectedAtIndex:0];
+    NSDictionary<NSString *, id> *customData = @{@"custom":@"data"};
+    [childDelegate component:component childSelectedAtIndex:0 customData:customData];
     
     XCTAssertEqualObjects(childComponentTargetInitialViewModel.identifier, childComponentInitialViewModelIdentifier);
     
@@ -1009,7 +1010,7 @@
         return YES;
     };
     
-    [childDelegate component:component childSelectedAtIndex:0];
+    [childDelegate component:component childSelectedAtIndex:0 customData:customData];
     XCTAssertEqual(self.actionHandler.contexts.count, (NSUInteger)1);
 
     id<HUBActionContext> actionContext = self.actionHandler.contexts.firstObject;
@@ -1017,6 +1018,7 @@
     XCTAssertEqualObjects(actionContext.viewController, self.viewController);
     XCTAssertEqualObjects(actionContext.viewModel, self.viewModelFromDelegateMethod);
     XCTAssertEqualObjects(actionContext.viewURI, self.viewURI);
+    XCTAssertEqualObjects(actionContext.customData, customData);
 }
 
 - (void)testProgrammaticSelectionForRootComponent
@@ -1036,7 +1038,7 @@
     };
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
-    XCTAssertTrue([self.viewController selectComponentWithModel:componentModel]);
+    XCTAssertTrue([self.viewController selectComponentWithModel:componentModel customData:nil]);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod, @[componentModel]);
     XCTAssertEqualObjects(self.actionHandler.contexts.firstObject.componentModel, componentModel);
 }
@@ -1057,9 +1059,12 @@
     };
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0].children[0];
-    XCTAssertTrue([self.viewController selectComponentWithModel:componentModel]);
+    NSDictionary<NSString *, id> *customData = @{@"custom":@"data"};
+
+    XCTAssertTrue([self.viewController selectComponentWithModel:componentModel customData:customData]);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod, @[componentModel]);
     XCTAssertEqualObjects(self.actionHandler.contexts.firstObject.componentModel, componentModel);
+    XCTAssertEqualObjects(self.actionHandler.contexts.firstObject.customData, customData);
 }
 
 - (void)testProgrammaticSelectionForNonSelectableComponentReturningFalse
@@ -1072,7 +1077,7 @@
     [self simulateViewControllerLayoutCycle];
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
-    XCTAssertFalse([self.viewController selectComponentWithModel:componentModel]);
+    XCTAssertFalse([self.viewController selectComponentWithModel:componentModel customData:nil]);
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)0);
 }
 
@@ -1875,7 +1880,7 @@
     };
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
-    [self.viewController selectComponentWithModel:componentModel];
+    [self.viewController selectComponentWithModel:componentModel customData:nil];
     XCTAssertEqual(self.contentOperation.actionContext, actionContext);
 }
 

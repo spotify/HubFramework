@@ -181,10 +181,13 @@
     [viewController viewWillAppear:YES];
     
     id<HUBComponentModel> const componentModel = viewController.viewModel.bodyComponentModels[0];
-    [viewController selectComponentWithModel:componentModel];
+    NSDictionary<NSString *, id> *customData = @{@"custom":@"data"};
+    
+    [viewController selectComponentWithModel:componentModel customData:customData];
     
     XCTAssertEqual(self.defaultActionHandler.contexts.count, (NSUInteger)1);
     XCTAssertEqualObjects(self.defaultActionHandler.contexts[0].componentModel, componentModel);
+    XCTAssertEqualObjects(self.defaultActionHandler.contexts[0].customData, customData);
 }
 
 @end
