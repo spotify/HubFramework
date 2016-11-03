@@ -47,6 +47,8 @@ This action can be configured using the following environment variable (valid va
 
 - `BUILD_DEMO_APP`: Whether the demo app should be built or not, defaults to `YES`
 
+- `RUN_UI_TESTS`:   Whether ui tests should be run against the demo app, defaults to `YES`'
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [fastlane](https://fastlane.tools) is run.

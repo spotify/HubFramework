@@ -58,6 +58,40 @@ platform :ios do
   end
 
 
+  desc 'Run ui tests'
+  lane :uitest do
+    system('pkill', '-9', '-x', 'Simulator')
+    UI.success('Simulator app killed')
+
+    device = ENV['TEST_DEVICE_NAME'] || 'iPhone 6s'
+    UI.message("Simulator testing device set to '#{device}'")
+
+    output_directory = 'build/tests'
+    ENV['XCPRETTY_JSON_FILE_OUTPUT'] = "#{output_directory}/summary.json"
+
+    scan(
+      :workspace => 'HubFramework.xcworkspace',
+      :scheme => 'HubFrameworkDemo',
+      :devices => [device],
+      :derived_data_path => 'build/DerivedData',
+      :output_directory => output_directory,
+      :buildlog_path => 'build/logs/tests',
+      :code_coverage => true,
+      :output_types => '',
+      :fail_build => false,
+      :formatter => 'xcpretty-json-formatter'
+    )
+
+    trainer(
+      path: 'build',
+      output_directory: output_directory,
+      extension: '.junit'
+    )
+
+    codecov() if ENV['CODECOV_TOKEN'] or ENV['TRAVIS'] == 'true'
+  end
+
+
   desc 'Build the live CLI'
   lane :live do
     ENV['XCPRETTY_JSON_FILE_OUTPUT'] = 'build/live/summary.json'
@@ -112,11 +146,13 @@ platform :ios do
   desc '- `LINT`:           Whether the sources and certain artifacts should be linted defaults to `YES`'
   desc '- `RUN_TESTS`:      Whether unit tests should be run, defaults to `YES`'
   desc '- `BUILD_DEMO_APP`: Whether the demo app should be built or not, defaults to `YES`'
+  desc '- `RUN_UI_TESTS`:   Whether ui tests should be run against the demo app, defaults to `YES`'
   desc '- `BUILD_LIVE_CLI`: Whether the live CLI should be built or not, defaults to `YES`'
   lane :ci_all do
     lint unless shouldSkipStep('LINT')
     test unless shouldSkipStep('RUN_TESTS')
     demo unless shouldSkipStep('BUILD_DEMO_APP')
+    uitest unless shouldSkipStep('BUILD_DEMO_APP') || shouldSkipStep('RUN_UI_TESTS')
     live unless shouldSkipStep('BUILD_LIVE_CLI')
   end
 
