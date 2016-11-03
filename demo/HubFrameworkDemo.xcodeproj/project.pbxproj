@@ -352,7 +352,6 @@
 				TargetAttributes = {
 					657DFE0E1DC8E1B600F20C0E = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 2FNC3A47ZF;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 8A42E0911D8C36A3004FAC33;
