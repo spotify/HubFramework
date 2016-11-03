@@ -98,9 +98,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
  *
  *  @param componentWrapper The wrapper of the component in which the event occured
  *  @param childIndex The index of the child component that was selected
+ *  @param customData Any custom data that should be passed to the action
  */
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
-    childSelectedAtIndex:(NSUInteger)childIndex;
+    childSelectedAtIndex:(NSUInteger)childIndex
+              customData:(nullable NSDictionary<NSString *, id> *)customData;
 
 /**
  *  Ask the delegate to perform an action on behalf of a component wrapper

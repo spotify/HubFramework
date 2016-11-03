@@ -179,7 +179,7 @@
     self.selectionStateFromDidUpdateDelegateMethod = selectionState;
 }
 
-- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childSelectedAtIndex:(NSUInteger)childIndex
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childSelectedAtIndex:(NSUInteger)childIndex customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     // No-op
 }
