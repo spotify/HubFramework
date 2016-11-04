@@ -54,6 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBComponentWrapper
 
+@synthesize childDelegate;
+
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
@@ -116,6 +118,15 @@ NS_ASSUME_NONNULL_BEGIN
     } else {
         [self.UIStateManager saveUIState:currentUIState forComponentModel:self.model];
     }
+}
+
+- (nullable HUBComponentWrapper *)visibleChildComponentAtIndex:(NSUInteger)index
+{
+    NSNumber * const boxedIndex = @(index);
+    if (self.visibleChildViewsByIndex[boxedIndex] != nil) {
+        return self.childrenByIndex[boxedIndex];
+    }
+    return nil;
 }
 
 - (NSArray<HUBComponentWrapper *> *)visibleChildren
@@ -305,6 +316,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateViewForSelectionState:(HUBComponentSelectionState)selectionState
 {
     [self updateViewForSelectionState:selectionState notifyDelegate:NO];
+}
+
+#pragma mark - HUBComponentWithScrolling
+
+- (void)scrollToComponentAtIndex:(NSUInteger)childIndex
+                  scrollPosition:(HUBScrollPosition)scrollPosition
+                        animated:(BOOL)animated
+                      completion:(void (^)(void))completion
+{
+    if ([self.component conformsToProtocol:@protocol(HUBComponentWithScrolling)]) {
+        [(id<HUBComponentWithScrolling>)self.component scrollToComponentAtIndex:childIndex
+                                                                 scrollPosition:scrollPosition
+                                                                       animated:animated
+                                                                     completion:completion];
+    }
 }
 
 #pragma mark - HUBComponentChildDelegate
