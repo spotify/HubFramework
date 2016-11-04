@@ -414,17 +414,16 @@ NS_ASSUME_NONNULL_BEGIN
                        animated:(BOOL)animated
                      completion:(void (^ _Nullable)(void))completion
 {
-    NSUInteger rootIndex = [indexPath indexAtPosition:0];
     if (componentType == HUBComponentTypeBody) {
-        NSUInteger componentCount = (NSUInteger)[self.collectionView numberOfItemsInSection:0];
-        NSAssert(rootIndex < componentCount,
-                 @"Root index %@ specified but there are only %@ components in the list.", @(rootIndex), @(componentCount));
+        NSAssert([indexPath indexAtPosition:0] < (NSUInteger)[self.collectionView numberOfItemsInSection:0],
+                 @"Root index %@ specified but there are only %@ components in the list.",
+                 @([indexPath indexAtPosition:0]), @([self.collectionView numberOfItemsInSection:0]));
     } else if (componentType == HUBComponentTypeHeader) {
         NSAssert(self.headerComponentWrapper != nil, @"Attempted to scroll to component within header, but no header was found.");
     } else if (componentType == HUBComponentTypeOverlay) {
-        NSUInteger overlayCount = self.overlayComponentWrappers.count;
-        NSAssert(rootIndex < overlayCount,
-                 @"Root index %@ specified but there are only %@ overlays in the list.", @(rootIndex), @(overlayCount));
+        NSAssert([indexPath indexAtPosition:0] < self.overlayComponentWrappers.count,
+                 @"Root index %@ specified but there are only %@ overlays in the list.",
+                 @([indexPath indexAtPosition:0]), @(self.overlayComponentWrappers.count));
     }
     
     [self scrollToRemainingComponentsOfType:componentType

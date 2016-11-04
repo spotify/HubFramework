@@ -23,7 +23,7 @@
 #import "HUBScrollPosition.h"
 
 /**
- * Extended Hub component protocol that adds the ability scroll between child components.
+ * Extended Hub component protocol that adds the ability to scroll between child components.
  *
  * Use this protocol if your component supports scrolling between components within it. 
  * See `HUBComponent` for more info.
