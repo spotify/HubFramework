@@ -408,17 +408,32 @@ NS_ASSUME_NONNULL_BEGIN
     [self.collectionView setContentOffset:CGPointMake(x, y) animated:animated];
 }
 
-- (void)scrollToComponentAtIndexPath:(NSIndexPath *)componentIndexPath
-                      scrollPosition:(HUBScrollPosition)scrollPosition
-                            animated:(BOOL)animated
-                          completion:(void (^ _Nullable)(void))completion
+- (void)scrollToComponentOfType:(HUBComponentType)componentType
+                      indexPath:(NSIndexPath *)indexPath
+                 scrollPosition:(HUBScrollPosition)scrollPosition
+                       animated:(BOOL)animated
+                     completion:(void (^ _Nullable)(void))completion
 {
-    [self scrollToRemainingComponentsStartingAtPosition:0
-                                              indexPath:componentIndexPath
-                                              component:nil
-                                         scrollPosition:scrollPosition
-                                               animated:animated
-                                             completion:completion];
+    NSUInteger rootIndex = [indexPath indexAtPosition:0];
+    if (componentType == HUBComponentTypeBody) {
+        NSUInteger componentCount = (NSUInteger)[self.collectionView numberOfItemsInSection:0];
+        NSAssert(rootIndex < componentCount,
+                 @"Root index %@ specified but there are only %@ components in the list.", @(rootIndex), @(componentCount));
+    } else if (componentType == HUBComponentTypeHeader) {
+        NSAssert(self.headerComponentWrapper != nil, @"Attempted to scroll to component within header, but no header was found.");
+    } else if (componentType == HUBComponentTypeOverlay) {
+        NSUInteger overlayCount = self.overlayComponentWrappers.count;
+        NSAssert(rootIndex < overlayCount,
+                 @"Root index %@ specified but there are only %@ overlays in the list.", @(rootIndex), @(overlayCount));
+    }
+    
+    [self scrollToRemainingComponentsOfType:componentType
+                              startPosition:0
+                                  indexPath:indexPath
+                                  component:nil
+                             scrollPosition:scrollPosition
+                                   animated:animated
+                                 completion:completion];
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
@@ -1338,10 +1353,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
 }
 
-- (void)scrollToRootComponentAtIndex:(NSUInteger)componentIndex
-                      scrollPosition:(HUBScrollPosition)scrollPosition
-                            animated:(BOOL)animated
-                          completion:(void (^)())completion
+- (void)scrollToRootBodyComponentAtIndex:(NSUInteger)componentIndex
+                          scrollPosition:(HUBScrollPosition)scrollPosition
+                                animated:(BOOL)animated
+                              completion:(void (^)())completion
 {
     NSParameterAssert(componentIndex <= (NSUInteger)[self.collectionView numberOfItemsInSection:0]);
 
@@ -1381,18 +1396,20 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
 }
 
-- (void)scrollToRemainingComponentsStartingAtPosition:(NSUInteger)indexPosition
-                                            indexPath:(NSIndexPath *)indexPath
-                                            component:(nullable HUBComponentWrapper *)componentWrapper
-                                       scrollPosition:(HUBScrollPosition)scrollPosition
-                                             animated:(BOOL)animated
-                                           completion:(void (^ _Nullable)())completionHandler
+- (void)scrollToRemainingComponentsOfType:(HUBComponentType)componentType
+                            startPosition:(NSUInteger)startPosition
+                                indexPath:(NSIndexPath *)indexPath
+                                component:(nullable HUBComponentWrapper *)componentWrapper
+                           scrollPosition:(HUBScrollPosition)scrollPosition
+                                 animated:(BOOL)animated
+                               completion:(void (^ _Nullable)())completionHandler
 {
-    NSUInteger const childIndex = [indexPath indexAtPosition:indexPosition];
-    NSParameterAssert(childIndex != NSNotFound);
+    NSUInteger const childIndex = [indexPath indexAtPosition:startPosition];
 
-    if (indexPosition > 0) {
-        NSParameterAssert(childIndex < componentWrapper.model.children.count);
+    if (startPosition > 0) {
+        NSAssert(childIndex < componentWrapper.model.children.count,
+                 @"Attempted to scroll to child %@ in component %@, but it only has %@ children",
+                 @(childIndex), componentWrapper.model.identifier, @(componentWrapper.model.children.count));
     }
 
     __weak HUBViewControllerImplementation *weakSelf = self;
@@ -1400,32 +1417,44 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         HUBViewControllerImplementation *strongSelf = weakSelf;
 
         HUBComponentWrapper *childComponentWrapper = nil;
-        if (indexPosition == 0) {
-            NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)childIndex inSection:0];
-            HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[strongSelf.collectionView cellForItemAtIndexPath:rootIndexPath];
-            childComponentWrapper = [strongSelf componentWrapperFromCell:cell];
+        if (startPosition == 0) {
+            if (componentType == HUBComponentTypeBody) {
+                NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)childIndex inSection:0];
+                HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[strongSelf.collectionView cellForItemAtIndexPath:rootIndexPath];
+                childComponentWrapper = [strongSelf componentWrapperFromCell:cell];
+            } else if (componentType == HUBComponentTypeHeader) {
+                childComponentWrapper = strongSelf.headerComponentWrapper;
+            } else if (componentType == HUBComponentTypeOverlay) {
+                childComponentWrapper = strongSelf.overlayComponentWrappers[startPosition];
+            }
         } else {
             childComponentWrapper = [componentWrapper visibleChildComponentAtIndex:childIndex];
         }
 
-        NSUInteger const nextPosition = indexPosition + 1;
+        NSUInteger const nextPosition = startPosition + 1;
         if (childComponentWrapper != nil && nextPosition < indexPath.length) {
-            [strongSelf scrollToRemainingComponentsStartingAtPosition:nextPosition
-                                                            indexPath:indexPath
-                                                            component:childComponentWrapper
-                                                       scrollPosition:scrollPosition
-                                                             animated:animated
-                                                           completion:completionHandler];
+            [strongSelf scrollToRemainingComponentsOfType:componentType
+                                            startPosition:nextPosition
+                                                indexPath:indexPath
+                                                component:childComponentWrapper
+                                           scrollPosition:scrollPosition
+                                                 animated:animated
+                                               completion:completionHandler];
         } else if (completionHandler != nil) {
             completionHandler();
         }
     };
 
-    if (indexPosition == 0) {
-        [self scrollToRootComponentAtIndex:childIndex
-                            scrollPosition:scrollPosition
-                                  animated:animated
-                                completion:stepCompletionHandler];
+    // Any other root components than body components don't need to be scrolled to, as they are always visible.
+    if (startPosition == 0) {
+        if (componentType == HUBComponentTypeBody) {
+            [self scrollToRootBodyComponentAtIndex:childIndex
+                                    scrollPosition:scrollPosition
+                                          animated:animated
+                                        completion:stepCompletionHandler];
+        } else {
+            stepCompletionHandler();
+        }
     } else {
         [componentWrapper scrollToComponentAtIndex:childIndex
                                     scrollPosition:scrollPosition

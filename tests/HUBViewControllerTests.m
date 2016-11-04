@@ -1510,10 +1510,11 @@
 
     XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
     NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
-    [self.viewController scrollToComponentAtIndexPath:indexPath
-                                       scrollPosition:HUBScrollPositionTop
-                                             animated:YES
-                                           completion:^{
+    [self.viewController scrollToComponentOfType:HUBComponentTypeBody
+                                       indexPath:indexPath
+                                  scrollPosition:HUBScrollPositionTop
+                                        animated:YES
+                                      completion:^{
         [scrollingCompletedExpectation fulfill];
         XCTAssertTrue(CGPointEqualToPoint(self.scrollHandler.targetContentOffset, self.collectionView.contentOffset));
     }];
@@ -1545,11 +1546,12 @@
     };
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
-    [self.viewController scrollToComponentAtIndexPath:indexPath
-                                       scrollPosition:HUBScrollPositionTop
-                                             animated:YES
-                                           completion:nil];
-
+    [self.viewController scrollToComponentOfType:HUBComponentTypeBody
+                                       indexPath:indexPath
+                                  scrollPosition:HUBScrollPositionTop
+                                        animated:YES
+                                      completion:nil];
+    
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
@@ -1611,10 +1613,11 @@
     };
 
     XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
-    [self.viewController scrollToComponentAtIndexPath:indexPath
-                                       scrollPosition:HUBScrollPositionTop
-                                             animated:YES
-                                           completion:^{
+    [self.viewController scrollToComponentOfType:HUBComponentTypeBody
+                                       indexPath:indexPath
+                                  scrollPosition:HUBScrollPositionTop
+                                        animated:YES
+                                      completion:^{
         [scrollingCompletedExpectation fulfill];
     }];
 

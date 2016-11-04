@@ -179,17 +179,19 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  In order for child components to support nested scrolling, they must implement @c HUBComponentWithScrolling.
  *
- *  @param componentIndexPath The index path of the component to scroll to.
+ *  @param componentType The type of component you want to scroll to.
+ *  @param indexPath The index path of the component to scroll to.
  *  @param scrollPosition The preferred position of the component after scrolling.
  *  @param animated Whether or not the scrolling should be animated.
  *  @param completion A block that is called once the component at the provided index path is visible.
  *
  *  @seealso HUBComponentWithScrolling
  */
-- (void)scrollToComponentAtIndexPath:(NSIndexPath *)componentIndexPath
-                      scrollPosition:(HUBScrollPosition)scrollPosition
-                            animated:(BOOL)animated
-                          completion:(void (^ _Nullable)(void))completion;
+- (void)scrollToComponentOfType:(HUBComponentType)componentType
+                      indexPath:(NSIndexPath *)indexPath
+                 scrollPosition:(HUBScrollPosition)scrollPosition
+                       animated:(BOOL)animated
+                     completion:(void (^ _Nullable)(void))completion;
 
 /**
  *  Returns the views of the components of the given type that are currently visible on screen, keyed by their index path
