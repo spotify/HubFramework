@@ -22,6 +22,7 @@
 #import "HUBIconImplementation.h"
 
 #import "HUBIconImageResolver.h"
+#import "HUBKeyPath.h"
 
 @interface HUBIconImplementation ()
 
@@ -33,6 +34,13 @@
 @implementation HUBIconImplementation
 
 @synthesize identifier = _identifier;
+
+#pragma mark - HUBAutoEquatable
+
++ (nullable NSSet<NSString *> *)ignoredAutoEquatablePropertyNames
+{
+    return [NSSet setWithObjects:HUBKeyPath((HUBIconImplementation *)nil, imageResolver), nil];
+}
 
 - (instancetype)initWithIdentifier:(NSString *)identifier imageResolver:(id<HUBIconImageResolver>)imageResolver isPlaceholder:(BOOL)isPlaceholder
 {
