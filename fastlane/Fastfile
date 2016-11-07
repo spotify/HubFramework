@@ -26,7 +26,7 @@ platform :ios do
     device = ENV['TEST_DEVICE_NAME'] || 'iPhone 6s'
     UI.message("Simulator testing device set to '#{device}'")
 
-    output_directory = 'build/#{output_label}'
+    output_directory = "build/#{output_label}"
     ENV['XCPRETTY_JSON_FILE_OUTPUT'] = "#{output_directory}/summary.json"
 
     scan(
