@@ -133,7 +133,7 @@ platform :ios do
     lint unless shouldSkipStep('LINT')
     test unless shouldSkipStep('RUN_TESTS')
     demo unless shouldSkipStep('BUILD_DEMO_APP')
-    uitest unless shouldSkipStep('BUILD_DEMO_APP') || shouldSkipStep('RUN_UI_TESTS')
+    test_ui unless shouldSkipStep('BUILD_DEMO_APP') || shouldSkipStep('RUN_UI_TESTS')
     live unless shouldSkipStep('BUILD_LIVE_CLI')
   end
 
