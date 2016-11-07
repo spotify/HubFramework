@@ -44,7 +44,15 @@ class HubFrameworkDemoUITests: XCTestCase {
         collectionView.cells.collectionViews.children(matching: .cell).element(boundBy: 0).otherElements.children(matching: .image).element.tap()
     }
 
+    /// This function walks the view hierarchy to find the hub framework's collection view.
+    /// There are currently no accessibility elements set on the collection view or its cells, so we have no other option.
+    /// - Parameter app: the top-level app instance.
+    /// - Returns: the collection view element.
     private func rootCollectionView(for app: XCUIApplication) -> XCUIElement {
-        return app.otherElements.containing(.navigationBar, identifier:"Pretty Pictures").children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .collectionView).element
+        let navigatonBarParentQuery = app.otherElements.containing(.navigationBar, identifier:"Pretty Pictures")
+        let navigationTransitionView = navigatonBarParentQuery.children(matching: .other).element
+        let viewControllerWrapperView = navigationTransitionView.children(matching: .other).element
+        let hubContainerView = viewControllerWrapperView.children(matching: .other).element
+        return hubContainerView.children(matching: .collectionView).element
     }
 }
