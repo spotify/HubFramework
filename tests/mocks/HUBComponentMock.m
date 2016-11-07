@@ -150,6 +150,22 @@
     self.latestObservedActionContext = context;
 }
 
+#pragma mark - HUBComponentWithScrolling
+
+- (void)scrollToComponentAtIndex:(NSUInteger)childIndex
+                  scrollPosition:(HUBScrollPosition)scrollPosition
+                        animated:(BOOL)animated
+                      completion:(void (^)(void))completionHandler
+{
+    UIView * const childView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.childDelegate component:self willDisplayChildAtIndex:childIndex view:childView];
+    completionHandler();
+    
+    if (self.scrollToComponentHandler) {
+        self.scrollToComponentHandler(childIndex, scrollPosition, animated);
+    }
+}
+
 #pragma mark - Property overrides
 
 - (NSArray<id> *)restoredUIStates

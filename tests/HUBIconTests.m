@@ -42,6 +42,21 @@
 
 #pragma mark - Tests
 
+- (void)testEquality
+{
+    HUBIconImageResolverMock *imageResolver1 = [HUBIconImageResolverMock new];
+    HUBIconImageResolverMock *imageResolver2 = [HUBIconImageResolverMock new];
+    XCTAssertNotEqualObjects(imageResolver1, imageResolver2);
+
+    HUBIconImplementation * const icon1 = [[HUBIconImplementation alloc] initWithIdentifier:@"id"
+                                                                              imageResolver:imageResolver1
+                                                                              isPlaceholder:NO];
+    HUBIconImplementation * const icon2 = [[HUBIconImplementation alloc] initWithIdentifier:@"id"
+                                                                              imageResolver:imageResolver2
+                                                                              isPlaceholder:NO];
+    XCTAssertEqualObjects(icon1, icon2);
+}
+
 - (void)testIdentifierAssignment
 {
     HUBIconImplementation * const icon = [[HUBIconImplementation alloc] initWithIdentifier:@"id"

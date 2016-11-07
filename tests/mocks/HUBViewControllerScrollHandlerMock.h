@@ -47,6 +47,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// The last content rect that was sent to the handler when scrolling ended
 @property (nonatomic, assign, readonly) CGRect endContentRect;
 
+/// A block that is called when the scroll handler is notified that scrolling has started.
+@property (nonatomic, copy) void (^ _Nullable scrollingWillStartHandler)(CGRect contentRect);
+
+/// A block that is called when the scroll handler is notified that scrolling has ended.
+@property (nonatomic, copy) void (^ _Nullable scrollingDidEndHandler)(CGRect contentRect);
+
 @end
 
 NS_ASSUME_NONNULL_END

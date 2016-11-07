@@ -23,6 +23,7 @@
 
 #import "HUBComponentType.h"
 #import "HUBComponentLayoutTraits.h"
+#import "HUBScrollPosition.h"
 
 @protocol HUBViewController;
 @protocol HUBViewModel;
@@ -169,6 +170,28 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param animated Defines if scrolling should be animated.
  */
 - (void)scrollToContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
+
+/**
+ *  Scroll to a desired component. Each index in the index path refers to one level of children.
+ *  For example, in order to scroll to a root component at an index, you would provide an index
+ *  path with that single index. If that component in turn has children, you can scroll between
+ *  those by providing an index path with two index, starting with the root index, and so on.
+ *
+ *  In order for child components to support nested scrolling, they must implement @c HUBComponentWithScrolling.
+ *
+ *  @param componentType The type of component you want to scroll to.
+ *  @param indexPath The index path of the component to scroll to.
+ *  @param scrollPosition The preferred position of the component after scrolling.
+ *  @param animated Whether or not the scrolling should be animated.
+ *  @param completion A block that is called once the component at the provided index path is visible.
+ *
+ *  @seealso HUBComponentWithScrolling
+ */
+- (void)scrollToComponentOfType:(HUBComponentType)componentType
+                      indexPath:(NSIndexPath *)indexPath
+                 scrollPosition:(HUBScrollPosition)scrollPosition
+                       animated:(BOOL)animated
+                     completion:(void (^ _Nullable)(void))completion;
 
 /**
  *  Returns the views of the components of the given type that are currently visible on screen, keyed by their index path

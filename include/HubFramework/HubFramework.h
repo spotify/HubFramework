@@ -60,6 +60,7 @@
 // Components
 #import "HUBComponent.h"
 #import "HUBComponentWithChildren.h"
+#import "HUBComponentWithScrolling.h"
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentWithRestorableUIState.h"
 #import "HUBComponentWithSelectionState.h"
@@ -84,6 +85,7 @@
 #import "HUBComponentFallbackHandler.h"
 #import "HUBComponentShowcaseManager.h"
 #import "HUBComponentShowcaseShapshotGenerator.h"
+#import "HUBScrollPosition.h"
 
 // Images & Icons
 #import "HUBImageLoaderFactory.h"
