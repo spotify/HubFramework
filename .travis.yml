@@ -38,7 +38,7 @@ matrix:
     # Xcode 8 to build and link so skip it.
     - osx_image: xcode7.3
       rvm: 2.2.5
-      env: LINT=YES  RUN_TESTS=YES  RUN_DANGER=NO   BUILD_DEMO_APP=YES  RUN_UI_TESTS=YES  BUILD_LIVE_CLI=NO   UPDATE_DOCUMENTATION=NO
+      env: LINT=YES  RUN_TESTS=YES  RUN_DANGER=NO   BUILD_DEMO_APP=NO   RUN_UI_TESTS=NO   BUILD_LIVE_CLI=NO   UPDATE_DOCUMENTATION=NO
 
 cache: bundler
 
