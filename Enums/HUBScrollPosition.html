@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>HUBViewModelJSONSchema Protocol Reference</title>
+    <title>HUBScrollPosition Enum Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Protocol/HUBViewModelJSONSchema" class="dashAnchor"></a>
+    <a name="//apple_ref/objc/Enum/HUBScrollPosition" class="dashAnchor"></a>
 
-    <a title="HUBViewModelJSONSchema Protocol Reference"></a>
+    <a title="HUBScrollPosition Enum Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -41,7 +41,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">HubFramework Reference</a>
       <img class="carat" src="../img/carat.png" />
-      HUBViewModelJSONSchema Protocol Reference
+      HUBScrollPosition Enum Reference
     </p>
 
     <div class="content-wrapper">
@@ -407,29 +407,15 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>HUBViewModelJSONSchema</h1>
+            <h1>HUBScrollPosition</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBViewModelJSONSchema</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight"><code><span class="k">enum</span> <span class="n">HUBScrollPosition</span> <span class="o">:</span> <span class="n">NSUInteger</span> <span class="p">{}</span></code></pre>
 
                 </div>
               </div>
-            <p>Protocol defining the public API of a JSON schema for <code><a href="../Protocols/HUBViewModel.html">HUBViewModel</a></code></p>
-
-<p>You don&rsquo;t conform to this protocol yourself, instead an object conforming to it will come attached
-  when you create a <code><a href="../Protocols/HUBJSONSchema.html">HUBJSONSchema</a></code> (see its documentation for more info). The implementation of this
-  protocol will come setup according to the default Hub Framework JSON schema, but you&rsquo;re free to change
-  &amp; extend it to fit any schema that you expect your JSON data to conform to.</p>
-
-<p>A schema is defined as a collection of paths, that each describe the operations required to extract
-  a certain piece of data from a JSON structure. For a more in-depth description on how paths work, see the
-  documentation for <code><a href="../Protocols/HUBJSONPath.html">HUBJSONPath</a></code> and <code><a href="../Protocols/HUBMutableJSONPath.html">HUBMutableJSONPath</a></code>. For more information about the properties that
-  the data extracted using this schema will be used for, see <code><a href="../Protocols/HUBViewModel.html">HUBViewModel</a></code>.</p>
-
-<p>To change a path - either create a <code>mutableCopy</code> of it, change it, and re-assign it back to its property,
-  or create a new path from scratch using <code><a href="../Protocols/HUBJSONSchema.html">HUBJSONSchema</a></code>.</p>
-
-<p>All paths in this schema are relative to a JSON dictionary defining view model data.</p>
+            <p>An enumeration to be used when scrolling to a specific position within a scrollable component.
+For ease of use, the different options map to their corresponding UICollectionViewScrollPosition.</p>
 
           </div>
         </section>
@@ -441,9 +427,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBViewModelJSONSchema(py)identifierPath"></a>
-                    <a name="//apple_ref/objc/Property/identifierPath" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBViewModelJSONSchema(py)identifierPath">identifierPath</a>
+                    <a name="/c:@E@HUBScrollPosition@HUBScrollPositionNone"></a>
+                    <a name="//apple_ref/objc/Case/HUBScrollPositionNone" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@HUBScrollPosition@HUBScrollPositionNone">HUBScrollPositionNone</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -451,15 +437,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The path to follow to extract a view model identifier. Maps to <code>identifier</code>.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONStringPath.html">HUBJSONStringPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">identifierPath</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">enum</span> <span class="n">HUBScrollPosition</span> <span class="o">:</span> <span class="n">NSUInteger</span> <span class="p">{}</span></code></pre>
 
                         </div>
                       </div>
@@ -469,9 +454,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBViewModelJSONSchema(py)navigationBarTitlePath"></a>
-                    <a name="//apple_ref/objc/Property/navigationBarTitlePath" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBViewModelJSONSchema(py)navigationBarTitlePath">navigationBarTitlePath</a>
+                    <a name="/c:@E@HUBScrollPosition@HUBScrollPositionTop"></a>
+                    <a name="//apple_ref/objc/Case/HUBScrollPositionTop" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@HUBScrollPosition@HUBScrollPositionTop">HUBScrollPositionTop</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -479,15 +464,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The path to follow to extract a navigation bar title. Maps to <code>navigationBarTitle</code>.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONStringPath.html">HUBJSONStringPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">navigationBarTitlePath</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">enum</span> <span class="n">HUBScrollPosition</span> <span class="o">:</span> <span class="n">NSUInteger</span> <span class="p">{}</span></code></pre>
 
                         </div>
                       </div>
@@ -497,9 +481,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBViewModelJSONSchema(py)headerComponentModelDictionaryPath"></a>
-                    <a name="//apple_ref/objc/Property/headerComponentModelDictionaryPath" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBViewModelJSONSchema(py)headerComponentModelDictionaryPath">headerComponentModelDictionaryPath</a>
+                    <a name="/c:@E@HUBScrollPosition@HUBScrollPositionCenteredVertically"></a>
+                    <a name="//apple_ref/objc/Case/HUBScrollPositionCenteredVertically" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@HUBScrollPosition@HUBScrollPositionCenteredVertically">HUBScrollPositionCenteredVertically</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -507,18 +491,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The path to follow to extract a dictionary for any component model for the view&rsquo;s header.
-  Maps to <code>headerComponentModel</code>.</p>
-
-<p>The dictionary extracted by following this path will then be parsed using <code><a href="../Protocols/HUBComponentModelJSONSchema.html">HUBComponentModelJSONSchema</a></code>.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">headerComponentModelDictionaryPath</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">enum</span> <span class="n">HUBScrollPosition</span> <span class="o">:</span> <span class="n">NSUInteger</span> <span class="p">{}</span></code></pre>
 
                         </div>
                       </div>
@@ -528,9 +508,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBViewModelJSONSchema(py)bodyComponentModelDictionariesPath"></a>
-                    <a name="//apple_ref/objc/Property/bodyComponentModelDictionariesPath" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBViewModelJSONSchema(py)bodyComponentModelDictionariesPath">bodyComponentModelDictionariesPath</a>
+                    <a name="/c:@E@HUBScrollPosition@HUBScrollPositionBottom"></a>
+                    <a name="//apple_ref/objc/Case/HUBScrollPositionBottom" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@HUBScrollPosition@HUBScrollPositionBottom">HUBScrollPositionBottom</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -538,18 +518,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The path to follow to extract an array of dictionaries for the component models for the view&rsquo;s body.
-  Maps to <code>bodyComponentModels</code>.</p>
-
-<p>The dictionaries extractd by following this path will then be parsed using <code><a href="../Protocols/HUBComponentModelJSONSchema.html">HUBComponentModelJSONSchema</a></code>.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">bodyComponentModelDictionariesPath</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">enum</span> <span class="n">HUBScrollPosition</span> <span class="o">:</span> <span class="n">NSUInteger</span> <span class="p">{}</span></code></pre>
 
                         </div>
                       </div>
@@ -559,9 +535,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBViewModelJSONSchema(py)overlayComponentModelDictionariesPath"></a>
-                    <a name="//apple_ref/objc/Property/overlayComponentModelDictionariesPath" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBViewModelJSONSchema(py)overlayComponentModelDictionariesPath">overlayComponentModelDictionariesPath</a>
+                    <a name="/c:@E@HUBScrollPosition@HUBScrollPositionLeft"></a>
+                    <a name="//apple_ref/objc/Case/HUBScrollPositionLeft" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@HUBScrollPosition@HUBScrollPositionLeft">HUBScrollPositionLeft</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -569,18 +545,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The path to follow to extract an array of dictionaries for the view&rsquo;s overlay component models.
-  Maps to <code>overlayComponentModel</code>.</p>
-
-<p>The dictionary extracted by following this path will then be parsed using <code><a href="../Protocols/HUBComponentModelJSONSchema.html">HUBComponentModelJSONSchema</a></code>.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">overlayComponentModelDictionariesPath</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">enum</span> <span class="n">HUBScrollPosition</span> <span class="o">:</span> <span class="n">NSUInteger</span> <span class="p">{}</span></code></pre>
 
                         </div>
                       </div>
@@ -590,9 +562,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBViewModelJSONSchema(py)customDataPath"></a>
-                    <a name="//apple_ref/objc/Property/customDataPath" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBViewModelJSONSchema(py)customDataPath">customDataPath</a>
+                    <a name="/c:@E@HUBScrollPosition@HUBScrollPositionCenteredHorizontally"></a>
+                    <a name="//apple_ref/objc/Case/HUBScrollPositionCenteredHorizontally" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@HUBScrollPosition@HUBScrollPositionCenteredHorizontally">HUBScrollPositionCenteredHorizontally</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -600,15 +572,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The path to follow to extract custom data for a view model. Maps to <code>customData</code>.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
-    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBJSONDictionaryPath.html">HUBJSONDictionaryPath</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">customDataPath</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">enum</span> <span class="n">HUBScrollPosition</span> <span class="o">:</span> <span class="n">NSUInteger</span> <span class="p">{}</span></code></pre>
 
                         </div>
                       </div>
@@ -618,9 +589,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBViewModelJSONSchema(im)copy"></a>
-                    <a name="//apple_ref/objc/Method/-copy" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBViewModelJSONSchema(im)copy">-copy</a>
+                    <a name="/c:@E@HUBScrollPosition@HUBScrollPositionRight"></a>
+                    <a name="//apple_ref/objc/Case/HUBScrollPositionRight" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@HUBScrollPosition@HUBScrollPositionRight">HUBScrollPositionRight</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -628,19 +599,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Create a copy of this schema, with the same paths</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">HUBViewModelJSONSchema</span><span class="o">&gt;</span><span class="p">)</span><span class="n">copy</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">copy</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">HUBViewModelJSONSchema</span></code></pre>
+                          <pre class="highlight"><code><span class="k">enum</span> <span class="n">HUBScrollPosition</span> <span class="o">:</span> <span class="n">NSUInteger</span> <span class="p">{}</span></code></pre>
 
                         </div>
                       </div>

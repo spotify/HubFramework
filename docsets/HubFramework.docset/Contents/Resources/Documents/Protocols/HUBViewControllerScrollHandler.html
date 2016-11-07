@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           HubFramework Docs
         </a>
-         (97% documented)
+         (95% documented)
       </p>
     
         <p class="header-col header-col--secondary">
@@ -152,6 +152,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/HUBConnectivityState.html">HUBConnectivityState</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/HUBScrollPosition.html">HUBScrollPosition</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -255,6 +258,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentWithRestorableUIState.html">HUBComponentWithRestorableUIState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBComponentWithScrolling.html">HUBComponentWithScrolling</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBComponentWithSelectionState.html">HUBComponentWithSelectionState</a>
@@ -898,6 +904,117 @@
                               <td>
                                 <div>
                                   <p>The target content offset that the Hub Framework is proposing will be used</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewControllerScrollHandler(im)contentOffsetForDisplayingComponentAtIndex:scrollPosition:contentInset:contentSize:viewController:"></a>
+                    <a name="//apple_ref/objc/Method/-contentOffsetForDisplayingComponentAtIndex:scrollPosition:contentInset:contentSize:viewController:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewControllerScrollHandler(im)contentOffsetForDisplayingComponentAtIndex:scrollPosition:contentInset:contentSize:viewController:">-contentOffsetForDisplayingComponentAtIndex:scrollPosition:contentInset:contentSize:viewController:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Return the content offset for displaying a component at a certain scroll position.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGPoint</span><span class="p">)</span>
+<span class="nf">contentOffsetForDisplayingComponentAtIndex</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">componentIndex</span>
+                            <span class="nf">scrollPosition</span><span class="p">:(</span><span class="n"><a href="../Enums/HUBScrollPosition.html">HUBScrollPosition</a></span><span class="p">)</span><span class="nv">scrollPosition</span>
+                              <span class="nf">contentInset</span><span class="p">:(</span><span class="n">UIEdgeInsets</span><span class="p">)</span><span class="nv">contentInset</span>
+                               <span class="nf">contentSize</span><span class="p">:(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">contentSize</span>
+                            <span class="nf">viewController</span><span class="p">:</span>
+                                <span class="p">(</span><span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span>
+                                    <span class="n">viewController</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">contentOffsetForDisplayingComponent</span><span class="p">(</span><span class="n">atIndex</span> <span class="nv">componentIndex</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">scrollPosition</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">contentInset</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">contentSize</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Any</span><span class="o">!</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>componentIndex</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the component to display.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>scrollPosition</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The position to display the component at.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>contentInset</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The current content inset of the view controller&rsquo;s scroll view</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>contentSize</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The current content size of the view controller&rsquo;s scroll view</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The view controller in question.</p>
 
                                 </div>
                               </td>
