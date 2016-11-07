@@ -44,7 +44,7 @@ class HubFrameworkDemoUITests: XCTestCase {
         collectionView.cells.collectionViews.children(matching: .cell).element(boundBy: 0).otherElements.children(matching: .image).element.tap()
     }
 
-    private func rootCollectionView(for app:XCUIApplication) -> XCUIElement {
+    private func rootCollectionView(for app: XCUIApplication) -> XCUIElement {
         return app.otherElements.containing(.navigationBar, identifier:"Pretty Pictures").children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .collectionView).element
     }
 }
