@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6510FD791DD1D182002FA2DC /* PrettyPicturesActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */; };
 		657DFE1B1DC8E21700F20C0E /* HubFrameworkDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DFE191DC8E21700F20C0E /* HubFrameworkDemoUITests.swift */; };
 		657DFE1C1DC8E21700F20C0E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 657DFE1A1DC8E21700F20C0E /* Info.plist */; };
 		8A27299A1D9546BB00EF43FC /* RootContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2729991D9546BB00EF43FC /* RootContentOperationFactory.swift */; };
@@ -75,6 +76,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrettyPicturesActionHandler.swift; sourceTree = "<group>"; };
 		657DFE0F1DC8E1B600F20C0E /* HubFrameworkDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HubFrameworkDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		657DFE191DC8E21700F20C0E /* HubFrameworkDemoUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HubFrameworkDemoUITests.swift; path = tests/HubFrameworkDemoUITests.swift; sourceTree = SOURCE_ROOT; };
 		657DFE1A1DC8E21700F20C0E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = tests/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -287,6 +289,7 @@
 		8AD72F4F1D9ABCDD00E4B427 /* Pretty pictures */ = {
 			isa = PBXGroup;
 			children = (
+				6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */,
 				8AD72F541D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift */,
 				8AD72F521D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift */,
 			);
@@ -453,6 +456,7 @@
 				8AD5EDBD1D9A7EC3004B2CEA /* GitHubSearchContentOperationFactory.swift in Sources */,
 				8A42E0AB1D8C376B004FAC33 /* AppDelegate.swift in Sources */,
 				8AD5EDC41D9A92EC004B2CEA /* GitHubSearchCustomDataKeys.swift in Sources */,
+				6510FD791DD1D182002FA2DC /* PrettyPicturesActionHandler.swift in Sources */,
 				8A27299E1D9546ED00EF43FC /* RootContentOperation.swift in Sources */,
 				8A374CFF1DBE659E0013E592 /* TodoListActionFactory.swift in Sources */,
 				8ABCCEAA1D9D1AC3005113B5 /* ReallyLongListContentOperation.swift in Sources */,
