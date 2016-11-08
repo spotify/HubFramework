@@ -44,6 +44,9 @@ class HubFrameworkDemoUITests: XCTestCase {
         let collectionViewCell = collectionView.children(matching: .cell).element(boundBy: 1)
         let imageView = collectionViewCell.otherElements.children(matching: .image).element
         imageView.tap()
+
+        // Assert we've navigated away...
+        XCTAssertFalse(app.navigationBars["Pretty Pictures"].exists)
     }
 
     func testTappingNestedComponent() {
@@ -59,6 +62,9 @@ class HubFrameworkDemoUITests: XCTestCase {
         let nestedCollectionViewCell = collectionViewCell.cells.element(boundBy: 1)
         let imageView = nestedCollectionViewCell.otherElements.children(matching: .image).element
         imageView.tap()
+
+        // Assert we've navigated away...
+        XCTAssertFalse(app.navigationBars["Pretty Pictures"].exists)
     }
 
     /// This function walks the view hierarchy to find the hub framework's collection view.
