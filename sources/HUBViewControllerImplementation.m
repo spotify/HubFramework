@@ -864,8 +864,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
     collectionView.dataSource = self;
     collectionView.delegate = self;
-    
-    [self.view insertSubview:collectionView atIndex:0];
 
     HUBContainerView *containerView = (HUBContainerView *)self.view;
     containerView.collectionView = self.collectionView;
