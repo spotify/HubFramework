@@ -27,19 +27,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setCollectionView:(nullable UICollectionView *)collectionView
 {
-    if (collectionView == nil) {
-        [_collectionView removeFromSuperview];
-        _collectionView = nil;
-        return;
-    }
-
     if (_collectionView == collectionView) {
         return;
     }
 
     [_collectionView removeFromSuperview];
-    _collectionView = collectionView;
-    [self insertSubview:(UICollectionView *)collectionView atIndex:0];
+    _collectionView = nil;
+
+    if (collectionView) {
+        _collectionView = collectionView;
+        [self insertSubview:(UICollectionView *)collectionView atIndex:0];
+    }
 }
 
 - (void)setBackgroundColor:(nullable UIColor *)backgroundColor

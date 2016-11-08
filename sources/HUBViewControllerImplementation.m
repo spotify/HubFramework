@@ -173,11 +173,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadView
 {
-    HUBContainerView *hubContainerView = [[HUBContainerView alloc] initWithFrame:CGRectZero];
-    self.view = hubContainerView;
+    self.view = [[HUBContainerView alloc] initWithFrame:CGRectZero];
 
     [self createCollectionViewIfNeeded];
-    hubContainerView.collectionView = self.collectionView;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -868,6 +866,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     collectionView.delegate = self;
     
     [self.view insertSubview:collectionView atIndex:0];
+
+    HUBContainerView *containerView = (HUBContainerView *)self.view;
+    containerView.collectionView = self.collectionView;
 }
 
 - (void)reloadCollectionViewWithViewModel:(id<HUBViewModel>)viewModel animated:(BOOL)animated

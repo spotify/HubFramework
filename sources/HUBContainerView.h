@@ -26,7 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// View that acts as a container view for a Hub Framework view controller
 @interface HUBContainerView : UIView
 
-/// Collection view contained by the container
+/**
+ *  Collection view contained by the container.
+ *
+ *  @discussion When collectionView is set it's also added as a subview.
+ */
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
 
 @end
