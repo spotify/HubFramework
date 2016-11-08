@@ -20,6 +20,7 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "HUBScrollPosition.h"
 
 @protocol HUBViewController;
 
@@ -109,5 +110,20 @@
                                                 contentInset:(UIEdgeInsets)contentInset
                                         currentContentOffset:(CGPoint)currentContentOffset
                                        proposedContentOffset:(CGPoint)proposedContentOffset;
+
+/**
+ *  Return the content offset for displaying a component at a certain scroll position.
+ *  
+ *  @param componentIndex The index of the component to display.
+ *  @param scrollPosition The position to display the component at.
+ *  @param contentInset The current content inset of the view controller's scroll view
+ *  @param contentSize The current content size of the view controller's scroll view
+ *  @param viewController The view controller in question.
+ */
+- (CGPoint)contentOffsetForDisplayingComponentAtIndex:(NSUInteger)componentIndex
+                                       scrollPosition:(HUBScrollPosition)scrollPosition
+                                         contentInset:(UIEdgeInsets)contentInset
+                                          contentSize:(CGSize)contentSize
+                                       viewController:(UIViewController<HUBViewController> *)viewController;
 
 @end

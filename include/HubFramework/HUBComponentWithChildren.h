@@ -84,11 +84,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param component The parent component
  *  @param childIndex The index of the child component that was selected
+ *  @param customData  Any custom data to use when the selection is handled. Will be available on the `HUBActionContext` passed to any actions handling the selection.
  *
  *  If your component has nested child components, you should call this method every time a child component was
  *  selected by the user, to enable the Hub Framework to handle the selection.
  */
-- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex;
+- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex customData:(nullable NSDictionary<NSString *, id> *)customData;
 
 @end
 

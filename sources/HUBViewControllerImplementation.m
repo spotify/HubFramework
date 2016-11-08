@@ -28,6 +28,7 @@
 #import "HUBComponentImageData.h"
 #import "HUBComponentTarget.h"
 #import "HUBComponentWithImageHandling.h"
+#import "HUBComponentWithChildren.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentWrapper.h"
@@ -95,6 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
 @property (nonatomic) CGFloat visibleKeyboardHeight;
+@property (nonatomic, copy, nullable) void(^pendingScrollAnimationCallback)(void);
 
 @end
 
@@ -406,6 +408,33 @@ NS_ASSUME_NONNULL_BEGIN
     [self.collectionView setContentOffset:CGPointMake(x, y) animated:animated];
 }
 
+- (void)scrollToComponentOfType:(HUBComponentType)componentType
+                      indexPath:(NSIndexPath *)indexPath
+                 scrollPosition:(HUBScrollPosition)scrollPosition
+                       animated:(BOOL)animated
+                     completion:(void (^ _Nullable)(void))completion
+{
+    if (componentType == HUBComponentTypeBody) {
+        NSAssert([indexPath indexAtPosition:0] < (NSUInteger)[self.collectionView numberOfItemsInSection:0],
+                 @"Root index %@ specified but there are only %@ components in the list.",
+                 @([indexPath indexAtPosition:0]), @([self.collectionView numberOfItemsInSection:0]));
+    } else if (componentType == HUBComponentTypeHeader) {
+        NSAssert(self.headerComponentWrapper != nil, @"Attempted to scroll to component within header, but no header was found.");
+    } else if (componentType == HUBComponentTypeOverlay) {
+        NSAssert([indexPath indexAtPosition:0] < self.overlayComponentWrappers.count,
+                 @"Root index %@ specified but there are only %@ overlays in the list.",
+                 @([indexPath indexAtPosition:0]), @(self.overlayComponentWrappers.count));
+    }
+    
+    [self scrollToRemainingComponentsOfType:componentType
+                              startPosition:0
+                                  indexPath:indexPath
+                                  component:nil
+                             scrollPosition:scrollPosition
+                                   animated:animated
+                                 completion:completion];
+}
+
 #pragma mark - HUBViewModelLoaderDelegate
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel
@@ -435,7 +464,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate viewController:self didFailToUpdateWithError:error];
 }
 
-- (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel
+- (BOOL)selectComponentWithModel:(id<HUBComponentModel>)componentModel customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     HUBComponentWrapper * const componentWrapper = self.componentWrappersByModelIdentifier[componentModel.identifier];
     
@@ -457,7 +486,7 @@ NS_ASSUME_NONNULL_BEGIN
     for (HUBIdentifier * const identifier in componentModel.target.actionIdentifiers) {
         selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
                                         customIdentifier:identifier
-                                              customData:nil
+                                              customData:customData
                                           componentModel:componentModel];
         
         if (selectionHandled) {
@@ -468,7 +497,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (!selectionHandled) {
         selectionHandled = [self performActionForTrigger:HUBActionTriggerSelection
                                         customIdentifier:nil
-                                              customData:nil
+                                              customData:customData
                                           componentModel:componentModel];
     }
     
@@ -528,7 +557,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         case HUBComponentSelectionStateHighlighted:
             break;
         case HUBComponentSelectionStateSelected:
-            [self selectComponentWithModel:componentWrapper.model];
+            [self selectComponentWithModel:componentWrapper.model customData:nil];
             break;
     }
 }
@@ -604,6 +633,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
     childSelectedAtIndex:(NSUInteger)childIndex
+              customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     id<HUBComponentModel> const componentModel = componentWrapper.model;
     
@@ -612,7 +642,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
     
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
-    [self selectComponentWithModel:childComponentModel];
+    [self selectComponentWithModel:childComponentModel customData:customData];
 }
 
 - (BOOL)componentWrapper:(HUBComponentWrapper *)componentWrapper performActionWithIdentifier:(HUBIdentifier *)identifier customData:(nullable NSDictionary<NSString *, id> *)customData
@@ -769,6 +799,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     if (!decelerate) {
         [self notifyScrollingDidEndInScrollView:scrollView];
+    }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    if (self.pendingScrollAnimationCallback) {
+        self.pendingScrollAnimationCallback();
+        self.pendingScrollAnimationCallback = nil;
     }
 }
 
@@ -1311,6 +1349,124 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
     if (componentWrapper.isActionObserver) {
         [self.actionObservingComponentWrappers removeObject:componentWrapper];
+    }
+}
+
+- (void)scrollToRootBodyComponentAtIndex:(NSUInteger)componentIndex
+                          scrollPosition:(HUBScrollPosition)scrollPosition
+                                animated:(BOOL)animated
+                              completion:(void (^)())completion
+{
+    NSParameterAssert(componentIndex <= (NSUInteger)[self.collectionView numberOfItemsInSection:0]);
+
+    NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)componentIndex inSection:0];
+    CGPoint const contentOffset = [self.scrollHandler contentOffsetForDisplayingComponentAtIndex:componentIndex
+                                                                                  scrollPosition:scrollPosition
+                                                                                    contentInset:self.collectionView.contentInset
+                                                                                     contentSize:self.collectionView.contentSize
+                                                                                  viewController:self];
+
+    UICollectionView * const nonnullCollectionView = self.collectionView;
+    CGRect const initialContentRect = [self contentRectForScrollView:nonnullCollectionView];
+    [self.scrollHandler scrollingWillStartInViewController:self currentContentRect:initialContentRect];
+
+    __weak HUBViewControllerImplementation *weakSelf = self;
+    void (^completionWrapper)() = ^{
+        HUBViewControllerImplementation *strongSelf = weakSelf;
+        CGRect const destinationContentRect = [strongSelf contentRectForScrollView:nonnullCollectionView];
+        [strongSelf.scrollHandler scrollingDidEndInViewController:strongSelf currentContentRect:destinationContentRect];
+        completion();
+    };
+    
+    // If the component is already visible, the completion handler can be called instantly.
+    if ([self.collectionView.indexPathsForVisibleItems containsObject:rootIndexPath]) {
+        [self.collectionView setContentOffset:contentOffset animated:animated];
+        completionWrapper();
+    // If the scrolling is animated, the animation has to end before the new component can be retrieved.
+    } else if (animated) {
+        self.pendingScrollAnimationCallback = completionWrapper;
+        [self.collectionView setContentOffset:contentOffset animated:animated];
+    // If there's no animations, the UICollectionView will still not update its visible cells until having layouted.
+    } else {
+        [self.collectionView setContentOffset:contentOffset animated:animated];
+        [self.collectionView setNeedsLayout];
+        [self.collectionView layoutIfNeeded];
+        completionWrapper();
+    }
+}
+
+- (void)scrollToRemainingComponentsOfType:(HUBComponentType)componentType
+                            startPosition:(NSUInteger)startPosition
+                                indexPath:(NSIndexPath *)indexPath
+                                component:(nullable HUBComponentWrapper *)componentWrapper
+                           scrollPosition:(HUBScrollPosition)scrollPosition
+                                 animated:(BOOL)animated
+                               completion:(void (^ _Nullable)())completionHandler
+{
+    NSUInteger const childIndex = [indexPath indexAtPosition:startPosition];
+
+    if (startPosition > 0) {
+        NSAssert(childIndex < componentWrapper.model.children.count,
+                 @"Attempted to scroll to child %@ in component %@, but it only has %@ children",
+                 @(childIndex), componentWrapper.model.identifier, @(componentWrapper.model.children.count));
+    }
+
+    __weak HUBViewControllerImplementation *weakSelf = self;
+    void (^stepCompletionHandler)() = ^{
+        HUBViewControllerImplementation *strongSelf = weakSelf;
+
+        HUBComponentWrapper *childComponentWrapper = nil;
+        if (startPosition == 0) {
+            if (componentType == HUBComponentTypeBody) {
+                NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)childIndex inSection:0];
+                HUBComponentCollectionViewCell * const cell = (HUBComponentCollectionViewCell *)[strongSelf.collectionView cellForItemAtIndexPath:rootIndexPath];
+                childComponentWrapper = [strongSelf componentWrapperFromCell:cell];
+            } else if (componentType == HUBComponentTypeHeader) {
+                childComponentWrapper = strongSelf.headerComponentWrapper;
+            } else if (componentType == HUBComponentTypeOverlay) {
+                childComponentWrapper = strongSelf.overlayComponentWrappers[startPosition];
+            }
+        } else {
+            childComponentWrapper = [componentWrapper visibleChildComponentAtIndex:childIndex];
+        }
+
+        NSUInteger const nextPosition = startPosition + 1;
+        if (childComponentWrapper != nil && nextPosition < indexPath.length) {
+            [strongSelf scrollToRemainingComponentsOfType:componentType
+                                            startPosition:nextPosition
+                                                indexPath:indexPath
+                                                component:childComponentWrapper
+                                           scrollPosition:scrollPosition
+                                                 animated:animated
+                                               completion:completionHandler];
+        } else if (completionHandler != nil) {
+            completionHandler();
+        }
+    };
+
+    // Any other root components than body components don't need to be scrolled to, as they are always visible.
+    if (startPosition == 0) {
+        if (componentType == HUBComponentTypeBody) {
+            [self scrollToRootBodyComponentAtIndex:childIndex
+                                    scrollPosition:scrollPosition
+                                          animated:animated
+                                        completion:stepCompletionHandler];
+        } else {
+            stepCompletionHandler();
+        }
+    } else {
+        [componentWrapper scrollToComponentAtIndex:childIndex
+                                    scrollPosition:scrollPosition
+                                          animated:animated
+                                        completion:^{
+            /* This solves a case where the UICollectionView hasn't updated its visible cells until the next cycle
+               when changing the content offset without animations. */
+            if (!animated) {
+                dispatch_async(dispatch_get_main_queue(), stepCompletionHandler);
+            } else {
+                stepCompletionHandler();
+            }
+        }];
     }
 }
 
