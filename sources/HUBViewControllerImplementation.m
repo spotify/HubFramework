@@ -173,8 +173,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadView
 {
-    self.view = [[HUBContainerView alloc] initWithFrame:CGRectZero];
+    HUBContainerView *hubContainerView = [[HUBContainerView alloc] initWithFrame:CGRectZero];
+    self.view = hubContainerView;
+
     [self createCollectionViewIfNeeded];
+    hubContainerView.collectionView = self.collectionView;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// View that acts as a container view for a Hub Framework view controller
 @interface HUBContainerView : UIView
 
+/// Collection view contained by the container
+@property (nonatomic, strong, nullable) UICollectionView *collectionView;
+
 @end
 
 NS_ASSUME_NONNULL_END
