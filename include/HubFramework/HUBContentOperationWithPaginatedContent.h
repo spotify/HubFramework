@@ -31,7 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  content to an existing view model builder in either of 3 scenarios:
  *
  *  - If the `loadNextPageForCurrentViewModel` method was called on a `HUBViewModelLoader`.
- *  - If the initially displayed content is not enough to cover the height of the view controller.
  *  - If the user is about to reach the bottom of the view's content when scrolling.
  */
 @protocol HUBContentOperationWithPaginatedContent <HUBContentOperation>
