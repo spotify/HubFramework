@@ -21,8 +21,7 @@
 
 import XCTest
 
-class HubFrameworkDemoUITests: XCTestCase {
-
+class SelectionUITests: XCTestCase {
     override func setUp() {
         super.setUp()
         
