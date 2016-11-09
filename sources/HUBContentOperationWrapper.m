@@ -20,8 +20,7 @@
  */
 
 #import "HUBContentOperationWrapper.h"
-
-#import "HUBContentOperation.h"
+#import "HUBContentOperationWithPaginatedContent.h"
 
 @interface HUBContentOperationWrapper () <HUBContentOperationDelegate>
 
@@ -53,9 +52,27 @@
                        featureInfo:(id<HUBFeatureInfo>)featureInfo
                  connectivityState:(HUBConnectivityState)connectivityState
                   viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
+                         pageIndex:(nullable NSNumber *)pageIndex
                      previousError:(nullable NSError *)previousError
 {
     self.isExecuting = YES;
+    
+    if (pageIndex != nil) {
+        if ([self.contentOperation conformsToProtocol:@protocol(HUBContentOperationWithPaginatedContent)]) {
+            id<HUBContentOperationWithPaginatedContent> const paginatedOperation = (id<HUBContentOperationWithPaginatedContent>)self.contentOperation;
+            
+            [paginatedOperation appendContentForPageIndex:pageIndex.unsignedIntegerValue
+                                       toViewModelBuilder:viewModelBuilder
+                                                  viewURI:viewURI
+                                              featureInfo:featureInfo
+                                        connectivityState:connectivityState
+                                            previousError:previousError];
+        } else {
+            [self finishWithError:previousError];
+        }
+        
+        return;
+    }
     
     [self.contentOperation performForViewURI:viewURI
                                  featureInfo:featureInfo

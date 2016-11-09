@@ -20,6 +20,7 @@
  */
 
 #import "HUBContentOperationWithInitialContent.h"
+#import "HUBContentOperationWithPaginatedContent.h"
 #import "HUBContentOperationActionObserver.h"
 #import "HUBContentOperationActionPerformer.h"
 
@@ -28,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Mocked content operation, for use in tests only
 @interface HUBContentOperationMock : NSObject <
     HUBContentOperationWithInitialContent,
+    HUBContentOperationWithPaginatedContent,
     HUBContentOperationActionObserver,
     HUBContentOperationActionPerformer
 >
@@ -38,7 +40,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// A block that gets called whenever the content operation is performed. Return whether the operation should call its delegate.
 @property (nonatomic, copy, nullable) BOOL(^contentLoadingBlock)(id<HUBViewModelBuilder> builder);
 
-/// The number of times this operation has been performed
+/**
+ *  A block that gets called whenever the content operation is asked to load paginated content
+ *
+ *  If nil, the content operation will act like it's not conforming to the `HUBContentOperationWithPaginatedContent` protocol.
+ *  Setting this to non-nil will enable the paginated content API on this mock.
+ *
+ *  Any block assigned to this property takes the current view model builder, as well as the current page index, and should return
+ *  whether the operation should call its delegate
+ */
+@property (nonatomic, copy, nullable) BOOL(^paginatedContentLoadingBlock)(id<HUBViewModelBuilder> builder, NSUInteger pageIndex);
+
+/// The number of times this operation has been performed (not including appending paginated content)
 @property (nonatomic, assign, readonly) NSUInteger performCount;
 
 /// The feature info that was most recently sent to this operation
