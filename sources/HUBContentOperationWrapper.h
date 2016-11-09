@@ -82,6 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureInfo An object containing information about the feature that the operation is used in
  *  @param connectivityState The current connectivity state, as resolved by `HUBConnectivityStateResolver`
  *  @param viewModelBuilder The builder that should be used to add, change or remove content to/from the view
+ *  @param pageIndex The index of the page of content to load. If non-nil, the pagination API will be used
  *  @param previousError Any error encountered by a previous content operation, that the wrapper's operation
  *         may attempt to recover.
  */
@@ -89,6 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
                        featureInfo:(id<HUBFeatureInfo>)featureInfo
                  connectivityState:(HUBConnectivityState)connectivityState
                   viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
+                         pageIndex:(nullable NSNumber *)pageIndex
                      previousError:(nullable NSError *)previousError;
 
 @end
