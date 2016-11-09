@@ -31,7 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  content to an existing view model builder in either of 3 scenarios:
  *
  *  - If the `loadNextPageForCurrentViewModel` method was called on a `HUBViewModelLoader`.
- *  - If the initially displayed content is not enough to cover the height of the view controller.
  *  - If the user is about to reach the bottom of the view's content when scrolling.
  */
 @protocol HUBContentOperationWithPaginatedContent <HUBContentOperation>
@@ -58,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
                           viewURI:(NSURL *)viewURI
                       featureInfo:(id<HUBFeatureInfo>)featureInfo
                 connectivityState:(HUBConnectivityState)connectivityState
-                    previousError:(nullable NSError *)previousError;
+                    previousError:(nullable NSError *)previousError NS_SWIFT_NAME(appendContent(pageIndex:viewModelBuilder:viewURI:featureInfo:connectivityState:previousError:));
 
 @end
 

@@ -794,6 +794,12 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                                     contentInset:scrollView.contentInset
                                                                             currentContentOffset:scrollView.contentOffset
                                                                            proposedContentOffset:*targetContentOffset];
+    
+    if (targetContentOffset->y >= (scrollView.contentSize.height - CGRectGetHeight(scrollView.frame))) {
+        if (!self.viewModelLoader.isLoading) {
+            [self.viewModelLoader loadNextPageForCurrentViewModel];
+        }
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView

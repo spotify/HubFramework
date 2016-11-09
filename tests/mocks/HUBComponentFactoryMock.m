@@ -23,14 +23,32 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface HUBComponentFactoryMock ()
+
+@property (nonatomic, copy) id<HUBComponent> _Nullable(^componentCreationBlock)(NSString *);
+
+@end
+
 @implementation HUBComponentFactoryMock
 
 - (instancetype)initWithComponents:(NSDictionary<NSString *, id<HUBComponent>> *)components
 {
+    self = [self initWithBlock:^id<HUBComponent> _Nullable(NSString *name) { return nil; }];
+    
+    if (self != nil) {
+        [self.components addEntriesFromDictionary:components];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithBlock:(id<HUBComponent> _Nullable(^)(NSString *))block
+{
     self = [super init];
     
     if (self) {
-        _components = [components mutableCopy];
+        _componentCreationBlock = [block copy];
+        _components = [NSMutableDictionary new];
     }
     
     return self;
@@ -40,6 +58,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id<HUBComponent>)createComponentForName:(NSString *)name
 {
+    id<HUBComponent> const component = self.componentCreationBlock(name);
+    
+    if (component != nil) {
+        return component;
+    }
+    
     return self.components[name];
 }
 

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6510FD791DD1D182002FA2DC /* PrettyPicturesActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */; };
-		657DFE1B1DC8E21700F20C0E /* HubFrameworkDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DFE191DC8E21700F20C0E /* HubFrameworkDemoUITests.swift */; };
+		657DFE1B1DC8E21700F20C0E /* SelectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DFE191DC8E21700F20C0E /* SelectionUITests.swift */; };
 		657DFE1C1DC8E21700F20C0E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 657DFE1A1DC8E21700F20C0E /* Info.plist */; };
 		8A27299A1D9546BB00EF43FC /* RootContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2729991D9546BB00EF43FC /* RootContentOperationFactory.swift */; };
 		8A27299E1D9546ED00EF43FC /* RootContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A27299D1D9546ED00EF43FC /* RootContentOperation.swift */; };
@@ -23,6 +23,7 @@
 		8A42E1F71D8C468C004FAC33 /* ComponentLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */; };
 		8A42E1F91D8C476C004FAC33 /* ComponentFallbackHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */; };
 		8A42E1FB1D8C4CEB004FAC33 /* RowComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */; };
+		8AA98C451DD3778B006CA6AA /* PaginationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA98C441DD3778B006CA6AA /* PaginationUITests.swift */; };
 		8AB850961DBF9DE300AFAFD0 /* CarouselComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */; };
 		8ABCCEAA1D9D1AC3005113B5 /* ReallyLongListContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCCEA91D9D1AC3005113B5 /* ReallyLongListContentOperation.swift */; };
 		8ABCCEAC1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCCEAB1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift */; };
@@ -78,7 +79,7 @@
 /* Begin PBXFileReference section */
 		6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrettyPicturesActionHandler.swift; sourceTree = "<group>"; };
 		657DFE0F1DC8E1B600F20C0E /* HubFrameworkDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HubFrameworkDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		657DFE191DC8E21700F20C0E /* HubFrameworkDemoUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HubFrameworkDemoUITests.swift; path = tests/HubFrameworkDemoUITests.swift; sourceTree = SOURCE_ROOT; };
+		657DFE191DC8E21700F20C0E /* SelectionUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectionUITests.swift; path = tests/SelectionUITests.swift; sourceTree = SOURCE_ROOT; };
 		657DFE1A1DC8E21700F20C0E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = tests/Info.plist; sourceTree = SOURCE_ROOT; };
 		8A2729991D9546BB00EF43FC /* RootContentOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootContentOperationFactory.swift; sourceTree = "<group>"; };
 		8A27299D1D9546ED00EF43FC /* RootContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootContentOperation.swift; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 		8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentLayoutManager.swift; sourceTree = "<group>"; };
 		8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentFallbackHandler.swift; sourceTree = "<group>"; };
 		8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowComponent.swift; sourceTree = "<group>"; };
+		8AA98C441DD3778B006CA6AA /* PaginationUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaginationUITests.swift; path = tests/PaginationUITests.swift; sourceTree = SOURCE_ROOT; };
 		8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselComponent.swift; sourceTree = "<group>"; };
 		8ABCCEA91D9D1AC3005113B5 /* ReallyLongListContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReallyLongListContentOperation.swift; sourceTree = "<group>"; };
 		8ABCCEAB1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReallyLongListContentOperationFactory.swift; sourceTree = "<group>"; };
@@ -139,7 +141,8 @@
 		657DFE101DC8E1B600F20C0E /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				657DFE191DC8E21700F20C0E /* HubFrameworkDemoUITests.swift */,
+				657DFE191DC8E21700F20C0E /* SelectionUITests.swift */,
+				8AA98C441DD3778B006CA6AA /* PaginationUITests.swift */,
 				657DFE1A1DC8E21700F20C0E /* Info.plist */,
 			);
 			name = Tests;
@@ -432,7 +435,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				657DFE1B1DC8E21700F20C0E /* HubFrameworkDemoUITests.swift in Sources */,
+				657DFE1B1DC8E21700F20C0E /* SelectionUITests.swift in Sources */,
+				8AA98C451DD3778B006CA6AA /* PaginationUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
