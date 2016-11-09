@@ -399,34 +399,34 @@ NS_ASSUME_NONNULL_BEGIN
     return YES;
 }
 
-//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-//{
-//    CGPoint const touchLocation = [touch locationInView:self.view];
-//    
-//    if (!CGRectContainsPoint(self.view.bounds, touchLocation)) {
-//        return NO;
-//    }
-//    
-//    UIView *currentView = touch.view;
-//    
-//    while (currentView != nil && currentView != self.view) {
-//        if ([currentView isKindOfClass:[UIButton class]]) {
-//            return NO;
-//        }
-//        
-//        if ([currentView isKindOfClass:[UICollectionViewCell class]]) {
-//            return NO;
-//        }
-//        
-//        if ([currentView isKindOfClass:[UITableViewCell class]]) {
-//            return NO;
-//        }
-//        
-//        currentView = currentView.superview;
-//    }
-//    
-//    return YES;
-//}
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    CGPoint const touchLocation = [touch locationInView:self.view];
+    
+    if (!CGRectContainsPoint(self.view.bounds, touchLocation)) {
+        return NO;
+    }
+    
+    UIView *currentView = touch.view;
+    
+    while (currentView != nil && currentView != self.view) {
+        if ([currentView isKindOfClass:[UIButton class]]) {
+            return NO;
+        }
+        
+        if ([currentView isKindOfClass:[UICollectionViewCell class]]) {
+            return NO;
+        }
+        
+        if ([currentView isKindOfClass:[UITableViewCell class]]) {
+            return NO;
+        }
+        
+        currentView = currentView.superview;
+    }
+    
+    return YES;
+}
 
 #pragma mark - HUBActionPerformer
 
