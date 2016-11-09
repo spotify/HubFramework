@@ -12,6 +12,7 @@ Welcome to the Hub Framework content programming guide! This guide aims to help 
 - [Content loading chain](#content-loading-chain)
 - [Rescheduling content operations](#rescheduling-content-operations)
 - [Handling errors in content operations](#handling-errors-in-content-operations)
+- [Using paginated content](#using-paginated-content)
 
 ## Introduction
 
@@ -189,3 +190,57 @@ Content operations may also be used for error handling. Whenever an operation ex
 
 - Silence the error by doing its work as normal, and calling `contentOperationDidFinish:` once done.
 - Forward the error by calling `contentOperation:didFailWithError:`, which will cause the error to continue down the chain.
+
+## Using paginated content
+
+The Hub Framework provides built-in support for handling large datasets using pagination. By making your content operation conform to `HUBContentOperationWithPaginatedContent`, it will automatically be asked to load the next "page" of content whenever the user is about to scroll to the bottom of a view.
+
+One key difference when loading paginated content is that the content of all subsequent pages after the initial one is **appended** to the current view model (instead of replacing it). This enables you to adopt a more simple programming model in your content operations, as you don't have to worry about the current state of the view, you can just keep adding new content.
+
+For example, if you're using a local data store that reads articles synchronously from disk, you might want to only load the articles that the user has scrolled to, like this:
+
+```objective-c
+@implementation SPTArticleContentOperation
+
+- (void)performForViewURI:(NSURL *)viewURI
+              featureInfo:(id<HUBFeatureInfo>)featureInfo
+        connectivityState:(HUBConnectivityState)connectivityState
+         viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
+            previousError:(nullable NSError *)previousError
+{
+    [self loadArticlesForPageIndex:0
+                  viewModelBuilder:viewModelBuilder];
+}
+
+- (void)appendContentForPageIndex:(NSUInteger)pageIndex
+               toViewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
+                          viewURI:(NSURL *)viewURI
+                      featureInfo:(id<HUBFeatureInfo>)featureInfo
+                connectivityState:(HUBConnectivityState)connectivityState
+                    previousError:(nullable NSError *)previousError
+{
+    [self loadArticlesForPageIndex:pageIndex
+                  viewModelBuilder:viewModelBuilder];
+}
+
+- (void)loadArticlesForPageIndex:(NSUInteger)pageIndex
+                viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
+{
+    NSUInteger pageSize = 10;
+    NSUInteger startIndex = pageIndex * pageSize;
+    NSUInteger endIndex = startIndex + pageSize - 1;
+    
+    for (NSUInteger index = startIndex; index <= endIndex; index++) {
+        SPTArticle *article = [self.articleLoader loadArticleAtIndex:index];
+        
+        id<HUBComponentModelBuilder> articleBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:article.identifier];
+        articleBuilder.componentName = @"article";
+        articleBuilder.title = article.title;
+        articleBuilder.descriptionText = article.body;
+    }
+    
+    [self.delegate contentOperationDidFinish:self];
+}
+
+@end
+```
