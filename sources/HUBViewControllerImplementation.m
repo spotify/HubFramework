@@ -881,12 +881,12 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
     [self saveStatesForVisibleComponents];
 
+    [self configureHeaderComponent];
+    [self configureOverlayComponents];
     [self.viewModelRenderer renderViewModel:viewModel
                           usingBatchUpdates:self.viewHasAppeared
                                    animated:animated
                                  completion:^{
-        [self configureHeaderComponent];
-        [self configureOverlayComponents];
         [self headerAndOverlayComponentViewsWillAppear];
         [self.delegate viewControllerDidFinishRendering:self];
     }];
