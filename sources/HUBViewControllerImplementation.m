@@ -174,6 +174,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadView
 {
     self.view = [[HUBContainerView alloc] initWithFrame:CGRectZero];
+
     [self createCollectionViewIfNeeded];
 }
 
@@ -863,8 +864,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
     collectionView.dataSource = self;
     collectionView.delegate = self;
-    
-    [self.view insertSubview:collectionView atIndex:0];
+
+    HUBContainerView *containerView = (HUBContainerView *)self.view;
+    containerView.collectionView = self.collectionView;
 }
 
 - (void)reloadCollectionViewWithViewModel:(id<HUBViewModel>)viewModel animated:(BOOL)animated
@@ -881,12 +883,12 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
     [self saveStatesForVisibleComponents];
 
+    [self configureHeaderComponent];
+    [self configureOverlayComponents];
     [self.viewModelRenderer renderViewModel:viewModel
                           usingBatchUpdates:self.viewHasAppeared
                                    animated:animated
                                  completion:^{
-        [self configureHeaderComponent];
-        [self configureOverlayComponents];
         [self headerAndOverlayComponentViewsWillAppear];
         [self.delegate viewControllerDidFinishRendering:self];
     }];

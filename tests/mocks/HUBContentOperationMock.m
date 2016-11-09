@@ -76,6 +76,34 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+#pragma mark - HUBContentOperationWithPaginatedContent
+
+- (void)appendContentForPageIndex:(NSUInteger)pageIndex
+               toViewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
+                          viewURI:(NSURL *)viewURI
+                      featureInfo:(id<HUBFeatureInfo>)featureInfo
+                connectivityState:(HUBConnectivityState)connectivityState
+                    previousError:(nullable NSError *)previousError
+{
+    self.featureInfo = featureInfo;
+    self.connectivityState = connectivityState;
+    self.previousContentOperationError = previousError;
+    
+    id<HUBContentOperationDelegate> const delegate = self.delegate;
+    
+    if (self.error != nil) {
+        NSError * const error = self.error;
+        [delegate contentOperation:self didFailWithError:error];
+        return;
+    }
+
+    BOOL const shouldCallDelegate = self.paginatedContentLoadingBlock(viewModelBuilder, pageIndex);
+    
+    if (shouldCallDelegate) {
+        [delegate contentOperationDidFinish:self];
+    }
+}
+
 #pragma mark - HUBContentOperationActionObserver
 
 - (void)actionPerformedWithContext:(id<HUBActionContext>)context
@@ -91,6 +119,10 @@ NS_ASSUME_NONNULL_BEGIN
 {
     if (protocol == @protocol(HUBContentOperationWithInitialContent)) {
         return (self.initialContentLoadingBlock != nil);
+    }
+    
+    if (protocol == @protocol(HUBContentOperationWithPaginatedContent)) {
+        return (self.paginatedContentLoadingBlock != nil);
     }
     
     return [super conformsToProtocol:protocol];
