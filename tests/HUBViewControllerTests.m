@@ -2262,6 +2262,67 @@
     XCTAssertTrue(CGPointEqualToPoint(expectedOffset, self.collectionView.appliedScrollViewOffset));
 }
 
+- (void)testLoadingPaginatedContentWhenScrollingIsAboutToReachBottom
+{
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithBlock:^(NSString *name) {
+        HUBComponentMock * const component = [HUBComponentMock new];
+        component.preferredViewSize = CGSizeMake(320, 100);
+        return component;
+    }];
+    
+    NSString * const componentNamespace = @"paginated-reach-bottom";
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        // Add 5 components, as it will be enough to extend the height of the view
+        for (NSUInteger index = 0; index < 5; index++) {
+            NSString * const componentIdentifier = [NSString stringWithFormat:@"component-%@", @(index)];
+            [builder builderForBodyComponentModelWithIdentifier:componentIdentifier].componentNamespace = componentNamespace;
+        }
+        
+        return YES;
+    };
+    
+    self.contentOperation.paginatedContentLoadingBlock = ^(id<HUBViewModelBuilder> builder, NSUInteger pageIndex) {
+        NSString * const componentIdentifier = [NSString stringWithFormat:@"extended-component-page-%@", @(pageIndex)];
+        [builder builderForBodyComponentModelWithIdentifier:componentIdentifier].componentNamespace = componentNamespace;
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqual(self.viewController.viewModel.bodyComponentModels.count, 5u);
+    
+    // Here we force update the collection view's content size as it doesn't do it automatically when not attached to a proper window
+    self.collectionView.contentSize = self.collectionView.collectionViewLayout.collectionViewContentSize;
+    XCTAssertEqualWithAccuracy(self.collectionView.contentSize.height, 500, 0.0001);
+    
+    CGPoint targetContentOffset = CGPointMake(0, 500);
+    self.scrollHandler.targetContentOffset = targetContentOffset;
+    
+    id<UIScrollViewDelegate> const scrollViewDelegate = self.collectionView.delegate;
+    
+    [scrollViewDelegate scrollViewWillEndDragging:self.collectionView
+                                     withVelocity:CGPointZero
+                              targetContentOffset:&targetContentOffset];
+    
+    XCTAssertEqual(self.viewController.viewModel.bodyComponentModels.count, 6u);
+    XCTAssertEqualObjects(self.viewController.viewModel.bodyComponentModels[5].identifier, @"extended-component-page-1");
+    
+    self.collectionView.contentSize = self.collectionView.collectionViewLayout.collectionViewContentSize;
+    XCTAssertEqualWithAccuracy(self.collectionView.contentSize.height, 600, 0.0001);
+    
+    targetContentOffset = CGPointMake(0, 600);
+    self.scrollHandler.targetContentOffset = targetContentOffset;
+    
+    [scrollViewDelegate scrollViewWillEndDragging:self.collectionView
+                                     withVelocity:CGPointZero
+                              targetContentOffset:&targetContentOffset];
+    
+    XCTAssertEqual(self.viewController.viewModel.bodyComponentModels.count, 7u);
+    XCTAssertEqualObjects(self.viewController.viewModel.bodyComponentModels[6].identifier, @"extended-component-page-2");
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
