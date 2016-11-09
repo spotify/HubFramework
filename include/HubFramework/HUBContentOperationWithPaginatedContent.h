@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
                           viewURI:(NSURL *)viewURI
                       featureInfo:(id<HUBFeatureInfo>)featureInfo
                 connectivityState:(HUBConnectivityState)connectivityState
-                    previousError:(nullable NSError *)previousError;
+                    previousError:(nullable NSError *)previousError NS_SWIFT_NAME(appendContent(pageIndex:viewModelBuilder:viewURI:featureInfo:connectivityState:previousError:));
 
 @end
 
