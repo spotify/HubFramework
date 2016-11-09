@@ -259,8 +259,14 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
-    [self.collectionView removeFromSuperview];
-    self.collectionView = nil;
+    if (self.collectionView != nil) {
+        UICollectionView * const collectionView = self.collectionView;
+        [collectionView removeFromSuperview];
+        [self.view removeGestureRecognizer:collectionView.panGestureRecognizer];
+        
+        self.collectionView = nil;
+    }
+    
     self.viewModel = nil;
 }
 

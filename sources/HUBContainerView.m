@@ -34,9 +34,11 @@ NS_ASSUME_NONNULL_BEGIN
     [_collectionView removeFromSuperview];
     _collectionView = nil;
 
-    if (collectionView) {
-        _collectionView = collectionView;
-        [self insertSubview:(UICollectionView *)collectionView atIndex:0];
+    if (collectionView != nil) {
+        UICollectionView * const nonNilCollectionView = collectionView;
+        _collectionView = nonNilCollectionView;
+        [self insertSubview:nonNilCollectionView atIndex:0];
+        [self addGestureRecognizer:nonNilCollectionView.panGestureRecognizer];
     }
 }
 
