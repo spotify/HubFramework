@@ -37,7 +37,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSString *> *showcaseNamesForComponentNames;
 
 /// Initialize an instance of this class with a name:component dictionary of components to create
-- (instancetype)initWithComponents:(NSDictionary<NSString *, id<HUBComponent>> *)components HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithComponents:(NSDictionary<NSString *, id<HUBComponent>> *)components;
+
+/// Initialize an instance of this class with a block that creates components
+- (instancetype)initWithBlock:(id<HUBComponent> _Nullable(^)(NSString *))block HUB_DESIGNATED_INITIALIZER;
 
 @end
 

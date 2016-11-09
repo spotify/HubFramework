@@ -922,6 +922,39 @@
     XCTAssertEqualObjects(componentModels[1].identifier, @"B-1");
 }
 
+- (void)testIsLoading
+{
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    
+    contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        return NO;
+    };
+    
+    contentOperation.paginatedContentLoadingBlock = ^(id<HUBViewModelBuilder> builder, NSUInteger pageIndex) {
+        return NO;
+    };
+    
+    [self createLoaderWithContentOperations:@[contentOperation]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+    
+    XCTAssertFalse(self.loader.isLoading);
+    
+    [self.loader loadViewModel];
+    XCTAssertTrue(self.loader.isLoading);
+    
+    id<HUBContentOperationDelegate> const contentOperationDelegate = contentOperation.delegate;
+    
+    [contentOperationDelegate contentOperationDidFinish:contentOperation];
+    XCTAssertFalse(self.loader.isLoading);
+    
+    [self.loader loadNextPageForCurrentViewModel];
+    XCTAssertTrue(self.loader.isLoading);
+    
+    [contentOperationDelegate contentOperationDidFinish:contentOperation];
+    XCTAssertFalse(self.loader.isLoading);
+}
+
 #pragma mark - HUBViewModelLoaderDelegate
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel

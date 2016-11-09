@@ -259,8 +259,14 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
-    [self.collectionView removeFromSuperview];
-    self.collectionView = nil;
+    if (self.collectionView != nil) {
+        UICollectionView * const collectionView = self.collectionView;
+        [collectionView removeFromSuperview];
+        [self.view removeGestureRecognizer:collectionView.panGestureRecognizer];
+        
+        self.collectionView = nil;
+    }
+    
     self.viewModel = nil;
 }
 
@@ -788,6 +794,12 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                                     contentInset:scrollView.contentInset
                                                                             currentContentOffset:scrollView.contentOffset
                                                                            proposedContentOffset:*targetContentOffset];
+    
+    if (targetContentOffset->y >= (scrollView.contentSize.height - CGRectGetHeight(scrollView.frame))) {
+        if (!self.viewModelLoader.isLoading) {
+            [self.viewModelLoader loadNextPageForCurrentViewModel];
+        }
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView

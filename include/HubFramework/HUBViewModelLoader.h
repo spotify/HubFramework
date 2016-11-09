@@ -83,6 +83,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBViewModel> initialViewModel;
 
 /**
+ *  Whether the view model loader is currently loading
+ *
+ *  True whenever one or more content operations are currently in the process of loading content, either as part
+ *  of the main content loading chain, or as part of appending paginated content.
+ */
+@property (nonatomic, assign, readonly) BOOL isLoading;
+
+/**
  *  Load a view model using this loader
  *
  *  Depending on the current connectivity state (determined by the current `HUBConnectivityStateResolver`),

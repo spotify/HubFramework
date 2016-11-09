@@ -167,6 +167,11 @@ NS_ASSUME_NONNULL_BEGIN
     return initialViewModel;
 }
 
+- (BOOL)isLoading
+{
+    return self.contentOperationQueue.count > 0;
+}
+
 - (void)loadViewModel
 {
     if (self.contentReloadPolicy != nil) {

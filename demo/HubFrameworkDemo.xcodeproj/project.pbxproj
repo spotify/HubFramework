@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6510FD791DD1D182002FA2DC /* PrettyPicturesActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */; };
+		657DFE1B1DC8E21700F20C0E /* SelectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DFE191DC8E21700F20C0E /* SelectionUITests.swift */; };
+		657DFE1C1DC8E21700F20C0E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 657DFE1A1DC8E21700F20C0E /* Info.plist */; };
 		8A27299A1D9546BB00EF43FC /* RootContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2729991D9546BB00EF43FC /* RootContentOperationFactory.swift */; };
 		8A27299E1D9546ED00EF43FC /* RootContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A27299D1D9546ED00EF43FC /* RootContentOperation.swift */; };
 		8A2729A21D95486A00EF43FC /* URL+ViewURIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2729A11D95486A00EF43FC /* URL+ViewURIs.swift */; };
@@ -20,6 +23,7 @@
 		8A42E1F71D8C468C004FAC33 /* ComponentLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */; };
 		8A42E1F91D8C476C004FAC33 /* ComponentFallbackHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */; };
 		8A42E1FB1D8C4CEB004FAC33 /* RowComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */; };
+		8AA98C451DD3778B006CA6AA /* PaginationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA98C441DD3778B006CA6AA /* PaginationUITests.swift */; };
 		8AB850961DBF9DE300AFAFD0 /* CarouselComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */; };
 		8ABCCEAA1D9D1AC3005113B5 /* ReallyLongListContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCCEA91D9D1AC3005113B5 /* ReallyLongListContentOperation.swift */; };
 		8ABCCEAC1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCCEAB1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift */; };
@@ -42,6 +46,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		657DFE141DC8E1B600F20C0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A42E08A1D8C36A3004FAC33 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8A42E0911D8C36A3004FAC33;
+			remoteInfo = HubFrameworkDemo;
+		};
 		8A42E0BA1D8C37B4004FAC33 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */;
@@ -66,6 +77,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrettyPicturesActionHandler.swift; sourceTree = "<group>"; };
+		657DFE0F1DC8E1B600F20C0E /* HubFrameworkDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HubFrameworkDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		657DFE191DC8E21700F20C0E /* SelectionUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectionUITests.swift; path = tests/SelectionUITests.swift; sourceTree = SOURCE_ROOT; };
+		657DFE1A1DC8E21700F20C0E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = tests/Info.plist; sourceTree = SOURCE_ROOT; };
 		8A2729991D9546BB00EF43FC /* RootContentOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootContentOperationFactory.swift; sourceTree = "<group>"; };
 		8A27299D1D9546ED00EF43FC /* RootContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootContentOperation.swift; sourceTree = "<group>"; };
 		8A2729A11D95486A00EF43FC /* URL+ViewURIs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+ViewURIs.swift"; sourceTree = "<group>"; };
@@ -81,6 +96,7 @@
 		8A42E1F61D8C468C004FAC33 /* ComponentLayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentLayoutManager.swift; sourceTree = "<group>"; };
 		8A42E1F81D8C476C004FAC33 /* ComponentFallbackHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentFallbackHandler.swift; sourceTree = "<group>"; };
 		8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowComponent.swift; sourceTree = "<group>"; };
+		8AA98C441DD3778B006CA6AA /* PaginationUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaginationUITests.swift; path = tests/PaginationUITests.swift; sourceTree = SOURCE_ROOT; };
 		8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselComponent.swift; sourceTree = "<group>"; };
 		8ABCCEA91D9D1AC3005113B5 /* ReallyLongListContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReallyLongListContentOperation.swift; sourceTree = "<group>"; };
 		8ABCCEAB1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReallyLongListContentOperationFactory.swift; sourceTree = "<group>"; };
@@ -103,6 +119,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		657DFE0C1DC8E1B600F20C0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A42E08F1D8C36A3004FAC33 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +138,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		657DFE101DC8E1B600F20C0E /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				657DFE191DC8E21700F20C0E /* SelectionUITests.swift */,
+				8AA98C441DD3778B006CA6AA /* PaginationUITests.swift */,
+				657DFE1A1DC8E21700F20C0E /* Info.plist */,
+			);
+			name = Tests;
+			path = HubFrameworkDemoUITests;
+			sourceTree = "<group>";
+		};
 		8A374CFA1DBE65920013E592 /* Todo list */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +165,7 @@
 				8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */,
 				8A42E0A81D8C376B004FAC33 /* Sources */,
 				8A42E0AD1D8C3779004FAC33 /* Resources */,
+				657DFE101DC8E1B600F20C0E /* Tests */,
 				8A42E0931D8C36A3004FAC33 /* Products */,
 				8AD732061D9AD63700E4B427 /* Frameworks */,
 			);
@@ -140,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				8A42E0921D8C36A3004FAC33 /* HubFrameworkDemo.app */,
+				657DFE0F1DC8E1B600F20C0E /* HubFrameworkDemoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -256,6 +292,7 @@
 		8AD72F4F1D9ABCDD00E4B427 /* Pretty pictures */ = {
 			isa = PBXGroup;
 			children = (
+				6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */,
 				8AD72F541D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift */,
 				8AD72F521D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift */,
 			);
@@ -273,6 +310,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		657DFE0E1DC8E1B600F20C0E /* HubFrameworkDemoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 657DFE161DC8E1B600F20C0E /* Build configuration list for PBXNativeTarget "HubFrameworkDemoUITests" */;
+			buildPhases = (
+				657DFE0B1DC8E1B600F20C0E /* Sources */,
+				657DFE0C1DC8E1B600F20C0E /* Frameworks */,
+				657DFE0D1DC8E1B600F20C0E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				657DFE151DC8E1B600F20C0E /* PBXTargetDependency */,
+			);
+			name = HubFrameworkDemoUITests;
+			productName = HubFrameworkDemoUITests;
+			productReference = 657DFE0F1DC8E1B600F20C0E /* HubFrameworkDemoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		8A42E0911D8C36A3004FAC33 /* HubFrameworkDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A42E0A41D8C36A3004FAC33 /* Build configuration list for PBXNativeTarget "HubFrameworkDemo" */;
@@ -301,6 +356,12 @@
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Spotify;
 				TargetAttributes = {
+					657DFE0E1DC8E1B600F20C0E = {
+						CreatedOnToolsVersion = 8.0;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 8A42E0911D8C36A3004FAC33;
+					};
 					8A42E0911D8C36A3004FAC33 = {
 						CreatedOnToolsVersion = 8.0;
 						ProvisioningStyle = Automatic;
@@ -327,6 +388,7 @@
 			projectRoot = "";
 			targets = (
 				8A42E0911D8C36A3004FAC33 /* HubFrameworkDemo */,
+				657DFE0E1DC8E1B600F20C0E /* HubFrameworkDemoUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -349,6 +411,14 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		657DFE0D1DC8E1B600F20C0E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				657DFE1C1DC8E21700F20C0E /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A42E0901D8C36A3004FAC33 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -361,6 +431,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		657DFE0B1DC8E1B600F20C0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				657DFE1B1DC8E21700F20C0E /* SelectionUITests.swift in Sources */,
+				8AA98C451DD3778B006CA6AA /* PaginationUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A42E08E1D8C36A3004FAC33 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -381,6 +460,7 @@
 				8AD5EDBD1D9A7EC3004B2CEA /* GitHubSearchContentOperationFactory.swift in Sources */,
 				8A42E0AB1D8C376B004FAC33 /* AppDelegate.swift in Sources */,
 				8AD5EDC41D9A92EC004B2CEA /* GitHubSearchCustomDataKeys.swift in Sources */,
+				6510FD791DD1D182002FA2DC /* PrettyPicturesActionHandler.swift in Sources */,
 				8A27299E1D9546ED00EF43FC /* RootContentOperation.swift in Sources */,
 				8A374CFF1DBE659E0013E592 /* TodoListActionFactory.swift in Sources */,
 				8ABCCEAA1D9D1AC3005113B5 /* ReallyLongListContentOperation.swift in Sources */,
@@ -399,6 +479,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		657DFE151DC8E1B600F20C0E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8A42E0911D8C36A3004FAC33 /* HubFrameworkDemo */;
+			targetProxy = 657DFE141DC8E1B600F20C0E /* PBXContainerItemProxy */;
+		};
 		DD874DCA1D9B1D4400BEF720 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = HubFramework;
@@ -418,6 +503,33 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		657DFE171DC8E1B600F20C0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = HubFrameworkDemo;
+			};
+			name = Debug;
+		};
+		657DFE181DC8E1B600F20C0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = HubFrameworkDemo;
+			};
+			name = Release;
+		};
 		8A42E0A21D8C36A3004FAC33 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -544,6 +656,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		657DFE161DC8E1B600F20C0E /* Build configuration list for PBXNativeTarget "HubFrameworkDemoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				657DFE171DC8E1B600F20C0E /* Debug */,
+				657DFE181DC8E1B600F20C0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8A42E08D1D8C36A3004FAC33 /* Build configuration list for PBXProject "HubFrameworkDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

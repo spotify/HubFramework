@@ -19,36 +19,21 @@
  *  under the License.
  */
 
-#import "HUBContainerView.h"
+import Foundation
+import HubFramework
+import SafariServices
 
-NS_ASSUME_NONNULL_BEGIN
+/// Action handler that opens a URL in a Safari VC
+class PrettyPicturesActionHandler: NSObject, HUBActionHandler {
+    func handleAction(with context: HUBActionContext) -> Bool {
+        guard let uri = context.componentModel?.target?.uri else {
+            return false
+        }
 
-@implementation HUBContainerView
+        let svc = SFSafariViewController(url: uri)
+        context.viewController.present(svc, animated: true, completion: nil)
 
-- (void)setCollectionView:(nullable UICollectionView *)collectionView
-{
-    if (_collectionView == collectionView) {
-        return;
-    }
-
-    [_collectionView removeFromSuperview];
-    _collectionView = nil;
-
-    if (collectionView != nil) {
-        UICollectionView * const nonNilCollectionView = collectionView;
-        _collectionView = nonNilCollectionView;
-        [self insertSubview:nonNilCollectionView atIndex:0];
-        [self addGestureRecognizer:nonNilCollectionView.panGestureRecognizer];
+        return true
     }
 }
 
-- (void)setBackgroundColor:(nullable UIColor *)backgroundColor
-{
-    [super setBackgroundColor:backgroundColor];
-
-    self.collectionView.backgroundColor = backgroundColor;
-}
-
-@end
-
-NS_ASSUME_NONNULL_END

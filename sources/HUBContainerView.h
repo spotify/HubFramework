@@ -29,7 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Collection view contained by the container.
  *
- *  @discussion When collectionView is set it's also added as a subview.
+ *  When a collectionView is set it's also added as a subview, and its pan gesture
+ *  recognizer is added to this view.
  */
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
 

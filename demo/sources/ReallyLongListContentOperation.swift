@@ -23,32 +23,27 @@ import Foundation
 import HubFramework
 
 /// Content operation that adds 10,000 rows as part of the "Really Long List" feature
-class ReallyLongListContentOperation: NSObject, HUBContentOperation {
+class ReallyLongListContentOperation: NSObject, HUBContentOperationWithPaginatedContent {
     weak var delegate: HUBContentOperationDelegate?
-    private var initialRenderingPassPerformed = false
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
-        // To enable the navigation bar title to be displayed synchronously,
-        // we finish directly if this operation is being executed for the first
-        // rendering pass, then reschedule it right after that, so that the
-        // operation gets run again (adding all the rows)
-        if !initialRenderingPassPerformed {
-            initialRenderingPassPerformed = true
-            delegate?.contentOperationDidFinish(self)
-            delegate?.contentOperationRequiresRescheduling(self)
-            return
+        addRows(toViewModelBuilder: viewModelBuilder, pageIndex: 0)
+    }
+    
+    func appendContent(pageIndex: UInt, viewModelBuilder: HUBViewModelBuilder, viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, previousError: Error?) {
+        addRows(toViewModelBuilder: viewModelBuilder, pageIndex: pageIndex)
+    }
+    
+    private func addRows(toViewModelBuilder viewModelBuilder: HUBViewModelBuilder, pageIndex: UInt) {
+        let pageSize = 50
+        let startIndex = Int(pageIndex) * pageSize
+        let endIndex = startIndex + pageSize - 1
+        
+        (startIndex...endIndex).forEach { index in
+            let rowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "row-\(index)")
+            rowBuilder.title = "Row number \(index + 1)"
         }
         
-        // Run this code on a background queue as to not block the main thread
-        DispatchQueue(label: String(describing: self)).async {
-            // Add 10,000 rows with unique IDs
-            for index in 0..<10000 {
-                let rowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "row-\(index)")
-                rowBuilder.title = "Row number \(index + 1)"
-            }
-            
-            // We don't need to manually go back to the main queue, Hubs takes care of this for us
-            self.delegate?.contentOperationDidFinish(self)
-        }
+        delegate?.contentOperationDidFinish(self)
     }
 }

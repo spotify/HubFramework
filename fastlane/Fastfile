@@ -5,18 +5,33 @@ platform :ios do
 
   desc 'Run unit tests'
   lane :test do
+    run_tests(scheme: 'HubFramework', output_label: 'tests')
+  end
+
+  desc 'Run UI tests'
+  lane :test_ui do
+    run_tests(scheme: 'HubFrameworkDemo', output_label: 'ui-tests')
+  end
+
+  private_lane :run_tests do |options|
+    scheme = options[:scheme]
+    output_label = options[:output_label]
+
+    UI.user_error!("No Xcode scheme provided") unless scheme
+    UI.user_error!("No label for the output was provided") unless output_label
+
     system('pkill', '-9', '-x', 'Simulator')
     UI.success('Simulator app killed')
 
     device = ENV['TEST_DEVICE_NAME'] || 'iPhone 6s'
     UI.message("Simulator testing device set to '#{device}'")
 
-    output_directory = 'build/tests'
+    output_directory = "build/#{output_label}"
     ENV['XCPRETTY_JSON_FILE_OUTPUT'] = "#{output_directory}/summary.json"
 
     scan(
       :workspace => 'HubFramework.xcworkspace',
-      :scheme => 'HubFramework',
+      :scheme => scheme,
       :devices => [device],
       :derived_data_path => 'build/DerivedData',
       :output_directory => output_directory,
@@ -83,7 +98,7 @@ platform :ios do
     pod_lib_lint(:quick => true)
 
     license_header_files = Dir.chdir("..") do
-      license_header_files = Dir.glob('{live/sources/*.swift,demo/sources/*.swift,include/HubFramework/*.h,sources/*.{h,m},tests/*/*.{h,m},tests/*.m}')
+      license_header_files = Dir.glob('{live/sources/*.swift,demo/{sources,tests}/*.swift,include/HubFramework/*.h,sources/*.{h,m},tests/*/*.{h,m},tests/*.m}')
     end
     lint_sources_for_license_header(
       :template => 'other/license_header_template.txt',
@@ -112,11 +127,13 @@ platform :ios do
   desc '- `LINT`:           Whether the sources and certain artifacts should be linted defaults to `YES`'
   desc '- `RUN_TESTS`:      Whether unit tests should be run, defaults to `YES`'
   desc '- `BUILD_DEMO_APP`: Whether the demo app should be built or not, defaults to `YES`'
+  desc '- `RUN_UI_TESTS`:   Whether ui tests should be run against the demo app, defaults to `YES`'
   desc '- `BUILD_LIVE_CLI`: Whether the live CLI should be built or not, defaults to `YES`'
   lane :ci_all do
     lint unless shouldSkipStep('LINT')
     test unless shouldSkipStep('RUN_TESTS')
     demo unless shouldSkipStep('BUILD_DEMO_APP')
+    test_ui unless shouldSkipStep('BUILD_DEMO_APP') || shouldSkipStep('RUN_UI_TESTS')
     live unless shouldSkipStep('BUILD_LIVE_CLI')
   end
 
