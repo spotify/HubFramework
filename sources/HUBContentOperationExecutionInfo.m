@@ -19,32 +19,23 @@
  *  under the License.
  */
 
-#import "HUBContainerView.h"
+#import "HUBContentOperationExecutionInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation HUBContainerView
+@implementation HUBContentOperationExecutionInfo
 
-- (void)setCollectionView:(nullable UICollectionView *)collectionView
+- (instancetype)initWithContentOperationIndex:(NSUInteger)contentOperationIndex
+                                executionMode:(HUBContentOperationExecutionMode)executionMode
 {
-    if (_collectionView == collectionView) {
-        return;
+    self = [super init];
+    
+    if (self) {
+        _contentOperationIndex = contentOperationIndex;
+        _executionMode = executionMode;
     }
-
-    [_collectionView removeFromSuperview];
-    _collectionView = nil;
-
-    if (collectionView) {
-        _collectionView = collectionView;
-        [self insertSubview:(UICollectionView *)collectionView atIndex:0];
-    }
-}
-
-- (void)setBackgroundColor:(nullable UIColor *)backgroundColor
-{
-    [super setBackgroundColor:backgroundColor];
-
-    self.collectionView.backgroundColor = backgroundColor;
+    
+    return self;
 }
 
 @end

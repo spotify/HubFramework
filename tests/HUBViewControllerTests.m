@@ -1363,6 +1363,20 @@
     XCTAssertEqualObjects(self.collectionView.backgroundColor, [UIColor redColor]);
 }
 
+- (void)testSettingBackgroundColorOfViewDoesNotUpdateHeaderComponentBackgroundColor
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"header";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    self.component.view.backgroundColor = [UIColor greenColor];
+    self.viewController.view.backgroundColor = [UIColor redColor];
+    XCTAssertEqualObjects(self.component.view.backgroundColor, [UIColor greenColor]);
+}
+
 - (void)testContainerViewSizeForNonReusedRootComponentsAreSameAsCollectionViewSize
 {
     __weak __typeof(self) weakSelf = self;
