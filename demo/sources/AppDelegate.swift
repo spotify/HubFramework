@@ -123,7 +123,7 @@ import HubFramework
             contentOperationFactories: [PrettyPicturesContentOperationFactory()],
             contentReloadPolicy: nil,
             customJSONSchemaIdentifier: nil,
-            actionHandler: nil,
+            actionHandler: PrettyPicturesActionHandler(),
             viewControllerScrollHandler: nil
         )
     }
