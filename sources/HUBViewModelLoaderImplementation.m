@@ -24,6 +24,7 @@
 #import "HUBFeatureInfo.h"
 #import "HUBConnectivityStateResolver.h"
 #import "HUBContentOperationWithInitialContent.h"
+#import "HUBContentOperationWithPaginatedContent.h"
 #import "HUBContentOperationActionObserver.h"
 #import "HUBContentOperationActionPerformer.h"
 #import "HUBActionPerformer.h"
@@ -32,6 +33,7 @@
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBViewModelImplementation.h"
 #import "HUBContentOperationWrapper.h"
+#import "HUBContentOperationExecutionInfo.h"
 #import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -42,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBFeatureInfo> featureInfo;
 @property (nonatomic, copy, readonly) NSArray<id<HUBContentOperation>> *contentOperations;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBContentOperationWrapper *> *contentOperationWrappers;
-@property (nonatomic, strong, readonly) NSMutableArray<HUBContentOperationWrapper *> *contentOperationQueue;
+@property (nonatomic, strong, readonly) NSMutableArray<HUBContentOperationExecutionInfo *> *contentOperationQueue;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
@@ -54,7 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBViewModelBuilderImplementation *> *builderSnapshots;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, NSError *> *errorSnapshots;
 @property (nonatomic, strong, nullable) HUBViewModelBuilderImplementation *currentBuilder;
-@property (nonatomic, strong, nullable) NSError *currentError;
+@property (nonatomic, assign) BOOL anyContentOperationSupportsPagination;
+@property (nonatomic, assign) NSUInteger pageIndex;
 
 @end
 
@@ -176,7 +179,20 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
-    [self scheduleContentOperationsFromIndex:0];
+    [self scheduleContentOperationsFromIndex:0 executionMode:HUBContentOperationExecutionModeMain];
+}
+
+- (void)loadNextPageForCurrentViewModel
+{
+    if (self.previouslyLoadedViewModel == nil) {
+        return;
+    }
+    
+    if (!self.anyContentOperationSupportsPagination) {
+        return;
+    }
+    
+    [self scheduleContentOperationsFromIndex:0 executionMode:HUBContentOperationExecutionModePagination];
 }
 
 #pragma mark - HUBContentOperationWrapperDelegate
@@ -184,23 +200,30 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)contentOperationWrapperDidFinish:(HUBContentOperationWrapper *)operationWrapper
 {
     HUBPerformOnMainQueue(^{
-        self.currentError = nil;
-        [self performFirstContentOperationInQueueAfterFinishingOperation:operationWrapper];
+        [self contentOperationWrapperDidFinish:operationWrapper withError:nil];
     });
 }
 
 - (void)contentOperationWrapper:(HUBContentOperationWrapper *)operationWrapper didFailWithError:(NSError *)error
 {
     HUBPerformOnMainQueue(^{
-        self.currentError = error;
-        [self performFirstContentOperationInQueueAfterFinishingOperation:operationWrapper];
+        [self contentOperationWrapperDidFinish:operationWrapper withError:error];
     });
+}
+
+- (void)contentOperationWrapperDidFinish:(HUBContentOperationWrapper *)operationWrapper withError:(nullable NSError *)error
+{
+    [self.contentOperationQueue removeObjectAtIndex:0];
+    self.builderSnapshots[@(operationWrapper.index)] = [self.currentBuilder copy];
+    self.errorSnapshots[@(operationWrapper.index)] = error;
+    [self performFirstContentOperationInQueue];
 }
 
 - (void)contentOperationWrapperRequiresRescheduling:(HUBContentOperationWrapper *)operationWrapper
 {
     HUBPerformOnMainQueue(^{
-        [self scheduleContentOperationsFromIndex:operationWrapper.index];
+        [self scheduleContentOperationsFromIndex:operationWrapper.index
+                                   executionMode:HUBContentOperationExecutionModeMain];
     });
 }
 
@@ -213,35 +236,35 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self.connectivityState != previousConnectivityState) {
         [self.delegate viewModelLoader:self didLoadViewModel:self.initialViewModel];
-        [self scheduleContentOperationsFromIndex:0];
+        
+        [self scheduleContentOperationsFromIndex:0
+                                   executionMode:HUBContentOperationExecutionModeMain];
     }
 }
 
 #pragma mark - Private utilities
 
-- (HUBViewModelBuilderImplementation *)builderForContentOperationAtIndex:(NSUInteger)index
-                                             previouslyExecutedOperation:(nullable HUBContentOperationWrapper *)previouslyExecutedOperation
+- (HUBViewModelBuilderImplementation *)builderForExecutionInfo:(HUBContentOperationExecutionInfo *)executionInfo
 {
-    if (index == 0) {
-        return [self createBuilder];
-    }
-    
-    if (previouslyExecutedOperation != nil) {
-        if (previouslyExecutedOperation.index == index - 1) {
-            NSAssert(self.currentBuilder != nil, @"Unexpected nil view model builder in ongoing content loading chain");
-            self.builderSnapshots[@(index)] = [self.currentBuilder copy];
-            self.errorSnapshots[@(index)] = self.currentError;
-            
-            HUBViewModelBuilderImplementation * const copiedBuilder = [self.currentBuilder copy];
-            return copiedBuilder;
+    if (executionInfo.contentOperationIndex == 0) {
+        switch (executionInfo.executionMode) {
+            case HUBContentOperationExecutionModeMain:
+                return [self createBuilder];
+            case HUBContentOperationExecutionModePagination:
+                return [self snapshotOfBuilderAtIndex:self.contentOperations.count - 1];
         }
     }
     
-    HUBViewModelBuilderImplementation * const existingSnapshot = self.builderSnapshots[@(index)];
-    NSAssert(existingSnapshot != nil, @"Unexpected nil shapshot for content operation at index: %lu", (unsigned long)index);
-    return [existingSnapshot copy];
+    return [self snapshotOfBuilderAtIndex:executionInfo.contentOperationIndex - 1];
 }
-                                             
+
+- (HUBViewModelBuilderImplementation *)snapshotOfBuilderAtIndex:(NSUInteger)index
+{
+    HUBViewModelBuilderImplementation * const snapshot = self.builderSnapshots[@(index)];
+    NSAssert(snapshot != nil, @"Unexpected nil shapshot for content operation at index: %lu", (unsigned long)index);
+    return [snapshot copy];
+}
+
 - (HUBViewModelBuilderImplementation *)createBuilder
 {
     return [[HUBViewModelBuilderImplementation alloc] initWithJSONSchema:self.JSONSchema
@@ -249,69 +272,90 @@ NS_ASSUME_NONNULL_BEGIN
                                                        iconImageResolver:self.iconImageResolver];
 }
 
+- (nullable NSNumber *)pageIndexForExecutionInfo:(HUBContentOperationExecutionInfo *)executionInfo
+{
+    switch (executionInfo.executionMode) {
+        case HUBContentOperationExecutionModeMain:
+            return nil;
+        case HUBContentOperationExecutionModePagination: {
+            if (executionInfo.contentOperationIndex == 0) {
+                self.pageIndex++;
+            }
+            
+            return @(self.pageIndex);
+        }
+    }
+}
+
+- (nullable NSError *)previousErrorForExecutionInfo:(HUBContentOperationExecutionInfo *)executionInfo
+{
+    switch (executionInfo.executionMode) {
+        case HUBContentOperationExecutionModeMain: {
+            if (executionInfo.contentOperationIndex == 0) {
+                return nil;
+            }
+            
+            return self.errorSnapshots[@(executionInfo.contentOperationIndex - 1)];
+        }
+        case HUBContentOperationExecutionModePagination:
+            return self.errorSnapshots[@(executionInfo.contentOperationIndex)];
+    }
+}
+
 - (void)scheduleContentOperationsFromIndex:(NSUInteger)startIndex
+                             executionMode:(HUBContentOperationExecutionMode)executionMode
 {
     NSParameterAssert(startIndex < self.contentOperations.count);
     
-    NSMutableArray<HUBContentOperationWrapper *> * const operations = [NSMutableArray new];
+    NSMutableArray<HUBContentOperationExecutionInfo *> * const appendedQueue = [NSMutableArray new];
     NSUInteger operationIndex = startIndex;
     
     while (operationIndex < self.contentOperations.count) {
-        HUBContentOperationWrapper * const cachedOperationWrapper = self.contentOperationWrappers[@(operationIndex)];
+        HUBContentOperationExecutionInfo * const executionInfo = [[HUBContentOperationExecutionInfo alloc] initWithContentOperationIndex:operationIndex
+                                                                                                                           executionMode:executionMode];
         
-        if (cachedOperationWrapper != nil) {
-            [operations addObject:cachedOperationWrapper];
-        } else {
-            id<HUBContentOperation> const operation = self.contentOperations[operationIndex];
-            HUBContentOperationWrapper * const operationWrapper = [[HUBContentOperationWrapper alloc] initWithContentOperation:operation index:operationIndex];
-            operationWrapper.delegate = self;
-            [operations addObject:operationWrapper];
-            self.contentOperationWrappers[@(operationIndex)] = operationWrapper;
-        }
-        
+        [appendedQueue addObject:executionInfo];
         operationIndex++;
     }
     
     BOOL const shouldRestartQueue = (self.contentOperationQueue.count == 0);
-    [self.contentOperationQueue addObjectsFromArray:operations];
+    [self.contentOperationQueue addObjectsFromArray:appendedQueue];
     
     if (shouldRestartQueue) {
-        [self performFirstContentOperationInQueueAfterFinishingOperation:nil];
+        [self performFirstContentOperationInQueue];
     }
 }
 
-- (void)performFirstContentOperationInQueueAfterFinishingOperation:(nullable HUBContentOperationWrapper *)finishedOperation
+- (void)performFirstContentOperationInQueue
 {
     if (self.contentOperationQueue.count == 0) {
         [self contentOperationQueueDidBecomeEmpty];
         return;
     }
     
-    HUBContentOperationWrapper * const operation = self.contentOperationQueue[0];
-    [self.contentOperationQueue removeObjectAtIndex:0];
-    
-    HUBViewModelBuilderImplementation * const builder = [self builderForContentOperationAtIndex:operation.index
-                                                                    previouslyExecutedOperation:finishedOperation];
+    HUBContentOperationExecutionInfo * const executionInfo = self.contentOperationQueue[0];
+    HUBContentOperationWrapper * const operation = [self getOrCreateWrapperForContentOperationAtIndex:executionInfo.contentOperationIndex];
+    HUBViewModelBuilderImplementation * const builder = [self builderForExecutionInfo:executionInfo];
+    NSNumber * const pageIndex = [self pageIndexForExecutionInfo:executionInfo];
+    NSError * const previousError = [self previousErrorForExecutionInfo:executionInfo];
     
     self.currentBuilder = builder;
-    
-    NSError * const previousError = self.errorSnapshots[@(operation.index)];
     
     [operation performOperationForViewURI:self.viewURI
                               featureInfo:self.featureInfo
                         connectivityState:self.connectivityState
                          viewModelBuilder:builder
+                                pageIndex:pageIndex
                             previousError:previousError];
 }
 
 - (void)contentOperationQueueDidBecomeEmpty
 {
     id<HUBViewModelLoaderDelegate> const delegate = self.delegate;
+    NSError * const error = self.errorSnapshots[@(self.contentOperations.count - 1)];
     
-    if (self.currentError != nil) {
-        NSError * const error = self.currentError;
+    if (error != nil) {
         [delegate viewModelLoader:self didFailLoadingWithError:error];
-        self.currentError = nil;
         return;
     }
     
@@ -322,6 +366,26 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBViewModel> const viewModel = [self.currentBuilder build];
     self.previouslyLoadedViewModel = viewModel;
     [delegate viewModelLoader:self didLoadViewModel:viewModel];
+}
+
+- (HUBContentOperationWrapper *)getOrCreateWrapperForContentOperationAtIndex:(NSUInteger)operationIndex
+{
+    HUBContentOperationWrapper * const existingOperationWrapper = self.contentOperationWrappers[@(operationIndex)];
+    
+    if (existingOperationWrapper != nil) {
+        return existingOperationWrapper;
+    }
+    
+    id<HUBContentOperation> const operation = self.contentOperations[operationIndex];
+    HUBContentOperationWrapper * const newOperationWrapper = [[HUBContentOperationWrapper alloc] initWithContentOperation:operation index:operationIndex];
+    newOperationWrapper.delegate = self;
+    self.contentOperationWrappers[@(operationIndex)] = newOperationWrapper;
+    
+    if ([operation conformsToProtocol:@protocol(HUBContentOperationWithPaginatedContent)]) {
+        self.anyContentOperationSupportsPagination = YES;
+    }
+    
+    return newOperationWrapper;
 }
 
 @end
