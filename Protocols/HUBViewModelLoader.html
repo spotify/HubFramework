@@ -534,6 +534,52 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelLoader(im)loadNextPageForCurrentViewModel"></a>
+                    <a name="//apple_ref/objc/Method/-loadNextPageForCurrentViewModel" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelLoader(im)loadNextPageForCurrentViewModel">-loadNextPageForCurrentViewModel</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Load the next set of paginated content for the current view model this loader is for</p>
+
+<p>Use this method to extend the current view model with additional paginated content. The view model loader
+  automatically manages the current state of the view and the page index for you, so all you have to do is to
+  call this method whenever additional content should be loaded.</p>
+
+<p>Content loaded this way will be appended to the current view model, so if it already contains 2 component
+  models (A &amp; B), and a new one &copy; is added through this mechanism - the resulting view model will now contain
+  A, B &amp; C.</p>
+
+<p>Calling this method invokes content operations conforming to <code>HUBContentOperationWithPaginatedContent</code>.</p>
+
+<p>The same delegate methods are called for success/error when the view model loader finishes this task.</p>
+
+<p>Calling this method before first loading a view model using <code>loadViewModel</code> does nothing.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">loadNextPageForCurrentViewModel</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">loadNextPageForCurrentViewModel</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
