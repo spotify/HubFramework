@@ -179,6 +179,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSMutableDictionary<NSString *, NSObject<NSCoding> *> const * serialization = [NSMutableDictionary new];
     serialization[HUBJSONKeyIdentifier] = self.identifier;
+    serialization[HUBJSONKeyGroup] = self.groupIdentifier;
     serialization[HUBJSONKeyComponent] = [self serializedComponentData];
     serialization[HUBJSONKeyText] = [self serializedTextData];
     serialization[HUBJSONKeyImages] = [self serializedImageData];
