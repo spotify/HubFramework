@@ -27,10 +27,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UICollectionView *)createCollectionView
 {
-    return [[UICollectionView alloc] initWithFrame:CGRectZero
-                              collectionViewLayout:[UICollectionViewLayout new]];
-}
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                                          collectionViewLayout:[UICollectionViewLayout new]];
+    collectionView.accessibilityIdentifier = @"collectionView";
 
+    return collectionView;
+}
 @end
 
 NS_ASSUME_NONNULL_END
