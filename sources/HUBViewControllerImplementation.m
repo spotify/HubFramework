@@ -387,7 +387,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGRect)frameForBodyComponentAtIndex:(NSUInteger)index
 {
-    if (index >= self.viewModel.bodyComponentModels.count) {
+    if (index >= (NSUInteger)[self.collectionView numberOfItemsInSection:0]) {
         return CGRectZero;
     }
     
