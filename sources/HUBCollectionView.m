@@ -29,10 +29,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setContentOffset:(CGPoint)contentOffset
 {
-    if (![self.delegate collectionViewShouldBeginScrolling:self]) {
-        self.panGestureRecognizer.enabled = NO;
-        self.panGestureRecognizer.enabled = YES;
-        return;
+    id<HUBCollectionViewDelegate> const delegate = self.delegate;
+    
+    if (delegate != nil) {
+        if (![delegate collectionViewShouldBeginScrolling:self]) {
+            self.panGestureRecognizer.enabled = NO;
+            self.panGestureRecognizer.enabled = YES;
+            return;
+        }
     }
     
     [super setContentOffset:contentOffset];
