@@ -38,6 +38,7 @@
 #import "HUBImageLoader.h"
 #import "HUBComponentImageLoadingContext.h"
 #import "HUBCollectionViewFactory.h"
+#import "HUBCollectionView.h"
 #import "HUBCollectionViewLayout.h"
 #import "HUBContainerView.h"
 #import "HUBContentReloadPolicy.h"
@@ -64,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBActionPerformer,
     HUBActionHandlerWrapperDelegate,
     UICollectionViewDataSource,
-    UICollectionViewDelegate
+    HUBCollectionViewDelegate
 >
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
@@ -735,7 +736,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     return cell;
 }
 
-#pragma mark - UICollectionViewDelegate
+#pragma mark - HUBCollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView
        willDisplayCell:(UICollectionViewCell *)cell
@@ -761,6 +762,15 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
              didDisappearFromView:cell];
 
     [self removeComponentWrapperFromLookupTables:componentWrapper];
+}
+
+- (BOOL)collectionViewShouldBeginScrolling:(HUBCollectionView *)collectionView
+{
+    if (self.delegate == nil) {
+        return YES;
+    }
+    
+    return [self.delegate viewControllerShouldStartScrolling:self];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -869,7 +879,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         return;
     }
     
-    UICollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
+    HUBCollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
     self.collectionView = collectionView;
     collectionView.showsVerticalScrollIndicator = [self.scrollHandler shouldShowScrollIndicatorsInViewController:self];
     collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;

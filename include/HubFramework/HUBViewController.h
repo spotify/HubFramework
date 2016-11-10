@@ -84,6 +84,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewControllerDidFinishRendering:(UIViewController<HUBViewController> *)viewController;
 
 /**
+ *  Sent to a Hub Framework view controller's delegate to ask it whenever the view controller should start scrolling
+ *
+ *  @param viewController The view controller that is about to start scrolling
+ *
+ *  This method can be used to veto a scroll event from being started. It will be called every time the user starts
+ *  scrolling the view that is rendering body components.
+ */
+- (BOOL)viewControllerShouldStartScrolling:(UIViewController<HUBViewController> *)viewController;
+
+/**
  *  Sent to a Hub Framework view controller's delegate when a component is about to appear on the screen
  *
  *  @param viewController The view controller in which a component is about to appear

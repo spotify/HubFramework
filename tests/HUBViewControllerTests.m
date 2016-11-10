@@ -89,6 +89,7 @@
 @property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromApperanceDelegateMethod;
 @property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
+@property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
 
 @end
 
@@ -179,6 +180,7 @@
     self.componentLayoutTraitsFromDisapperanceDelegateMethod = [NSMutableArray new];
     self.componentModelsFromSelectionDelegateMethod = [NSMutableArray new];
     self.componentViewsFromApperanceDelegateMethod = [NSMutableArray new];
+    self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
 }
 
 #pragma mark - Tests
@@ -2337,6 +2339,75 @@
     XCTAssertEqualObjects(self.viewController.viewModel.bodyComponentModels[6].identifier, @"extended-component-page-2");
 }
 
+- (void)testPreventingViewControllerScrolling
+{
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithBlock:^(NSString *name) {
+        HUBComponentMock * const component = [HUBComponentMock new];
+        component.preferredViewSize = CGSizeMake(320, 100);
+        return component;
+    }];
+    
+    NSString * const componentNamespace = @"preventing-scrolling";
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        for (NSUInteger index = 0; index < 10; index++) {
+            NSString * const componentIdentifier = [NSString stringWithFormat:@"component-%@", @(index)];
+            [builder builderForBodyComponentModelWithIdentifier:componentIdentifier].componentNamespace = componentNamespace;
+        }
+        
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    // First verify that we can scroll the view per default
+    self.collectionView.contentOffset = CGPointMake(0, 500);
+    XCTAssertEqualWithAccuracy(self.collectionView.contentOffset.y, 500, 0.0001);
+    
+    self.viewControllerShouldStartScrollingBlock = ^{ return NO; };
+    self.collectionView.contentOffset = CGPointMake(0, 600);
+    XCTAssertEqualWithAccuracy(self.collectionView.contentOffset.y, 500, 0.0001);
+    
+    // Verify that scrolling works again as soon as we switch back
+    self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
+    self.collectionView.contentOffset = CGPointMake(0, 700);
+    XCTAssertEqualWithAccuracy(self.collectionView.contentOffset.y, 700, 0.0001);
+}
+
+- (void)testViewControllerWithoutDelegateIsAlwaysScrollable
+{
+    self.viewController.delegate = nil;
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithBlock:^(NSString *name) {
+        HUBComponentMock * const component = [HUBComponentMock new];
+        component.preferredViewSize = CGSizeMake(320, 100);
+        return component;
+    }];
+    
+    NSString * const componentNamespace = @"no-delegate-always-scrollable";
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        for (NSUInteger index = 0; index < 10; index++) {
+            NSString * const componentIdentifier = [NSString stringWithFormat:@"component-%@", @(index)];
+            [builder builderForBodyComponentModelWithIdentifier:componentIdentifier].componentNamespace = componentNamespace;
+        }
+        
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    // Here we force update the collection view's content size as it doesn't do it automatically when not attached to a proper window
+    self.collectionView.contentSize = self.collectionView.collectionViewLayout.collectionViewContentSize;
+    XCTAssertEqualWithAccuracy(self.collectionView.contentSize.height, 1000, 0.0001);
+    XCTAssertGreaterThan(self.collectionView.contentSize.height, CGRectGetHeight(self.collectionView.frame));
+    
+    self.collectionView.contentOffset = CGPointMake(0, 500);
+    XCTAssertEqualWithAccuracy(self.collectionView.contentOffset.y, 500, 0.0001);
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
@@ -2365,6 +2436,11 @@
     if (self.viewControllerDidFinishRenderingBlock) {
         self.viewControllerDidFinishRenderingBlock();
     }
+}
+
+- (BOOL)viewControllerShouldStartScrolling:(UIViewController<HUBViewController> *)viewController
+{
+    return self.viewControllerShouldStartScrollingBlock();
 }
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController

@@ -19,12 +19,12 @@
  *  under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "HUBCollectionView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Mocked collection view, for use in tests only
-@interface HUBCollectionViewMock : UICollectionView
+@interface HUBCollectionViewMock : HUBCollectionView
 
 /// The cells that the collection view will consider as being part of it
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSIndexPath *, UICollectionViewCell *> *cells;
