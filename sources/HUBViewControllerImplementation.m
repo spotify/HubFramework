@@ -1392,15 +1392,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                                      contentSize:self.collectionView.contentSize
                                                                                   viewController:self];
 
-    UICollectionView * const nonnullCollectionView = self.collectionView;
-    CGRect const initialContentRect = [self contentRectForScrollView:nonnullCollectionView];
-    [self.scrollHandler scrollingWillStartInViewController:self currentContentRect:initialContentRect];
-
-    __weak HUBViewControllerImplementation *weakSelf = self;
     void (^completionWrapper)() = ^{
-        HUBViewControllerImplementation *strongSelf = weakSelf;
-        CGRect const destinationContentRect = [strongSelf contentRectForScrollView:nonnullCollectionView];
-        [strongSelf.scrollHandler scrollingDidEndInViewController:strongSelf currentContentRect:destinationContentRect];
         completion();
     };
     
