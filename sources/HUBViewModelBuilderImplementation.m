@@ -266,6 +266,22 @@ NS_ASSUME_NONNULL_BEGIN
                                                        customData:[self.customData copy]];
 }
 
+#pragma mark - Manipulate custom data
+
+- (void)setCustomDataValue:(nullable id)value forKey:(nonnull NSString *)key
+{
+    NSMutableDictionary *customData = self.customData.mutableCopy;
+    customData = customData ?: [[NSMutableDictionary alloc] init];
+
+    if (value == nil) {
+        [customData removeObjectForKey:key];
+    } else {
+        [customData setObject:(id)value forKey:key];
+    }
+
+    self.customData = customData;
+}
+
 #pragma mark - HUBJSONCompatibleBuilder
 
 - (nullable NSError *)addJSONData:(NSData *)JSONData
