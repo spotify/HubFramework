@@ -606,6 +606,28 @@
     XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
 }
 
+- (void)testHeaderComponentNotReconfiguredForSameModel
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqualObjects(self.component.model.title, @"Header");
+    
+    self.contentReloadPolicy.shouldReload = YES;
+    
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    
+    XCTAssertEqual(self.contentOperation.performCount, 3u);
+    XCTAssertEqual(self.component.numberOfReuses, 0u);
+}
+
 - (void)testHeaderComponentNotifiedOfViewWillAppear
 {
     self.component.isViewObserver = YES;
@@ -678,6 +700,28 @@
     
     XCTAssertEqual(componentA.numberOfReuses, (NSUInteger)2);
     XCTAssertEqual(componentB.numberOfReuses, (NSUInteger)1);
+}
+
+- (void)testOverlayComponentNotReconfiguredForSameModel
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"id"].title = @"Overlay";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqualObjects(self.component.model.title, @"Overlay");
+    
+    self.contentReloadPolicy.shouldReload = YES;
+    
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    
+    XCTAssertEqual(self.contentOperation.performCount, 3u);
+    XCTAssertEqual(self.component.numberOfReuses, 0u);
 }
 
 - (void)testRemovedOverlayComponentsRemovedFromView
