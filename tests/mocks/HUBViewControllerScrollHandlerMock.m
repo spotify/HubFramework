@@ -51,7 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIEdgeInsets)contentInsetsForViewController:(UIViewController<HUBViewController> *)viewController
                          proposedContentInsets:(UIEdgeInsets)proposedContentInsets
 {
-    return self.contentInsets;
+    if (self.contentInsetHandler) {
+        return self.contentInsetHandler(viewController, proposedContentInsets);
+    } else {
+        return self.contentInsets;
+    }
 }
 
 - (void)scrollingWillStartInViewController:(UIViewController<HUBViewController> *)viewController
