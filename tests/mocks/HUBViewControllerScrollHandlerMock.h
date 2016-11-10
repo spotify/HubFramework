@@ -53,6 +53,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// A block that is called when the scroll handler is notified that scrolling has ended.
 @property (nonatomic, copy) void (^ _Nullable scrollingDidEndHandler)(CGRect contentRect);
 
+/// A block that can be used instead of the @c contentInset property to determine the content inset.
+@property (nonatomic, copy) UIEdgeInsets (^ _Nullable contentInsetHandler)(UIViewController<HUBViewController> *controller, UIEdgeInsets proposedOffset);
+
 @end
 
 NS_ASSUME_NONNULL_END

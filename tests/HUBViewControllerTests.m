@@ -1511,6 +1511,33 @@
     XCTAssertTrue(self.collectionView.appliedScrollViewOffsetAnimatedFlag);
 }
 
+- (void)testRenderingUpdatesContentInsetBeforeAndAfterRendering
+{
+    UIEdgeInsets const firstInsets = UIEdgeInsetsMake(100, 30, 40, 200);
+    UIEdgeInsets const secondInsets = UIEdgeInsetsMake(50, 0, 0, 0);
+
+    __weak HUBViewControllerTests *weakSelf = self;
+    void (^assertInsetsEqualToCollectionViewInsets)(UIEdgeInsets insets) = ^(UIEdgeInsets insets) {
+        HUBViewControllerTests *strongSelf = weakSelf;
+        XCTAssertTrue(UIEdgeInsetsEqualToEdgeInsets(strongSelf.collectionView.contentInset, insets));
+    };
+    
+    __block NSUInteger numberOfContentInsetCalls = 0;
+    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(UIViewController<HUBViewController> *controller, UIEdgeInsets insets) {
+        numberOfContentInsetCalls += 1;
+        if (numberOfContentInsetCalls == 1) {
+            assertInsetsEqualToCollectionViewInsets(UIEdgeInsetsZero);
+            return firstInsets;
+        } else {
+            assertInsetsEqualToCollectionViewInsets(firstInsets);
+            return secondInsets;
+        }
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    assertInsetsEqualToCollectionViewInsets(secondInsets);
+}
+
 - (void)testScrollingToRootComponentUsesScrollHandler
 {
     [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
