@@ -1065,6 +1065,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 - (HUBComponentWrapper *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
                                                   previousComponentWrapper:(nullable HUBComponentWrapper *)previousComponentWrapper
 {
+    if ([previousComponentWrapper.model isEqual:componentModel]) {
+        return (HUBComponentWrapper *)previousComponentWrapper;
+    }
+    
     BOOL const shouldReuseCurrentComponent = [previousComponentWrapper.model.componentIdentifier isEqual:componentModel.componentIdentifier];
     HUBComponentWrapper *componentWrapper;
     
