@@ -94,7 +94,7 @@
     XCTAssertEqual(self.selectionStateFromWillUpdateDelegateMethod, HUBComponentSelectionStateHighlighted);
     XCTAssertEqual(self.selectionStateFromDidUpdateDelegateMethod, HUBComponentSelectionStateNone);
     
-    XCTestExpectation * const expectation = [self expectationWithDescription:@"Waiting for highlight"];
+    __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"Waiting for highlight"];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [expectation fulfill];
