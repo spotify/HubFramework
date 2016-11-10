@@ -766,11 +766,13 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (BOOL)collectionViewShouldBeginScrolling:(HUBCollectionView *)collectionView
 {
-    if (self.delegate == nil) {
+    id<HUBViewControllerDelegate> const delegate = self.delegate;
+    
+    if (delegate == nil) {
         return YES;
     }
     
-    return [self.delegate viewControllerShouldStartScrolling:self];
+    return [delegate viewControllerShouldStartScrolling:self];
 }
 
 #pragma mark - UIScrollViewDelegate
