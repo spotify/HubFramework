@@ -20,17 +20,18 @@
  */
 
 #import "HUBCollectionViewFactory.h"
+#import "HUBCollectionView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBCollectionViewFactory
 
-- (UICollectionView *)createCollectionView
+- (HUBCollectionView *)createCollectionView
 {
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
-                                                          collectionViewLayout:[UICollectionViewLayout new]];
+    HUBCollectionView *collectionView = [[HUBCollectionView alloc] initWithFrame:CGRectZero
+                                                            collectionViewLayout:[UICollectionViewLayout new]];
+    
     collectionView.accessibilityIdentifier = @"collectionView";
-
     return collectionView;
 }
 @end

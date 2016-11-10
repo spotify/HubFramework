@@ -25,11 +25,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Factory used to create collection views for use in a `HUBViewController`
-@interface HUBCollectionViewFactory : NSObject
+/// Delegate protocol used by `HUBCollectionView`. Extends the system-provided `UICollectionViewDelegate`.
+@protocol HUBCollectionViewDelegate <UICollectionViewDelegate>
 
-/// Create a collection view. It will be setup with a default layout.
-- (HUBCollectionView *)createCollectionView;
+/**
+ *  Return whether the collection view should start scrolling
+ *
+ *  @param collectionView The collection view that is about to start scrolling
+ *
+ *  This method will be called every time the collection view is about to start scrolling, returning `NO`
+ *  will stop the event from happening.
+ */
+- (BOOL)collectionViewShouldBeginScrolling:(HUBCollectionView *)collectionView;
+
+@end
+
+/// Collection view subclass used by the Hub Framework to render body components
+@interface HUBCollectionView : UICollectionView
+
+/// The collection view's delegate. See `HUBCollectionViewDelegate` for more information.
+@property (nonatomic, weak, nullable) id <HUBCollectionViewDelegate> delegate;
 
 @end
 

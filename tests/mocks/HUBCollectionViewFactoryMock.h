@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param collectionView A collection view that this factory will always create
  */
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCollectionView:(HUBCollectionView *)collectionView HUB_DESIGNATED_INITIALIZER;
 
 @end
 

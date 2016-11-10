@@ -20,7 +20,9 @@
  */
 
 #import <XCTest/XCTest.h>
+
 #import "HUBCollectionViewFactory.h"
+#import "HUBCollectionView.h"
 
 @interface HUBCollectionViewFactoryTests : XCTestCase
 
@@ -41,7 +43,7 @@
 - (void)testThatTheFactoryCreatesNonNilInstances
 {
     HUBCollectionViewFactory *factory = [HUBCollectionViewFactory new];
-    UICollectionView *collectionView = [factory createCollectionView];
+    HUBCollectionView *collectionView = [factory createCollectionView];
 
     XCTAssertNotNil(collectionView);
 }
@@ -49,7 +51,7 @@
 - (void)testThatTheCollectionViewHasAccessibilityId
 {
     HUBCollectionViewFactory *factory = [HUBCollectionViewFactory new];
-    UICollectionView *collectionView = [factory createCollectionView];
+    HUBCollectionView *collectionView = [factory createCollectionView];
 
     XCTAssertNotNil(collectionView.accessibilityIdentifier);
 }
@@ -57,8 +59,8 @@
 - (void)testThatTheFactoryCreatesNewCollectionViewInstances
 {
     HUBCollectionViewFactory *factory = [HUBCollectionViewFactory new];
-    UICollectionView *collectionView1 = [factory createCollectionView];
-    UICollectionView *collectionView2 = [factory createCollectionView];
+    HUBCollectionView *collectionView1 = [factory createCollectionView];
+    HUBCollectionView *collectionView2 = [factory createCollectionView];
 
     XCTAssertNotEqual(collectionView1, collectionView2);
 }

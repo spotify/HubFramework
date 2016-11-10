@@ -25,13 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBCollectionViewFactoryMock ()
 
-@property (nonatomic, strong, readonly) UICollectionView *collectionView;
+@property (nonatomic, strong, readonly) HUBCollectionView *collectionView;
 
 @end
 
 @implementation HUBCollectionViewFactoryMock
 
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView
+- (instancetype)initWithCollectionView:(HUBCollectionView *)collectionView
 {
     self = [super init];
     
@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (UICollectionView *)createCollectionView
+- (HUBCollectionView *)createCollectionView
 {
     return self.collectionView;
 }

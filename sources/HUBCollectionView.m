@@ -19,17 +19,28 @@
  *  under the License.
  */
 
-#import <UIKit/UIKit.h>
-
-@class HUBCollectionView;
+#import "HUBCollectionView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Factory used to create collection views for use in a `HUBViewController`
-@interface HUBCollectionViewFactory : NSObject
+@implementation HUBCollectionView
 
-/// Create a collection view. It will be setup with a default layout.
-- (HUBCollectionView *)createCollectionView;
+@dynamic delegate;
+
+- (void)setContentOffset:(CGPoint)contentOffset
+{
+    id<HUBCollectionViewDelegate> const delegate = self.delegate;
+    
+    if (delegate != nil) {
+        if (![delegate collectionViewShouldBeginScrolling:self]) {
+            self.panGestureRecognizer.enabled = NO;
+            self.panGestureRecognizer.enabled = YES;
+            return;
+        }
+    }
+    
+    [super setContentOffset:contentOffset];
+}
 
 @end
 
