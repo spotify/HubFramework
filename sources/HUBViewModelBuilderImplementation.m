@@ -270,8 +270,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setCustomDataValue:(nullable id)value forKey:(nonnull NSString *)key
 {
-    NSMutableDictionary *customData = self.customData.mutableCopy;
-    customData = customData ?: [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *customData = [self.customData mutableCopy] ?: [[NSMutableDictionary alloc] init];
 
     if (value == nil) {
         [customData removeObjectForKey:key];

@@ -77,7 +77,7 @@
 {
     [self.builder setCustomDataValue:@"test_object" forKey:@"test_key"];
 
-    XCTAssertEqual([self.builder.customData objectForKey:@"test_key"], @"test_object");
+    XCTAssertEqualObjects([self.builder.customData objectForKey:@"test_key"], @"test_object");
 
     [self.builder setCustomDataValue:nil forKey:@"test_key"];
 
