@@ -106,16 +106,13 @@
         }
     ],
     "custom":{
-        "contextmenu":{
-            "entity_uri":"spotify:artist:6XIX2G6ZGiVQgMr6SSTMFu",
-            "title":"Farao",
-            "image_placeholder":"artist",
-            "subtitle":"4,432 Followers",
-            "image_uri":"https:\/\/i.scdn.co\/image\/e69cc354b032a4ee136a1e0e5f7c270d75511204",
-            "actions":{
-                "share-artist":{
-                    "title":"Farao",
-                    "image_uri":"https:\/\/i.scdn.co\/image\/e69cc354b032a4ee136a1e0e5f7c270d75511204"
+        "nested":{
+            "a":"a",
+            "b":"b",
+            "nested":{
+                "nested":{
+                    "c":"c",
+                    "d":"d"
                 }
             }
         }
