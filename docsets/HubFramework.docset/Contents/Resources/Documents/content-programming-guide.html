@@ -289,6 +289,9 @@
                 <a class="nav-group-task-link" href="Protocols/HUBContentOperationWithInitialContent.html">HUBContentOperationWithInitialContent</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBContentOperationWithPaginatedContent.html">HUBContentOperationWithPaginatedContent</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a>
               </li>
               <li class="nav-group-task">
@@ -422,6 +425,7 @@
 <li><a href="#content-loading-chain">Content loading chain</a></li>
 <li><a href="#rescheduling-content-operations">Rescheduling content operations</a></li>
 <li><a href="#handling-errors-in-content-operations">Handling errors in content operations</a></li>
+<li><a href="#using-paginated-content">Using paginated content</a></li>
 </ul>
 <a href='#introduction' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='introduction'>Introduction</h2>
 
@@ -576,6 +580,57 @@ contentOperationFactory2
 <li>Silence the error by doing its work as normal, and calling <code>contentOperationDidFinish:</code> once done.</li>
 <li>Forward the error by calling <code>contentOperation:didFailWithError:</code>, which will cause the error to continue down the chain.</li>
 </ul>
+<a href='#using-paginated-content' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='using-paginated-content'>Using paginated content</h2>
+
+<p>The Hub Framework provides built-in support for handling large datasets using pagination. By making your content operation conform to <code>HUBContentOperationWithPaginatedContent</code>, it will automatically be asked to load the next <q>page</q> of content whenever the user is about to scroll to the bottom of a view.</p>
+
+<p>One key difference when loading paginated content is that the content of all subsequent pages after the initial one is <strong>appended</strong> to the current view model (instead of replacing it). This enables you to adopt a more simple programming model in your content operations, as you don&rsquo;t have to worry about the current state of the view, you can just keep adding new content.</p>
+
+<p>For example, if you&rsquo;re using a local data store that reads articles synchronously from disk, you might want to only load the articles that the user has scrolled to, like this:</p>
+<pre class="highlight plaintext"><code>@implementation SPTArticleContentOperation
+
+- (void)performForViewURI:(NSURL *)viewURI
+              featureInfo:(id&lt;HUBFeatureInfo&gt;)featureInfo
+        connectivityState:(HUBConnectivityState)connectivityState
+         viewModelBuilder:(id&lt;HUBViewModelBuilder&gt;)viewModelBuilder
+            previousError:(nullable NSError *)previousError
+{
+    [self loadArticlesForPageIndex:0
+                  viewModelBuilder:viewModelBuilder];
+}
+
+- (void)appendContentForPageIndex:(NSUInteger)pageIndex
+               toViewModelBuilder:(id&lt;HUBViewModelBuilder&gt;)viewModelBuilder
+                          viewURI:(NSURL *)viewURI
+                      featureInfo:(id&lt;HUBFeatureInfo&gt;)featureInfo
+                connectivityState:(HUBConnectivityState)connectivityState
+                    previousError:(nullable NSError *)previousError
+{
+    [self loadArticlesForPageIndex:pageIndex
+                  viewModelBuilder:viewModelBuilder];
+}
+
+- (void)loadArticlesForPageIndex:(NSUInteger)pageIndex
+                viewModelBuilder:(id&lt;HUBViewModelBuilder&gt;)viewModelBuilder
+{
+    NSUInteger pageSize = 10;
+    NSUInteger startIndex = pageIndex * pageSize;
+    NSUInteger endIndex = startIndex + pageSize - 1;
+
+    for (NSUInteger index = startIndex; index &lt;= endIndex; index++) {
+        SPTArticle *article = [self.articleLoader loadArticleAtIndex:index];
+
+        id&lt;HUBComponentModelBuilder&gt; articleBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:article.identifier];
+        articleBuilder.componentName = @"article";
+        articleBuilder.title = article.title;
+        articleBuilder.descriptionText = article.body;
+    }
+
+    [self.delegate contentOperationDidFinish:self];
+}
+
+@end
+</code></pre>
 
           </div>
         </section>

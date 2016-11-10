@@ -290,6 +290,9 @@
                 <a class="nav-group-task-link" href="../Protocols/HUBContentOperationWithInitialContent.html">HUBContentOperationWithInitialContent</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBContentOperationWithPaginatedContent.html">HUBContentOperationWithPaginatedContent</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a>
               </li>
               <li class="nav-group-task">
@@ -498,6 +501,41 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/c:objc(pl)HUBViewModelLoader(py)isLoading"></a>
+                    <a name="//apple_ref/objc/Property/isLoading" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelLoader(py)isLoading">isLoading</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether the view model loader is currently loading</p>
+
+<p>True whenever one or more content operations are currently in the process of loading content, either as part
+  of the main content loading chain, or as part of appending paginated content.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">isLoading</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">isLoading</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/c:objc(pl)HUBViewModelLoader(im)loadViewModel"></a>
                     <a name="//apple_ref/objc/Method/-loadViewModel" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)HUBViewModelLoader(im)loadViewModel">-loadViewModel</a>
@@ -557,7 +595,7 @@
   models (A &amp; B), and a new one &copy; is added through this mechanism - the resulting view model will now contain
   A, B &amp; C.</p>
 
-<p>Calling this method invokes content operations conforming to <code>HUBContentOperationWithPaginatedContent</code>.</p>
+<p>Calling this method invokes content operations conforming to <code><a href="../Protocols/HUBContentOperationWithPaginatedContent.html">HUBContentOperationWithPaginatedContent</a></code>.</p>
 
 <p>The same delegate methods are called for success/error when the view model loader finishes this task.</p>
 

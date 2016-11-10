@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>HUBComponentContentOffsetObserver Protocol Reference</title>
+    <title>HUBContentOperationWithPaginatedContent Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Protocol/HUBComponentContentOffsetObserver" class="dashAnchor"></a>
+    <a name="//apple_ref/objc/Protocol/HUBContentOperationWithPaginatedContent" class="dashAnchor"></a>
 
-    <a title="HUBComponentContentOffsetObserver Protocol Reference"></a>
+    <a title="HUBContentOperationWithPaginatedContent Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -41,7 +41,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">HubFramework Reference</a>
       <img class="carat" src="../img/carat.png" />
-      HUBComponentContentOffsetObserver Protocol Reference
+      HUBContentOperationWithPaginatedContent Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -410,17 +410,23 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>HUBComponentContentOffsetObserver</h1>
+            <h1>HUBContentOperationWithPaginatedContent</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBComponentContentOffsetObserver</span> <span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponent.html">HUBComponent</a></span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBContentOperationWithPaginatedContent</span> <span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBContentOperation.html">HUBContentOperation</a></span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
-            <p>Extended Hub component protocol that adds the ability to observe content offset changes</p>
+            <p>Extended content operation protocol that adds the ability to append paginated content to a view</p>
 
-<p>Use this protocol if your component needs to react to content offset changes in the view that it
-  is being displayed in. See <code><a href="../Protocols/HUBComponent.html">HUBComponent</a></code> for more info.</p>
+<p>Use this protocol in case you want to handle large datasets in your feature, which are not practical
+  to load up front. Content operations conforming to this protocol will be called and asked to append
+  content to an existing view model builder in either of 3 scenarios:</p>
+
+<ul>
+<li>If the <code>loadNextPageForCurrentViewModel</code> method was called on a <code><a href="../Protocols/HUBViewModelLoader.html">HUBViewModelLoader</a></code>.</li>
+<li>If the user is about to reach the bottom of the view&rsquo;s content when scrolling.</li>
+</ul>
 
           </div>
         </section>
@@ -432,9 +438,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentContentOffsetObserver(im)updateViewForChangedContentOffset:"></a>
-                    <a name="//apple_ref/objc/Method/-updateViewForChangedContentOffset:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentContentOffsetObserver(im)updateViewForChangedContentOffset:">-updateViewForChangedContentOffset:</a>
+                    <a name="/c:objc(pl)HUBContentOperationWithPaginatedContent(im)appendContentForPageIndex:toViewModelBuilder:viewURI:featureInfo:connectivityState:previousError:"></a>
+                    <a name="//apple_ref/objc/Method/-appendContentForPageIndex:toViewModelBuilder:viewURI:featureInfo:connectivityState:previousError:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBContentOperationWithPaginatedContent(im)appendContentForPageIndex:toViewModelBuilder:viewURI:featureInfo:connectivityState:previousError:">-appendContentForPageIndex:toViewModelBuilder:viewURI:featureInfo:connectivityState:previousError:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -442,22 +448,20 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Update the component’s view in reaction to that the content offset of the container view changed</p>
-
-<p>The Hub Framework will send this message every time that the content offset changed in the main
-  container view. This is equivalent to <code>UIScrollView scrollViewDidScroll:</code>.</p>
+                        <p>Append content for a certain page index to an existing view model builder</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">updateViewForChangedContentOffset</span><span class="p">:(</span><span class="n">CGPoint</span><span class="p">)</span><span class="nv">contentOffset</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">updateView</span><span class="p">(</span><span class="n">forChangedContentOffset</span> <span class="nv">contentOffset</span><span class="p">:</span> <span class="kt">CGPoint</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">appendContentForPageIndex</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">pageIndex</span>
+               <span class="nf">toViewModelBuilder</span><span class="p">:</span>
+                   <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">viewModelBuilder</span>
+                          <span class="nf">viewURI</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewURI</span>
+                      <span class="nf">featureInfo</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBFeatureInfo.html">HUBFeatureInfo</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">featureInfo</span>
+                <span class="nf">connectivityState</span><span class="p">:(</span><span class="n"><a href="../Enums/HUBConnectivityState.html">HUBConnectivityState</a></span><span class="p">)</span><span class="nv">connectivityState</span>
+                    <span class="nf">previousError</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nv">previousError</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -468,12 +472,84 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>contentOffset</em>
+                                <em>pageIndex</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The new content offset of the container view</p>
+                                  <p>The index of the page to add content for. Since the main content set is considered
+        index number 0, this will always be at least 1 or greater. Incremented on each paginated content
+        loading chain.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewModelBuilder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The builder to use to append content to the view. If this content operation is
+        first in the appended content loading chain, this builder will be a snapshot of the last rendered
+        view state. If it&rsquo;s subsequent in the chain, it will instead be a snapshot of the previous operation&rsquo;s
+        finished state.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewURI</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The URI of the view that content should be appended for</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>featureInfo</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Info about the feature that the operation is being performed for</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>connectivityState</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The current connectivity state of the application (as it was when the content loading
+        chain that this operation is part of was started).</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>previousError</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any previous error that was encountered during the content loading chain that this operation
+        is a part of.</p>
 
                                 </div>
                               </td>

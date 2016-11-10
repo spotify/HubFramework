@@ -289,6 +289,9 @@
                 <a class="nav-group-task-link" href="Protocols/HUBContentOperationWithInitialContent.html">HUBContentOperationWithInitialContent</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBContentOperationWithPaginatedContent.html">HUBContentOperationWithPaginatedContent</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBContentReloadPolicy.html">HUBContentReloadPolicy</a>
               </li>
               <li class="nav-group-task">
@@ -2319,6 +2322,52 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBContentOperationWithInitialContent</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBContentOperation.html">HUBContentOperation</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBContentOperationWithPaginatedContent"></a>
+                    <a name="//apple_ref/objc/Protocol/HUBContentOperationWithPaginatedContent" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBContentOperationWithPaginatedContent">HUBContentOperationWithPaginatedContent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Extended content operation protocol that adds the ability to append paginated content to a view</p>
+
+<p>Use this protocol in case you want to handle large datasets in your feature, which are not practical
+  to load up front. Content operations conforming to this protocol will be called and asked to append
+  content to an existing view model builder in either of 3 scenarios:</p>
+
+<ul>
+<li>If the <code>loadNextPageForCurrentViewModel</code> method was called on a <code><a href="Protocols/HUBViewModelLoader.html">HUBViewModelLoader</a></code>.</li>
+<li>If the user is about to reach the bottom of the view&rsquo;s content when scrolling.</li>
+</ul>
+
+                        <a href="Protocols/HUBContentOperationWithPaginatedContent.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBContentOperationWithPaginatedContent</span> <span class="o">&lt;</span><span class="n"><a href="Protocols/HUBContentOperation.html">HUBContentOperation</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">protocol</span> <span class="kt">HUBContentOperationWithPaginatedContent</span> <span class="p">:</span> <span class="kt"><a href="Protocols/HUBContentOperation.html">HUBContentOperation</a></span></code></pre>
 
                         </div>
                       </div>
