@@ -1565,7 +1565,7 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testScrollingToRootComponentNotifiesScrollHandler
+- (void)testScrollingToRootComponentDoesNotNotifyScrollHandler
 {
     [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
                                        componentSize:CGSizeMake(200.0, 200.0)
@@ -1578,23 +1578,26 @@
 
     self.scrollHandler.targetContentOffset = CGPointMake(0.0, 1400);
 
-    XCTestExpectation * const scrollingWillBeginExpectation = [self expectationWithDescription:@"scroll handler should be notified when scrolling starts"];
+    __block BOOL scrollHandlerNotified = NO;
     self.scrollHandler.scrollingWillStartHandler = ^(CGRect contentRect) {
-        [scrollingWillBeginExpectation fulfill];
+        scrollHandlerNotified = YES;
     };
 
-    XCTestExpectation * const scrollingDidEndExpectation = [self expectationWithDescription:@"scroll handler should be notified when scrolling ends"];
     self.scrollHandler.scrollingDidEndHandler = ^(CGRect contentRect) {
-        [scrollingDidEndExpectation fulfill];
+        scrollHandlerNotified = YES;
     };
-    
+
+    XCTestExpectation * const expectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
     NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
     [self.viewController scrollToComponentOfType:HUBComponentTypeBody
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
-                                      completion:nil];
-    
+                                      completion:^{
+        XCTAssertFalse(scrollHandlerNotified);
+        [expectation fulfill];
+    }];
+
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
