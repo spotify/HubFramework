@@ -102,9 +102,7 @@ class GitHubSearchResultsContentOperation: NSObject, HUBContentOperation {
         }
         
         // Encode that a search will be performed (will be picked up by `GitHubSearchActivityIndicatorContentOperation`)
-        var customData = viewModelBuilder.customData ?? [:]
-        customData[GitHubSearchCustomDataKeys.searchInProgress] = true
-        viewModelBuilder.customData = customData
+        viewModelBuilder.setCustomDataValue(true, forKey: GitHubSearchCustomDataKeys.searchInProgress)
         
         // Tell our delegate we're done (to enable to UI to be rendered), then start the task
         delegate?.contentOperationDidFinish(self)
