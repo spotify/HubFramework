@@ -387,7 +387,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGRect)frameForBodyComponentAtIndex:(NSUInteger)index
 {
-    if (index >= self.viewModel.bodyComponentModels.count) {
+    if (index >= (NSUInteger)[self.collectionView numberOfItemsInSection:0]) {
         return CGRectZero;
     }
     
@@ -914,6 +914,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                    animated:animated
                                  completion:^{
         [self headerAndOverlayComponentViewsWillAppear];
+        [self adjustCollectionViewContentInsetWithProposedTopValue:[self defaultTopContentInset]];
         [self.delegate viewControllerDidFinishRendering:self];
     }];
     
@@ -974,21 +975,22 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     return self.componentWrappersByCellIdentifier[cell.identifier];
 }
 
+- (CGFloat)defaultTopContentInset
+{
+    CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
+    CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+    CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
+    CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
+    return MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
+}
+
 - (void)configureHeaderComponent
 {
     id<HUBComponentModel> const componentModel = self.viewModel.headerComponentModel;
     
     if (componentModel == nil) {
         [self removeHeaderComponent];
-        
-        CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
-        CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
-        CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
-        CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
-        CGFloat const proposedTopInset = MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
-
-        [self adjustCollectionViewContentInsetWithProposedTopValue:proposedTopInset];
-        
+        [self adjustCollectionViewContentInsetWithProposedTopValue:[self defaultTopContentInset]];
         return;
     }
     
@@ -1065,6 +1067,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 - (HUBComponentWrapper *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
                                                   previousComponentWrapper:(nullable HUBComponentWrapper *)previousComponentWrapper
 {
+    if ([previousComponentWrapper.model isEqual:componentModel]) {
+        return (HUBComponentWrapper *)previousComponentWrapper;
+    }
+    
     BOOL const shouldReuseCurrentComponent = [previousComponentWrapper.model.componentIdentifier isEqual:componentModel.componentIdentifier];
     HUBComponentWrapper *componentWrapper;
     
@@ -1392,15 +1398,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                                      contentSize:self.collectionView.contentSize
                                                                                   viewController:self];
 
-    UICollectionView * const nonnullCollectionView = self.collectionView;
-    CGRect const initialContentRect = [self contentRectForScrollView:nonnullCollectionView];
-    [self.scrollHandler scrollingWillStartInViewController:self currentContentRect:initialContentRect];
-
-    __weak HUBViewControllerImplementation *weakSelf = self;
     void (^completionWrapper)() = ^{
-        HUBViewControllerImplementation *strongSelf = weakSelf;
-        CGRect const destinationContentRect = [strongSelf contentRectForScrollView:nonnullCollectionView];
-        [strongSelf.scrollHandler scrollingDidEndInViewController:strongSelf currentContentRect:destinationContentRect];
         completion();
     };
     

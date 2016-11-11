@@ -606,6 +606,28 @@
     XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
 }
 
+- (void)testHeaderComponentNotReconfiguredForSameModel
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqualObjects(self.component.model.title, @"Header");
+    
+    self.contentReloadPolicy.shouldReload = YES;
+    
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    
+    XCTAssertEqual(self.contentOperation.performCount, 3u);
+    XCTAssertEqual(self.component.numberOfReuses, 0u);
+}
+
 - (void)testHeaderComponentNotifiedOfViewWillAppear
 {
     self.component.isViewObserver = YES;
@@ -678,6 +700,28 @@
     
     XCTAssertEqual(componentA.numberOfReuses, (NSUInteger)2);
     XCTAssertEqual(componentB.numberOfReuses, (NSUInteger)1);
+}
+
+- (void)testOverlayComponentNotReconfiguredForSameModel
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"id"].title = @"Overlay";
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqualObjects(self.component.model.title, @"Overlay");
+    
+    self.contentReloadPolicy.shouldReload = YES;
+    
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    [self.viewController viewWillAppear:YES];
+    [self.viewController viewDidLayoutSubviews];
+    
+    XCTAssertEqual(self.contentOperation.performCount, 3u);
+    XCTAssertEqual(self.component.numberOfReuses, 0u);
 }
 
 - (void)testRemovedOverlayComponentsRemovedFromView
@@ -1511,6 +1555,33 @@
     XCTAssertTrue(self.collectionView.appliedScrollViewOffsetAnimatedFlag);
 }
 
+- (void)testRenderingUpdatesContentInsetBeforeAndAfterRendering
+{
+    UIEdgeInsets const firstInsets = UIEdgeInsetsMake(100, 30, 40, 200);
+    UIEdgeInsets const secondInsets = UIEdgeInsetsMake(50, 0, 0, 0);
+
+    __weak HUBViewControllerTests *weakSelf = self;
+    void (^assertInsetsEqualToCollectionViewInsets)(UIEdgeInsets insets) = ^(UIEdgeInsets insets) {
+        HUBViewControllerTests *strongSelf = weakSelf;
+        XCTAssertTrue(UIEdgeInsetsEqualToEdgeInsets(strongSelf.collectionView.contentInset, insets));
+    };
+    
+    __block NSUInteger numberOfContentInsetCalls = 0;
+    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(UIViewController<HUBViewController> *controller, UIEdgeInsets insets) {
+        numberOfContentInsetCalls += 1;
+        if (numberOfContentInsetCalls == 1) {
+            assertInsetsEqualToCollectionViewInsets(UIEdgeInsetsZero);
+            return firstInsets;
+        } else {
+            assertInsetsEqualToCollectionViewInsets(firstInsets);
+            return secondInsets;
+        }
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    assertInsetsEqualToCollectionViewInsets(secondInsets);
+}
+
 - (void)testScrollingToRootComponentUsesScrollHandler
 {
     [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
@@ -1538,7 +1609,7 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testScrollingToRootComponentNotifiesScrollHandler
+- (void)testScrollingToRootComponentDoesNotNotifyScrollHandler
 {
     [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
                                        componentSize:CGSizeMake(200.0, 200.0)
@@ -1551,23 +1622,26 @@
 
     self.scrollHandler.targetContentOffset = CGPointMake(0.0, 1400);
 
-    XCTestExpectation * const scrollingWillBeginExpectation = [self expectationWithDescription:@"scroll handler should be notified when scrolling starts"];
+    __block BOOL scrollHandlerNotified = NO;
     self.scrollHandler.scrollingWillStartHandler = ^(CGRect contentRect) {
-        [scrollingWillBeginExpectation fulfill];
+        scrollHandlerNotified = YES;
     };
 
-    XCTestExpectation * const scrollingDidEndExpectation = [self expectationWithDescription:@"scroll handler should be notified when scrolling ends"];
     self.scrollHandler.scrollingDidEndHandler = ^(CGRect contentRect) {
-        [scrollingDidEndExpectation fulfill];
+        scrollHandlerNotified = YES;
     };
-    
+
+    XCTestExpectation * const expectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
     NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
     [self.viewController scrollToComponentOfType:HUBComponentTypeBody
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
-                                      completion:nil];
-    
+                                      completion:^{
+        XCTAssertFalse(scrollHandlerNotified);
+        [expectation fulfill];
+    }];
+
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
