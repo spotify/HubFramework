@@ -34,11 +34,11 @@ xcode_summary.report 'build/demo/summary.json' if File.file?('build/demo/summary
 
 def report_junit_results(path)
   junit_report_path = Dir.glob(path + "/*TestSummaries.junit").first
-  if junit_report_path
+  if File.readable_real?(junit_report_path)
     junit.parse junit_report_path
     junit.report
   else
-    warn "Couldn't find the (junit) unit test report file in " + path + ". Make sure the tests were actually run."
+    error "Couldn't find the (junit) unit test report file in " + path + ". Make sure the tests were actually run."
   end
 end
 
