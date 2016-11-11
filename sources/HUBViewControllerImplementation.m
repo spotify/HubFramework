@@ -914,7 +914,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                    animated:animated
                                  completion:^{
         [self headerAndOverlayComponentViewsWillAppear];
-        [self adjustCollectionViewContentInsetWithProposedTopValue:[self defaultTopContentInset]];
+        CGFloat const topInset = (self.headerComponentWrapper != nil) ? CGRectGetHeight(self.headerComponentWrapper.view.frame) : [self defaultTopContentInset];
+        [self adjustCollectionViewContentInsetWithProposedTopValue:topInset];
         [self.delegate viewControllerDidFinishRendering:self];
     }];
     
