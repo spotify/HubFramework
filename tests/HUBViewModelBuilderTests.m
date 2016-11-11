@@ -73,6 +73,17 @@
     XCTAssertEqualObjects(model.customData, self.builder.customData);
 }
 
+- (void)testCustomDataUpdates
+{
+    [self.builder setCustomDataValue:@"test_object" forKey:@"test_key"];
+
+    XCTAssertEqualObjects([self.builder.customData objectForKey:@"test_key"], @"test_object");
+
+    [self.builder setCustomDataValue:nil forKey:@"test_key"];
+
+    XCTAssertNil([self.builder.customData objectForKey:@"test_key"]);
+}
+
 - (void)testNavigationItemLazyInit
 {
     XCTAssertNil([self.builder build].navigationItem);

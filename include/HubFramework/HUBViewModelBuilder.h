@@ -231,6 +231,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)removeAllComponentModelBuilders;
 
+#pragma mark - Manipulate custom data
+
+/**
+ *  Sets value for key in custom data dictionary associated with the view model
+ *
+ *  @param value The value to put into customData. If the value is nil existing value for the key will be deleted from the dictionary.
+ *  @param key The key used in customData to store the value
+ */
+- (void)setCustomDataValue:(nullable id)value forKey:(nonnull NSString *)key NS_SWIFT_NAME(setCustomDataValue(_:forKey:) );
 @end
 
 NS_ASSUME_NONNULL_END
