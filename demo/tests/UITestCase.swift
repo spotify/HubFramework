@@ -21,24 +21,14 @@
 
 import XCTest
 
-class PaginationUITests: UITestCase {
-    func testScrollingToBottomOfViewLoadsPaginatedContent() {
-        XCUIApplication().collectionViews.staticTexts["Really long list"].tap()
+/// Base class for UI test cases, that sets up the application and launches it
+class UITestCase: XCTestCase {
+    override func setUp() {
+        super.setUp()
         
-        let collectionView = XCUIApplication().collectionViews.element(boundBy: 0)
-        var numberOfSwipes = 0
+        continueAfterFailure = false
+        XCUIApplication().launch()
         
-        // Load 100 rows (page size = 50), which should be done in under 20 swipes
-        while !collectionView.staticTexts["Row number 100"].exists {
-            collectionView.swipeUp()
-            numberOfSwipes += 1
-            
-            if numberOfSwipes > 20 {
-                XCTFail("Should not have taken over 20 swipes to load paginated content")
-                break
-            }
-        }
-        
-        // Test succeeded
+        XCUIDevice.shared().orientation = .portrait
     }
 }

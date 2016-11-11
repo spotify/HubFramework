@@ -21,16 +21,7 @@
 
 import XCTest
 
-class NavigationItemUITests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-
-        continueAfterFailure = false
-        XCUIApplication().launch()
-
-        XCUIDevice.shared().orientation = .portrait
-    }
-
+class NavigationItemUITests: UITestCase {
     func testRightBarButtonItem() {
         let app = XCUIApplication()
 
