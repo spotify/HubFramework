@@ -38,7 +38,7 @@
 @property (nonatomic, strong) NSError *loadingError;
 @property (nonatomic, assign) BOOL loadedImageFromCache;
 
-@property (nonatomic, strong) XCTestExpectation *imageLoadedExpectation;
+@property (nonatomic, weak) XCTestExpectation *imageLoadedExpectation;
 
 @end
 
