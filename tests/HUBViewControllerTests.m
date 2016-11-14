@@ -2553,6 +2553,34 @@
     XCTAssertEqualWithAccuracy(self.collectionView.contentOffset.y, 500, 0.0001);
 }
 
+- (void)testThatDelegateIsNotifiedWhenOverlayAppears
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"id"].title = @"Overlay";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, 1u);
+    XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod[0].title, @"Overlay");
+    XCTAssertEqualObjects(self.componentViewsFromApperanceDelegateMethod, @[self.component.view]);
+}
+
+- (void)testThatDelegateIsNotifiedWhenHeaderAppears
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, 1u);
+    XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod[0].title, @"Header");
+    XCTAssertEqualObjects(self.componentViewsFromApperanceDelegateMethod, @[self.component.view]);
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel

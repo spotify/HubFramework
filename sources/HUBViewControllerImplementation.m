@@ -1160,13 +1160,29 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (void)headerAndOverlayComponentViewsWillAppear
 {
+    id<HUBViewControllerDelegate> const delegate = self.delegate;
+
     if (self.headerComponentWrapper != nil) {
         HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
         [self componentWrapperWillAppear:headerComponentWrapper];
+
+        UIView * const componentView = HUBComponentLoadViewIfNeeded(headerComponentWrapper);
+
+        [delegate viewController:self
+              componentWithModel:headerComponentWrapper.model
+                    layoutTraits:headerComponentWrapper.layoutTraits
+                willAppearInView:componentView];
     }
     
     for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
         [self componentWrapperWillAppear:overlayComponentWrapper];
+
+        UIView * const componentView = HUBComponentLoadViewIfNeeded(overlayComponentWrapper);
+
+        [delegate viewController:self
+              componentWithModel:overlayComponentWrapper.model
+                    layoutTraits:overlayComponentWrapper.layoutTraits
+                willAppearInView:componentView];
     }
 }
 
