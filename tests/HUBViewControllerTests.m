@@ -1596,7 +1596,7 @@
     };
 
     __block NSUInteger numberOfInsetCalls = 0;
-    XCTestExpectation * const expectation = [self expectationWithDescription:@"The content inset handler should be asked for the content inset"];
+    __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"The content inset handler should be asked for the content inset"];
     self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(UIViewController<HUBViewController> *controller, UIEdgeInsets proposedInsets) {
         assertInsetsEqualToCollectionViewInsets(proposedInsets, expectedInsets);
         numberOfInsetCalls += 1;
@@ -1637,7 +1637,7 @@
     };
 
     __block NSUInteger numberOfInsetCalls = 0;
-    XCTestExpectation * const expectation = [self expectationWithDescription:@"The content inset handler should be asked for the content inset"];
+    __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"The content inset handler should be asked for the content inset"];
     self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(UIViewController<HUBViewController> *controller, UIEdgeInsets proposedInsets) {
         assertInsetsEqualToCollectionViewInsets(proposedInsets, expectedInsets);
         numberOfInsetCalls += 1;
@@ -1664,7 +1664,7 @@
 
     self.scrollHandler.targetContentOffset = CGPointMake(0.0, 1400);
 
-    XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
+    __weak XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
     NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
     [self.viewController scrollToComponentOfType:HUBComponentTypeBody
                                        indexPath:indexPath
@@ -1691,23 +1691,25 @@
 
     self.scrollHandler.targetContentOffset = CGPointMake(0.0, 1400);
 
-    __block BOOL scrollHandlerNotified = NO;
+    __block BOOL willStartScrollHandlerNotified = NO;
     self.scrollHandler.scrollingWillStartHandler = ^(CGRect contentRect) {
-        scrollHandlerNotified = YES;
+        willStartScrollHandlerNotified = YES;
     };
 
+    __block BOOL didEndScrollHandlerNotified = NO;
     self.scrollHandler.scrollingDidEndHandler = ^(CGRect contentRect) {
-        scrollHandlerNotified = YES;
+        didEndScrollHandlerNotified = YES;
     };
 
-    XCTestExpectation * const expectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
+    __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
     NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
     [self.viewController scrollToComponentOfType:HUBComponentTypeBody
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
                                       completion:^{
-        XCTAssertFalse(scrollHandlerNotified);
+        XCTAssertFalse(willStartScrollHandlerNotified);
+        XCTAssertFalse(didEndScrollHandlerNotified);
         [expectation fulfill];
     }];
 
@@ -1765,13 +1767,13 @@
     self.collectionView.cells[rootIndexPath] = cell;
     self.collectionView.mockedVisibleCells = @[cell];
 
-    XCTestExpectation * const componentScrollExpectation = [self expectationWithDescription:@"The component should be asked to scroll to its child component"];
+    __weak XCTestExpectation * const componentScrollExpectation = [self expectationWithDescription:@"The component should be asked to scroll to its child component"];
     component.scrollToComponentHandler = ^(NSUInteger childIndex, HUBScrollPosition position, BOOL animated) {
         [componentScrollExpectation fulfill];
         XCTAssertEqual([indexPath indexAtPosition:1], childIndex);
     };
 
-    XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
+    __weak XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
     [self.viewController scrollToComponentOfType:HUBComponentTypeBody
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
@@ -2638,7 +2640,7 @@
 
 - (void)performAsynchronousTestWithDelay:(NSTimeInterval)delay block:(void(^)(void))block
 {
-    XCTestExpectation * const expectation = [self expectationWithDescription:@"Async test"];
+    __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"Async test"];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [expectation fulfill];
