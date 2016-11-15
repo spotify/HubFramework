@@ -443,6 +443,11 @@ NS_ASSUME_NONNULL_BEGIN
                                  completion:completion];
 }
 
+-(void)reload
+{
+    [self.viewModelLoader loadViewModel];
+}
+
 #pragma mark - HUBViewModelLoaderDelegate
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel

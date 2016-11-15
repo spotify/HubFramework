@@ -251,6 +251,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)cancelComponentSelection;
 
+/**
+ * Reload the view model of the view controller.
+ */
+- (void)reload;
+
 @end
 
 NS_ASSUME_NONNULL_END
