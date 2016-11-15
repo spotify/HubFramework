@@ -1670,7 +1670,7 @@
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
-                                      completion:^{
+                                      completion:^(NSIndexPath *visibleIndexPath) {
         [scrollingCompletedExpectation fulfill];
         XCTAssertTrue(CGPointEqualToPoint(self.scrollHandler.targetContentOffset, self.collectionView.contentOffset));
     }];
@@ -1707,7 +1707,7 @@
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
-                                      completion:^{
+                                      completion:^(NSIndexPath *visibleIndexPath) {
         XCTAssertFalse(willStartScrollHandlerNotified);
         XCTAssertFalse(didEndScrollHandlerNotified);
         [expectation fulfill];
@@ -1778,8 +1778,10 @@
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
-                                      completion:^{
-        [scrollingCompletedExpectation fulfill];
+                                      completion:^(NSIndexPath *visibleIndexPath) {
+        if ([visibleIndexPath isEqual:indexPath]) {
+            [scrollingCompletedExpectation fulfill];
+        }
     }];
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
