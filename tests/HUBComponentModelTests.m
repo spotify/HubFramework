@@ -59,21 +59,24 @@
                                                                                                                    type:HUBComponentImageTypeMain
                                                                                                                     URL:mainImageURL
                                                                                                         placeholderIcon:nil
-                                                                                                             localImage:nil];
+                                                                                                             localImage:nil
+                                                                                                             customData:nil];
         
         NSURL * const backgroundImageURL = [NSURL URLWithString:@"https://image.com/main.jpg"];
         id<HUBComponentImageData> const backgroundImageData = [[HUBComponentImageDataImplementation alloc] initWithIdentifier:nil
                                                                                                                          type:HUBComponentImageTypeBackground
                                                                                                                           URL:backgroundImageURL
                                                                                                               placeholderIcon:nil
-                                                                                                                   localImage:nil];
+                                                                                                                   localImage:nil
+                                                                                                                   customData:nil];
         
         NSURL * const customImageURL = [NSURL URLWithString:@"https://image.com/custom.jpg"];
         id<HUBComponentImageData> const customImageData = [[HUBComponentImageDataImplementation alloc] initWithIdentifier:nil
                                                                                                                      type:HUBComponentImageTypeCustom
                                                                                                                       URL:customImageURL
                                                                                                           placeholderIcon:nil
-                                                                                                               localImage:nil];
+                                                                                                               localImage:nil
+                                                                                                               customData:nil];
         
         NSURL * const targetURI = [NSURL URLWithString:@"spotify:hub:framework"];
         HUBViewModelImplementation * const targetInitialViewModel = [[HUBViewModelImplementation alloc] initWithIdentifier:nil
