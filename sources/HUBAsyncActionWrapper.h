@@ -19,9 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param nextActionCustomData Any custom data to pass to the chained action
  */
 - (void)actionDidFinish:(HUBAsyncActionWrapper *)action
-            withContext:(id<HUBActionContext>)context
+        withContext:(id<HUBActionContext>)context
         chainToActionWithIdentifier:(nullable HUBIdentifier *)nextActionIdentifier
-             customData:(nullable NSDictionary<NSString *, id> *)nextActionCustomData;
+        customData:(nullable NSDictionary<NSString *, id> *)nextActionCustomData;
 
 @end
 
