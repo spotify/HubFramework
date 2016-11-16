@@ -81,6 +81,11 @@ typedef NS_ENUM(NSInteger, HUBComponentImageType) {
  */
 @property (nonatomic, strong, readonly, nullable) UIImage *localImage;
 
+/**
+ *  Additional per-image properties such as transformations to the images, caching policies, etc.
+ */
+@property (nonatomic, strong, readonly, nullable) NSDictionary *customData;
+
 @end
 
 NS_ASSUME_NONNULL_END

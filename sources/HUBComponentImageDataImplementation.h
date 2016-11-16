@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param URL Any HTTP URL of a remote image that should be downloaded and then rendered
  *  @param placeholderIcon Any icon to use as a placeholder before a remote image has been downloaded
  *  @param localImage Any local image that should be rendered
+ *  @param customData Additional per-image properties
  *
  *  For more information about these parameters and their corresponding properties, see their
  *  documentation in `HUBComponentImageData`.
@@ -46,7 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
                               type:(HUBComponentImageType)type
                                URL:(nullable NSURL *)URL
                    placeholderIcon:(nullable id<HUBIcon>)placeholderIcon
-                        localImage:(nullable UIImage *)localImage HUB_DESIGNATED_INITIALIZER;
+                        localImage:(nullable UIImage *)localImage
+                        customData:(nullable NSDictionary *)customData HUB_DESIGNATED_INITIALIZER;
 
 @end
 
