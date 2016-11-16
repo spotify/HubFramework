@@ -121,7 +121,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)actionDidFinish:(HUBAsyncActionWrapper *)action
         withContext:(id<HUBActionContext>)context
         chainToActionWithIdentifier:(nullable HUBIdentifier *)nextActionIdentifier
-        customData:(nullable NSDictionary<NSString *,id> *)nextActionCustomData
+        customData:(nullable NSDictionary<NSString *, id> *)nextActionCustomData
 {
     [self.ongoingAsyncActions removeObject:action];
     
