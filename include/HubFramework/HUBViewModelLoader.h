@@ -102,6 +102,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)loadViewModel;
 
+/**
+ *  Load a view model using this loader regard less of reload policy
+ */
 - (void)loadViewModelRegardlessOfReloadPolicy;
 
 /**
