@@ -23,7 +23,7 @@
 
 #import "HUBViewModel.h"
 #import "HUBComponentModel.h"
-#import "HUBComponentRegistryImplementation.h"
+#import "HUBComponentRegistry.h"
 #import "HUBComponent.h"
 #import "HUBComponentWithChildren.h"
 #import "HUBIdentifier.h"
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBCollectionViewLayout () <HUBComponentChildDelegate>
 
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
-@property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
+@property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBIdentifier *, id<HUBComponent>> *componentCache;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *layoutAttributesByIndexPath;
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBCollectionViewLayout
 
-- (instancetype)initWithComponentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
                    componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
 {
     self = [super init];

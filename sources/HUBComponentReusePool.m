@@ -24,14 +24,14 @@
 #import "HUBComponentWrapper.h"
 #import "HUBIdentifier.h"
 #import "HUBComponentModel.h"
-#import "HUBComponentRegistryImplementation.h"
+#import "HUBComponentRegistry.h"
 #import "HUBComponentGestureRecognizer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBComponentReusePool ()
 
-@property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
+@property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBIdentifier *, NSMutableSet<HUBComponentWrapper *> *> *componentWrappers;
 
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBComponentReusePool
 
-- (instancetype)initWithComponentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
                            UIStateManager:(HUBComponentUIStateManager *)UIStateManager
 {
     NSParameterAssert(componentRegistry != nil);
