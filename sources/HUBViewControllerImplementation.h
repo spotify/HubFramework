@@ -27,9 +27,9 @@
 @protocol HUBComponentLayoutManager;
 @protocol HUBActionHandler;
 @protocol HUBViewControllerScrollHandler;
+@protocol HUBComponentRegistry;
 @class HUBViewModelLoaderImplementation;
 @class HUBCollectionViewFactory;
-@class HUBComponentRegistryImplementation;
 @class HUBInitialViewModelRegistry;
 @class HUBActionRegistryImplementation;
 
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
               featureIdentifier:(NSString *)featureIdentifier
                 viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
-              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+              componentRegistry:(id<HUBComponentRegistry>)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler

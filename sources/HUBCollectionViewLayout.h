@@ -24,7 +24,7 @@
 
 @protocol HUBViewModel;
 @protocol HUBComponentLayoutManager;
-@class HUBComponentRegistryImplementation;
+@protocol HUBComponentRegistry;
 @class HUBScrollBehaviorWrapper;
 @class HUBViewModelDiff;
 
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentRegistry The registry to use to retrieve components for calculations
  *  @param componentLayoutManager The manager responsible for component layout
  */
-- (instancetype)initWithComponentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
                    componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager HUB_DESIGNATED_INITIALIZER;
 /**
  *  Compute this layout for a given collection view size
