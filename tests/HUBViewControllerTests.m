@@ -1773,13 +1773,16 @@
         XCTAssertEqual([indexPath indexAtPosition:1], childIndex);
     };
 
-    __weak XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
+    __weak XCTestExpectation * const scrollingToFirstExpectation = [self expectationWithDescription:@"Scrolling to the root component should complete and call the handler"];
+    __weak XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling to the nested component should complete and call the handler"];
     [self.viewController scrollToComponentOfType:HUBComponentTypeBody
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
                                       completion:^(NSIndexPath *visibleIndexPath) {
-        if ([visibleIndexPath isEqual:indexPath]) {
+        if (visibleIndexPath.length == 1 && [visibleIndexPath indexAtPosition:0] == 6) {
+            [scrollingToFirstExpectation fulfill];
+        } else if ([visibleIndexPath isEqual:indexPath]) {
             [scrollingCompletedExpectation fulfill];
         }
     }];
