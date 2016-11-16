@@ -289,7 +289,6 @@
         return YES;
     };
     
-    self.contentReloadPolicy.shouldReload = YES;
     [self.viewController reload];
     
     XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationItem.title, viewModelNavBarTitleB);

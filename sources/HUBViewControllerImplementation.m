@@ -445,7 +445,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)reload
 {
-    [self.viewModelLoader loadViewModel];
+    [self.viewModelLoader loadViewModelRegardlessOfReloadPolicy];
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
