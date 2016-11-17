@@ -77,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (existingWrappers.count > 0) {
         HUBComponentWrapper * const wrapper = [existingWrappers anyObject];
         wrapper.delegate = delegate;
+        wrapper.parent = parent;
         [existingWrappers removeObject:wrapper];
         return wrapper;
     }
