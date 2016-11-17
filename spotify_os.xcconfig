@@ -60,7 +60,7 @@ HF_IGNORED_WARNINGS_0800 = $(HF_IGNORED_WARNINGS_0730)
 HF_IGNORED_WARNINGS_0810 = $(HF_IGNORED_WARNINGS_0800)
 HF_IGNORED_WARNINGS_0820 = $(HF_IGNORED_WARNINGS_0810)
 
-WARNING_CFLAGS = -Weverything -Wno-error=deprecated -Wno-objc-missing-property-synthesis -Wno-gnu-conditional-omitted-operand -Wno-gnu -Wno-reserved-id-macro -Wno-auto-import -Wno-missing-variable-declarations -Werror $(HF_IGNORED_WARNINGS_$(XCODE_VERSION_MINOR))
+WARNING_CFLAGS = -Weverything -Wno-error=deprecated -Wno-objc-missing-property-synthesis -Wno-gnu-conditional-omitted-operand -Wno-gnu -Wno-reserved-id-macro -Wno-auto-import -Wno-missing-variable-declarations -Wno-vla -Werror $(HF_IGNORED_WARNINGS_$(XCODE_VERSION_MINOR))
 
 // Apple LLVM 7.0 - Warnings - All languages
 GCC_WARN_CHECK_SWITCH_STATEMENTS = YES

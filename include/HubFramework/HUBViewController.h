@@ -203,7 +203,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param indexPath The index path of the component to scroll to.
  *  @param scrollPosition The preferred position of the component after scrolling.
  *  @param animated Whether or not the scrolling should be animated.
- *  @param completion A block that is called once the component at the provided index path is visible.
+ *  @param completion A block that is called for each step of the scrolling, providing the index path of the component 
+ *         that became visible.
  *
  *  @seealso HUBComponentWithScrolling
  */
@@ -211,7 +212,7 @@ NS_ASSUME_NONNULL_BEGIN
                       indexPath:(NSIndexPath *)indexPath
                  scrollPosition:(HUBScrollPosition)scrollPosition
                        animated:(BOOL)animated
-                     completion:(void (^ _Nullable)(void))completion;
+                     completion:(void (^ _Nullable)(NSIndexPath *))completion;
 
 /**
  *  Returns the views of the components of the given type that are currently visible on screen, keyed by their index path
