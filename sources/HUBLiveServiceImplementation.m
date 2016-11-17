@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readwrite, nullable) NSNetService *netService;
 @property (nonatomic, strong, readonly) id<HUBViewControllerFactory> viewControllerFactory;
 @property (nonatomic, strong, nullable) NSInputStream *stream;
-@property (nonatomic, weak, nullable) UIViewController<HUBViewController> *viewController;
+@property (nonatomic, weak, nullable) HUBViewController *viewController;
 @property (nonatomic, strong, nullable) HUBLiveContentOperation *contentOperation;
 
 @end
@@ -139,10 +139,10 @@ NS_ASSUME_NONNULL_BEGIN
     HUBLiveContentOperation * const contentOperation = [[HUBLiveContentOperation alloc] initWithJSONData:data];
     self.contentOperation = contentOperation;
     
-    UIViewController<HUBViewController> * const viewController = [self.viewControllerFactory createViewControllerForViewURI:viewURI
-                                                                                                          contentOperations:@[contentOperation]
-                                                                                                          featureIdentifier:@"live"
-                                                                                                               featureTitle:@"Hub Framework Live"];
+    HUBViewController * const viewController = [self.viewControllerFactory createViewControllerForViewURI:viewURI
+                                                                                        contentOperations:@[contentOperation]
+                                                                                        featureIdentifier:@"live"
+                                                                                             featureTitle:@"Hub Framework Live"];
     
     self.viewController = viewController;
     [self.delegate liveService:self didCreateViewController:viewController];

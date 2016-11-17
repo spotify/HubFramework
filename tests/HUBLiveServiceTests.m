@@ -37,7 +37,7 @@
 
 @property (nonatomic, strong) HUBManager *hubManager;
 @property (nonatomic, strong) HUBLiveServiceImplementation *service;
-@property (nonatomic, strong) UIViewController<HUBViewController> *viewController;
+@property (nonatomic, strong) HUBViewController *viewController;
 
 @end
 
@@ -108,7 +108,7 @@
     
     [stream.delegate stream:stream handleEvent:NSStreamEventHasBytesAvailable];
     
-    UIViewController<HUBViewController> * const viewController = self.viewController;
+    HUBViewController * const viewController = self.viewController;
     XCTAssertNotNil(viewController);
     
     [viewController viewWillAppear:YES];
@@ -134,7 +134,7 @@
 
 #pragma mark - HUBLiveServiceDelegate
 
-- (void)liveService:(id<HUBLiveService>)liveService didCreateViewController:(UIViewController<HUBViewController> *)viewController
+- (void)liveService:(id<HUBLiveService>)liveService didCreateViewController:(HUBViewController *)viewController
 {
     XCTAssertEqual(self.service, liveService);
     self.viewController = viewController;
