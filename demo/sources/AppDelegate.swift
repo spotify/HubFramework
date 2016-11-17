@@ -66,7 +66,7 @@ import HubFramework
     
     // MARK: - HUBLiveServiceDelegate
     
-    func liveService(_ liveService: HUBLiveService, didCreateViewController viewController: UIViewController) {
+    func liveService(_ liveService: HUBLiveService, didCreateViewController viewController: HUBViewController) {
         prepareAndPush(viewController: viewController, animated: true)
     }
     
