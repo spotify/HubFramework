@@ -390,7 +390,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
-    return [self.collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
+    return [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].frame;
 }
 
 - (NSUInteger)indexOfBodyComponentAtPoint:(CGPoint)point
