@@ -23,7 +23,7 @@
 
 @protocol HUBComponentModel;
 @protocol HUBComponentWrapperDelegate;
-@class HUBComponentRegistryImplementation;
+@protocol HUBComponentRegistry;
 @class HUBComponentWrapper;
 @class HUBComponentUIStateManager;
 
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentRegistry The component registry to use to create new component instances
  *  @param UIStateManager The manager keeping track of component UI states
  */
-- (instancetype)initWithComponentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
                            UIStateManager:(HUBComponentUIStateManager *)UIStateManager HUB_DESIGNATED_INITIALIZER;
 
 /**

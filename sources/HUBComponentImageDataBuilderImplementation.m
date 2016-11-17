@@ -98,7 +98,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - API
 
-- (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier type:(HUBComponentImageType)type
+- (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier
+                                                                 type:(HUBComponentImageType)type
+                                                           customData:(nullable NSDictionary *)customData
 {
     id<HUBIcon> const placeholderIcon = [self buildPlaceholderIcon];
     
@@ -110,7 +112,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                       type:type
                                                                        URL:self.URL
                                                            placeholderIcon:placeholderIcon
-                                                                localImage:self.localImage];
+                                                                localImage:self.localImage
+                                                                customData:customData];
 }
 
 #pragma mark - Private utilities

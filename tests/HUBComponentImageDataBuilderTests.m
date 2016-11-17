@@ -63,7 +63,7 @@
     NSString * const identifier = @"identifier";
     HUBComponentImageType const type = HUBComponentImageTypeCustom;
     
-    HUBComponentImageDataImplementation * const imageData = [self.builder buildWithIdentifier:identifier type:type];
+    HUBComponentImageDataImplementation * const imageData = [self.builder buildWithIdentifier:identifier type:type customData:nil];
     
     XCTAssertEqual(imageData.identifier, identifier);
     XCTAssertEqual(imageData.type, type);
@@ -74,25 +74,25 @@
 
 - (void)testEmptyBuilderProducingNil
 {
-    XCTAssertNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
+    XCTAssertNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil]);
 }
 
 - (void)testOnlyURLNotProducingNil
 {
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
-    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
+    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil]);
 }
 
 - (void)testLocalImageOnlyNotProducingNil
 {
     self.builder.localImage = [UIImage new];
-    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
+    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil]);
 }
 
 - (void)testOnlyPlaceholderIconIdentifierNotProducingNil
 {
     self.builder.placeholderIconIdentifier = @"placeholder";
-    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
+    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil]);
 }
 
 - (void)testNilIconImageResolverAlwaysResultingInNilPlaceholderIcon
@@ -105,10 +105,10 @@
     self.builder.placeholderIconIdentifier = @"placeholder";
     
     // Since icon is now nil, the builder itself should also return nil (since it doesn't contain any other data)
-    XCTAssertNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
+    XCTAssertNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil]);
     
     self.builder.localImage = [UIImage new];
-    HUBComponentImageDataImplementation * const imageData = [self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain];
+    HUBComponentImageDataImplementation * const imageData = [self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil];
     XCTAssertNotNil(imageData);
     XCTAssertNil(imageData.placeholderIcon);
 }

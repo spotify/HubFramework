@@ -22,6 +22,8 @@
 #import <Foundation/Foundation.h>
 
 @protocol HUBComponentFactory;
+@protocol HUBComponent;
+@protocol HUBComponentModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -59,6 +61,21 @@ NS_ASSUME_NONNULL_BEGIN
  *  method does nothing.
  */
 - (void)unregisterComponentFactoryForNamespace:(NSString *)componentNamespace;
+
+/**
+ *  Create a new component instance for a model
+ *
+ *  @param model The model to create a component for
+ *
+ *  @return A newly created component that is ready to use. The component registry will first attempt
+ *          to resolve a component factory for the model's `componentNamespace`, and ask it to create
+ *          a component. However, if this fails, the registry will use its fallback handler to create
+ *          a fallback component for the model's `componentCategory`.
+ *
+ *  Normally, you don't have to call this method yourself. Instead, the Hub Framework automatically
+ *  creates component instances for the models you delcare in a content operation.
+ */
+- (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model;
 
 @end
 

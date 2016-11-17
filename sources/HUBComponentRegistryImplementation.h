@@ -48,18 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
                      JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
                       iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
 
-/**
- *  Create a new component instance for a model
- *
- *  @param model The model to create a component for
- *
- *  @return A newly created component that is ready to use. The component registry will first attempt
- *          to resolve a component factory for the model's `componentNamespace`, and ask it to create
- *          a component. However, if this fails, the registry will use its fallback handler to create
- *          a fallback component for the model's `componentCategory`.
- */
-- (id<HUBComponent>)createComponentForModel:(id<HUBComponentModel>)model;
-
 @end
 
 NS_ASSUME_NONNULL_END

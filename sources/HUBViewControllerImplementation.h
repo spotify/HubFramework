@@ -25,13 +25,13 @@
 @protocol HUBImageLoader;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
+@protocol HUBActionHandler;
 @protocol HUBViewControllerScrollHandler;
+@protocol HUBComponentRegistry;
 @class HUBViewModelLoaderImplementation;
 @class HUBCollectionViewFactory;
-@class HUBComponentRegistryImplementation;
 @class HUBInitialViewModelRegistry;
 @class HUBActionRegistryImplementation;
-@class HUBActionHandlerWrapper;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -55,9 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
               featureIdentifier:(NSString *)featureIdentifier
                 viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
-              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+              componentRegistry:(id<HUBComponentRegistry>)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                  actionHandler:(HUBActionHandlerWrapper *)actionHandler
+                  actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader HUB_DESIGNATED_INITIALIZER;
 
