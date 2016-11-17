@@ -30,27 +30,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Delegate protocol for `HUBActionHandlerWrapper`
-@protocol HUBActionHandlerWrapperDelegate <NSObject>
-
-/**
- *  Provide an action context for an action handler
- *
- *  @param actionHandler The handler to provide an action context for
- *  @param actionIdentifier The identifier of the action to return a context for
- *  @param customData Any custom data to include in the returned action context
- */
-- (id<HUBActionContext>)actionHandler:(HUBActionHandlerWrapper *)actionHandler
-                        provideContextForActionWithIdentifier:(HUBIdentifier *)actionIdentifier
-                        customData:(nullable NSDictionary<NSString *, id> *)customData;
-
-@end
-
 /// Class handling actions for a Hub Framework powered-view, while wrapping any user-specified action handler
 @interface HUBActionHandlerWrapper : NSObject <HUBActionHandler>
-
-/// The action handler's delegate. See `HUBActionHandlerWrapperDelegate` for more information.
-@property (nonatomic, weak, nullable) id<HUBActionHandlerWrapperDelegate> delegate;
 
 /**
  *  Initialize an instance of this class

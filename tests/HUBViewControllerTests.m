@@ -2354,49 +2354,52 @@
 
 - (void)testPerformingAsyncAction
 {
-    HUBActionMock *action = [[HUBActionMock alloc] initWithBlock:^(id<HUBActionContext> context) {
-        return YES;
-    }];
-    action.isAsync = YES;
-    
-    HUBActionFactoryMock *actionFactory = [[HUBActionFactoryMock alloc] initWithActions:@{@"name": action}];
-    [self.actionRegistry registerActionFactory:actionFactory forNamespace:@"namespace"];
-    
-    __weak HUBActionMock *actionWeakRef = action;
-    
-    [self simulateViewControllerLayoutCycle];
-    
-    HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
-    BOOL const actionOutcome = [self.contentOperation.actionPerformer performActionWithIdentifier:actionIdentifier
-                                                                                       customData:nil];
-    
-    // Here we unregister the action factory, to release our mocked reference to the action
-    // We also nil out our local reference, to be able to assert that the Hub Framework is retaining it
-    [self.actionRegistry unregisterActionFactoryForNamespace:@"namespace"];
-    actionFactory = nil;
-    action = nil;
-    
-    XCTAssertTrue(actionOutcome);
-    XCTAssertNotNil(actionWeakRef);
-    
-    // Capture action strongly again, to avoid compiler error
-    action = actionWeakRef;
-    
-    __block id<HUBActionContext> chainedActionContext = nil;
-    
-    self.actionHandler.block = ^(id<HUBActionContext> context) {
-        chainedActionContext = context;
-        return YES;
-    };
+    __weak HUBActionMock *actionWeakRef;
+    __block id<HUBActionContext> chainedActionContext;
     
     HUBIdentifier * const chainedActionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"chained" name:@"action"];
     NSDictionary * const chainedActionCustomData = @{@"custom": @"data"};
-    [action.delegate actionDidFinish:action chainToActionWithIdentifier:chainedActionIdentifier customData:chainedActionCustomData];
     
-    // Action should now be fully released, since we are done with it
-    action = nil;
+    // Here we use an auto release pool to control the lifecycles of the objects locally
+    @autoreleasepool {
+        HUBActionMock *action = [[HUBActionMock alloc] initWithBlock:^(id<HUBActionContext> context) {
+            return YES;
+        }];
+        action.isAsync = YES;
+        
+        HUBActionFactoryMock *actionFactory = [[HUBActionFactoryMock alloc] initWithActions:@{@"name": action}];
+        [self.actionRegistry registerActionFactory:actionFactory forNamespace:@"namespace"];
+        
+        actionWeakRef = action;
+        
+        [self simulateViewControllerLayoutCycle];
+        
+        HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+        BOOL const actionOutcome = [self.contentOperation.actionPerformer performActionWithIdentifier:actionIdentifier
+                                                                                           customData:nil];
+        
+        // Here we unregister the action factory, to release our mocked reference to the action
+        // We also nil out our local reference, to be able to assert that the Hub Framework is retaining it
+        [self.actionRegistry unregisterActionFactoryForNamespace:@"namespace"];
+        actionFactory = nil;
+        action = nil;
+        
+        XCTAssertTrue(actionOutcome);
+        XCTAssertNotNil(actionWeakRef);
+        
+        // Capture action strongly again, to avoid compiler error
+        action = actionWeakRef;
+        
+        self.actionHandler.block = ^(id<HUBActionContext> context) {
+            chainedActionContext = context;
+            return YES;
+        };
+        
+        [action.delegate actionDidFinish:action chainToActionWithIdentifier:chainedActionIdentifier customData:chainedActionCustomData];
+    }
+    
+    // Make sure that the action has now been released, and that the chained action was performed
     XCTAssertNil(actionWeakRef);
-    
     XCTAssertNotNil(chainedActionContext);
     XCTAssertEqualObjects(chainedActionContext.customActionIdentifier, chainedActionIdentifier);
     XCTAssertEqualObjects(chainedActionContext.customData, chainedActionCustomData);
