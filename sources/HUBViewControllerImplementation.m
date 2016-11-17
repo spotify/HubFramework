@@ -418,7 +418,7 @@ NS_ASSUME_NONNULL_BEGIN
                       indexPath:(NSIndexPath *)indexPath
                  scrollPosition:(HUBScrollPosition)scrollPosition
                        animated:(BOOL)animated
-                     completion:(void (^ _Nullable)(void))completion
+                     completion:(void (^ _Nullable)(NSIndexPath *))completion
 {
     if (componentType == HUBComponentTypeBody) {
         NSAssert([indexPath indexAtPosition:0] < (NSUInteger)[self.collectionView numberOfItemsInSection:0],
@@ -1423,7 +1423,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                 component:(nullable HUBComponentWrapper *)componentWrapper
                            scrollPosition:(HUBScrollPosition)scrollPosition
                                  animated:(BOOL)animated
-                               completion:(void (^ _Nullable)())completionHandler
+                               completion:(void (^ _Nullable)(NSIndexPath *))completionHandler
 {
     NSUInteger const childIndex = [indexPath indexAtPosition:startPosition];
 
@@ -1452,6 +1452,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
             childComponentWrapper = [componentWrapper visibleChildComponentAtIndex:childIndex];
         }
 
+        if (completionHandler != nil) {
+            NSUInteger const currentIndexPathLength = startPosition + 1;
+            NSUInteger currentIndexes[currentIndexPathLength];
+            [indexPath getIndexes:currentIndexes range:NSMakeRange(0, currentIndexPathLength)];
+            NSIndexPath * const currentIndexPath = [NSIndexPath indexPathWithIndexes:currentIndexes length:currentIndexPathLength];
+            completionHandler(currentIndexPath);
+        }
+
         NSUInteger const nextPosition = startPosition + 1;
         if (childComponentWrapper != nil && nextPosition < indexPath.length) {
             [strongSelf scrollToRemainingComponentsOfType:componentType
@@ -1461,8 +1469,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                            scrollPosition:scrollPosition
                                                  animated:animated
                                                completion:completionHandler];
-        } else if (completionHandler != nil) {
-            completionHandler();
         }
     };
 
