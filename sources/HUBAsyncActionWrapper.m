@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)actionDidFinish:(id<HUBAsyncAction>)action
         chainToActionWithIdentifier:(nullable HUBIdentifier *)nextActionIdentifier
-             customData:(nullable NSDictionary<NSString *, id> *)nextActionCustomData
+        customData:(nullable NSDictionary<NSString *, id> *)nextActionCustomData
 {
     [self.delegate actionDidFinish:self
                        withContext:self.context
