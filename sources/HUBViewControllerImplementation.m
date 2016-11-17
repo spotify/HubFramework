@@ -63,7 +63,6 @@ NS_ASSUME_NONNULL_BEGIN
     HUBImageLoaderDelegate,
     HUBComponentWrapperDelegate,
     HUBActionPerformer,
-    HUBActionHandlerWrapperDelegate,
     UICollectionViewDataSource,
     HUBCollectionViewDelegate
 >
@@ -114,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(id<HUBComponentRegistry>)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                  actionHandler:(HUBActionHandlerWrapper *)actionHandler
+                  actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader
 
@@ -157,7 +156,6 @@ NS_ASSUME_NONNULL_BEGIN
     viewModelLoader.delegate = self;
     viewModelLoader.actionPerformer = self;
     imageLoader.delegate = self;
-    actionHandler.delegate = self;
     
     self.automaticallyAdjustsScrollViewInsets = [_scrollHandler shouldAutomaticallyAdjustContentInsetsInViewController:self];
     
@@ -676,23 +674,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                         customIdentifier:identifier
                               customData:customData
                           componentModel:nil];
-}
-
-#pragma mark - HUBActionHandlerWrapperDelegate
-
-- (id<HUBActionContext>)actionHandler:(HUBActionHandlerWrapper *)actionHandler
-                        provideContextForActionWithIdentifier:(HUBIdentifier *)actionIdentifier
-                           customData:(nullable NSDictionary<NSString *, id> *)customData
-{
-    id<HUBViewModel> const viewModel = self.viewModel;
-    
-    return [[HUBActionContextImplementation alloc] initWithTrigger:HUBActionTriggerChained
-                                            customActionIdentifier:actionIdentifier
-                                                        customData:customData
-                                                           viewURI:self.viewURI
-                                                         viewModel:viewModel
-                                                    componentModel:nil
-                                                    viewController:self];
 }
 
 #pragma mark - UICollectionViewDataSource
