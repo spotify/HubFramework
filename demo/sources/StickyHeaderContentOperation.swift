@@ -25,6 +25,7 @@ import HubFramework
 /// Content operation that adds a sticky header and a few rows beneath it
 class StickyHeaderContentOperation: NSObject, HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
+    private var performCount = 0
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
         let headerBuilder = viewModelBuilder.headerComponentModelBuilder
@@ -37,6 +38,16 @@ class StickyHeaderContentOperation: NSObject, HUBContentOperation {
             rowBuilder.title = "Row number \(rowIndex + 1)"
         }
         
+        // Add a row displaying the number of times the view has been reloaded, for use in UI tests
+        let reloadCountRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "row-reloadCount")
+        reloadCountRowBuilder.title = "Number of reloads: \(performCount)"
+        
+        // Add a link to the "Pretty pictures" feature, for use in UI tests
+        let prettyPicturesRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "row-prettyPictures")
+        prettyPicturesRowBuilder.title = "Go to Pretty Pictures"
+        prettyPicturesRowBuilder.targetBuilder.uri = .prettyPicturesViewURI
+        
         delegate?.contentOperationDidFinish(self)
+        performCount += 1
     }
 }
