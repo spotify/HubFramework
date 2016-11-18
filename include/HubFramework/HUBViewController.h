@@ -19,16 +19,24 @@
  *  under the License.
  */
 
-#import <UIKit/UIKit.h>
-
-#import "HUBComponentType.h"
+#import "HUBHeaderMacros.h"
 #import "HUBComponentLayoutTraits.h"
+#import "HUBComponentType.h"
 #import "HUBScrollPosition.h"
 
-@protocol HUBViewController;
 @protocol HUBViewModel;
-@protocol HUBComponent;
 @protocol HUBComponentModel;
+@protocol HUBImageLoader;
+@protocol HUBContentReloadPolicy;
+@protocol HUBComponentLayoutManager;
+@protocol HUBActionHandler;
+@protocol HUBViewControllerScrollHandler;
+@protocol HUBComponentRegistry;
+@class HUBViewController;
+@class HUBViewModelLoaderImplementation;
+@class HUBCollectionViewFactory;
+@class HUBInitialViewModelRegistry;
+@class HUBActionRegistryImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -48,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  You can use this method to perform any custom UI operations on the whole view controller right before
  *  a new model will be rendered.
  */
-- (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel;
+- (void)viewController:(HUBViewController *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel;
 
 /**
  *  Sent to a Hub Framework view controller's delegate when it was updated with a new view model
@@ -58,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  You can use this method to perform any custom UI operations on the whole view controller when a new
  *  view model has been rendered.
  */
-- (void)viewControllerDidUpdate:(UIViewController<HUBViewController> *)viewController;
+- (void)viewControllerDidUpdate:(HUBViewController *)viewController;
 
 /**
  *  Sent to a Hub Framework view controller's delegate when it failed to be updated because of an error
@@ -71,17 +79,17 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Note that you can also use content operations (`HUBContentOperation`) to react to errors, and adjust the UI.
  */
-- (void)viewController:(UIViewController<HUBViewController> *)viewController didFailToUpdateWithError:(NSError *)error;
+- (void)viewController:(HUBViewController *)viewController didFailToUpdateWithError:(NSError *)error;
 
 /**
  *  Sent to a Hub Framework view controller's delegate when the view finished rendering, due to a view model update.
-
+ 
  *  @param viewController The view controller that finished rendering.
  *
  *  You can use this method to perform any custom UI operations on the whole view controller right after
  *  a new view model was rendered.
  */
-- (void)viewControllerDidFinishRendering:(UIViewController<HUBViewController> *)viewController;
+- (void)viewControllerDidFinishRendering:(HUBViewController *)viewController;
 
 /**
  *  Sent to a Hub Framework view controller's delegate to ask it whenever the view controller should start scrolling
@@ -91,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  This method can be used to veto a scroll event from being started. It will be called every time the user starts
  *  scrolling the view that is rendering body components.
  */
-- (BOOL)viewControllerShouldStartScrolling:(UIViewController<HUBViewController> *)viewController;
+- (BOOL)viewControllerShouldStartScrolling:(HUBViewController *)viewController;
 
 /**
  *  Sent to a Hub Framework view controller's delegate when a component is about to appear on the screen
@@ -101,7 +109,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param layoutTraits The layout traits of the component that is about to appear
  *  @param componentView The view that the component is about to appear in
  */
-- (void)viewController:(UIViewController<HUBViewController> *)viewController
+- (void)viewController:(HUBViewController *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
       willAppearInView:(UIView *)componentView;
@@ -114,7 +122,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param layoutTraits The layout traits of the component that disappeared
  *  @param componentView The view that the component disappeared from
  */
-- (void)viewController:(UIViewController<HUBViewController> *)viewController
+- (void)viewController:(HUBViewController *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
   didDisappearFromView:(UIView *)componentView;
@@ -125,17 +133,19 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewController The view controller in which the component was selected
  *  @param componentModel The model of the component that was selected
  */
-- (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
+- (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
 
 @end
 
 /**
- *  Protocol defining the public API of a Hub Framework view controller
+ *  View controller used to render a Hub Framework-powered view
  *
- *  You don't conform to this protocol yourself, instead the Hub Framework will create view controllers conforming
- *  to this protocol through `HUBViewControllerFactory`.
+ *  You don't create instances of this class directly. Instead, you use `HUBViewControllerFactory` to do so.
+ *
+ *  This view controller renders `HUBComponent` instances using a collection view. What components that are rendered
+ *  are determined by `HUBContentOperation`s that build a `HUBViewModel`.
  */
-@protocol HUBViewController <NSObject>
+@interface HUBViewController : UIViewController
 
 /// The view controller's delegate. See `HUBViewControllerDelegate` for more information.
 @property (nonatomic, weak, nullable) id<HUBViewControllerDelegate> delegate;
@@ -251,6 +261,21 @@ NS_ASSUME_NONNULL_BEGIN
  *  If no component is currently being selected, this method does nothing.
  */
 - (void)cancelComponentSelection;
+
+#pragma mark - Unavailable initializers
+
+/// Use `HUBViewControllerFactory` to create instances of this class
++ (instancetype)new NS_UNAVAILABLE;
+
+/// Use `HUBViewControllerFactory` to create instances of this class
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Use `HUBViewControllerFactory` to create instances of this class
+- (instancetype)initWithCoder:(NSCoder *)decoder NS_UNAVAILABLE;
+
+/// Use `HUBViewControllerFactory` to create instances of this class
+- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil
+                         bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 
 @end
 

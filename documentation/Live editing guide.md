@@ -36,7 +36,7 @@ Once the live service has created a view controller, push that view controller o
 
 ```objective-c
 - (void)liveService:(id<HUBLiveService>)liveService
-        didCreateViewController:(UIViewController<HUBViewController> *)viewController
+        didCreateViewController:(HUBViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:YES];
 }

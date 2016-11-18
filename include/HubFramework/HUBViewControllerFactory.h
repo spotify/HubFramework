@@ -21,7 +21,7 @@
 
 #import <UIKIt/UIKit.h>
 
-@protocol HUBViewController;
+@class HUBViewController;
 @protocol HUBContentOperation;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  To be able to create a view controller without creating a feature, you can use the other view controller
  *  creation method available on this protocol.
  */
-- (nullable UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI;
+- (nullable HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI;
 
 /**
  *  Create a view controller without a feature registration
@@ -73,10 +73,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureTitle The title of the feature that the view controller will belong to. Used for its
  *         default title, and also made available to contnet operations as part of `HUBFeatureInfo`.
  */
-- (UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI
-                                                      contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
-                                                      featureIdentifier:(NSString *)featureIdentifier
-                                                           featureTitle:(NSString *)featureTitle;
+- (HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
+                                    contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+                                    featureIdentifier:(NSString *)featureIdentifier
+                                         featureTitle:(NSString *)featureTitle;
 
 @end
 

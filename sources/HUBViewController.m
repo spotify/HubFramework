@@ -19,7 +19,7 @@
  *  under the License.
  */
 
-#import "HUBViewControllerImplementation.h"
+#import "HUBViewController.h"
 
 #import "HUBIdentifier.h"
 #import "HUBViewModelLoaderImplementation.h"
@@ -58,7 +58,7 @@ static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewControllerImplementation () <
+@interface HUBViewController () <
     HUBViewModelLoaderDelegate,
     HUBImageLoaderDelegate,
     HUBComponentWrapperDelegate,
@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation HUBViewControllerImplementation
+@implementation HUBViewController
 
 @synthesize delegate = _delegate;
 @synthesize featureIdentifier = _featureIdentifier;
@@ -1433,9 +1433,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                  @(childIndex), componentWrapper.model.identifier, @(componentWrapper.model.children.count));
     }
 
-    __weak HUBViewControllerImplementation *weakSelf = self;
+    __weak HUBViewController *weakSelf = self;
     void (^stepCompletionHandler)() = ^{
-        HUBViewControllerImplementation *strongSelf = weakSelf;
+        HUBViewController *strongSelf = weakSelf;
 
         HUBComponentWrapper *childComponentWrapper = nil;
         if (startPosition == 0) {
