@@ -33,12 +33,14 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize URL = _URL;
 @synthesize placeholderIcon = _placeholderIcon;
 @synthesize localImage = _localImage;
+@synthesize customData = _customData;
 
 - (instancetype)initWithIdentifier:(nullable NSString *)identifier
                               type:(HUBComponentImageType)type
                                URL:(nullable NSURL *)URL
                    placeholderIcon:(nullable id<HUBIcon>)placeholderIcon
                         localImage:(nullable UIImage *)localImage
+                        customData:(nullable NSDictionary *)customData
 {
     self = [super init];
     
@@ -48,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
         _URL = [URL copy];
         _placeholderIcon = placeholderIcon;
         _localImage = localImage;
+        _customData = customData;
     }
     
     return self;

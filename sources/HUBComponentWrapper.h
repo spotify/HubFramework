@@ -150,7 +150,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
 @property (nonatomic, weak, nullable) id<HUBComponentWrapperDelegate> delegate;
 
 /// The components parent wrapper if it is a child component
-@property (nonatomic, weak, nullable, readonly) HUBComponentWrapper *parent;
+@property (nonatomic, weak, nullable) HUBComponentWrapper *parent;
 
 /// Whether the wrapper is for a root component, or for a child component
 @property (nonatomic, readonly) BOOL isRootComponent;

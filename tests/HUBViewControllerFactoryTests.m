@@ -115,10 +115,10 @@
         return YES;
     };
     
-    UIViewController<HUBViewController> * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI
-                                                                                                                  contentOperations:@[contentOperation]
-                                                                                                                  featureIdentifier:@"identifier"
-                                                                                                                       featureTitle:@"Title"];
+    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI
+                                                                                                contentOperations:@[contentOperation]
+                                                                                                featureIdentifier:@"identifier"
+                                                                                                     featureTitle:@"Title"];
     
     [viewController viewWillAppear:NO];
     
@@ -177,7 +177,7 @@
         return YES;
     };
     
-    UIViewController<HUBViewController> * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
     [viewController viewWillAppear:YES];
     
     id<HUBComponentModel> const componentModel = viewController.viewModel.bodyComponentModels[0];

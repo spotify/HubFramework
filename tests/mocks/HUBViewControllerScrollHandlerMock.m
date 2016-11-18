@@ -33,22 +33,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewControllerScrollHandlerMock
 
-- (BOOL)shouldShowScrollIndicatorsInViewController:(UIViewController<HUBViewController> *)viewController
+- (BOOL)shouldShowScrollIndicatorsInViewController:(HUBViewController *)viewController
 {
     return self.shouldShowScrollIndicators;
 }
 
-- (BOOL)shouldAutomaticallyAdjustContentInsetsInViewController:(UIViewController<HUBViewController> *)viewController
+- (BOOL)shouldAutomaticallyAdjustContentInsetsInViewController:(HUBViewController *)viewController
 {
     return self.shouldAutomaticallyAdjustContentInsets;
 }
 
-- (CGFloat)scrollDecelerationRateForViewController:(UIViewController<HUBViewController> *)viewController
+- (CGFloat)scrollDecelerationRateForViewController:(HUBViewController *)viewController
 {
     return self.scrollDecelerationRate;
 }
 
-- (UIEdgeInsets)contentInsetsForViewController:(UIViewController<HUBViewController> *)viewController
+- (UIEdgeInsets)contentInsetsForViewController:(HUBViewController *)viewController
                          proposedContentInsets:(UIEdgeInsets)proposedContentInsets
 {
     if (self.contentInsetHandler) {
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (void)scrollingWillStartInViewController:(UIViewController<HUBViewController> *)viewController
+- (void)scrollingWillStartInViewController:(HUBViewController *)viewController
                         currentContentRect:(CGRect)currentContentRect
 {
     self.startContentRect = currentContentRect;
@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (void)scrollingDidEndInViewController:(UIViewController<HUBViewController> *)viewController
+- (void)scrollingDidEndInViewController:(HUBViewController *)viewController
                      currentContentRect:(CGRect)currentContentRect
 {
     self.endContentRect = currentContentRect;
@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (CGPoint)targetContentOffsetForEndedScrollInViewController:(UIViewController<HUBViewController> *)viewController
+- (CGPoint)targetContentOffsetForEndedScrollInViewController:(HUBViewController *)viewController
                                                     velocity:(CGVector)velocity
                                                 contentInset:(UIEdgeInsets)contentInset
                                         currentContentOffset:(CGPoint)currentContentOffset
@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
                                        scrollPosition:(HUBScrollPosition)scrollPosition
                                          contentInset:(UIEdgeInsets)contentInset
                                           contentSize:(CGSize)contentSize
-                                       viewController:(UIViewController<HUBViewController> *)viewController
+                                       viewController:(HUBViewController *)viewController
 {
     return self.targetContentOffset;
 }

@@ -19,7 +19,7 @@
  *  under the License.
  */
 
-#import "HUBViewControllerImplementation.h"
+#import "HUBViewController.h"
 
 #import "HUBIdentifier.h"
 #import "HUBViewModelLoaderImplementation.h"
@@ -32,7 +32,7 @@
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentWrapper.h"
-#import "HUBComponentRegistryImplementation.h"
+#import "HUBComponentRegistry.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBUtilities.h"
 #import "HUBImageLoader.h"
@@ -58,12 +58,11 @@ static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewControllerImplementation () <
+@interface HUBViewController () <
     HUBViewModelLoaderDelegate,
     HUBImageLoaderDelegate,
     HUBComponentWrapperDelegate,
     HUBActionPerformer,
-    HUBActionHandlerWrapperDelegate,
     UICollectionViewDataSource,
     HUBCollectionViewDelegate
 >
@@ -71,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
-@property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistry;
+@property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) id<HUBActionHandler> actionHandler;
 @property (nonatomic, strong, readonly) id<HUBViewControllerScrollHandler> scrollHandler;
@@ -101,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation HUBViewControllerImplementation
+@implementation HUBViewController
 
 @synthesize delegate = _delegate;
 @synthesize featureIdentifier = _featureIdentifier;
@@ -112,9 +111,9 @@ NS_ASSUME_NONNULL_BEGIN
               featureIdentifier:(NSString *)featureIdentifier
                 viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
-              componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+              componentRegistry:(id<HUBComponentRegistry>)componentRegistry
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                  actionHandler:(HUBActionHandlerWrapper *)actionHandler
+                  actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader
 
@@ -157,7 +156,6 @@ NS_ASSUME_NONNULL_BEGIN
     viewModelLoader.delegate = self;
     viewModelLoader.actionPerformer = self;
     imageLoader.delegate = self;
-    actionHandler.delegate = self;
     
     self.automaticallyAdjustsScrollViewInsets = [_scrollHandler shouldAutomaticallyAdjustContentInsetsInViewController:self];
     
@@ -392,7 +390,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
-    return [self.collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
+    return [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].frame;
 }
 
 - (NSUInteger)indexOfBodyComponentAtPoint:(CGPoint)point
@@ -420,7 +418,7 @@ NS_ASSUME_NONNULL_BEGIN
                       indexPath:(NSIndexPath *)indexPath
                  scrollPosition:(HUBScrollPosition)scrollPosition
                        animated:(BOOL)animated
-                     completion:(void (^ _Nullable)(void))completion
+                     completion:(void (^ _Nullable)(NSIndexPath *))completion
 {
     if (componentType == HUBComponentTypeBody) {
         NSAssert([indexPath indexAtPosition:0] < (NSUInteger)[self.collectionView numberOfItemsInSection:0],
@@ -681,23 +679,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                         customIdentifier:identifier
                               customData:customData
                           componentModel:nil];
-}
-
-#pragma mark - HUBActionHandlerWrapperDelegate
-
-- (id<HUBActionContext>)actionHandler:(HUBActionHandlerWrapper *)actionHandler
-                        provideContextForActionWithIdentifier:(HUBIdentifier *)actionIdentifier
-                           customData:(nullable NSDictionary<NSString *, id> *)customData
-{
-    id<HUBViewModel> const viewModel = self.viewModel;
-    
-    return [[HUBActionContextImplementation alloc] initWithTrigger:HUBActionTriggerChained
-                                            customActionIdentifier:actionIdentifier
-                                                        customData:customData
-                                                           viewURI:self.viewURI
-                                                         viewModel:viewModel
-                                                    componentModel:nil
-                                                    viewController:self];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -1447,7 +1428,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                 component:(nullable HUBComponentWrapper *)componentWrapper
                            scrollPosition:(HUBScrollPosition)scrollPosition
                                  animated:(BOOL)animated
-                               completion:(void (^ _Nullable)())completionHandler
+                               completion:(void (^ _Nullable)(NSIndexPath *))completionHandler
 {
     NSUInteger const childIndex = [indexPath indexAtPosition:startPosition];
 
@@ -1457,9 +1438,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                  @(childIndex), componentWrapper.model.identifier, @(componentWrapper.model.children.count));
     }
 
-    __weak HUBViewControllerImplementation *weakSelf = self;
+    __weak HUBViewController *weakSelf = self;
     void (^stepCompletionHandler)() = ^{
-        HUBViewControllerImplementation *strongSelf = weakSelf;
+        HUBViewController *strongSelf = weakSelf;
 
         HUBComponentWrapper *childComponentWrapper = nil;
         if (startPosition == 0) {
@@ -1476,6 +1457,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
             childComponentWrapper = [componentWrapper visibleChildComponentAtIndex:childIndex];
         }
 
+        if (completionHandler != nil) {
+            NSUInteger const currentIndexPathLength = startPosition + 1;
+            NSUInteger currentIndexes[currentIndexPathLength];
+            [indexPath getIndexes:currentIndexes range:NSMakeRange(0, currentIndexPathLength)];
+            NSIndexPath * const currentIndexPath = [NSIndexPath indexPathWithIndexes:currentIndexes length:currentIndexPathLength];
+            completionHandler(currentIndexPath);
+        }
+
         NSUInteger const nextPosition = startPosition + 1;
         if (childComponentWrapper != nil && nextPosition < indexPath.length) {
             [strongSelf scrollToRemainingComponentsOfType:componentType
@@ -1485,8 +1474,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                            scrollPosition:scrollPosition
                                                  animated:animated
                                                completion:completionHandler];
-        } else if (completionHandler != nil) {
-            completionHandler();
         }
     };
 

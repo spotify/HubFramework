@@ -21,7 +21,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "HUBViewControllerImplementation.h"
+#import "HUBViewController+Initializer.h"
 #import "HUBViewModelLoaderImplementation.h"
 #import "HUBContentOperationMock.h"
 #import "HUBComponentRegistryImplementation.h"
@@ -78,7 +78,7 @@
 @property (nonatomic, strong) HUBActionMock *selectionAction;
 @property (nonatomic, strong) HUBActionRegistryImplementation *actionRegistry;
 @property (nonatomic, strong) NSURL *viewURI;
-@property (nonatomic, strong) HUBViewControllerImplementation *viewController;
+@property (nonatomic, strong) HUBViewController *viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromAppearanceDelegateMethod;
@@ -161,15 +161,15 @@
                                                                              initialViewModelRegistry:self.initialViewModelRegistry
                                                                                       viewModelLoader:self.viewModelLoader];
     
-    self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:self.viewURI
-                                                                 featureIdentifier:featureInfo.identifier
-                                                                   viewModelLoader:self.viewModelLoader
-                                                             collectionViewFactory:self.collectionViewFactory
-                                                                 componentRegistry:self.componentRegistry
-                                                            componentLayoutManager:componentLayoutManager
-                                                                     actionHandler:actionHandler
-                                                                     scrollHandler:self.scrollHandler
-                                                                       imageLoader:self.imageLoader];
+    self.viewController = [[HUBViewController alloc] initWithViewURI:self.viewURI
+                                                   featureIdentifier:featureInfo.identifier
+                                                     viewModelLoader:self.viewModelLoader
+                                               collectionViewFactory:self.collectionViewFactory
+                                                   componentRegistry:self.componentRegistry
+                                              componentLayoutManager:componentLayoutManager
+                                                       actionHandler:actionHandler
+                                                       scrollHandler:self.scrollHandler
+                                                         imageLoader:self.imageLoader];
     
     self.viewController.delegate = self;
     
@@ -963,6 +963,72 @@
     XCTAssertEqual(childComponentWrapper, reusedChildComponentWrapper);
 }
 
+- (void)testChildComponentsRemovedFromParentOnReuse
+{
+    HUBComponentMock * const componentA = [HUBComponentMock new];
+    componentA.view = [[UIView alloc] initWithFrame:CGRectZero];
+
+    HUBComponentMock * const componentB = [HUBComponentMock new];
+    componentB.view = [[UIView alloc] initWithFrame:CGRectZero];
+
+    HUBComponentMock * const childComponent = [HUBComponentMock new];
+    UIView *childComponentView = [[UIView alloc] initWithFrame:CGRectZero];
+    childComponent.view = childComponentView;
+
+    self.componentFactory.components[@"A"] = componentA;
+    self.componentFactory.components[@"B"] = componentB;
+    self.componentFactory.components[@"child"] = childComponent;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilderA = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"A"];
+        componentModelBuilderA.componentName = @"A";
+        [componentModelBuilderA builderForChildWithIdentifier:@"childA"].componentName = @"child";
+
+        id<HUBComponentModelBuilder> const componentModelBuilderB = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"B"];
+        componentModelBuilderB.componentName = @"B";
+        [componentModelBuilderB builderForChildWithIdentifier:@"childB"].componentName = @"child";
+
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+
+    NSIndexPath * const indexPathA = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cellA = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
+
+    NSIndexPath * const indexPathB = [NSIndexPath indexPathForItem:1 inSection:0];
+    UICollectionViewCell * const cellB = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
+
+    self.collectionView.mockedVisibleCells = @[cellA, cellB];
+    self.collectionView.cells[indexPathA] = cellA;
+    self.collectionView.cells[indexPathB] = cellB;
+
+    id<HUBComponentChildDelegate> componentAChildDelegate = componentA.childDelegate;
+    id<HUBComponentModel> const childComponentModelA = [componentA.model childAtIndex:0];
+    id<HUBComponent> const childComponentWrapperA = [componentAChildDelegate component:componentA childComponentForModel:childComponentModelA];
+
+    [componentAChildDelegate component:componentA willDisplayChildAtIndex:0 view:childComponentView];
+    NSIndexPath * const indexPathChildA = [NSIndexPath indexPathForItem:0 inSection:0];
+    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildA], childComponentView);
+
+    [childComponentWrapperA prepareViewForReuse];
+    XCTAssertNil([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildA]);
+
+    id<HUBComponentChildDelegate> componentBChildDelegate = componentB.childDelegate;
+    id<HUBComponentModel> const childComponentModelB = [componentB.model childAtIndex:0];
+    id<HUBComponent> const childComponentWrapperB = [componentBChildDelegate component:componentB childComponentForModel:childComponentModelB];
+    XCTAssertEqual(childComponentWrapperA, childComponentWrapperB);
+
+    [componentBChildDelegate component:componentB willDisplayChildAtIndex:0 view:childComponentView];
+    NSIndexPath * const indexPathChildB = [NSIndexPath indexPathForItem:0 inSection:1];
+    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildB], childComponentView);
+
+    [childComponentWrapperB prepareViewForReuse];
+    XCTAssertNil([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildB]);
+}
+
 - (void)testSelectionForRootComponent
 {
     NSString * const componentNamespace = @"selectionForRootComponent";
@@ -1592,7 +1658,7 @@
     };
     
     __block NSUInteger numberOfContentInsetCalls = 0;
-    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(UIViewController<HUBViewController> *controller, UIEdgeInsets insets) {
+    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(HUBViewController *controller, UIEdgeInsets insets) {
         numberOfContentInsetCalls += 1;
         if (numberOfContentInsetCalls == 1) {
             assertInsetsEqualToCollectionViewInsets(UIEdgeInsetsZero);
@@ -1622,7 +1688,7 @@
 
     __block NSUInteger numberOfInsetCalls = 0;
     __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"The content inset handler should be asked for the content inset"];
-    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(UIViewController<HUBViewController> *controller, UIEdgeInsets proposedInsets) {
+    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(HUBViewController *controller, UIEdgeInsets proposedInsets) {
         assertInsetsEqualToCollectionViewInsets(proposedInsets, expectedInsets);
         numberOfInsetCalls += 1;
         if (numberOfInsetCalls == 2) {
@@ -1663,7 +1729,7 @@
 
     __block NSUInteger numberOfInsetCalls = 0;
     __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"The content inset handler should be asked for the content inset"];
-    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(UIViewController<HUBViewController> *controller, UIEdgeInsets proposedInsets) {
+    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(HUBViewController *controller, UIEdgeInsets proposedInsets) {
         assertInsetsEqualToCollectionViewInsets(proposedInsets, expectedInsets);
         numberOfInsetCalls += 1;
         if (numberOfInsetCalls == 2) {
@@ -1695,7 +1761,7 @@
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
-                                      completion:^{
+                                      completion:^(NSIndexPath *visibleIndexPath) {
         [scrollingCompletedExpectation fulfill];
         XCTAssertTrue(CGPointEqualToPoint(self.scrollHandler.targetContentOffset, self.collectionView.contentOffset));
     }];
@@ -1732,7 +1798,7 @@
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
-                                      completion:^{
+                                      completion:^(NSIndexPath *visibleIndexPath) {
         XCTAssertFalse(willStartScrollHandlerNotified);
         XCTAssertFalse(didEndScrollHandlerNotified);
         [expectation fulfill];
@@ -1798,13 +1864,18 @@
         XCTAssertEqual([indexPath indexAtPosition:1], childIndex);
     };
 
-    __weak XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
+    __weak XCTestExpectation * const scrollingToFirstExpectation = [self expectationWithDescription:@"Scrolling to the root component should complete and call the handler"];
+    __weak XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling to the nested component should complete and call the handler"];
     [self.viewController scrollToComponentOfType:HUBComponentTypeBody
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
-                                      completion:^{
-        [scrollingCompletedExpectation fulfill];
+                                      completion:^(NSIndexPath *visibleIndexPath) {
+        if (visibleIndexPath.length == 1 && [visibleIndexPath indexAtPosition:0] == 6) {
+            [scrollingToFirstExpectation fulfill];
+        } else if ([visibleIndexPath isEqual:indexPath]) {
+            [scrollingCompletedExpectation fulfill];
+        }
     }];
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
@@ -2313,49 +2384,52 @@
 
 - (void)testPerformingAsyncAction
 {
-    HUBActionMock *action = [[HUBActionMock alloc] initWithBlock:^(id<HUBActionContext> context) {
-        return YES;
-    }];
-    action.isAsync = YES;
-    
-    HUBActionFactoryMock *actionFactory = [[HUBActionFactoryMock alloc] initWithActions:@{@"name": action}];
-    [self.actionRegistry registerActionFactory:actionFactory forNamespace:@"namespace"];
-    
-    __weak HUBActionMock *actionWeakRef = action;
-    
-    [self simulateViewControllerLayoutCycle];
-    
-    HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
-    BOOL const actionOutcome = [self.contentOperation.actionPerformer performActionWithIdentifier:actionIdentifier
-                                                                                       customData:nil];
-    
-    // Here we unregister the action factory, to release our mocked reference to the action
-    // We also nil out our local reference, to be able to assert that the Hub Framework is retaining it
-    [self.actionRegistry unregisterActionFactoryForNamespace:@"namespace"];
-    actionFactory = nil;
-    action = nil;
-    
-    XCTAssertTrue(actionOutcome);
-    XCTAssertNotNil(actionWeakRef);
-    
-    // Capture action strongly again, to avoid compiler error
-    action = actionWeakRef;
-    
-    __block id<HUBActionContext> chainedActionContext = nil;
-    
-    self.actionHandler.block = ^(id<HUBActionContext> context) {
-        chainedActionContext = context;
-        return YES;
-    };
+    __weak HUBActionMock *actionWeakRef;
+    __block id<HUBActionContext> chainedActionContext;
     
     HUBIdentifier * const chainedActionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"chained" name:@"action"];
     NSDictionary * const chainedActionCustomData = @{@"custom": @"data"};
-    [action.delegate actionDidFinish:action chainToActionWithIdentifier:chainedActionIdentifier customData:chainedActionCustomData];
     
-    // Action should now be fully released, since we are done with it
-    action = nil;
+    // Here we use an auto release pool to control the lifecycles of the objects locally
+    @autoreleasepool {
+        HUBActionMock *action = [[HUBActionMock alloc] initWithBlock:^(id<HUBActionContext> context) {
+            return YES;
+        }];
+        action.isAsync = YES;
+        
+        HUBActionFactoryMock *actionFactory = [[HUBActionFactoryMock alloc] initWithActions:@{@"name": action}];
+        [self.actionRegistry registerActionFactory:actionFactory forNamespace:@"namespace"];
+        
+        actionWeakRef = action;
+        
+        [self simulateViewControllerLayoutCycle];
+        
+        HUBIdentifier * const actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+        BOOL const actionOutcome = [self.contentOperation.actionPerformer performActionWithIdentifier:actionIdentifier
+                                                                                           customData:nil];
+        
+        // Here we unregister the action factory, to release our mocked reference to the action
+        // We also nil out our local reference, to be able to assert that the Hub Framework is retaining it
+        [self.actionRegistry unregisterActionFactoryForNamespace:@"namespace"];
+        actionFactory = nil;
+        action = nil;
+        
+        XCTAssertTrue(actionOutcome);
+        XCTAssertNotNil(actionWeakRef);
+        
+        // Capture action strongly again, to avoid compiler error
+        action = actionWeakRef;
+        
+        self.actionHandler.block = ^(id<HUBActionContext> context) {
+            chainedActionContext = context;
+            return YES;
+        };
+        
+        [action.delegate actionDidFinish:action chainToActionWithIdentifier:chainedActionIdentifier customData:chainedActionCustomData];
+    }
+    
+    // Make sure that the action has now been released, and that the chained action was performed
     XCTAssertNil(actionWeakRef);
-    
     XCTAssertNotNil(chainedActionContext);
     XCTAssertEqualObjects(chainedActionContext.customActionIdentifier, chainedActionIdentifier);
     XCTAssertEqualObjects(chainedActionContext.customData, chainedActionCustomData);
@@ -2608,25 +2682,25 @@
 
 #pragma mark - HUBViewControllerDelegate
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
+- (void)viewController:(HUBViewController *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
 {
     XCTAssertEqual(viewController, self.viewController);
     self.viewModelFromDelegateMethod = viewModel;
 }
 
-- (void)viewControllerDidUpdate:(UIViewController<HUBViewController> *)viewController
+- (void)viewControllerDidUpdate:(HUBViewController *)viewController
 {
     XCTAssertEqual(viewController, self.viewController);
     XCTAssertEqual(self.viewModelFromDelegateMethod, viewController.viewModel);
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController didFailToUpdateWithError:(NSError *)error
+- (void)viewController:(HUBViewController *)viewController didFailToUpdateWithError:(NSError *)error
 {
     XCTAssertEqual(viewController, self.viewController);
     self.errorFromDelegateMethod = error;
 }
 
-- (void)viewControllerDidFinishRendering:(UIViewController<HUBViewController> *)viewController
+- (void)viewControllerDidFinishRendering:(HUBViewController *)viewController
 {
     XCTAssertEqual(viewController, self.viewController);
     self.didReceiveViewControllerDidFinishRendering = YES;
@@ -2636,12 +2710,12 @@
     }
 }
 
-- (BOOL)viewControllerShouldStartScrolling:(UIViewController<HUBViewController> *)viewController
+- (BOOL)viewControllerShouldStartScrolling:(HUBViewController *)viewController
 {
     return self.viewControllerShouldStartScrollingBlock();
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController
+- (void)viewController:(HUBViewController *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
       willAppearInView:(nonnull UIView *)componentView
@@ -2654,7 +2728,7 @@
     [self.componentLayoutTraitsFromAppearanceDelegateMethod addObject:layoutTraits];
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController
+- (void)viewController:(HUBViewController *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
   didDisappearFromView:(UIView *)componentView
@@ -2665,7 +2739,7 @@
     [self.componentLayoutTraitsFromDisapperanceDelegateMethod addObject:layoutTraits];
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
+- (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
 {
     XCTAssertEqual(viewController, self.viewController);
     [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];
