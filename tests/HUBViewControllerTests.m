@@ -938,6 +938,72 @@
     XCTAssertEqual(childComponentWrapper, reusedChildComponentWrapper);
 }
 
+- (void)testChildComponentsRemovedFromParentOnReuse
+{
+    HUBComponentMock * const componentA = [HUBComponentMock new];
+    componentA.view = [[UIView alloc] initWithFrame:CGRectZero];
+
+    HUBComponentMock * const componentB = [HUBComponentMock new];
+    componentB.view = [[UIView alloc] initWithFrame:CGRectZero];
+
+    HUBComponentMock * const childComponent = [HUBComponentMock new];
+    UIView *childComponentView = [[UIView alloc] initWithFrame:CGRectZero];
+    childComponent.view = childComponentView;
+
+    self.componentFactory.components[@"A"] = componentA;
+    self.componentFactory.components[@"B"] = componentB;
+    self.componentFactory.components[@"child"] = childComponent;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const componentModelBuilderA = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"A"];
+        componentModelBuilderA.componentName = @"A";
+        [componentModelBuilderA builderForChildWithIdentifier:@"childA"].componentName = @"child";
+
+        id<HUBComponentModelBuilder> const componentModelBuilderB = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"B"];
+        componentModelBuilderB.componentName = @"B";
+        [componentModelBuilderB builderForChildWithIdentifier:@"childB"].componentName = @"child";
+
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
+
+    NSIndexPath * const indexPathA = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cellA = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
+
+    NSIndexPath * const indexPathB = [NSIndexPath indexPathForItem:1 inSection:0];
+    UICollectionViewCell * const cellB = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
+
+    self.collectionView.mockedVisibleCells = @[cellA, cellB];
+    self.collectionView.cells[indexPathA] = cellA;
+    self.collectionView.cells[indexPathB] = cellB;
+
+    id<HUBComponentChildDelegate> componentAChildDelegate = componentA.childDelegate;
+    id<HUBComponentModel> const childComponentModelA = [componentA.model childAtIndex:0];
+    id<HUBComponent> const childComponentWrapperA = [componentAChildDelegate component:componentA childComponentForModel:childComponentModelA];
+
+    [componentAChildDelegate component:componentA willDisplayChildAtIndex:0 view:childComponentView];
+    NSIndexPath * const indexPathChildA = [NSIndexPath indexPathForItem:0 inSection:0];
+    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildA], childComponentView);
+
+    [childComponentWrapperA prepareViewForReuse];
+    XCTAssertNil([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildA]);
+
+    id<HUBComponentChildDelegate> componentBChildDelegate = componentB.childDelegate;
+    id<HUBComponentModel> const childComponentModelB = [componentB.model childAtIndex:0];
+    id<HUBComponent> const childComponentWrapperB = [componentBChildDelegate component:componentB childComponentForModel:childComponentModelB];
+    XCTAssertEqual(childComponentWrapperA, childComponentWrapperB);
+
+    [componentBChildDelegate component:componentB willDisplayChildAtIndex:0 view:childComponentView];
+    NSIndexPath * const indexPathChildB = [NSIndexPath indexPathForItem:0 inSection:1];
+    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildB], childComponentView);
+
+    [childComponentWrapperB prepareViewForReuse];
+    XCTAssertNil([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildB]);
+}
+
 - (void)testSelectionForRootComponent
 {
     NSString * const componentNamespace = @"selectionForRootComponent";
