@@ -52,7 +52,7 @@ class NavigationController: UINavigationController, HUBViewControllerDelegate {
     }
     
     func viewController(_ viewController: HUBViewController, componentWith componentModel: HUBComponentModel, layoutTraits: Set<HUBComponentLayoutTrait>, didDisappearFrom componentView: UIView) {
-        
+        // No-op
     }
     
     func viewController(_ viewController: HUBViewController, componentSelectedWith componentModel: HUBComponentModel) {
