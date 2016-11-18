@@ -26,7 +26,7 @@
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBImageLoaderFactory.h"
 #import "HUBFeatureRegistration.h"
-#import "HUBViewControllerImplementation.h"
+#import "HUBViewController+Initializer.h"
 #import "HUBCollectionViewFactory.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBViewControllerDefaultScrollHandler.h"
@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [self.viewModelLoaderFactory canCreateViewModelLoaderForViewURI:viewURI];
 }
 
-- (nullable UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI
+- (nullable HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
 {
     HUBFeatureRegistration * const featureRegistration = [self.featureRegistry featureRegistrationForViewURI:viewURI];
     
@@ -102,10 +102,10 @@ NS_ASSUME_NONNULL_BEGIN
     return [self createViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
 }
 
-- (UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI
-                                                      contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
-                                                      featureIdentifier:(NSString *)featureIdentifier
-                                                           featureTitle:(NSString *)featureTitle
+- (HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
+                                    contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+                                    featureIdentifier:(NSString *)featureIdentifier
+                                         featureTitle:(NSString *)featureTitle
 {
     HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithViewURI:viewURI];
     id<HUBContentOperationFactory> const contentOperationFactory = [[HUBBlockContentOperationFactory alloc] initWithBlock:^NSArray<id<HUBContentOperation>> *(NSURL *_) {
@@ -123,8 +123,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Private utilities
 
-- (UIViewController<HUBViewController> *)createViewControllerForViewURI:(NSURL *)viewURI
-                                                    featureRegistration:(HUBFeatureRegistration *)featureRegistration
+- (HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
+                                  featureRegistration:(HUBFeatureRegistration *)featureRegistration
 {
     HUBViewModelLoaderImplementation * const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI
                                                                                                         featureRegistration:featureRegistration];
@@ -140,15 +140,15 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBViewControllerScrollHandler> const scrollHandlerToUse = featureRegistration.viewControllerScrollHandler ?: [HUBViewControllerDefaultScrollHandler new];
     
-    return [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
-                                                  featureIdentifier:featureRegistration.featureIdentifier
-                                                    viewModelLoader:viewModelLoader
-                                              collectionViewFactory:collectionViewFactory
-                                                  componentRegistry:self.componentRegistry
-                                             componentLayoutManager:self.componentLayoutManager
-                                                      actionHandler:actionHandlerWrapper
-                                                      scrollHandler:scrollHandlerToUse
-                                                        imageLoader:imageLoader];
+    return [[HUBViewController alloc] initWithViewURI:viewURI
+                                    featureIdentifier:featureRegistration.featureIdentifier
+                                      viewModelLoader:viewModelLoader
+                                collectionViewFactory:collectionViewFactory
+                                    componentRegistry:self.componentRegistry
+                               componentLayoutManager:self.componentLayoutManager
+                                        actionHandler:actionHandlerWrapper
+                                        scrollHandler:scrollHandlerToUse
+                                          imageLoader:imageLoader];
 }
 
 @end

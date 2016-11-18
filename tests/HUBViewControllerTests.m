@@ -21,7 +21,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "HUBViewControllerImplementation.h"
+#import "HUBViewController+Initializer.h"
 #import "HUBViewModelLoaderImplementation.h"
 #import "HUBContentOperationMock.h"
 #import "HUBComponentRegistryImplementation.h"
@@ -78,7 +78,7 @@
 @property (nonatomic, strong) HUBActionMock *selectionAction;
 @property (nonatomic, strong) HUBActionRegistryImplementation *actionRegistry;
 @property (nonatomic, strong) NSURL *viewURI;
-@property (nonatomic, strong) HUBViewControllerImplementation *viewController;
+@property (nonatomic, strong) HUBViewController *viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromAppearanceDelegateMethod;
@@ -161,15 +161,15 @@
                                                                              initialViewModelRegistry:self.initialViewModelRegistry
                                                                                       viewModelLoader:self.viewModelLoader];
     
-    self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:self.viewURI
-                                                                 featureIdentifier:featureInfo.identifier
-                                                                   viewModelLoader:self.viewModelLoader
-                                                             collectionViewFactory:self.collectionViewFactory
-                                                                 componentRegistry:self.componentRegistry
-                                                            componentLayoutManager:componentLayoutManager
-                                                                     actionHandler:actionHandler
-                                                                     scrollHandler:self.scrollHandler
-                                                                       imageLoader:self.imageLoader];
+    self.viewController = [[HUBViewController alloc] initWithViewURI:self.viewURI
+                                                   featureIdentifier:featureInfo.identifier
+                                                     viewModelLoader:self.viewModelLoader
+                                               collectionViewFactory:self.collectionViewFactory
+                                                   componentRegistry:self.componentRegistry
+                                              componentLayoutManager:componentLayoutManager
+                                                       actionHandler:actionHandler
+                                                       scrollHandler:self.scrollHandler
+                                                         imageLoader:self.imageLoader];
     
     self.viewController.delegate = self;
     
@@ -1633,7 +1633,7 @@
     };
     
     __block NSUInteger numberOfContentInsetCalls = 0;
-    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(UIViewController<HUBViewController> *controller, UIEdgeInsets insets) {
+    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(HUBViewController *controller, UIEdgeInsets insets) {
         numberOfContentInsetCalls += 1;
         if (numberOfContentInsetCalls == 1) {
             assertInsetsEqualToCollectionViewInsets(UIEdgeInsetsZero);
@@ -1663,7 +1663,7 @@
 
     __block NSUInteger numberOfInsetCalls = 0;
     __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"The content inset handler should be asked for the content inset"];
-    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(UIViewController<HUBViewController> *controller, UIEdgeInsets proposedInsets) {
+    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(HUBViewController *controller, UIEdgeInsets proposedInsets) {
         assertInsetsEqualToCollectionViewInsets(proposedInsets, expectedInsets);
         numberOfInsetCalls += 1;
         if (numberOfInsetCalls == 2) {
@@ -1704,7 +1704,7 @@
 
     __block NSUInteger numberOfInsetCalls = 0;
     __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"The content inset handler should be asked for the content inset"];
-    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(UIViewController<HUBViewController> *controller, UIEdgeInsets proposedInsets) {
+    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(HUBViewController *controller, UIEdgeInsets proposedInsets) {
         assertInsetsEqualToCollectionViewInsets(proposedInsets, expectedInsets);
         numberOfInsetCalls += 1;
         if (numberOfInsetCalls == 2) {
@@ -1736,7 +1736,7 @@
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
-                                      completion:^{
+                                      completion:^(NSIndexPath *visibleIndexPath) {
         [scrollingCompletedExpectation fulfill];
         XCTAssertTrue(CGPointEqualToPoint(self.scrollHandler.targetContentOffset, self.collectionView.contentOffset));
     }];
@@ -1773,7 +1773,7 @@
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
-                                      completion:^{
+                                      completion:^(NSIndexPath *visibleIndexPath) {
         XCTAssertFalse(willStartScrollHandlerNotified);
         XCTAssertFalse(didEndScrollHandlerNotified);
         [expectation fulfill];
@@ -1839,13 +1839,18 @@
         XCTAssertEqual([indexPath indexAtPosition:1], childIndex);
     };
 
-    __weak XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
+    __weak XCTestExpectation * const scrollingToFirstExpectation = [self expectationWithDescription:@"Scrolling to the root component should complete and call the handler"];
+    __weak XCTestExpectation * const scrollingCompletedExpectation = [self expectationWithDescription:@"Scrolling to the nested component should complete and call the handler"];
     [self.viewController scrollToComponentOfType:HUBComponentTypeBody
                                        indexPath:indexPath
                                   scrollPosition:HUBScrollPositionTop
                                         animated:YES
-                                      completion:^{
-        [scrollingCompletedExpectation fulfill];
+                                      completion:^(NSIndexPath *visibleIndexPath) {
+        if (visibleIndexPath.length == 1 && [visibleIndexPath indexAtPosition:0] == 6) {
+            [scrollingToFirstExpectation fulfill];
+        } else if ([visibleIndexPath isEqual:indexPath]) {
+            [scrollingCompletedExpectation fulfill];
+        }
     }];
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
@@ -2652,25 +2657,25 @@
 
 #pragma mark - HUBViewControllerDelegate
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
+- (void)viewController:(HUBViewController *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
 {
     XCTAssertEqual(viewController, self.viewController);
     self.viewModelFromDelegateMethod = viewModel;
 }
 
-- (void)viewControllerDidUpdate:(UIViewController<HUBViewController> *)viewController
+- (void)viewControllerDidUpdate:(HUBViewController *)viewController
 {
     XCTAssertEqual(viewController, self.viewController);
     XCTAssertEqual(self.viewModelFromDelegateMethod, viewController.viewModel);
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController didFailToUpdateWithError:(NSError *)error
+- (void)viewController:(HUBViewController *)viewController didFailToUpdateWithError:(NSError *)error
 {
     XCTAssertEqual(viewController, self.viewController);
     self.errorFromDelegateMethod = error;
 }
 
-- (void)viewControllerDidFinishRendering:(UIViewController<HUBViewController> *)viewController
+- (void)viewControllerDidFinishRendering:(HUBViewController *)viewController
 {
     XCTAssertEqual(viewController, self.viewController);
     self.didReceiveViewControllerDidFinishRendering = YES;
@@ -2680,12 +2685,12 @@
     }
 }
 
-- (BOOL)viewControllerShouldStartScrolling:(UIViewController<HUBViewController> *)viewController
+- (BOOL)viewControllerShouldStartScrolling:(HUBViewController *)viewController
 {
     return self.viewControllerShouldStartScrollingBlock();
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController
+- (void)viewController:(HUBViewController *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
       willAppearInView:(nonnull UIView *)componentView
@@ -2698,7 +2703,7 @@
     [self.componentLayoutTraitsFromAppearanceDelegateMethod addObject:layoutTraits];
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController
+- (void)viewController:(HUBViewController *)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
   didDisappearFromView:(UIView *)componentView
@@ -2709,7 +2714,7 @@
     [self.componentLayoutTraitsFromDisapperanceDelegateMethod addObject:layoutTraits];
 }
 
-- (void)viewController:(UIViewController<HUBViewController> *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
+- (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
 {
     XCTAssertEqual(viewController, self.viewController);
     [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];

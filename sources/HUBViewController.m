@@ -19,7 +19,7 @@
  *  under the License.
  */
 
-#import "HUBViewControllerImplementation.h"
+#import "HUBViewController.h"
 
 #import "HUBIdentifier.h"
 #import "HUBViewModelLoaderImplementation.h"
@@ -58,7 +58,7 @@ static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBViewControllerImplementation () <
+@interface HUBViewController () <
     HUBViewModelLoaderDelegate,
     HUBImageLoaderDelegate,
     HUBComponentWrapperDelegate,
@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation HUBViewControllerImplementation
+@implementation HUBViewController
 
 @synthesize delegate = _delegate;
 @synthesize featureIdentifier = _featureIdentifier;
@@ -390,7 +390,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
-    return [self.collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
+    return [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].frame;
 }
 
 - (NSUInteger)indexOfBodyComponentAtPoint:(CGPoint)point
@@ -418,7 +418,7 @@ NS_ASSUME_NONNULL_BEGIN
                       indexPath:(NSIndexPath *)indexPath
                  scrollPosition:(HUBScrollPosition)scrollPosition
                        animated:(BOOL)animated
-                     completion:(void (^ _Nullable)(void))completion
+                     completion:(void (^ _Nullable)(NSIndexPath *))completion
 {
     if (componentType == HUBComponentTypeBody) {
         NSAssert([indexPath indexAtPosition:0] < (NSUInteger)[self.collectionView numberOfItemsInSection:0],
@@ -1423,7 +1423,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                 component:(nullable HUBComponentWrapper *)componentWrapper
                            scrollPosition:(HUBScrollPosition)scrollPosition
                                  animated:(BOOL)animated
-                               completion:(void (^ _Nullable)())completionHandler
+                               completion:(void (^ _Nullable)(NSIndexPath *))completionHandler
 {
     NSUInteger const childIndex = [indexPath indexAtPosition:startPosition];
 
@@ -1433,9 +1433,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                  @(childIndex), componentWrapper.model.identifier, @(componentWrapper.model.children.count));
     }
 
-    __weak HUBViewControllerImplementation *weakSelf = self;
+    __weak HUBViewController *weakSelf = self;
     void (^stepCompletionHandler)() = ^{
-        HUBViewControllerImplementation *strongSelf = weakSelf;
+        HUBViewController *strongSelf = weakSelf;
 
         HUBComponentWrapper *childComponentWrapper = nil;
         if (startPosition == 0) {
@@ -1452,6 +1452,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
             childComponentWrapper = [componentWrapper visibleChildComponentAtIndex:childIndex];
         }
 
+        if (completionHandler != nil) {
+            NSUInteger const currentIndexPathLength = startPosition + 1;
+            NSUInteger currentIndexes[currentIndexPathLength];
+            [indexPath getIndexes:currentIndexes range:NSMakeRange(0, currentIndexPathLength)];
+            NSIndexPath * const currentIndexPath = [NSIndexPath indexPathWithIndexes:currentIndexes length:currentIndexPathLength];
+            completionHandler(currentIndexPath);
+        }
+
         NSUInteger const nextPosition = startPosition + 1;
         if (childComponentWrapper != nil && nextPosition < indexPath.length) {
             [strongSelf scrollToRemainingComponentsOfType:componentType
@@ -1461,8 +1469,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                            scrollPosition:scrollPosition
                                                  animated:animated
                                                completion:completionHandler];
-        } else if (completionHandler != nil) {
-            completionHandler();
         }
     };
 

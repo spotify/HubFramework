@@ -20,23 +20,11 @@
  */
 
 #import "HUBViewController.h"
-#import "HUBHeaderMacros.h"
-
-@protocol HUBImageLoader;
-@protocol HUBContentReloadPolicy;
-@protocol HUBComponentLayoutManager;
-@protocol HUBActionHandler;
-@protocol HUBViewControllerScrollHandler;
-@protocol HUBComponentRegistry;
-@class HUBViewModelLoaderImplementation;
-@class HUBCollectionViewFactory;
-@class HUBInitialViewModelRegistry;
-@class HUBActionRegistryImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// View controller that manages a Hub Framework-powered User Interface with a collection view of components
-@interface HUBViewControllerImplementation : UIViewController <HUBViewController>
+/// Extension enabling a HUBViewController instance to be initialized by the framework
+@interface HUBViewController ()
 
 /**
  *  Initialize an instance of this class with its required dependencies
@@ -60,12 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader HUB_DESIGNATED_INITIALIZER;
-
-#pragma mark - Unavailable initializers
-
-/// This class cannot be used with Interface Builder
-- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil
-                         bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 
 @end
 

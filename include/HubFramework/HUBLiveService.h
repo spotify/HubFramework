@@ -24,7 +24,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol HUBLiveService;
-@protocol HUBViewController;
+@class HUBViewController;
 
 /**
  *  Delegate protocol for `HUBLiveService`
@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  navigation stack.
  */
 - (void)liveService:(id<HUBLiveService>)liveService
-        didCreateViewController:(UIViewController<HUBViewController> *)viewController;
+        didCreateViewController:(HUBViewController *)viewController;
 
 @end
 
