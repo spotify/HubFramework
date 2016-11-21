@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'danger', '~> 3.5'
+gem 'danger', '~> 4.0'
 gem 'danger-junit'
 gem 'danger-xcode_summary'
 gem 'fastlane', '~> 1.106'
