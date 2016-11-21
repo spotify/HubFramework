@@ -896,9 +896,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                           usingBatchUpdates:self.viewHasAppeared
                                    animated:animated
                                  completion:^{
+        id<HUBViewControllerDelegate> delegate = self.delegate;
+
         [self headerAndOverlayComponentViewsWillAppear];
         [self adjustCollectionViewContentInsetWithProposedTopValue:[self calculateTopContentInset]];
-        [self.delegate viewControllerDidFinishRendering:self];
+        [delegate viewControllerDidFinishRendering:self];
     }];
     
     self.viewModelHasChangedSinceLastLayoutUpdate = NO;
