@@ -90,6 +90,7 @@
 @property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
+@property (nonatomic, copy) BOOL (^viewControllerShouldIgnoreHeaderComponentInset)(void);
 
 @end
 
@@ -181,6 +182,7 @@
     self.componentModelsFromSelectionDelegateMethod = [NSMutableArray new];
     self.componentViewsFromApperanceDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
+    self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return NO; };
 }
 
 #pragma mark - Tests
@@ -1717,6 +1719,20 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testThatViewControllerCanIgnoreHeaderContentInsets
+{
+    self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return YES; };
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 0, 0.001);
+}
+
 - (void)testScrollingToRootComponentUsesScrollHandler
 {
     [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
@@ -2718,6 +2734,12 @@
 {
     XCTAssertEqual(viewController, self.viewController);
     [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];
+}
+
+- (BOOL)viewControllerShouldIgnoreHeaderComponentContentInset:(HUBViewController *)viewController
+{
+    XCTAssertEqual(viewController, self.viewController);
+    return self.viewControllerShouldIgnoreHeaderComponentInset();
 }
 
 #pragma mark - Utilities

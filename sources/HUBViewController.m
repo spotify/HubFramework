@@ -894,10 +894,18 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                           usingBatchUpdates:self.viewHasAppeared
                                    animated:animated
                                  completion:^{
+        id<HUBViewControllerDelegate> delegate = self.delegate;
+
         [self headerAndOverlayComponentViewsWillAppear];
-        CGFloat const topInset = (self.headerComponentWrapper != nil) ? CGRectGetHeight(self.headerComponentWrapper.view.frame) : [self defaultTopContentInset];
+
+        CGFloat topInset = [self defaultTopContentInset];
+        if (self.headerComponentWrapper != nil) {
+            BOOL ignoreHeaderComponentInset = [delegate viewControllerShouldIgnoreHeaderComponentContentInset:self];
+            topInset = ignoreHeaderComponentInset ? 0 : CGRectGetHeight(self.headerComponentWrapper.view.frame);
+        }
+
         [self adjustCollectionViewContentInsetWithProposedTopValue:topInset];
-        [self.delegate viewControllerDidFinishRendering:self];
+        [delegate viewControllerDidFinishRendering:self];
     }];
     
     self.viewModelHasChangedSinceLastLayoutUpdate = NO;

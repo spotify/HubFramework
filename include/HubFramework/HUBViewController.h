@@ -135,6 +135,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
 
+/**
+ *  Sent to a Hub Framework view controller's delegate to ask if content inset for header
+ *  component should be ignored
+ *
+ *  @param viewController The view controller which displays a header component
+ */
+- (BOOL)viewControllerShouldIgnoreHeaderComponentContentInset:(HUBViewController *)viewController;
+
 @end
 
 /**
