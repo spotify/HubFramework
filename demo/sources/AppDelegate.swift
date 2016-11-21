@@ -25,7 +25,7 @@ import HubFramework
 /// The delegate of the application
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate, HUBLiveServiceDelegate {
     var window: UIWindow?
-    var navigationController: UINavigationController?
+    var navigationController: NavigationController?
     var hubManager: HUBManager!
     
     // MARK: - UIApplicationDelegate
@@ -34,7 +34,7 @@ import HubFramework
         let window = UIWindow(frame: UIScreen.main.bounds)
         
         self.window = window
-        navigationController = UINavigationController()
+        navigationController = NavigationController()
         
         hubManager = makeHubManager()
         
@@ -47,6 +47,7 @@ import HubFramework
         registerPrettyPicturesFeature()
         registerReallyLongListFeature()
         registerTodoListFeature()
+        registerStickyHeaderFeature()
         startLiveService()
         
         return true
@@ -160,6 +161,23 @@ import HubFramework
         hubManager.actionRegistry.register(TodoListActionFactory(), forNamespace: TodoListActionFactory.namespace)
     }
     
+    private func registerStickyHeaderFeature() {
+        let contentOperationFactory = HUBBlockContentOperationFactory() { _ in
+            return [StickyHeaderContentOperation()]
+        }
+        
+        hubManager.featureRegistry.registerFeature(
+            withIdentifier: "stickyHeader",
+            viewURIPredicate: HUBViewURIPredicate(viewURI: .stickyHeaderViewURI),
+            title: "Sticky Header",
+            contentOperationFactories: [contentOperationFactory],
+            contentReloadPolicy: nil,
+            customJSONSchemaIdentifier: nil,
+            actionHandler: nil,
+            viewControllerScrollHandler: nil
+        )
+    }
+    
     private func startLiveService() {
         #if DEBUG
         hubManager.liveService?.delegate = self
@@ -181,7 +199,8 @@ import HubFramework
     
     // MARK: - View controller handling
     
-    private func prepareAndPush(viewController: UIViewController, animated: Bool) {
+    private func prepareAndPush(viewController: HUBViewController, animated: Bool) {
+        viewController.delegate = navigationController
         viewController.view.backgroundColor = .white
         navigationController?.pushViewController(viewController, animated: animated)
     }

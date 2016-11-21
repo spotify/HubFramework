@@ -21,16 +21,7 @@
 
 import XCTest
 
-class SelectionUITests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-        
-        continueAfterFailure = false
-        XCUIApplication().launch()
-
-        XCUIDevice.shared().orientation = .portrait
-    }
-    
+class SelectionUITests: UITestCase {
     func testTappingTopLevelComponent() {
         let app = XCUIApplication()
 
