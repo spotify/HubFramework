@@ -1651,6 +1651,33 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testHeaderContentInsetAlwaysBasedOnComponentPreferredViewSize
+{
+    self.contentReloadPolicy.shouldReload = YES;
+    
+    self.component.preferredViewSize = CGSizeMake(320, 400);
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+    
+    self.scrollHandler.contentInsetHandler = ^(UIViewController<HUBViewController> *viewController, UIEdgeInsets proposedContentInset) {
+        return proposedContentInset;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 400, 0.0001);
+    
+    // If the header height is changed (for example, by the header itself, it shouldn't affect content inset)
+    self.component.view.frame = CGRectMake(0, 0, 320, 100);
+    [self.viewController viewWillAppear:YES];
+    
+    // Make sure that the view was reloaded
+    XCTAssertEqual(self.contentOperation.performCount, 2u);
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 400, 0.0001);
+}
+
 - (void)testScrollingToRootComponentUsesScrollHandler
 {
     [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"

@@ -909,13 +909,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
     [self configureHeaderComponent];
     [self configureOverlayComponents];
+    [self adjustCollectionViewContentInsetWithProposedTopValue:[self calculateTopContentInset]];
+    
     [self.viewModelRenderer renderViewModel:viewModel
                           usingBatchUpdates:self.viewHasAppeared
                                    animated:animated
                                  completion:^{
         [self headerAndOverlayComponentViewsWillAppear];
-        CGFloat const topInset = (self.headerComponentWrapper != nil) ? CGRectGetHeight(self.headerComponentWrapper.view.frame) : [self defaultTopContentInset];
-        [self adjustCollectionViewContentInsetWithProposedTopValue:topInset];
+        [self adjustCollectionViewContentInsetWithProposedTopValue:[self calculateTopContentInset]];
         [self.delegate viewControllerDidFinishRendering:self];
     }];
     
@@ -976,8 +977,16 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     return self.componentWrappersByCellIdentifier[cell.identifier];
 }
 
-- (CGFloat)defaultTopContentInset
+- (CGFloat)calculateTopContentInset
 {
+    if (self.headerComponentWrapper != nil) {
+        HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
+        CGSize const defaultHeaderSize = [headerComponentWrapper preferredViewSizeForDisplayingModel:headerComponentWrapper.model
+                                                                                   containerViewSize:self.collectionView.frame.size];
+        
+        return defaultHeaderSize.height;
+    }
+    
     CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
     CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
     CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
@@ -990,22 +999,13 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     id<HUBComponentModel> const componentModel = self.viewModel.headerComponentModel;
     
     if (componentModel == nil) {
-        [self removeHeaderComponent];
-        [self adjustCollectionViewContentInsetWithProposedTopValue:[self defaultTopContentInset]];
+        [self.headerComponentWrapper.view removeFromSuperview];
+        self.headerComponentWrapper = nil;
         return;
     }
     
     self.headerComponentWrapper = [self configureHeaderOrOverlayComponentWrapperWithModel:componentModel
                                                                  previousComponentWrapper:self.headerComponentWrapper];
-    
-    CGFloat const headerViewHeight = CGRectGetHeight(self.headerComponentWrapper.view.frame);
-    [self adjustCollectionViewContentInsetWithProposedTopValue:headerViewHeight];
-}
-
-- (void)removeHeaderComponent
-{
-    [self.headerComponentWrapper.view removeFromSuperview];
-    self.headerComponentWrapper = nil;
 }
 
 - (void)configureOverlayComponents
