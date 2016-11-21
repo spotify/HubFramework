@@ -38,7 +38,7 @@ struct SearchBarComponentCustomDataKeys {
  *  This component uses the `customData` dictionary of `HUBComponentModel` for customization.
  *  See `SearchBarComponentCustomKeys` for what keys are used for what data.
  */
-class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDelegate {
+class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDelegate, HUBComponentContentOffsetObserver {
     static let debounceInterval = 0.3
 
     var view: UIView?
@@ -100,6 +100,12 @@ class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDele
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
+    // MARK: HUBComponentContentOffsetObserver
+
+    func updateView(forChangedContentOffset contentOffset: CGPoint) {
         searchBar.resignFirstResponder()
     }
 }
