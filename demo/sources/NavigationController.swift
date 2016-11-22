@@ -63,7 +63,7 @@ class NavigationController: UINavigationController, HUBViewControllerDelegate {
         return false
     }
 
-    func viewControllerShouldIgnoreNavigationBarAndStatusBarContentInset(_ viewController: HUBViewController) -> Bool {
+    func viewControllerShouldIgnoreTopBarContentInset(_ viewController: HUBViewController) -> Bool {
         return false
     }
 }

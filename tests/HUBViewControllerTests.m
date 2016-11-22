@@ -91,7 +91,7 @@
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldIgnoreHeaderComponentInset)(void);
-@property (nonatomic, copy) BOOL (^viewControllerShouldIgnoreNavigationBarAndStatusBarInset)(void);
+@property (nonatomic, copy) BOOL (^viewControllerShouldIgnoreTopBarInset)(void);
 
 @end
 
@@ -187,7 +187,7 @@
     self.componentViewsFromApperanceDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
     self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return NO; };
-    self.viewControllerShouldIgnoreNavigationBarAndStatusBarInset = ^{ return NO; };
+    self.viewControllerShouldIgnoreTopBarInset = ^{ return NO; };
 }
 
 #pragma mark - Tests
@@ -1750,7 +1750,7 @@
 - (void)testThatViewControllerCanIgnoreNavigationBarAndStatusBarInsets
 {
     self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return YES; };
-    self.viewControllerShouldIgnoreNavigationBarAndStatusBarInset = ^{ return YES; };
+    self.viewControllerShouldIgnoreTopBarInset = ^{ return YES; };
 
     self.component.preferredViewSize = CGSizeMake(320, 200);
 
@@ -2806,10 +2806,10 @@
     return self.viewControllerShouldIgnoreHeaderComponentInset();
 }
 
-- (BOOL)viewControllerShouldIgnoreNavigationBarAndStatusBarContentInset:(HUBViewController *)viewController
+- (BOOL)viewControllerShouldIgnoreTopBarContentInset:(HUBViewController *)viewController
 {
     XCTAssertEqual(viewController, self.viewController);
-    return self.viewControllerShouldIgnoreNavigationBarAndStatusBarInset();
+    return self.viewControllerShouldIgnoreTopBarInset();
 }
 
 #pragma mark - Utilities

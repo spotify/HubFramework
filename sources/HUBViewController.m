@@ -964,7 +964,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     id<HUBViewControllerDelegate> delegate = self.delegate;
 
-    if ([delegate viewControllerShouldIgnoreNavigationBarAndStatusBarContentInset:self]) {
+    if ([delegate viewControllerShouldIgnoreTopBarContentInset:self]) {
         return 0;
     }
 
