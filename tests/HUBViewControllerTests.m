@@ -90,6 +90,7 @@
 @property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
+@property (nonatomic, copy) BOOL (^viewControllerShouldIgnoreHeaderComponentInset)(void);
 
 @end
 
@@ -181,6 +182,7 @@
     self.componentModelsFromSelectionDelegateMethod = [NSMutableArray new];
     self.componentViewsFromApperanceDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
+    self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return NO; };
 }
 
 #pragma mark - Tests
@@ -1742,6 +1744,54 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testThatViewControllerCanIgnoreHeaderContentInsets
+{
+    self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return YES; };
+
+    self.component.preferredViewSize = CGSizeMake(320, 200);
+    
+    self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInset) {
+        return proposedContentInset;
+    };
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    XCTAssertEqualWithAccuracy(CGRectGetHeight(self.component.view.frame), 200, 0.001);
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 0, 0.001);
+}
+
+- (void)testHeaderContentInsetAlwaysBasedOnComponentPreferredViewSize
+{
+    self.contentReloadPolicy.shouldReload = YES;
+    
+    self.component.preferredViewSize = CGSizeMake(320, 400);
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+    
+    self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInsets) {
+        return proposedContentInsets;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 400, 0.0001);
+    
+    // If the header height is changed (for example, by the header itself, it shouldn't affect content inset)
+    self.component.view.frame = CGRectMake(0, 0, 320, 100);
+    [self.viewController viewWillAppear:YES];
+    
+    // Make sure that the view was reloaded
+    XCTAssertEqual(self.contentOperation.performCount, 2u);
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 400, 0.0001);
+}
+
 - (void)testScrollingToRootComponentUsesScrollHandler
 {
     [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
@@ -2743,6 +2793,12 @@
 {
     XCTAssertEqual(viewController, self.viewController);
     [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];
+}
+
+- (BOOL)viewControllerShouldIgnoreHeaderComponentContentInset:(HUBViewController *)viewController
+{
+    XCTAssertEqual(viewController, self.viewController);
+    return self.viewControllerShouldIgnoreHeaderComponentInset();
 }
 
 #pragma mark - Utilities

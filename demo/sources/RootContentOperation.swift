@@ -53,6 +53,11 @@ class RootContentOperation: NSObject, HUBContentOperation {
         todoListRowBuilder.subtitle = "A feature for adding todo items to a list"
         todoListRowBuilder.targetBuilder.uri = .todoListViewURI
         
+        let stickyHeaderRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "stickyHeader")
+        stickyHeaderRowBuilder.title = "Sticky header"
+        stickyHeaderRowBuilder.subtitle = "A feature demonstrating how to build a sticky header"
+        stickyHeaderRowBuilder.targetBuilder.uri = .stickyHeaderViewURI
+        
         delegate?.contentOperationDidFinish(self)
     }
 }

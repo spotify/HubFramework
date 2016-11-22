@@ -46,6 +46,11 @@ extension URL {
     static var todoListViewURI: URL {
         return URL(viewURI: "todoList")
     }
+    
+    /// The view URI used for the "Sticky header" feature
+    static var stickyHeaderViewURI: URL {
+        return URL(viewURI: "stickyHeader")
+    }
 }
 
 private extension URL {
