@@ -1932,6 +1932,10 @@
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
     [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+
+    // Component shouldn't be notified because content offset hasn't changed
+    [self.viewController viewWillAppear:NO];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
 }
 
 - (void)testHeaderComponentNotifiedOfContentOffsetChange
