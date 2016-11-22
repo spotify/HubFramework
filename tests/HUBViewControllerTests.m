@@ -87,6 +87,7 @@
 @property (nonatomic, strong) NSMutableArray<NSSet<HUBComponentLayoutTrait> *> *componentLayoutTraitsFromDisapperanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromSelectionDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromApperanceDelegateMethod;
+@property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromReuseDelegateMethod;
 @property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
@@ -185,6 +186,7 @@
     self.componentLayoutTraitsFromDisapperanceDelegateMethod = [NSMutableArray new];
     self.componentModelsFromSelectionDelegateMethod = [NSMutableArray new];
     self.componentViewsFromApperanceDelegateMethod = [NSMutableArray new];
+    self.componentViewsFromReuseDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
     self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return NO; };
     self.viewControllerShouldIgnoreTopBarInset = ^{ return NO; };
@@ -1473,6 +1475,25 @@
     
     // Make sure that the component was actually reused
     XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
+}
+
+- (void)testViewControllerDelegateIsNotifiedWhenComponentIsReused
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].title = @"One";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+    XCTAssertEqualObjects(self.componentViewsFromReuseDelegateMethod, @[]);
+
+    [cell prepareForReuse];
+
+    XCTAssertEqualObjects(self.componentViewsFromReuseDelegateMethod, @[self.component.view]);
 }
 
 - (void)testSettingBackgroundColorOfViewAlsoUpdatesCollectionView
@@ -2792,6 +2813,13 @@
     
     [self.componentModelsFromDisapperanceDelegateMethod addObject:componentModel];
     [self.componentLayoutTraitsFromDisapperanceDelegateMethod addObject:layoutTraits];
+}
+
+- (void)viewController:(HUBViewController *)viewController willReuseComponentWithView:(UIView *)componentView
+{
+    XCTAssertEqual(viewController, self.viewController);
+
+    [self.componentViewsFromReuseDelegateMethod addObject:componentView];
 }
 
 - (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
