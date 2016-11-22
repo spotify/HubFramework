@@ -964,10 +964,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     id<HUBViewControllerDelegate> delegate = self.delegate;
 
-    if ([delegate viewControllerShouldIgnoreTopBarContentInset:self]) {
-        return 0;
-    }
-
     if (self.headerComponentWrapper != nil) {
         if (![delegate viewControllerShouldIgnoreHeaderComponentContentInset:self]) {
             HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
@@ -978,11 +974,16 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         }
     }
 
+    if ([delegate viewControllerShouldIgnoreTopBarContentInset:self]) {
+        return 0;
+    }
+
     CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
     CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
     CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
     CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
-    return MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
+    CGFloat const topBarHeight = MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
+    return topBarHeight;
 }
 
 - (void)configureHeaderComponent

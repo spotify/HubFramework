@@ -1747,7 +1747,7 @@
     XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, navigationBarHeight, 0.001);
 }
 
-- (void)testThatViewControllerCanIgnoreNavigationBarAndStatusBarInsets
+- (void)testThatViewControllerCanIgnoreTopBarInsets
 {
     self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return YES; };
     self.viewControllerShouldIgnoreTopBarInset = ^{ return YES; };
