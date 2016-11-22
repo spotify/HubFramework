@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 >
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
-@property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
+@property (nonatomic, strong, readonly) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
@@ -443,7 +443,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)reload
 {
-    [(HUBViewModelLoaderImplementation*)self.viewModelLoader loadViewModelRegardlessOfReloadPolicy];
+    [self.viewModelLoader loadViewModelRegardlessOfReloadPolicy];
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
