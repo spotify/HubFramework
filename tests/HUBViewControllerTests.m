@@ -1936,6 +1936,11 @@
     // Component shouldn't be notified because content offset hasn't changed
     [self.viewController viewWillAppear:NO];
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+
+    // Component isn't notified if view is reloaded
+    self.contentReloadPolicy.shouldReload = YES;
+    [self.viewController viewWillAppear:NO];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
 }
 
 - (void)testHeaderComponentNotifiedOfContentOffsetChange
