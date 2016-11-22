@@ -443,7 +443,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)reload
 {
-    [self.viewModelLoader loadViewModelRegardlessOfReloadPolicy];
+    [(HUBViewModelLoaderImplementation*)self.viewModelLoader loadViewModelRegardlessOfReloadPolicy];
 }
 
 #pragma mark - HUBViewModelLoaderDelegate

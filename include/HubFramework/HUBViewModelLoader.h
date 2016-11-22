@@ -103,11 +103,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadViewModel;
 
 /**
- *  Load a view model using this loader regard less of reload policy
- */
-- (void)loadViewModelRegardlessOfReloadPolicy;
-
-/**
  *  Load the next set of paginated content for the current view model this loader is for
  *
  *  Use this method to extend the current view model with additional paginated content. The view model loader
