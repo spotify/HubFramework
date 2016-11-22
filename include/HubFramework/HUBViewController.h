@@ -143,6 +143,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)viewControllerShouldIgnoreHeaderComponentContentInset:(HUBViewController *)viewController;
 
+/**
+ *  Sent to a Hub Framework view controller's delegate to ask if content inset for navigation controller
+ *  (navigation bar and status bar) should be ignored
+ *
+ *  @param viewController The view controller which displays a header component
+ */
+- (BOOL)viewControllerShouldIgnoreNavigationBarAndStatusBarContentInset:(HUBViewController *)viewController;
+
 @end
 
 /**

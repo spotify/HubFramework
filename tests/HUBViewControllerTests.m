@@ -91,6 +91,7 @@
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldIgnoreHeaderComponentInset)(void);
+@property (nonatomic, copy) BOOL (^viewControllerShouldIgnoreNavigationBarAndStatusBarInset)(void);
 
 @end
 
@@ -173,6 +174,9 @@
                                                          imageLoader:self.imageLoader];
     
     self.viewController.delegate = self;
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
+    XCTAssertEqual(navigationController, self.viewController.navigationController);
     
     self.viewModelFromDelegateMethod = nil;
     self.componentModelsFromAppearanceDelegateMethod = [NSMutableArray new];
@@ -183,6 +187,7 @@
     self.componentViewsFromApperanceDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
     self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return NO; };
+    self.viewControllerShouldIgnoreNavigationBarAndStatusBarInset = ^{ return NO; };
 }
 
 #pragma mark - Tests
@@ -1737,6 +1742,31 @@
     [self simulateViewControllerLayoutCycle];
 
     XCTAssertEqualWithAccuracy(CGRectGetHeight(self.component.view.frame), 200, 0.001);
+
+    CGFloat const navigationBarHeight = CGRectGetHeight(self.viewController.navigationController.navigationBar.frame);
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, navigationBarHeight, 0.001);
+}
+
+- (void)testThatViewControllerCanIgnoreNavigationBarAndStatusBarInsets
+{
+    self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return YES; };
+    self.viewControllerShouldIgnoreNavigationBarAndStatusBarInset = ^{ return YES; };
+
+    self.component.preferredViewSize = CGSizeMake(320, 200);
+
+    self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInset) {
+        return proposedContentInset;
+    };
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.navigationItem.title = @"Test";
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    XCTAssertEqualWithAccuracy(CGRectGetHeight(self.component.view.frame), 200, 0.001);
     XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 0, 0.001);
 }
 
@@ -2774,6 +2804,12 @@
 {
     XCTAssertEqual(viewController, self.viewController);
     return self.viewControllerShouldIgnoreHeaderComponentInset();
+}
+
+- (BOOL)viewControllerShouldIgnoreNavigationBarAndStatusBarContentInset:(HUBViewController *)viewController
+{
+    XCTAssertEqual(viewController, self.viewController);
+    return self.viewControllerShouldIgnoreNavigationBarAndStatusBarInset();
 }
 
 #pragma mark - Utilities

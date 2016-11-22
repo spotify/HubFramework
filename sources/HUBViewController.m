@@ -962,8 +962,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (CGFloat)calculateTopContentInset
 {
+    id<HUBViewControllerDelegate> delegate = self.delegate;
+
+    if ([delegate viewControllerShouldIgnoreNavigationBarAndStatusBarContentInset:self]) {
+        return 0;
+    }
+
     if (self.headerComponentWrapper != nil) {
-        if (![self.delegate viewControllerShouldIgnoreHeaderComponentContentInset:self]) {
+        if (![delegate viewControllerShouldIgnoreHeaderComponentContentInset:self]) {
             HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
             CGSize const defaultHeaderSize = [headerComponentWrapper preferredViewSizeForDisplayingModel:headerComponentWrapper.model
                                                                                        containerViewSize:self.collectionView.frame.size];
@@ -971,7 +977,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
             return defaultHeaderSize.height;
         }
     }
-    
+
     CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
     CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
     CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
