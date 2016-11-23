@@ -1258,7 +1258,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         contextsForURL = [NSMutableArray arrayWithObject:context];
         self.componentImageLoadingContexts[imageURL] = contextsForURL;
         
-        HUBPerformOnMainQueue(^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
         });
     } else {
@@ -1490,7 +1490,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
             /* This solves a case where the UICollectionView hasn't updated its visible cells until the next cycle
                when changing the content offset without animations. */
             if (!animated) {
-                HUBPerformOnMainQueue(stepCompletionHandler);
+                dispatch_async(dispatch_get_main_queue(), stepCompletionHandler);
             } else {
                 stepCompletionHandler();
             }
