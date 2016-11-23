@@ -61,7 +61,7 @@ GEM
       commander (>= 4.3.5)
       highline (>= 1.7.1)
       security
-    danger (4.0.0)
+    danger (4.0.1)
       claide (~> 1.0)
       claide-plugins (>= 0.9.2)
       colored (~> 1.2)
