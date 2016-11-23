@@ -87,6 +87,7 @@
 @property (nonatomic, strong) NSMutableArray<NSSet<HUBComponentLayoutTrait> *> *componentLayoutTraitsFromDisapperanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromSelectionDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromApperanceDelegateMethod;
+@property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromReuseDelegateMethod;
 @property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
@@ -185,6 +186,7 @@
     self.componentLayoutTraitsFromDisapperanceDelegateMethod = [NSMutableArray new];
     self.componentModelsFromSelectionDelegateMethod = [NSMutableArray new];
     self.componentViewsFromApperanceDelegateMethod = [NSMutableArray new];
+    self.componentViewsFromReuseDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
     self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return NO; };
     self.viewControllerShouldIgnoreTopBarInset = ^{ return NO; };
@@ -276,6 +278,31 @@
     
     XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationItem.title, viewModelNavBarTitleB);
 }
+
+- (void)testReloadViewModel
+{
+    NSString * const viewModelNavBarTitleA = @"View model A";
+    NSString * const viewModelNavBarTitleB = @"View model B";
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        builder.navigationBarTitle = viewModelNavBarTitleA;
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationItem.title, viewModelNavBarTitleA);
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        builder.navigationBarTitle = viewModelNavBarTitleB;
+        return YES;
+    };
+    
+    [self.viewController reload];
+    
+    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationItem.title, viewModelNavBarTitleB);
+}
+
 
 - (void)testDelegateNotifiedOfViewModelUpdateError
 {
@@ -1475,6 +1502,25 @@
     XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
 }
 
+- (void)testViewControllerDelegateIsNotifiedWhenComponentIsReused
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].title = @"One";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+    XCTAssertEqualObjects(self.componentViewsFromReuseDelegateMethod, @[]);
+
+    [cell prepareForReuse];
+
+    XCTAssertEqualObjects(self.componentViewsFromReuseDelegateMethod, @[self.component.view]);
+}
+
 - (void)testSettingBackgroundColorOfViewAlsoUpdatesCollectionView
 {
     self.viewController.view.backgroundColor = [UIColor redColor];
@@ -1961,6 +2007,15 @@
     
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
     [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+
+    // Component shouldn't be notified because content offset hasn't changed
+    [self.viewController viewWillAppear:NO];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+
+    // Component isn't notified if view is reloaded
+    self.contentReloadPolicy.shouldReload = YES;
+    [self.viewController viewWillAppear:NO];
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
 }
 
@@ -2792,6 +2847,13 @@
     
     [self.componentModelsFromDisapperanceDelegateMethod addObject:componentModel];
     [self.componentLayoutTraitsFromDisapperanceDelegateMethod addObject:layoutTraits];
+}
+
+- (void)viewController:(HUBViewController *)viewController willReuseComponentWithView:(UIView *)componentView
+{
+    XCTAssertEqual(viewController, self.viewController);
+
+    [self.componentViewsFromReuseDelegateMethod addObject:componentView];
 }
 
 - (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel

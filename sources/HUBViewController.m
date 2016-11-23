@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 >
 
 @property (nonatomic, copy, readonly) NSURL *viewURI;
-@property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
+@property (nonatomic, strong, readonly) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
@@ -96,6 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
 @property (nonatomic) CGFloat visibleKeyboardHeight;
+@property (nonatomic, strong, nullable) NSValue *lastContentOffset;
 @property (nonatomic, copy, nullable) void(^pendingScrollAnimationCallback)(void);
 
 @end
@@ -411,7 +412,7 @@ NS_ASSUME_NONNULL_BEGIN
     const CGFloat x = contentOffset.x;
     const CGFloat y = contentOffset.y - self.collectionView.contentInset.top;
     
-    [self.collectionView setContentOffset:CGPointMake(x, y) animated:animated];
+    [self setContentOffset:CGPointMake(x, y) animated:animated];
 }
 
 - (void)scrollToComponentOfType:(HUBComponentType)componentType
@@ -439,6 +440,11 @@ NS_ASSUME_NONNULL_BEGIN
                              scrollPosition:scrollPosition
                                    animated:animated
                                  completion:completion];
+}
+
+-(void)reload
+{
+    [self.viewModelLoader loadViewModelRegardlessOfReloadPolicy];
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
@@ -663,6 +669,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     if (!componentWrapper.isRootComponent) {
         [self.childComponentReusePool addComponentWrappper:componentWrapper];
+    }
+
+    if (componentWrapper.view) {
+        UIView *componentView = componentWrapper.view;
+        [self.delegate viewController:self willReuseComponentWithView:componentView];
     }
 }
 
@@ -1113,7 +1124,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         self.collectionView.contentInset = contentInsets;
         CGPoint contentOffset = self.collectionView.contentOffset;
         contentOffset.y = -contentInsets.top;
-        self.collectionView.contentOffset = contentOffset;
+        [self setContentOffset:contentOffset animated:NO];
     }
 
     self.collectionView.scrollIndicatorInsets = self.collectionView.contentInset;
@@ -1181,8 +1192,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 - (void)componentWrapperWillAppear:(HUBComponentWrapper *)componentWrapper
 {
     [componentWrapper viewWillAppear];
-    
-    if (componentWrapper.isContentOffsetObserver) {
+
+    BOOL wasContentOffsetUpdated = self.lastContentOffset == nil ||
+                                   !CGPointEqualToPoint([self.lastContentOffset CGPointValue], self.collectionView.contentOffset);
+
+    if (componentWrapper.isContentOffsetObserver && wasContentOffsetUpdated) {
         [componentWrapper updateViewForChangedContentOffset:self.collectionView.contentOffset];
     }
 }
@@ -1413,15 +1427,15 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     // If the component is already visible, the completion handler can be called instantly.
     if ([self.collectionView.indexPathsForVisibleItems containsObject:rootIndexPath]) {
-        [self.collectionView setContentOffset:contentOffset animated:animated];
+        [self setContentOffset:contentOffset animated:animated];
         completionWrapper();
     // If the scrolling is animated, the animation has to end before the new component can be retrieved.
     } else if (animated) {
         self.pendingScrollAnimationCallback = completionWrapper;
-        [self.collectionView setContentOffset:contentOffset animated:animated];
+        [self setContentOffset:contentOffset animated:animated];
     // If there's no animations, the UICollectionView will still not update its visible cells until having layouted.
     } else {
-        [self.collectionView setContentOffset:contentOffset animated:animated];
+        [self setContentOffset:contentOffset animated:animated];
         [self.collectionView setNeedsLayout];
         [self.collectionView layoutIfNeeded];
         completionWrapper();
@@ -1507,6 +1521,12 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
             }
         }];
     }
+}
+
+- (void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated
+{
+    self.lastContentOffset = [NSValue valueWithCGPoint:contentOffset];
+    [self.collectionView setContentOffset:contentOffset animated:animated];
 }
 
 @end
