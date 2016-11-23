@@ -128,6 +128,15 @@ NS_ASSUME_NONNULL_BEGIN
   didDisappearFromView:(UIView *)componentView;
 
 /**
+ *  Sent to a Hub Framework view controller's delegate when a component view will be reused
+ *
+ *  @param viewController The view controller in which a component view will be reused
+ *  @param componentView The component view that will be reused
+ */
+- (void)viewController:(HUBViewController *)viewController
+        willReuseComponentWithView:(UIView *)componentView;
+
+/**
  *  Sent to a Hub Framework view controller's delegate when a component was selected
  *
  *  @param viewController The view controller in which the component was selected
