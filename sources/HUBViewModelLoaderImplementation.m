@@ -187,6 +187,11 @@ NS_ASSUME_NONNULL_BEGIN
     [self scheduleContentOperationsFromIndex:0 executionMode:HUBContentOperationExecutionModeMain];
 }
 
+- (void)loadViewModelRegardlessOfReloadPolicy
+{
+    [self scheduleContentOperationsFromIndex:0 executionMode:HUBContentOperationExecutionModeMain];
+}
+
 - (void)loadNextPageForCurrentViewModel
 {
     if (self.previouslyLoadedViewModel == nil) {
