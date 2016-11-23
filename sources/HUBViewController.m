@@ -665,6 +665,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (!componentWrapper.isRootComponent) {
         [self.childComponentReusePool addComponentWrappper:componentWrapper];
     }
+
+    if (componentWrapper.view) {
+        UIView *componentView = componentWrapper.view;
+        [self.delegate viewController:self willReuseComponentWithView:componentView];
+    }
 }
 
 #pragma mark - HUBActionPerformer
