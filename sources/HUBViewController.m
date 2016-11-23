@@ -975,18 +975,16 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     id<HUBViewControllerDelegate> delegate = self.delegate;
 
-    if (self.headerComponentWrapper != nil) {
-        if (![delegate viewControllerShouldIgnoreHeaderComponentContentInset:self]) {
-            HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
-            CGSize const defaultHeaderSize = [headerComponentWrapper preferredViewSizeForDisplayingModel:headerComponentWrapper.model
-                                                                                       containerViewSize:self.collectionView.frame.size];
-            
-            return defaultHeaderSize.height;
-        }
+    if (![delegate viewControllerShouldAutomaticallyManageTopContentInset:self]) {
+        return 0;
     }
 
-    if ([delegate viewControllerShouldIgnoreTopBarContentInset:self]) {
-        return 0;
+    if (self.headerComponentWrapper != nil) {
+        HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
+        CGSize const defaultHeaderSize = [headerComponentWrapper preferredViewSizeForDisplayingModel:headerComponentWrapper.model
+                                                                                   containerViewSize:self.collectionView.frame.size];
+        
+        return defaultHeaderSize.height;
     }
 
     CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
