@@ -412,7 +412,7 @@ NS_ASSUME_NONNULL_BEGIN
     const CGFloat x = contentOffset.x;
     const CGFloat y = contentOffset.y - self.collectionView.contentInset.top;
     
-    [self setContentOffset:CGPointMake(x, y) inCollectionView:self.collectionView animated:animated];
+    [self setContentOffset:CGPointMake(x, y) animated:animated];
 }
 
 - (void)scrollToComponentOfType:(HUBComponentType)componentType
@@ -1107,7 +1107,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         self.collectionView.contentInset = contentInsets;
         CGPoint contentOffset = self.collectionView.contentOffset;
         contentOffset.y = -contentInsets.top;
-        [self setContentOffset:contentOffset inCollectionView:self.collectionView animated:NO];
+        [self setContentOffset:contentOffset animated:NO];
     }
 
     self.collectionView.scrollIndicatorInsets = self.collectionView.contentInset;
@@ -1176,7 +1176,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     [componentWrapper viewWillAppear];
 
-    BOOL wasContentOffsetUpdated = !self.lastContentOffset || !CGPointEqualToPoint([self.lastContentOffset CGPointValue], self.collectionView.contentOffset);
+    BOOL wasContentOffsetUpdated = self.lastContentOffset == nil ||
+                                   !CGPointEqualToPoint([self.lastContentOffset CGPointValue], self.collectionView.contentOffset);
 
     if (componentWrapper.isContentOffsetObserver && wasContentOffsetUpdated) {
         [componentWrapper updateViewForChangedContentOffset:self.collectionView.contentOffset];
@@ -1409,15 +1410,15 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     // If the component is already visible, the completion handler can be called instantly.
     if ([self.collectionView.indexPathsForVisibleItems containsObject:rootIndexPath]) {
-        [self setContentOffset:contentOffset inCollectionView:self.collectionView animated:animated];
+        [self setContentOffset:contentOffset animated:animated];
         completionWrapper();
     // If the scrolling is animated, the animation has to end before the new component can be retrieved.
     } else if (animated) {
         self.pendingScrollAnimationCallback = completionWrapper;
-        [self setContentOffset:contentOffset inCollectionView:self.collectionView animated:animated];
+        [self setContentOffset:contentOffset animated:animated];
     // If there's no animations, the UICollectionView will still not update its visible cells until having layouted.
     } else {
-        [self setContentOffset:contentOffset inCollectionView:self.collectionView animated:animated];
+        [self setContentOffset:contentOffset animated:animated];
         [self.collectionView setNeedsLayout];
         [self.collectionView layoutIfNeeded];
         completionWrapper();
@@ -1505,10 +1506,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
 }
 
-- (void)setContentOffset:(CGPoint)contentOffset inCollectionView:( UICollectionView * _Nullable )collectionView animated:(BOOL)animated
+- (void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated
 {
     self.lastContentOffset = [NSValue valueWithCGPoint:contentOffset];
-    [collectionView setContentOffset:contentOffset animated:animated];
+    [self.collectionView setContentOffset:contentOffset animated:animated];
 }
 
 @end
