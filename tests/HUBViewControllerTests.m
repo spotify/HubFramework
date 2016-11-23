@@ -274,6 +274,31 @@
     XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationItem.title, viewModelNavBarTitleB);
 }
 
+- (void)testReloadViewModel
+{
+    NSString * const viewModelNavBarTitleA = @"View model A";
+    NSString * const viewModelNavBarTitleB = @"View model B";
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        builder.navigationBarTitle = viewModelNavBarTitleA;
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationItem.title, viewModelNavBarTitleA);
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> builder) {
+        builder.navigationBarTitle = viewModelNavBarTitleB;
+        return YES;
+    };
+    
+    [self.viewController reload];
+    
+    XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationItem.title, viewModelNavBarTitleB);
+}
+
+
 - (void)testDelegateNotifiedOfViewModelUpdateError
 {
     NSError * const error = [NSError errorWithDomain:@"hubFramework" code:4 userInfo:nil];

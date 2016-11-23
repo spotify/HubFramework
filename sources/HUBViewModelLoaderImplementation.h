@@ -73,6 +73,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)actionPerformedWithContext:(id<HUBActionContext>)context;
 
+
+/**
+ *  Load a view model using this loader regard less of reload policy
+ */
+- (void)loadViewModelRegardlessOfReloadPolicy;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -279,6 +279,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)cancelComponentSelection;
 
+/**
+ * Reload the view model of the view controller.
+ */
+- (void)reload;
+
 #pragma mark - Unavailable initializers
 
 /// Use `HUBViewControllerFactory` to create instances of this class
