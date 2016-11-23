@@ -25,7 +25,6 @@
 @protocol HUBViewModel;
 @protocol HUBComponentLayoutManager;
 @protocol HUBComponentRegistry;
-@class HUBScrollBehaviorWrapper;
 @class HUBViewModelDiff;
 
 NS_ASSUME_NONNULL_BEGIN
