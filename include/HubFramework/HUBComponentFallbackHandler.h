@@ -23,6 +23,8 @@
 
 @protocol HUBComponent;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Protocol implemented by an object that handles fallback behavior for Hub Framework components
  *
@@ -67,3 +69,5 @@
 - (id<HUBComponent>)createFallbackComponentForCategory:(HUBComponentCategory)componentCategory;
 
 @end
+
+NS_ASSUME_NONNULL_END
