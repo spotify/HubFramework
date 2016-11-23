@@ -87,9 +87,11 @@
 @property (nonatomic, strong) NSMutableArray<NSSet<HUBComponentLayoutTrait> *> *componentLayoutTraitsFromDisapperanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromSelectionDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromApperanceDelegateMethod;
+@property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromReuseDelegateMethod;
 @property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
+@property (nonatomic, copy) BOOL (^viewControllerShouldIgnoreHeaderComponentInset)(void);
 
 @end
 
@@ -180,7 +182,9 @@
     self.componentLayoutTraitsFromDisapperanceDelegateMethod = [NSMutableArray new];
     self.componentModelsFromSelectionDelegateMethod = [NSMutableArray new];
     self.componentViewsFromApperanceDelegateMethod = [NSMutableArray new];
+    self.componentViewsFromReuseDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
+    self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return NO; };
 }
 
 #pragma mark - Tests
@@ -1468,6 +1472,25 @@
     XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
 }
 
+- (void)testViewControllerDelegateIsNotifiedWhenComponentIsReused
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"one"].title = @"One";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+    XCTAssertEqualObjects(self.componentViewsFromReuseDelegateMethod, @[]);
+
+    [cell prepareForReuse];
+
+    XCTAssertEqualObjects(self.componentViewsFromReuseDelegateMethod, @[self.component.view]);
+}
+
 - (void)testSettingBackgroundColorOfViewAlsoUpdatesCollectionView
 {
     self.viewController.view.backgroundColor = [UIColor redColor];
@@ -1717,6 +1740,54 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testThatViewControllerCanIgnoreHeaderContentInsets
+{
+    self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return YES; };
+
+    self.component.preferredViewSize = CGSizeMake(320, 200);
+    
+    self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInset) {
+        return proposedContentInset;
+    };
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    XCTAssertEqualWithAccuracy(CGRectGetHeight(self.component.view.frame), 200, 0.001);
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 0, 0.001);
+}
+
+- (void)testHeaderContentInsetAlwaysBasedOnComponentPreferredViewSize
+{
+    self.contentReloadPolicy.shouldReload = YES;
+    
+    self.component.preferredViewSize = CGSizeMake(320, 400);
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+    
+    self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInsets) {
+        return proposedContentInsets;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 400, 0.0001);
+    
+    // If the header height is changed (for example, by the header itself, it shouldn't affect content inset)
+    self.component.view.frame = CGRectMake(0, 0, 320, 100);
+    [self.viewController viewWillAppear:YES];
+    
+    // Make sure that the view was reloaded
+    XCTAssertEqual(self.contentOperation.performCount, 2u);
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 400, 0.0001);
+}
+
 - (void)testScrollingToRootComponentUsesScrollHandler
 {
     [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
@@ -1881,6 +1952,15 @@
     
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
     [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+
+    // Component shouldn't be notified because content offset hasn't changed
+    [self.viewController viewWillAppear:NO];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+
+    // Component isn't notified if view is reloaded
+    self.contentReloadPolicy.shouldReload = YES;
+    [self.viewController viewWillAppear:NO];
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
 }
 
@@ -2714,10 +2794,23 @@
     [self.componentLayoutTraitsFromDisapperanceDelegateMethod addObject:layoutTraits];
 }
 
+- (void)viewController:(HUBViewController *)viewController willReuseComponentWithView:(UIView *)componentView
+{
+    XCTAssertEqual(viewController, self.viewController);
+
+    [self.componentViewsFromReuseDelegateMethod addObject:componentView];
+}
+
 - (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
 {
     XCTAssertEqual(viewController, self.viewController);
     [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];
+}
+
+- (BOOL)viewControllerShouldIgnoreHeaderComponentContentInset:(HUBViewController *)viewController
+{
+    XCTAssertEqual(viewController, self.viewController);
+    return self.viewControllerShouldIgnoreHeaderComponentInset();
 }
 
 #pragma mark - Utilities

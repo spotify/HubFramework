@@ -128,12 +128,29 @@ NS_ASSUME_NONNULL_BEGIN
   didDisappearFromView:(UIView *)componentView;
 
 /**
+ *  Sent to a Hub Framework view controller's delegate when a component view will be reused
+ *
+ *  @param viewController The view controller in which a component view will be reused
+ *  @param componentView The component view that will be reused
+ */
+- (void)viewController:(HUBViewController *)viewController
+        willReuseComponentWithView:(UIView *)componentView;
+
+/**
  *  Sent to a Hub Framework view controller's delegate when a component was selected
  *
  *  @param viewController The view controller in which the component was selected
  *  @param componentModel The model of the component that was selected
  */
 - (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
+
+/**
+ *  Sent to a Hub Framework view controller's delegate to ask if content inset for header
+ *  component should be ignored
+ *
+ *  @param viewController The view controller which displays a header component
+ */
+- (BOOL)viewControllerShouldIgnoreHeaderComponentContentInset:(HUBViewController *)viewController;
 
 @end
 

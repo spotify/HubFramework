@@ -35,4 +35,6 @@ struct DefaultComponentNames {
     static var activityIndicator: String { return "activityIndicator" }
     /// A carousel component - maps to `CarouselComponent`
     static var carousel: String { return "carousel" }
+    /// A sticky header component - maps to `HeaderComponent`
+    static var header: String { return "header" }
 }
