@@ -80,7 +80,7 @@ class HeaderComponentUITests: UITestCase {
         XCTAssertTrue(header.exists)
         
         // Go to the top of the view
-        (0..<numberOfSwipes).forEach { _ in
+        (0..<numberOfSwipes + 1).forEach { _ in
             collectionView.swipeDown()
         }
         
