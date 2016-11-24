@@ -64,6 +64,6 @@ class NavigationController: UINavigationController, HUBViewControllerDelegate {
     }
 
     func viewControllerShouldAutomaticallyManageTopContentInset(_ viewController: HUBViewController) -> Bool {
-        return false
+        return true
     }
 }
