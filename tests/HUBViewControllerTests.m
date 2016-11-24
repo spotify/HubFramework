@@ -1763,26 +1763,60 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testThatViewControllerCanIgnoreTopBarInsets
+- (void)testDisablingAutomaticTopInsetManagementWithoutHeaderComponent
 {
     self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return NO; };
-
-    self.component.preferredViewSize = CGSizeMake(320, 200);
-
-    self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInset) {
-        return proposedContentInset;
-    };
-
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        viewModelBuilder.navigationItem.title = @"Test";
-        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
-        return YES;
-    };
+    
+    UINavigationController * const navigationController = [UINavigationController new];
+    navigationController.navigationBar.frame = CGRectMake(0, 0, 320, 44);
+    navigationController.viewControllers = @[self.viewController];
 
     [self simulateViewControllerLayoutCycle];
-
-    XCTAssertEqualWithAccuracy(CGRectGetHeight(self.component.view.frame), 200, 0.001);
+    
     XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 0, 0.001);
+    
+    // Now, let's enable and reload - content inset should now be reset
+    self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return YES; };
+    [self.viewController reload];
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 44, 0.001);
+}
+
+- (void)testDisablingAutomaticTopInsetManagementWithHeaderComponent
+{
+    self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return NO; };
+    
+    HUBComponentMock * const headerComponent = [HUBComponentMock new];
+    headerComponent.preferredViewSize = CGSizeMake(320, 400);
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        @"header": headerComponent
+    }];
+    
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:@"header"];
+    
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.componentNamespace = @"header";
+        viewModelBuilder.headerComponentModelBuilder.componentName = @"header";
+        
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"body"].title = @"Body component";
+        
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewLayoutAttributes * const layoutAttributesA = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+    
+    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 0, 0.001);
+    XCTAssertEqualWithAccuracy(layoutAttributesA.frame.origin.y, 0, 0.001);
+    
+    // Now, let's enable and reload - the first component should now have been pushed down by the header
+    self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return YES; };
+    [self.viewController reload];
+    
+    UICollectionViewLayoutAttributes * const layoutAttributesB = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+    XCTAssertEqualWithAccuracy(layoutAttributesB.frame.origin.y, 400, 0.001);
 }
 
 - (void)testHeaderMarginAlwaysBasedOnComponentPreferredViewSize
