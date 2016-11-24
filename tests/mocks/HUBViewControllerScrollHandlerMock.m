@@ -53,9 +53,9 @@ NS_ASSUME_NONNULL_BEGIN
 {
     if (self.contentInsetHandler) {
         return self.contentInsetHandler(viewController, proposedContentInsets);
-    } else {
-        return self.contentInsets;
     }
+    
+    return proposedContentInsets;
 }
 
 - (void)scrollingWillStartInViewController:(HUBViewController *)viewController

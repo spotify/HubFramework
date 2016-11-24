@@ -68,6 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)computeForCollectionViewSize:(CGSize)collectionViewSize
                            viewModel:(id<HUBViewModel>)viewModel
                                 diff:(nullable HUBViewModelDiff *)diff
+                     addHeaderMargin:(BOOL)addHeaderMargin
 {
     self.lastViewModelDiff = diff;
     self.viewModel = viewModel;
@@ -99,7 +100,9 @@ NS_ASSUME_NONNULL_BEGIN
 
         UIEdgeInsets margins = [self defaultMarginsForComponent:component
                                                      isInTopRow:componentIsInTopRow
-                                         componentsOnCurrentRow:componentsOnCurrentRow];
+                                         componentsOnCurrentRow:componentsOnCurrentRow
+                                             collectionViewSize:collectionViewSize
+                                                addHeaderMargin:addHeaderMargin];
 
         componentViewFrame.origin.x = currentPoint.x + margins.left;
 
@@ -107,7 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         if (couldFitOnTheRow == NO) {
             [self updateLayoutAttributesForComponentsIfNeeded:componentsOnCurrentRow
-                                           lastComponentIndex:componentIndex - 1
+                                           lastComponentIndex:(NSInteger)componentIndex - 1
                                               firstComponentX:firstComponentOnCurrentRowOrigin.x
                                                lastComponentX:currentPoint.x
                                                      rowWidth:collectionViewSize.width];
@@ -155,7 +158,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (isLastComponent) {
             // We center components if needed when we go to a new row. If it is the last row we need to center it here
             [self updateLayoutAttributesForComponentsIfNeeded:componentsOnCurrentRow
-                                           lastComponentIndex:componentIndex
+                                           lastComponentIndex:(NSInteger)componentIndex
                                               firstComponentX:firstComponentOnCurrentRowOrigin.x
                                                lastComponentX:currentPoint.x
                                                      rowWidth:collectionViewSize.width];
@@ -304,17 +307,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIEdgeInsets)defaultMarginsForComponent:(id<HUBComponent>)component
                                 isInTopRow:(BOOL)componentIsInTopRow
                     componentsOnCurrentRow:(NSArray<id<HUBComponent>> *)componentsOnCurrentRow
+                        collectionViewSize:(CGSize)collectionViewSize
+                           addHeaderMargin:(BOOL)addHeaderMargin
 {
     NSSet<HUBComponentLayoutTrait> * const componentLayoutTraits = component.layoutTraits;
     UIEdgeInsets margins = UIEdgeInsetsZero;
     
     if (componentIsInTopRow) {
         id<HUBComponentModel> const headerComponentModel = self.viewModel.headerComponentModel;
-        
+
         if (headerComponentModel != nil) {
-            id<HUBComponent> const headerComponent = [self componentForModel:headerComponentModel];
-            margins.top = [self.componentLayoutManager verticalMarginBetweenComponentWithLayoutTraits:componentLayoutTraits
-                                                                   andHeaderComponentWithLayoutTraits:headerComponent.layoutTraits];
+            if (addHeaderMargin) {
+                id<HUBComponent> const headerComponent = [self componentForModel:headerComponentModel];
+                CGSize headerSize = [headerComponent preferredViewSizeForDisplayingModel:headerComponentModel containerViewSize:collectionViewSize];
+                margins.top = headerSize.height + [self.componentLayoutManager verticalMarginBetweenComponentWithLayoutTraits:componentLayoutTraits
+                                                                                           andHeaderComponentWithLayoutTraits:headerComponent.layoutTraits];
+            }
         } else {
             margins.top = [self.componentLayoutManager marginBetweenComponentWithLayoutTraits:componentLayoutTraits
                                                                                andContentEdge:HUBComponentLayoutContentEdgeTop];
@@ -398,7 +406,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)updateLayoutAttributesForComponentsIfNeeded:(NSArray<id<HUBComponent>> *)components
-                                 lastComponentIndex:(NSUInteger)lastComponentIndex
+                                 lastComponentIndex:(NSInteger)lastComponentIndex
                                     firstComponentX:(CGFloat)firstComponentX
                                      lastComponentX:(CGFloat)lastComponentX
                                            rowWidth:(CGFloat)rowWidth
@@ -412,14 +420,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateLayoutAttributesForComponents:(NSArray<id<HUBComponent>> *)components
                        horizontalAdjustment:(CGFloat)horizontalAdjustment
-                         lastComponentIndex:(NSUInteger)lastComponentIndex
+                         lastComponentIndex:(NSInteger)lastComponentIndex
 {
-    if (horizontalAdjustment == 0.0) {
+    if (horizontalAdjustment == 0.0 || lastComponentIndex < 0) {
         return;
     }
 
-    NSUInteger indexOfFirstComponentOnTheRow = lastComponentIndex - components.count + 1;
-    for (NSUInteger index = indexOfFirstComponentOnTheRow; index <= lastComponentIndex; index++) {
+    NSUInteger indexOfFirstComponentOnTheRow = (NSUInteger)lastComponentIndex - components.count + 1;
+    for (NSUInteger index = indexOfFirstComponentOnTheRow; index <= (NSUInteger)lastComponentIndex; index++) {
         NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
         UICollectionViewLayoutAttributes * const layoutAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
         CGRect adjustedFrame = layoutAttributes.frame;

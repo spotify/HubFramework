@@ -35,9 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// The scroll deceleration rate that the handler should return
 @property (nonatomic, assign) CGFloat scrollDecelerationRate;
 
-/// The content insets that the handler should return
-@property (nonatomic, assign) UIEdgeInsets contentInsets;
-
 /// The target content offset that the handler should return
 @property (nonatomic, assign) CGPoint targetContentOffset;
 

@@ -72,13 +72,9 @@ class HeaderComponent: NSObject, HUBComponentContentOffsetObserver, HUBComponent
         guard let view = view else {
             return
         }
-        
-        if contentOffset.y > -minimumHeight {
-            view.frame.size.height = minimumHeight;
-        } else {
-            view.frame.size.height = abs(contentOffset.y);
-        }
-        
+
+        view.frame.size.height = max(maximumHeight - contentOffset.y, minimumHeight)
+
         let relativeHeight = view.frame.height / maximumHeight
         
         if relativeHeight > 1 {

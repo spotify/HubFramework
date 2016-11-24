@@ -26,28 +26,30 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * A class used to render view models in a collection view.
+ *  A class used to render view models in a collection view.
  */
 @interface HUBViewModelRenderer : NSObject
 
 /**
- * Initializes a @c HUBViewModelRenderer with a provided collection view.
+ *  Initializes a @c HUBViewModelRenderer with a provided collection view.
  *
- * @param collectionView The collection view to use for rendering.
+ *  @param collectionView The collection view to use for rendering.
  */
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView HUB_DESIGNATED_INITIALIZER;
 
 /** 
- * Renders the provided view model in the collection view.
+ *  Renders the provided view model in the collection view.
  * 
- * @param viewModel The view model to render.
- * @param usingBatchUpdates Whether the renderer should render using batch updates or not.
- * @param animated Whether the renderer should render with animations or not.
- * @param completionBlock The block to be called once the rendering is completed.
+ *  @param viewModel The view model to render.
+ *  @param usingBatchUpdates Whether the renderer should render using batch updates or not.
+ *  @param animated Whether the renderer should render with animations or not.
+ *  @param addHeaderMargin Whether margin should be added to account for any header component
+ *  @param completionBlock The block to be called once the rendering is completed.
  */
 - (void)renderViewModel:(id<HUBViewModel>)viewModel
       usingBatchUpdates:(BOOL)usingBatchUpdates
                animated:(BOOL)animated
+        addHeaderMargin:(BOOL)addHeaderMargin
              completion:(void(^)(void))completionBlock;
 
 @end
