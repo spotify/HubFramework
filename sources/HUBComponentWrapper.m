@@ -97,6 +97,11 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
+- (void)dealloc
+{
+    [_gestureRecognizer.view removeGestureRecognizer:_gestureRecognizer];
+}
+
 #pragma mark - API
 
 - (void)viewDidMoveToSuperview:(UIView *)superview
