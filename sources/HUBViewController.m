@@ -973,21 +973,26 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (CGFloat)calculateTopContentInset
 {
-    if (self.headerComponentWrapper != nil) {
-        if (![self.delegate viewControllerShouldIgnoreHeaderComponentContentInset:self]) {
-            HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
-            CGSize const defaultHeaderSize = [headerComponentWrapper preferredViewSizeForDisplayingModel:headerComponentWrapper.model
-                                                                                       containerViewSize:self.collectionView.frame.size];
-            
-            return defaultHeaderSize.height;
-        }
+    id<HUBViewControllerDelegate> delegate = self.delegate;
+
+    if (delegate && ![delegate viewControllerShouldAutomaticallyManageTopContentInset:self]) {
+        return 0;
     }
-    
+
+    if (self.headerComponentWrapper != nil) {
+        HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
+        CGSize const defaultHeaderSize = [headerComponentWrapper preferredViewSizeForDisplayingModel:headerComponentWrapper.model
+                                                                                   containerViewSize:self.collectionView.frame.size];
+        
+        return defaultHeaderSize.height;
+    }
+
     CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
     CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
     CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
     CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
-    return MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
+    CGFloat const topBarHeight = MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
+    return topBarHeight;
 }
 
 - (void)configureHeaderComponent

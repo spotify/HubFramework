@@ -62,8 +62,8 @@ class NavigationController: UINavigationController, HUBViewControllerDelegate {
     func viewController(_ viewController: HUBViewController, componentSelectedWith componentModel: HUBComponentModel) {
         // No-op
     }
-    
-    func viewControllerShouldIgnoreHeaderComponentContentInset(_ viewController: HUBViewController) -> Bool {
-        return false
+
+    func viewControllerShouldAutomaticallyManageTopContentInset(_ viewController: HUBViewController) -> Bool {
+        return true
     }
 }
