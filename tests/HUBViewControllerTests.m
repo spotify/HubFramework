@@ -91,7 +91,7 @@
 @property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
-@property (nonatomic, copy) BOOL (^viewControllerShouldIgnoreHeaderComponentInset)(void);
+@property (nonatomic, copy) BOOL (^viewControllerShouldAutomaticallyManageTopContentInset)(void);
 
 @end
 
@@ -184,7 +184,7 @@
     self.componentViewsFromApperanceDelegateMethod = [NSMutableArray new];
     self.componentViewsFromReuseDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
-    self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return NO; };
+    self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return YES; };
 }
 
 #pragma mark - Tests
@@ -1765,17 +1765,18 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testThatViewControllerCanIgnoreHeaderContentInsets
+- (void)testThatViewControllerCanIgnoreTopBarInsets
 {
-    self.viewControllerShouldIgnoreHeaderComponentInset = ^{ return YES; };
+    self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return NO; };
 
     self.component.preferredViewSize = CGSizeMake(320, 200);
-    
+
     self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInset) {
         return proposedContentInset;
     };
-    
+
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.navigationItem.title = @"Test";
         viewModelBuilder.headerComponentModelBuilder.title = @"Header";
         return YES;
     };
@@ -2832,10 +2833,10 @@
     [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];
 }
 
-- (BOOL)viewControllerShouldIgnoreHeaderComponentContentInset:(HUBViewController *)viewController
+- (BOOL)viewControllerShouldAutomaticallyManageTopContentInset:(HUBViewController *)viewController
 {
     XCTAssertEqual(viewController, self.viewController);
-    return self.viewControllerShouldIgnoreHeaderComponentInset();
+    return self.viewControllerShouldAutomaticallyManageTopContentInset();
 }
 
 #pragma mark - Utilities
