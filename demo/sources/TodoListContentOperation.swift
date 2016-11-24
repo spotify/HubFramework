@@ -26,13 +26,35 @@ import HubFramework
 class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HUBContentOperationActionObserver {
     weak var delegate: HUBContentOperationDelegate?
     weak var actionPerformer: HUBActionPerformer?
+    private var addActionIdentifier: HUBIdentifier {
+        return HUBIdentifier(namespace: TodoListActionFactory.namespace, name: TodoListActionNames.addCompleted)
+    }
+    private var filterActionIdentifier: HUBIdentifier { return HUBIdentifier(namespace: "todo", name: "filter") }
+    private var filter: String?
     
     private var items = [String]()
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
         viewModelBuilder.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleAddButton))
         
+        // Add a search bar if we have at least one item
+        if !items.isEmpty {
+            let searchBarBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "searchBar")
+            searchBarBuilder.componentName = DefaultComponentNames.searchBar
+            searchBarBuilder.customData = [
+                SearchBarComponentCustomDataKeys.placeholder: "Filter your todo items",
+                SearchBarComponentCustomDataKeys.actionIdentifier: filterActionIdentifier.identifierString,
+                SearchBarComponentCustomDataKeys.actionDelay: 0
+            ]
+        }
+        
         items.enumerated().forEach { index, item in
+            if let filter = self.filter {
+                if !item.lowercased().contains(filter) {
+                    return
+                }
+            }
+            
             let itemRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "item-\(index)")
             itemRowBuilder.title = item
         }
@@ -41,16 +63,41 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
     }
     
     func actionPerformed(with context: HUBActionContext, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState) {
-        guard context.customActionIdentifier == HUBIdentifier(namespace: TodoListActionFactory.namespace, name: TodoListActionNames.addCompleted) else {
-            return
+        if !handleAddAction(withContext: context) {
+            if !handleFilterAction(withContext: context) {
+                return
+            }
         }
         
-        guard let itemTitle = context.customData?[TodoListAddActionCustomDataKeys.itemTitle] as? String else {
-            return
-        }
-        
-        items.append(itemTitle)
         delegate?.contentOperationRequiresRescheduling(self)
+    }
+    
+    // MARK: - Private
+    
+    private func handleAddAction(withContext context: HUBActionContext) -> Bool {
+        guard context.customActionIdentifier == addActionIdentifier else {
+            return false
+        }
+        
+        if let itemTitle = context.customData?[TodoListAddActionCustomDataKeys.itemTitle] as? String {
+            items.append(itemTitle)
+        }
+        
+        return true
+    }
+    
+    private func handleFilterAction(withContext context: HUBActionContext) -> Bool {
+        guard context.customActionIdentifier == filterActionIdentifier else {
+            return false
+        }
+        
+        if let filter = context.customData?[SearchBarComponentCustomDataKeys.text] as? String {
+            self.filter = filter.isEmpty ? nil : filter.lowercased()
+        } else {
+            self.filter = nil
+        }
+        
+        return true
     }
     
     @objc private func handleAddButton() {
