@@ -1724,7 +1724,7 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testProposedContentInsetIsHeaderHeightIfHeaderExists
+- (void)testProposedContentInsetNotAffectedByHeaderComponent
 {
     NSString * const componentNamespace = @"proposedContentInset";
     NSString * const componentName = @"header";
@@ -1744,8 +1744,6 @@
     
     [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
     
-    UIEdgeInsets const expectedInsets = UIEdgeInsetsMake(component.preferredViewSize.height, 0.0, 0.0, 0.0);
-    
     void (^assertInsetsEqualToCollectionViewInsets)(UIEdgeInsets, UIEdgeInsets) = ^(UIEdgeInsets insets, UIEdgeInsets otherInsets) {
         XCTAssertTrue(UIEdgeInsetsEqualToEdgeInsets(insets, otherInsets));
     };
@@ -1753,7 +1751,7 @@
     __block NSUInteger numberOfInsetCalls = 0;
     __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"The content inset handler should be asked for the content inset"];
     self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(HUBViewController *controller, UIEdgeInsets proposedInsets) {
-        assertInsetsEqualToCollectionViewInsets(proposedInsets, expectedInsets);
+        assertInsetsEqualToCollectionViewInsets(proposedInsets, UIEdgeInsetsZero);
         numberOfInsetCalls += 1;
         if (numberOfInsetCalls == 2) {
             [expectation fulfill];
@@ -1787,14 +1785,25 @@
     XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 0, 0.001);
 }
 
-- (void)testHeaderContentInsetAlwaysBasedOnComponentPreferredViewSize
+- (void)testHeaderMarginAlwaysBasedOnComponentPreferredViewSize
 {
     self.contentReloadPolicy.shouldReload = YES;
     
-    self.component.preferredViewSize = CGSizeMake(320, 400);
+    HUBComponentMock * const headerComponent = [HUBComponentMock new];
+    headerComponent.preferredViewSize = CGSizeMake(320, 400);
+    
+    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
+        @"header": headerComponent
+    }];
+    
+    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:@"header"];
     
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        viewModelBuilder.headerComponentModelBuilder.componentNamespace = @"header";
+        viewModelBuilder.headerComponentModelBuilder.componentName = @"header";
+        
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"body"].title = @"Body component";
+        
         return YES;
     };
     
@@ -1803,7 +1812,10 @@
     };
     
     [self simulateViewControllerLayoutCycle];
-    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 400, 0.0001);
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewLayoutAttributes * const layoutAttributesA = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+    XCTAssertEqualWithAccuracy(layoutAttributesA.frame.origin.y, 400, 0.0001);
     
     // If the header height is changed (for example, by the header itself, it shouldn't affect content inset)
     self.component.view.frame = CGRectMake(0, 0, 320, 100);
@@ -1811,7 +1823,9 @@
     
     // Make sure that the view was reloaded
     XCTAssertEqual(self.contentOperation.performCount, 2u);
-    XCTAssertEqualWithAccuracy(self.collectionView.contentInset.top, 400, 0.0001);
+    
+    UICollectionViewLayoutAttributes * const layoutAttributesB = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+    XCTAssertEqualWithAccuracy(layoutAttributesB.frame.origin.y, 400, 0.0001);
 }
 
 - (void)testScrollingToRootComponentUsesScrollHandler

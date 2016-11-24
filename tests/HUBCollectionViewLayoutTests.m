@@ -173,7 +173,7 @@
     
     NSIndexPath * const componentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     CGRect const componentViewFrame = [layout layoutAttributesForItemAtIndexPath:componentIndexPath].frame;
-    CGRect const expectedComponentViewFrame = CGRectMake(0, headerMargin, componentSize.width, componentSize.height);
+    CGRect const expectedComponentViewFrame = CGRectMake(0, headerMargin + componentSize.height, componentSize.width, componentSize.height);
     
     XCTAssertTrue(CGRectEqualToRect(componentViewFrame, expectedComponentViewFrame));
 }
