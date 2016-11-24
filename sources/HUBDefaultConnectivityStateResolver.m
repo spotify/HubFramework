@@ -21,6 +21,8 @@
 
 #import "HUBDefaultConnectivityStateResolver.h"
 
+#import "HUBUtilities.h"
+
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <netinet/in.h>
 
@@ -136,7 +138,7 @@ void HUBReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkConnectio
 
 - (void)notifyObserversOfChangedConnectivityState
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    HUBPerformOnMainQueue(^{
         for (id<HUBConnectivityStateResolverObserver> const observer in self.observers) {
             [observer connectivityStateResolverStateDidChange:self];
         }
