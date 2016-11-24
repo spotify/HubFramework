@@ -980,11 +980,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
 
     if (self.headerComponentWrapper != nil) {
-        HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
-        CGSize const defaultHeaderSize = [headerComponentWrapper preferredViewSizeForDisplayingModel:headerComponentWrapper.model
-                                                                                   containerViewSize:self.collectionView.frame.size];
-        
-        return defaultHeaderSize.height;
+        return 0;
     }
 
     CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
