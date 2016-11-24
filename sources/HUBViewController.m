@@ -903,9 +903,12 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     [self configureOverlayComponents];
     [self adjustCollectionViewContentInsetWithProposedTopValue:[self calculateTopContentInset]];
     
+    BOOL const shouldAddHeaderMargin = [self shouldAutomaticallyManageTopContentInset];
+    
     [self.viewModelRenderer renderViewModel:viewModel
                           usingBatchUpdates:self.viewHasAppeared
                                    animated:animated
+                            addHeaderMargin:shouldAddHeaderMargin
                                  completion:^{
         id<HUBViewControllerDelegate> delegate = self.delegate;
 
@@ -973,9 +976,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (CGFloat)calculateTopContentInset
 {
-    id<HUBViewControllerDelegate> delegate = self.delegate;
-
-    if (delegate && ![delegate viewControllerShouldAutomaticallyManageTopContentInset:self]) {
+    if (![self shouldAutomaticallyManageTopContentInset]) {
         return 0;
     }
 
@@ -989,6 +990,17 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
     CGFloat const topBarHeight = MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
     return topBarHeight;
+}
+
+- (BOOL)shouldAutomaticallyManageTopContentInset
+{
+    id<HUBViewControllerDelegate> delegate = self.delegate;
+    
+    if (delegate == nil) {
+        return YES;
+    }
+    
+    return [delegate viewControllerShouldAutomaticallyManageTopContentInset:self];
 }
 
 - (void)configureHeaderComponent
