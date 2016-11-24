@@ -110,7 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         if (couldFitOnTheRow == NO) {
             [self updateLayoutAttributesForComponentsIfNeeded:componentsOnCurrentRow
-                                           lastComponentIndex:componentIndex - 1
+                                           lastComponentIndex:(NSInteger)componentIndex - 1
                                               firstComponentX:firstComponentOnCurrentRowOrigin.x
                                                lastComponentX:currentPoint.x
                                                      rowWidth:collectionViewSize.width];
@@ -158,7 +158,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (isLastComponent) {
             // We center components if needed when we go to a new row. If it is the last row we need to center it here
             [self updateLayoutAttributesForComponentsIfNeeded:componentsOnCurrentRow
-                                           lastComponentIndex:componentIndex
+                                           lastComponentIndex:(NSInteger)componentIndex
                                               firstComponentX:firstComponentOnCurrentRowOrigin.x
                                                lastComponentX:currentPoint.x
                                                      rowWidth:collectionViewSize.width];
@@ -406,7 +406,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)updateLayoutAttributesForComponentsIfNeeded:(NSArray<id<HUBComponent>> *)components
-                                 lastComponentIndex:(NSUInteger)lastComponentIndex
+                                 lastComponentIndex:(NSInteger)lastComponentIndex
                                     firstComponentX:(CGFloat)firstComponentX
                                      lastComponentX:(CGFloat)lastComponentX
                                            rowWidth:(CGFloat)rowWidth
@@ -420,14 +420,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateLayoutAttributesForComponents:(NSArray<id<HUBComponent>> *)components
                        horizontalAdjustment:(CGFloat)horizontalAdjustment
-                         lastComponentIndex:(NSUInteger)lastComponentIndex
+                         lastComponentIndex:(NSInteger)lastComponentIndex
 {
-    if (horizontalAdjustment == 0.0) {
+    if (horizontalAdjustment == 0.0 || lastComponentIndex < 0) {
         return;
     }
 
-    NSUInteger indexOfFirstComponentOnTheRow = lastComponentIndex - components.count + 1;
-    for (NSUInteger index = indexOfFirstComponentOnTheRow; index <= lastComponentIndex; index++) {
+    NSUInteger indexOfFirstComponentOnTheRow = (NSUInteger)lastComponentIndex - components.count + 1;
+    for (NSUInteger index = indexOfFirstComponentOnTheRow; index <= (NSUInteger)lastComponentIndex; index++) {
         NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:(NSInteger)index inSection:0];
         UICollectionViewLayoutAttributes * const layoutAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
         CGRect adjustedFrame = layoutAttributes.frame;
