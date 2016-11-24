@@ -1412,31 +1412,25 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     NSParameterAssert(componentIndex <= (NSUInteger)[self.collectionView numberOfItemsInSection:0]);
 
-    NSIndexPath * const rootIndexPath = [NSIndexPath indexPathForItem:(NSInteger)componentIndex inSection:0];
     CGPoint const contentOffset = [self.scrollHandler contentOffsetForDisplayingComponentAtIndex:componentIndex
                                                                                   scrollPosition:scrollPosition
                                                                                     contentInset:self.collectionView.contentInset
                                                                                      contentSize:self.collectionView.contentSize
                                                                                   viewController:self];
-
-    void (^completionWrapper)() = ^{
-        completion();
-    };
     
-    // If the component is already visible, the completion handler can be called instantly.
-    if ([self.collectionView.indexPathsForVisibleItems containsObject:rootIndexPath]) {
-        [self setContentOffset:contentOffset animated:animated];
-        completionWrapper();
+    // If the target offset is the same, the completion handler can be called instantly.
+    if (CGPointEqualToPoint(contentOffset, self.collectionView.contentOffset)) {
+        completion();
     // If the scrolling is animated, the animation has to end before the new component can be retrieved.
     } else if (animated) {
-        self.pendingScrollAnimationCallback = completionWrapper;
+        self.pendingScrollAnimationCallback = completion;
         [self setContentOffset:contentOffset animated:animated];
     // If there's no animations, the UICollectionView will still not update its visible cells until having layouted.
     } else {
         [self setContentOffset:contentOffset animated:animated];
         [self.collectionView setNeedsLayout];
         [self.collectionView layoutIfNeeded];
-        completionWrapper();
+        completion();
     }
 }
 
