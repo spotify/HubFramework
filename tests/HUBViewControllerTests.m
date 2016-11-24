@@ -2093,7 +2093,9 @@
     self.scrollHandler.shouldShowScrollIndicators = YES;
     self.scrollHandler.shouldAutomaticallyAdjustContentInsets = YES;
     self.scrollHandler.scrollDecelerationRate = UIScrollViewDecelerationRateNormal;
-    self.scrollHandler.contentInsets = UIEdgeInsetsMake(100, 30, 40, 200);
+    self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInset) {
+        return UIEdgeInsetsMake(100, 30, 40, 200);
+    };
     
     [self simulateViewControllerLayoutCycle];
     
@@ -2600,8 +2602,10 @@
 
         return YES;
     };
-
-    self.scrollHandler.contentInsets = UIEdgeInsetsMake(100, 30, 40, 200);
+    
+    self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInset) {
+        return UIEdgeInsetsMake(100, 30, 40, 200);
+    };
 
     __weak HUBViewControllerTests *weakSelf = self;
     __block CGPoint expectedOffset = CGPointZero;
@@ -2609,7 +2613,7 @@
         HUBViewControllerTests *strongSelf = weakSelf;
         CGRect componentFrame = [strongSelf.viewController frameForBodyComponentAtIndex:3];
         CGPoint offset = CGPointMake(0.0, CGRectGetMinY(componentFrame));
-        expectedOffset = CGPointMake(offset.x, offset.y - strongSelf.scrollHandler.contentInsets.top);
+        expectedOffset = CGPointMake(offset.x, offset.y - 100);
         [strongSelf.viewController scrollToContentOffset:offset animated:NO];
     };
 
