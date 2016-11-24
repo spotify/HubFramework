@@ -975,7 +975,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     id<HUBViewControllerDelegate> delegate = self.delegate;
 
-    if (![delegate viewControllerShouldAutomaticallyManageTopContentInset:self]) {
+    if (delegate && ![delegate viewControllerShouldAutomaticallyManageTopContentInset:self]) {
         return 0;
     }
 
