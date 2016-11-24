@@ -46,6 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)renderViewModel:(id<HUBViewModel>)viewModel
       usingBatchUpdates:(BOOL)usingBatchUpdates
                animated:(BOOL)animated
+        addHeaderMargin:(BOOL)addHeaderMargin
              completion:(void (^)(void))completionBlock
 {
     HUBViewModelDiff *diff;
@@ -59,7 +60,10 @@ NS_ASSUME_NONNULL_BEGIN
     if (!usingBatchUpdates || diff == nil) {
         [self.collectionView reloadData];
         
-        [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:diff];
+        [layout computeForCollectionViewSize:self.collectionView.frame.size
+                                   viewModel:viewModel
+                                        diff:diff
+                             addHeaderMargin:addHeaderMargin];
 
         /* Below is a workaround for an issue caused by UICollectionView not asking for numberOfItemsInSection
            before viewDidAppear is called or instantly after a call to reloadData. If reloadData is called
@@ -81,7 +85,11 @@ NS_ASSUME_NONNULL_BEGIN
                 [self.collectionView deleteItemsAtIndexPaths:diff.deletedBodyComponentIndexPaths];
                 [self.collectionView reloadItemsAtIndexPaths:diff.reloadedBodyComponentIndexPaths];
                 
-                [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:diff];
+                [layout computeForCollectionViewSize:self.collectionView.frame.size
+                                           viewModel:viewModel
+                                                diff:diff
+                                     addHeaderMargin:addHeaderMargin];
+                
             } completion:^(BOOL finished) {
                 completionBlock();
             }];

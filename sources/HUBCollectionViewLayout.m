@@ -68,6 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)computeForCollectionViewSize:(CGSize)collectionViewSize
                            viewModel:(id<HUBViewModel>)viewModel
                                 diff:(nullable HUBViewModelDiff *)diff
+                     addHeaderMargin:(BOOL)addHeaderMargin
 {
     self.lastViewModelDiff = diff;
     self.viewModel = viewModel;
@@ -99,7 +100,9 @@ NS_ASSUME_NONNULL_BEGIN
 
         UIEdgeInsets margins = [self defaultMarginsForComponent:component
                                                      isInTopRow:componentIsInTopRow
-                                         componentsOnCurrentRow:componentsOnCurrentRow];
+                                         componentsOnCurrentRow:componentsOnCurrentRow
+                                             collectionViewSize:collectionViewSize
+                                                addHeaderMargin:addHeaderMargin];
 
         componentViewFrame.origin.x = currentPoint.x + margins.left;
 
@@ -304,17 +307,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIEdgeInsets)defaultMarginsForComponent:(id<HUBComponent>)component
                                 isInTopRow:(BOOL)componentIsInTopRow
                     componentsOnCurrentRow:(NSArray<id<HUBComponent>> *)componentsOnCurrentRow
+                        collectionViewSize:(CGSize)collectionViewSize
+                           addHeaderMargin:(BOOL)addHeaderMargin
 {
     NSSet<HUBComponentLayoutTrait> * const componentLayoutTraits = component.layoutTraits;
     UIEdgeInsets margins = UIEdgeInsetsZero;
     
     if (componentIsInTopRow) {
         id<HUBComponentModel> const headerComponentModel = self.viewModel.headerComponentModel;
-        
+
         if (headerComponentModel != nil) {
-            id<HUBComponent> const headerComponent = [self componentForModel:headerComponentModel];
-            margins.top = [self.componentLayoutManager verticalMarginBetweenComponentWithLayoutTraits:componentLayoutTraits
-                                                                   andHeaderComponentWithLayoutTraits:headerComponent.layoutTraits];
+            if (addHeaderMargin) {
+                id<HUBComponent> const headerComponent = [self componentForModel:headerComponentModel];
+                CGSize headerSize = [headerComponent preferredViewSizeForDisplayingModel:headerComponentModel containerViewSize:collectionViewSize];
+                margins.top = headerSize.height + [self.componentLayoutManager verticalMarginBetweenComponentWithLayoutTraits:componentLayoutTraits
+                                                                                           andHeaderComponentWithLayoutTraits:headerComponent.layoutTraits];
+            }
         } else {
             margins.top = [self.componentLayoutManager marginBetweenComponentWithLayoutTraits:componentLayoutTraits
                                                                                andContentEdge:HUBComponentLayoutContentEdgeTop];
