@@ -174,9 +174,6 @@
                                                          imageLoader:self.imageLoader];
     
     self.viewController.delegate = self;
-
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
-    XCTAssertEqual(navigationController, self.viewController.navigationController);
     
     self.viewModelFromDelegateMethod = nil;
     self.componentModelsFromAppearanceDelegateMethod = [NSMutableArray new];
