@@ -145,12 +145,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
 
 /**
- *  Sent to a Hub Framework view controller's delegate to ask if content inset for header
- *  component should be ignored
+ *  Sent to a Hub Framework view controller's delegate to ask if view controller should automatically
+ *  manage content inset.
  *
- *  @param viewController The view controller which displays a header component
+ *  @param viewController The view controller which displays some components
+ *
+ *  @discussion When view controller automatically manages content inset it puts body components
+ *  below header component and below navigation bar.
  */
-- (BOOL)viewControllerShouldIgnoreHeaderComponentContentInset:(HUBViewController *)viewController;
+- (BOOL)viewControllerShouldAutomaticallyManageTopContentInset:(HUBViewController *)viewController;
 
 @end
 
