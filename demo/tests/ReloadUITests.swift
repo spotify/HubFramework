@@ -73,13 +73,18 @@ class ReloadUITests: UITestCase {
     
     private func addItem(named itemName: String) {
         let app = XCUIApplication()
-        app.navigationBars["Todo List"].buttons["Add"].tap()
+        let addButton = app.navigationBars["Todo List"].buttons["Add"]
+        XCTAssertTrue(addButton.exists)
+        addButton.tap()
         
         let alert = app.alerts["Add an item"]
         let textField = alert.textFields.element(boundBy: 0)
+        XCTAssertTrue(textField.exists)
         textField.tap()
         textField.typeText(itemName)
         
-        alert.buttons["Add"].tap()
+        let alertConfirmationButton = alert.buttons["Add"]
+        XCTAssertTrue(alertConfirmationButton.exists)
+        alertConfirmationButton.tap()
     }
 }
