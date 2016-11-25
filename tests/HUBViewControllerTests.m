@@ -58,6 +58,7 @@
 #import "HUBActionPerformer.h"
 #import "HUBViewControllerScrollHandlerMock.h"
 #import "HUBComponentCollectionViewCell.h"
+#import "UIViewController+HUBSimulateLayoutCycle.h"
 #import "HUBUtilities.h"
 #import "HUBTestUtilities.h"
 
@@ -2896,11 +2897,7 @@
 
 - (void)simulateViewControllerLayoutCycle
 {
-    [self.viewController loadView];
-    [self.viewController viewDidLoad];
-    [self.viewController viewWillAppear:YES];
-    self.viewController.view.frame = CGRectMake(0, 0, 320, 400);
-    [self.viewController viewDidLayoutSubviews];
+    [self.viewController hub_simulateLayoutCycle];
 }
 
 - (void)simulateLayoutForViewHierarchyStartingWithView:(UIView *)rootView

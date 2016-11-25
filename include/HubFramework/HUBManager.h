@@ -20,6 +20,8 @@
  */
 
 #import "HUBHeaderMacros.h"
+#import "HUBComponentCategories.h"
+#import <CoreGraphics/CoreGraphics.h>
 
 @protocol HUBFeatureRegistry;
 @protocol HUBComponentRegistry;
@@ -28,6 +30,7 @@
 @protocol HUBViewModelLoaderFactory;
 @protocol HUBViewControllerFactory;
 @protocol HUBComponentShowcaseManager;
+@protocol HUBComponent;
 @protocol HUBLiveService;
 @protocol HUBConnectivityStateResolver;
 @protocol HUBDataLoaderFactory;
@@ -73,6 +76,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The service that can be used to enable live editing of Hub Framework-powered view controllers. Always `nil` in release builds.
 @property (nonatomic, strong, readonly, nullable) id<HUBLiveService> liveService;
+
+/**
+ *  Initialize an instance of this class with a default configuration
+ *
+ *  @param componentMargin The margin to use in between components. Margin will be applied between two components except
+ *         when both of them are not stackable (vertical) or when one of them is full width (horizontal). For more information,
+ *         see the "Layout programming guide".
+ *  @param componentFallbackBlock A block that should return a fallback component in case one couldn't be resolved for a given
+ *         component model. The block must always return a `HUBComponent` instance.
+ *
+ *  This is the easiest way to setup the Hub Framework in an application. For more customization options, see the other
+ *  initializers. The supplied `componentMargin` will be used to implement a default `HUBComponentLayoutManager`, and the
+ *  `componentFallbackBlock` will be used for a default `HUBComponentFallbackHandler`.
+ */
+- (instancetype)initWithComponentMargin:(CGFloat)componentMargin
+                 componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:));
 
 /**
  *  Initialize an instance of this class with its required dependencies
