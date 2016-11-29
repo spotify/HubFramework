@@ -19,7 +19,7 @@
  *  under the License.
  */
 
-#import "HUBViewController.h"
+#import "HUBViewController+Initializer.h"
 
 #import "HUBIdentifier.h"
 #import "HUBViewModelLoaderImplementation.h"
@@ -42,7 +42,6 @@
 #import "HUBCollectionViewLayout.h"
 #import "HUBContainerView.h"
 #import "HUBContentReloadPolicy.h"
-#import "HUBComponentUIStateManager.h"
 #import "HUBViewControllerScrollHandler.h"
 #import "HUBComponentReusePool.h"
 #import "HUBActionContextImplementation.h"
@@ -71,6 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
+@property (nonatomic, strong, readonly) HUBComponentReusePool *componentReusePool;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) id<HUBActionHandler> actionHandler;
 @property (nonatomic, strong, readonly) id<HUBViewControllerScrollHandler> scrollHandler;
@@ -88,8 +88,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByCellIdentifier;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentWrapper *> *componentWrappersByModelIdentifier;
-@property (nonatomic, strong, readonly) HUBComponentUIStateManager *componentUIStateManager;
-@property (nonatomic, strong, readonly) HUBComponentReusePool *childComponentReusePool;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *highlightedComponentWrapper;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic, assign) BOOL viewHasAppeared;
@@ -113,6 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
                 viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(id<HUBComponentRegistry>)componentRegistry
+             componentReusePool:(HUBComponentReusePool *)componentReusePool
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
@@ -124,6 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(viewModelLoader != nil);
     NSParameterAssert(collectionViewFactory != nil);
     NSParameterAssert(componentRegistry != nil);
+    NSParameterAssert(componentReusePool != nil);
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(actionHandler != nil);
     NSParameterAssert(scrollHandler != nil);
@@ -138,6 +138,7 @@ NS_ASSUME_NONNULL_BEGIN
     _viewModelLoader = viewModelLoader;
     _collectionViewFactory = collectionViewFactory;
     _componentRegistry = componentRegistry;
+    _componentReusePool = componentReusePool;
     _componentLayoutManager = componentLayoutManager;
     _actionHandler = actionHandler;
     _scrollHandler = scrollHandler;
@@ -150,9 +151,6 @@ NS_ASSUME_NONNULL_BEGIN
     _componentWrappersByIdentifier = [NSMutableDictionary new];
     _componentWrappersByCellIdentifier = [NSMutableDictionary new];
     _componentWrappersByModelIdentifier = [NSMutableDictionary new];
-    _componentUIStateManager = [HUBComponentUIStateManager new];
-    _childComponentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:_componentRegistry
-                                                                         UIStateManager:_componentUIStateManager];
     
     viewModelLoader.delegate = self;
     viewModelLoader.actionPerformer = self;
@@ -579,9 +577,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     CGSize const containerViewSize = [self childComponentContainerViewSizeForParentWrapper:componentWrapper];
     
-    HUBComponentWrapper * const childComponentWrapper = [self.childComponentReusePool componentWrapperForModel:model
-                                                                                                      delegate:self
-                                                                                                        parent:componentWrapper];
+    HUBComponentWrapper * const childComponentWrapper = [self.componentReusePool componentWrapperForModel:model
+                                                                                                 delegate:self
+                                                                                                   parent:componentWrapper];
     
     UIView * const childComponentView = HUBComponentLoadViewIfNeeded(childComponentWrapper);
     [self configureComponentWrapper:childComponentWrapper withModel:model containerViewSize:containerViewSize];
@@ -668,7 +666,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
 {
     if (!componentWrapper.isRootComponent) {
-        [self.childComponentReusePool addComponentWrappper:componentWrapper];
+        [self.componentReusePool addComponentWrappper:componentWrapper];
     }
 
     if (componentWrapper.view) {
@@ -712,11 +710,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                                             forIndexPath:indexPath];
     
     if (cell.component == nil) {
-        id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
-        HUBComponentWrapper * const componentWrapper = [self wrapComponent:component withModel:componentModel];
+        HUBComponentWrapper * const componentWrapper = [self.componentReusePool componentWrapperForModel:componentModel
+                                                                                                delegate:self
+                                                                                                  parent:nil];
+        
         self.componentWrappersByCellIdentifier[cell.identifier] = componentWrapper;
         cell.component = componentWrapper;
         [componentWrapper viewDidMoveToSuperview:cell];
+        [self didAddComponentWrapper:componentWrapper];
     }
     
     HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:cell];
@@ -928,19 +929,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
 }
 
-- (HUBComponentWrapper *)wrapComponent:(id<HUBComponent>)component withModel:(id<HUBComponentModel>)model
-{
-    HUBComponentWrapper * const wrapper = [[HUBComponentWrapper alloc] initWithComponent:component
-                                                                                   model:model
-                                                                          UIStateManager:self.componentUIStateManager
-                                                                                delegate:self
-                                                                       gestureRecognizer:[HUBComponentGestureRecognizer new]
-                                                                                  parent:nil];
-    
-    [self didAddComponentWrapper:wrapper];
-    return wrapper;
-}
-
 - (void)didAddComponentWrapper:(HUBComponentWrapper *)wrapper
 {
     wrapper.delegate = self;
@@ -1008,8 +996,12 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     id<HUBComponentModel> const componentModel = self.viewModel.headerComponentModel;
     
     if (componentModel == nil) {
-        [self.headerComponentWrapper.view removeFromSuperview];
-        self.headerComponentWrapper = nil;
+        if (self.headerComponentWrapper != nil) {
+            HUBComponentWrapper * const headerComponentWrapper = self.headerComponentWrapper;
+            [self removeComponentWrapper:headerComponentWrapper];
+            self.headerComponentWrapper = nil;
+        }
+        
         return;
     }
     
@@ -1043,7 +1035,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
     
     for (HUBComponentWrapper * const unusedOverlayComponentWrapper in currentOverlayComponentWrappers) {
-        [self removeOverlayComponentWrapper:unusedOverlayComponentWrapper];
+        [self removeComponentWrapper:unusedOverlayComponentWrapper];
     }
 }
 
@@ -1075,12 +1067,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     [UIView commitAnimations];
 }
 
-- (void)removeOverlayComponentWrapper:(HUBComponentWrapper *)wrapper
-{
-    self.componentWrappersByIdentifier[wrapper.identifier] = nil;
-    [wrapper.view removeFromSuperview];
-}
-
 - (HUBComponentWrapper *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
                                                   previousComponentWrapper:(nullable HUBComponentWrapper *)previousComponentWrapper
 {
@@ -1097,11 +1083,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     } else {
         if (previousComponentWrapper != nil) {
             HUBComponentWrapper * const nonNilPreviousComponentWrapper = previousComponentWrapper;
-            [self removeOverlayComponentWrapper:nonNilPreviousComponentWrapper];
+            [self removeComponentWrapper:nonNilPreviousComponentWrapper];
         }
         
-        id<HUBComponent> const component = [self.componentRegistry createComponentForModel:componentModel];
-        componentWrapper = [self wrapComponent:component withModel:componentModel];
+        componentWrapper = [self.componentReusePool componentWrapperForModel:componentModel delegate:self parent:nil];
+        [self didAddComponentWrapper:componentWrapper];
     }
     
     CGSize const containerViewSize = self.view.frame.size;
@@ -1123,6 +1109,13 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     [self addComponentWrapperToLookupTables:componentWrapper];
 
     return componentWrapper;
+}
+
+- (void)removeComponentWrapper:(HUBComponentWrapper *)wrapper
+{
+    self.componentWrappersByIdentifier[wrapper.identifier] = nil;
+    self.componentWrappersByModelIdentifier[wrapper.model.identifier] = nil;
+    [wrapper.view removeFromSuperview];
 }
 
 - (void)adjustCollectionViewContentInsetWithProposedTopValue:(CGFloat)topContentInset
