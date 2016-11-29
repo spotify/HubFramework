@@ -21,6 +21,15 @@
 
 #import "HUBViewController.h"
 
+@protocol HUBComponentRegistry;
+@protocol HUBComponentLayoutManager;
+@protocol HUBActionHandler;
+@protocol HUBViewControllerScrollHandler;
+@protocol HUBImageLoader;
+@class HUBViewModelLoaderImplementation;
+@class HUBCollectionViewFactory;
+@class HUBComponentReusePool;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Extension enabling a HUBViewController instance to be initialized by the framework
@@ -33,7 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureIdentifier The identifier of the feature that this view controller is for
  *  @param viewModelLoader The object to use to load view models for the view controller
  *  @param collectionViewFactory The factory to use to create collection views
- *  @param componentRegistry The registry to use to retrieve components to render
+ *  @param componentRegistry The registry to use to lookup component information
+ *  @param componentReusePool The reuse pool to use to manage component wrappers
  *  @param componentLayoutManager The object that manages layout for components in the view controller
  *  @param actionHandler The object that will handle actions for this view controller
  *  @param scrollHandler The object that will handle scrolling for the view controller
@@ -44,6 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
                 viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(id<HUBComponentRegistry>)componentRegistry
+             componentReusePool:(HUBComponentReusePool *)componentReusePool
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
