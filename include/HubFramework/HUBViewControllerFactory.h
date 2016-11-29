@@ -58,12 +58,25 @@ NS_ASSUME_NONNULL_BEGIN
  *  for it), this method returns `nil`.
  *
  *  To be able to create a view controller without creating a feature, you can use the other view controller
- *  creation method available on this protocol.
+ *  creation methods available on this protocol.
  */
 - (nullable HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI;
 
 /**
- *  Create a view controller without a feature registration
+ *  Create a view controller without a feature registration, with implicit identifiers
+ *
+ *  @param contentOperations The content operations to use to load the content for the view controller.
+ *  @param featureTitle The title of the feature that the view controller will belong to. Used for its
+ *         default title, and also made available to contnet operations as part of `HUBFeatureInfo`.
+ *
+ *  The view controller's feature identifier and view URI will be set by transforming the given feature
+ *  title into lowercase characters.
+ */
+- (HUBViewController *)createViewControllerWithContentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+                                                    featureTitle:(NSString *)featureTitle;
+
+/**
+ *  Create a view controller without a feature registration, with explicit identifiers
  *
  *  @param viewURI The URI of the view controller to create. This view URI will not be looked up in the
  *         Hub Framework's feature registry, it will simply be assigned to the view controller.
