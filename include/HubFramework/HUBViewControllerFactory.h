@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param contentOperations The content operations to use to load the content for the view controller.
  *  @param featureTitle The title of the feature that the view controller will belong to. Used for its
- *         default title, and also made available to contnet operations as part of `HUBFeatureInfo`.
+ *         default title, and also made available to content operations as part of `HUBFeatureInfo`.
  *
  *  The view controller's feature identifier and view URI will be set by transforming the given feature
  *  title into lowercase characters.
