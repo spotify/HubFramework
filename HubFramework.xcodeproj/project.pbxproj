@@ -1159,7 +1159,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = HUB;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Spotify;
 				TargetAttributes = {
 					8A07549D1C21A79200AFAD38 = {
@@ -1345,7 +1345,6 @@
 			baseConfigurationReference = DD13758E1C68C76000AD3499 /* project.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				SDKROOT = iphoneos;
@@ -1357,7 +1356,6 @@
 			baseConfigurationReference = DD13758E1C68C76000AD3499 /* project.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
