@@ -39,4 +39,6 @@
 /// Map of horizontal component offsets to use for an array of sets of layout traits
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSArray<NSSet<HUBComponentLayoutTrait> *> *, NSNumber *> *horizontalComponentOffsetsForArrayOfLayoutTraits;
 
+@property (nonatomic, assign) CGFloat topMarginForOverlayComponent;
+
 @end

@@ -83,6 +83,7 @@
 @property (nonatomic, strong) HUBActionRegistryImplementation *actionRegistry;
 @property (nonatomic, strong) NSURL *viewURI;
 @property (nonatomic, strong) HUBViewController *viewController;
+@property (nonatomic, strong) HUBComponentLayoutManagerMock *componentLayoutManager;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromAppearanceDelegateMethod;
@@ -96,7 +97,6 @@
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldAutomaticallyManageTopContentInset)(void);
-@property (nonatomic, assign) CGFloat topMarginForOverlayComponent;
 
 @end
 
@@ -156,7 +156,8 @@
     
     self.imageLoader = [HUBImageLoaderMock new];
     
-    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    self.componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    self.componentLayoutManager.topMarginForOverlayComponent = 0;
     
     self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     
@@ -176,7 +177,7 @@
                                                collectionViewFactory:self.collectionViewFactory
                                                    componentRegistry:self.componentRegistry
                                                   componentReusePool:self.componentReusePool
-                                              componentLayoutManager:componentLayoutManager
+                                              componentLayoutManager:self.componentLayoutManager
                                                        actionHandler:actionHandler
                                                        scrollHandler:self.scrollHandler
                                                          imageLoader:self.imageLoader];
@@ -193,7 +194,6 @@
     self.componentViewsFromReuseDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
     self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return YES; };
-    self.topMarginForOverlayComponent = 0;
 }
 
 #pragma mark - Tests
@@ -2674,7 +2674,7 @@
 
 - (void)testAdaptingOverlayComponentCenterPointToKeyboardAndTopMargin
 {
-    self.topMarginForOverlayComponent = 64;
+    self.componentLayoutManager.topMarginForOverlayComponent = 64;
 
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         id<HUBComponentModelBuilder> overlayModelBuilder = [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"];
@@ -2982,12 +2982,6 @@
 {
     XCTAssertEqual(viewController, self.viewController);
     return self.viewControllerShouldAutomaticallyManageTopContentInset();
-}
-
-- (CGFloat)viewController:(HUBViewController *)viewController topMarginForOverlayComponentWithModel:(id<HUBComponentModel>)componentModel
-{
-    XCTAssertEqual(viewController, self.viewController);
-    return self.topMarginForOverlayComponent;
 }
 
 #pragma mark - Utilities

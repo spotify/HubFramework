@@ -52,6 +52,7 @@
 #import "HUBComponentGestureRecognizer.h"
 #import "HUBViewModelRenderer.h"
 #import "HUBComponentActionObserver.h"
+#import "HUBComponentLayoutManager.h"
 
 static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
@@ -1028,7 +1029,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         
         [self.overlayComponentWrappers addObject:componentWrapper];
 
-        CGFloat shift = [self.delegate viewController:self topMarginForOverlayComponentWithModel:componentModel];
+        CGFloat shift = [self.componentLayoutManager topMarginForOverlayComponentWithModel:componentModel];
         CGPoint center = [self overlayComponentCenterPoint];
         center.y += shift;
         componentWrapper.view.center = center;
@@ -1057,8 +1058,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     [UIView setAnimationCurve:animationCurve];
     
     for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
-        CGFloat shift = [self.delegate viewController:self
-                topMarginForOverlayComponentWithModel:overlayComponentWrapper.model];
+        CGFloat shift = [self.componentLayoutManager topMarginForOverlayComponentWithModel:overlayComponentWrapper.model];
         CGPoint center = [self overlayComponentCenterPoint];
         center.y += shift;
         overlayComponentWrapper.view.center = center;
