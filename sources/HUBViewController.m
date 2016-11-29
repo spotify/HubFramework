@@ -1035,8 +1035,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                           previousComponentWrapper:componentWrapper];
         
         [self.overlayComponentWrappers addObject:componentWrapper];
-        
-        componentWrapper.view.center = [self overlayComponentCenterPoint];
+
+        CGFloat shift = [self.delegate viewController:self topMarginForOverlayComponentWithModel:componentModel];
+        CGPoint center = [self overlayComponentCenterPoint];
+        center.y += shift;
+        componentWrapper.view.center = center;
     }
     
     for (HUBComponentWrapper * const unusedOverlayComponentWrapper in currentOverlayComponentWrappers) {
@@ -1062,7 +1065,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     [UIView setAnimationCurve:animationCurve];
     
     for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
-        overlayComponentWrapper.view.center = [self overlayComponentCenterPoint];
+        CGFloat shift = [self.delegate viewController:self
+                topMarginForOverlayComponentWithModel:overlayComponentWrapper.model];
+        CGPoint center = [self overlayComponentCenterPoint];
+        center.y += shift;
+        overlayComponentWrapper.view.center = center;
     }
     
     [UIView commitAnimations];

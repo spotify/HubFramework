@@ -93,6 +93,7 @@
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldAutomaticallyManageTopContentInset)(void);
+@property (nonatomic, assign) CGFloat topMarginForOverlayComponent;
 
 @end
 
@@ -186,6 +187,7 @@
     self.componentViewsFromReuseDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
     self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return YES; };
+    self.topMarginForOverlayComponent = 0;
 }
 
 #pragma mark - Tests
@@ -2618,6 +2620,44 @@
     HUBAssertEqualFloatValues(self.component.view.center.y, 200);
 }
 
+- (void)testAdaptingOverlayComponentCenterPointToKeyboardAndTopMargin
+{
+    self.topMarginForOverlayComponent = 64;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> overlayModelBuilder = [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+        overlayModelBuilder.title = @"Overlay";
+        return YES;
+    };
+
+    // Sets view controller's view frame to {0, 0, 320, 400}
+    [self simulateViewControllerLayoutCycle];
+
+    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualFloatValues(self.component.view.center.y, 264);
+
+    CGRect const keyboardEndFrame = CGRectMake(0, 200, 320, 200);
+    NSDictionary * const notificationUserInfo = @{
+                                                  UIKeyboardFrameEndUserInfoKey: [NSValue valueWithCGRect:keyboardEndFrame]
+                                                  };
+    NSNotification * const keyboardNotification = [NSNotification notificationWithName:UIKeyboardWillShowNotification
+                                                                                object:nil
+                                                                              userInfo:notificationUserInfo];
+
+    // Show keyboard, which should push the overlay component
+    NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotification:keyboardNotification];
+
+    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualFloatValues(self.component.view.center.y, 164);
+
+    // Hide keyboard, which should pull the overlay component back down
+    [notificationCenter postNotificationName:UIKeyboardWillHideNotification object:nil];
+
+    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualFloatValues(self.component.view.center.y, 264);
+}
+
 - (void)testScrollingToComponentAfterViewModelFinishesRendering
 {
     HUBComponentMock * const componentA = [HUBComponentMock new];
@@ -2890,6 +2930,12 @@
 {
     XCTAssertEqual(viewController, self.viewController);
     return self.viewControllerShouldAutomaticallyManageTopContentInset();
+}
+
+- (CGFloat)viewController:(HUBViewController *)viewController topMarginForOverlayComponentWithModel:(id<HUBComponentModel>)componentModel
+{
+    XCTAssertEqual(viewController, self.viewController);
+    return self.topMarginForOverlayComponent;
 }
 
 #pragma mark - Utilities

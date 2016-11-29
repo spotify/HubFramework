@@ -155,6 +155,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)viewControllerShouldAutomaticallyManageTopContentInset:(HUBViewController *)viewController;
 
+/**
+ *  Sent to a Hub Framework view controller's delegate to ask for top margin for the specified overlay component
+ *
+ *  @param viewController The view controller which displays the overlay component
+ *  @param componentModel The component model for the overlay component
+ *
+ *  @discussion If you want the overlay component to be centered top margin should be 0.
+ *  In case you want it to be shifted down, e.g. to reveal header component, return corresponding top margin
+ *  from this delegate method.
+ */
+- (CGFloat)viewController:(HUBViewController *)viewController topMarginForOverlayComponentWithModel:(id<HUBComponentModel>)componentModel;
+
 @end
 
 /**

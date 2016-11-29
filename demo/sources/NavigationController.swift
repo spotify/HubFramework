@@ -66,4 +66,8 @@ class NavigationController: UINavigationController, HUBViewControllerDelegate {
     func viewControllerShouldAutomaticallyManageTopContentInset(_ viewController: HUBViewController) -> Bool {
         return true
     }
+
+    func viewController(_ viewController: HUBViewController, topMarginForOverlayComponentWith componentModel: HUBComponentModel) -> CGFloat {
+        return 0
+    }
 }
