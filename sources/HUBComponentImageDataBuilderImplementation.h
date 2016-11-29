@@ -45,13 +45,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param identifier Any identifier that the produced image data should have
  *  @param type The type of the image. See `HUBComponentImageType` for more information.
- *  @param customData Additional per-image properties
  *
  *  If the builder has neither an `URL` or `iconIdentifier` associated with it, nil will be returned.
  */
 - (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier
-                                                                 type:(HUBComponentImageType)type
-                                                           customData:(nullable NSDictionary*)customData;
+                                                                 type:(HUBComponentImageType)type;
 
 @end
 

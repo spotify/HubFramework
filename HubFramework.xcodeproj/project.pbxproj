@@ -67,6 +67,7 @@
 		8A9C9CFF1DDC71930070258F /* HUBAsyncActionWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C9CFE1DDC71930070258F /* HUBAsyncActionWrapper.m */; };
 		8A9ED75D1D4A049C006B27D8 /* HUBComponentReusePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ED75C1D4A049C006B27D8 /* HUBComponentReusePool.m */; };
 		8A9ED75F1D4A24C2006B27D8 /* HUBComponentModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ED75E1D4A24C2006B27D8 /* HUBComponentModelTests.m */; };
+		8AA124DD1DE8831B0076582D /* HUBComponentReusePoolMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA124DC1DE8831B0076582D /* HUBComponentReusePoolMock.m */; };
 		8AA124E71DE89B530076582D /* HUBDefaultComponentLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA124E61DE89B530076582D /* HUBDefaultComponentLayoutManager.m */; };
 		8AA127EE1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA127ED1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.m */; };
 		8AA29C851C4FAA9200E972B7 /* HUBComponentModelImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA29C841C4FAA9200E972B7 /* HUBComponentModelImplementation.m */; };
@@ -307,6 +308,8 @@
 		8A9ED75B1D4A049C006B27D8 /* HUBComponentReusePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentReusePool.h; sourceTree = "<group>"; };
 		8A9ED75C1D4A049C006B27D8 /* HUBComponentReusePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentReusePool.m; sourceTree = "<group>"; };
 		8A9ED75E1D4A24C2006B27D8 /* HUBComponentModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentModelTests.m; sourceTree = "<group>"; };
+		8AA124DB1DE8831B0076582D /* HUBComponentReusePoolMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentReusePoolMock.h; sourceTree = "<group>"; };
+		8AA124DC1DE8831B0076582D /* HUBComponentReusePoolMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentReusePoolMock.m; sourceTree = "<group>"; };
 		8AA124E51DE89B530076582D /* HUBDefaultComponentLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBDefaultComponentLayoutManager.h; sourceTree = "<group>"; };
 		8AA124E61DE89B530076582D /* HUBDefaultComponentLayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBDefaultComponentLayoutManager.m; sourceTree = "<group>"; };
 		8AA127EC1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBDefaultComponentFallbackHandler.h; sourceTree = "<group>"; };
@@ -767,6 +770,8 @@
 				8A5D7A711CBE5CA700B987BA /* HUBComponentFallbackHandlerMock.m */,
 				8A0F910B1D0EEBDD00C37FAE /* HUBActionHandlerMock.h */,
 				8A0F910C1D0EEBDD00C37FAE /* HUBActionHandlerMock.m */,
+				8AA124DB1DE8831B0076582D /* HUBComponentReusePoolMock.h */,
+				8AA124DC1DE8831B0076582D /* HUBComponentReusePoolMock.m */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -1317,6 +1322,7 @@
 				5284988B1DC4FC1300291C0C /* HUBInputStreamMock.m in Sources */,
 				8A89EFE81C7C866500A27EE9 /* HUBImageLoaderFactoryMock.m in Sources */,
 				8ACE24C71C6B650B0036240A /* HUBViewControllerFactoryTests.m in Sources */,
+				8AA124DD1DE8831B0076582D /* HUBComponentReusePoolMock.m in Sources */,
 				52E7FC671D9C78730053EECF /* HUBActionMock.m in Sources */,
 				8AA97C161C60C5320078F19D /* HUBFeatureRegistryTests.m in Sources */,
 				8AD00A0E1CC79F850012A9AF /* HUBIconTests.m in Sources */,

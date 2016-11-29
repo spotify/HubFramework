@@ -59,40 +59,48 @@
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
     self.builder.localImage = [UIImage new];
     self.builder.placeholderIconIdentifier = @"placeholder";
+    self.builder.customData = @{@"custom": @"data"};
     
     NSString * const identifier = @"identifier";
     HUBComponentImageType const type = HUBComponentImageTypeCustom;
     
-    HUBComponentImageDataImplementation * const imageData = [self.builder buildWithIdentifier:identifier type:type customData:nil];
+    HUBComponentImageDataImplementation * const imageData = [self.builder buildWithIdentifier:identifier type:type];
     
     XCTAssertEqual(imageData.identifier, identifier);
     XCTAssertEqual(imageData.type, type);
     XCTAssertEqualObjects(imageData.URL, self.builder.URL);
     XCTAssertEqual(imageData.localImage, self.builder.localImage);
     XCTAssertEqualObjects(imageData.placeholderIcon.identifier, @"placeholder");
+    XCTAssertEqualObjects(imageData.customData, @{@"custom": @"data"});
 }
 
 - (void)testEmptyBuilderProducingNil
 {
-    XCTAssertNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil]);
+    XCTAssertNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
 }
 
 - (void)testOnlyURLNotProducingNil
 {
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
-    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil]);
+    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
 }
 
 - (void)testLocalImageOnlyNotProducingNil
 {
     self.builder.localImage = [UIImage new];
-    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil]);
+    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
 }
 
 - (void)testOnlyPlaceholderIconIdentifierNotProducingNil
 {
     self.builder.placeholderIconIdentifier = @"placeholder";
-    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil]);
+    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
+}
+
+- (void)testCustomDataOnlyNotProducingNil
+{
+    self.builder.customData = @{@"custom": @"data"};
+    XCTAssertNotNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
 }
 
 - (void)testNilIconImageResolverAlwaysResultingInNilPlaceholderIcon
@@ -105,10 +113,10 @@
     self.builder.placeholderIconIdentifier = @"placeholder";
     
     // Since icon is now nil, the builder itself should also return nil (since it doesn't contain any other data)
-    XCTAssertNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil]);
+    XCTAssertNil([self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain]);
     
     self.builder.localImage = [UIImage new];
-    HUBComponentImageDataImplementation * const imageData = [self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain customData:nil];
+    HUBComponentImageDataImplementation * const imageData = [self.builder buildWithIdentifier:nil type:HUBComponentImageTypeMain];
     XCTAssertNotNil(imageData);
     XCTAssertNil(imageData.placeholderIcon);
 }
@@ -119,13 +127,17 @@
     
     NSDictionary * const dictionary = @{
         @"uri": imageURL.absoluteString,
-        @"placeholder": @"place_holder"
+        @"placeholder": @"place_holder",
+        @"custom": @{
+            @"key": @"value"
+        }
     };
     
     [self.builder addDataFromJSONDictionary:dictionary];
     
     XCTAssertEqualObjects(self.builder.URL, imageURL);
     XCTAssertEqualObjects(self.builder.placeholderIconIdentifier, @"place_holder");
+    XCTAssertEqualObjects(self.builder.customData, @{@"key": @"value"});
 }
 
 - (void)testAddingJSONDataNotOverridingExistingData
@@ -134,11 +146,13 @@
     
     self.builder.placeholderIconIdentifier = @"placeholder";
     self.builder.URL = imageURL;
+    self.builder.customData = @{@"custom": @"data"};
     
     [self.builder addDataFromJSONDictionary:@{}];
     
     XCTAssertEqualObjects(self.builder.placeholderIconIdentifier, @"placeholder");
     XCTAssertEqualObjects(self.builder.URL, imageURL);
+    XCTAssertEqualObjects(self.builder.customData, @{@"custom": @"data"});
 }
 
 - (void)testAddingNonDictionaryJSONDataReturnsError
@@ -157,6 +171,7 @@
     self.builder.URL = [NSURL URLWithString:@"cdn.spotify.com/hub"];
     self.builder.localImage = localImage;
     self.builder.placeholderIconIdentifier = @"placeholder";
+    self.builder.customData = @{@"custom": @"data"};
     
     HUBComponentImageDataBuilderImplementation * const builderCopy = [self.builder copy];
     XCTAssertNotEqual(self.builder, builderCopy);
@@ -164,6 +179,7 @@
     XCTAssertEqualObjects(builderCopy.URL, [NSURL URLWithString:@"cdn.spotify.com/hub"]);
     XCTAssertEqualObjects(builderCopy.localImage, localImage);
     XCTAssertEqualObjects(builderCopy.placeholderIconIdentifier, @"placeholder");
+    XCTAssertEqualObjects(builderCopy.customData, @{@"custom": @"data"});
 }
 
 @end

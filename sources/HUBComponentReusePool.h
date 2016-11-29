@@ -36,10 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with a component registry and a UI state manager
  *
  *  @param componentRegistry The component registry to use to create new component instances
- *  @param UIStateManager The manager keeping track of component UI states
  */
-- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
-                           UIStateManager:(HUBComponentUIStateManager *)UIStateManager HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Add a component wrapper to the reuse pool, enabling it to be used for other models

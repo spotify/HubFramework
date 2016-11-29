@@ -25,6 +25,7 @@
 #import "HUBViewModelLoaderImplementation.h"
 #import "HUBContentOperationMock.h"
 #import "HUBComponentRegistryImplementation.h"
+#import "HUBComponentReusePoolMock.h"
 #import "HUBIdentifier.h"
 #import "HUBJSONSChemaRegistryImplementation.h"
 #import "HUBJSONSchemaImplementation.h"
@@ -38,6 +39,7 @@
 #import "HUBComponentTarget.h"
 #import "HUBComponentFactoryMock.h"
 #import "HUBComponentMock.h"
+#import "HUBComponentWrapper.h"
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
 #import "HUBComponentLayoutManagerMock.h"
@@ -72,6 +74,7 @@
 @property (nonatomic, strong) HUBCollectionViewMock *collectionView;
 @property (nonatomic, strong) HUBCollectionViewFactoryMock *collectionViewFactory;
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
+@property (nonatomic, strong) HUBComponentReusePoolMock *componentReusePool;
 @property (nonatomic, strong) HUBViewControllerScrollHandlerMock *scrollHandler;
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
@@ -124,6 +127,8 @@
                                                                               JSONSchemaRegistry:JSONSchemaRegistry
                                                                                iconImageResolver:iconImageResolver];
     
+    self.componentReusePool = [[HUBComponentReusePoolMock alloc] initWithComponentRegistry:self.componentRegistry];
+    
     self.scrollHandler = [HUBViewControllerScrollHandlerMock new];
     
     self.component = [HUBComponentMock new];
@@ -170,6 +175,7 @@
                                                      viewModelLoader:self.viewModelLoader
                                                collectionViewFactory:self.collectionViewFactory
                                                    componentRegistry:self.componentRegistry
+                                                  componentReusePool:self.componentReusePool
                                               componentLayoutManager:componentLayoutManager
                                                        actionHandler:actionHandler
                                                        scrollHandler:self.scrollHandler
@@ -678,6 +684,37 @@
     XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)3);
 }
 
+- (void)testRemovingHeaderComponent
+{
+    __block BOOL shouldAddHeaderComponent = YES;
+    __weak HUBComponentWrapper *componentWrapper;
+    
+    @autoreleasepool {
+        self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+            if (shouldAddHeaderComponent) {
+                viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+            }
+            
+            return YES;
+        };
+        
+        [self simulateViewControllerLayoutCycle];
+        
+        XCTAssertEqual(self.componentReusePool.componentsInUse.count, 1u);
+        componentWrapper = self.componentReusePool.componentsInUse[0];
+        HUBComponentWrapper * const strongComponentWrapper = componentWrapper;
+        XCTAssertEqualObjects(strongComponentWrapper.view, self.component.view);
+        
+        shouldAddHeaderComponent = NO;
+        [self.viewController reload];
+        [self.viewController viewDidLayoutSubviews];
+    }
+    
+    XCTAssertEqual(self.componentReusePool.componentsInUse.count, 0u);
+    XCTAssertNil(componentWrapper);
+    XCTAssertNil(self.component.view.superview);
+}
+
 - (void)testOverlayComponentReuse
 {
     HUBComponentMock * const componentA = [HUBComponentMock new];
@@ -783,34 +820,49 @@
 
 - (void)testUnreusedOverlayComponentsRemovedFromView
 {
-    __block BOOL isFirstLoad = YES;
+    __weak HUBComponentWrapper *originalComponentWrapper;
     
-    HUBComponentMock * const alternativeComponent = [HUBComponentMock new];
-    HUBComponentFactoryMock * const alternativeComponentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{@"alternative": alternativeComponent}];
-    [self.componentRegistry registerComponentFactory:alternativeComponentFactory forNamespace:@"alternative"];
-    
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+    /// Here we use an autorelease pool to enable more fine grained control over object lifecycles
+    @autoreleasepool {
+        __block BOOL isFirstLoad = YES;
         
-        if (!isFirstLoad) {
-            componentModelBuilder.componentNamespace = @"alternative";
-            componentModelBuilder.componentName = @"alternative";
-        }
+        HUBComponentMock * const alternativeComponent = [HUBComponentMock new];
+        HUBComponentFactoryMock * const alternativeComponentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{@"alternative": alternativeComponent}];
+        [self.componentRegistry registerComponentFactory:alternativeComponentFactory forNamespace:@"alternative"];
         
-        isFirstLoad = NO;
+        self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+            id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+            
+            if (!isFirstLoad) {
+                componentModelBuilder.componentNamespace = @"alternative";
+                componentModelBuilder.componentName = @"alternative";
+            }
+            
+            isFirstLoad = NO;
+            
+            return YES;
+        };
         
-        return YES;
-    };
+        [self simulateViewControllerLayoutCycle];
+        XCTAssertNotNil(self.component.view.superview);
+        XCTAssertNil(alternativeComponent.view);
+        
+        XCTAssertEqual(self.componentReusePool.componentsInUse.count, 1u);
+        originalComponentWrapper = self.componentReusePool.componentsInUse[0];
+        HUBComponentWrapper * const strongOriginalComponentWrapper = originalComponentWrapper;
+        XCTAssertEqualObjects(strongOriginalComponentWrapper.view, self.component.view);
+        
+        [self.viewController reload];
+        [self.viewController viewDidLayoutSubviews];
+        
+        XCTAssertNotNil(alternativeComponent.view.superview);
+        XCTAssertNil(self.component.view.superview);
+    }
     
-    [self simulateViewControllerLayoutCycle];
-    XCTAssertNotNil(self.component.view.superview);
-    XCTAssertNil(alternativeComponent.view);
-    
-    [self.contentOperation.delegate contentOperationRequiresRescheduling:self.contentOperation];
-    [self.viewController viewDidLayoutSubviews];
-    
-    XCTAssertNotNil(alternativeComponent.view.superview);
-    XCTAssertNil(self.component.view.superview);
+    // The component wrapper for the original overlay component should now have been removed,
+    // and have been replaced by the alternative one
+    XCTAssertNil(originalComponentWrapper);
+    XCTAssertEqual(self.componentReusePool.componentsInUse.count, 1u);
 }
 
 - (void)testOverlayComponentsNotifiedOfViewWillAppear

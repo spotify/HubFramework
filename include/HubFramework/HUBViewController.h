@@ -27,16 +27,7 @@
 @protocol HUBViewModel;
 @protocol HUBComponentModel;
 @protocol HUBImageLoader;
-@protocol HUBContentReloadPolicy;
-@protocol HUBComponentLayoutManager;
-@protocol HUBActionHandler;
-@protocol HUBViewControllerScrollHandler;
-@protocol HUBComponentRegistry;
 @class HUBViewController;
-@class HUBViewModelLoaderImplementation;
-@class HUBCollectionViewFactory;
-@class HUBInitialViewModelRegistry;
-@class HUBActionRegistryImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
 

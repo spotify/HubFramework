@@ -54,6 +54,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Any local image that should be used, either as a placeholder or a permanent image
 @property (nonatomic, strong, nullable) UIImage *localImage;
 
+/// Any custom data that should be associated with the image data object
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, id> *customData;
+
 @end
 
 NS_ASSUME_NONNULL_END

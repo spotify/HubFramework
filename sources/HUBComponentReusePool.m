@@ -22,6 +22,7 @@
 #import "HUBComponentReusePool.h"
 
 #import "HUBComponentWrapper.h"
+#import "HUBComponentUIStateManager.h"
 #import "HUBIdentifier.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentRegistry.h"
@@ -40,16 +41,14 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentReusePool
 
 - (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
-                           UIStateManager:(HUBComponentUIStateManager *)UIStateManager
 {
     NSParameterAssert(componentRegistry != nil);
-    NSParameterAssert(UIStateManager != nil);
     
     self = [super init];
     
     if (self) {
         _componentRegistry = componentRegistry;
-        _UIStateManager = UIStateManager;
+        _UIStateManager = [HUBComponentUIStateManager new];
         _componentWrappers = [NSMutableDictionary new];
     }
     
