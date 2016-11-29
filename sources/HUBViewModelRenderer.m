@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewModelRenderer ()
 
+@property (nonatomic, getter=isRendering) BOOL rendering;
 @property (nonatomic, strong, readonly) UICollectionView *collectionView;
 @property (nonatomic, strong, nullable) id<HUBViewModel> lastRenderedViewModel;
 
@@ -38,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     self = [super init];
     if (self) {
+        _rendering = NO;
         _collectionView = collectionView;
     }
     return self;
@@ -49,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
         addHeaderMargin:(BOOL)addHeaderMargin
              completion:(void (^)(void))completionBlock
 {
+    self.rendering = YES;
     HUBViewModelDiff *diff;
     if (self.lastRenderedViewModel != nil) {
         id<HUBViewModel> nonnullViewModel = self.lastRenderedViewModel;
@@ -77,6 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
             [self.collectionView setNeedsLayout];
             [self.collectionView layoutIfNeeded];
         }
+        self.rendering = NO;
         completionBlock();
     } else {
         void (^updateBlock)() = ^{
@@ -91,6 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
                                      addHeaderMargin:addHeaderMargin];
                 
             } completion:^(BOOL finished) {
+                self.rendering = NO;
                 completionBlock();
             }];
         };

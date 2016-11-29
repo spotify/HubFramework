@@ -89,6 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByCellIdentifier;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentWrapper *> *componentWrappersByModelIdentifier;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *highlightedComponentWrapper;
+@property (nonatomic, strong, nullable) id<HUBViewModel> pendingViewModel;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
@@ -453,6 +454,11 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
+    if (self.viewModelRenderer.isRendering) {
+        self.pendingViewModel = viewModel;
+        return;
+    }
+
     id<HUBViewControllerDelegate> const delegate = self.delegate;
     [delegate viewController:self willUpdateWithViewModel:viewModel];
     
@@ -911,6 +917,13 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                    animated:animated
                             addHeaderMargin:shouldAddHeaderMargin
                                  completion:^{
+        if (self.pendingViewModel != nil) {
+            id<HUBViewModel> pendingViewModel = self.pendingViewModel;
+            self.pendingViewModel = nil;
+            [self reloadCollectionViewWithViewModel:pendingViewModel animated:animated];
+            return;
+        }
+
         id<HUBViewControllerDelegate> delegate = self.delegate;
 
         [self headerAndOverlayComponentViewsWillAppear];
