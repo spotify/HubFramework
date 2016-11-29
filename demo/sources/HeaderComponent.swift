@@ -40,7 +40,7 @@ class HeaderComponent: NSObject, HUBComponentContentOffsetObserver, HUBComponent
     private var maximumFontSize: CGFloat { return 30 }
 
     var layoutTraits: Set<HUBComponentLayoutTrait> {
-        return [.fullWidth]
+        return [.fullWidth, .stackable]
     }
 
     func loadView() {
