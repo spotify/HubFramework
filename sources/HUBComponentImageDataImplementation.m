@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
         _URL = [URL copy];
         _placeholderIcon = placeholderIcon;
         _localImage = localImage;
-        _customData = customData;
+        _customData = [customData copy];
     }
     
     return self;

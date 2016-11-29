@@ -495,18 +495,16 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                     name:self.componentName];
     
     id<HUBComponentImageData> const mainImageData = [self.mainImageDataBuilderImplementation buildWithIdentifier:nil
-                                                                                                            type:HUBComponentImageTypeMain
-                                                                                                      customData:nil];
+                                                                                                            type:HUBComponentImageTypeMain];
     
     id<HUBComponentImageData> const backgroundImageData = [self.backgroundImageDataBuilderImplementation buildWithIdentifier:nil
-                                                                                                                        type:HUBComponentImageTypeBackground
-                                                                                                                  customData:nil];
+                                                                                                                        type:HUBComponentImageTypeBackground];
     
     NSMutableDictionary * const customImageData = [NSMutableDictionary new];
     
     for (NSString * const imageIdentifier in self.customImageDataBuilders) {
         HUBComponentImageDataBuilderImplementation * const builder = self.customImageDataBuilders[imageIdentifier];
-        id<HUBComponentImageData> const imageData = [builder buildWithIdentifier:imageIdentifier type:HUBComponentImageTypeCustom customData:nil];
+        id<HUBComponentImageData> const imageData = [builder buildWithIdentifier:imageIdentifier type:HUBComponentImageTypeCustom];
         
         if (imageData != nil) {
             [customImageData setObject:imageData forKey:imageIdentifier];
