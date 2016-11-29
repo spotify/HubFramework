@@ -40,16 +40,16 @@ class TodoListAddAction: NSObject, HUBAsyncAction {
             alertController.dismiss(animated: true, completion: nil)
             self.delegate?.actionDidFinish(self, chainToActionWithIdentifier: nil, customData: nil)
         }
-        
+
         let doneAction = UIAlertAction(title: "Add", style: .default) { _ in
             let nextActionIdentifier = HUBIdentifier(namespace: TodoListActionFactory.namespace, name: TodoListActionNames.addCompleted)
             let nextActionCustomData = [TodoListAddActionCustomDataKeys.itemTitle: alertController.textFields!.first!.text!]
             self.delegate?.actionDidFinish(self, chainToActionWithIdentifier: nextActionIdentifier, customData: nextActionCustomData)
         }
-        
+
         alertController.addAction(cancelAction)
         alertController.addAction(doneAction)
-        
+
         context.viewController.present(alertController, animated: true, completion: nil)
         
         return true
