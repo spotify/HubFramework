@@ -33,6 +33,12 @@ class StickyHeaderContentOperation: NSObject, HUBContentOperation {
         headerBuilder.title = "A sticky header!"
         headerBuilder.backgroundImageURL = URL(string: "https://spotify.github.io/HubFramework/resources/getting-started-gothenburg.jpg")
         
+        let searchBarBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "searchBar")
+        searchBarBuilder.componentName = DefaultComponentNames.searchBar
+        searchBarBuilder.customData = [
+            SearchBarComponentCustomDataKeys.placeholder: "Dummy search bar",
+        ]
+
         for rowIndex in 0..<20 {
             let rowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "row-\(rowIndex)")
             rowBuilder.title = "Row number \(rowIndex + 1)"

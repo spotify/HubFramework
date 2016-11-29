@@ -87,6 +87,21 @@ class HeaderComponentUITests: UITestCase {
         // Make sure that the header is now uncollapsed
         XCTAssertEqual(header.frame.height, 250)
     }
+
+    func testHiddingKeyboardOnDrag() {
+        navigateToStickyHeaderFeature()
+
+        let app = XCUIApplication()
+
+        let collectionview = app.collectionViews["collectionView"]
+        let searchField = collectionview.searchFields["Dummy search bar"]
+        searchField.tap()
+
+        collectionview.swipeUp()
+
+        // Make sure the keyboard is hidden
+        XCTAssert(app.keyboards.count == 0)
+    }
     
     // MARK: - Utilities
     
