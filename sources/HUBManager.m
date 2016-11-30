@@ -30,10 +30,10 @@
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBComponentDefaults.h"
 #import "HUBComponentFallbackHandler.h"
-#import "HUBDefaultComponentLayoutManager.h"
-#import "HUBDefaultComponentFallbackHandler.h"
 #import "HUBDefaultConnectivityStateResolver.h"
 #import "HUBDefaultImageLoaderFactory.h"
+#import "HUBDefaultComponentLayoutManager.h"
+#import "HUBDefaultComponentFallbackHandler.h"
 #import "HUBLiveServiceImplementation.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -49,30 +49,6 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBManager
 
 @synthesize liveService = _liveService;
-
-- (instancetype)initWithComponentMargin:(CGFloat)componentMargin
-                 componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
-{
-    id<HUBComponentLayoutManager> const componentLayoutManager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:componentMargin];
-    id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBDefaultComponentFallbackHandler alloc] initWithFallbackBlock:componentFallbackBlock];
-    
-    return [self initWithComponentLayoutManager:componentLayoutManager
-                       componentFallbackHandler:componentFallbackHandler];
-}
-
-- (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                      componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-{
-    return [self initWithComponentLayoutManager:componentLayoutManager
-                       componentFallbackHandler:componentFallbackHandler
-                      connectivityStateResolver:nil
-                             imageLoaderFactory:nil
-                              iconImageResolver:nil
-                           defaultActionHandler:nil
-                     defaultContentReloadPolicy:nil
-               prependedContentOperationFactory:nil
-                appendedContentOperationFactory:nil];
-}
 
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                       componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
@@ -160,6 +136,34 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
     
     return _liveService;
+}
+
+@end
+
+@implementation HUBManager (Convenience)
+
++ (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
+                    componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
+{
+    id<HUBComponentLayoutManager> const componentLayoutManager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:componentMargin];
+    id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBDefaultComponentFallbackHandler alloc] initWithFallbackBlock:componentFallbackBlock];
+    
+    return [self managerWithComponentLayoutManager:componentLayoutManager
+                          componentFallbackHandler:componentFallbackHandler];
+}
+
++ (instancetype)managerWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+{
+    return [[self alloc] initWithComponentLayoutManager:componentLayoutManager
+                               componentFallbackHandler:componentFallbackHandler
+                              connectivityStateResolver:nil
+                                     imageLoaderFactory:nil
+                                      iconImageResolver:nil
+                                   defaultActionHandler:nil
+                             defaultContentReloadPolicy:nil
+                       prependedContentOperationFactory:nil
+                        appendedContentOperationFactory:nil];
 }
 
 @end

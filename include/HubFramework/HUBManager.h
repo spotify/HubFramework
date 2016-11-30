@@ -24,13 +24,13 @@
 #import <CoreGraphics/CoreGraphics.h>
 
 @protocol HUBFeatureRegistry;
+@protocol HUBComponent;
 @protocol HUBComponentRegistry;
 @protocol HUBActionRegistry;
 @protocol HUBJSONSchemaRegistry;
 @protocol HUBViewModelLoaderFactory;
 @protocol HUBViewControllerFactory;
 @protocol HUBComponentShowcaseManager;
-@protocol HUBComponent;
 @protocol HUBLiveService;
 @protocol HUBConnectivityStateResolver;
 @protocol HUBDataLoaderFactory;
@@ -78,36 +78,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly, nullable) id<HUBLiveService> liveService;
 
 /**
- *  Initialize an instance of this class with a default configuration
- *
- *  @param componentMargin The margin to use in between components. Margin will be applied between two components except
- *         when both of them are not stackable (vertical) or when one of them is full width (horizontal). For more information,
- *         see the "Layout programming guide".
- *  @param componentFallbackBlock A block that should return a fallback component in case one couldn't be resolved for a given
- *         component model. The block must always return a `HUBComponent` instance.
- *
- *  This is the easiest way to setup the Hub Framework in an application. For more customization options, see the other
- *  initializers. The supplied `componentMargin` will be used to implement a default `HUBComponentLayoutManager`, and the
- *  `componentFallbackBlock` will be used for a default `HUBComponentFallbackHandler`.
- */
-- (instancetype)initWithComponentMargin:(CGFloat)componentMargin
-                 componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:));
-
-/**
- *  Initialize an instance of this class with its required dependencies
- *
- *  @param componentLayoutManager The object to use to manage layout for components, computing margins using layout traits.
- *         See `HUBComponentLayoutManager` for more information.
- *  @param componentFallbackHandler The object to use to fall back to default components in case a component couldn't be
- *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
- *
- *  This is a convenience initializer, to enable you to easily setup this class with the least amount of options. For more
- *  customization options, see this class' designated initializer.
- */
-- (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                      componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler;
-
-/**
  *  Initialize an instance of this class with all available customization options
  *
  *  @param componentLayoutManager The object to use to manage layout for components, computing margins using layout traits.
@@ -132,6 +102,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param appendedContentOperationFactory Any content operation factory that should be appended to the chain of content
  *         operation factories for all views. The operations that this factory produces will therefore always be appended
  *         to the content loading chain of any view.
+ *
+ *  In case you don't want to use all of these customization options, see the initializers available in `HUBManager+Convenience.h`.
  */
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                       componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
@@ -144,5 +116,41 @@ NS_ASSUME_NONNULL_BEGIN
                appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory HUB_DESIGNATED_INITIALIZER;
 
 @end
+
+/// Category providing convenience APIs for setting up a `HUBManager` instance
+@interface HUBManager (Convenience)
+
+/**
+ *  Create an instance of this class with a default configuration
+ *
+ *  @param componentMargin The margin to use in between components. Margin will be applied between two components except
+ *         when both of them are not stackable (vertical) or when one of them is full width (horizontal). For more information,
+ *         see the "Layout programming guide".
+ *  @param componentFallbackBlock A block that should return a fallback component in case one couldn't be resolved for a given
+ *         component model. The block must always return a `HUBComponent` instance.
+ *
+ *  This is the easiest way to setup the Hub Framework in an application. For more customization options, see this class'
+ *  designated initializer. The supplied `componentMargin` will be used to implement a default `HUBComponentLayoutManager`, and
+ *  the `componentFallbackBlock` will be used for a default `HUBComponentFallbackHandler`.
+ */
++ (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
+                    componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:));
+
+/**
+ *  Create an instance of this class with its required dependencies
+ *
+ *  @param componentLayoutManager The object to use to manage layout for components, computing margins using layout traits.
+ *         See `HUBComponentLayoutManager` for more information.
+ *  @param componentFallbackHandler The object to use to fall back to default components in case a component couldn't be
+ *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
+ *
+ *  This is a convenience initializer, to enable you to easily setup this class with the least amount of dependencies.
+ *  For more customization options, see this class' designated initializer.
+ */
++ (instancetype)managerWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler;
+
+@end
+
 
 NS_ASSUME_NONNULL_END
