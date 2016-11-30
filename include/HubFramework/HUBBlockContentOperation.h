@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  *         invoked each time the operation is performed. The contextual object passed to the block
  *         will contain all execution parameters that are passed to any `HUBContentOperation`.
  */
-- (instancetype)initWithBlock:(void(^)(id<HUBContentOperationContext>))block HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBlock:(void(^)(id<HUBContentOperationContext>))block NS_SWIFT_NAME(init(closure:)) HUB_DESIGNATED_INITIALIZER;
 
 @end
 

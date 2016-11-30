@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBBlockContentOperation ()
 
-@property (nonatomic, copy) void(^block)(id<HUBContentOperationContext>);
+@property (nonatomic, copy, readonly) void(^block)(id<HUBContentOperationContext>);
 
 @end
 
