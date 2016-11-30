@@ -91,6 +91,9 @@
                 <a class="nav-group-task-link" href="Classes/HUBManager.html">HUBManager</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/HUBViewController.html">HUBViewController</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/HUBViewURIPredicate.html">HUBViewURIPredicate</a>
               </li>
             </ul>
@@ -355,9 +358,6 @@
                 <a class="nav-group-task-link" href="Protocols/HUBSerializable.html">HUBSerializable</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/HUBViewController.html">HUBViewController</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBViewControllerDelegate.html">HUBViewControllerDelegate</a>
               </li>
               <li class="nav-group-task">
@@ -444,7 +444,7 @@
 
 <p>Once the live service has created a view controller, push that view controller onto the navigation stack:</p>
 <pre class="highlight plaintext"><code>- (void)liveService:(id&lt;HUBLiveService&gt;)liveService
-        didCreateViewController:(UIViewController&lt;HUBViewController&gt; *)viewController
+        didCreateViewController:(HUBViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:YES];
 }

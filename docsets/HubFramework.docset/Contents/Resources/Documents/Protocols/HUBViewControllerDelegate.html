@@ -92,6 +92,9 @@
                 <a class="nav-group-task-link" href="../Classes/HUBManager.html">HUBManager</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HUBViewController.html">HUBViewController</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/HUBViewURIPredicate.html">HUBViewURIPredicate</a>
               </li>
             </ul>
@@ -356,9 +359,6 @@
                 <a class="nav-group-task-link" href="../Protocols/HUBSerializable.html">HUBSerializable</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBViewController.html">HUBViewController</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBViewControllerDelegate.html">HUBViewControllerDelegate</a>
               </li>
               <li class="nav-group-task">
@@ -417,7 +417,7 @@
 
                 </div>
               </div>
-            <p>Delegate protocol for <code><a href="../Protocols/HUBViewController.html">HUBViewController</a></code></p>
+            <p>Delegate protocol for <code><a href="../Classes/HUBViewController.html">HUBViewController</a></code></p>
 
 <p>Conform to this protocol in a custom object to get notified of events occuring in a Hub Framework view controller</p>
 
@@ -451,8 +451,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:</span>
-            <span class="p">(</span><span class="n">nonnull</span> <span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBViewController.html">HUBViewController</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
     <span class="nf">willUpdateWithViewModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewModel.html">HUBViewModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">viewModel</span><span class="p">;</span></code></pre>
 
                         </div>
@@ -516,13 +515,12 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewControllerDidUpdate</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">nonnull</span> <span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span><span class="p">;</span></code></pre>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewControllerDidUpdate</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBViewController.html">HUBViewController</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewControllerDidUpdate</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewControllerDidUpdate</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/HUBViewController.html">HUBViewController</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -574,14 +572,13 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:</span>
-            <span class="p">(</span><span class="n">nonnull</span> <span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBViewController.html">HUBViewController</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
     <span class="nf">didFailToUpdateWithError</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewController</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="n">didFailToUpdateWithError</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewController</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/HUBViewController.html">HUBViewController</a></span><span class="p">,</span> <span class="n">didFailToUpdateWithError</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -645,12 +642,12 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewControllerDidFinishRendering</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">nonnull</span> <span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span><span class="p">;</span></code></pre>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBViewController.html">HUBViewController</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewControllerDidFinishRendering</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewControllerDidFinishRendering</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/HUBViewController.html">HUBViewController</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -701,12 +698,12 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">viewControllerShouldStartScrolling</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">nonnull</span> <span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span><span class="p">;</span></code></pre>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBViewController.html">HUBViewController</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewControllerShouldStartScrolling</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewControllerShouldStartScrolling</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/HUBViewController.html">HUBViewController</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -753,8 +750,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:</span>
-            <span class="p">(</span><span class="n">nonnull</span> <span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBViewController.html">HUBViewController</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
     <span class="nf">componentWithModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentModel</span>
           <span class="nf">layoutTraits</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSSet</span><span class="o">&lt;</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">layoutTraits</span>
       <span class="nf">willAppearInView</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">componentView</span><span class="p">;</span></code></pre>
@@ -843,8 +839,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:</span>
-            <span class="p">(</span><span class="n">nonnull</span> <span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBViewController.html">HUBViewController</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
       <span class="nf">componentWithModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentModel</span>
             <span class="nf">layoutTraits</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSSet</span><span class="o">&lt;</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentLayoutTraits.h@T@HUBComponentLayoutTrait">HUBComponentLayoutTrait</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">layoutTraits</span>
     <span class="nf">didDisappearFromView</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">componentView</span><span class="p">;</span></code></pre>
@@ -916,6 +911,72 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/c:objc(pl)HUBViewControllerDelegate(im)viewController:willReuseComponentWithView:"></a>
+                    <a name="//apple_ref/objc/Method/-viewController:willReuseComponentWithView:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewControllerDelegate(im)viewController:willReuseComponentWithView:">-viewController:willReuseComponentWithView:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sent to a Hub Framework view controller&rsquo;s delegate when a component view will be reused</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBViewController.html">HUBViewController</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
+    <span class="nf">willReuseComponentWithView</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">componentView</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewController</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/HUBViewController.html">HUBViewController</a></span><span class="p">,</span> <span class="n">willReuseComponentWithView</span> <span class="nv">componentView</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The view controller in which a component view will be reused</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>componentView</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The component view that will be reused</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/c:objc(pl)HUBViewControllerDelegate(im)viewController:componentSelectedWithModel:"></a>
                     <a name="//apple_ref/objc/Method/-viewController:componentSelectedWithModel:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)HUBViewControllerDelegate(im)viewController:componentSelectedWithModel:">-viewController:componentSelectedWithModel:</a>
@@ -933,8 +994,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:</span>
-            <span class="p">(</span><span class="n">nonnull</span> <span class="n">UIViewController</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewController.html">HUBViewController</a></span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewController</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBViewController.html">HUBViewController</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span>
     <span class="nf">componentSelectedWithModel</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentModel</span><span class="p">;</span></code></pre>
 
                         </div>
@@ -965,6 +1025,63 @@
                               <td>
                                 <div>
                                   <p>The model of the component that was selected</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewControllerDelegate(im)viewControllerShouldAutomaticallyManageTopContentInset:"></a>
+                    <a name="//apple_ref/objc/Method/-viewControllerShouldAutomaticallyManageTopContentInset:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewControllerDelegate(im)viewControllerShouldAutomaticallyManageTopContentInset:">-viewControllerShouldAutomaticallyManageTopContentInset:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sent to a Hub Framework view controller&rsquo;s delegate to ask if view controller should automatically
+  manage content inset.</p>
+
+<p>@discussion When view controller automatically manages content inset it puts body components
+  below header component and below navigation bar.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">viewControllerShouldAutomaticallyManageTopContentInset</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/HUBViewController.html">HUBViewController</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">viewControllerShouldAutomaticallyManageTopContentInset</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/HUBViewController.html">HUBViewController</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The view controller which displays some components</p>
 
                                 </div>
                               </td>

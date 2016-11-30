@@ -92,6 +92,9 @@
                 <a class="nav-group-task-link" href="../Classes/HUBManager.html">HUBManager</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HUBViewController.html">HUBViewController</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/HUBViewURIPredicate.html">HUBViewURIPredicate</a>
               </li>
             </ul>
@@ -356,9 +359,6 @@
                 <a class="nav-group-task-link" href="../Protocols/HUBSerializable.html">HUBSerializable</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBViewController.html">HUBViewController</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBViewControllerDelegate.html">HUBViewControllerDelegate</a>
               </li>
               <li class="nav-group-task">
@@ -551,6 +551,65 @@
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBComponentRegistry(im)createComponentForModel:"></a>
+                    <a name="//apple_ref/objc/Method/-createComponentForModel:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentRegistry(im)createComponentForModel:">-createComponentForModel:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a new component instance for a model</p>
+
+<p>Normally, you don&rsquo;t have to call this method yourself. Instead, the Hub Framework automatically
+  creates component instances for the models you delcare in a content operation.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponent.html">HUBComponent</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nf">createComponentForModel</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentModel.html">HUBComponentModel</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">model</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>model</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The model to create a component for</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A newly created component that is ready to use. The component registry will first attempt
+         to resolve a component factory for the model&rsquo;s <code>componentNamespace</code>, and ask it to create
+         a component. However, if this fails, the registry will use its fallback handler to create
+         a fallback component for the model&rsquo;s <code>componentCategory</code>.</p>
+
                       </div>
                     </section>
                   </div>

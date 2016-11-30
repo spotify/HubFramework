@@ -92,6 +92,9 @@
                 <a class="nav-group-task-link" href="../Classes/HUBManager.html">HUBManager</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HUBViewController.html">HUBViewController</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/HUBViewURIPredicate.html">HUBViewURIPredicate</a>
               </li>
             </ul>
@@ -354,9 +357,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBSerializable.html">HUBSerializable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HUBViewController.html">HUBViewController</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBViewControllerDelegate.html">HUBViewControllerDelegate</a>
@@ -1345,6 +1345,82 @@
                           <pre class="highlight"><code><span class="kd">func</span> <span class="nf">removeAllComponentModelBuilders</span><span class="p">()</span></code></pre>
 
                         </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Manipulate%20custom%20data"></a>
+                <a name="//apple_ref/objc/Section/Manipulate custom data" class="dashAnchor"></a>
+                <a href="#/Manipulate%20custom%20data">
+                  <h3 class="section-name">Manipulate custom data</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBViewModelBuilder(im)setCustomDataValue:forKey:"></a>
+                    <a name="//apple_ref/objc/Method/-setCustomDataValue:forKey:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBViewModelBuilder(im)setCustomDataValue:forKey:">-setCustomDataValue:forKey:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets value for key in custom data dictionary associated with the view model</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setCustomDataValue</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">forKey</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">setCustomDataValue</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>value</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The value to put into customData. If the value is nil existing value for the key will be deleted from the dictionary.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The key used in customData to store the value</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
