@@ -82,6 +82,13 @@ NS_ASSUME_NONNULL_BEGIN
         self.placeholderIconIdentifier = placeholderIconIdentifier;
     }
     
+    NSString * const localImageName = [imageDataSchema.localImageNamePath stringFromJSONDictionary:dictionary];
+    
+    if (localImageName != nil) {
+        NSBundle * const bundle = [NSBundle bundleForClass:[self class]];
+        self.localImage = [UIImage imageNamed:localImageName inBundle:bundle compatibleWithTraitCollection:nil];
+    }
+
     NSDictionary * const customDataDictionary = [imageDataSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
     
     if (customDataDictionary != nil) {
