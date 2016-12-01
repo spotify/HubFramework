@@ -30,9 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface HUBViewModelRenderer : NSObject
 
-/// Whether the view model renderer is currently rendering.
-@property (nonatomic, readonly, getter=isRendering) BOOL rendering;
-
 /**
  *  Initializes a @c HUBViewModelRenderer with a provided collection view.
  *

@@ -97,6 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat visibleKeyboardHeight;
 @property (nonatomic, strong, nullable) NSValue *lastContentOffset;
 @property (nonatomic, copy, nullable) void(^pendingScrollAnimationCallback)(void);
+@property (nonatomic, getter=isRendering) BOOL rendering;
 
 @end
 
@@ -453,11 +454,13 @@ NS_ASSUME_NONNULL_BEGIN
     if ([self.viewModel.buildDate isEqual:viewModel.buildDate]) {
         return;
     }
-    
-    if (self.viewModelRenderer.isRendering) {
+
+    if (self.isRendering) {
         self.pendingViewModel = viewModel;
         return;
     }
+
+    self.rendering = YES;
 
     id<HUBViewControllerDelegate> const delegate = self.delegate;
     [delegate viewController:self willUpdateWithViewModel:viewModel];
@@ -917,10 +920,12 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                    animated:animated
                             addHeaderMargin:shouldAddHeaderMargin
                                  completion:^{
+        self.rendering = NO;
+
         if (self.pendingViewModel != nil) {
             id<HUBViewModel> pendingViewModel = self.pendingViewModel;
             self.pendingViewModel = nil;
-            [self reloadCollectionViewWithViewModel:pendingViewModel animated:animated];
+            [self viewModelLoader:self.viewModelLoader didLoadViewModel:pendingViewModel];
             return;
         }
 
