@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBViewModelRendererMock : HUBViewModelRenderer
 
 /// All completion blocks passed to the render method
-@property (nonatomic, readonly) NSMutableArray<void(^)(void)> *completionBlocks;
+@property (nonatomic, strong, readonly) NSMutableArray<void(^)(void)> *completionBlocks;
 
 @end
 

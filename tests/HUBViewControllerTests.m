@@ -2946,8 +2946,7 @@
         return YES;
     };
 
-    [self.viewController.view layoutIfNeeded];
-    [self.viewController reload];
+    [self simulateViewControllerLayoutCycle];
 
     // The model should be set at this point as there's no existing render in progress
     XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
@@ -2969,8 +2968,7 @@
         return YES;
     };
 
-    [self.viewController.view layoutIfNeeded];
-    [self.viewController reload];
+    [self simulateViewControllerLayoutCycle];
 
     // The model should be set at this point as there's no existing render in progress
     XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
