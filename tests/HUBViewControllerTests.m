@@ -32,7 +32,7 @@
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBImageLoaderMock.h"
 #import "HUBViewModelBuilder.h"
-#import "HUBViewModelRenderer.h"
+#import "HUBViewModelRendererMock.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentImageDataBuilder.h"
@@ -84,6 +84,7 @@
 @property (nonatomic, strong) HUBActionMock *selectionAction;
 @property (nonatomic, strong) HUBActionRegistryImplementation *actionRegistry;
 @property (nonatomic, strong) NSURL *viewURI;
+@property (nonatomic, strong) HUBFeatureInfoImplementation *featureInfo;
 @property (nonatomic, strong) HUBViewController *viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromDelegateMethod;
@@ -140,13 +141,13 @@
     self.collectionViewFactory = [[HUBCollectionViewFactoryMock alloc] initWithCollectionView:self.collectionView];
     
     self.viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    HUBFeatureInfoImplementation * const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
+    self.featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
     
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults iconImageResolver:iconImageResolver];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
     self.viewModelLoader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:self.viewURI
-                                                                         featureInfo:featureInfo
+                                                                         featureInfo:self.featureInfo
                                                                    contentOperations:@[self.contentOperation]
                                                                  contentReloadPolicy:self.contentReloadPolicy
                                                                           JSONSchema:JSONSchema
@@ -158,34 +159,14 @@
     self.viewModelRenderer = [HUBViewModelRenderer new];
     self.imageLoader = [HUBImageLoaderMock new];
     
-    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
-    
     self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     
     self.actionHandler = [HUBActionHandlerMock new];
     self.selectionAction = [[HUBActionMock alloc] initWithBlock:nil];
     self.actionRegistry = [[HUBActionRegistryImplementation alloc] initWithSelectionAction:self.selectionAction];
     
-    
-    id<HUBActionHandler> const actionHandler = [[HUBActionHandlerWrapper alloc] initWithActionHandler:self.actionHandler
-                                                                                       actionRegistry:self.actionRegistry
-                                                                             initialViewModelRegistry:self.initialViewModelRegistry
-                                                                                      viewModelLoader:self.viewModelLoader];
-    
-    self.viewController = [[HUBViewController alloc] initWithViewURI:self.viewURI
-                                                   featureIdentifier:featureInfo.identifier
-                                                     viewModelLoader:self.viewModelLoader
-                                                   viewModelRenderer:self.viewModelRenderer
-                                               collectionViewFactory:self.collectionViewFactory
-                                                   componentRegistry:self.componentRegistry
-                                                  componentReusePool:self.componentReusePool
-                                              componentLayoutManager:componentLayoutManager
-                                                       actionHandler:actionHandler
-                                                       scrollHandler:self.scrollHandler
-                                                         imageLoader:self.imageLoader];
-    
-    self.viewController.delegate = self;
-    
+    [self createViewControllerWithViewModelRenderer:self.viewModelRenderer];
+
     self.viewModelFromDelegateMethod = nil;
     self.componentModelsFromAppearanceDelegateMethod = [NSMutableArray new];
     self.componentLayoutTraitsFromAppearanceDelegateMethod = [NSMutableArray new];
@@ -196,6 +177,29 @@
     self.componentViewsFromReuseDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
     self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return YES; };
+}
+
+- (void)createViewControllerWithViewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
+{
+    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    id<HUBActionHandler> const actionHandler = [[HUBActionHandlerWrapper alloc] initWithActionHandler:self.actionHandler
+                                                                                       actionRegistry:self.actionRegistry
+                                                                             initialViewModelRegistry:self.initialViewModelRegistry
+                                                                                      viewModelLoader:self.viewModelLoader];
+    
+    self.viewController = [[HUBViewController alloc] initWithViewURI:self.viewURI
+                                                   featureIdentifier:self.featureInfo.identifier
+                                                     viewModelLoader:self.viewModelLoader
+                                                   viewModelRenderer:viewModelRenderer
+                                               collectionViewFactory:self.collectionViewFactory
+                                                   componentRegistry:self.componentRegistry
+                                                  componentReusePool:self.componentReusePool
+                                              componentLayoutManager:componentLayoutManager
+                                                       actionHandler:actionHandler
+                                                       scrollHandler:self.scrollHandler
+                                                         imageLoader:self.imageLoader];
+    
+    self.viewController.delegate = self;
 }
 
 #pragma mark - Tests
@@ -2868,6 +2872,29 @@
     XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, 1u);
     XCTAssertEqualObjects(self.componentModelsFromAppearanceDelegateMethod[0].title, @"Header");
     XCTAssertEqualObjects(self.componentViewsFromApperanceDelegateMethod, @[self.component.view]);
+}
+
+- (void)testThatModelIsSetImmediatelyOnInitialRenderRequest
+{
+    HUBViewModelRendererMock *viewModelRenderer = [HUBViewModelRendererMock new];
+    [self createViewControllerWithViewModelRenderer:viewModelRenderer];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder headerComponentModelBuilder].title = @"title1";
+        return YES;
+    };
+
+    [self.viewController.view layoutIfNeeded];
+    [self.viewController reload];
+
+    // The model should be set at this point as there's no existing render in progress
+    XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
+
+    // Only 1 render request was made
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 1);
+
+    // Don't finish the test until rendering has stopped.
+    viewModelRenderer.completionBlocks[0]();
 }
 
 #pragma mark - HUBViewControllerDelegate
