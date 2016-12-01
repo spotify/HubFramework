@@ -52,12 +52,15 @@
 
 #pragma mark - Tests
 
-- (void)testRegisteringAndRetrievingCustomSchema
+- (void)testRegisteringRetrievingAndRemovingCustomSchema
 {
     id<HUBJSONSchema> const customSchema = [self.registry createNewSchema];
     NSString * const customSchemaIdentifier = @"custom";
     [self.registry registerCustomSchema:customSchema forIdentifier:customSchemaIdentifier];
     XCTAssertEqualObjects([self.registry customSchemaForIdentifier:customSchemaIdentifier], customSchema);
+    
+    [self.registry unregisterCustomSchemaWithIdentifier:customSchemaIdentifier];
+    XCTAssertNil([self.registry customSchemaForIdentifier:customSchemaIdentifier]);
 }
 
 - (void)testRetrievingUnknownSchemaReturnsNil
