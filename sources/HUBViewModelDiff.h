@@ -26,6 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class HUBViewModelDiff;
 
+/**
+ * The prototype of a function used to calculate a list of changes to get from
+ * the one view model to another.
+ */
 typedef HUBViewModelDiff *(HUBDiffAlgorithm)(id<HUBViewModel>, id<HUBViewModel>);
 
 /** 

@@ -56,6 +56,7 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
                       toViewModel:(id<HUBViewModel>)toViewModel
                         algorithm:(HUBDiffAlgorithm)algorithm
 {
+    NSParameterAssert(algorithm);
     return algorithm(fromViewModel, toViewModel);
 }
 
@@ -282,18 +283,18 @@ static NSArray<HUBDiffTrace *> *HUBDiffMyersTracesBetweenViewModels(id<HUBViewMo
 
     NSMutableArray *traces = [NSMutableArray arrayWithCapacity:(NSUInteger)max];
 
-    NSInteger vertexCount = 2 * max + 1;
-    NSInteger vertices[vertexCount];
-    for (NSInteger i = 0; i < vertexCount; i++) {
-        vertices[i] = -1;
+    NSUInteger endpointCount = 2 * (NSUInteger)max + 1;
+    NSInteger *endpoints = malloc(sizeof(NSInteger) * endpointCount);
+    for (NSUInteger i = 0; i < endpointCount; i++) {
+        endpoints[i] = -1;
     }
-    vertices[max + 1] = 0;
+    endpoints[max + 1] = 0;
 
     for (NSInteger numberOfDifferences = 0; numberOfDifferences <= max; numberOfDifferences++) {
         for (NSInteger k = -numberOfDifferences; k <= numberOfDifferences; k += 2) {
             NSInteger index = k + max;
 
-            HUBDiffTraceStep step = HUBDiffTraceStepMake(numberOfDifferences, k, vertices[index - 1], vertices[index + 1]);
+            HUBDiffTraceStep step = HUBDiffTraceStepMake(numberOfDifferences, k, endpoints[index - 1], endpoints[index + 1]);
             HUBDiffTrace *trace = [HUBDiffTrace nextTraceFromStep:step];
 
             if (trace.to.x <= fromCount && trace.to.y <= toCount) {
@@ -318,15 +319,18 @@ static NSArray<HUBDiffTrace *> *HUBDiffMyersTracesBetweenViewModels(id<HUBViewMo
                     }
                 }
 
-                vertices[index] = x;
+                // Only the x-point needs to be stored since y = x - k
+                endpoints[index] = x;
 
                 if (x >= fromCount && y >= toCount) {
+                    free(endpoints);
                     return traces;
                 }
             }
         }
     }
 
+    free(endpoints);
     return @[];
 }
 
@@ -342,7 +346,7 @@ static NSArray<HUBDiffTrace *> *HUBDiffTracesBetweenViewModels(id<HUBViewModel> 
     }
 }
 
-static NSArray<HUBDiffTrace *> *HUBDiffFindPathFromTraces(NSArray *traces) {
+static NSArray<HUBDiffTrace *> *HUBDiffFindPathFromTraces(NSArray<HUBDiffTrace *> *traces) {
     if (traces.count == 0) {
         return traces;
     }
