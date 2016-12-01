@@ -29,6 +29,7 @@ extension String {
      *  - Parameter color: The color to print the string using
      */
     func print(withColor color: AnsiColor) {
-        Swift.print(color.rawValue + self)
+        /// Append a reset color code to the string, to clear all colors and styles
+        Swift.print(color.rawValue + self + "\u{001B}[0;0m")
     }
 }
