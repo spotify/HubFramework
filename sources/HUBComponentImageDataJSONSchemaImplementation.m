@@ -29,21 +29,29 @@
 
 @synthesize URLPath = _URLPath;
 @synthesize placeholderIconIdentifierPath = _placeholderIconIdentifierPath;
+@synthesize localImageNamePath = _localImageNamePath;
+@synthesize customDataPath = _customDataPath;
 
 - (instancetype)init
 {
     return [self initWithURLPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyURI] URLPath]
-   placeholderIconIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyPlaceholder] stringPath]];
+   placeholderIconIdentifierPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyPlaceholder] stringPath]
+              localImageNamePath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyLocal] stringPath]
+                  customDataPath:[[[HUBMutableJSONPathImplementation path] goTo:HUBJSONKeyCustom] dictionaryPath]];
 }
 
 - (instancetype)initWithURLPath:(id<HUBJSONURLPath>)URLPath
   placeholderIconIdentifierPath:(id<HUBJSONStringPath>)placeholderIconIdentifierPath
+             localImageNamePath:(id<HUBJSONStringPath>)localImageNamePath
+                 customDataPath:(id<HUBJSONDictionaryPath>)customDataPath
 {
     self = [super init];
     
     if (self) {
         _URLPath = URLPath;
         _placeholderIconIdentifierPath = placeholderIconIdentifierPath;
+        _localImageNamePath = localImageNamePath;
+        _customDataPath = customDataPath;
     }
     
     return self;
@@ -54,7 +62,9 @@
 - (id)copy
 {
     return [[HUBComponentImageDataJSONSchemaImplementation alloc] initWithURLPath:self.URLPath
-                                                    placeholderIconIdentifierPath:self.placeholderIconIdentifierPath];
+                                                    placeholderIconIdentifierPath:self.placeholderIconIdentifierPath
+                                                               localImageNamePath:self.localImageNamePath
+                                                                   customDataPath:self.customDataPath];
 }
 
 @end

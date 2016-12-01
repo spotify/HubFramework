@@ -43,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize URL = _URL;
 @synthesize placeholderIconIdentifier = _placeholderIconIdentifier;
 @synthesize localImage = _localImage;
+@synthesize customData = _customData;
 
 #pragma mark - Initializer
 
@@ -80,6 +81,19 @@ NS_ASSUME_NONNULL_BEGIN
     if (placeholderIconIdentifier != nil) {
         self.placeholderIconIdentifier = placeholderIconIdentifier;
     }
+    
+    NSString * const localImageName = [imageDataSchema.localImageNamePath stringFromJSONDictionary:dictionary];
+    
+    if (localImageName != nil) {
+        NSBundle * const bundle = [NSBundle bundleForClass:[self class]];
+        self.localImage = [UIImage imageNamed:localImageName inBundle:bundle compatibleWithTraitCollection:nil];
+    }
+
+    NSDictionary * const customDataDictionary = [imageDataSchema.customDataPath dictionaryFromJSONDictionary:dictionary];
+    
+    if (customDataDictionary != nil) {
+        self.customData = HUBMergeDictionaries(self.customData, customDataDictionary);
+    }
 }
 
 #pragma mark - NSCopying
@@ -92,6 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
     copy.URL = self.URL;
     copy.placeholderIconIdentifier = self.placeholderIconIdentifier;
     copy.localImage = self.localImage;
+    copy.customData = self.customData;
     
     return copy;
 }
@@ -100,11 +115,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable HUBComponentImageDataImplementation *)buildWithIdentifier:(nullable NSString *)identifier
                                                                  type:(HUBComponentImageType)type
-                                                           customData:(nullable NSDictionary *)customData
 {
     id<HUBIcon> const placeholderIcon = [self buildPlaceholderIcon];
     
-    if (self.URL == nil && self.localImage == nil && placeholderIcon == nil) {
+    if (self.URL == nil && self.localImage == nil && placeholderIcon == nil && self.customData == nil) {
         return nil;
     }
     
@@ -113,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                        URL:self.URL
                                                            placeholderIcon:placeholderIcon
                                                                 localImage:self.localImage
-                                                                customData:customData];
+                                                                customData:self.customData];
 }
 
 #pragma mark - Private utilities

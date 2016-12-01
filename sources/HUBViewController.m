@@ -95,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
 @property (nonatomic) CGFloat visibleKeyboardHeight;
-@property (nonatomic, strong, nullable) NSValue *lastContentOffset;
+@property (nonatomic, assign) CGPoint lastContentOffset;
 @property (nonatomic, copy, nullable) void(^pendingScrollAnimationCallback)(void);
 @property (nonatomic, getter=isRendering) BOOL rendering;
 
@@ -893,6 +893,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     collectionView.dataSource = self;
     collectionView.delegate = self;
 
+    self.lastContentOffset = self.collectionView.contentOffset;
+
     HUBContainerView *containerView = (HUBContainerView *)self.view;
     containerView.collectionView = self.collectionView;
 }
@@ -1208,8 +1210,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     [componentWrapper viewWillAppear];
 
-    BOOL wasContentOffsetUpdated = self.lastContentOffset == nil ||
-                                   !CGPointEqualToPoint([self.lastContentOffset CGPointValue], self.collectionView.contentOffset);
+    BOOL wasContentOffsetUpdated = componentWrapper.appearanceCount == 1 ||
+                                   !CGPointEqualToPoint(self.lastContentOffset, self.collectionView.contentOffset);
 
     if (componentWrapper.isContentOffsetObserver && wasContentOffsetUpdated) {
         [componentWrapper updateViewForChangedContentOffset:self.collectionView.contentOffset];
@@ -1534,7 +1536,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated
 {
-    self.lastContentOffset = [NSValue valueWithCGPoint:contentOffset];
+    self.lastContentOffset = contentOffset;
     [self.collectionView setContentOffset:contentOffset animated:animated];
 }
 
