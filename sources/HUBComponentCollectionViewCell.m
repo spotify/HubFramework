@@ -67,6 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)prepareForReuse
 {
     [self.component prepareViewForReuse];
+    self.component = nil;
 }
 
 - (void)layoutSubviews
