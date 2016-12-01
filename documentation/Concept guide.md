@@ -15,7 +15,9 @@ Welcome to the Hub Framework concept guide! This guide aims to give you an easy 
 - [Content loading chain](#content-loading-chain)
 - [Content operation](#content-operation)
 - [Factory](#factory)
+- [JSON schema](#json-schema)
 - [Layout trait](#layout-trait)
+- [Registry](#registry)
 - [View model](#view-model)
 
 ## Action
@@ -134,6 +136,17 @@ For more information see:
 - The `HUBViewControllerFactory` protocol.
 - The `HUBViewModelLoaderFactory` protocol.
 
+## JSON schema
+
+In the Hub Framework, a JSON schema is an object responsible for extracting model information from JSON data. Each schema has a set of defined paths, that each describe how to "go into" a JSON structure and retrieving the requested information.
+
+The framework ships with a default JSON schema, that is implicitly used if not overriden, but custom schemas can also be defined through `HUBJSONSchemaRegistry`.
+
+For more information see:
+
+- The `HUBJSONSchema` protocol.
+- The [JSON programming guide](https://spotify.github.io/HubFramework/json-programming-guide.html).
+
 ## Layout trait
 
 Layout traits are used to define layout relationships between components. Instead of hard-coding margins and relationships between concrete component implementations - layout traits enables components to work with layout in a more abstract way. Each component simply defines which layout traits that best describe it, in terms of layout, and then an implementation of `HUBComponentLayoutManager` computes the exact margins that should be applied to it.
@@ -143,6 +156,17 @@ For more information see:
 - The `HUBComponentLayoutTrait` type.
 - The `HUBComponent` protocol.
 - The [Layout programming guide](https://spotify.github.io/HubFramework/layout-programming-guide.html).
+
+## Registry
+
+In order to enable applications using the Hub Framework to easily inject implementations into it - registries are used. Each registry enables a certain type of object to be registered. There are currently four registries: for [features](#feature), [components](#component), [actions](#action) & [JSON schemas](#json-schema).
+
+For more information see:
+
+- The `HUBFeatureRegistry` protocol.
+- The `HUBComponentRegistry` protocol.
+- The `HUBActionRegistry` protocol.
+- The `HUBJSONSchemaRegistry` protocol.
 
 ## View model
 
