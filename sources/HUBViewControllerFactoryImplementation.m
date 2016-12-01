@@ -103,6 +103,18 @@ NS_ASSUME_NONNULL_BEGIN
     return [self createViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
 }
 
+- (HUBViewController *)createViewControllerWithContentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+                                                    featureTitle:(NSString *)featureTitle
+{
+    NSString * const identifier = [featureTitle lowercaseString];
+    NSURL * const viewURI = [NSURL URLWithString:identifier];
+    
+    return [self createViewControllerForViewURI:viewURI
+                              contentOperations:contentOperations
+                              featureIdentifier:identifier
+                                   featureTitle:featureTitle];
+}
+
 - (HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
                                     contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
                                     featureIdentifier:(NSString *)featureIdentifier
