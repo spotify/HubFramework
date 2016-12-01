@@ -167,7 +167,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
 /// Whether the wrapped component's view has appeared since the model was last changed
 @property (nonatomic, readonly) BOOL viewHasAppearedSinceLastModelChange;
 
-/// The wrapped component's appearance count
+/**
+ *  The number of times the wrapped component has appeared on the screen
+ *
+ *  Incremented every time the component gets sent the -viewWillAppear message.
+ */
 @property (nonatomic, assign, readonly) NSUInteger appearanceCount;
 
 /// Returns an array of all direct child component wrappers that are currently being displayed.
