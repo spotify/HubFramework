@@ -131,7 +131,7 @@ An object that is responsible for creating implementations of a certain protocol
 For more information see:
 
 - ["Factory method pattern" on Wikipedia](https://en.wikipedia.org/wiki/Factory_method_pattern).
-- The  `HUBComponentFactory` protocol.
+- The `HUBComponentFactory` protocol.
 - The `HUBActionFactory` protocol.
 - The `HUBViewControllerFactory` protocol.
 - The `HUBViewModelLoaderFactory` protocol.
@@ -149,7 +149,7 @@ For more information see:
 
 ## Layout trait
 
-Layout traits are used to define layout relationships between components. Instead of hard-coding margins and relationships between concrete component implementations - layout traits enables components to work with layout in a more abstract way. Each component simply defines which layout traits that best describe it, in terms of layout, and then an implementation of `HUBComponentLayoutManager` computes the exact margins that should be applied to it.
+Layout traits are used to define layout relationships between components. Instead of hard-coding margins and relationships between concrete component implementations - layout traits enables components to work with layout in a more abstract way. Each component simply defines the layout traits that best describe it, in terms of layout, and then an implementation of `HUBComponentLayoutManager` computes the exact margins that should be applied to it.
 
 For more information see:
 
