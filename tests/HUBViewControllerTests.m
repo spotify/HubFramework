@@ -2897,6 +2897,45 @@
     viewModelRenderer.completionBlocks[0]();
 }
 
+- (void)testThatModelIsNotSetImmediatelyOnOverlappingRenderRequests
+{
+    HUBViewModelRendererMock *viewModelRenderer = [HUBViewModelRendererMock new];
+    [self createViewControllerWithViewModelRenderer:viewModelRenderer];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder headerComponentModelBuilder].title = @"title1";
+        return YES;
+    };
+
+    [self.viewController.view layoutIfNeeded];
+    [self.viewController reload];
+
+    // The model should be set at this point as there's no existing render in progress
+    XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder headerComponentModelBuilder].title = @"title2";
+        return YES;
+    };
+
+    // While the 1st render is in progress, a 2nd render request comes in
+    [self.viewController reload];
+
+    // The 2nd model should NOT be set at this point as the 1st render hasn't finished
+    XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
+    // Only 1 render request has been made at this point (the 2nd is pending)
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 1);
+    // Complete the 1st render request
+    viewModelRenderer.completionBlocks[0]();
+
+    // The 2nd model should now be set as the 1st render has finished and the 2nd is in progress
+    XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title2");
+    // 2 render requests have now been made
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 2);
+    // Complete the 2nd render request
+    viewModelRenderer.completionBlocks[1]();
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(HUBViewController *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
