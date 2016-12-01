@@ -76,6 +76,11 @@ NS_ASSUME_NONNULL_BEGIN
     [self.customSchemasByIdentifier setObject:schema forKey:identifier];
 }
 
+- (void)unregisterCustomSchemaWithIdentifier:(NSString *)identifier
+{
+    [self.customSchemasByIdentifier removeObjectForKey:identifier];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
