@@ -62,6 +62,15 @@ HF_IGNORED_WARNINGS_0820 = $(HF_IGNORED_WARNINGS_0810)
 
 WARNING_CFLAGS = -Weverything -Wno-error=deprecated -Wno-objc-missing-property-synthesis -Wno-gnu-conditional-omitted-operand -Wno-gnu -Wno-reserved-id-macro -Wno-auto-import -Wno-missing-variable-declarations -Wno-vla -Werror $(HF_IGNORED_WARNINGS_$(XCODE_VERSION_MINOR))
 
+// Apple LLVM 8.0 - Warnings - All languages
+CLANG_WARN_INFINITE_RECURSION = YES
+
+// Apple LLVM 8.0 - Warnings - C++
+CLANG_WARN_SUSPICIOUS_MOVE = YES
+
+// Apple LLVM 8.0 - Preprocessing
+ENABLE_STRICT_OBJC_MSGSEND = YES
+
 // Apple LLVM 7.0 - Warnings - All languages
 GCC_WARN_CHECK_SWITCH_STATEMENTS = YES
 GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES

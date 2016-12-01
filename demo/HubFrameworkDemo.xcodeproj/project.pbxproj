@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		6510FD791DD1D182002FA2DC /* PrettyPicturesActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */; };
 		657DFE1B1DC8E21700F20C0E /* SelectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DFE191DC8E21700F20C0E /* SelectionUITests.swift */; };
-		657DFE1C1DC8E21700F20C0E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 657DFE1A1DC8E21700F20C0E /* Info.plist */; };
 		65A790361DDDA8FC00AD4078 /* NavigationItemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A790351DDDA8FC00AD4078 /* NavigationItemUITests.swift */; };
 		8A27299A1D9546BB00EF43FC /* RootContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2729991D9546BB00EF43FC /* RootContentOperationFactory.swift */; };
 		8A27299E1D9546ED00EF43FC /* RootContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A27299D1D9546ED00EF43FC /* RootContentOperation.swift */; };
@@ -382,7 +381,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Spotify;
 				TargetAttributes = {
 					657DFE0E1DC8E1B600F20C0E = {
@@ -444,7 +443,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				657DFE1C1DC8E21700F20C0E /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,6 +582,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -634,6 +633,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
