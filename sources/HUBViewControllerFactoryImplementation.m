@@ -33,6 +33,7 @@
 #import "HUBViewControllerDefaultScrollHandler.h"
 #import "HUBActionHandlerWrapper.h"
 #import "HUBViewModelLoaderImplementation.h"
+#import "HUBViewModelRenderer.h"
 #import "HUBViewURIPredicate.h"
 #import "HUBBlockContentOperationFactory.h"
 
@@ -130,6 +131,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBViewModelLoaderImplementation * const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI
                                                                                                         featureRegistration:featureRegistration];
     
+    HUBViewModelRenderer * const viewModelRenderer = [HUBViewModelRenderer new];
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
     HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:self.componentRegistry];
@@ -145,6 +147,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [[HUBViewController alloc] initWithViewURI:viewURI
                                     featureIdentifier:featureRegistration.featureIdentifier
                                       viewModelLoader:viewModelLoader
+                                    viewModelRenderer:viewModelRenderer
                                 collectionViewFactory:collectionViewFactory
                                     componentRegistry:self.componentRegistry
                                    componentReusePool:componentReusePool

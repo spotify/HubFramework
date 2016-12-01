@@ -32,6 +32,7 @@
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBImageLoaderMock.h"
 #import "HUBViewModelBuilder.h"
+#import "HUBViewModelRenderer.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentImageDataBuilder.h"
@@ -76,6 +77,7 @@
 @property (nonatomic, strong) HUBComponentReusePoolMock *componentReusePool;
 @property (nonatomic, strong) HUBViewControllerScrollHandlerMock *scrollHandler;
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
+@property (nonatomic, strong) HUBViewModelRenderer *viewModelRenderer;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
 @property (nonatomic, strong) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong) HUBActionHandlerMock *actionHandler;
@@ -153,6 +155,7 @@
                                                                    iconImageResolver:iconImageResolver
                                                                     initialViewModel:nil];
     
+    self.viewModelRenderer = [HUBViewModelRenderer new];
     self.imageLoader = [HUBImageLoaderMock new];
     
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
@@ -172,6 +175,7 @@
     self.viewController = [[HUBViewController alloc] initWithViewURI:self.viewURI
                                                    featureIdentifier:featureInfo.identifier
                                                      viewModelLoader:self.viewModelLoader
+                                                   viewModelRenderer:self.viewModelRenderer
                                                collectionViewFactory:self.collectionViewFactory
                                                    componentRegistry:self.componentRegistry
                                                   componentReusePool:self.componentReusePool

@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, nullable, readonly) id<HUBImageLoader> imageLoader;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
-@property (nonatomic, strong, nullable) HUBViewModelRenderer *viewModelRenderer;
+@property (nonatomic, strong, readonly) HUBViewModelRenderer *viewModelRenderer;
 @property (nonatomic, assign) BOOL collectionViewIsScrolling;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
@@ -111,6 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
                 viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
+              viewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(id<HUBComponentRegistry>)componentRegistry
              componentReusePool:(HUBComponentReusePool *)componentReusePool
@@ -118,11 +119,11 @@ NS_ASSUME_NONNULL_BEGIN
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader
-
 {
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(viewModelLoader != nil);
+    NSParameterAssert(viewModelRenderer != nil);
     NSParameterAssert(collectionViewFactory != nil);
     NSParameterAssert(componentRegistry != nil);
     NSParameterAssert(componentReusePool != nil);
@@ -138,6 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
     _viewURI = [viewURI copy];
     _featureIdentifier = [featureIdentifier copy];
     _viewModelLoader = viewModelLoader;
+    _viewModelRenderer = viewModelRenderer;
     _collectionViewFactory = collectionViewFactory;
     _componentRegistry = componentRegistry;
     _componentReusePool = componentReusePool;
@@ -902,11 +904,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                                        componentLayoutManager:self.componentLayoutManager];
     }
 
-    if (self.viewModelRenderer == nil) {
-        UICollectionView * const nonnullCollectionView = self.collectionView;
-        self.viewModelRenderer = [[HUBViewModelRenderer alloc] initWithCollectionView:nonnullCollectionView];
-    }
-
     [self saveStatesForVisibleComponents];
 
     [self configureHeaderComponent];
@@ -916,6 +913,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     BOOL const shouldAddHeaderMargin = [self shouldAutomaticallyManageTopContentInset];
     
     [self.viewModelRenderer renderViewModel:viewModel
+                           inCollectionView:self.collectionView
                           usingBatchUpdates:self.viewHasAppeared
                                    animated:animated
                             addHeaderMargin:shouldAddHeaderMargin
