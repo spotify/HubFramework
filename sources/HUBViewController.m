@@ -914,8 +914,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     BOOL const shouldAddHeaderMargin = [self shouldAutomaticallyManageTopContentInset];
     
+    UICollectionView * const nonnullCollectionView = self.collectionView;
     [self.viewModelRenderer renderViewModel:viewModel
-                           inCollectionView:self.collectionView
+                           inCollectionView:nonnullCollectionView
                           usingBatchUpdates:self.viewHasAppeared
                                    animated:animated
                             addHeaderMargin:shouldAddHeaderMargin

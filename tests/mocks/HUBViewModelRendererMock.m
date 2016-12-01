@@ -29,7 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init
 {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         _completionBlocks = [NSMutableArray array];
     }
     return self;

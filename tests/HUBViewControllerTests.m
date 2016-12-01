@@ -2953,7 +2953,7 @@
     XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
 
     // Only 1 render request was made
-    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 1);
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)1);
 
     // Don't finish the test until rendering has stopped.
     viewModelRenderer.completionBlocks[0]();
@@ -2986,14 +2986,14 @@
     // The 2nd model should NOT be set at this point as the 1st render hasn't finished
     XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
     // Only 1 render request has been made at this point (the 2nd is pending)
-    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 1);
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)1);
     // Complete the 1st render request
     viewModelRenderer.completionBlocks[0]();
 
     // The 2nd model should now be set as the 1st render has finished and the 2nd is in progress
     XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title2");
     // 2 render requests have now been made
-    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 2);
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)2);
     // Complete the 2nd render request
     viewModelRenderer.completionBlocks[1]();
 }
