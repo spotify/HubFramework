@@ -2071,25 +2071,49 @@
     
     id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
     [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    // Component should be notified on the first appearance
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
     
     self.collectionView.cells[indexPath] = cell;
     self.collectionView.mockedIndexPathsForVisibleItems = @[indexPath];
     [self.viewController viewWillAppear:NO];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    // Content offset hasn't been changed so the component shouldn't be notified
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
     
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
     [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+    // Content offset has been changed so the component should be notified
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
 
     // Component shouldn't be notified because content offset hasn't changed
     [self.viewController viewWillAppear:NO];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
 
     // Component isn't notified if view is reloaded
-    self.contentReloadPolicy.shouldReload = YES;
-    [self.viewController viewWillAppear:NO];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+    [self.viewController reload];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+}
+
+- (void)testBodyComponentNotifiedOfContentOffsetChangeOnFirstAppearanceWithContentOffsetSetBefore
+{
+    self.component.isContentOffsetObserver = YES;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"body"];
+        return YES;
+    };
+
+    // Before displaying a view, view controller has initialized contentOffset by scrolling
+    [self.viewController scrollToContentOffset:CGPointMake(0, 0) animated:NO];
+    [self simulateViewControllerLayoutCycle];
+
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+    id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
+    [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
 }
 
 - (void)testHeaderComponentNotifiedOfContentOffsetChange
@@ -2106,6 +2130,25 @@
     
     [self.viewController scrollToContentOffset:CGPointMake(0, 100) animated:NO];
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+
+    [self.viewController reload];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+}
+
+- (void)testHeaderComponentNotifiedOfContentOffsetChangeOnFirstAppearanceWithContentOffsetSetBefore
+{
+    self.component.isContentOffsetObserver = YES;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+
+    // Before displaying a view, view controller has initialized contentOffset by scrolling
+    [self.viewController scrollToContentOffset:CGPointMake(0, 0) animated:NO];
+    [self simulateViewControllerLayoutCycle];
+
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
 }
 
 - (void)testOverlayComponentNotifiedOfContentOffsetChange
@@ -2123,6 +2166,25 @@
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
     [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    
+    [self.viewController reload];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+}
+
+- (void)testOverlayComponentNotifiedOfContentOffsetChangeOnFirstAppearanceWithContentOffsetSetBefore
+{
+    self.component.isContentOffsetObserver = YES;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+        return YES;
+    };
+
+    // Before displaying a view, view controller has initialized contentOffset by scrolling
+    [self.viewController scrollToContentOffset:CGPointMake(0, 0) animated:NO];
+    [self simulateViewControllerLayoutCycle];
+
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
 }
 
 - (void)testChildComponentNotifiedOfContentOffsetChange

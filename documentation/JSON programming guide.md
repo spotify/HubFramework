@@ -85,6 +85,7 @@ Here is a reference for the default JSON schema:
 | --- | ---- | ----------- | ------- |
 | `uri` | `String` | The URI of the image. Used to download a remote image using the application's `HUBImageLoader(Factory)`. | `URL` |
 | `placeholder` | `String` | Any icon to use as a placeholder until a remote image has been downloaded. Will be resolved using the application's `HUBIconImageResolver`. | `placeholderIcon` |
+| `local` | `String` | The name of any local (bundled) image to use. | `localImage` |
 | `custom` | `Dictionary` | Any custom (free-form) data to associate with the image data. | `customData` |
 
 ### Component target schema
