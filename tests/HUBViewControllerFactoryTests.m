@@ -36,6 +36,7 @@
 #import "HUBActionHandlerMock.h"
 #import "HUBViewModelBuilder.h"
 #import "HUBViewModel.h"
+#import "HUBComponentModel.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBActionContext.h"
 
@@ -125,6 +126,26 @@
     XCTAssertTrue(contentOperationCalled);
     XCTAssertEqualObjects(viewController.featureIdentifier, @"identifier");
     XCTAssertEqualObjects(viewController.navigationItem.title, @"Title");
+}
+
+- (void)testCreatingViewControllerWithImplicitIdentifiers
+{
+    HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
+    
+    contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"].title = @"Hello world";
+        return YES;
+    };
+    
+    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerWithContentOperations:@[contentOperation]
+                                                                                                                featureTitle:@"Feature"];
+    
+    [viewController viewWillAppear:NO];
+    
+    XCTAssertEqualObjects(viewController.featureIdentifier, @"feature");
+    XCTAssertEqualObjects(viewController.navigationItem.title, @"Feature");
+    XCTAssertEqual(viewController.viewModel.bodyComponentModels.count, 1u);
+    XCTAssertEqualObjects(viewController.viewModel.bodyComponentModels[0].title, @"Hello world");
 }
 
 - (void)testDefaultContentReloadPolicyUsedIfFeatureDidNotSupplyOne

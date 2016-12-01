@@ -128,6 +128,7 @@
     NSDictionary * const dictionary = @{
         @"uri": imageURL.absoluteString,
         @"placeholder": @"place_holder",
+        @"local": @"testImage",
         @"custom": @{
             @"key": @"value"
         }
@@ -137,21 +138,29 @@
     
     XCTAssertEqualObjects(self.builder.URL, imageURL);
     XCTAssertEqualObjects(self.builder.placeholderIconIdentifier, @"place_holder");
-    XCTAssertEqualObjects(self.builder.customData, @{@"key": @"value"});
+	XCTAssertEqualObjects(self.builder.customData, @{@"key": @"value"});    
+
+    NSBundle * const bundle = [NSBundle bundleForClass:[self class]];
+    UIImage * const expectedImage = [UIImage imageNamed:@"testImage" inBundle:bundle compatibleWithTraitCollection:nil];
+    XCTAssertNotNil(expectedImage);
+    XCTAssertEqualObjects(self.builder.localImage, expectedImage);
 }
 
 - (void)testAddingJSONDataNotOverridingExistingData
 {
     NSURL * const imageURL = [NSURL URLWithString:@"http://cdn.spotify.com/image"];
+    UIImage * const localImage = [UIImage new];
     
     self.builder.placeholderIconIdentifier = @"placeholder";
     self.builder.URL = imageURL;
+    self.builder.localImage = localImage;
     self.builder.customData = @{@"custom": @"data"};
     
     [self.builder addDataFromJSONDictionary:@{}];
     
     XCTAssertEqualObjects(self.builder.placeholderIconIdentifier, @"placeholder");
     XCTAssertEqualObjects(self.builder.URL, imageURL);
+    XCTAssertEqualObjects(self.builder.localImage, localImage);
     XCTAssertEqualObjects(self.builder.customData, @{@"custom": @"data"});
 }
 
