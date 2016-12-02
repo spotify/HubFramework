@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, nullable, readonly) id<HUBImageLoader> imageLoader;
 @property (nonatomic, strong, nullable) UICollectionView *collectionView;
-@property (nonatomic, strong, nullable) HUBViewModelRenderer *viewModelRenderer;
+@property (nonatomic, strong, readonly) HUBViewModelRenderer *viewModelRenderer;
 @property (nonatomic, assign) BOOL collectionViewIsScrolling;
 @property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
@@ -89,6 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByCellIdentifier;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentWrapper *> *componentWrappersByModelIdentifier;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *highlightedComponentWrapper;
+@property (nonatomic, strong, nullable) id<HUBViewModel> pendingViewModel;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
@@ -96,6 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) CGPoint lastContentOffset;
 @property (nonatomic, copy, nullable) void(^pendingScrollAnimationCallback)(void);
+@property (nonatomic, getter=isRendering) BOOL rendering;
 
 @end
 
@@ -109,6 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
                 viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
+              viewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(id<HUBComponentRegistry>)componentRegistry
              componentReusePool:(HUBComponentReusePool *)componentReusePool
@@ -116,11 +119,11 @@ NS_ASSUME_NONNULL_BEGIN
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader
-
 {
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(viewModelLoader != nil);
+    NSParameterAssert(viewModelRenderer != nil);
     NSParameterAssert(collectionViewFactory != nil);
     NSParameterAssert(componentRegistry != nil);
     NSParameterAssert(componentReusePool != nil);
@@ -136,6 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
     _viewURI = [viewURI copy];
     _featureIdentifier = [featureIdentifier copy];
     _viewModelLoader = viewModelLoader;
+    _viewModelRenderer = viewModelRenderer;
     _collectionViewFactory = collectionViewFactory;
     _componentRegistry = componentRegistry;
     _componentReusePool = componentReusePool;
@@ -452,7 +456,14 @@ NS_ASSUME_NONNULL_BEGIN
     if ([self.viewModel.buildDate isEqual:viewModel.buildDate]) {
         return;
     }
-    
+
+    if (self.isRendering) {
+        self.pendingViewModel = viewModel;
+        return;
+    }
+
+    self.rendering = YES;
+
     id<HUBViewControllerDelegate> const delegate = self.delegate;
     [delegate viewController:self willUpdateWithViewModel:viewModel];
     
@@ -895,11 +906,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                                        componentLayoutManager:self.componentLayoutManager];
     }
 
-    if (self.viewModelRenderer == nil) {
-        UICollectionView * const nonnullCollectionView = self.collectionView;
-        self.viewModelRenderer = [[HUBViewModelRenderer alloc] initWithCollectionView:nonnullCollectionView];
-    }
-
     [self saveStatesForVisibleComponents];
 
     [self configureHeaderComponent];
@@ -908,11 +914,22 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     BOOL const shouldAddHeaderMargin = [self shouldAutomaticallyManageTopContentInset];
     
+    UICollectionView * const nonnullCollectionView = self.collectionView;
     [self.viewModelRenderer renderViewModel:viewModel
+                           inCollectionView:nonnullCollectionView
                           usingBatchUpdates:self.viewHasAppeared
                                    animated:animated
                             addHeaderMargin:shouldAddHeaderMargin
                                  completion:^{
+        self.rendering = NO;
+
+        if (self.pendingViewModel != nil) {
+            id<HUBViewModel> pendingViewModel = self.pendingViewModel;
+            self.pendingViewModel = nil;
+            [self viewModelLoader:self.viewModelLoader didLoadViewModel:pendingViewModel];
+            return;
+        }
+
         id<HUBViewControllerDelegate> delegate = self.delegate;
 
         [self headerAndOverlayComponentViewsWillAppear];

@@ -84,14 +84,7 @@
     HUBInputStreamMock * const stream = [HUBInputStreamMock new];
     
     NSDictionary * const dictionary = @{
-        @"title": @"Live!",
-        @"body": @[
-            @{
-                @"text": @{
-                    @"title": @"Hello world!"
-                }
-            }
-        ]
+        @"title": @"Live!"
     };
     
     stream.data = [NSJSONSerialization dataWithJSONObject:dictionary options:(NSJSONWritingOptions)0 error:nil];;
@@ -112,10 +105,10 @@
     XCTAssertNotNil(viewController);
     
     [viewController viewWillAppear:YES];
-    
+    [viewController viewDidLayoutSubviews];
+
     id<HUBViewModel> const viewModel = viewController.viewModel;
     XCTAssertEqualObjects(viewModel.navigationItem.title, @"Live!");
-    XCTAssertEqualObjects(viewModel.bodyComponentModels[0].title, @"Hello world!");
     
     // Now let's reload the JSON, which should result in the view controller being reused for a new view model
     NSMutableDictionary * const newDictionary = [dictionary mutableCopy];
