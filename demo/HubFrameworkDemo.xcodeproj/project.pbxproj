@@ -48,6 +48,7 @@
 		8AD98C521DD5F25900F01A62 /* HeaderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C511DD5F25900F01A62 /* HeaderComponent.swift */; };
 		8AD98C561DD5F5FE00F01A62 /* StickyHeaderContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C551DD5F5FE00F01A62 /* StickyHeaderContentOperation.swift */; };
 		8AD98C591DD6062100F01A62 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C581DD6062100F01A62 /* NavigationController.swift */; };
+		8AE6BD2E1DF1BF780063B2B1 /* ColorContainerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6BD2D1DF1BF780063B2B1 /* ColorContainerComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +128,7 @@
 		8AD98C511DD5F25900F01A62 /* HeaderComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderComponent.swift; sourceTree = "<group>"; };
 		8AD98C551DD5F5FE00F01A62 /* StickyHeaderContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickyHeaderContentOperation.swift; sourceTree = "<group>"; };
 		8AD98C581DD6062100F01A62 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		8AE6BD2D1DF1BF780063B2B1 /* ColorContainerComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorContainerComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +252,7 @@
 				8AD5EDC71D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift */,
 				8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */,
 				8AD98C511DD5F25900F01A62 /* HeaderComponent.swift */,
+				8AE6BD2D1DF1BF780063B2B1 /* ColorContainerComponent.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -472,6 +475,7 @@
 				8AD72F571D9AC22600E4B427 /* ImageComponent.swift in Sources */,
 				8A2729A21D95486A00EF43FC /* URL+ViewURIs.swift in Sources */,
 				8AD98C521DD5F25900F01A62 /* HeaderComponent.swift in Sources */,
+				8AE6BD2E1DF1BF780063B2B1 /* ColorContainerComponent.swift in Sources */,
 				8AB850961DBF9DE300AFAFD0 /* CarouselComponent.swift in Sources */,
 				8AD98C591DD6062100F01A62 /* NavigationController.swift in Sources */,
 				8A374D001DBE659E0013E592 /* TodoListAddAction.swift in Sources */,

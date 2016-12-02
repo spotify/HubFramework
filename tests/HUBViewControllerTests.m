@@ -1150,33 +1150,15 @@
     XCTAssertEqualObjects(actionContext.viewController, self.viewController);
 }
 
-- (void)testSelectionForChildComponent
+- (void)testSelectionForChildComponentWithCustomView
 {
-    NSString * const componentNamespace = @"childComponentSelection";
-    NSString * const componentName = @"component";
-    NSString * const childComponentName = @"componentB";
-    NSURL * const childComponentTargetURL = [NSURL URLWithString:@"spotify:hub:child-component"];
-    NSString * const childComponentInitialViewModelIdentifier = @"viewModel";
-    HUBComponentMock * const component = [HUBComponentMock new];
-    HUBComponentMock * const childComponent = [HUBComponentMock new];
-    
-    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
-        componentName: component,
-        childComponentName: childComponent
-    }];
-    
-    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
-    
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
-        componentModelBuilder.componentNamespace = componentNamespace;
-        componentModelBuilder.componentName = componentName;
+        id<HUBComponentModelBuilder> const parentBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"parent"];
         
-        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildWithIdentifier:@"child"];
-        childComponentModelBuilder.componentNamespace = componentNamespace;
-        childComponentModelBuilder.componentName = childComponentName;
-        childComponentModelBuilder.targetBuilder.URI = childComponentTargetURL;
-        childComponentModelBuilder.targetBuilder.initialViewModelBuilder.viewIdentifier = childComponentInitialViewModelIdentifier;
+        id<HUBComponentModelBuilder> const childBuilder = [parentBuilder builderForChildWithIdentifier:@"child"];
+        childBuilder.title = @"Child title";
+        childBuilder.targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:child-component"];
+        childBuilder.targetBuilder.initialViewModelBuilder.viewIdentifier = @"view";
         
         return YES;
     };
@@ -1186,39 +1168,70 @@
     __block id<HUBViewModel> childComponentTargetInitialViewModel = nil;
     
     self.selectionAction.block = ^BOOL(id<HUBActionContext> context) {
-        childComponentTargetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:childComponentTargetURL];
+        NSURL * const expectedTargetURI = [NSURL URLWithString:@"spotify:hub:child-component"];
+        childComponentTargetInitialViewModel = [self.initialViewModelRegistry initialViewModelForViewURI:expectedTargetURI];
         return YES;
     };
     
-    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    NSIndexPath * const parentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:parentIndexPath];
     
-    id<HUBComponentChildDelegate> const childDelegate = component.childDelegate;
-    NSDictionary<NSString *, id> *customData = @{@"custom":@"data"};
-    [childDelegate component:component childSelectedAtIndex:0 customData:customData];
+    id<HUBComponentChildDelegate> const childDelegate = self.component.childDelegate;
+    NSDictionary<NSString *, id> * const customData = @{@"custom":@"data"};
+    [childDelegate component:self.component childWithCustomViewSelectedAtIndex:0 customData:customData];
     
-    XCTAssertEqualObjects(childComponentTargetInitialViewModel.identifier, childComponentInitialViewModelIdentifier);
+    XCTAssertEqualObjects(childComponentTargetInitialViewModel.identifier, @"view");
     
     // Make sure bounds-checking is performed for child component index
-    [childDelegate component:component willDisplayChildAtIndex:99 view:[UIView new]];
+    [childDelegate component:self.component childWithCustomViewSelectedAtIndex:99 customData:nil];
     
     XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
-    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].target.URI, childComponentTargetURL);
+    XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].target.URI,
+                          [NSURL URLWithString:@"spotify:hub:child-component"]);
     
     // Test custom selection handling
     self.actionHandler.block = ^(id<HUBActionContext> context) {
         return YES;
     };
     
-    [childDelegate component:component childSelectedAtIndex:0 customData:customData];
+    [childDelegate component:self.component childWithCustomViewSelectedAtIndex:0 customData:customData];
     XCTAssertEqual(self.actionHandler.contexts.count, (NSUInteger)1);
 
     id<HUBActionContext> actionContext = self.actionHandler.contexts.firstObject;
-    XCTAssertEqualObjects(actionContext.componentModel.target.URI, childComponentTargetURL);
+    XCTAssertEqualObjects(actionContext.componentModel.target.URI, [NSURL URLWithString:@"spotify:hub:child-component"]);
     XCTAssertEqualObjects(actionContext.viewController, self.viewController);
     XCTAssertEqualObjects(actionContext.viewModel, self.viewModelFromDelegateMethod);
     XCTAssertEqualObjects(actionContext.viewURI, self.viewURI);
     XCTAssertEqualObjects(actionContext.customData, customData);
+}
+
+- (void)testAccidentalCallsToSelectionMethodForManagedComponentIgnored
+{
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> const parentBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"parent"];
+        
+        id<HUBComponentModelBuilder> const childBuilder = [parentBuilder builderForChildWithIdentifier:@"child"];
+        childBuilder.title = @"Child title";
+        childBuilder.targetBuilder.URI = [NSURL URLWithString:@"spotify:hub:child-component"];
+        childBuilder.targetBuilder.initialViewModelBuilder.viewIdentifier = @"view";
+        
+        return YES;
+    };
+    
+    [self simulateViewControllerLayoutCycle];
+    
+    NSIndexPath * const parentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:parentIndexPath];
+    
+    id<HUBComponentModel> const childModel = [self.viewController.viewModel.bodyComponentModels[0] childAtIndex:0];
+    XCTAssertNotNil(childModel);
+    
+    id<HUBComponentChildDelegate> const childDelegate = self.component.childDelegate;
+    [childDelegate component:self.component childComponentForModel:childModel];
+    
+    // Since we created a managed component using childDelegate, calling the custom selection API shouldn't work
+    [childDelegate component:self.component childWithCustomViewSelectedAtIndex:0 customData:nil];
+    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, 0u);
 }
 
 - (void)testProgrammaticSelectionForRootComponent

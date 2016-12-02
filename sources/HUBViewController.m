@@ -598,6 +598,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     childComponentView.frame = CGRectMake(0, 0, preferredViewSize.width, preferredViewSize.height);
     
     [self loadImagesForComponentWrapper:childComponentWrapper childIndex:nil];
+    [childComponentWrapper viewDidMoveToSuperview:HUBComponentLoadViewIfNeeded(componentWrapper)];
     
     return childComponentWrapper;
 }

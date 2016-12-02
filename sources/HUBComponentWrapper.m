@@ -44,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL shouldPerformDelayedHighlight;
 @property (nonatomic, assign) NSUInteger appearanceCount;
 @property (nonatomic, assign) HUBComponentSelectionState selectionState;
+@property (nonatomic, assign) CGRect interactionStartViewFrameInWindow;
 
 @end
 
@@ -378,9 +379,16 @@ NS_ASSUME_NONNULL_BEGIN
                 didDisappearAtIndex:childIndex];
 }
 
-- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex customData:(nullable NSDictionary<NSString *, id> *)customData
+- (void)component:(id<HUBComponentWithChildren>)component
+        childWithCustomViewSelectedAtIndex:(NSUInteger)childIndex
+        customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     if (self.component != component) {
+        return;
+    }
+    
+    // If this is accidentially called by the API user (for a managed component) - simply ignore it
+    if (self.childrenByIndex[@(childIndex)] != nil) {
         return;
     }
     
@@ -445,9 +453,19 @@ NS_ASSUME_NONNULL_BEGIN
     
     switch (gestureRecognizer.state) {
         case UIGestureRecognizerStatePossible:
-        case UIGestureRecognizerStateChanged:
             break;
+        case UIGestureRecognizerStateChanged: {
+            CGRect const currentViewFrameInWindow = [self calculateViewFrameInWindow];
+            
+            if (!CGRectEqualToRect(self.interactionStartViewFrameInWindow, currentViewFrameInWindow)) {
+                [self.gestureRecognizer cancel];
+            }
+            
+            break;
+        }
         case UIGestureRecognizerStateBegan: {
+            self.interactionStartViewFrameInWindow = [self calculateViewFrameInWindow];
+            
             self.shouldPerformDelayedHighlight = YES;
             [delegate componentWrapper:self willUpdateSelectionState:HUBComponentSelectionStateHighlighted];
             
@@ -546,6 +564,13 @@ NS_ASSUME_NONNULL_BEGIN
     if (notifyDelegate) {
         [self.delegate componentWrapper:self didUpdateSelectionState:selectionState];
     }
+}
+
+- (CGRect)calculateViewFrameInWindow
+{
+    UIView * const view = HUBComponentLoadViewIfNeeded(self);
+    UIWindow * const window = [UIApplication sharedApplication].keyWindow;
+    return [window convertRect:view.frame fromView:view.superview];
 }
 
 @end
