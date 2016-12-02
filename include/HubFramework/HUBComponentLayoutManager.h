@@ -24,6 +24,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol HUBComponentModel;
+
 /**
  *  Enum describing various logical content edges
  *
@@ -112,6 +114,18 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
 - (CGFloat)horizontalOffsetForComponentsWithLayoutTraits:(NSArray<NSSet<HUBComponentLayoutTrait> *> *)componentsTraits
                    firstComponentLeadingHorizontalOffset:(CGFloat)firstComponentLeadingOffsetX
                    lastComponentTrailingHorizontalOffset:(CGFloat)lastComponentTrailingOffsetX;
+
+/**
+ *  Return top margin for overlay component with the specified model
+ *
+ *  @param componentModel The component model for the overlay component
+ *
+ *  @discussion If you want the overlay component to be centered top margin should be 0.
+ *  In case you want it to be shifted down, e.g. to reveal header component, return corresponding top margin
+ *  from this delegate method.
+ */
+- (CGFloat)topMarginForOverlayComponentWithModel:(id<HUBComponentModel>)componentModel;
+
 @end
 
 NS_ASSUME_NONNULL_END

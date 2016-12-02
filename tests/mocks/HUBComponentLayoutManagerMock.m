@@ -69,4 +69,9 @@
     return [self.horizontalComponentOffsetsForArrayOfLayoutTraits[componentsTraits] doubleValue];
 }
 
+- (CGFloat)topMarginForOverlayComponentWithModel:(id<HUBComponentModel>)componentModel
+{
+    return self.topMarginForOverlayComponent;
+}
+
 @end

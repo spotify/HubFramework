@@ -83,6 +83,7 @@
 @property (nonatomic, strong) HUBActionRegistryImplementation *actionRegistry;
 @property (nonatomic, strong) NSURL *viewURI;
 @property (nonatomic, strong) HUBViewController *viewController;
+@property (nonatomic, strong) HUBComponentLayoutManagerMock *componentLayoutManager;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromAppearanceDelegateMethod;
@@ -155,7 +156,8 @@
     
     self.imageLoader = [HUBImageLoaderMock new];
     
-    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    self.componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    self.componentLayoutManager.topMarginForOverlayComponent = 0;
     
     self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     
@@ -175,7 +177,7 @@
                                                collectionViewFactory:self.collectionViewFactory
                                                    componentRegistry:self.componentRegistry
                                                   componentReusePool:self.componentReusePool
-                                              componentLayoutManager:componentLayoutManager
+                                              componentLayoutManager:self.componentLayoutManager
                                                        actionHandler:actionHandler
                                                        scrollHandler:self.scrollHandler
                                                          imageLoader:self.imageLoader];
@@ -2730,6 +2732,44 @@
     
     HUBAssertEqualFloatValues(self.component.view.center.x, 160);
     HUBAssertEqualFloatValues(self.component.view.center.y, 200);
+}
+
+- (void)testAdaptingOverlayComponentCenterPointToKeyboardAndTopMargin
+{
+    self.componentLayoutManager.topMarginForOverlayComponent = 64;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        id<HUBComponentModelBuilder> overlayModelBuilder = [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+        overlayModelBuilder.title = @"Overlay";
+        return YES;
+    };
+
+    // Sets view controller's view frame to {0, 0, 320, 400}
+    [self simulateViewControllerLayoutCycle];
+
+    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualFloatValues(self.component.view.center.y, 264);
+
+    CGRect const keyboardEndFrame = CGRectMake(0, 200, 320, 200);
+    NSDictionary * const notificationUserInfo = @{
+                                                  UIKeyboardFrameEndUserInfoKey: [NSValue valueWithCGRect:keyboardEndFrame]
+                                                  };
+    NSNotification * const keyboardNotification = [NSNotification notificationWithName:UIKeyboardWillShowNotification
+                                                                                object:nil
+                                                                              userInfo:notificationUserInfo];
+
+    // Show keyboard, which should push the overlay component
+    NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotification:keyboardNotification];
+
+    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualFloatValues(self.component.view.center.y, 164);
+
+    // Hide keyboard, which should pull the overlay component back down
+    [notificationCenter postNotificationName:UIKeyboardWillHideNotification object:nil];
+
+    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualFloatValues(self.component.view.center.y, 264);
 }
 
 - (void)testScrollingToComponentAfterViewModelFinishesRendering

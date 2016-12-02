@@ -63,4 +63,8 @@ class ComponentLayoutManager: NSObject, HUBComponentLayoutManager {
     func horizontalOffsetForComponents(withLayoutTraits componentsTraits: [Set<HUBComponentLayoutTrait>], firstComponentLeadingHorizontalOffset firstComponentLeadingOffsetX: CGFloat, lastComponentTrailingHorizontalOffset lastComponentTrailingOffsetX: CGFloat) -> CGFloat {
         return 0
     }
+
+    func topMarginForOverlayComponent(with componentModel: HUBComponentModel) -> CGFloat {
+        return 0
+    }
 }
