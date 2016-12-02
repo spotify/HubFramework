@@ -68,6 +68,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)registerCustomSchema:(id<HUBJSONSchema>)schema forIdentifier:(NSString *)identifier;
 
+/**
+ *  Unregister a custom JSON schema from the Hub Framework
+ *
+ *  @param identifier The identifier to unregister a schema for
+ *
+ *  Calling this will remove the custom JSON schema from the framework, opening up the identifier for use by other schemas.
+ */
+- (void)unregisterCustomSchemaWithIdentifier:(NSString *)identifier;
+
 @end
 
 NS_ASSUME_NONNULL_END
