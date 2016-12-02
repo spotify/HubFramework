@@ -174,14 +174,14 @@ static inline HUBDiffPoint HUBDiffPointMake(NSInteger x, NSInteger y) {
 }
 
 typedef struct {
-    NSInteger D;
-    NSInteger k;
+    NSInteger changes;
+    NSInteger diagonal;
     NSInteger previousX;
     NSInteger nextX;
 } HUBDiffTraceStep;
 
-static inline HUBDiffTraceStep HUBDiffTraceStepMake(NSInteger D, NSInteger k, NSInteger previousX, NSInteger nextX) {
-    return (HUBDiffTraceStep){ .D = D, .k = k, .previousX = previousX, .nextX = nextX };
+static inline HUBDiffTraceStep HUBDiffTraceStepMake(NSInteger changes, NSInteger diagonal, NSInteger previousX, NSInteger nextX) {
+    return (HUBDiffTraceStep){ .changes = changes, .diagonal = diagonal, .previousX = previousX, .nextX = nextX };
 }
 
 typedef NS_ENUM(NSUInteger, HUBDiffTraceType) {
@@ -194,7 +194,7 @@ typedef NS_ENUM(NSUInteger, HUBDiffTraceType) {
 
 @property (nonatomic, assign, readonly) HUBDiffPoint from;
 @property (nonatomic, assign, readonly) HUBDiffPoint to;
-@property (nonatomic, assign, readonly) NSInteger D;
+@property (nonatomic, assign, readonly) NSInteger changes;
 
 @property (nonatomic, assign, readonly) HUBDiffTraceType type;
 
@@ -205,9 +205,9 @@ typedef NS_ENUM(NSUInteger, HUBDiffTraceType) {
 + (instancetype)nextTraceFromStep:(HUBDiffTraceStep)step
 {
     HUBDiffTraceType type;
-    if (step.k == -(step.D)) {
+    if (step.diagonal == -(step.changes)) {
         type = HUBDiffTraceTypeInsert;
-    } else if (step.k != step.D) {
+    } else if (step.diagonal != step.changes) {
         if (step.previousX < step.nextX) {
             type = HUBDiffTraceTypeInsert;
         } else {
@@ -220,21 +220,21 @@ typedef NS_ENUM(NSUInteger, HUBDiffTraceType) {
     if (type == HUBDiffTraceTypeInsert) {
         NSInteger x = step.nextX;
         
-        return [[self alloc] initWithFromPoint:HUBDiffPointMake(x, x - step.k - 1) toPoint:HUBDiffPointMake(x, x - step.k) D:step.D];
+        return [[self alloc] initWithFromPoint:HUBDiffPointMake(x, x - step.diagonal - 1) toPoint:HUBDiffPointMake(x, x - step.diagonal) changes:step.changes];
     } else {
         NSInteger x = step.previousX + 1;
 
-        return [[self alloc] initWithFromPoint:HUBDiffPointMake(x - 1, x - step.k) toPoint:HUBDiffPointMake(x, x - step.k) D:step.D];
+        return [[self alloc] initWithFromPoint:HUBDiffPointMake(x - 1, x - step.diagonal) toPoint:HUBDiffPointMake(x, x - step.diagonal) changes:step.changes];
     }
 }
 
-- (instancetype)initWithFromPoint:(HUBDiffPoint)fromPoint toPoint:(HUBDiffPoint)toPoint D:(NSInteger)D
+- (instancetype)initWithFromPoint:(HUBDiffPoint)fromPoint toPoint:(HUBDiffPoint)toPoint changes:(NSInteger)changes
 {
     self = [super init];
     if (self) {
         _from = fromPoint;
         _to = toPoint;
-        _D = D;
+        _changes = changes;
     }
     return self;
 }
@@ -257,7 +257,7 @@ static NSArray<HUBDiffTrace *> *HUBDiffInsertionTracesFromViewModel(id<HUBViewMo
     NSMutableArray<HUBDiffTrace *> *traces = [NSMutableArray arrayWithCapacity:(NSUInteger)toCount];
 
     for (NSInteger i = 0; i < toCount; i++) {
-        HUBDiffTrace *trace = [[HUBDiffTrace alloc] initWithFromPoint:HUBDiffPointMake(0, i) toPoint:HUBDiffPointMake(0, i + 1) D:0];
+        HUBDiffTrace *trace = [[HUBDiffTrace alloc] initWithFromPoint:HUBDiffPointMake(0, i) toPoint:HUBDiffPointMake(0, i + 1) changes:0];
         [traces addObject:trace];
     }
     
@@ -269,7 +269,7 @@ static NSArray<HUBDiffTrace *> *HUBDiffDeletionTracesFromViewModel(id<HUBViewMod
     NSMutableArray<HUBDiffTrace *> *traces = [NSMutableArray arrayWithCapacity:(NSUInteger)fromCount];
 
     for (NSInteger i = 0; i < fromCount; i++) {
-        HUBDiffTrace *trace = [[HUBDiffTrace alloc] initWithFromPoint:HUBDiffPointMake(i, 0) toPoint:HUBDiffPointMake(i + 1, 0) D:0];
+        HUBDiffTrace *trace = [[HUBDiffTrace alloc] initWithFromPoint:HUBDiffPointMake(i, 0) toPoint:HUBDiffPointMake(i + 1, 0) changes:0];
         [traces addObject:trace];
     }
     
@@ -290,11 +290,11 @@ static NSArray<HUBDiffTrace *> *HUBDiffMyersTracesBetweenViewModels(id<HUBViewMo
     }
     endpoints[max + 1] = 0;
 
-    for (NSInteger numberOfDifferences = 0; numberOfDifferences <= max; numberOfDifferences++) {
-        for (NSInteger k = -numberOfDifferences; k <= numberOfDifferences; k += 2) {
-            NSInteger index = k + max;
+    for (NSInteger changes = 0; changes <= max; changes++) {
+        for (NSInteger diagonal = -changes; diagonal <= changes; diagonal += 2) {
+            NSInteger index = diagonal + max;
 
-            HUBDiffTraceStep step = HUBDiffTraceStepMake(numberOfDifferences, k, endpoints[index - 1], endpoints[index + 1]);
+            HUBDiffTraceStep step = HUBDiffTraceStepMake(changes, diagonal, endpoints[index - 1], endpoints[index + 1]);
             HUBDiffTrace *trace = [HUBDiffTrace nextTraceFromStep:step];
 
             if (trace.to.x <= fromCount && trace.to.y <= toCount) {
@@ -311,7 +311,7 @@ static NSArray<HUBDiffTrace *> *HUBDiffMyersTracesBetweenViewModels(id<HUBViewMo
                         x += 1;
                         y += 1;
 
-                        HUBDiffTrace *nextTrace = [[HUBDiffTrace alloc] initWithFromPoint:HUBDiffPointMake(x - 1, y - 1) toPoint:HUBDiffPointMake(x, y) D:numberOfDifferences];
+                        HUBDiffTrace *nextTrace = [[HUBDiffTrace alloc] initWithFromPoint:HUBDiffPointMake(x - 1, y - 1) toPoint:HUBDiffPointMake(x, y) changes:changes];
                         
                         [traces addObject:nextTrace];
                     } else {
