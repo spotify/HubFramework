@@ -81,7 +81,7 @@ class ImageComponent: NSObject, HUBComponentWithImageHandling, HUBComponentWithS
             return containerViewSize.width
         }
         
-        return floor((containerViewSize.width - ComponentLayoutManager.margin * 3) / 2)
+        return floor((containerViewSize.width - ComponentMargin * 3) / 2)
     }
     
     // MARK: - HUBComponentWithSelectionState

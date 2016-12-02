@@ -19,28 +19,7 @@
  *  under the License.
  */
 
-import Foundation
-import HubFramework
+import CoreGraphics
 
-/// Component fallback handler used when setting up HUBManager
-class ComponentFallbackHandler: NSObject, HUBComponentFallbackHandler {
-    var defaultComponentNamespace: String {
-        return DefaultComponentFactory.namespace
-    }
-    
-    var defaultComponentName: String {
-        return DefaultComponentNames.row
-    }
-    
-    var defaultComponentCategory: HUBComponentCategory {
-        return .row
-    }
-    
-    func createFallbackComponent(forCategory componentCategory: HUBComponentCategory) -> HUBComponent {
-        if componentCategory == .card {
-            return ImageComponent()
-        }
-        
-        return RowComponent()
-    }
-}
+/// The margin that is used between components
+let ComponentMargin = CGFloat(15)

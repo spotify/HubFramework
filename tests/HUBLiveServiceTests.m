@@ -53,7 +53,7 @@
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     id<HUBComponentFallbackHandler> const fallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
     
-    self.hubManager = [[HUBManager alloc] initWithComponentLayoutManager:layoutManager componentFallbackHandler:fallbackHandler];
+    self.hubManager = [HUBManager managerWithComponentLayoutManager:layoutManager componentFallbackHandler:fallbackHandler];
     self.service = [[HUBLiveServiceImplementation alloc] initWithViewControllerFactory:self.hubManager.viewControllerFactory];
     self.service.delegate = self;
 }
