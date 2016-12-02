@@ -57,6 +57,9 @@
                 <a class="nav-group-task-link" href="../component-programming-guide.html">Component programming guide</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../concept-guide.html">Concept guide</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../content-programming-guide.html">Content programming guide</a>
               </li>
               <li class="nav-group-task">
@@ -573,6 +576,60 @@
                               <td>
                                 <div>
                                   <p>The identifier to register the schema for</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBJSONSchemaRegistry(im)unregisterCustomSchemaWithIdentifier:"></a>
+                    <a name="//apple_ref/objc/Method/-unregisterCustomSchemaWithIdentifier:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBJSONSchemaRegistry(im)unregisterCustomSchemaWithIdentifier:">-unregisterCustomSchemaWithIdentifier:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Unregister a custom JSON schema from the Hub Framework</p>
+
+<p>Calling this will remove the custom JSON schema from the framework, opening up the identifier for use by other schemas.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">unregisterCustomSchemaWithIdentifier</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">unregisterCustomSchema</span><span class="p">(</span><span class="n">withIdentifier</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier to unregister a schema for</p>
 
                                 </div>
                               </td>

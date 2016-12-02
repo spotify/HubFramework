@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Action programming guide  Reference</title>
+    <title>Concept guide  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
   <body>
 
 
-    <a title="Action programming guide  Reference"></a>
+    <a title="Concept guide  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -40,7 +40,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">HubFramework Reference</a>
       <img class="carat" src="img/carat.png" />
-      Action programming guide  Reference
+      Concept guide  Reference
     </p>
 
     <div class="content-wrapper">
@@ -413,184 +413,203 @@
         <section class="section">
           <div class="section-content">
             
-            <a href='#action-programming-guide' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='action-programming-guide'>Action Programming Guide</h1>
+            <a href='#hub-framework-concept-guide' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='hub-framework-concept-guide'>Hub Framework concept guide</h1>
 
-<p>Welcome to the Hub Framework action programming guide! This guide aims to help you gain a deeper understanding of how actions work, how to create them and how you can use them to easily extend the framework with additional functionality.</p>
-
-<p>If you haven&rsquo;t already - we really recommend that you read the <a href="https://spotify.github.io/HubFramework/component-programming-guide.html">component programming guide</a> and <a href="https://spotify.github.io/HubFramework/content-programming-guide.html">content programming guide</a> before proceeding with this one.</p>
+<p>Welcome to the Hub Framework concept guide! This guide aims to give you an easy to navigate, alphabetical reference that explains all the key concepts of the framework. It also contains links to other guides and code that will give you more in-depth knowledge about the various concepts and how they relate.</p>
 
 <p><strong>Table of contents</strong></p>
 
 <ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#creating-an-action">Creating an action</a></li>
-<li><a href="#integrating-an-action-with-the-framework">Integrating an action with the framework</a></li>
-<li><a href="#triggering-an-action">Triggering an action</a></li>
-<li><a href="#responding-to-an-action-in-a-content-operation">Responding to an action in a content operation</a></li>
-<li><a href="#handling-actions">Handling actions</a></li>
+<li><a href="#action">Action</a></li>
+<li><a href="#action-handler">Action handler</a></li>
+<li><a href="#backend-driven-uis">Backend-driven UIs</a></li>
+<li><a href="#builder">Builder</a></li>
+<li><a href="#component">Component</a></li>
+<li><a href="#component-driven-uis">Component-driven UIs</a></li>
+<li><a href="#component-identifier">Component identifier</a></li>
+<li><a href="#component-model">Component model</a></li>
+<li><a href="#content-loading-chain">Content loading chain</a></li>
+<li><a href="#content-operation">Content operation</a></li>
+<li><a href="#factory">Factory</a></li>
+<li><a href="#json-schema">JSON schema</a></li>
+<li><a href="#layout-trait">Layout trait</a></li>
+<li><a href="#registry">Registry</a></li>
+<li><a href="#view-model">View model</a></li>
 </ul>
-<a href='#introduction' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='introduction'>Introduction</h2>
+<a href='#action' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='action'>Action</h2>
 
-<p>The Hub Framework comes with built-in selection handling for components. Whenever a component is selected, the <code>URI</code> associated with that component&rsquo;s <code>target</code> will be opened, using the standard <code>[UIApplication openURL:]</code> API. However, if you want to customize the selection behavior, or execute other type of actions based on other user interactions - that&rsquo;s when the Action API comes in handy.</p>
+<p>An object implementing <code>HUBAction</code> - which can be used to define custom behavior for components &amp; content operations. Actions can be both observed and triggered by content operations &amp; components, meaning that they can be used to bridge the gap between content operations and components.</p>
 
-<p>The Action API also makes it easy to send events back to your content operations from your components.</p>
-<a href='#creating-an-action' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='creating-an-action'>Creating an action</h2>
+<p>Actions are integrated with the Hub Framework through a <a href="#factory">factory</a> (<code>HUBActionFactory</code>) that is registered using <code>HUBActionRegistry</code>.</p>
 
-<p>Just like components, content operations and the other aspects of the Hub Framework, actions are defined using a protocol - <code>HUBAction</code>. Actions are very simple to implement, all you require is one method:</p>
-<pre class="highlight plaintext"><code>@interface SPTMyHubAction : NSObject &lt;HUBAction&gt;
+<p>For more information see:</p>
 
-@end
-</code></pre>
-<pre class="highlight plaintext"><code>@implementation SPTMyHubAction
+<ul>
+<li>The <code>HUBAction</code> protocol.</li>
+<li>The <code>HUBActionFactory</code> protocol.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/action-programming-guide.html">Action programming guide</a>.</li>
+</ul>
+<a href='#action-handler' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='action-handler'>Action handler</h2>
 
-- (BOOL)performWithContext:(id&lt;HUBActionContext&gt;)context
-{
-    // Return a boolean indicating whether the action was performed or not
-    return YES;
-}
+<p>An object that handles actions, either on a global or feature level. Action handlers are defined using <code>HUBActionHandler</code> and can be supplied either when setting up <code>HUBManager</code> (as <code>defaultActionHandler</code>) or when setting up a feature (as <code>actionHandler</code>).</p>
 
-@end
-</code></pre>
+<p>An action handler is called each time an action is about to be performed in a view, and can chose to handle that action itself, or simply returning <code>NO</code> to let the action take place.</p>
 
-<p>The contextual object passed to the action contains useful information like what view controller (and for which view URI) the action is being performed, as well as the component &amp; view model that the action should be performed for.</p>
-<a href='#integrating-an-action-with-the-framework' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='integrating-an-action-with-the-framework'>Integrating an action with the framework</h2>
+<p>For more information see:</p>
 
-<p>Before an action can be used, it must be integrated into the Hub Framework. This is done through the <code>HUBActionRegistry</code> API, which works similar to how the <code>HUBComponentRegistry</code> works for components.</p>
+<ul>
+<li>The <code>HUBAction</code> protocol.</li>
+<li>The <code>HUBActionHandler</code> protocol.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/action-programming-guide.html">Action programming guide</a>.</li>
+</ul>
+<a href='#backend-driven-uis' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='backend-driven-uis'>Backend-driven UIs</h2>
 
-<p>In order to avoid accidentally sharing state between actions, all actions are uniquely created before they are performed, using a factory - an implementation of <code>HUBActionFactory</code>.</p>
+<p>A phrase used to describe UIs that are essentially controlled by a backend service. While most apps these days have their content provided by some form of backend, UIs that are considered <q>backend-driven</q> also have their structure &amp; layout driven from the backend.</p>
 
-<p>So, to integrate your action into the framework, first create a factory class:</p>
-<pre class="highlight plaintext"><code>@interface SPTMyActionFactory : NSObject &lt;HUBActionFactory&gt;
+<p>The Hub Framework faciliates the creation of <q>backend-driven UIs</q> through its JSON API and declarative characteristics.</p>
 
-@end
-</code></pre>
-<pre class="highlight plaintext"><code>@implementation SPTMyActionFactory
+<p>For more information see:</p>
 
-- (nullable id&lt;HUBAction&gt;)createActionForName:(NSString *)name
-{
-    if ([name isEqualToString:@"myAction"]) {
-        return [SPTMyAction new];
-    }
+<ul>
+<li>The <a href="https://spotify.github.io/HubFramework/content-programming-guide.html">Content programming guide</a>.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/json-programming-guide.html">JSON programming guide</a>.</li>
+<li>The talk <a href="https://atscaleconference.com/videos/backend-driven-native-uis/"><q>Backend-driven UIs</q></a> from Mobile@Scale London 2016.</li>
+</ul>
+<a href='#builder' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='builder'>Builder</h2>
 
-    return nil;
-}
+<p>An object that is responsible for constructing a model. Builders are used in <a href="#content-operation">content operations</a> to declare content (like components, images, targets, etc). They act like a mutable counterpart to the model that they build - with the key difference that they&rsquo;re not related by inheritance. Each model in the Hub Framework has a builder associated with it.</p>
 
-@end
-</code></pre>
+<p>You can add content to a builder either through code, or through JSON.</p>
 
-<p>Then, register your factory with the action registry (available on <code>HUBManager</code>):</p>
-<pre class="highlight plaintext"><code>id&lt;HUBActionFactory&gt; factory = [SPTMyActionFactory new];
-[actionRegistry registerActionFactory:factory forNamespace:@"myNamespace"];
-</code></pre>
+<p>For more information see:</p>
 
-<p>The <code>namespace</code> used when registering the factory are used to match actions when performed - just like the way components are matched.</p>
-<a href='#triggering-an-action' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='triggering-an-action'>Triggering an action</h2>
-<a href='#triggering-an-action-from-a-component-model' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='triggering-an-action-from-a-component-model'>Triggering an action from a component model</h3>
+<ul>
+<li>The <code>HUBViewModelBuilder</code> protocol.</li>
+<li>The <code>HUBComponentModelBuilder</code> protocol.</li>
+<li>The <code>HUBComponentImageDataBuilder</code> protocol.</li>
+<li>The <code>HUBComponentTargetBuilder</code> protocol.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/content-programming-guide.html">Content programming guide</a>.</li>
+</ul>
+<a href='#component' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='component'>Component</h2>
 
-<p>Actions that are associated with a <code>HUBComponentModel</code> will automatically be triggered when a component rendering that model was selected by the user.</p>
+<p>An object that manages a view that is rendered in a <code>HUBViewController</code>. Components are defined using <code>HUBComponent</code> (or related protocols) and are registered with the Hub Framework using a <a href="#factory">factory</a> (<code>HUBComponentFactory</code>) through <code>HUBComponentRegistry</code>. A component is the controller between a <a href="#component-model">component model</a> and a <code>UIView</code>. All views that are rendered in a <code>HUBViewController</code> are components.</p>
 
-<p>To add actions to a component model, you add a <code>HUBIdentifier</code> matching your action&rsquo;s <code>name</code> and <code>namespace</code> (that your factory was registered for) either using code in a content operation:</p>
-<pre class="highlight plaintext"><code>id&lt;HUBComponentModelBuilder&gt; componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"myComponent"];
-[componentModelBuilder.targetBuilder addActionWithNamespace:@"myNamespace"
-                                                       name:@"myAction"];
-</code></pre>
+<p>For more information see:</p>
 
-<p>Or using JSON:</p>
-<pre class="highlight json"><code><span class="err">//</span><span class="w"> </span><span class="err">A</span><span class="w"> </span><span class="err">component</span><span class="w"> </span><span class="err">model</span><span class="w"> </span><span class="err">dictionary</span><span class="w">
-</span><span class="p">{</span><span class="w">
-   </span><span class="nt">"target"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-       </span><span class="nt">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"myNamespace:myAction"</span><span class="p">]</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<a href='#triggering-an-action-from-a-component' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='triggering-an-action-from-a-component'>Triggering an action from a component</h3>
+<ul>
+<li>The <code>HUBComponent</code> protocol.</li>
+<li>The <code>HUBComponentFactory</code> protocol.</li>
+<li>The <code>HUBComponentModel</code> protocol.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/component-programming-guide.html">Component programming guide</a>.</li>
+</ul>
+<a href='#component-driven-uis' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='component-driven-uis'>Component-driven UIs</h2>
 
-<p>You can also have a component implementation manually trigger an action. This can be done at any point in time, for example in response to a custom user interaction (such as a swipe), or some other event.</p>
+<p>A phrase used to describe UIs that consists entirely of components. Instead of creating hard-wired layout relationships between subviews, components are fully decoupled, atomic pieces of a UI. In the Hub Framework, a <a href="#component">component</a> in a thin wrapper around a <code>UIView</code>, that enables existing views to be easily imported into the framework.</p>
 
-<p>To make a component able to perform actions, make it conform to the <code>HUBComponentActionPerformer</code> protocol. This gives you an <code>actionDelegate</code> that you can call to perform an action for a given identifier (which will be resolved exactly the same way as when action identifiers are attached to a <code>HUBComponentModel</code>). You also have the option of passing any <code>customData</code> that you can then pick up in the action or in a content operation.</p>
+<p>For more information see:</p>
 
-<p>Here&rsquo;s an example where we perform an action in response to a <code>UIGestureRecognizer</code> being triggered:</p>
-<pre class="highlight plaintext"><code>- (void)handleGestureRecognizer:(UIGestureRecognizer *)recognizer
-{
-    HUBIdentifier *actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"myFeature" name:@"myAction"];
-    [self.actionDelegate component:self performActionWithIdentifier:actionIdentifier customData:nil];
-}
-</code></pre>
-<a href='#responding-to-an-action-in-a-content-operation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='responding-to-an-action-in-a-content-operation'>Responding to an action in a content operation</h2>
+<ul>
+<li>The <code>HUBComponent</code> protocol.</li>
+<li>The <code>HUBComponentModel</code> protocol.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/component-programming-guide.html">Component programming guide</a>.</li>
+<li>The talk <a href="https://vimeo.com/190713343"><q>Building component-driven UIs</q></a> from MobileEra 2016.</li>
+</ul>
+<a href='#component-model' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='component-model'>Component model</h2>
 
-<p>As mentioned in the introduction, one thing you can use actions for, is to be able to easily communicate with a content operation from a component. For example, you might want to reschedule an operation based on user interaction, or modify your underlying data.</p>
+<p>A model that is used to render a component. Component models are created using <a href="#builder">builders</a> in <a href="#content-operation">content operations</a> and are generic representations of data, for rendering purposes. Each component model has a <a href="#component-identifier">component identifier</a> associated with it, which is used to resolve which component instance that will render it. It also contains properties like <code>title</code>, <code>subtitle</code>, <code>mainImage</code>, <code>target</code>, etc. that a component can be used to populate its view.</p>
 
-<p>To observe actions performed in the view that a content operation is serving, conform to the <code>HUBContentOperationActionObserver</code> protocol in your content operation.</p>
+<p>For more information see:</p>
 
-<p>In the example below, we are rendering a list of songs based on a <code>SPTSongContentOperation</code>. We then implement a delete button in one of our components, which will trigger an action to delete the song associated with that component from our data source, and then reschedule our content operation to re-render our view (with the component deleted).</p>
+<ul>
+<li>The <code>HUBComponentModel</code> protocol.</li>
+<li>The <code>HUBComponent</code> protocol.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/component-programming-guide.html">Component programming guide</a>.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/content-programming-guide.html">Content programming guide</a>.</li>
+</ul>
+<a href='#content-loading-chain' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='content-loading-chain'>Content loading chain</h2>
 
-<p>First, the component which performs the action when the delete button is tapped:</p>
-<pre class="highlight plaintext"><code>@implementation SPTDeletableComponent
+<p>An array of <a href="#content-operation">content operations</a> that are chained together to load the content for a view. A chain is automatically formed when a <code>HUBViewController</code> (or <code>HUBViewModelLoader</code>) is created with multiple content operations. In a chain, each operation is called sequentially, and its output state is transferred (by copying) to the next operation.</p>
 
-- (void)handleDeleteButtonTapped
-{
-    HUBIdentifier *actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"delete" name:@"song"];
-    [self.actionDelegate component:self performActionWithIdentifier:actionIdentifier];
-}
+<p>For more information see:</p>
 
-@end
-</code></pre>
+<ul>
+<li>The <code>HUBContentOperation</code> protocol.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/content-programming-guide.html">Content programming guide</a>.</li>
+</ul>
+<a href='#content-operation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='content-operation'>Content operation</h2>
 
-<p>Then, the action, which deletes the song from our data source:</p>
-<pre class="highlight plaintext"><code>@implementation SPTDeleteSongAction
+<p>An operation that is resposible for loading the content for a view. A single content operation can be resonsible for the entire content, or multiple ones can be chained together (to form a <a href="#content-loading-chain">content loading chain</a>), each performing a specific mutation of the view&rsquo;s content.</p>
 
-- (BOOL)performWithContext:(id&lt;HUBActionContext&gt;)context
-{
-    NSString *songID = context.componentModel.identifier;
-    [self.dataSource removeSongWithIdentifier:songID];
-    return YES;
-}
+<p>Content operations use a view model <a href="#builder">builder</a> (<code>HUBViewModelBuilder</code>) to add, remove or change component models for a view. How they execute, and whether they load remote JSON or use local content is up to you. They are defined using the <code>HUBContentOperation</code> protocol (and optionally, sub-protocols).</p>
 
-@end
-</code></pre>
+<p>For more information see:</p>
 
-<p>Finally, we observe actions being performed in our content operation, and re-schedule it once a delete action was performed:</p>
-<pre class="highlight plaintext"><code>@implementation SPTSongContentOperation
+<ul>
+<li>The <code>HUBContentOperation</code> protocol.</li>
+<li>The <code>HUBViewModelBuilder</code> protocol.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/content-programming-guide.html">Content programming guide</a>.</li>
+</ul>
+<a href='#factory' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='factory'>Factory</h2>
 
-- (void)actionPerformedWithContext:(id&lt;HUBActionContext&gt;)context
-                       featureInfo:(id&lt;HUBFeatureInfo&gt;)featureInfo
-                 connectivityState:(HUBConnectivityState)connectivityState
-{
-    HUBIdentifier *deleteSongActionID = [[HUBIdentifier alloc] initWithNamespace:@"delete" name:@"song"];
+<p>An object that is responsible for creating implementations of a certain protocol. The <a href="https://en.wikipedia.org/wiki/Factory_method_pattern">factory pattern</a> is used extensively throughout the Hub Framework to avoid shared state. By always creating unique object instances for each context - no state is ever shared. While this requires a bit more code to be written (you have to write both an implementation <strong>and a factory</strong>, for example for <a href="#component">components</a>), it makes the framework a lot more predictable and less error prone.</p>
 
-    if ([context.customActionIdentifier isEqual:deleteSongActionID]) {
-        [self.delegate contentOperationRequiresRescheduling:self];
-    }
-}
+<p>For more information see:</p>
 
-@end
-</code></pre>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Factory_method_pattern"><q>Factory method pattern</q> on Wikipedia</a>.</li>
+<li>The <code>HUBComponentFactory</code> protocol.</li>
+<li>The <code>HUBActionFactory</code> protocol.</li>
+<li>The <code>HUBViewControllerFactory</code> protocol.</li>
+<li>The <code>HUBViewModelLoaderFactory</code> protocol.</li>
+</ul>
+<a href='#json-schema' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='json-schema'>JSON schema</h2>
 
-<p>The result of the above is that every time a delete button is pressed, the component for that song is deleted from the view.</p>
-<a href='#handling-actions' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='handling-actions'>Handling actions</h2>
+<p>In the Hub Framework, a JSON schema is an object responsible for extracting model information from JSON data. Each schema has a set of defined paths, that each describe how to <q>go into</q> a JSON structure and retrieving the requested information.</p>
 
-<p>You can also opt to handle certain actions on a feature level. When you set up your feature with the Hub Framework, you can pass an <code>actionHandler</code> (an implementation of the <code>HUBActionHandler</code> protocol), that gets called each time an action is about to be performed. The action handler can then choose to handle the action itself, rather than letting the action being performed.</p>
+<p>The framework ships with a default JSON schema, that is implicitly used if not overriden, but custom schemas can also be defined through <code>HUBJSONSchemaRegistry</code>.</p>
 
-<p>Let&rsquo;s take the <q>delete a song</q> example from just before, and add some <q>protected songs</q> that are not deletable. That is, when the <code>SPTDeleteSongAction</code> is about to be performed, we check if the song is protected, and if it is - we veto the action, preventing it from being performed. Let&rsquo;s implement <code>HUBActionHandler</code>:</p>
-<pre class="highlight plaintext"><code>@implementation SPTMyActionHandler
+<p>For more information see:</p>
 
-- (BOOL)handleActionWithContext:(id&lt;HUBActionContext&gt;)context
-{
-    NSString *songID = context.componentModel.identifier;
+<ul>
+<li>The <code>HUBJSONSchema</code> protocol.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/json-programming-guide.html">JSON programming guide</a>.</li>
+</ul>
+<a href='#layout-trait' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='layout-trait'>Layout trait</h2>
 
-    if ([self isSongWithIdentifierProtected:songID]) {
-        return YES;
-    }
+<p>Layout traits are used to define layout relationships between components. Instead of hard-coding margins and relationships between concrete component implementations - layout traits enables components to work with layout in a more abstract way. Each component simply defines the layout traits that best describe it, in terms of layout, and then an implementation of <code>HUBComponentLayoutManager</code> computes the exact margins that should be applied to it.</p>
 
-    return NO;
-}
+<p>For more information see:</p>
 
-@end
-</code></pre>
+<ul>
+<li>The <code>HUBComponentLayoutTrait</code> type.</li>
+<li>The <code>HUBComponent</code> protocol.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/layout-programming-guide.html">Layout programming guide</a>.</li>
+</ul>
+<a href='#registry' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='registry'>Registry</h2>
 
-<p>By returning <code>YES</code> above, we tell the Hub Framework that we&rsquo;ve handled the action in our action handler, which means that the action won&rsquo;t be performed.</p>
+<p>In order to enable applications using the Hub Framework to easily inject implementations into it - registries are used. Each registry enables a certain type of object to be registered. There are currently four registries: for <a href="#feature">features</a>, <a href="#component">components</a>, <a href="#action">actions</a> &amp; <a href="#json-schema">JSON schemas</a>.</p>
 
-<p>A global action handler can also be added when setting up <code>HUBManager</code>, that will be used for all features that do not implement their own. For more information about setting up Hub Manager, see the <a href="https://spotify.github.io/HubFramework/setup-guide.html">setup guide</a>.</p>
+<p>For more information see:</p>
+
+<ul>
+<li>The <code>HUBFeatureRegistry</code> protocol.</li>
+<li>The <code>HUBComponentRegistry</code> protocol.</li>
+<li>The <code>HUBActionRegistry</code> protocol.</li>
+<li>The <code>HUBJSONSchemaRegistry</code> protocol.</li>
+</ul>
+<a href='#view-model' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='view-model'>View model</h2>
+
+<p>The Hub Framework uses a take on the <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel">MVVM pattern</a> to drive its view controllers. It uses a view model to encapsulate exactly what should be rendered. A view model in turn consists of <a href="#component-model">component models</a> in three categories: <code>Header</code>, <code>Body</code> and <code>Overlay</code>. A view model also contains information like what <code>UINavigationItem</code> to use, etc.</p>
+
+<p>View models are built in content operations, using any combination of JSON and code through the <code>HUBViewModelBuilder</code> API.</p>
+
+<p>For more information see:</p>
+
+<ul>
+<li>The <code>HUBViewModel</code> protocol.</li>
+<li>The <code>HUBViewModelBuilder</code> protocol.</li>
+<li>The <a href="https://spotify.github.io/HubFramework/content-programming-guide.html">Content programming guide</a>.</li>
+</ul>
 
           </div>
         </section>
