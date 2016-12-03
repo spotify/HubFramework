@@ -22,8 +22,6 @@
 
 #import <XCTest/XCTest.h>
 
-#import <UIKit/UIKit.h>
-
 #import "HUBDefaultImageLoader.h"
 #import "HUBURLSessionMock.h"
 #import "HUBURLSessionDataTaskMock.h"

@@ -29,7 +29,6 @@
 #import "HUBInputStreamMock.h"
 #import "HUBViewController.h"
 #import "HUBViewModel.h"
-#import "HUBComponentModel.h"
 
 #if HUB_DEBUG
 

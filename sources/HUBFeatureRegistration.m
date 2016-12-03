@@ -21,8 +21,6 @@
 
 #import "HUBFeatureRegistration.h"
 
-#import "HUBFeatureInfoImplementation.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBFeatureRegistration

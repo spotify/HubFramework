@@ -24,7 +24,6 @@
 #import "HUBComponentImageDataBuilderImplementation.h"
 #import "HUBComponentImageDataImplementation.h"
 #import "HUBJSONSchemaImplementation.h"
-#import "HUBComponentImageDataJSONSchema.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBIconImageResolverMock.h"
 #import "HUBIcon.h"

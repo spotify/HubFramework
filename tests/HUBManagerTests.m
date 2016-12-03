@@ -22,7 +22,6 @@
 #import <XCTest/XCTest.h>
 
 #import "HUBManager.h"
-#import "HUBContentOperationFactoryMock.h"
 #import "HUBContentOperationMock.h"
 #import "HUBComponentLayoutManagerMock.h"
 #import "HUBComponentFallbackHandlerMock.h"
@@ -33,7 +32,6 @@
 #import "UIViewController+HUBSimulateLayoutCycle.h"
 #import "HUBViewModelBuilder.h"
 #import "HUBComponentModelBuilder.h"
-#import "HUBComponentModel.h"
 #import "HUBTestUtilities.h"
 
 @interface HUBManagerTests : XCTestCase
