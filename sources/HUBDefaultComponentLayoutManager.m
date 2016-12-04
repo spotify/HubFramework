@@ -118,7 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     /// Center the component
-    return floor((firstComponentLeadingOffsetX + lastComponentTrailingOffsetX) / 2 - firstComponentLeadingOffsetX);
+    return (CGFloat)floor((firstComponentLeadingOffsetX + lastComponentTrailingOffsetX) / 2 - firstComponentLeadingOffsetX);
 }
 
 #pragma mark - Private utilities
