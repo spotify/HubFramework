@@ -31,8 +31,12 @@
 #import "HUBViewControllerFactory.h"
 #import "UIViewController+HUBSimulateLayoutCycle.h"
 #import "HUBViewModelBuilder.h"
+#import "HUBViewModel.h"
 #import "HUBComponentModelBuilder.h"
+#import "HUBComponentModel.h"
+#import "HUBIdentifier.h"
 #import "HUBTestUtilities.h"
+#import "HUBDefaults.h"
 
 @interface HUBManagerTests : XCTestCase
 
@@ -108,6 +112,10 @@
     
     // Assert that the fallback component was used
     XCTAssertTrue(fallbackComponentUsed);
+    
+    // Assert that the default component namespace was used
+    XCTAssertEqualObjects(viewController.viewModel.bodyComponentModels[0].componentIdentifier.namespacePart,
+                          HUBDefaultComponentNamespace);
 }
 
 #pragma mark - Utilities

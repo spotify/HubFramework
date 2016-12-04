@@ -84,9 +84,9 @@
 		8AA97C161C60C5320078F19D /* HUBFeatureRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97C151C60C5320078F19D /* HUBFeatureRegistryTests.m */; };
 		8AA97C1A1C60C5F60078F19D /* HUBContentOperationFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97C181C60C5CD0078F19D /* HUBContentOperationFactoryMock.m */; };
 		8AA9894B1DD1E3C1006CA6AA /* HUBContentOperationExecutionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9894A1DD1E3C1006CA6AA /* HUBContentOperationExecutionInfo.m */; };
-		8AC3158E1DEDE2D40093AEA0 /* testImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AC3158D1DEDE2D40093AEA0 /* testImage.png */; };
 		8AC315841DED94790093AEA0 /* UIViewController+HUBSimulateLayoutCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC315831DED94790093AEA0 /* UIViewController+HUBSimulateLayoutCycle.m */; };
 		8AC315871DEDAB490093AEA0 /* HUBDefaultComponentLayoutManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC315861DEDAB490093AEA0 /* HUBDefaultComponentLayoutManagerTests.m */; };
+		8AC3158E1DEDE2D40093AEA0 /* testImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AC3158D1DEDE2D40093AEA0 /* testImage.png */; };
 		8ACA8C871D1818920015310F /* HUBComponentModelBuilderShowcaseSnapshotGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ACA8C861D1818920015310F /* HUBComponentModelBuilderShowcaseSnapshotGenerator.m */; };
 		8ACB2A7A1C6A2F7C000741D7 /* HUBIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB2A791C6A2F7C000741D7 /* HUBIdentifier.m */; };
 		8ACB2A7C1C6A2F99000741D7 /* HUBIdentifierTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB2A7B1C6A2F99000741D7 /* HUBIdentifierTests.m */; };
@@ -173,6 +173,7 @@
 		521891E81DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBContentOperationContextImplementation.h; sourceTree = "<group>"; };
 		521891E91DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBContentOperationContextImplementation.m; sourceTree = "<group>"; };
 		521891EC1DEE410200FA3BF7 /* HUBBlockContentOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBBlockContentOperationTests.m; sourceTree = "<group>"; };
+		525E2F5C1DF4CEED008DCB85 /* HUBDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBDefaults.h; sourceTree = "<group>"; };
 		528498861DC4E8E800291C0C /* HUBLiveServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBLiveServiceTests.m; sourceTree = "<group>"; };
 		528498891DC4FC1300291C0C /* HUBInputStreamMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBInputStreamMock.h; sourceTree = "<group>"; };
 		5284988A1DC4FC1300291C0C /* HUBInputStreamMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBInputStreamMock.m; sourceTree = "<group>"; };
@@ -350,10 +351,10 @@
 		8AA97C1F1C60D8270078F19D /* HUBComponentImageDataJSONSchema.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentImageDataJSONSchema.h; sourceTree = "<group>"; };
 		8AA989491DD1E3C1006CA6AA /* HUBContentOperationExecutionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBContentOperationExecutionInfo.h; sourceTree = "<group>"; };
 		8AA9894A1DD1E3C1006CA6AA /* HUBContentOperationExecutionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBContentOperationExecutionInfo.m; sourceTree = "<group>"; };
-		8AC3158D1DEDE2D40093AEA0 /* testImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testImage.png; path = resources/testImage.png; sourceTree = "<group>"; };
 		8AC315821DED94790093AEA0 /* UIViewController+HUBSimulateLayoutCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUBSimulateLayoutCycle.h"; sourceTree = "<group>"; };
 		8AC315831DED94790093AEA0 /* UIViewController+HUBSimulateLayoutCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUBSimulateLayoutCycle.m"; sourceTree = "<group>"; };
 		8AC315861DEDAB490093AEA0 /* HUBDefaultComponentLayoutManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBDefaultComponentLayoutManagerTests.m; sourceTree = "<group>"; };
+		8AC3158D1DEDE2D40093AEA0 /* testImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testImage.png; path = resources/testImage.png; sourceTree = "<group>"; };
 		8ACA8C7F1D1805420015310F /* HUBComponentFactoryShowcaseNameProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactoryShowcaseNameProvider.h; sourceTree = "<group>"; };
 		8ACA8C801D180EC80015310F /* HUBComponentShowcaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentShowcaseManager.h; sourceTree = "<group>"; };
 		8ACA8C841D1816C90015310F /* HUBComponentShowcaseShapshotGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentShowcaseShapshotGenerator.h; sourceTree = "<group>"; };
@@ -628,6 +629,7 @@
 				8A5D7A5A1CB806E200B987BA /* HUBHeaderMacros.h */,
 				8AF21C9D1C6D044700960A06 /* HUBIdentifier.h */,
 				8A0E4B801CB69CD80019DE71 /* HUBSerializable.h */,
+				525E2F5C1DF4CEED008DCB85 /* HUBDefaults.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
