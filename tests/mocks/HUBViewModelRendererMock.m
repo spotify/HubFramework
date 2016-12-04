@@ -21,8 +21,6 @@
 
 #import "HUBViewModelRendererMock.h"
 
-#import "HUBCollectionViewMock.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewModelRendererMock

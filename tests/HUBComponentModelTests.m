@@ -25,7 +25,6 @@
 #import "HUBIdentifier.h"
 #import "HUBComponentTargetImplementation.h"
 #import "HUBComponentImageDataImplementation.h"
-#import "HUBIconImplementation.h"
 #import "HUBViewModelImplementation.h"
 
 @interface HUBComponentModelTests : XCTestCase

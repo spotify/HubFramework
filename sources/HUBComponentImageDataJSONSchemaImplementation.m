@@ -21,7 +21,6 @@
 
 #import "HUBComponentImageDataJSONSchemaImplementation.h"
 
-#import "HUBComponentImageDataImplementation.h"
 #import "HUBMutableJSONPathImplementation.h"
 #import "HUBJSONKeys.h"
 

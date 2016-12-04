@@ -45,13 +45,9 @@
 #import "HUBViewControllerScrollHandler.h"
 #import "HUBComponentReusePool.h"
 #import "HUBActionContextImplementation.h"
-#import "HUBActionRegistry.h"
 #import "HUBActionHandlerWrapper.h"
 #import "HUBActionPerformer.h"
-#import "HUBViewModelDiff.h"
-#import "HUBComponentGestureRecognizer.h"
 #import "HUBViewModelRenderer.h"
-#import "HUBComponentActionObserver.h"
 
 static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
