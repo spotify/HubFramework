@@ -21,6 +21,7 @@
 
 #import "HUBManager.h"
 #import "HUBConnectivityStateResolver.h"
+#import "HUBDefaults.h"
 
 // JSON
 #import "HUBJSONSchema.h"

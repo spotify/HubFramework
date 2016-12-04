@@ -20,6 +20,7 @@
  */
 
 #import "HUBDefaultComponentFallbackHandler.h"
+#import "HUBDefaults.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -41,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
     self = [super init];
     
     if (self) {
-        _defaultComponentNamespace = @"default";
+        _defaultComponentNamespace = HUBDefaultComponentNamespace;
         _defaultComponentName = @"row";
         _fallbackBlock = [fallbackBlock copy];
     }
