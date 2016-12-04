@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  title into lowercase characters.
  */
 - (HUBViewController *)createViewControllerWithContentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
-                                                    featureTitle:(NSString *)featureTitle;
+                                                    featureTitle:(NSString *)featureTitle NS_SWIFT_NAME(createViewController(withContentOperations:featureTitle:));
 
 /**
  *  Create a view controller without a feature registration, with explicit identifiers
