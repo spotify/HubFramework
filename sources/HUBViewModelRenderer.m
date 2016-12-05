@@ -27,23 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewModelRenderer ()
 
-@property (nonatomic, strong, readonly) UICollectionView *collectionView;
 @property (nonatomic, strong, nullable) id<HUBViewModel> lastRenderedViewModel;
 
 @end
 
 @implementation HUBViewModelRenderer
 
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView
-{
-    self = [super init];
-    if (self) {
-        _collectionView = collectionView;
-    }
-    return self;
-}
-
 - (void)renderViewModel:(id<HUBViewModel>)viewModel
+       inCollectionView:(UICollectionView *)collectionView
       usingBatchUpdates:(BOOL)usingBatchUpdates
                animated:(BOOL)animated
         addHeaderMargin:(BOOL)addHeaderMargin
@@ -55,12 +46,12 @@ NS_ASSUME_NONNULL_BEGIN
         diff = [HUBViewModelDiff diffFromViewModel:nonnullViewModel toViewModel:viewModel];
     }
 
-    HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)self.collectionView.collectionViewLayout;
+    HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)collectionView.collectionViewLayout;
 
     if (!usingBatchUpdates || diff == nil) {
-        [self.collectionView reloadData];
+        [collectionView reloadData];
         
-        [layout computeForCollectionViewSize:self.collectionView.frame.size
+        [layout computeForCollectionViewSize:collectionView.frame.size
                                    viewModel:viewModel
                                         diff:diff
                              addHeaderMargin:addHeaderMargin];
@@ -74,18 +65,18 @@ NS_ASSUME_NONNULL_BEGIN
            triggers the numberOfItems call.
          */
         if (usingBatchUpdates && diff == nil) {
-            [self.collectionView setNeedsLayout];
-            [self.collectionView layoutIfNeeded];
+            [collectionView setNeedsLayout];
+            [collectionView layoutIfNeeded];
         }
         completionBlock();
     } else {
         void (^updateBlock)() = ^{
-            [self.collectionView performBatchUpdates:^{
-                [self.collectionView insertItemsAtIndexPaths:diff.insertedBodyComponentIndexPaths];
-                [self.collectionView deleteItemsAtIndexPaths:diff.deletedBodyComponentIndexPaths];
-                [self.collectionView reloadItemsAtIndexPaths:diff.reloadedBodyComponentIndexPaths];
+            [collectionView performBatchUpdates:^{
+                [collectionView insertItemsAtIndexPaths:diff.insertedBodyComponentIndexPaths];
+                [collectionView deleteItemsAtIndexPaths:diff.deletedBodyComponentIndexPaths];
+                [collectionView reloadItemsAtIndexPaths:diff.reloadedBodyComponentIndexPaths];
                 
-                [layout computeForCollectionViewSize:self.collectionView.frame.size
+                [layout computeForCollectionViewSize:collectionView.frame.size
                                            viewModel:viewModel
                                                 diff:diff
                                      addHeaderMargin:addHeaderMargin];

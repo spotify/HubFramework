@@ -36,7 +36,16 @@ import HubFramework
         self.window = window
         navigationController = NavigationController()
         
-        hubManager = makeHubManager()
+        hubManager = HUBManager(
+            componentMargin: ComponentMargin,
+            componentFallbackClosure: { category in
+                if category == .card {
+                    return ImageComponent()
+                }
+                
+                return RowComponent()
+            }
+        )
         
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
@@ -72,13 +81,6 @@ import HubFramework
     }
     
     // MARK: - Private
-    
-    private func makeHubManager() -> HUBManager {
-        return HUBManager(
-            componentLayoutManager: ComponentLayoutManager(),
-            componentFallbackHandler: ComponentFallbackHandler()
-        )
-    }
     
     private func registerDefaultComponentFactory() {
         hubManager.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)

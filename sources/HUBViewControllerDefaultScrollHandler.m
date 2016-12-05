@@ -22,8 +22,6 @@
 #import "HUBViewControllerDefaultScrollHandler.h"
 #import "HUBViewController.h"
 
-#import <UIKit/UIKit.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewControllerDefaultScrollHandler

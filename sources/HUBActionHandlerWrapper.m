@@ -30,7 +30,6 @@
 #import "HUBComponentModel.h"
 #import "HUBComponentTarget.h"
 #import "HUBViewModelLoaderImplementation.h"
-#import "HUBActionPerformer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

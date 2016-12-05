@@ -29,6 +29,7 @@
 @class HUBViewModelLoaderImplementation;
 @class HUBCollectionViewFactory;
 @class HUBComponentReusePool;
+@class HUBViewModelRenderer;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -41,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewURI The view URI that this view controller is for
  *  @param featureIdentifier The identifier of the feature that this view controller is for
  *  @param viewModelLoader The object to use to load view models for the view controller
+ *  @param viewModelRenderer The object used to render the view model
  *  @param collectionViewFactory The factory to use to create collection views
  *  @param componentRegistry The registry to use to lookup component information
  *  @param componentReusePool The reuse pool to use to manage component wrappers
@@ -52,6 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewURI:(NSURL *)viewURI
               featureIdentifier:(NSString *)featureIdentifier
                 viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
+              viewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(id<HUBComponentRegistry>)componentRegistry
              componentReusePool:(HUBComponentReusePool *)componentReusePool

@@ -116,8 +116,7 @@ class CarouselComponent: NSObject, HUBComponentWithChildren, HUBComponentWithRes
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let horizontalMargin = ComponentLayoutManager.margin
-        return UIEdgeInsets(top: 0, left: horizontalMargin, bottom: 0, right: horizontalMargin)
+        return UIEdgeInsets(top: 0, left: ComponentMargin, bottom: 0, right: ComponentMargin)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
