@@ -34,7 +34,8 @@ xcode_summary.report 'build/demo/summary.json' if File.file?('build/demo/summary
 
 def report_junit_results(path)
   junit_report_path = Dir.glob(path + "/*TestSummaries.junit").first
-  if File.readable_real?(junit_report_path)
+
+  if !junit_report_path.nil? and File.readable_real?(junit_report_path)
     junit.parse junit_report_path
     junit.report
   else

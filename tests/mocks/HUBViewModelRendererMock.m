@@ -19,33 +19,30 @@
  *  under the License.
  */
 
-#import <UIKit/UIKit.h>
-#import "HUBViewModel.h"
-#import "HUBHeaderMacros.h"
+#import "HUBViewModelRendererMock.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- *  A class used to render view models in a collection view.
- */
-@interface HUBViewModelRenderer : NSObject
+@implementation HUBViewModelRendererMock
 
-/**
- *  Renders the provided view model in the collection view.
- * 
- *  @param viewModel The view model to render.
- *  @param collectionView The collection view to use for rendering.
- *  @param usingBatchUpdates Whether the renderer should render using batch updates or not.
- *  @param animated Whether the renderer should render with animations or not.
- *  @param addHeaderMargin Whether margin should be added to account for any header component
- *  @param completionBlock The block to be called once the rendering is completed.
- */
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _completionBlocks = [NSMutableArray array];
+    }
+    return self;
+}
+
 - (void)renderViewModel:(id<HUBViewModel>)viewModel
-       inCollectionView:(UICollectionView *)collectionView
+       inCollectionView:(nonnull UICollectionView *)collectionView
       usingBatchUpdates:(BOOL)usingBatchUpdates
                animated:(BOOL)animated
         addHeaderMargin:(BOOL)addHeaderMargin
-             completion:(void(^)(void))completionBlock;
+             completion:(void(^)(void))completionBlock
+{
+    [self.completionBlocks addObject:[completionBlock copy]];
+}
 
 @end
 

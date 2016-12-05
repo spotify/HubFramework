@@ -21,8 +21,6 @@
 
 #import "HUBComponentCollectionViewCell.h"
 
-#import <UIKit/UIGestureRecognizerSubclass.h>
-
 #import "HUBComponent.h"
 #import "HUBUtilities.h"
 

@@ -19,28 +19,16 @@
  *  under the License.
  */
 
-import Foundation
-import HubFramework
+#import "HUBViewModelRenderer.h"
 
-/// Component fallback handler used when setting up HUBManager
-class ComponentFallbackHandler: NSObject, HUBComponentFallbackHandler {
-    var defaultComponentNamespace: String {
-        return DefaultComponentFactory.namespace
-    }
-    
-    var defaultComponentName: String {
-        return DefaultComponentNames.row
-    }
-    
-    var defaultComponentCategory: HUBComponentCategory {
-        return .row
-    }
-    
-    func createFallbackComponent(forCategory componentCategory: HUBComponentCategory) -> HUBComponent {
-        if componentCategory == .card {
-            return ImageComponent()
-        }
-        
-        return RowComponent()
-    }
-}
+NS_ASSUME_NONNULL_BEGIN
+
+/// Mocked renderer that gives the test control over when to fire the completion block. For use in tests only.
+@interface HUBViewModelRendererMock : HUBViewModelRenderer
+
+/// All completion blocks passed to the render method
+@property (nonatomic, strong, readonly) NSMutableArray<void(^)(void)> *completionBlocks;
+
+@end
+
+NS_ASSUME_NONNULL_END

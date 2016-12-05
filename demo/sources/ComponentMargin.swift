@@ -19,17 +19,7 @@
  *  under the License.
  */
 
-import Foundation
+import CoreGraphics
 
-/// Extension that enables strings to be printed using an Ansi color
-extension String {
-    /**
-     *  Print this string using an Ansi color
-     *
-     *  - Parameter color: The color to print the string using
-     */
-    func print(withColor color: AnsiColor) {
-        /// Append a reset color code to the string, to clear all colors and styles
-        Swift.print(color.rawValue + self + "\u{001B}[0;0m")
-    }
-}
+/// The margin that is used between components
+let ComponentMargin = CGFloat(15)

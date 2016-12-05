@@ -21,12 +21,6 @@
 
 #import "HUBComponentWrapper.h"
 
-#import "HUBComponentWithChildren.h"
-#import "HUBComponentWithRestorableUIState.h"
-#import "HUBComponentViewObserver.h"
-#import "HUBComponentWithImageHandling.h"
-#import "HUBComponentContentOffsetObserver.h"
-#import "HUBComponentActionObserver.h"
 #import "HUBComponentActionPerformer.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentUIStateManager.h"
@@ -48,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentGestureRecognizer *gestureRecognizer;
 @property (nonatomic, assign) BOOL hasBeenConfigured;
 @property (nonatomic, assign) BOOL shouldPerformDelayedHighlight;
+@property (nonatomic, assign) NSUInteger appearanceCount;
 @property (nonatomic, assign) HUBComponentSelectionState selectionState;
 
 @end
@@ -271,6 +266,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewWillAppear
 {
+    self.appearanceCount++;
+    
     if ([self.component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
         [(id<HUBComponentViewObserver>)self.component viewWillAppear];
     }

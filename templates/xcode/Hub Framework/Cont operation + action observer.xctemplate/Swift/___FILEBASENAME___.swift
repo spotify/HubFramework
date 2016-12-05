@@ -8,7 +8,7 @@ class ___FILEBASENAMEASIDENTIFIER___: NSObject, HUBContentOperationActionObserve
         // Perform the content operation, and call the delegate once done
     }
 
-    func actionPerformed(with context: HUBActionContext, viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState) {
+    func actionPerformed(with context: HUBActionContext, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState) {
         // React to that an action was performed in the content operation's view
     }
 }

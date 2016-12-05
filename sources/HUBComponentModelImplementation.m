@@ -25,10 +25,8 @@
 #import "HUBComponentImageData.h"
 #import "HUBComponentTarget.h"
 #import "HUBJSONKeys.h"
-#import "HUBViewModel.h"
 #import "HUBUtilities.h"
 #import "HUBIcon.h"
-#import "HUBKeyPath.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

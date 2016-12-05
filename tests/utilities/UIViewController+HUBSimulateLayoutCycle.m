@@ -19,17 +19,18 @@
  *  under the License.
  */
 
-import Foundation
+#import "UIViewController+HUBSimulateLayoutCycle.h"
 
-/// Extension that enables strings to be printed using an Ansi color
-extension String {
-    /**
-     *  Print this string using an Ansi color
-     *
-     *  - Parameter color: The color to print the string using
-     */
-    func print(withColor color: AnsiColor) {
-        /// Append a reset color code to the string, to clear all colors and styles
-        Swift.print(color.rawValue + self + "\u{001B}[0;0m")
-    }
+@implementation UIViewController (HUBSimulateLayoutCycle)
+
+- (void)hub_simulateLayoutCycle
+{
+    // Load the view
+    __unused UIView * const _ = self.view;
+    
+    [self viewWillAppear:YES];
+    self.view.frame = CGRectMake(0, 0, 320, 400);
+    [self viewDidLayoutSubviews];
 }
+
+@end

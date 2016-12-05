@@ -19,17 +19,10 @@
  *  under the License.
  */
 
-import Foundation
-
-/// Extension that enables strings to be printed using an Ansi color
-extension String {
-    /**
-     *  Print this string using an Ansi color
-     *
-     *  - Parameter color: The color to print the string using
-     */
-    func print(withColor color: AnsiColor) {
-        /// Append a reset color code to the string, to clear all colors and styles
-        Swift.print(color.rawValue + self + "\u{001B}[0;0m")
-    }
-}
+/**
+ *  Default namespace assigned to all components when using the default component fallback handler
+ *
+ *  This namespace will be used as a default when an application doesn't supply its own
+ *  `HUBComponentFallbackHandler` when setting up `HUBManager`.
+ */
+static NSString * const HUBDefaultComponentNamespace = @"default";

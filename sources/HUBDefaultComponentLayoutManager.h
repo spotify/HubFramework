@@ -19,17 +19,27 @@
  *  under the License.
  */
 
-import Foundation
+#import "HUBComponentLayoutManager.h"
+#import "HUBHeaderMacros.h"
 
-/// Extension that enables strings to be printed using an Ansi color
-extension String {
-    /**
-     *  Print this string using an Ansi color
-     *
-     *  - Parameter color: The color to print the string using
-     */
-    func print(withColor color: AnsiColor) {
-        /// Append a reset color code to the string, to clear all colors and styles
-        Swift.print(color.rawValue + self + "\u{001B}[0;0m")
-    }
-}
+NS_ASSUME_NONNULL_BEGIN
+
+/**
+ *  A default component layout manager implementation, used for applications that don't supply their own
+ *
+ *  This layout manager applies a given `margin` (set in the initializer) to all components, except if
+ *  two components are both stackable (vertical), or if a component is full width (horizontal). Adjustment
+ *  is also made for centered components.
+ */
+@interface HUBDefaultComponentLayoutManager : NSObject <HUBComponentLayoutManager>
+
+/**
+ *  Initialize an instance of this class
+ *
+ *  @param margin The margin that this layout manager should use
+ */
+- (instancetype)initWithMargin:(CGFloat)margin HUB_DESIGNATED_INITIALIZER;
+
+@end
+
+NS_ASSUME_NONNULL_END

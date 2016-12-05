@@ -19,17 +19,26 @@
  *  under the License.
  */
 
-import Foundation
+#import "HUBComponentFallbackHandler.h"
+#import "HUBHeaderMacros.h"
 
-/// Extension that enables strings to be printed using an Ansi color
-extension String {
-    /**
-     *  Print this string using an Ansi color
-     *
-     *  - Parameter color: The color to print the string using
-     */
-    func print(withColor color: AnsiColor) {
-        /// Append a reset color code to the string, to clear all colors and styles
-        Swift.print(color.rawValue + self + "\u{001B}[0;0m")
-    }
-}
+NS_ASSUME_NONNULL_BEGIN
+
+/**
+ *  Default component fallback handler implementation, used for applications that don't supply their own
+ *
+ *  This fallback handler uses a block (set in the initializer) to create fallback components.
+ */
+@interface HUBDefaultComponentFallbackHandler : NSObject <HUBComponentFallbackHandler>
+
+/**
+ *  Initialize an instance of this class
+ *
+ *  @param fallbackBlock The block to use to create fallback components. Will be called every time the
+ *         fallback handler is asked to create a component.
+ */
+- (instancetype)initWithFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))fallbackBlock HUB_DESIGNATED_INITIALIZER;
+
+@end
+
+NS_ASSUME_NONNULL_END

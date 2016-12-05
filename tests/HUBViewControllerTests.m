@@ -32,6 +32,7 @@
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBImageLoaderMock.h"
 #import "HUBViewModelBuilder.h"
+#import "HUBViewModelRendererMock.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentImageDataBuilder.h"
@@ -46,20 +47,18 @@
 #import "HUBActionHandlerMock.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBActionRegistryImplementation.h"
-#import "HUBViewModel.h"
 #import "HUBContentReloadPolicyMock.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBComponentFallbackHandlerMock.h"
 #import "HUBIconImageResolverMock.h"
 #import "HUBFeatureInfoImplementation.h"
 #import "HUBActionHandlerWrapper.h"
-#import "HUBActionHandlerMock.h"
-#import "HUBActionContext.h"
 #import "HUBActionFactoryMock.h"
 #import "HUBActionMock.h"
 #import "HUBActionPerformer.h"
 #import "HUBViewControllerScrollHandlerMock.h"
 #import "HUBComponentCollectionViewCell.h"
+#import "UIViewController+HUBSimulateLayoutCycle.h"
 #import "HUBUtilities.h"
 #import "HUBTestUtilities.h"
 
@@ -76,12 +75,14 @@
 @property (nonatomic, strong) HUBComponentReusePoolMock *componentReusePool;
 @property (nonatomic, strong) HUBViewControllerScrollHandlerMock *scrollHandler;
 @property (nonatomic, strong) HUBViewModelLoaderImplementation *viewModelLoader;
+@property (nonatomic, strong) HUBViewModelRenderer *viewModelRenderer;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoader;
 @property (nonatomic, strong) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong) HUBActionHandlerMock *actionHandler;
 @property (nonatomic, strong) HUBActionMock *selectionAction;
 @property (nonatomic, strong) HUBActionRegistryImplementation *actionRegistry;
 @property (nonatomic, strong) NSURL *viewURI;
+@property (nonatomic, strong) HUBFeatureInfoImplementation *featureInfo;
 @property (nonatomic, strong) HUBViewController *viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromDelegateMethod;
@@ -138,13 +139,13 @@
     self.collectionViewFactory = [[HUBCollectionViewFactoryMock alloc] initWithCollectionView:self.collectionView];
     
     self.viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
-    HUBFeatureInfoImplementation * const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
+    self.featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
     
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults iconImageResolver:iconImageResolver];
     id<HUBConnectivityStateResolver> const connectivityStateResolver = [HUBConnectivityStateResolverMock new];
     
     self.viewModelLoader = [[HUBViewModelLoaderImplementation alloc] initWithViewURI:self.viewURI
-                                                                         featureInfo:featureInfo
+                                                                         featureInfo:self.featureInfo
                                                                    contentOperations:@[self.contentOperation]
                                                                  contentReloadPolicy:self.contentReloadPolicy
                                                                           JSONSchema:JSONSchema
@@ -153,9 +154,8 @@
                                                                    iconImageResolver:iconImageResolver
                                                                     initialViewModel:nil];
     
+    self.viewModelRenderer = [HUBViewModelRenderer new];
     self.imageLoader = [HUBImageLoaderMock new];
-    
-    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     
     self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
     
@@ -163,25 +163,8 @@
     self.selectionAction = [[HUBActionMock alloc] initWithBlock:nil];
     self.actionRegistry = [[HUBActionRegistryImplementation alloc] initWithSelectionAction:self.selectionAction];
     
-    
-    id<HUBActionHandler> const actionHandler = [[HUBActionHandlerWrapper alloc] initWithActionHandler:self.actionHandler
-                                                                                       actionRegistry:self.actionRegistry
-                                                                             initialViewModelRegistry:self.initialViewModelRegistry
-                                                                                      viewModelLoader:self.viewModelLoader];
-    
-    self.viewController = [[HUBViewController alloc] initWithViewURI:self.viewURI
-                                                   featureIdentifier:featureInfo.identifier
-                                                     viewModelLoader:self.viewModelLoader
-                                               collectionViewFactory:self.collectionViewFactory
-                                                   componentRegistry:self.componentRegistry
-                                                  componentReusePool:self.componentReusePool
-                                              componentLayoutManager:componentLayoutManager
-                                                       actionHandler:actionHandler
-                                                       scrollHandler:self.scrollHandler
-                                                         imageLoader:self.imageLoader];
-    
-    self.viewController.delegate = self;
-    
+    [self createViewControllerWithViewModelRenderer:self.viewModelRenderer];
+
     self.viewModelFromDelegateMethod = nil;
     self.componentModelsFromAppearanceDelegateMethod = [NSMutableArray new];
     self.componentLayoutTraitsFromAppearanceDelegateMethod = [NSMutableArray new];
@@ -192,6 +175,29 @@
     self.componentViewsFromReuseDelegateMethod = [NSMutableArray new];
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
     self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return YES; };
+}
+
+- (void)createViewControllerWithViewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
+{
+    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    id<HUBActionHandler> const actionHandler = [[HUBActionHandlerWrapper alloc] initWithActionHandler:self.actionHandler
+                                                                                       actionRegistry:self.actionRegistry
+                                                                             initialViewModelRegistry:self.initialViewModelRegistry
+                                                                                      viewModelLoader:self.viewModelLoader];
+    
+    self.viewController = [[HUBViewController alloc] initWithViewURI:self.viewURI
+                                                   featureIdentifier:self.featureInfo.identifier
+                                                     viewModelLoader:self.viewModelLoader
+                                                   viewModelRenderer:viewModelRenderer
+                                               collectionViewFactory:self.collectionViewFactory
+                                                   componentRegistry:self.componentRegistry
+                                                  componentReusePool:self.componentReusePool
+                                              componentLayoutManager:componentLayoutManager
+                                                       actionHandler:actionHandler
+                                                       scrollHandler:self.scrollHandler
+                                                         imageLoader:self.imageLoader];
+    
+    self.viewController.delegate = self;
 }
 
 #pragma mark - Tests
@@ -2104,25 +2110,49 @@
     
     id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
     [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    // Component should be notified on the first appearance
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
     
     self.collectionView.cells[indexPath] = cell;
     self.collectionView.mockedIndexPathsForVisibleItems = @[indexPath];
     [self.viewController viewWillAppear:NO];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    // Content offset hasn't been changed so the component shouldn't be notified
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
     
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
     [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+    // Content offset has been changed so the component should be notified
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
 
     // Component shouldn't be notified because content offset hasn't changed
     [self.viewController viewWillAppear:NO];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
 
     // Component isn't notified if view is reloaded
-    self.contentReloadPolicy.shouldReload = YES;
-    [self.viewController viewWillAppear:NO];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)3);
+    [self.viewController reload];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+}
+
+- (void)testBodyComponentNotifiedOfContentOffsetChangeOnFirstAppearanceWithContentOffsetSetBefore
+{
+    self.component.isContentOffsetObserver = YES;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"body"];
+        return YES;
+    };
+
+    // Before displaying a view, view controller has initialized contentOffset by scrolling
+    [self.viewController scrollToContentOffset:CGPointMake(0, 0) animated:NO];
+    [self simulateViewControllerLayoutCycle];
+
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+
+    id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
+    [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
 }
 
 - (void)testHeaderComponentNotifiedOfContentOffsetChange
@@ -2139,6 +2169,25 @@
     
     [self.viewController scrollToContentOffset:CGPointMake(0, 100) animated:NO];
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+
+    [self.viewController reload];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+}
+
+- (void)testHeaderComponentNotifiedOfContentOffsetChangeOnFirstAppearanceWithContentOffsetSetBefore
+{
+    self.component.isContentOffsetObserver = YES;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        viewModelBuilder.headerComponentModelBuilder.title = @"Header";
+        return YES;
+    };
+
+    // Before displaying a view, view controller has initialized contentOffset by scrolling
+    [self.viewController scrollToContentOffset:CGPointMake(0, 0) animated:NO];
+    [self simulateViewControllerLayoutCycle];
+
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
 }
 
 - (void)testOverlayComponentNotifiedOfContentOffsetChange
@@ -2156,6 +2205,25 @@
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
     [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
     XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    
+    [self.viewController reload];
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+}
+
+- (void)testOverlayComponentNotifiedOfContentOffsetChangeOnFirstAppearanceWithContentOffsetSetBefore
+{
+    self.component.isContentOffsetObserver = YES;
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"];
+        return YES;
+    };
+
+    // Before displaying a view, view controller has initialized contentOffset by scrolling
+    [self.viewController scrollToContentOffset:CGPointMake(0, 0) animated:NO];
+    [self simulateViewControllerLayoutCycle];
+
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
 }
 
 - (void)testChildComponentNotifiedOfContentOffsetChange
@@ -2900,6 +2968,66 @@
     XCTAssertEqualObjects(self.componentViewsFromApperanceDelegateMethod, @[self.component.view]);
 }
 
+- (void)testThatModelIsSetImmediatelyOnInitialRenderRequest
+{
+    HUBViewModelRendererMock *viewModelRenderer = [HUBViewModelRendererMock new];
+    [self createViewControllerWithViewModelRenderer:viewModelRenderer];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder headerComponentModelBuilder].title = @"title1";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    // The model should be set at this point as there's no existing render in progress
+    XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
+
+    // Only 1 render request was made
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)1);
+
+    // Don't finish the test until rendering has stopped.
+    viewModelRenderer.completionBlocks[0]();
+}
+
+- (void)testThatModelIsNotSetImmediatelyOnOverlappingRenderRequests
+{
+    HUBViewModelRendererMock *viewModelRenderer = [HUBViewModelRendererMock new];
+    [self createViewControllerWithViewModelRenderer:viewModelRenderer];
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder headerComponentModelBuilder].title = @"title1";
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    // The model should be set at this point as there's no existing render in progress
+    XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
+
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder headerComponentModelBuilder].title = @"title2";
+        return YES;
+    };
+
+    // While the 1st render is in progress, a 2nd render request comes in
+    [self.viewController reload];
+
+    // The 2nd model should NOT be set at this point as the 1st render hasn't finished
+    XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
+    // Only 1 render request has been made at this point (the 2nd is pending)
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)1);
+    // Complete the 1st render request
+    viewModelRenderer.completionBlocks[0]();
+
+    // The 2nd model should now be set as the 1st render has finished and the 2nd is in progress
+    XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title2");
+    // 2 render requests have now been made
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)2);
+    // Complete the 2nd render request
+    viewModelRenderer.completionBlocks[1]();
+}
+
 #pragma mark - HUBViewControllerDelegate
 
 - (void)viewController:(HUBViewController *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
@@ -2982,11 +3110,7 @@
 
 - (void)simulateViewControllerLayoutCycle
 {
-    [self.viewController loadView];
-    [self.viewController viewDidLoad];
-    [self.viewController viewWillAppear:YES];
-    self.viewController.view.frame = CGRectMake(0, 0, 320, 400);
-    [self.viewController viewDidLayoutSubviews];
+    [self.viewController hub_simulateLayoutCycle];
 }
 
 - (void)simulateLayoutForViewHierarchyStartingWithView:(UIView *)rootView
