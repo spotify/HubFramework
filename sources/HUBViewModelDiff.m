@@ -338,7 +338,7 @@ static NSArray<HUBDiffTrace *> *HUBDiffTracesBetweenViewModels(id<HUBViewModel> 
     if (fromViewModel.bodyComponentModels.count == 0 && toViewModel.bodyComponentModels.count == 0) {
         return @[];
     } else if (fromViewModel.bodyComponentModels.count == 0) {
-        return  HUBDiffInsertionTracesFromViewModel(toViewModel);
+        return HUBDiffInsertionTracesFromViewModel(toViewModel);
     } else if (toViewModel.bodyComponentModels.count == 0) {
         return HUBDiffDeletionTracesFromViewModel(fromViewModel);
     } else {
@@ -373,7 +373,7 @@ static NSArray<HUBDiffTrace *> *HUBDiffFindPathFromTraces(NSArray<HUBDiffTrace *
 }
 
 HUBViewModelDiff *HUBDiffMyersAlgorithm(id<HUBViewModel> fromViewModel, id<HUBViewModel> toViewModel) {
-    NSArray<HUBDiffTrace *> * const traces = HUBDiffTracesBetweenViewModels(fromViewModel, toViewModel);
+    NSArray<HUBDiffTrace *> *traces = HUBDiffTracesBetweenViewModels(fromViewModel, toViewModel);
     NSArray<HUBDiffTrace *> *path = HUBDiffFindPathFromTraces(traces);
 
     NSMutableIndexSet *insertions = [NSMutableIndexSet indexSet];
