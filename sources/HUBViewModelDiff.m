@@ -170,7 +170,7 @@ typedef struct {
 } HUBDiffPoint;
 
 static inline HUBDiffPoint HUBDiffPointMake(NSInteger x, NSInteger y) {
-    return (HUBDiffPoint){ .x = x, .y = y};
+    return (HUBDiffPoint){ .x = x, .y = y };
 }
 
 typedef struct {
@@ -195,7 +195,6 @@ typedef NS_ENUM(NSUInteger, HUBDiffTraceType) {
 @property (nonatomic, assign, readonly) HUBDiffPoint from;
 @property (nonatomic, assign, readonly) HUBDiffPoint to;
 @property (nonatomic, assign, readonly) NSInteger changes;
-
 @property (nonatomic, assign, readonly) HUBDiffTraceType type;
 
 @end
