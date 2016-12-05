@@ -981,25 +981,26 @@
     [self simulateViewControllerLayoutCycle];
 
     NSIndexPath * const indexPathA = [NSIndexPath indexPathForItem:0 inSection:0];
-    UICollectionViewCell *cellA = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
+    id<UICollectionViewDataSource> dataSource = self.collectionView.dataSource;
+    UICollectionViewCell *cellA = [dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
 
     [cellA prepareForReuse];
     XCTAssertEqual(self.componentReusePool.componentsInUse.count, 1u);
 
     NSIndexPath * const indexPathB = [NSIndexPath indexPathForItem:1 inSection:0];
-    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
+    [dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
 
     XCTAssertEqual(self.componentReusePool.componentsInUse.count, 1u);
-    XCTAssertEqual(self.component.numberOfReuses, 1);
+    XCTAssertEqual(self.component.numberOfReuses, 1u);
 
     [cellA prepareForReuse];
     XCTAssertEqual(self.componentReusePool.componentsInUse.count, 1u);
 
     NSIndexPath * const indexPathC = [NSIndexPath indexPathForItem:2 inSection:0];
-    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathC];
+    [dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathC];
 
     XCTAssertEqual(self.componentReusePool.componentsInUse.count, 2u);
-    XCTAssertEqual(self.component.numberOfReuses, 1);
+    XCTAssertEqual(self.component.numberOfReuses, 1u);
 }
 
 - (void)testCreatingAndReusingChildComponent
