@@ -83,6 +83,9 @@
             <a class="nav-group-name-link" href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HUBBlockContentOperation.html">HUBBlockContentOperation</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/HUBBlockContentOperationFactory.html">HUBBlockContentOperationFactory</a>
               </li>
               <li class="nav-group-task">
@@ -134,6 +137,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitStackable">HUBComponentLayoutTraitStackable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:HUBDefaults.h@HUBDefaultComponentNamespace">HUBDefaultComponentNamespace</a>
               </li>
             </ul>
           </li>
@@ -285,6 +291,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBContentOperationActionPerformer.html">HUBContentOperationActionPerformer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HUBContentOperationContext.html">HUBContentOperationContext</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a>
@@ -659,75 +668,6 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)HUBManager(im)initWithComponentLayoutManager:componentFallbackHandler:"></a>
-                    <a name="//apple_ref/objc/Method/-initWithComponentLayoutManager:componentFallbackHandler:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)HUBManager(im)initWithComponentLayoutManager:componentFallbackHandler:">-initWithComponentLayoutManager:componentFallbackHandler:</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initialize an instance of this class with its required dependencies</p>
-
-<p>This is a convenience initializer, to enable you to easily setup this class with the least amount of options. For more
-  customization options, see this class&rsquo; designated initializer.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span>
-<span class="nf">initWithComponentLayoutManager</span><span class="p">:</span>
-    <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentLayoutManager</span>
-      <span class="nf">componentFallbackHandler</span><span class="p">:</span>
-          <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentFallbackHandler</span><span class="p">;</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>componentLayoutManager</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The object to use to manage layout for components, computing margins using layout traits.
-        See <code>HUBComponentLayoutManager</code> for more information.</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>componentFallbackHandler</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The object to use to fall back to default components in case a component couldn&rsquo;t be
-        resolved using the standard mechanism. See <code>HUBComponentFallbackHandler</code> for more information.</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/c:objc(cs)HUBManager(im)initWithComponentLayoutManager:componentFallbackHandler:connectivityStateResolver:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:"></a>
                     <a name="//apple_ref/objc/Method/-initWithComponentLayoutManager:componentFallbackHandler:connectivityStateResolver:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)HUBManager(im)initWithComponentLayoutManager:componentFallbackHandler:connectivityStateResolver:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:">-initWithComponentLayoutManager:componentFallbackHandler:connectivityStateResolver:imageLoaderFactory:iconImageResolver:defaultActionHandler:defaultContentReloadPolicy:prependedContentOperationFactory:appendedContentOperationFactory:</a>
@@ -739,6 +679,8 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Initialize an instance of this class with all available customization options</p>
+
+<p>In case you don&rsquo;t want to use all of these customization options, see the initializers available in <code>HUBManager+Convenience.h</code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -984,6 +926,157 @@
                           <pre class="highlight"><code><span class="k">@interface</span> <span class="nc">HUBManager</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
 
                         </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Convenience"></a>
+                <a name="//apple_ref/objc/Section/Convenience" class="dashAnchor"></a>
+                <a href="#/Convenience">
+                  <h3 class="section-name">Convenience</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBManager(cm)managerWithComponentMargin:componentFallbackBlock:"></a>
+                    <a name="//apple_ref/objc/Method/+managerWithComponentMargin:componentFallbackBlock:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(cm)managerWithComponentMargin:componentFallbackBlock:">+managerWithComponentMargin:componentFallbackBlock:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create an instance of this class with a default configuration</p>
+
+<p>This is the easiest way to setup the Hub Framework in an application. For more customization options, see this class&rsquo;
+  designated initializer. The supplied <code>componentMargin</code> will be used to implement a default <code><a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a></code>, and
+  the <code>componentFallbackBlock</code> will be used for a default <code><a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">+</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span>
+<span class="nf">managerWithComponentMargin</span><span class="p">:(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">componentMargin</span>
+    <span class="nf">componentFallbackBlock</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponent.html">HUBComponent</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n"><a href="../Type Definitions.html#/c:HUBComponentCategories.h@T@HUBComponentCategory">HUBComponentCategory</a></span> <span class="n">_Nonnull</span><span class="p">))</span>
+            <span class="n">componentFallbackBlock</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>componentMargin</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The margin to use in between components. Margin will be applied between two components except
+        when both of them are not stackable (vertical) or when one of them is full width (horizontal). For more information,
+        see the <q>Layout programming guide</q>.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>componentFallbackBlock</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A block that should return a fallback component in case one couldn&rsquo;t be resolved for a given
+        component model. The block must always return a <code>HUBComponent</code> instance.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)HUBManager(cm)managerWithComponentLayoutManager:componentFallbackHandler:"></a>
+                    <a name="//apple_ref/objc/Method/+managerWithComponentLayoutManager:componentFallbackHandler:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)HUBManager(cm)managerWithComponentLayoutManager:componentFallbackHandler:">+managerWithComponentLayoutManager:componentFallbackHandler:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create an instance of this class with its required dependencies</p>
+
+<p>This is a convenience initializer, to enable you to easily setup this class with the least amount of dependencies.
+  For more customization options, see this class&rsquo; designated initializer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">+</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span>
+<span class="nf">managerWithComponentLayoutManager</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentLayoutManager.html">HUBComponentLayoutManager</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentLayoutManager</span>
+         <span class="nf">componentFallbackHandler</span><span class="p">:</span>
+             <span class="p">(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentFallbackHandler.html">HUBComponentFallbackHandler</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">componentFallbackHandler</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>componentLayoutManager</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The object to use to manage layout for components, computing margins using layout traits.
+        See <code>HUBComponentLayoutManager</code> for more information.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>componentFallbackHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The object to use to fall back to default components in case a component couldn&rsquo;t be
+        resolved using the standard mechanism. See <code>HUBComponentFallbackHandler</code> for more information.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

@@ -1,6 +1,27 @@
 {
   "warnings": [
     {
+      "file": "/Users/josu/Code/HubFramework/include/HubFramework/HUBBlockContentOperation.h",
+      "line": 47,
+      "symbol": "HUBBlockContentOperation.+new",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/josu/Code/HubFramework/include/HubFramework/HUBBlockContentOperation.h",
+      "line": 47,
+      "symbol": "HUBBlockContentOperation.-init",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/josu/Code/HubFramework/include/HubFramework/HUBBlockContentOperation.h",
+      "line": 47,
+      "symbol": "HUBBlockContentOperation.-initWithCoder:",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/josu/Code/HubFramework/include/HubFramework/HUBBlockContentOperationFactory.h",
       "line": 46,
       "symbol": "HUBBlockContentOperationFactory.+new",
@@ -44,21 +65,21 @@
     },
     {
       "file": "/Users/josu/Code/HubFramework/include/HubFramework/HUBManager.h",
-      "line": 125,
+      "line": 116,
       "symbol": "HUBManager.+new",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
     },
     {
       "file": "/Users/josu/Code/HubFramework/include/HubFramework/HUBManager.h",
-      "line": 125,
+      "line": 116,
       "symbol": "HUBManager.-init",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/josu/Code/HubFramework/include/HubFramework/HUBManager.h",
-      "line": 125,
+      "line": 116,
       "symbol": "HUBManager.-initWithCoder:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"

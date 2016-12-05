@@ -82,6 +82,9 @@
             <a class="nav-group-name-link" href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/HUBBlockContentOperation.html">HUBBlockContentOperation</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/HUBBlockContentOperationFactory.html">HUBBlockContentOperationFactory</a>
               </li>
               <li class="nav-group-task">
@@ -133,6 +136,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Constants.html#/c:HUBComponentLayoutTraits.h@HUBComponentLayoutTraitStackable">HUBComponentLayoutTraitStackable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Constants.html#/c:HUBDefaults.h@HUBDefaultComponentNamespace">HUBDefaultComponentNamespace</a>
               </li>
             </ul>
           </li>
@@ -284,6 +290,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBContentOperationActionPerformer.html">HUBContentOperationActionPerformer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HUBContentOperationContext.html">HUBContentOperationContext</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HUBContentOperationDelegate.html">HUBContentOperationDelegate</a>
@@ -442,14 +451,14 @@
 
 <p>Each application using the Hub Framework will have one instance of the <code>HUBManager</code> class, which manages an instance of the framework. It’s recommended that you create this object early in your application’s lifecycle and keep it somewhere accessible - for example in your <code>AppDelegate</code>.</p>
 
-<p>In order to create a <code>HUBManager</code> instance, you need to supply implementations of the following 2 protocols:</p>
+<p>There are a few different ways to setup <code>HUBManager</code>, each providing different levels of customizability. The simplest way is to use the defaults, and just supply the following two parameters:</p>
 
 <ul>
-<li><code>HUBComponentLayoutManager</code>: For calculating margins and other layout attributes for components based on their layout traits.</li>
-<li><code>HUBComponentFallbackHandler</code>: For providing fallback information in case a component model’s component couldn’t be resolved by the framework.</li>
+<li><code>componentMargin</code>: What margin that should be used in between components.</li>
+<li><code>componentFallbackBlock/Closure</code>: A block/closure that returns a component to use for fallback, in case a default one couldn&rsquo;t be matched.</li>
 </ul>
 
-<p>For an example of how to set up the above, see the <a href="https://github.com/spotify/HubFramework/tree/master/demo">demo app</a> which contains implementations of both of these protocols. Also refer to their individual protocol documentation for more information about their required APIs.</p>
+<p>For an example of how to set up the above, see the <a href="https://github.com/spotify/HubFramework/tree/master/demo">demo app</a> which uses this way of setting up the Hub Framework.</p>
 
 <p>There are also several optional parameters that you can choose to supply in case you want to further customize how the Hub Framework behaves. For more information about those, see the documentation for <code>HUBManager</code>, or the <a href="#further-customization">Further customization section</a>.</p>
 <a href='#setting-up-the-navigation-system' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='setting-up-the-navigation-system'>Setting up the navigation system</h2>
@@ -531,6 +540,11 @@
 <p>You’re now ready to start building UIs using the Hub Framework. Head over to the <a href="https://spotify.github.io/HubFramework/getting-started-guide.html">getting started guide</a> to learn how to register features and how to build content operations &amp; components.</p>
 
 <p>In case you need it, you can also continue customizing the framework, adding support for additional features.</p>
+<a href='#building-a-custom-component-layout-manager' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='building-a-custom-component-layout-manager'>Building a custom component layout manager</h3>
+
+<p>In case you want more fine-grained control over how components are laid out, you can supply your own layout manager by conforming to the <code>HUBComponentLayoutManager</code> protocol. A custom layout manager enables you to calculate margins for your components, given a set of layout traits.</p>
+
+<p>For more information about how layout works for components, see the <a href="https://spotify.github.io/HubFramework/layout-programming-guide.html">Layout programming guide</a>.</p>
 <a href='#adding-icon-support' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='adding-icon-support'>Adding icon support</h3>
 
 <p>The Hub Framework enables you to easily convert string representations of icon identifiers to <code>UIImages</code> in components, through the <code>HUBIcon</code> API. However, before this API can be used, you need to implement a <code>HUBIconImageResolver</code>, which the framework will use to perform this conversion. The image resolver is then passed as <code>iconImageResolver</code> when setting up <code>HUBManager</code>.</p>

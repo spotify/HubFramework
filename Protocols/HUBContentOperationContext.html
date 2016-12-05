@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>HUBComponentImageType Enum Reference</title>
+    <title>HUBContentOperationContext Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Enum/HUBComponentImageType" class="dashAnchor"></a>
+    <a name="//apple_ref/objc/Protocol/HUBContentOperationContext" class="dashAnchor"></a>
 
-    <a title="HUBComponentImageType Enum Reference"></a>
+    <a title="HUBContentOperationContext Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -41,7 +41,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">HubFramework Reference</a>
       <img class="carat" src="../img/carat.png" />
-      HUBComponentImageType Enum Reference
+      HUBContentOperationContext Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -422,14 +422,18 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>HUBComponentImageType</h1>
+            <h1>HUBContentOperationContext</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="k">enum</span> <span class="n">HUBComponentImageType</span> <span class="o">:</span> <span class="n">NSInteger</span> <span class="p">{}</span></code></pre>
+                  <pre class="highlight"><code><span class="k">@protocol</span> <span class="nc">HUBContentOperationContext</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
-            <p>Enum describing various types of component images</p>
+            <p>Protocol defining the public API of a content operation context</p>
+
+<p>This API is currently only used with <code><a href="../Classes/HUBBlockContentOperation.html">HUBBlockContentOperation</a></code>. For more information
+  about the properties that are part of this API, refer to <code><a href="../Protocols/HUBContentOperation.html">HUBContentOperation</a></code>, or to
+  the <q>Content programming guide</q>.</p>
 
           </div>
         </section>
@@ -441,9 +445,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@E@HUBComponentImageType@HUBComponentImageTypeMain"></a>
-                    <a name="//apple_ref/objc/Case/HUBComponentImageTypeMain" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@E@HUBComponentImageType@HUBComponentImageTypeMain">HUBComponentImageTypeMain</a>
+                    <a name="/c:objc(pl)HUBContentOperationContext(py)viewURI"></a>
+                    <a name="//apple_ref/objc/Property/viewURI" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBContentOperationContext(py)viewURI">viewURI</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -451,19 +455,19 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The main image of a component. See <code><a href="../Protocols/HUBComponentModel.html#/c:objc(pl)HUBComponentModel(py)mainImageData">HUBComponentModel.mainImageData</a></code> for more information.</p>
+                        <p>The URI of the view that the content operation is being used in</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="n">HUBComponentImageTypeMain</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSURL</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">viewURI</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="n">main</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">viewURI</span><span class="p">:</span> <span class="kt">URL</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -473,9 +477,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@E@HUBComponentImageType@HUBComponentImageTypeBackground"></a>
-                    <a name="//apple_ref/objc/Case/HUBComponentImageTypeBackground" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@E@HUBComponentImageType@HUBComponentImageTypeBackground">HUBComponentImageTypeBackground</a>
+                    <a name="/c:objc(pl)HUBContentOperationContext(py)featureInfo"></a>
+                    <a name="//apple_ref/objc/Property/featureInfo" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBContentOperationContext(py)featureInfo">featureInfo</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -483,19 +487,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The background image of a component. See <code><a href="../Protocols/HUBComponentModel.html#/c:objc(pl)HUBComponentModel(py)backgroundImageData">HUBComponentModel.backgroundImageData</a></code> for more information.</p>
+                        <p>An object containing information about the feature that the operation is being used in</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="n">HUBComponentImageTypeBackground</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="n">background</span> <span class="o">=</span> <span class="mi">1</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBFeatureInfo.html">HUBFeatureInfo</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">featureInfo</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -505,9 +504,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@E@HUBComponentImageType@HUBComponentImageTypeCustom"></a>
-                    <a name="//apple_ref/objc/Case/HUBComponentImageTypeCustom" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@E@HUBComponentImageType@HUBComponentImageTypeCustom">HUBComponentImageTypeCustom</a>
+                    <a name="/c:objc(pl)HUBContentOperationContext(py)connectivityState"></a>
+                    <a name="//apple_ref/objc/Property/connectivityState" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBContentOperationContext(py)connectivityState">connectivityState</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -515,19 +514,79 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A custom image for a component. See <code><a href="../Protocols/HUBComponentModel.html#/c:objc(pl)HUBComponentModel(py)customImageData">HUBComponentModel.customImageData</a></code> for more information.</p>
+                        <p>The current connectivity state, as resolved by <code><a href="../Protocols/HUBConnectivityStateResolver.html">HUBConnectivityStateResolver</a></code></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight"><code><span class="n">HUBComponentImageTypeCustom</span></code></pre>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n"><a href="../Enums/HUBConnectivityState.html">HUBConnectivityState</a></span> <span class="n">connectivityState</span><span class="p">;</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="n">custom</span> <span class="o">=</span> <span class="mi">2</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">connectivityState</span><span class="p">:</span> <span class="kt"><a href="../Enums/HUBConnectivityState.html">HUBConnectivityState</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBContentOperationContext(py)viewModelBuilder"></a>
+                    <a name="//apple_ref/objc/Property/viewModelBuilder" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBContentOperationContext(py)viewModelBuilder">viewModelBuilder</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The builder that can be used to add, change or remove content to/from the view</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBViewModelBuilder.html">HUBViewModelBuilder</a></span><span class="o">&gt;</span> <span class="n">_Nonnull</span> <span class="n">viewModelBuilder</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)HUBContentOperationContext(py)previousError"></a>
+                    <a name="//apple_ref/objc/Property/previousError" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBContentOperationContext(py)previousError">previousError</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Any error encountered by a previous content operation in the view&rsquo;s content loading chain</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">previousError</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">previousError</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
