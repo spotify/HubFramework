@@ -26,6 +26,7 @@ platform :ios do
     device = ENV['TEST_DEVICE_NAME'] || 'iPhone 6s'
     UI.message("Simulator testing device set to '#{device}'")
 
+    log_directory = "build/logs/#{output_label}"
     output_directory = "build/#{output_label}"
     ENV['XCPRETTY_JSON_FILE_OUTPUT'] = "#{output_directory}/summary.json"
 
@@ -35,7 +36,7 @@ platform :ios do
       :devices => [device],
       :derived_data_path => 'build/DerivedData',
       :output_directory => output_directory,
-      :buildlog_path => 'build/logs/tests',
+      :buildlog_path => log_directory,
       :code_coverage => true,
       :output_types => '',
       :fail_build => false,
