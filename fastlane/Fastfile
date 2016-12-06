@@ -48,8 +48,6 @@ platform :ios do
       output_directory: output_directory,
       extension: '.junit'
     )
-
-    codecov() if ENV['CODECOV_TOKEN'] or ENV['TRAVIS'] == 'true'
   end
 
 
@@ -121,6 +119,11 @@ platform :ios do
     end
   end
 
+  desc 'Report test coverage'
+  private_lane :report_coverage do
+    codecov() if ENV['CODECOV_TOKEN'] or ENV['TRAVIS'] == 'true' or ENV['CIRCLECI'] == 'true'
+  end
+
 
   desc 'Execute all CI lanes'
   desc 'This action can be configured using the following environment variable (valid values are `YES` and `NO`):'
@@ -136,6 +139,10 @@ platform :ios do
     demo unless shouldSkipStep('BUILD_DEMO_APP')
     test_ui unless shouldSkipStep('BUILD_DEMO_APP') || shouldSkipStep('RUN_UI_TESTS')
     live unless shouldSkipStep('BUILD_LIVE_CLI')
+
+    if !shouldSkipStep('RUN_TESTS') || !shouldSkipStep('RUN_UI_TESTS')
+      report_coverage
+    end
   end
 
   # Whether we should execute the step or not.
