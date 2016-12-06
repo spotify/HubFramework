@@ -451,6 +451,7 @@
 		DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBUtilities.h; sourceTree = "<group>"; };
 		DDBCF36B1C68DD2300693038 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E9B84D441DF6ED48009E57D5 /* HUBViewControllerScrollHandlerActionPerformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewControllerScrollHandlerActionPerformer.h; sourceTree = "<group>"; };
 		F64C5C2B1DB82CA30077E619 /* HUBViewModelRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewModelRenderer.h; sourceTree = "<group>"; };
 		F64C5C2C1DB82CA30077E619 /* HUBViewModelRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBViewModelRenderer.m; sourceTree = "<group>"; };
 		F65C149A1DC93AEB0030958D /* HUBComponentWithScrolling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentWithScrolling.h; sourceTree = "<group>"; };
@@ -1125,6 +1126,7 @@
 				8AD064771C6906B00086C081 /* HUBViewControllerFactory.h */,
 				8A0E4B761CB561DE0019DE71 /* HUBViewURIPredicate.h */,
 				8AED9F8F1D77090D00BEFD66 /* HUBViewControllerScrollHandler.h */,
+				E9B84D441DF6ED48009E57D5 /* HUBViewControllerScrollHandlerActionPerformer.h */,
 			);
 			name = View;
 			sourceTree = "<group>";
