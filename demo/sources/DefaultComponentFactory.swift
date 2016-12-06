@@ -33,7 +33,8 @@ class DefaultComponentFactory: NSObject, HUBComponentFactory {
         DefaultComponentNames.searchBar: { SearchBarComponent() },
         DefaultComponentNames.activityIndicator: { ActivityIndicatorComponent() },
         DefaultComponentNames.carousel: { CarouselComponent() },
-        DefaultComponentNames.header: { HeaderComponent() }
+        DefaultComponentNames.header: { HeaderComponent() },
+        DefaultComponentNames.colorContainer: { ColorContainerComponent() }
     ]
     
     func createComponent(forName name: String) -> HUBComponent? {
