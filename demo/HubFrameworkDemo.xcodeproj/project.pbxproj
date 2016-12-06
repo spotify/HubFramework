@@ -19,7 +19,6 @@
 		8A42E0AB1D8C376B004FAC33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E0A91D8C376B004FAC33 /* AppDelegate.swift */; };
 		8A42E0B21D8C3779004FAC33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */; };
 		8A42E0B31D8C3779004FAC33 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AF1D8C3779004FAC33 /* LaunchScreen.storyboard */; };
-		8A42E1001D8C399D004FAC33 /* libHubFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A42E0BB1D8C37B4004FAC33 /* libHubFramework.a */; };
 		8A42E1FB1D8C4CEB004FAC33 /* RowComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */; };
 		8A9204FD1DDE07810081E0B5 /* HeaderComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9204FC1DDE07810081E0B5 /* HeaderComponentUITests.swift */; };
 		8A9204FF1DDE07AF0081E0B5 /* UITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9204FE1DDE07AF0081E0B5 /* UITestCase.swift */; };
@@ -48,6 +47,8 @@
 		8AD98C521DD5F25900F01A62 /* HeaderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C511DD5F25900F01A62 /* HeaderComponent.swift */; };
 		8AD98C561DD5F5FE00F01A62 /* StickyHeaderContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C551DD5F5FE00F01A62 /* StickyHeaderContentOperation.swift */; };
 		8AD98C591DD6062100F01A62 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C581DD6062100F01A62 /* NavigationController.swift */; };
+		8AE6C0101DF6E3560063B2B1 /* HubFramework-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */; };
+		8AE6C0111DF6E3560063B2B1 /* HubFramework-iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,14 +73,35 @@
 			remoteGlobalIDString = 8ADD42991C21CF6500D1A801;
 			remoteInfo = HubFrameworkTests;
 		};
-		DD874DC91D9B1D4400BEF720 /* PBXContainerItemProxy */ = {
+		8AE6C00E1DF6E3560063B2B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8AE6C0001DF6E3110063B2B1;
+			remoteInfo = "HubFramework-iOS";
+		};
+		8AE6C0121DF6E3560063B2B1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8A07549D1C21A79200AFAD38;
-			remoteInfo = HubFramework;
+			remoteGlobalIDString = 8AE6BFFF1DF6E3110063B2B1;
+			remoteInfo = "HubFramework-iOS";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8AE6C0141DF6E3560063B2B1 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8AE6C0111DF6E3560063B2B1 /* HubFramework-iOS.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrettyPicturesActionHandler.swift; sourceTree = "<group>"; };
@@ -141,8 +163,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AE6C0101DF6E3560063B2B1 /* HubFramework-iOS.framework in Frameworks */,
 				8AD732081D9AD63700E4B427 /* SystemConfiguration.framework in Frameworks */,
-				8A42E1001D8C399D004FAC33 /* libHubFramework.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,6 +246,7 @@
 			children = (
 				8A42E0BB1D8C37B4004FAC33 /* libHubFramework.a */,
 				8A42E0BD1D8C37B4004FAC33 /* HubFrameworkTests.xctest */,
+				8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -352,11 +375,12 @@
 				8A42E08E1D8C36A3004FAC33 /* Sources */,
 				8A42E08F1D8C36A3004FAC33 /* Frameworks */,
 				8A42E0901D8C36A3004FAC33 /* Resources */,
+				8AE6C0141DF6E3560063B2B1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DD874DCA1D9B1D4400BEF720 /* PBXTargetDependency */,
+				8AE6C0131DF6E3560063B2B1 /* PBXTargetDependency */,
 			);
 			name = HubFrameworkDemo;
 			productName = HubFrameworkDemo;
@@ -423,6 +447,13 @@
 			fileType = wrapper.cfbundle;
 			path = HubFrameworkTests.xctest;
 			remoteRef = 8A42E0BC1D8C37B4004FAC33 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = "HubFramework-iOS.framework";
+			remoteRef = 8AE6C00E1DF6E3560063B2B1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -506,10 +537,10 @@
 			target = 8A42E0911D8C36A3004FAC33 /* HubFrameworkDemo */;
 			targetProxy = 657DFE141DC8E1B600F20C0E /* PBXContainerItemProxy */;
 		};
-		DD874DCA1D9B1D4400BEF720 /* PBXTargetDependency */ = {
+		8AE6C0131DF6E3560063B2B1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = HubFramework;
-			targetProxy = DD874DC91D9B1D4400BEF720 /* PBXContainerItemProxy */;
+			name = "HubFramework-iOS";
+			targetProxy = 8AE6C0121DF6E3560063B2B1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

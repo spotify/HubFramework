@@ -49,6 +49,7 @@
                                                                                       iconImageResolver:iconImageResolver];
     
     self.builder = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema iconImageResolver:iconImageResolver];
+    self.builder.bundle = [NSBundle bundleForClass:[self class]];
 }
 
 #pragma mark - Tests
