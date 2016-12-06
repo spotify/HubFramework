@@ -5,18 +5,20 @@ platform :ios do
 
   desc 'Run unit tests'
   lane :test do
-    run_tests(scheme: 'HubFramework', output_label: 'tests')
+    run_tests(project: 'HubFramework.xcodeproj', scheme: 'HubFramework', output_label: 'tests')
   end
 
   desc 'Run UI tests'
   lane :test_ui do
-    run_tests(scheme: 'HubFrameworkDemo', output_label: 'ui-tests')
+    run_tests(project: 'demo/HubFrameworkDemo.xcodeproj', scheme: 'HubFrameworkDemo', output_label: 'ui-tests')
   end
 
   private_lane :run_tests do |options|
+    project = options[:project]
     scheme = options[:scheme]
     output_label = options[:output_label]
 
+    UI.user_error!("No Xcode project provided") unless project
     UI.user_error!("No Xcode scheme provided") unless scheme
     UI.user_error!("No label for the output was provided") unless output_label
 
@@ -31,7 +33,7 @@ platform :ios do
     ENV['XCPRETTY_JSON_FILE_OUTPUT'] = "#{output_directory}/summary.json"
 
     scan(
-      :workspace => 'HubFramework.xcworkspace',
+      :project => project,
       :scheme => scheme,
       :devices => [device],
       :derived_data_path => 'build/DerivedData',
