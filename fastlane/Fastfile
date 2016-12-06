@@ -56,8 +56,6 @@ platform :ios do
     ENV['XCPRETTY_JSON_FILE_OUTPUT'] = 'build/demo/summary.json'
     demo_project = 'demo/HubFrameworkDemo.xcodeproj'
 
-    recreate_schemes(project: demo_project)
-
     xcodebuild(
       :build => true,
       :parallelize_targets => true,
@@ -92,6 +90,7 @@ platform :ios do
     )
   end
 
+
   desc 'Lint the source code and other linteable artifacts'
   lane :lint do
     pod_lib_lint(:quick => true)
@@ -104,6 +103,7 @@ platform :ios do
       :files => license_header_files
     )
   end
+
 
   desc 'Validate changes according to a set of rules'
   lane :validate_changes do
