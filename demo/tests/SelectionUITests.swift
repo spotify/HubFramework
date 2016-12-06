@@ -66,12 +66,12 @@ class SelectionUITests: UITestCase {
         XCTAssertTrue(rootCell.exists)
         
         let carouselCellA = rootCell.cells.element(boundBy: 0)
-        let carouselCellB = rootCell.cells.element(boundBy: 1)
+        let carouselCellB = rootCell.cells.element(boundBy: 2)
         XCTAssertTrue(carouselCellA.exists)
         XCTAssertTrue(carouselCellB.exists)
         
         // Start pressing, then move to the next cell. No selection should happen = we're still in pretty pictures
-        carouselCellA.press(forDuration: 1, thenDragTo: carouselCellB)
+        carouselCellA.press(forDuration: 3, thenDragTo: carouselCellB)
         XCTAssertTrue(app.navigationBars["Pretty Pictures"].exists)
     }
 
