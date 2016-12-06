@@ -49,7 +49,7 @@
                                                                                       iconImageResolver:iconImageResolver];
     
     self.builder = [[HUBComponentImageDataBuilderImplementation alloc] initWithJSONSchema:JSONSchema iconImageResolver:iconImageResolver];
-    self.builder.bundle = [NSBundle bundleForClass:[self class]];
+    self.builder.bundle = [NSBundle bundleForClass:self.class];
 }
 
 #pragma mark - Tests
@@ -140,7 +140,7 @@
     XCTAssertEqualObjects(self.builder.placeholderIconIdentifier, @"place_holder");
 	XCTAssertEqualObjects(self.builder.customData, @{@"key": @"value"});    
 
-    NSBundle * const bundle = [NSBundle bundleForClass:[self class]];
+    NSBundle * const bundle = [NSBundle bundleForClass:self.class];
     UIImage * const expectedImage = [UIImage imageNamed:@"testImage" inBundle:bundle compatibleWithTraitCollection:nil];
     XCTAssertNotNil(expectedImage);
     XCTAssertEqualObjects(self.builder.localImage, expectedImage);
