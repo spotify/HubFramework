@@ -28,12 +28,12 @@ The Hub Framework requires you to link with Apple's `SystemConfiguration` framew
 
 Each application using the Hub Framework will have one instance of the `HUBManager` class, which manages an instance of the framework. It’s recommended that you create this object early in your application’s lifecycle and keep it somewhere accessible - for example in your `AppDelegate`.
 
-In order to create a `HUBManager` instance, you need to supply implementations of the following 2 protocols:
+There are a few different ways to setup `HUBManager`, each providing different levels of customizability. The simplest way is to use the defaults, and just supply the following two parameters:
 
-- `HUBComponentLayoutManager`: For calculating margins and other layout attributes for components based on their layout traits.
-- `HUBComponentFallbackHandler`: For providing fallback information in case a component model’s component couldn’t be resolved by the framework.
+- `componentMargin`: What margin that should be used in between components.
+- `componentFallbackBlock/Closure`: A block/closure that returns a component to use for fallback, in case a default one couldn't be matched.
 
-For an example of how to set up the above, see the [demo app](https://github.com/spotify/HubFramework/tree/master/demo) which contains implementations of both of these protocols. Also refer to their individual protocol documentation for more information about their required APIs.
+For an example of how to set up the above, see the [demo app](https://github.com/spotify/HubFramework/tree/master/demo) which uses this way of setting up the Hub Framework.
 
 There are also several optional parameters that you can choose to supply in case you want to further customize how the Hub Framework behaves. For more information about those, see the documentation for `HUBManager`, or the [Further customization section](#further-customization).
 
@@ -127,6 +127,12 @@ The above is only one of many possible implementations. You could, for example, 
 You’re now ready to start building UIs using the Hub Framework. Head over to the [getting started guide](https://spotify.github.io/HubFramework/getting-started-guide.html) to learn how to register features and how to build content operations & components.
 
 In case you need it, you can also continue customizing the framework, adding support for additional features.
+
+### Building a custom component layout manager
+
+In case you want more fine-grained control over how components are laid out, you can supply your own layout manager by conforming to the `HUBComponentLayoutManager` protocol. A custom layout manager enables you to calculate margins for your components, given a set of layout traits.
+
+For more information about how layout works for components, see the [Layout programming guide](https://spotify.github.io/HubFramework/layout-programming-guide.html).
 
 ### Adding icon support
 
