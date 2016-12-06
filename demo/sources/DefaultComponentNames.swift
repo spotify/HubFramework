@@ -37,4 +37,6 @@ struct DefaultComponentNames {
     static var carousel: String { return "carousel" }
     /// A sticky header component - maps to `HeaderComponent`
     static var header: String { return "header" }
+    /// A container that wraps a component and adds a background color - maps to `ColorContainerComponent`
+    static var colorContainer: String { return "colorContainer" }
 }

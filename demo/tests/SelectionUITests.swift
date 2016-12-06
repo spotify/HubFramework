@@ -22,12 +22,11 @@
 import XCTest
 
 class SelectionUITests: UITestCase {
-    func testTappingTopLevelComponent() {
+    func testSelectingRootComponent() {
         let app = XCUIApplication()
 
         // Tap "Pretty pictures" and make sure we navigate to that page.
-        app.collectionViews.staticTexts["Pretty pictures"].tap()
-        XCTAssertTrue(app.navigationBars["Pretty Pictures"].exists)
+        navigateToPrettyPictures()
 
         // Tap the 2nd cell (index 1)
         let collectionView = rootCollectionView(for:app)
@@ -39,12 +38,11 @@ class SelectionUITests: UITestCase {
         XCTAssertFalse(app.navigationBars["Pretty Pictures"].exists)
     }
 
-    func testTappingNestedComponent() {
+    func testSelectingChildComponent() {
         let app = XCUIApplication()
 
         // Tap "Pretty pictures" and make sure we navigate to that page.
-        app.collectionViews.staticTexts["Pretty pictures"].tap()
-        XCTAssertTrue(app.navigationBars["Pretty Pictures"].exists)
+        navigateToPrettyPictures()
 
         // Tap the 2nd cell (index 1) in the 1st row (index 0)
         let collectionView = rootCollectionView(for:app)
@@ -55,6 +53,26 @@ class SelectionUITests: UITestCase {
 
         // Assert we've navigated away...
         XCTAssertFalse(app.navigationBars["Pretty Pictures"].exists)
+    }
+    
+    func testChildSelectionCancelledOnParentScrolling() {
+        let app = XCUIApplication()
+        navigateToPrettyPictures()
+        
+        let collectionView = rootCollectionView(for: app)
+        XCTAssertTrue(collectionView.exists)
+        
+        let rootCell = collectionView.children(matching: .cell).element(boundBy: 0)
+        XCTAssertTrue(rootCell.exists)
+        
+        let carouselCellA = rootCell.cells.element(boundBy: 0)
+        let carouselCellB = rootCell.cells.element(boundBy: 2)
+        XCTAssertTrue(carouselCellA.exists)
+        XCTAssertTrue(carouselCellB.exists)
+        
+        // Start pressing, then move to the next cell. No selection should happen = we're still in pretty pictures
+        carouselCellA.press(forDuration: 3, thenDragTo: carouselCellB)
+        XCTAssertTrue(app.navigationBars["Pretty Pictures"].exists)
     }
 
     /// This function walks the view hierarchy to find the hub framework's collection view.
@@ -67,5 +85,11 @@ class SelectionUITests: UITestCase {
         let viewControllerWrapperView = navigationTransitionView.children(matching: .other).element
         let hubContainerView = viewControllerWrapperView.children(matching: .other).element
         return hubContainerView.children(matching: .collectionView).element
+    }
+    
+    private func navigateToPrettyPictures() {
+        let app = XCUIApplication()
+        app.collectionViews.staticTexts["Pretty pictures"].tap()
+        XCTAssertTrue(app.navigationBars["Pretty Pictures"].exists)
     }
 }
