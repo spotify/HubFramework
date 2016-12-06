@@ -143,10 +143,6 @@ class CarouselComponent: NSObject, HUBComponentWithChildren, HUBComponentWithRes
         childDelegate?.component(self, didStopDisplayingChildAt: UInt(indexPath.item), view: cell)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        childDelegate?.component(self, childSelectedAt: UInt(indexPath.item), customData:nil)
-    }
-    
     // MARK: - Private utilities
     
     private static func makeCollectionViewLayout() -> UICollectionViewLayout {
