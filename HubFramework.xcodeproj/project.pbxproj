@@ -1444,6 +1444,7 @@
 		8ADD42A21C21CF6500D1A801 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = NO;
 				HUB_NON_ERROR_WARNINGS_0720 = "";
 				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
@@ -1460,6 +1461,7 @@
 		8ADD42A31C21CF6500D1A801 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = NO;
 				HUB_NON_ERROR_WARNINGS_0720 = "";
 				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
