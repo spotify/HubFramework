@@ -968,6 +968,41 @@
     }];
 }
 
+- (void)testComponentReusedOnCellReuse
+{
+    NSString *componentName = self.componentIdentifier.namePart;
+    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"A"].componentName = componentName;
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"B"].componentName = componentName;
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"C"].componentName = componentName;
+        return YES;
+    };
+
+    [self simulateViewControllerLayoutCycle];
+
+    NSIndexPath * const indexPathA = [NSIndexPath indexPathForItem:0 inSection:0];
+    id<UICollectionViewDataSource> dataSource = self.collectionView.dataSource;
+    UICollectionViewCell *cellA = [dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
+
+    [cellA prepareForReuse];
+    XCTAssertEqual(self.componentReusePool.componentsInUse.count, 1u);
+
+    NSIndexPath * const indexPathB = [NSIndexPath indexPathForItem:1 inSection:0];
+    [dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
+
+    XCTAssertEqual(self.componentReusePool.componentsInUse.count, 1u);
+    XCTAssertEqual(self.component.numberOfReuses, 1u);
+
+    [cellA prepareForReuse];
+    XCTAssertEqual(self.componentReusePool.componentsInUse.count, 1u);
+
+    NSIndexPath * const indexPathC = [NSIndexPath indexPathForItem:2 inSection:0];
+    [dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathC];
+
+    XCTAssertEqual(self.componentReusePool.componentsInUse.count, 2u);
+    XCTAssertEqual(self.component.numberOfReuses, 1u);
+}
+
 - (void)testCreatingAndReusingChildComponent
 {
     NSString * const componentNamespace = @"childComponentSelection";
