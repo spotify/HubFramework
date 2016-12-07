@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString * const localImageName = [imageDataSchema.localImageNamePath stringFromJSONDictionary:dictionary];
     
     if (localImageName != nil) {
-        NSBundle * const bundle = [NSBundle bundleForClass:[self class]];
+        NSBundle * const bundle = self.bundle ?: [NSBundle mainBundle];
         self.localImage = [UIImage imageNamed:localImageName inBundle:bundle compatibleWithTraitCollection:nil];
     }
 
