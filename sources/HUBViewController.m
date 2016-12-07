@@ -673,9 +673,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
 {
-    if (!componentWrapper.isRootComponent) {
-        [self.componentReusePool addComponentWrappper:componentWrapper];
-    }
+    [self.componentReusePool addComponentWrappper:componentWrapper];
 
     if (componentWrapper.view) {
         UIView *componentView = componentWrapper.view;
@@ -716,19 +714,16 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     HUBComponentCollectionViewCell * const cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier
                                                                                             forIndexPath:indexPath];
-    
-    if (cell.component == nil) {
-        HUBComponentWrapper * const componentWrapper = [self.componentReusePool componentWrapperForModel:componentModel
-                                                                                                delegate:self
-                                                                                                  parent:nil];
-        
-        self.componentWrappersByCellIdentifier[cell.identifier] = componentWrapper;
-        cell.component = componentWrapper;
-        [componentWrapper viewDidMoveToSuperview:cell];
-        [self didAddComponentWrapper:componentWrapper];
-    }
-    
-    HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:cell];
+
+    HUBComponentWrapper * const componentWrapper = [self.componentReusePool componentWrapperForModel:componentModel
+                                                                                            delegate:self
+                                                                                              parent:nil];
+
+    self.componentWrappersByCellIdentifier[cell.identifier] = componentWrapper;
+    cell.component = componentWrapper;
+    [componentWrapper viewDidMoveToSuperview:cell];
+    [self didAddComponentWrapper:componentWrapper];
+
     [self configureComponentWrapper:componentWrapper withModel:componentModel containerViewSize:collectionView.frame.size];
     
     [self loadImagesForComponentWrapper:componentWrapper
