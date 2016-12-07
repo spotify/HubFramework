@@ -94,7 +94,9 @@
                                     viewControllerScrollHandler:nil];
     
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
-    XCTAssertNotNil([self.manager.viewControllerFactory createViewControllerForViewURI:viewURI]);
+    
+    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    XCTAssertEqualObjects(viewController.viewURI, viewURI);
 }
 
 - (void)testCreatingViewControllerForInvalidViewURIReturnsNil

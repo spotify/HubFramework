@@ -62,7 +62,6 @@ NS_ASSUME_NONNULL_BEGIN
     HUBCollectionViewDelegate
 >
 
-@property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, strong, readonly) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
