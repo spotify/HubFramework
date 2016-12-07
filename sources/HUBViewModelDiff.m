@@ -251,6 +251,7 @@ typedef NS_ENUM(NSUInteger, HUBDiffTraceType) {
 
 @end
 
+// Optimization – when going from an empty sequence, everything is an insertion.
 static NSArray<HUBDiffTrace *> *HUBDiffInsertionTracesFromViewModel(id<HUBViewModel> viewModel) {
     NSInteger toCount = (NSInteger)viewModel.bodyComponentModels.count;
     NSMutableArray<HUBDiffTrace *> *traces = [NSMutableArray arrayWithCapacity:(NSUInteger)toCount];
@@ -259,10 +260,11 @@ static NSArray<HUBDiffTrace *> *HUBDiffInsertionTracesFromViewModel(id<HUBViewMo
         HUBDiffTrace *trace = [[HUBDiffTrace alloc] initWithFromPoint:HUBDiffPointMake(0, i) toPoint:HUBDiffPointMake(0, i + 1) changes:0];
         [traces addObject:trace];
     }
-    
+
     return traces;
 }
 
+// Optimization – when going to an empty sequence, everything is a deletion.
 static NSArray<HUBDiffTrace *> *HUBDiffDeletionTracesFromViewModel(id<HUBViewModel> viewModel) {
     NSInteger fromCount = (NSInteger)viewModel.bodyComponentModels.count;
     NSMutableArray<HUBDiffTrace *> *traces = [NSMutableArray arrayWithCapacity:(NSUInteger)fromCount];
@@ -275,6 +277,7 @@ static NSArray<HUBDiffTrace *> *HUBDiffDeletionTracesFromViewModel(id<HUBViewMod
     return traces;
 }
 
+// Calculating the different paths between the two sequences.
 static NSArray<HUBDiffTrace *> *HUBDiffMyersTracesBetweenViewModels(id<HUBViewModel> fromViewModel, id<HUBViewModel> toViewModel) {
     NSInteger fromCount = (NSInteger)fromViewModel.bodyComponentModels.count;
     NSInteger toCount = (NSInteger)toViewModel.bodyComponentModels.count;

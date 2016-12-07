@@ -29,8 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * The prototype of a function used to calculate a list of changes to get from
  * the one view model to another.
+ *
+ * @param from The view model that is being transitioned from.
+ * @param to The view model that is being transitioned to.
  */
-typedef HUBViewModelDiff *(HUBDiffAlgorithm)(id<HUBViewModel>, id<HUBViewModel>);
+typedef HUBViewModelDiff *(HUBDiffAlgorithm)(id<HUBViewModel> from, id<HUBViewModel> to);
 
 /** 
  * An implementation of the longest-common-subsequence.
