@@ -28,9 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewModelUtilities : NSObject
 
+/// Creates a component model with the given identifier and custom data.
 + (id<HUBComponentModel>)createComponentModelWithIdentifier:(NSString *)identifier
                                                  customData:(nullable NSDictionary *)customData;
 
+/// Creates a view model with the given identifier and components.
 + (id<HUBViewModel>)createViewModelWithIdentifier:(NSString *)identifier components:(NSArray<id<HUBComponentModel>> *)components;
 
 @end
