@@ -83,7 +83,7 @@
     
     HUBManager * const manager = [HUBManager managerWithComponentMargin:15
                                                  componentFallbackBlock:^id<HUBComponent>(HUBComponentCategory category) {
-                                                     XCTAssertEqual(category, HUBComponentCategoryRow);
+                                                     XCTAssertEqualObjects(category, HUBComponentCategoryRow);
                                                      fallbackComponentUsed = YES;
                                                      return [HUBComponentMock new];
                                                  }];

@@ -31,6 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Concrete implementation of the `HUBComponentImageDataBuilder` API
 @interface HUBComponentImageDataBuilderImplementation : NSObject <HUBComponentImageDataBuilder, NSCopying>
 
+/// Any specific bundle that the builder should use to load local images (defaults to the main bundle)
+@property (nonatomic, weak, nullable) NSBundle *bundle;
+
 /**
  *  Initialize an instance of this class with its required dependencies
  *

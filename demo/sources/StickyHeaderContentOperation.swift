@@ -42,8 +42,12 @@ class StickyHeaderContentOperation: NSObject, HUBContentOperation {
         let reloadCountRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "row-reloadCount")
         reloadCountRowBuilder.title = "Number of reloads: \(performCount)"
         
-        // Add a link to the "Pretty pictures" feature, for use in UI tests
-        let prettyPicturesRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "row-prettyPictures")
+        // Add a button to go to the "Pretty pictures" feature, for use in UI tests, wrapped in a color container
+        let colorContainerBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "colorContainer")
+        colorContainerBuilder.componentName = DefaultComponentNames.colorContainer
+        colorContainerBuilder.customData = [ColorContainerComponent.CustomDataKeys.color: ColorContainerComponent.Color.green.rawValue]
+        
+        let prettyPicturesRowBuilder = colorContainerBuilder.builderForChild(withIdentifier: "row-prettyPictures")
         prettyPicturesRowBuilder.title = "Go to Pretty Pictures"
         prettyPicturesRowBuilder.targetBuilder.uri = .prettyPicturesViewURI
         

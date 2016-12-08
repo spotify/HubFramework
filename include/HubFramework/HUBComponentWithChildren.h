@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  to be truly dynamic with which child components they support.
  *
  *  Components created this way are retained and managed by the Hub Framework, and reused whenever they are sent the
- *  `prepareViewForReuse` message.
+ *  `prepareViewForReuse` message. Selection for them is also automatically handled, just like it is for root components.
  *
  *  @return A component that was either newly created, or reused - if an inactive component of the same type was available.
  *          The component will have its view loaded and resized according to its parent and the component's `preferredViewSize`,
@@ -80,16 +80,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)component:(id<HUBComponentWithChildren>)component didStopDisplayingChildAtIndex:(NSUInteger)childIndex view:(UIView *)childView;
 
 /**
- *  Notify the Hub Framework that a component's child component has been selected
+ *  Notify the Hub Framework that a custom child component view was selected
  *
  *  @param component The parent component
  *  @param childIndex The index of the child component that was selected
- *  @param customData  Any custom data to use when the selection is handled. Will be available on the `HUBActionContext` passed to any actions handling the selection.
+ *  @param customData Any custom data to use when the selection is handled. Will be available on the `HUBActionContext`
+ *         passed to any actions handling the selection.
  *
- *  If your component has nested child components, you should call this method every time a child component was
- *  selected by the user, to enable the Hub Framework to handle the selection.
+ *  If you implement your child components as custom `UIViews` (that is, not using `HUBComponent` implementations resolved
+ *  using `childDelegate`), you can call this method to have the Hub Framework perform selection handling on behalf of your
+ *  child component.
+ *
+ *  If you are not using custom views, but rather nested `HUBComponent` implementations, you don't have to call this method,
+ *  as the Hub Framework will automatically manage selection for those components.
  */
-- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex customData:(nullable NSDictionary<NSString *, id> *)customData;
+- (void)component:(id<HUBComponentWithChildren>)component
+        childWithCustomViewSelectedAtIndex:(NSUInteger)childIndex
+        customData:(nullable NSDictionary<NSString *, id> *)customData;
 
 @end
 

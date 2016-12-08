@@ -233,7 +233,9 @@ NS_ASSUME_NONNULL_BEGIN
     // No-op
 }
 
-- (void)component:(id<HUBComponentWithChildren>)component childSelectedAtIndex:(NSUInteger)childIndex customData:(nullable NSDictionary *)customData
+- (void)component:(id<HUBComponentWithChildren>)component
+        childWithCustomViewSelectedAtIndex:(NSUInteger)childIndex
+        customData:(nullable NSDictionary<NSString *, id> *)customData
 {
     // No-op
 }

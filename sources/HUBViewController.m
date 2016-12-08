@@ -62,7 +62,6 @@ NS_ASSUME_NONNULL_BEGIN
     HUBCollectionViewDelegate
 >
 
-@property (nonatomic, copy, readonly) NSURL *viewURI;
 @property (nonatomic, strong, readonly) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
@@ -598,6 +597,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     childComponentView.frame = CGRectMake(0, 0, preferredViewSize.width, preferredViewSize.height);
     
     [self loadImagesForComponentWrapper:childComponentWrapper childIndex:nil];
+    [childComponentWrapper viewDidMoveToSuperview:HUBComponentLoadViewIfNeeded(componentWrapper)];
     
     return childComponentWrapper;
 }
@@ -672,9 +672,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
 {
-    if (!componentWrapper.isRootComponent) {
-        [self.componentReusePool addComponentWrappper:componentWrapper];
-    }
+    [self.componentReusePool addComponentWrappper:componentWrapper];
 
     if (componentWrapper.view) {
         UIView *componentView = componentWrapper.view;
@@ -715,19 +713,16 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     HUBComponentCollectionViewCell * const cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier
                                                                                             forIndexPath:indexPath];
-    
-    if (cell.component == nil) {
-        HUBComponentWrapper * const componentWrapper = [self.componentReusePool componentWrapperForModel:componentModel
-                                                                                                delegate:self
-                                                                                                  parent:nil];
-        
-        self.componentWrappersByCellIdentifier[cell.identifier] = componentWrapper;
-        cell.component = componentWrapper;
-        [componentWrapper viewDidMoveToSuperview:cell];
-        [self didAddComponentWrapper:componentWrapper];
-    }
-    
-    HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:cell];
+
+    HUBComponentWrapper * const componentWrapper = [self.componentReusePool componentWrapperForModel:componentModel
+                                                                                            delegate:self
+                                                                                              parent:nil];
+
+    self.componentWrappersByCellIdentifier[cell.identifier] = componentWrapper;
+    cell.component = componentWrapper;
+    [componentWrapper viewDidMoveToSuperview:cell];
+    [self didAddComponentWrapper:componentWrapper];
+
     [self configureComponentWrapper:componentWrapper withModel:componentModel containerViewSize:collectionView.frame.size];
     
     [self loadImagesForComponentWrapper:componentWrapper
