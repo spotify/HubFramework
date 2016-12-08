@@ -26,7 +26,7 @@
 @implementation HUBComponentRegistryMock
 
 - (void)registerComponentFactory:(id<HUBComponentFactory>)componentFactory
-                    forNamespace:(NSString *)componentNamespace NS_SWIFT_NAME(register(componentFactory:namespace:))
+                    forNamespace:(NSString *)componentNamespace
 {
     // Do nothing.
 }
