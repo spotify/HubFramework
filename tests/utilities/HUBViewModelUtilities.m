@@ -22,7 +22,10 @@
 #import "HUBViewModelUtilities.h"
 
 #import "HUBComponentModelImplementation.h"
+#import "HUBIdentifier.h"
 #import "HUBViewModelImplementation.h"
+
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
