@@ -164,6 +164,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The identifier of the feature that this view controller belongs to
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
 
+/// The URI that this view controller was resolved from
+@property (nonatomic, copy, readonly) NSURL *viewURI;
+
 /**
  *  The current view model that the view controller is using
  *

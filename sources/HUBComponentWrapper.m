@@ -209,6 +209,9 @@ NS_ASSUME_NONNULL_BEGIN
         
         [self saveComponentUIState];
         [self.component prepareViewForReuse];
+
+        [self.childrenByIndex removeAllObjects];
+        [self.visibleChildViewsByIndex removeAllObjects];
     }
     
     self.model = model;
@@ -225,9 +228,13 @@ NS_ASSUME_NONNULL_BEGIN
     NSNumber * const index = @(self.model.index);
     
     HUBComponentWrapper * const parent = self.parent;
-    parent.childrenByIndex[index] = nil;
-    parent.visibleChildViewsByIndex[index] = nil;
+    if (parent.childrenByIndex[index] == self) {
+        parent.childrenByIndex[index] = nil;
+        parent.visibleChildViewsByIndex[index] = nil;
+    }
     
+    self.parent = nil;
+
     [self.delegate sendComponentWrapperToReusePool:self];
 }
 

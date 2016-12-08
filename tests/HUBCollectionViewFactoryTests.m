@@ -30,16 +30,6 @@
 
 @implementation HUBCollectionViewFactoryTests
 
-- (void)setUp
-{
-    [super setUp];
-}
-
-- (void)tearDown
-{
-    [super tearDown];
-}
-
 - (void)testThatTheFactoryCreatesNonNilInstances
 {
     HUBCollectionViewFactory *factory = [HUBCollectionViewFactory new];

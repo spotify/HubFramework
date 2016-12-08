@@ -42,6 +42,12 @@
     self.actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionAction];
 }
 
+- (void)tearDown
+{
+    self.actionRegistry = nil;
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testRegisteringFactoryAndCreatingAction

@@ -75,6 +75,15 @@
                                       appendedContentOperationFactory:nil];
 }
 
+- (void)tearDown
+{
+    self.defaultActionHandler = nil;
+    self.defaultContentReloadPolicy = nil;
+    self.manager = nil;
+
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testCreatingViewControllerForValidViewURI
@@ -94,7 +103,9 @@
                                     viewControllerScrollHandler:nil];
     
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
-    XCTAssertNotNil([self.manager.viewControllerFactory createViewControllerForViewURI:viewURI]);
+    
+    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    XCTAssertEqualObjects(viewController.viewURI, viewURI);
 }
 
 - (void)testCreatingViewControllerForInvalidViewURIReturnsNil

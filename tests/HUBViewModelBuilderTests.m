@@ -56,6 +56,15 @@
                                                                iconImageResolver:self.iconImageResolver];
 }
 
+- (void)tearDown
+{
+    self.componentDefaults = nil;
+    self.iconImageResolver = nil;
+    self.builder = nil;
+
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testPropertyAssignment

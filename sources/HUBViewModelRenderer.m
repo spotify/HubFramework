@@ -68,6 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
             [collectionView setNeedsLayout];
             [collectionView layoutIfNeeded];
         }
+        self.lastRenderedViewModel = viewModel;
         completionBlock();
     } else {
         void (^updateBlock)() = ^{
@@ -82,6 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
                                      addHeaderMargin:addHeaderMargin];
                 
             } completion:^(BOOL finished) {
+                self.lastRenderedViewModel = viewModel;
                 completionBlock();
             }];
         };
@@ -92,8 +94,6 @@ NS_ASSUME_NONNULL_BEGIN
             [UIView performWithoutAnimation:updateBlock];
         }
     }
-
-    self.lastRenderedViewModel = viewModel;
 }
 
 @end

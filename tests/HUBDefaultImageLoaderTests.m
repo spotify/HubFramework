@@ -55,7 +55,12 @@
 
 - (void)tearDown
 {
-    [NSURLProtocol unregisterClass:[HUBURLProtocolMock class]];
+    self.session = nil;
+    self.imageLoader = nil;
+    self.loadedImage = nil;
+    self.loadedImageURL = nil;
+    self.loadingError = nil;
+
     [super tearDown];
 }
 

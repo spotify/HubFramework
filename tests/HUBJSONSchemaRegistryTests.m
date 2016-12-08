@@ -50,6 +50,13 @@
                                                                          iconImageResolver:iconImageResolver];
 }
 
+- (void)tearDown
+{
+    self.registry = nil;
+
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testRegisteringRetrievingAndRemovingCustomSchema
