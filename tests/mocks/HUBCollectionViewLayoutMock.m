@@ -46,9 +46,4 @@
     [self.capturedViewModelDiffs addObject:nonNullDiff];
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [[UICollectionViewLayoutAttributes alloc] init];
-}
-
 @end
