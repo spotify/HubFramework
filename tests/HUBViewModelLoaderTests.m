@@ -67,7 +67,10 @@
 - (void)tearDown
 {
     self.loader = nil;
+    self.featureInfo = nil;
+    self.contentReloadPolicy = nil;
     self.connectivityStateResolver.state = HUBConnectivityStateOnline;
+    self.connectivityStateResolver = nil;
     self.viewModelFromSuccessDelegateMethod = nil;
     self.errorFromFailureDelegateMethod = nil;
     
