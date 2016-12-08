@@ -77,6 +77,8 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
 
 @end
 
+#pragma mark - Longest common subsequence
+
 static NSArray<NSString *> *HUBDiffComponentIdentifiersFromViewModel(id<HUBViewModel> viewModel) {
     NSMutableArray *identifiers = [NSMutableArray arrayWithCapacity:viewModel.bodyComponentModels.count];
     for (id<HUBComponentModel> model in viewModel.bodyComponentModels) {
@@ -164,6 +166,12 @@ HUBViewModelDiff *HUBDiffLCSAlgorithm(id<HUBViewModel> fromViewModel, id<HUBView
                                              reloads:[reloads copy]];
 }
 
+#pragma mark - Myers algorithm
+
+/**
+ * A point representing movement within the acyclic edit graph, with x being the position in the sequence being,
+ * transitioned from and y the position in the sequence transitioned to.
+ */ 
 typedef struct {
     NSInteger x;
     NSInteger y;
@@ -173,91 +181,71 @@ static inline HUBDiffPoint HUBDiffPointMake(NSInteger x, NSInteger y) {
     return (HUBDiffPoint){ .x = x, .y = y };
 }
 
-typedef struct {
-    NSInteger changes;
-    NSInteger diagonal;
-    NSInteger previousX;
-    NSInteger nextX;
-} HUBDiffTraceStep;
-
-static inline HUBDiffTraceStep HUBDiffTraceStepMake(NSInteger changes, NSInteger diagonal, NSInteger previousX, NSInteger nextX) {
-    return (HUBDiffTraceStep){ .changes = changes, .diagonal = diagonal, .previousX = previousX, .nextX = nextX };
-}
-
-typedef NS_ENUM(NSUInteger, HUBDiffTraceType) {
-    HUBDiffTraceTypeInsert,
-    HUBDiffTraceTypeDelete,
-    HUBDiffTraceTypeMatchPoint
+typedef NS_ENUM(NSUInteger, HUBDiffStepType) {
+    HUBDiffStepTypeInsert,
+    HUBDiffStepTypeDelete,
+    HUBDiffStepTypeMatchPoint
 };
 
-@interface HUBDiffTrace : NSObject
+static inline HUBDiffStepType HUBDiffStepTypeInfer(NSInteger k, NSInteger d, NSInteger previousX, NSInteger nextX) {
+    // k = -d and k = +d are edge cases which can only be reached through vertical and horizontal movement, respectively
+    if (k == -d) {
+        return HUBDiffStepTypeInsert;
+    } else if (k == d) {
+        return HUBDiffStepTypeDelete;
+    } else {
+        // If the next x is greater than the previous, it is a horizontal movement and thus an insertion.
+        if (previousX < nextX) {
+            return HUBDiffStepTypeInsert;
+        } else {
+            return HUBDiffStepTypeDelete;
+        }
+    }
+}
+
+@interface HUBDiffStep : NSObject
 
 @property (nonatomic, assign, readonly) HUBDiffPoint from;
 @property (nonatomic, assign, readonly) HUBDiffPoint to;
-@property (nonatomic, assign, readonly) NSInteger changes;
-@property (nonatomic, assign, readonly) HUBDiffTraceType type;
+@property (nonatomic, assign, readonly) HUBDiffStepType type;
 
 @end
 
-@implementation HUBDiffTrace
+@implementation HUBDiffStep
 
-+ (instancetype)nextTraceFromStep:(HUBDiffTraceStep)step
-{
-    HUBDiffTraceType type;
-    if (step.diagonal == -(step.changes)) {
-        type = HUBDiffTraceTypeInsert;
-    } else if (step.diagonal != step.changes) {
-        if (step.previousX < step.nextX) {
-            type = HUBDiffTraceTypeInsert;
-        } else {
-            type = HUBDiffTraceTypeDelete;
-        }
-    } else {
-        type = HUBDiffTraceTypeDelete;
-    }
-    
-    if (type == HUBDiffTraceTypeInsert) {
-        NSInteger x = step.nextX;
-        
-        return [[self alloc] initWithFromPoint:HUBDiffPointMake(x, x - step.diagonal - 1) toPoint:HUBDiffPointMake(x, x - step.diagonal) changes:step.changes];
-    } else {
-        NSInteger x = step.previousX + 1;
-
-        return [[self alloc] initWithFromPoint:HUBDiffPointMake(x - 1, x - step.diagonal) toPoint:HUBDiffPointMake(x, x - step.diagonal) changes:step.changes];
-    }
-}
-
-- (instancetype)initWithFromPoint:(HUBDiffPoint)fromPoint toPoint:(HUBDiffPoint)toPoint changes:(NSInteger)changes
+- (instancetype)initWithFromPoint:(HUBDiffPoint)fromPoint toPoint:(HUBDiffPoint)toPoint
 {
     self = [super init];
     if (self) {
         _from = fromPoint;
         _to = toPoint;
-        _changes = changes;
     }
     return self;
 }
 
-- (HUBDiffTraceType)type
+- (HUBDiffStepType)type
 {
+    // Diagonal movement, the two elements match.
     if (self.from.x + 1 == self.to.x && self.from.y + 1 == self.to.y) {
-        return HUBDiffTraceTypeMatchPoint;
+        return HUBDiffStepTypeMatchPoint;
+    // Vertical movement, insertion
     } else if (self.from.y < self.to.y) {
-        return HUBDiffTraceTypeInsert;
+        return HUBDiffStepTypeInsert;
+    // Horizontal movement, insertion
     } else {
-        return HUBDiffTraceTypeDelete;
+        return HUBDiffStepTypeDelete;
     }
 }
 
 @end
 
 // Optimization – when going from an empty sequence, everything is an insertion.
-static NSArray<HUBDiffTrace *> *HUBDiffInsertionTracesFromViewModel(id<HUBViewModel> viewModel) {
+static NSArray<HUBDiffStep *> *HUBDiffInsertionTracesFromViewModel(id<HUBViewModel> viewModel) {
     NSInteger toCount = (NSInteger)viewModel.bodyComponentModels.count;
-    NSMutableArray<HUBDiffTrace *> *traces = [NSMutableArray arrayWithCapacity:(NSUInteger)toCount];
+    NSMutableArray<HUBDiffStep *> *traces = [NSMutableArray arrayWithCapacity:(NSUInteger)toCount];
 
     for (NSInteger i = 0; i < toCount; i++) {
-        HUBDiffTrace *trace = [[HUBDiffTrace alloc] initWithFromPoint:HUBDiffPointMake(0, i) toPoint:HUBDiffPointMake(0, i + 1) changes:0];
+        HUBDiffStep *trace = [[HUBDiffStep alloc] initWithFromPoint:HUBDiffPointMake(0, i) toPoint:HUBDiffPointMake(0, i + 1)];
         [traces addObject:trace];
     }
 
@@ -265,12 +253,12 @@ static NSArray<HUBDiffTrace *> *HUBDiffInsertionTracesFromViewModel(id<HUBViewMo
 }
 
 // Optimization – when going to an empty sequence, everything is a deletion.
-static NSArray<HUBDiffTrace *> *HUBDiffDeletionTracesFromViewModel(id<HUBViewModel> viewModel) {
+static NSArray<HUBDiffStep *> *HUBDiffDeletionTracesFromViewModel(id<HUBViewModel> viewModel) {
     NSInteger fromCount = (NSInteger)viewModel.bodyComponentModels.count;
-    NSMutableArray<HUBDiffTrace *> *traces = [NSMutableArray arrayWithCapacity:(NSUInteger)fromCount];
+    NSMutableArray<HUBDiffStep *> *traces = [NSMutableArray arrayWithCapacity:(NSUInteger)fromCount];
 
     for (NSInteger i = 0; i < fromCount; i++) {
-        HUBDiffTrace *trace = [[HUBDiffTrace alloc] initWithFromPoint:HUBDiffPointMake(i, 0) toPoint:HUBDiffPointMake(i + 1, 0) changes:0];
+        HUBDiffStep *trace = [[HUBDiffStep alloc] initWithFromPoint:HUBDiffPointMake(i, 0) toPoint:HUBDiffPointMake(i + 1, 0)];
         [traces addObject:trace];
     }
     
@@ -278,12 +266,19 @@ static NSArray<HUBDiffTrace *> *HUBDiffDeletionTracesFromViewModel(id<HUBViewMod
 }
 
 // Calculating the different paths between the two sequences.
-static NSArray<HUBDiffTrace *> *HUBDiffMyersTracesBetweenViewModels(id<HUBViewModel> fromViewModel, id<HUBViewModel> toViewModel) {
+static NSArray<HUBDiffStep *> *HUBDiffMyersTracesBetweenViewModels(id<HUBViewModel> fromViewModel, id<HUBViewModel> toViewModel) {
     NSInteger fromCount = (NSInteger)fromViewModel.bodyComponentModels.count;
     NSInteger toCount = (NSInteger)toViewModel.bodyComponentModels.count;
     NSInteger max = fromCount + toCount;
 
-    NSMutableArray *traces = [NSMutableArray arrayWithCapacity:(NSUInteger)max];
+    /**
+     * The algorithm can be visualized with an acyclic graph where the elements of the first sequence are
+     * along the x-axis and the second sequence along the y-axis. The goal is to find the shortest path
+     * from the top left (x0, y0) to the bottom right (xn, ym). A horizontal movement (x+1) represents
+     * a deletion from the first sequence, and a vertical movement (y+1) represents an insertion from the
+     * second sequence. A diagonal movement  (x+1, y+1) represents a match between the two sequences.
+     */
+    NSMutableArray *steps = [NSMutableArray arrayWithCapacity:(NSUInteger)max];
 
     NSUInteger endpointCount = 2 * (NSUInteger)max + 1;
     NSInteger *endpoints = malloc(sizeof(NSInteger) * endpointCount);
@@ -292,51 +287,115 @@ static NSArray<HUBDiffTrace *> *HUBDiffMyersTracesBetweenViewModels(id<HUBViewMo
     }
     endpoints[max + 1] = 0;
 
-    for (NSInteger changes = 0; changes <= max; changes++) {
-        for (NSInteger diagonal = -changes; diagonal <= changes; diagonal += 2) {
-            NSInteger index = diagonal + max;
+    /**
+     * d represents the number of non-diagonal steps taken. The algorithm is iterative and explores every
+     * path one step at a time (with the exception of diagonal steps).
+     */
+    for (NSInteger d = 0; d <= max; d++) {
+        /**
+         * k represents the diagonal movement within the graph, with a "k-line" being a diagonal line through the graph
+         * defined by the equation y = x - k. k can be bounded between [-d...d] since certain k-lines can only be
+         * reached with a certain number of edits. E.g. the line k = -2 starts at (x0, y2), meaning it must be 
+         * preceded by two vertical movements.
+         */
+        for (NSInteger k = -d; k <= d; k += 2) {
+            /**
+             * The goal here is to find the furthest reaching path for the given k-line. To get to this k-line from an
+             * earlier step, we must move from the adjacent k-lines (either k - 1 or k + 1). These points are retrieved
+             * from earlier iterations in the endpoints array.
+             */
+            NSInteger index = k + max;
 
-            HUBDiffTraceStep step = HUBDiffTraceStepMake(changes, diagonal, endpoints[index - 1], endpoints[index + 1]);
-            HUBDiffTrace *trace = [HUBDiffTrace nextTraceFromStep:step];
+            NSInteger previousX = endpoints[index - 1];
+            NSInteger nextX = endpoints[index + 1];
+            HUBDiffStepType type = HUBDiffStepTypeInfer(k, d, previousX, nextX);
 
-            if (trace.to.x <= fromCount && trace.to.y <= toCount) {
-                [traces addObject:trace];
+            // Once the type of edit is determined, the next step can be taken.
+            HUBDiffStep *step = nil;
+            if (type == HUBDiffStepTypeInsert) {
+                NSInteger x = nextX;
+                step = [[HUBDiffStep alloc] initWithFromPoint:HUBDiffPointMake(x, x - k - 1) toPoint:HUBDiffPointMake(x, x - k)];
+            } else {
+                NSInteger x = previousX + 1;
+                step = [[HUBDiffStep alloc] initWithFromPoint:HUBDiffPointMake(x - 1, x - k) toPoint:HUBDiffPointMake(x, x - k)];
+            }
+            
+            /// Here the goal is to follow the diagonal line with additional steps to find the longest common sequence
+            if (step.to.x <= fromCount && step.to.y <= toCount) {
+                [steps addObject:step];
 
-                NSInteger x = trace.to.x;
-                NSInteger y = trace.to.y;
+                NSInteger x = step.to.x;
+                NSInteger y = step.to.y;
                 
                 while (x >= 0 && y >= 0 && x < fromCount && y < toCount) {
                     id<HUBComponentModel> target = toViewModel.bodyComponentModels[(NSUInteger)y];
                     id<HUBComponentModel> base = fromViewModel.bodyComponentModels[(NSUInteger)x];
 
+                    /**
+                     * Only the element's identity is compared here, as equality is checked later in order to determine
+                     * the location of updates.
+                     */ 
                     if ([base.identifier isEqual:target.identifier]) {
+                        // A match is found and another step can be taken diagonally.
                         x += 1;
                         y += 1;
 
-                        HUBDiffTrace *nextTrace = [[HUBDiffTrace alloc] initWithFromPoint:HUBDiffPointMake(x - 1, y - 1) toPoint:HUBDiffPointMake(x, y) changes:changes];
+                        HUBDiffStep *nextStep = [[HUBDiffStep alloc] initWithFromPoint:HUBDiffPointMake(x - 1, y - 1) toPoint:HUBDiffPointMake(x, y)];
                         
-                        [traces addObject:nextTrace];
+                        [steps addObject:nextStep];
                     } else {
                         break;
                     }
                 }
 
-                // Only the x-point needs to be stored since y = x - k
+                // Only the x-point needs to be stored since y can be inferred with y = x - k
                 endpoints[index] = x;
 
+                // The end of the graph has been reached, and a solution has been found.
                 if (x >= fromCount && y >= toCount) {
                     free(endpoints);
-                    return traces;
+                    return steps;
                 }
             }
         }
     }
 
+    // Unless there is an early return, no solution was found. This should never happen.
     free(endpoints);
     return @[];
 }
 
-static NSArray<HUBDiffTrace *> *HUBDiffTracesBetweenViewModels(id<HUBViewModel> fromViewModel, id<HUBViewModel> toViewModel) {
+/**
+ * Filtering out any steps not part of the solution path (or "snake").
+ */
+static NSArray<HUBDiffStep *> *HUBDiffFindPathFromSteps(NSArray<HUBDiffStep *> *steps) {
+    if (steps.count == 0) {
+        return steps;
+    }
+
+    NSMutableArray<HUBDiffStep *> *pathSteps = [NSMutableArray array];
+
+    HUBDiffStep *lastStep = steps.lastObject;
+    [pathSteps addObject:lastStep];
+
+    // Starting with the last step (being the last step of the solution) and tracing the path backwards.
+    if (lastStep.from.x != 0 || lastStep.from.y != 0) {
+        for (HUBDiffStep *step in steps.reverseObjectEnumerator) {
+            if (step.to.x == lastStep.from.x && step.to.y == lastStep.from.y) {
+                [pathSteps insertObject:step atIndex:0];
+                lastStep = step;
+
+                if (step.from.x == 0 && step.from.y == 0) {
+                    break;
+                }
+            }
+        }
+    }
+
+    return pathSteps;
+}
+
+static NSArray<HUBDiffStep *> *HUBDiffStepsBetweenViewModels(id<HUBViewModel> fromViewModel, id<HUBViewModel> toViewModel) {
     if (fromViewModel.bodyComponentModels.count == 0 && toViewModel.bodyComponentModels.count == 0) {
         return @[];
     } else if (fromViewModel.bodyComponentModels.count == 0) {
@@ -348,50 +407,27 @@ static NSArray<HUBDiffTrace *> *HUBDiffTracesBetweenViewModels(id<HUBViewModel> 
     }
 }
 
-static NSArray<HUBDiffTrace *> *HUBDiffFindPathFromTraces(NSArray<HUBDiffTrace *> *traces) {
-    if (traces.count == 0) {
-        return traces;
-    }
-
-    NSMutableArray<HUBDiffTrace *> *pathTraces = [NSMutableArray array];
-
-    HUBDiffTrace *lastTrace = traces.lastObject;
-    [pathTraces addObject:lastTrace];
-
-    if (lastTrace.from.x != 0 || lastTrace.from.y != 0) {
-        for (HUBDiffTrace *trace in traces.reverseObjectEnumerator) {
-            if (trace.to.x == lastTrace.from.x && trace.to.y == lastTrace.from.y) {
-                [pathTraces insertObject:trace atIndex:0];
-                lastTrace = trace;
-
-                if (trace.from.x == 0 && trace.from.y == 0) {
-                    break;
-                }
-            }
-        }
-    }
-
-    return pathTraces;
-}
-
 HUBViewModelDiff *HUBDiffMyersAlgorithm(id<HUBViewModel> fromViewModel, id<HUBViewModel> toViewModel) {
-    NSArray<HUBDiffTrace *> *traces = HUBDiffTracesBetweenViewModels(fromViewModel, toViewModel);
-    NSArray<HUBDiffTrace *> *path = HUBDiffFindPathFromTraces(traces);
+    NSArray<HUBDiffStep *> *steps = HUBDiffStepsBetweenViewModels(fromViewModel, toViewModel);
+    NSArray<HUBDiffStep *> *path = HUBDiffFindPathFromSteps(steps);
 
     NSMutableIndexSet *insertions = [NSMutableIndexSet indexSet];
     NSMutableIndexSet *deletions = [NSMutableIndexSet indexSet];
     NSMutableIndexSet *reloads = [NSMutableIndexSet indexSet];
-    for (HUBDiffTrace *trace in path) {
-        HUBDiffTraceType type = trace.type;
-        if (type == HUBDiffTraceTypeInsert) {
-            [insertions addIndex:(NSUInteger)trace.from.y];
-        } else if (type == HUBDiffTraceTypeDelete) {
-            [deletions addIndex:(NSUInteger)trace.from.x];
-        } else {
-            id<HUBComponentModel> base = fromViewModel.bodyComponentModels[(NSUInteger)trace.from.x];
-            id<HUBComponentModel> target = toViewModel.bodyComponentModels[(NSUInteger)trace.from.y];
+
+    // Converting the edit path to insert|delete|reload indexes
+    for (HUBDiffStep *step in path) {
+        HUBDiffStepType type = step.type;
+        if (type == HUBDiffStepTypeInsert) {
+            [insertions addIndex:(NSUInteger)step.from.y];
+        } else if (type == HUBDiffStepTypeDelete) {
+            [deletions addIndex:(NSUInteger)step.from.x];
+        } else if (type == HUBDiffStepTypeMatchPoint) {
+            // Here we perform the deep equality check to determine if the element has actually changed.
+            id<HUBComponentModel> base = fromViewModel.bodyComponentModels[(NSUInteger)step.from.x];
+            id<HUBComponentModel> target = toViewModel.bodyComponentModels[(NSUInteger)step.from.y];
             if (![target isEqual:base]) {
-                [reloads addIndex:(NSUInteger)trace.from.x];
+                [reloads addIndex:(NSUInteger)step.from.x];
             }
         }
     }
