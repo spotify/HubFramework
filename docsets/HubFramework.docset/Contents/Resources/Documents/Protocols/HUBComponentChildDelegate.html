@@ -466,7 +466,7 @@
   to be truly dynamic with which child components they support.</p>
 
 <p>Components created this way are retained and managed by the Hub Framework, and reused whenever they are sent the
-  <code>prepareViewForReuse</code> message.</p>
+  <code>prepareViewForReuse</code> message. Selection for them is also automatically handled, just like it is for root components.</p>
 
                       </div>
                       <div class="declaration">
@@ -550,11 +550,6 @@
                        <span class="nf">view</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">childView</span><span class="p">;</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">component</span><span class="p">(</span><span class="n">_</span> <span class="nv">component</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="p">,</span> <span class="n">willDisplayChildAt</span> <span class="nv">childIndex</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">,</span> <span class="n">view</span> <span class="nv">childView</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
-
-                        </div>
                       </div>
                       <div>
                         <h4>Parameters</h4>
@@ -630,11 +625,6 @@
                              <span class="nf">view</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">childView</span><span class="p">;</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">component</span><span class="p">(</span><span class="n">_</span> <span class="nv">component</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="p">,</span> <span class="n">didStopDisplayingChildAt</span> <span class="nv">childIndex</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">,</span> <span class="n">view</span> <span class="nv">childView</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
-
-                        </div>
                       </div>
                       <div>
                         <h4>Parameters</h4>
@@ -688,9 +678,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)HUBComponentChildDelegate(im)component:childSelectedAtIndex:customData:"></a>
-                    <a name="//apple_ref/objc/Method/-component:childSelectedAtIndex:customData:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)HUBComponentChildDelegate(im)component:childSelectedAtIndex:customData:">-component:childSelectedAtIndex:customData:</a>
+                    <a name="/c:objc(pl)HUBComponentChildDelegate(im)component:childWithCustomViewSelectedAtIndex:customData:"></a>
+                    <a name="//apple_ref/objc/Method/-component:childWithCustomViewSelectedAtIndex:customData:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)HUBComponentChildDelegate(im)component:childWithCustomViewSelectedAtIndex:customData:">-component:childWithCustomViewSelectedAtIndex:customData:</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -698,10 +688,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Notify the Hub Framework that a component&rsquo;s child component has been selected</p>
+                        <p>Notify the Hub Framework that a custom child component view was selected</p>
 
-<p>If your component has nested child components, you should call this method every time a child component was
-  selected by the user, to enable the Hub Framework to handle the selection.</p>
+<p>If you implement your child components as custom <code>UIViews</code> (that is, not using <code><a href="../Protocols/HUBComponent.html">HUBComponent</a></code> implementations resolved
+  using <code>childDelegate</code>), you can call this method to have the Hub Framework perform selection handling on behalf of your
+  child component.</p>
+
+<p>If you are not using custom views, but rather nested <code><a href="../Protocols/HUBComponent.html">HUBComponent</a></code> implementations, you don&rsquo;t have to call this method,
+  as the Hub Framework will automatically manage selection for those components.</p>
 
                       </div>
                       <div class="declaration">
@@ -709,13 +703,9 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">component</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">component</span>
-    <span class="nf">childSelectedAtIndex</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">childIndex</span>
-              <span class="nf">customData</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*</span><span class="p">,</span> <span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">customData</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">component</span><span class="p">(</span><span class="n">_</span> <span class="nv">component</span><span class="p">:</span> <span class="kt"><a href="../Protocols/HUBComponentWithChildren.html">HUBComponentWithChildren</a></span><span class="p">,</span> <span class="n">childSelectedAt</span> <span class="nv">childIndex</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">,</span> <span class="nv">customData</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]?)</span></code></pre>
+    <span class="nf">childWithCustomViewSelectedAtIndex</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">childIndex</span>
+                            <span class="nf">customData</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*</span><span class="p">,</span> <span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span>
+                                           <span class="n">customData</span><span class="p">;</span></code></pre>
 
                         </div>
                       </div>
@@ -757,7 +747,8 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>Any custom data to use when the selection is handled. Will be available on the <code>HUBActionContext</code> passed to any actions handling the selection.</p>
+                                  <p>Any custom data to use when the selection is handled. Will be available on the <code>HUBActionContext</code>
+        passed to any actions handling the selection.</p>
 
                                 </div>
                               </td>
