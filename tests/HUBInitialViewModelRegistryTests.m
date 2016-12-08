@@ -38,6 +38,12 @@
     self.registry = [HUBInitialViewModelRegistry new];
 }
 
+- (void)tearDown
+{
+    self.registry = nil;
+    [super tearDown];
+}
+
 - (void)testRegisteringRetrievingAndRemovingInitialViewModel
 {
     id<HUBViewModel> const viewModel = [[HUBViewModelImplementation alloc] initWithIdentifier:@"id"

@@ -42,6 +42,12 @@
     self.registry = [HUBFeatureRegistryImplementation new];
 }
 
+- (void)tearDown
+{
+    self.registry = nil;
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testConflictingIdentifiersTriggerAssert

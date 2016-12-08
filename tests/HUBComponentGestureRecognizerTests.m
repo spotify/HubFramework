@@ -45,6 +45,14 @@
     [self.view addGestureRecognizer:self.gestureRecognizer];
 }
 
+- (void)tearDown
+{
+    self.gestureRecognizer = nil;
+    self.view = nil;
+
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testGestureRecognizerAddedToView

@@ -53,6 +53,13 @@
                                                                      actionIdentifiers:nil];
 }
 
+- (void)tearDown
+{
+    self.builder = nil;
+
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testEmptyBuilderStillProducingModel

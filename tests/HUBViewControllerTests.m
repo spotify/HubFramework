@@ -177,6 +177,44 @@
     self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return YES; };
 }
 
+- (void)tearDown
+{
+    self.contentOperation = nil;
+    self.contentReloadPolicy = nil;
+    self.componentIdentifier = nil;
+    self.component = nil;
+    self.componentFactory = nil;
+    self.collectionView = nil;
+    self.collectionViewFactory = nil;
+    self.componentRegistry = nil;
+    self.componentReusePool = nil;
+    self.scrollHandler = nil;
+    self.viewModelLoader = nil;
+    self.viewModelRenderer = nil;
+    self.imageLoader = nil;
+    self.initialViewModelRegistry = nil;
+    self.actionHandler = nil;
+    self.selectionAction = nil;
+    self.actionRegistry = nil;
+    self.viewURI = nil;
+    self.featureInfo = nil;
+    self.viewController = nil;
+    self.viewModelFromDelegateMethod = nil;
+    self.errorFromDelegateMethod = nil;
+    self.componentModelsFromAppearanceDelegateMethod = nil;
+    self.componentLayoutTraitsFromAppearanceDelegateMethod = nil;
+    self.componentModelsFromDisapperanceDelegateMethod = nil;
+    self.componentLayoutTraitsFromDisapperanceDelegateMethod = nil;
+    self.componentModelsFromSelectionDelegateMethod = nil;
+    self.componentViewsFromApperanceDelegateMethod = nil;
+    self.componentViewsFromReuseDelegateMethod = nil;
+    self.viewControllerDidFinishRenderingBlock = nil;
+    self.viewControllerShouldStartScrollingBlock = nil;
+    self.viewControllerShouldAutomaticallyManageTopContentInset = nil;
+
+    [super tearDown];
+}
+
 - (void)createViewControllerWithViewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
 {
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
