@@ -59,7 +59,11 @@
 
 - (void)tearDown
 {
+    self.hubManager = nil;
     self.service = nil;
+    self.viewController = nil;
+
+    [super tearDown];
 }
 
 #pragma mark - Tests

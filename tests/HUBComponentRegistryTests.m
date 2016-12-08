@@ -62,6 +62,14 @@ static NSString * const DefaultNamespace = @"default";
                                                                       iconImageResolver:nil];
 }
 
+- (void)tearDown
+{
+    self.componentFallbackHandler = nil;
+    self.registry = nil;
+
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testRegisteringComponentFactory

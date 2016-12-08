@@ -61,6 +61,14 @@
     self.gestureRecognizer = [HUBComponentGestureRecognizer new];
 }
 
+- (void)tearDown
+{
+    self.UIStateManager = nil;
+    self.gestureRecognizer = nil;
+
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testComponentStateRestoring
