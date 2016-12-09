@@ -119,6 +119,22 @@
                                                                         iconImageResolver:iconImageResolver];
 }
 
+- (void)tearDown
+{
+    self.compactComponent = nil;
+    self.compactComponentIdentifier = nil;
+    self.centeredComponent = nil;
+    self.centeredComponentIdentifier = nil;
+    self.fullWidthComponent = nil;
+    self.fullWidthComponentIdentifier = nil;
+    self.componentFactory = nil;
+    self.componentRegistry = nil;
+    self.componentLayoutManager = nil;
+    self.viewModelBuilder = nil;
+
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testTopLeftContentEdgeMargins

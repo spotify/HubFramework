@@ -75,6 +75,15 @@
                                       appendedContentOperationFactory:nil];
 }
 
+- (void)tearDown
+{
+    self.defaultActionHandler = nil;
+    self.defaultContentReloadPolicy = nil;
+    self.manager = nil;
+
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testCreatingViewControllerForValidViewURI

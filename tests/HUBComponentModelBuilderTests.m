@@ -64,6 +64,15 @@
                                                                 backgroundImageDataBuilder:nil];
 }
 
+- (void)tearDown
+{
+    self.modelIdentifier = nil;
+    self.componentDefaults = nil;
+    self.builder = nil;
+
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testPropertyAssignment

@@ -52,6 +52,14 @@
     self.builder.bundle = [NSBundle bundleForClass:self.class];
 }
 
+- (void)tearDown
+{
+    self.builder = nil;
+    self.schema = nil;
+
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testPropertyAssignment

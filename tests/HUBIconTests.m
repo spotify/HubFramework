@@ -40,6 +40,12 @@
     self.imageResolver = [HUBIconImageResolverMock new];
 }
 
+- (void)tearDown
+{
+    self.imageResolver = nil;
+    [super tearDown];
+}
+
 #pragma mark - Tests
 
 - (void)testEquality

@@ -73,6 +73,17 @@
                                                                                 defaultContentReloadPolicy:nil];
 }
 
+- (void)tearDown
+{
+    self.featureRegistry = nil;
+    self.defaultComponentNamespace = nil;
+    self.prependedContentOperationFactory = nil;
+    self.appendedContentOperationFactory = nil;
+    self.viewModelLoaderFactory = nil;
+
+    [super tearDown];
+}
+
 - (void)testCreatingViewModelLoaderForValidViewURI
 {
     NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
