@@ -37,6 +37,7 @@ def report_junit_results(path)
 
   if !junit_report_path.nil? and File.readable_real?(junit_report_path)
     junit.parse junit_report_path
+    junit.show_skipped_tests = true
     junit.report
   else
     fail "Couldn't find the (junit) unit test report file in '#{path}'. Make sure the tests were actually run."
