@@ -5,7 +5,18 @@ platform :ios do
 
   desc 'Run unit tests'
   lane :test do
-    run_tests(scheme: 'HubFramework', output_label: 'tests')
+    test_static
+    test_dynamic
+  end
+
+  desc 'Run all tests linked with the HubFramework as a static library'
+  private_lane :test_static do
+    run_tests(scheme: 'HubFramework', output_label: 'tests-static')
+  end
+
+  desc 'Run all tests linked with the HubFramework as a dynamic framework'
+  private_lane :test_dynamic do
+    run_tests(scheme: 'HubFramework-iOS', output_label: 'tests-dynamic')
   end
 
   desc 'Run UI tests'
@@ -134,34 +145,23 @@ platform :ios do
   desc '- `RUN_UI_TESTS`:   Whether ui tests should be run against the demo app, defaults to `YES`'
   desc '- `BUILD_LIVE_CLI`: Whether the live CLI should be built or not, defaults to `YES`'
   lane :ci_all do
-    lint unless shouldSkipStep('LINT')
-
-    # The UI tests scheme includes both the UI tests and unit tests targets. As such if we should
-    # run the UI tests suite that willl also run the unit tests. This check makes sure we build and
-    # run our code only once. To reduce CI time and flakiness.
-    if !shouldSkipStep('RUN_UI_TESTS') && !shouldSkipStep('BUILD_DEMO_APP')
-      test_ui
-    else
-      test unless shouldSkipStep('RUN_TESTS')
-      demo unless shouldSkipStep('BUILD_DEMO_APP')
-    end  
-
-    live unless shouldSkipStep('BUILD_LIVE_CLI')
-
-    if !shouldSkipStep('RUN_TESTS') || !shouldSkipStep('RUN_UI_TESTS')
-      report_coverage
-    end
+    lint if shouldPerformStep('LINT')
+    test if shouldPerformStep('RUN_TESTS')
+    test_ui if shouldPerformStep('RUN_UI_TESTS')
+    demo if shouldPerformStep('BUILD_DEMO_APP') && !shouldPerformStep('RUN_UI_TESTS')
+    live if shouldPerformStep('BUILD_LIVE_CLI')
+    report_coverage if shouldPerformStep('RUN_TESTS') || shouldPerformStep('RUN_UI_TESTS')
   end
 
   # Whether we should execute the step or not.
   # Looks up the value in the environment variables where a missing, empty, or 'YES' string is
   # considerered to denote that the step should be ran. Any other value is interpreted as 'skip
   # this step'.
-  def shouldSkipStep(step)
-    value = ENV[step].to_s
+  def shouldPerformStep(step)
+    value = ENV[step].to_s.downcase
 
-    # We should skip if the value isn't the empty string, or if it's set to something other than YES
-    not value.empty? and value != 'YES'
+    # We should perform if the value is the empty string, or if it’s set to `yes`, `true` or `1`
+    value.empty? or value == 'yes' or value == '1' or value == 'true'
   end
 
 end

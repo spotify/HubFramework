@@ -33,16 +33,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8ABD6CA51DF6EC36005BCB33"
-               BuildableName = "HubFrameworkTests.xctest"
-               BlueprintName = "HubFrameworkTests-iOS"
-               ReferencedContainer = "container:../HubFramework.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "657DFE0E1DC8E1B600F20C0E"
                BuildableName = "HubFrameworkDemoUITests.xctest"
                BlueprintName = "HubFrameworkDemoUITests"
