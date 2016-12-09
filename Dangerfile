@@ -28,7 +28,7 @@ if git.modified_files.include?("LICENSE")
 end
 
 # Give inline build results (compile and link time warnings and errors)
-xcode_summary.report 'build/tests/summary.json' if File.file?('build/tests/summary.json')
+xcode_summary.report 'build/tests-static/summary.json' if File.file?('build/tests-static/summary.json')
 xcode_summary.report 'build/ui-tests/summary.json' if File.file?('build/ui-tests/summary.json')
 xcode_summary.report 'build/demo/summary.json' if File.file?('build/demo/summary.json')
 
@@ -45,5 +45,5 @@ def report_junit_results(path)
 end
 
 # Give inline test fail reports
-report_junit_results("build/tests")
+report_junit_results("build/tests-static")
 report_junit_results("build/ui-tests")
