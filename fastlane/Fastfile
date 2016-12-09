@@ -135,9 +135,17 @@ platform :ios do
   desc '- `BUILD_LIVE_CLI`: Whether the live CLI should be built or not, defaults to `YES`'
   lane :ci_all do
     lint unless shouldSkipStep('LINT')
-    test unless shouldSkipStep('RUN_TESTS')
-    demo unless shouldSkipStep('BUILD_DEMO_APP')
-    test_ui unless shouldSkipStep('BUILD_DEMO_APP') || shouldSkipStep('RUN_UI_TESTS')
+
+    # The UI tests scheme includes both the UI tests and unit tests targets. As such if we should
+    # run the UI tests suite that willl also run the unit tests. This check makes sure we build and
+    # run our code only once. To reduce CI time and flakiness.
+    if !shouldSkipStep('RUN_UI_TESTS') && !shouldSkipStep('BUILD_DEMO_APP')
+      test_ui
+    else
+      test unless shouldSkipStep('RUN_TESTS')
+      demo unless shouldSkipStep('BUILD_DEMO_APP')
+    end  
+
     live unless shouldSkipStep('BUILD_LIVE_CLI')
 
     if !shouldSkipStep('RUN_TESTS') || !shouldSkipStep('RUN_UI_TESTS')
