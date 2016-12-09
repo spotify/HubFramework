@@ -39,7 +39,7 @@ def report_junit_results(path)
     junit.parse junit_report_path
     junit.report
   else
-    error "Couldn't find the (junit) unit test report file in " + path + ". Make sure the tests were actually run."
+    fail "Couldn't find the (junit) unit test report file in '#{path}'. Make sure the tests were actually run."
   end
 end
 
