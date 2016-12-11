@@ -72,22 +72,9 @@ NS_ASSUME_NONNULL_BEGIN
                                          contentInset:(UIEdgeInsets)contentInset
                                           contentSize:(CGSize)contentSize
                                        viewController:(HUBViewController *)viewController
+                                proposedContentOffset:(CGPoint)proposedContentOffset
 {
-    CGRect const componentFrame = [viewController frameForBodyComponentAtIndex:componentIndex];
-    CGFloat const viewHeight = CGRectGetHeight(viewController.view.frame);
-    CGFloat targetOffset = 0.0;
-
-    if (scrollPosition & HUBScrollPositionCenteredVertically) {
-        targetOffset = CGRectGetMidY(componentFrame) - (viewHeight / 2.0f);
-    } else if (scrollPosition & HUBScrollPositionBottom) {
-        targetOffset = CGRectGetMaxY(componentFrame) - viewHeight;
-    } else {
-        // Default to putting it at the top unless a proper position is provided
-        targetOffset = CGRectGetMinY(componentFrame);
-    }
-
-    targetOffset = MAX(-contentInset.top, MIN(contentSize.height - viewHeight, targetOffset));
-    return CGPointMake(0.0, (CGFloat)floor((double)targetOffset));
+    return proposedContentOffset;
 }
 
 @end

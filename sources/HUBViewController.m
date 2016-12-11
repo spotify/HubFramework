@@ -1423,11 +1423,29 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     NSParameterAssert(componentIndex <= (NSUInteger)[self.collectionView numberOfItemsInSection:0]);
 
+    CGRect const componentFrame = [self frameForBodyComponentAtIndex:componentIndex];
+    CGFloat const viewHeight = CGRectGetHeight(self.view.frame);
+    CGFloat targetOffset = 0.0;
+
+    if (scrollPosition & HUBScrollPositionCenteredVertically) {
+        targetOffset = CGRectGetMidY(componentFrame) - (viewHeight / 2.0f);
+    } else if (scrollPosition & HUBScrollPositionBottom) {
+        targetOffset = CGRectGetMaxY(componentFrame) - viewHeight;
+    } else {
+        // Default to putting it at the top unless a proper position is provided
+        targetOffset = CGRectGetMinY(componentFrame);
+    }
+
+    targetOffset = MAX(-self.collectionView.contentInset.top,
+                       MIN(self.collectionView.contentSize.height - viewHeight, targetOffset));
+    CGPoint proposedContentOffset = CGPointMake(0.0, (CGFloat)floor((double)targetOffset));
+
     CGPoint const contentOffset = [self.scrollHandler contentOffsetForDisplayingComponentAtIndex:componentIndex
                                                                                   scrollPosition:scrollPosition
                                                                                     contentInset:self.collectionView.contentInset
                                                                                      contentSize:self.collectionView.contentSize
-                                                                                  viewController:self];
+                                                                                  viewController:self
+                                                                           proposedContentOffset:proposedContentOffset];
     
     // If the target offset is the same, the completion handler can be called instantly.
     if (CGPointEqualToPoint(contentOffset, self.collectionView.contentOffset)) {
