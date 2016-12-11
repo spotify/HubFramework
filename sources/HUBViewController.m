@@ -880,6 +880,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     self.collectionView = collectionView;
     collectionView.showsVerticalScrollIndicator = [self.scrollHandler shouldShowScrollIndicatorsInViewController:self];
     collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;
+    collectionView.keyboardDismissMode = [self.scrollHandler keyboardDismissModeForDraggingViewController:self];
     collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
     collectionView.dataSource = self;
     collectionView.delegate = self;

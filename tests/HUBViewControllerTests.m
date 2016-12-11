@@ -2333,6 +2333,7 @@
 {
     self.scrollHandler.shouldShowScrollIndicators = YES;
     self.scrollHandler.shouldAutomaticallyAdjustContentInsets = YES;
+    self.scrollHandler.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.scrollHandler.scrollDecelerationRate = UIScrollViewDecelerationRateNormal;
     self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInset) {
         return UIEdgeInsetsMake(100, 30, 40, 200);
@@ -2342,6 +2343,7 @@
     
     XCTAssertEqual(self.collectionView.showsHorizontalScrollIndicator, YES);
     XCTAssertEqual(self.collectionView.showsVerticalScrollIndicator, YES);
+    XCTAssertEqual(self.collectionView.keyboardDismissMode, UIScrollViewKeyboardDismissModeOnDrag);
     HUBAssertEqualFloatValues(self.collectionView.decelerationRate, UIScrollViewDecelerationRateNormal);
     XCTAssertTrue(UIEdgeInsetsEqualToEdgeInsets(self.collectionView.contentInset, UIEdgeInsetsMake(100, 30, 40, 200)));
 }

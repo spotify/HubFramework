@@ -32,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether the handler should return that content insets should automatically be adjusted
 @property (nonatomic, assign) BOOL shouldAutomaticallyAdjustContentInsets;
 
+/// The manner in which the keyboard is dismissed when a drag begins
+@property (nonatomic, assign) UIScrollViewKeyboardDismissMode keyboardDismissMode;
+
 /// The scroll deceleration rate that the handler should return
 @property (nonatomic, assign) CGFloat scrollDecelerationRate;
 

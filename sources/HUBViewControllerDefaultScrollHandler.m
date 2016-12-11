@@ -36,6 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
     return YES;
 }
 
+- (UIScrollViewKeyboardDismissMode)keyboardDismissModeForDraggingViewController:(HUBViewController *)viewController
+{
+    return UIScrollViewKeyboardDismissModeNone;
+}
+
 - (CGFloat)scrollDecelerationRateForViewController:(HUBViewController *)viewController
 {
     return UIScrollViewDecelerationRateNormal;
