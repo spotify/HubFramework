@@ -35,9 +35,7 @@ typedef NS_ENUM(NSUInteger, HUBComponentSelectionState) {
  *  Extended Hub component protocol that adds the ability to respond to selection events
  *
  *  Use this protocol if your component adjusts its appearance when the user interacts with it,
- *  such as when the user highlights it through a touch down, or selects it through a tap. A
- *  normal use case for this protocol is when a component is implemented using a table- or
- *  collection view cell, and you wish to update the cell's highlighted/selected status.
+ *  such as when the user highlights it through a touch down, or selects it through a tap.
  *
  *  For more information, see `HUBComponent` and `HUBComponentSelectionState`.
  */
