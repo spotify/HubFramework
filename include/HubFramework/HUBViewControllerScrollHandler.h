@@ -55,7 +55,7 @@
 - (BOOL)shouldAutomaticallyAdjustContentInsetsInViewController:(HUBViewController *)viewController;
 
 /**
- *  Return the manner in which the keyboard is dismissed when a drag begins in the view controller
+ *  Return the manner in which the keyboard is dismissed when the content in the view controller is dragged
  *
  *  @param viewController The view controller in question
  *
@@ -63,7 +63,7 @@
  *  assigned to the `keyboardDismissMode` property of the used scroll view, so see the documentation for that property
  *  on `UIScrollView` for more information.
  */
-- (UIScrollViewKeyboardDismissMode)keyboardDismissModeForDraggingViewController:(HUBViewController *)viewController;
+- (UIScrollViewKeyboardDismissMode)keyboardDismissModeForViewController:(HUBViewController *)viewController;
 
 /**
  *  Return the deceleration rate to use for scrolling in a view controller

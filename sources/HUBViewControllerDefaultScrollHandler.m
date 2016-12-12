@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
     return YES;
 }
 
-- (UIScrollViewKeyboardDismissMode)keyboardDismissModeForDraggingViewController:(HUBViewController *)viewController
+- (UIScrollViewKeyboardDismissMode)keyboardDismissModeForViewController:(HUBViewController *)viewController
 {
     return UIScrollViewKeyboardDismissModeNone;
 }
