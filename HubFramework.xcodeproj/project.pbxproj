@@ -326,7 +326,6 @@
 		8AE6C09D1DF6E4020063B2B1 /* HUBViewURIPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E4B791CB562140019DE71 /* HUBViewURIPredicate.m */; };
 		8AE6C09E1DF6E4020063B2B1 /* HUBContainerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD009FC1CC64EF80012A9AF /* HUBContainerView.h */; };
 		8AE6C09F1DF6E4020063B2B1 /* HUBContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD009FD1CC64EF80012A9AF /* HUBContainerView.m */; };
-		8AE6C0A01DF6E4020063B2B1 /* HUBViewControllerDefaultScrollHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AEDA0981D7710A300BEFD66 /* HUBViewControllerDefaultScrollHandler.h */; };
 		8AE6C0A11DF6E4020063B2B1 /* HUBViewControllerDefaultScrollHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AEDA0991D7710A300BEFD66 /* HUBViewControllerDefaultScrollHandler.m */; };
 		8AE6C0A21DF6E4020063B2B1 /* HUBViewModelDiff.h in Headers */ = {isa = PBXBuildFile; fileRef = F66658D71D9925CC0097929F /* HUBViewModelDiff.h */; };
 		8AE6C0A31DF6E4020063B2B1 /* HUBViewModelDiff.m in Sources */ = {isa = PBXBuildFile; fileRef = F66658D81D9925CC0097929F /* HUBViewModelDiff.m */; };
@@ -699,7 +698,6 @@
 		8AE6C0001DF6E3110063B2B1 /* HubFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HubFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AE6C0081DF6E3330063B2B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = sources/Info.plist; sourceTree = "<group>"; };
 		8AED9F8F1D77090D00BEFD66 /* HUBViewControllerScrollHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBViewControllerScrollHandler.h; sourceTree = "<group>"; };
-		8AEDA0981D7710A300BEFD66 /* HUBViewControllerDefaultScrollHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewControllerDefaultScrollHandler.h; sourceTree = "<group>"; };
 		8AEDA0991D7710A300BEFD66 /* HUBViewControllerDefaultScrollHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBViewControllerDefaultScrollHandler.m; sourceTree = "<group>"; };
 		8AF21C9D1C6D044700960A06 /* HUBIdentifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBIdentifier.h; sourceTree = "<group>"; };
 		8AF5B57D1C64B59E001FF228 /* HUBViewModelLoaderImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewModelLoaderImplementation.h; sourceTree = "<group>"; };
@@ -724,6 +722,7 @@
 		8AFF10061C87015A00D5535B /* HUBComponentLayoutTraits.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentLayoutTraits.h; sourceTree = "<group>"; };
 		9996E9691C6A42E000231D22 /* HUBComponentFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactory.h; sourceTree = "<group>"; };
 		B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewFactoryTests.m; sourceTree = "<group>"; };
+		B38EA90C1DFEF18400526587 /* HUBViewControllerDefaultScrollHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewControllerDefaultScrollHandler.h; sourceTree = "<group>"; };
 		DD13758E1C68C76000AD3499 /* project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
 		DD13758F1C68C76000AD3499 /* spotify_os.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = spotify_os.xcconfig; sourceTree = "<group>"; };
 		DD79C3B91D9F0A8800FA77E5 /* HUBKeyPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBKeyPath.h; sourceTree = "<group>"; };
@@ -1429,6 +1428,7 @@
 				8AD064771C6906B00086C081 /* HUBViewControllerFactory.h */,
 				8A0E4B761CB561DE0019DE71 /* HUBViewURIPredicate.h */,
 				8AED9F8F1D77090D00BEFD66 /* HUBViewControllerScrollHandler.h */,
+				B38EA90C1DFEF18400526587 /* HUBViewControllerDefaultScrollHandler.h */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1461,7 +1461,6 @@
 				8A0E4B791CB562140019DE71 /* HUBViewURIPredicate.m */,
 				8AD009FC1CC64EF80012A9AF /* HUBContainerView.h */,
 				8AD009FD1CC64EF80012A9AF /* HUBContainerView.m */,
-				8AEDA0981D7710A300BEFD66 /* HUBViewControllerDefaultScrollHandler.h */,
 				8AEDA0991D7710A300BEFD66 /* HUBViewControllerDefaultScrollHandler.m */,
 				F66658D71D9925CC0097929F /* HUBViewModelDiff.h */,
 				F66658D81D9925CC0097929F /* HUBViewModelDiff.m */,
@@ -1565,7 +1564,6 @@
 				8AE6C05B1DF6E3E00063B2B1 /* HUBActionHandler.h in Headers */,
 				8AE6C03C1DF6E3D40063B2B1 /* HUBComponentWithSelectionState.h in Headers */,
 				8AE6C02F1DF6E3CE0063B2B1 /* HUBViewModelLoader.h in Headers */,
-				8AE6C0A01DF6E4020063B2B1 /* HUBViewControllerDefaultScrollHandler.h in Headers */,
 				8AE6C0C71DF6E4100063B2B1 /* HUBDefaultImageLoader.h in Headers */,
 				8AE6C0891DF6E4020063B2B1 /* HUBViewModelImplementation.h in Headers */,
 				8AE6C0B01DF6E40D0063B2B1 /* HUBComponentImageDataImplementation.h in Headers */,
