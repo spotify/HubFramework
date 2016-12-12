@@ -55,6 +55,17 @@
 - (BOOL)shouldAutomaticallyAdjustContentInsetsInViewController:(HUBViewController *)viewController;
 
 /**
+ *  Return the manner in which the keyboard is dismissed when the content in the view controller is dragged
+ *
+ *  @param viewController The view controller in question
+ *
+ *  The Hub Framework will call this method when a view controller is being set up. The returned value will be
+ *  assigned to the `keyboardDismissMode` property of the used scroll view, so see the documentation for that property
+ *  on `UIScrollView` for more information.
+ */
+- (UIScrollViewKeyboardDismissMode)keyboardDismissModeForViewController:(HUBViewController *)viewController;
+
+/**
  *  Return the deceleration rate to use for scrolling in a view controller
  *
  *  @param viewController The view controller in question
