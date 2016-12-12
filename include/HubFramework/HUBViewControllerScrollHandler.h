@@ -78,6 +78,17 @@
 - (UIEdgeInsets)contentInsetsForViewController:(HUBViewController *)viewController
                          proposedContentInsets:(UIEdgeInsets)proposedContentInsets;
 
+
+/**
+ *  Return the center point of an overlay coponent used in a view controller
+ *
+ *  @param viewController The view controller in question
+ *  @param proposedCenterPoint The center point that the Hub Framework is proposing
+ *
+ */
+- (CGPoint)centerPointForOverlayComponentInViewController:(HUBViewController *)viewController
+                                      proposedCenterPoint:(CGPoint)proposedCenterPoint;
+
 /**
  *  React to that a scrolling event started in a view controller
  *
