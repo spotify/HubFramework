@@ -1056,7 +1056,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     CGRect frame = self.view.bounds;
     frame.origin.y = self.collectionView.contentInset.top;
     frame.size.height -= self.visibleKeyboardHeight + CGRectGetMinY(frame);
-    return CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+
+    CGPoint proposedCenterPoint = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+    return [self.scrollHandler centerPointForOverlayComponentInViewController:self
+                                                          proposedCenterPoint:proposedCenterPoint];
 }
 
 - (void)updateOverlayComponentCenterPointsWithKeyboardNotification:(NSNotification *)notification
