@@ -70,9 +70,14 @@
                                                        customData:@{@"custom": @"data"}];
 }
 
-- (void)testInsertionsDiffMyers
+- (void)testInsertionsMyers
 {
     [self runInsertionsTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)testInsertionsLCS
+{
+    [self runInsertionsTestWithAlgorithm:HUBDiffLCSAlgorithm];
 }
 
 - (void)runInsertionsTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
@@ -98,9 +103,14 @@
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
 }
 
-- (void)testReloadsDiffMyers
+- (void)testReloadsMyers
 {
     [self runReloadsTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)testReloadsLCS
+{
+    [self runReloadsTestWithAlgorithm:HUBDiffLCSAlgorithm];
 }
 
 - (void)runReloadsTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
@@ -131,9 +141,14 @@
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
 }
 
-- (void)testDeletionsDiffMyers
+- (void)testDeletionsMyers
 {
     [self runDeletionsTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)testDeletionsLCS
+{
+    [self runDeletionsTestWithAlgorithm:HUBDiffLCSAlgorithm];
 }
 
 - (void)runDeletionsTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
@@ -161,9 +176,14 @@
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
 }
 
-- (void)testComplexChangeSetDiffMyers
+- (void)testComplexChangeSetMyers
 {
     [self runComplextChangeSetTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)testComplexChangeSetLCS
+{
+    [self runComplextChangeSetTestWithAlgorithm:HUBDiffLCSAlgorithm];
 }
 
 - (void)runComplextChangeSetTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
@@ -209,9 +229,14 @@
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
 }
 
-- (void)testInsertionOfSingleComponentModelAtStartWithDataChangesDiffMyers
+- (void)testInsertionOfSingleComponentModelAtStartWithDataChangesMyers
 {
     [self runInsertionOfSingleComponentModelAtStartWithDataChangesTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)testInsertionOfSingleComponentModelAtStartWithDataChangesLCS
+{
+    [self runInsertionOfSingleComponentModelAtStartWithDataChangesTestWithAlgorithm:HUBDiffLCSAlgorithm];
 }
 
 - (void)runInsertionOfSingleComponentModelAtStartWithDataChangesTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
@@ -242,9 +267,14 @@
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
 }
 
-- (void)testInsertionOfMultipleComponentModelsAtStartWithDataChangesDiffMyers
+- (void)testInsertionOfMultipleComponentModelsAtStartWithDataChangesMyers
 {
     [self runInsertionOfMultipleComponentModelsAtStartWithDataChangesTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)testInsertionOfMultipleComponentModelsAtStartWithDataChangesLCS
+{
+    [self runInsertionOfMultipleComponentModelsAtStartWithDataChangesTestWithAlgorithm:HUBDiffLCSAlgorithm];
 }
 
 - (void)runInsertionOfMultipleComponentModelsAtStartWithDataChangesTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
