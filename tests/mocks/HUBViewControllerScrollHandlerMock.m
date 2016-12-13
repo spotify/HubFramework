@@ -43,6 +43,11 @@ NS_ASSUME_NONNULL_BEGIN
     return self.shouldAutomaticallyAdjustContentInsets;
 }
 
+- (UIScrollViewKeyboardDismissMode)keyboardDismissModeForViewController:(HUBViewController *)viewController
+{
+    return self.keyboardDismissMode;
+}
+
 - (CGFloat)scrollDecelerationRateForViewController:(HUBViewController *)viewController
 {
     return self.scrollDecelerationRate;
