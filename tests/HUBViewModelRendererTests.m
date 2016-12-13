@@ -107,15 +107,15 @@
 
     [self waitForExpectationsWithTimeout:2 handler:nil];
 
-    XCTAssertEqual(self.collectionViewLayout.capturedViewModels.count, 2u);
-    XCTAssertEqualObjects(self.collectionViewLayout.capturedViewModels[0], firstViewModel);
-    XCTAssertEqualObjects(self.collectionViewLayout.capturedViewModels[1], secondViewModel);
+    XCTAssertEqual([self.collectionViewLayout numberOfInvocations], 2u);
+    XCTAssertEqualObjects([self.collectionViewLayout capturedViewModelAtIndex:0], firstViewModel);
+    XCTAssertEqualObjects([self.collectionViewLayout capturedViewModelAtIndex:1], secondViewModel);
 
-    XCTAssertEqual(self.collectionViewLayout.capturedViewModelDiffs.count, 2u);
+    XCTAssertEqual([self.collectionViewLayout numberOfInvocations], 2u);
     // The first invocation shouldn't generate a diff.
-    XCTAssertEqualObjects(self.collectionViewLayout.capturedViewModelDiffs[0], [NSNull null]);
+    XCTAssertEqualObjects([self.collectionViewLayout capturedViewModelDiffAtIndex:0], [NSNull null]);
     // The second invocation should generate a diff.
-    HUBViewModelDiff *diff = self.collectionViewLayout.capturedViewModelDiffs[1];
+    HUBViewModelDiff *diff = [self.collectionViewLayout capturedViewModelDiffAtIndex:1];
     XCTAssertNotEqualObjects(diff, [NSNull null]);
 
     XCTAssertEqual(diff.insertedBodyComponentIndexPaths.count, 1u);

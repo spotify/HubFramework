@@ -24,6 +24,15 @@
 #import "HUBComponentLayoutManagerMock.h"
 #import "HUBComponentRegistryMock.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
+@interface HUBCollectionViewLayoutMock ()
+
+@property (nonatomic, strong, readonly) NSMutableArray<id<HUBViewModel>> *capturedViewModels;
+@property (nonatomic, strong, readonly) NSMutableArray<HUBViewModelDiff *> *capturedViewModelDiffs;
+
+@end
+
 @implementation HUBCollectionViewLayoutMock
 
 - (instancetype)init
@@ -46,4 +55,30 @@
     [self.capturedViewModelDiffs addObject:nonNullDiff];
 }
 
+- (NSUInteger)numberOfInvocations
+{
+    return self.capturedViewModels.count;
+}
+
+- (nullable id<HUBViewModel>)capturedViewModelAtIndex:(NSUInteger)index
+{
+    if (index >= self.capturedViewModels.count) {
+        return nil;
+    }
+
+    return self.capturedViewModels[index];
+}
+
+- (nullable HUBViewModelDiff *)capturedViewModelDiffAtIndex:(NSUInteger)index
+{
+    if (index >= self.capturedViewModelDiffs.count) {
+        return nil;
+    }
+
+    return self.capturedViewModelDiffs[index];
+}
+
+
 @end
+
+NS_ASSUME_NONNULL_END

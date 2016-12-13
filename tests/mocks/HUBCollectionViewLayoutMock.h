@@ -21,18 +21,37 @@
 
 #import "HUBCollectionViewLayout.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  A mock collection view layout for testing. The implementation of computeForCollectionViewSize:viewModel:diff:addHeaderMargin:
- *  captures arguments into the
+ *  captures arguments to the computeForCollectionViewSize:viewModel:diff:addHeaderMargin: method and makes them available to the
+ *  test.
  */
 @interface HUBCollectionViewLayoutMock : HUBCollectionViewLayout
-
-/// All captured view models in the order they were captured.
-@property (nonatomic, strong, readonly) NSMutableArray<id<HUBViewModel>> *capturedViewModels;
-/// All captured view model diffs (or NSNull if nil was captured) in the order they were captured.
-@property (nonatomic, strong, readonly) NSMutableArray<HUBViewModelDiff *> *capturedViewModelDiffs;
 
 /// Default constructor takes no arguments.
 - (instancetype)init;
 
+/**
+ *  Returns the number of times that computeForCollectionViewSize:viewModel:diff:addHeaderMargin: was called.
+ */
+- (NSUInteger)numberOfInvocations;
+
+/**
+ *  Returns a captured view model from a call to computeForCollectionViewSize:viewModel:diff:addHeaderMargin:
+ *  indexed in the order they were captured.
+ *  Returns nil if no object exists at the given index.
+ */
+- (nullable id<HUBViewModel>)capturedViewModelAtIndex:(NSUInteger)index;
+
+/**
+ *  Returns a captured view model diff from a call to computeForCollectionViewSize:viewModel:diff:addHeaderMargin:
+ *  indexed in the order they were captured.
+ *  Returns nil if no object exists at the given index.
+ */
+- (nullable HUBViewModelDiff *)capturedViewModelDiffAtIndex:(NSUInteger)index;
+
 @end
+
+NS_ASSUME_NONNULL_END
