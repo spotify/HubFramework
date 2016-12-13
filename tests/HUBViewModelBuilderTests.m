@@ -383,7 +383,7 @@
     };
     
     NSData * const data = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
-    [self.builder addJSONData:data];
+    [self.builder addJSONData:data error:nil];
     
     id<HUBViewModel> const model = [self.builder build];
     
@@ -420,7 +420,7 @@
     ];
     
     NSData * const data = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:nil];
-    [self.builder addJSONData:data];
+    [self.builder addJSONData:data error:nil];
     
     id<HUBViewModel> const model = [self.builder build];
     
@@ -430,8 +430,8 @@
 
 - (void)testAddingInvalidJSONData
 {
-    NSData * const data = [@"Clearly not JSON" dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil([self.builder addJSONData:data]);
+    NSData * const data = [@"<html><head><title>Clearly not JSON</title></head></html>" dataUsingEncoding:NSUTF8StringEncoding];
+    XCTAssertFalse([self.builder addJSONData:data error:nil], @"Adding invalid JSON data should fail");
 }
 
 - (void)testAddingJSONDataNotRemovingExistingData
@@ -443,7 +443,7 @@
     [self.builder builderForBodyComponentModelWithIdentifier:@"component"].title = @"body title";
     
     NSData * const emptyJSONData = [NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:nil];
-    [self.builder addJSONData:emptyJSONData];
+    [self.builder addJSONData:emptyJSONData error:nil];
     
     XCTAssertEqualObjects(self.builder.viewIdentifier, @"view");
     XCTAssertEqualObjects(self.builder.navigationBarTitle, @"title");
@@ -463,7 +463,7 @@
     };
     
     NSData * const JSONData = [NSJSONSerialization dataWithJSONObject:JSONDictionary options:NSJSONWritingPrettyPrinted error:nil];
-    [self.builder addJSONData:JSONData];
+    [self.builder addJSONData:JSONData error:nil];
     
     NSDictionary * const expectedCustomData = @{
         @"custom": @"data",

@@ -28,30 +28,32 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Protocol defining the public API for adding JSON data to a Hub Framework model builder
  *
- *  Builders that support JSON data will conform to this protocol. Most builders only support Dictionary-based
- *  JSON, except for `HUBViewModelBuilder` that supports Array-based JSON for defining an array of body
- *  component models.
+ *  Builders that support JSON data will conform to this protocol. Most builders only support Dictionary-based JSON,
+ *  except for `HUBViewModelBuilder` that supports Array-based JSON for defining an array of body component models.
  */
 @protocol HUBJSONCompatibleBuilder <NSObject>
 
 /**
- *  Add binary JSON data to the builder
+ *  Add the contents of the given JSON data to the builder.
  *
- *  @param JSONData The JSON data to add
- *
- *  The builder will use its feature's `HUBJSONSchema` to parse the data that was added, and return any error that
+ *  The builder will use its feature’s `HUBJSONSchema` to parse the data that was added, and return any error that
  *  occured while doing so, or nil if the operation was completed successfully.
+ *
+ *  @param data The JSON data to extract content from, after being serialized.
+ *  @param error If an internal error occurs, upon return contains an `NSError` object that describes the problem.
+ *
+ *  @return `YES` if the data was successfully serialized and added; otherwise `NO`.
  */
-- (nullable NSError *)addJSONData:(NSData *)JSONData;
+- (BOOL)addJSONData:(NSData *)data error:(NSError * _Nullable __autoreleasing *)error NS_SWIFT_NAME(addJSON(data:));
 
 /**
- *  Add a JSON dictionary to this builder
- *
- *  @param dictionary The JSON dictionary to extract content from
+ *  Add the contents of the given JSON dictionary to the builder.
  *
  *  The content that was extracted from the supplied dictionary will replace any previously defined content.
+ *
+ *  @param dictionary The JSON dictionary to extract content from.
  */
-- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary;
+- (void)addJSONDictionary:(NSDictionary<NSString *, id> *)dictionary NS_SWIFT_NAME(addJSON(dictionary:));
 
 @end
 

@@ -68,29 +68,52 @@ static inline UIView *HUBComponentLoadViewIfNeeded(id<HUBComponent> component)
 }
 
 /**
+ *  Conditionally sets the given optional `outError` to the `error`.
+ *
+ *  The function always returns `NO`.
+ *
+ *  @param outError The pointer to an `NSError` pointer which should be assigned to.
+ *  @param error The error that should be assigned to the `outError`.
+ *
+ *  @return `NO`.
+ */
+static inline BOOL HUBSetOutError(NSError * _Nullable __autoreleasing *outError, NSError *error) __attribute__((const));
+static inline BOOL HUBSetOutError(NSError * _Nullable __autoreleasing *outError, NSError *error)
+{
+    if (outError) {
+        *outError = error;
+    }
+    return NO;
+}
+
+/**
  *  Add binary JSON data to a JSON compatible builder
  *
  *  @param data The binary data to add to the builder. Must contain dictionary-based JSON.
- *  @param builder The builder to add the data to
+ *  @param builder The builder to add the data to.
+ *  @param outError Contains an `NSError` object that describes the problem, iff an error occurred when parsing the
+ *                  supplied JSON data.
  *
- *  @return Any error that was encountered when parsing the supplied JSON data, or nil if the operation
- *          was successfully completed.
+ *  @return `YES` if the data was successfully serialized and added; otherwise `NO`.
  */
-static inline NSError * _Nullable HUBAddJSONDataToBuilder(NSData *data, id<HUBJSONCompatibleBuilder> builder) {
-    NSError *error;
-    NSObject *JSONObject = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:&error];
-    
-    if (error != nil || JSONObject == nil) {
-        return error;
+static inline BOOL HUBAddJSONDataToBuilder(NSData *data,
+                                           id<HUBJSONCompatibleBuilder> builder,
+                                           NSError * _Nullable __autoreleasing *outError)
+{
+    NSError *JSONError;
+    id JSONObject = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:&JSONError];
+
+    if (JSONObject == nil && JSONError != nil) {
+        return HUBSetOutError(outError, JSONError);
     }
-    
+
     if (![JSONObject isKindOfClass:[NSDictionary class]]) {
-        return [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil];
+        return HUBSetOutError(outError, [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil]);
     }
     
-    [builder addDataFromJSONDictionary:(NSDictionary *)JSONObject];
+    [builder addJSONDictionary:(NSDictionary *)JSONObject];
     
-    return nil;
+    return YES;
 }
 
 /**

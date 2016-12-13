@@ -55,7 +55,7 @@
         ]
     };
     
-    [builder addDataFromJSONDictionary:dictionary];
+    [builder addJSONDictionary:dictionary];
     
     id<HUBViewModel> const viewModelFromSchema = [schema viewModelFromJSONDictionary:dictionary];
     id<HUBViewModel> const viewModelFromBuilder = [builder build];

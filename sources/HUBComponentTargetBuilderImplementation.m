@@ -95,12 +95,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBJSONCompatibleBuilder
 
-- (nullable NSError *)addJSONData:(NSData *)JSONData
+- (BOOL)addJSONData:(NSData *)data error:(NSError *__autoreleasing  _Nullable *)error
 {
-    return HUBAddJSONDataToBuilder(JSONData, self);
+    return HUBAddJSONDataToBuilder(data, self, error);
 }
 
-- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
+- (void)addJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {
     id<HUBComponentTargetJSONSchema> const schema = self.JSONSchema.componentTargetSchema;
     
@@ -113,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary * const initialViewModelDictionary = [schema.initialViewModelDictionaryPath dictionaryFromJSONDictionary:dictionary];
     
     if (initialViewModelDictionary != nil) {
-        [[self getOrCreateInitialViewModelBuilder] addDataFromJSONDictionary:initialViewModelDictionary];
+        [[self getOrCreateInitialViewModelBuilder] addJSONDictionary:initialViewModelDictionary];
     }
     
     NSArray<NSString *> * const actionIdentifierStrings = [schema.actionIdentifiersPath valuesFromJSONDictionary:dictionary];
