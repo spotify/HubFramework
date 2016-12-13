@@ -70,7 +70,7 @@
                                                        customData:@{@"custom": @"data"}];
 }
 
-- (void)testInsertions
+- (void)testInsertionsDiffMyers
 {
     [self runInsertionsTestWithAlgorithm:HUBDiffMyersAlgorithm];
 }
@@ -98,7 +98,7 @@
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
 }
 
-- (void)testReloads
+- (void)testReloadsDiffMyers
 {
     [self runReloadsTestWithAlgorithm:HUBDiffMyersAlgorithm];
 }
@@ -131,7 +131,7 @@
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
 }
 
-- (void)testDeletions
+- (void)testDeletionsDiffMyers
 {
     [self runDeletionsTestWithAlgorithm:HUBDiffMyersAlgorithm];
 }
@@ -161,7 +161,7 @@
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
 }
 
-- (void)testComplexChangeSet
+- (void)testComplexChangeSetDiffMyers
 {
     [self runComplextChangeSetTestWithAlgorithm:HUBDiffMyersAlgorithm];
 }
@@ -209,7 +209,7 @@
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
 }
 
-- (void)testInsertionOfSingleComponentModelAtStartWithDataChanges
+- (void)testInsertionOfSingleComponentModelAtStartWithDataChangesDiffMyers
 {
     [self runInsertionOfSingleComponentModelAtStartWithDataChangesTestWithAlgorithm:HUBDiffMyersAlgorithm];
 }
@@ -242,7 +242,7 @@
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
 }
 
-- (void)testInsertionOfMultipleComponentModelsAtStartWithDataChanges
+- (void)testInsertionOfMultipleComponentModelsAtStartWithDataChangesDiffMyers
 {
     [self runInsertionOfMultipleComponentModelsAtStartWithDataChangesTestWithAlgorithm:HUBDiffMyersAlgorithm];
 }
