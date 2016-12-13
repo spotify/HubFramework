@@ -72,6 +72,11 @@
 
 - (void)testInsertions
 {
+    [self runInsertionsTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)runInsertionsTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
+{
     id<HUBViewModel> firstViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                components:@[]];
     NSArray<id<HUBComponentModel>> *secondComponents = @[
@@ -83,7 +88,7 @@
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
 
-    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel algorithm:algorithm];
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:1 inSection:0]]);
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
@@ -94,6 +99,11 @@
 }
 
 - (void)testReloads
+{
+    [self runReloadsTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)runReloadsTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
 {
     NSArray<id<HUBComponentModel>> *firstComponents = @[
         [self createComponentModelWithIdentifier:@"component-1" customData:nil],
@@ -112,7 +122,7 @@
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
 
-    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel algorithm:algorithm];
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
 
@@ -122,6 +132,11 @@
 }
 
 - (void)testDeletions
+{
+    [self runDeletionsTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)runDeletionsTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
 {
     NSArray<id<HUBComponentModel>> *firstComponents = @[
         [self createComponentModelWithIdentifier:@"component-1" customData:nil],
@@ -138,7 +153,7 @@
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
 
-    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel algorithm:algorithm];
     XCTAssert([diff.deletedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
     XCTAssert([diff.deletedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 0);
@@ -147,6 +162,11 @@
 }
 
 - (void)testComplexChangeSet
+{
+    [self runComplextChangeSetTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)runComplextChangeSetTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
 {
     NSArray<id<HUBComponentModel>> *firstComponents = @[
         [self createComponentModelWithIdentifier:@"component-1" customData:nil],
@@ -177,7 +197,7 @@
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
 
-    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel algorithm:algorithm];
     XCTAssert([diff.deletedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
     XCTAssert([diff.deletedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:7 inSection:0]]);
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
@@ -190,6 +210,11 @@
 }
 
 - (void)testInsertionOfSingleComponentModelAtStartWithDataChanges
+{
+    [self runInsertionOfSingleComponentModelAtStartWithDataChangesTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)runInsertionOfSingleComponentModelAtStartWithDataChangesTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
 {
     NSArray<id<HUBComponentModel>> *firstComponents = @[
         [self createComponentModelWithIdentifier:@"component-1" customData:nil],
@@ -207,7 +232,7 @@
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
 
-    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel algorithm:algorithm];
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 3);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 1);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
@@ -218,6 +243,11 @@
 }
 
 - (void)testInsertionOfMultipleComponentModelsAtStartWithDataChanges
+{
+    [self runInsertionOfMultipleComponentModelsAtStartWithDataChangesTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)runInsertionOfMultipleComponentModelsAtStartWithDataChangesTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
 {
     NSArray<id<HUBComponentModel>> *firstComponents = @[
         [self createComponentModelWithIdentifier:@"component-1" customData:nil],
@@ -236,7 +266,7 @@
     id<HUBViewModel> secondViewModel = [self createViewModelWithIdentifier:@"Test"
                                                                 components:secondComponents];
 
-    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel];
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:firstViewModel toViewModel:secondViewModel algorithm:algorithm];
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 3);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 2);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
