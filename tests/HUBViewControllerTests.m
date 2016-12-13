@@ -224,7 +224,7 @@
                                                                                       viewModelLoader:self.viewModelLoader];
     
     self.viewController = [[HUBViewController alloc] initWithViewURI:self.viewURI
-                                                   featureIdentifier:self.featureInfo.identifier
+                                                         featureInfo:self.featureInfo
                                                      viewModelLoader:self.viewModelLoader
                                                    viewModelRenderer:viewModelRenderer
                                                collectionViewFactory:self.collectionViewFactory
@@ -239,6 +239,12 @@
 }
 
 #pragma mark - Tests
+
+- (void)testFeatureIdentifier
+{
+    XCTAssertNotNil(self.featureInfo.identifier);
+    XCTAssertEqualObjects(self.viewController.featureIdentifier, self.featureInfo.identifier);
+}
 
 - (void)testContentLoadedOnViewWillAppear
 {
@@ -348,7 +354,6 @@
     
     XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationItem.title, viewModelNavBarTitleB);
 }
-
 
 - (void)testDelegateNotifiedOfViewModelUpdateError
 {
@@ -2773,6 +2778,8 @@
     XCTAssertNotNil(chainedActionContext);
     XCTAssertEqualObjects(chainedActionContext.customActionIdentifier, chainedActionIdentifier);
     XCTAssertEqualObjects(chainedActionContext.customData, chainedActionCustomData);
+    XCTAssertEqualObjects(chainedActionContext.featureInfo.identifier, self.featureInfo.identifier);
+    XCTAssertEqualObjects(chainedActionContext.featureInfo.title, self.featureInfo.title);
 }
 
 - (void)testAssigningNavigationItemProperties
@@ -3114,7 +3121,10 @@
 
 - (BOOL)viewControllerShouldStartScrolling:(HUBViewController *)viewController
 {
-    return self.viewControllerShouldStartScrollingBlock();
+    if (self.viewControllerShouldStartScrollingBlock) {
+        return self.viewControllerShouldStartScrollingBlock();
+    }
+    return NO;
 }
 
 - (void)viewController:(HUBViewController *)viewController
@@ -3157,7 +3167,10 @@
 - (BOOL)viewControllerShouldAutomaticallyManageTopContentInset:(HUBViewController *)viewController
 {
     XCTAssertEqual(viewController, self.viewController);
-    return self.viewControllerShouldAutomaticallyManageTopContentInset();
+    if (self.viewControllerShouldAutomaticallyManageTopContentInset) {
+        return self.viewControllerShouldAutomaticallyManageTopContentInset();
+    }
+    return NO;
 }
 
 #pragma mark - Utilities

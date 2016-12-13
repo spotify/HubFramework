@@ -27,6 +27,7 @@
 #import "HUBComponentReusePool.h"
 #import "HUBImageLoaderFactory.h"
 #import "HUBFeatureRegistration.h"
+#import "HUBFeatureInfoImplementation.h"
 #import "HUBViewController+Initializer.h"
 #import "HUBCollectionViewFactory.h"
 #import "HUBInitialViewModelRegistry.h"
@@ -140,6 +141,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
                                   featureRegistration:(HUBFeatureRegistration *)featureRegistration
 {
+    id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureRegistration.featureIdentifier
+                                                                                              title:featureRegistration.featureTitle];
+    
     HUBViewModelLoaderImplementation * const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI
                                                                                                         featureRegistration:featureRegistration];
     
@@ -157,7 +161,7 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBViewControllerScrollHandler> const scrollHandlerToUse = featureRegistration.viewControllerScrollHandler ?: [HUBViewControllerDefaultScrollHandler new];
     
     return [[HUBViewController alloc] initWithViewURI:viewURI
-                                    featureIdentifier:featureRegistration.featureIdentifier
+                                          featureInfo:featureInfo
                                       viewModelLoader:viewModelLoader
                                     viewModelRenderer:viewModelRenderer
                                 collectionViewFactory:collectionViewFactory

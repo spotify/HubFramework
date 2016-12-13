@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize trigger = _trigger;
 @synthesize customActionIdentifier = _customActionIdentifier;
 @synthesize customData = _customData;
+@synthesize featureInfo = _featureInfo;
 @synthesize viewURI = _viewURI;
 @synthesize viewModel = _viewModel;
 @synthesize componentModel = _componentModel;
@@ -36,11 +37,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithTrigger:(HUBActionTrigger)trigger
          customActionIdentifier:(nullable HUBIdentifier *)customActionIdentifier
                      customData:(nullable NSDictionary<NSString *, id> *)customData
+                    featureInfo:(id<HUBFeatureInfo>)featureInfo
                         viewURI:(NSURL *)viewURI
                       viewModel:(id<HUBViewModel>)viewModel
                  componentModel:(nullable id<HUBComponentModel>)componentModel
                  viewController:(UIViewController *)viewController
 {
+    NSParameterAssert(featureInfo != nil);
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(viewModel != nil);
     NSParameterAssert(viewController != nil);
@@ -51,6 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
         _trigger = trigger;
         _customActionIdentifier = customActionIdentifier;
         _customData = customData;
+        _featureInfo = featureInfo;
         _viewURI = viewURI;
         _viewModel = viewModel;
         _componentModel = componentModel;
