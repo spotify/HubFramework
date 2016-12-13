@@ -21,6 +21,7 @@
 
 #import "HUBViewController.h"
 
+@protocol HUBFeatureInfo;
 @protocol HUBComponentRegistry;
 @protocol HUBComponentLayoutManager;
 @protocol HUBActionHandler;
@@ -40,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with its required dependencies
  *
  *  @param viewURI The view URI that this view controller is for
- *  @param featureIdentifier The identifier of the feature that this view controller is for
+ *  @param featureInfo Information about the feature that the view controller is for
  *  @param viewModelLoader The object to use to load view models for the view controller
  *  @param viewModelRenderer The object used to render the view model
  *  @param collectionViewFactory The factory to use to create collection views
@@ -52,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param imageLoader The loader to use to load images for components
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
-              featureIdentifier:(NSString *)featureIdentifier
+                    featureInfo:(id<HUBFeatureInfo>)featureInfo
                 viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
               viewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory

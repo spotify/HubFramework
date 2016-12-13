@@ -48,6 +48,7 @@
 #import "HUBActionHandlerWrapper.h"
 #import "HUBActionPerformer.h"
 #import "HUBViewModelRenderer.h"
+#import "HUBFeatureInfo.h"
 
 static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
@@ -62,6 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBCollectionViewDelegate
 >
 
+@property (nonatomic, strong, readonly) id<HUBFeatureInfo> featureInfo;
 @property (nonatomic, strong, readonly) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
@@ -98,13 +100,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewController
 
-@synthesize delegate = _delegate;
-@synthesize featureIdentifier = _featureIdentifier;
-
 #pragma mark - Lifecycle
 
 - (instancetype)initWithViewURI:(NSURL *)viewURI
-              featureIdentifier:(NSString *)featureIdentifier
+                    featureInfo:(id<HUBFeatureInfo>)featureInfo
                 viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
               viewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
@@ -116,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
                     imageLoader:(id<HUBImageLoader>)imageLoader
 {
     NSParameterAssert(viewURI != nil);
-    NSParameterAssert(featureIdentifier != nil);
+    NSParameterAssert(featureInfo != nil);
     NSParameterAssert(viewModelLoader != nil);
     NSParameterAssert(viewModelRenderer != nil);
     NSParameterAssert(collectionViewFactory != nil);
@@ -132,7 +131,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     _viewURI = [viewURI copy];
-    _featureIdentifier = [featureIdentifier copy];
+    _featureInfo = featureInfo;
     _viewModelLoader = viewModelLoader;
     _viewModelRenderer = viewModelRenderer;
     _collectionViewFactory = collectionViewFactory;
@@ -268,6 +267,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - HUBViewController
+
+- (NSString *)featureIdentifier
+{
+    return self.featureInfo.identifier;
+}
 
 - (BOOL)isViewScrolling
 {
@@ -1380,6 +1384,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     id<HUBActionContext> const context = [[HUBActionContextImplementation alloc] initWithTrigger:trigger
                                                                           customActionIdentifier:customIdentifier
                                                                                       customData:customData
+                                                                                     featureInfo:self.featureInfo
                                                                                          viewURI:self.viewURI
                                                                                        viewModel:viewModel
                                                                                   componentModel:componentModel

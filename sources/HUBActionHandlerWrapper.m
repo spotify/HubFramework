@@ -129,6 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
         HUBActionContextImplementation * const chainedActionContext = [[HUBActionContextImplementation alloc] initWithTrigger:context.trigger
                                                                                                        customActionIdentifier:chainedActionIdentifier
                                                                                                                    customData:nextActionCustomData
+                                                                                                                  featureInfo:context.featureInfo
                                                                                                                       viewURI:context.viewURI
                                                                                                                     viewModel:context.viewModel
                                                                                                                componentModel:context.componentModel
