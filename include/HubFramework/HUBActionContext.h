@@ -24,7 +24,7 @@
 
 #import "HUBActionTrigger.h"
 
-@protocol HUBViewModel, HUBComponentModel;
+@protocol HUBViewModel, HUBComponentModel, HUBFeatureInfo;
 @class HUBIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -55,6 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  This property will always be `nil` if this context is for the default selection action
  */
 @property (nonatomic, strong, readonly, nullable) NSDictionary<NSString *, id> *customData;
+
+/// An object containing information about the feature that the action is being performed in
+@property (nonatomic, strong, readonly) id<HUBFeatureInfo> featureInfo;
 
 /// The URI of the view that the action is being performed in
 @property (nonatomic, copy, readonly) NSURL *viewURI;
