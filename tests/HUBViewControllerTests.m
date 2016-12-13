@@ -3114,7 +3114,10 @@
 
 - (BOOL)viewControllerShouldStartScrolling:(HUBViewController *)viewController
 {
-    return self.viewControllerShouldStartScrollingBlock();
+    if (self.viewControllerShouldStartScrollingBlock) {
+        return self.viewControllerShouldStartScrollingBlock();
+    }
+    return NO;
 }
 
 - (void)viewController:(HUBViewController *)viewController
@@ -3157,7 +3160,10 @@
 - (BOOL)viewControllerShouldAutomaticallyManageTopContentInset:(HUBViewController *)viewController
 {
     XCTAssertEqual(viewController, self.viewController);
-    return self.viewControllerShouldAutomaticallyManageTopContentInset();
+    if (self.viewControllerShouldAutomaticallyManageTopContentInset) {
+        return self.viewControllerShouldAutomaticallyManageTopContentInset();
+    }
+    return NO;
 }
 
 #pragma mark - Utilities
