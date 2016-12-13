@@ -63,7 +63,11 @@ class GitHubSearchResultsContentOperation: NSObject, HUBContentOperation {
         
         // If we've already downloaded JSON data, add it to the view and flush our state
         if let jsonData = jsonData {
-            viewModelBuilder.addJSONData(jsonData)
+            do {
+                try viewModelBuilder.addJSON(data: jsonData)
+            } catch let error {
+                finishAndResetState(with: error)
+            }
             
             // If the data didn't contain any components (we only have 1 = the search bar), add a
             // "No results found" label as an overlay component
@@ -109,9 +113,14 @@ class GitHubSearchResultsContentOperation: NSObject, HUBContentOperation {
         dataTask?.resume()
     }
     
-    private func finishAndResetState() {
+    private func finishAndResetState(with error: Error? = nil) {
         jsonData = nil
         dataTask = nil
-        delegate?.contentOperationDidFinish(self)
+
+        if let error = error {
+            delegate?.contentOperation(self, didFailWithError: error)
+        } else {
+            delegate?.contentOperationDidFinish(self)
+        }
     }
 }
