@@ -1296,10 +1296,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (contextsForURL == nil) {
         contextsForURL = [NSMutableArray arrayWithObject:context];
         self.componentImageLoadingContexts[imageURL] = contextsForURL;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
-        });
+        [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
     } else {
         [contextsForURL addObject:context];
     }
