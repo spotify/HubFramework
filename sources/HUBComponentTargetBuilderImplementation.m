@@ -97,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSError *)addJSONData:(NSData *)JSONData
 {
-    return HUBAddJSONDataToBuilder(JSONData, self);
+    return nil;//HUBAddJSONDataToBuilder(JSONData, self);
 }
 
 - (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
