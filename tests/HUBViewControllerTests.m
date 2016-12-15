@@ -2837,6 +2837,12 @@
     [notificationCenter postNotification:keyboardNotification];
     HUBAssertEqualFloatValues(self.component.view.center.x, 80);
     HUBAssertEqualFloatValues(self.component.view.center.y, 100);
+
+    self.viewController.delegate = nil;
+    self.centerPointForOverlayComponents = nil;
+    [notificationCenter postNotificationName:UIKeyboardWillHideNotification object:nil];
+    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualFloatValues(self.component.view.center.y, 200);
 }
 
 - (void)testScrollingToComponentAfterViewModelFinishesRendering

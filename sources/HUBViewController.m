@@ -1058,8 +1058,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     frame.size.height -= self.visibleKeyboardHeight + CGRectGetMinY(frame);
 
     CGPoint proposedCenterPoint = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
-    return [self.delegate centerPointForOverlayComponentInViewController:self
-                                                     proposedCenterPoint:proposedCenterPoint];
+
+    id<HUBViewControllerDelegate> delegate = self.delegate;
+    if (delegate == nil) {
+        return proposedCenterPoint;
+    }
+
+    return [delegate centerPointForOverlayComponentInViewController:self
+                                                proposedCenterPoint:proposedCenterPoint];
 }
 
 - (void)updateOverlayComponentCenterPointsWithKeyboardNotification:(NSNotification *)notification
