@@ -23,6 +23,7 @@
 #import "HUBComponentLayoutTraits.h"
 #import "HUBComponentType.h"
 #import "HUBScrollPosition.h"
+#import "HUBActionPerformer.h"
 
 @protocol HUBViewModel;
 @protocol HUBComponentModel;
@@ -156,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  This view controller renders `HUBComponent` instances using a collection view. What components that are rendered
  *  are determined by `HUBContentOperation`s that build a `HUBViewModel`.
  */
-@interface HUBViewController : UIViewController
+@interface HUBViewController : UIViewController <HUBActionPerformer>
 
 /// The view controller's delegate. See `HUBViewControllerDelegate` for more information.
 @property (nonatomic, weak, nullable) id<HUBViewControllerDelegate> delegate;

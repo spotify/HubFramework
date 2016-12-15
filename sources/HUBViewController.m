@@ -46,7 +46,6 @@
 #import "HUBComponentReusePool.h"
 #import "HUBActionContextImplementation.h"
 #import "HUBActionHandlerWrapper.h"
-#import "HUBActionPerformer.h"
 #import "HUBViewModelRenderer.h"
 #import "HUBFeatureInfo.h"
 
@@ -58,7 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
     HUBViewModelLoaderDelegate,
     HUBImageLoaderDelegate,
     HUBComponentWrapperDelegate,
-    HUBActionPerformer,
     UICollectionViewDataSource,
     HUBCollectionViewDelegate
 >
