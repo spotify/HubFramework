@@ -56,9 +56,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// A block that can be used instead of the @c contentInset property to determine the content inset.
 @property (nonatomic, copy) UIEdgeInsets (^ _Nullable contentInsetHandler)(HUBViewController *controller, UIEdgeInsets proposedOffset);
 
-/// A block that can be used instead to set the center point of the overlay components.
-@property (nonatomic, copy) CGPoint (^ _Nullable overlayCenterPointHandler)(HUBViewController *controller, CGPoint proposedCenterPoint);
-
 @end
 
 NS_ASSUME_NONNULL_END

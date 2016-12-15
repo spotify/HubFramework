@@ -97,6 +97,7 @@
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldAutomaticallyManageTopContentInset)(void);
+@property (nonatomic, strong, nullable) NSValue *centerPointForOverlayComponents;
 
 @end
 
@@ -2832,12 +2833,10 @@
     HUBAssertEqualFloatValues(self.component.view.center.x, 160);
     HUBAssertEqualFloatValues(self.component.view.center.y, 200);
 
-    self.scrollHandler.overlayCenterPointHandler = ^(HUBViewController *viewController, CGPoint proposedCenterPoint) {
-        return CGPointMake(CGRectGetMidX(viewController.view.frame), CGRectGetMidY(viewController.view.frame));
-    };
+    self.centerPointForOverlayComponents = [NSValue valueWithCGPoint:CGPointMake(80, 100)];
     [notificationCenter postNotification:keyboardNotification];
-    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
-    HUBAssertEqualFloatValues(self.component.view.center.y, 200);
+    HUBAssertEqualFloatValues(self.component.view.center.x, 80);
+    HUBAssertEqualFloatValues(self.component.view.center.y, 100);
 }
 
 - (void)testScrollingToComponentAfterViewModelFinishesRendering
@@ -3178,6 +3177,17 @@
         return self.viewControllerShouldAutomaticallyManageTopContentInset();
     }
     return NO;
+}
+
+- (CGPoint)centerPointForOverlayComponentInViewController:(HUBViewController *)viewController
+                                      proposedCenterPoint:(CGPoint)proposedCenterPoint
+{
+    XCTAssertEqual(viewController, self.viewController);
+    if (self.centerPointForOverlayComponents == nil) {
+        return proposedCenterPoint;
+    } else {
+        return [self.centerPointForOverlayComponents CGPointValue];
+    }
 }
 
 #pragma mark - Utilities
