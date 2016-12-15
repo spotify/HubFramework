@@ -2818,7 +2818,7 @@
     NSNotification * const keyboardNotification = [NSNotification notificationWithName:UIKeyboardWillShowNotification
                                                                                 object:nil
                                                                               userInfo:notificationUserInfo];
-    
+
     // Show keyboard, which should push the overlay component
     NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter postNotification:keyboardNotification];
@@ -2829,6 +2829,13 @@
     // Hide keyboard, which should pull the overlay component back down
     [notificationCenter postNotificationName:UIKeyboardWillHideNotification object:nil];
     
+    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualFloatValues(self.component.view.center.y, 200);
+
+    self.scrollHandler.overlayCenterPointHandler = ^(HUBViewController *viewController, CGPoint proposedCenterPoint) {
+        return CGPointMake(CGRectGetMidX(viewController.view.frame), CGRectGetMidY(viewController.view.frame));
+    };
+    [notificationCenter postNotification:keyboardNotification];
     HUBAssertEqualFloatValues(self.component.view.center.x, 160);
     HUBAssertEqualFloatValues(self.component.view.center.y, 200);
 }

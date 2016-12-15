@@ -63,6 +63,15 @@ NS_ASSUME_NONNULL_BEGIN
     return proposedContentInsets;
 }
 
+- (CGPoint)centerPointForOverlayComponentInViewController:(HUBViewController *)viewController
+                                      proposedCenterPoint:(CGPoint)proposedCenterPoint
+{
+    if (self.overlayCenterPointHandler) {
+        return self.overlayCenterPointHandler(viewController, proposedCenterPoint);
+    }
+    return proposedCenterPoint;
+}
+
 - (void)scrollingWillStartInViewController:(HUBViewController *)viewController
                         currentContentRect:(CGRect)currentContentRect
 {
