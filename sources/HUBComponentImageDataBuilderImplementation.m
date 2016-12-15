@@ -61,12 +61,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBJSONCompatibleBuilder
 
-- (nullable NSError *)addJSONData:(NSData *)JSONData
+- (BOOL)addJSONData:(NSData *)data error:(NSError *__autoreleasing  _Nullable *)error
 {
-    return HUBAddJSONDataToBuilder(JSONData, self);
+    return HUBAddJSONDataToBuilder(data, self, error);
 }
 
-- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
+- (void)addJSONDictionary:(NSDictionary<NSString *, id> *)dictionary
 {
     id<HUBComponentImageDataJSONSchema> const imageDataSchema = self.JSONSchema.componentImageDataSchema;
     

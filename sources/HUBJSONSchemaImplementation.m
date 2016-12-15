@@ -108,7 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                     componentDefaults:self.componentDefaults
                                                                                                     iconImageResolver:self.iconImageResolver];
     
-    [builder addDataFromJSONDictionary:dictionary];
+    [builder addJSONDictionary:dictionary];
     return [builder build];
 }
 

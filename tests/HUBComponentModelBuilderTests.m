@@ -417,7 +417,7 @@
         ]
     };
     
-    [self.builder addDataFromJSONDictionary:dictionary];
+    [self.builder addJSONDictionary:dictionary];
     id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
     
     XCTAssertEqualObjects(model.componentIdentifier, componentIdentifier);
@@ -467,7 +467,7 @@
     self.builder.customData = @{@"custom": @"data"};
     
     NSData * const data = [NSJSONSerialization dataWithJSONObject:@{} options:(NSJSONWritingOptions)0 error:nil];
-    [self.builder addJSONData:data];
+    [self.builder addJSONData:data error:nil];
     
     XCTAssertEqualObjects(self.builder.componentNamespace, @"namespace");
     XCTAssertEqualObjects(self.builder.componentName, @"name");
@@ -491,7 +491,7 @@
         }
     };
     
-    [self.builder addDataFromJSONDictionary:JSONDictionary];
+    [self.builder addJSONDictionary:JSONDictionary];
     
     NSDictionary * const expectedMetadata = @{
         @"meta": @"data",
@@ -511,7 +511,7 @@
         }
     };
     
-    [self.builder addDataFromJSONDictionary:JSONDictionary];
+    [self.builder addJSONDictionary:JSONDictionary];
     
     NSDictionary * const expectedLoggingData = @{
         @"logging": @"data",
@@ -531,7 +531,7 @@
         }
     };
     
-    [self.builder addDataFromJSONDictionary:JSONDictionary];
+    [self.builder addJSONDictionary:JSONDictionary];
     
     NSDictionary * const expectedCustomData = @{
         @"custom": @"data",
@@ -544,10 +544,21 @@
 - (void)testAddingNonDictionaryJSONDataReturnsError
 {
     NSData * const stringData = [@"Not a dictionary" dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil([self.builder addJSONData:stringData]);
-    
+    NSError *error = nil;
+
+    const BOOL success = [self.builder addJSONData:stringData error:&error];
+
+    XCTAssertFalse(success, @"Should not return success when failed to add JSON data");
+    XCTAssertNotNil(error, @"Should set the output error parameter");
+}
+
+- (void)testAddingNonDictionaryJSONDataDoesNotCrash
+{
     NSData * const arrayData = [NSJSONSerialization dataWithJSONObject:@[] options:(NSJSONWritingOptions)0 error:nil];
-    XCTAssertNotNil([self.builder addJSONData:arrayData]);
+
+    const BOOL success = [self.builder addJSONData:arrayData error:nil];
+
+    XCTAssertFalse(success, @"Should not return success when failed to add JSON data");
 }
 
 - (void)testCopying

@@ -305,12 +305,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBJSONCompatibleBuilder
 
-- (nullable NSError *)addJSONData:(NSData *)JSONData
+- (BOOL)addJSONData:(NSData *)data error:(NSError *__autoreleasing  _Nullable *)error
 {
-    return HUBAddJSONDataToBuilder(JSONData, self);
+    return HUBAddJSONDataToBuilder(data, self, error);
 }
 
-- (void)addDataFromJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
+- (void)addJSONDictionary:(NSDictionary<NSString *, NSObject *> *)dictionary
 {
     id<HUBComponentModelJSONSchema> componentModelSchema = self.JSONSchema.componentModelSchema;
     
@@ -366,7 +366,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary * const targetDictionary = [componentModelSchema.targetDictionaryPath dictionaryFromJSONDictionary:dictionary];
     
     if (targetDictionary != nil) {
-        [[self getOrCreateTargetBuilder] addDataFromJSONDictionary:targetDictionary];
+        [[self getOrCreateTargetBuilder] addJSONDictionary:targetDictionary];
     }
     
     NSDictionary * const metadata = [componentModelSchema.metadataPath dictionaryFromJSONDictionary:dictionary];
@@ -390,13 +390,13 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary * const mainImageDataDictionary = [componentModelSchema.mainImageDataDictionaryPath dictionaryFromJSONDictionary:dictionary];
     
     if (mainImageDataDictionary != nil) {
-        [self.mainImageDataBuilderImplementation addDataFromJSONDictionary:mainImageDataDictionary];
+        [self.mainImageDataBuilderImplementation addJSONDictionary:mainImageDataDictionary];
     }
     
     NSDictionary * const backgroundImageDataDictionary = [componentModelSchema.backgroundImageDataDictionaryPath dictionaryFromJSONDictionary:dictionary];
     
     if (backgroundImageDataDictionary != nil) {
-        [self.backgroundImageDataBuilderImplementation addDataFromJSONDictionary:backgroundImageDataDictionary];
+        [self.backgroundImageDataBuilderImplementation addJSONDictionary:backgroundImageDataDictionary];
     }
     
     NSDictionary * const customImageDataDictionary = [componentModelSchema.customImageDataDictionaryPath dictionaryFromJSONDictionary:dictionary];
@@ -406,7 +406,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         if ([imageDataDictionary isKindOfClass:[NSDictionary class]]) {
             HUBComponentImageDataBuilderImplementation * const builder = [self getOrCreateBuilderForCustomImageDataWithIdentifier:imageIdentifier];
-            [builder addDataFromJSONDictionary:imageDataDictionary];
+            [builder addJSONDictionary:imageDataDictionary];
         }
     }
     
@@ -421,7 +421,7 @@ NS_ASSUME_NONNULL_BEGIN
     for (NSDictionary * const childDictionary in childDictionaries) {
         NSString * const childModelIdentifier = [componentModelSchema.identifierPath stringFromJSONDictionary:childDictionary];
         HUBComponentModelBuilderImplementation * const childModelBuilder = [self getOrCreateBuilderForChildWithIdentifier:childModelIdentifier];
-        [childModelBuilder addDataFromJSONDictionary:childDictionary];
+        [childModelBuilder addJSONDictionary:childDictionary];
     }
 }
 
