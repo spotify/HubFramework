@@ -42,7 +42,7 @@
 #import "HUBCollectionViewLayout.h"
 #import "HUBContainerView.h"
 #import "HUBContentReloadPolicy.h"
-#import "HUBViewControllerScrollHandler.h"
+#import "HUBViewControllerScrollHandlerActionPerformer.h"
 #import "HUBComponentReusePool.h"
 #import "HUBActionContextImplementation.h"
 #import "HUBActionHandlerWrapper.h"
@@ -151,6 +151,9 @@ NS_ASSUME_NONNULL_BEGIN
     viewModelLoader.delegate = self;
     viewModelLoader.actionPerformer = self;
     imageLoader.delegate = self;
+    if ([scrollHandler conformsToProtocol:@protocol(HUBViewControllerScrollHandlerActionPerformer)]) {
+        ((id<HUBViewControllerScrollHandlerActionPerformer>)scrollHandler).actionPerformer = self;
+    }
     
     self.automaticallyAdjustsScrollViewInsets = [_scrollHandler shouldAutomaticallyAdjustContentInsetsInViewController:self];
     
