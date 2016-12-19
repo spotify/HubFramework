@@ -121,7 +121,7 @@
         ]
     };
     
-    [self.builder addDataFromJSONDictionary:dictionary];
+    [self.builder addJSONDictionary:dictionary];
     
     id<HUBComponentTarget> const target = [self.builder build];
     XCTAssertEqualObjects(target.actionIdentifiers, @[[[HUBIdentifier alloc] initWithNamespace:@"valid" name:@"action"]]);
@@ -143,7 +143,7 @@
         @"custom": @{@"json": @"customB"}
     };
     
-    [self.builder addDataFromJSONDictionary:dictionary];
+    [self.builder addJSONDictionary:dictionary];
     
     id<HUBComponentTarget> const target = [self.builder build];
     

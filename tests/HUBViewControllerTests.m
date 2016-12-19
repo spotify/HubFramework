@@ -97,6 +97,7 @@
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldAutomaticallyManageTopContentInset)(void);
+@property (nonatomic, strong, nullable) NSValue *centerPointForOverlayComponents;
 
 @end
 
@@ -2818,7 +2819,7 @@
     NSNotification * const keyboardNotification = [NSNotification notificationWithName:UIKeyboardWillShowNotification
                                                                                 object:nil
                                                                               userInfo:notificationUserInfo];
-    
+
     // Show keyboard, which should push the overlay component
     NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter postNotification:keyboardNotification];
@@ -2829,6 +2830,17 @@
     // Hide keyboard, which should pull the overlay component back down
     [notificationCenter postNotificationName:UIKeyboardWillHideNotification object:nil];
     
+    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualFloatValues(self.component.view.center.y, 200);
+
+    self.centerPointForOverlayComponents = [NSValue valueWithCGPoint:CGPointMake(80, 100)];
+    [notificationCenter postNotification:keyboardNotification];
+    HUBAssertEqualFloatValues(self.component.view.center.x, 80);
+    HUBAssertEqualFloatValues(self.component.view.center.y, 100);
+
+    self.viewController.delegate = nil;
+    self.centerPointForOverlayComponents = nil;
+    [notificationCenter postNotificationName:UIKeyboardWillHideNotification object:nil];
     HUBAssertEqualFloatValues(self.component.view.center.x, 160);
     HUBAssertEqualFloatValues(self.component.view.center.y, 200);
 }
@@ -3232,6 +3244,17 @@
         return self.viewControllerShouldAutomaticallyManageTopContentInset();
     }
     return NO;
+}
+
+- (CGPoint)centerPointForOverlayComponentInViewController:(HUBViewController *)viewController
+                                      proposedCenterPoint:(CGPoint)proposedCenterPoint
+{
+    XCTAssertEqual(viewController, self.viewController);
+    if (self.centerPointForOverlayComponents == nil) {
+        return proposedCenterPoint;
+    } else {
+        return [self.centerPointForOverlayComponents CGPointValue];
+    }
 }
 
 #pragma mark - Utilities

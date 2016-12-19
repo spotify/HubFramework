@@ -160,7 +160,7 @@ platform :ios do
   def shouldPerformStep(step)
     value = ENV[step].to_s.downcase
 
-    # We should perform if the value is the empty string, or if it’s set to `yes`, `true` or `1`
+    # We should perform if the value is the empty string, or if it's set to `yes`, `true` or `1`
     value.empty? or value == 'yes' or value == '1' or value == 'true'
   end
 

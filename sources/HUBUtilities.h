@@ -37,7 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Two nil values are considered equal.
  */
-static inline BOOL HUBPropertyIsEqual(NSObject * _Nullable objectA, NSObject * _Nullable objectB, NSString *propertyName) {
+static inline BOOL HUBPropertyIsEqual(NSObject * _Nullable objectA, NSObject * _Nullable objectB, NSString *propertyName)
+{
     NSObject * const valueA = [objectA valueForKey:propertyName];
     NSObject * const valueB = [objectB valueForKey:propertyName];
     
@@ -55,7 +56,8 @@ static inline BOOL HUBPropertyIsEqual(NSObject * _Nullable objectA, NSObject * _
  *
  *  This function asserts that a view has been loaded after -loadView was sent to the component.
  */
-static inline UIView *HUBComponentLoadViewIfNeeded(id<HUBComponent> component) {
+static inline UIView *HUBComponentLoadViewIfNeeded(id<HUBComponent> component)
+{
     if (component.view == nil) {
         [component loadView];
     }
@@ -66,29 +68,52 @@ static inline UIView *HUBComponentLoadViewIfNeeded(id<HUBComponent> component) {
 }
 
 /**
+ *  Conditionally sets the given optional `outError` to the `error`.
+ *
+ *  The function always returns `NO`.
+ *
+ *  @param outError The pointer to an `NSError` pointer which should be assigned to.
+ *  @param error The error that should be assigned to the `outError`.
+ *
+ *  @return `NO`.
+ */
+static inline BOOL HUBSetOutError(NSError * _Nullable __autoreleasing *outError, NSError *error) __attribute__((const));
+static inline BOOL HUBSetOutError(NSError * _Nullable __autoreleasing *outError, NSError *error)
+{
+    if (outError) {
+        *outError = error;
+    }
+    return NO;
+}
+
+/**
  *  Add binary JSON data to a JSON compatible builder
  *
  *  @param data The binary data to add to the builder. Must contain dictionary-based JSON.
- *  @param builder The builder to add the data to
+ *  @param builder The builder to add the data to.
+ *  @param outError Contains an `NSError` object that describes the problem, iff an error occurred when parsing the
+ *                  supplied JSON data.
  *
- *  @return Any error that was encountered when parsing the supplied JSON data, or nil if the operation
- *          was successfully completed.
+ *  @return `YES` if the data was successfully serialized and added; otherwise `NO`.
  */
-static inline NSError * _Nullable HUBAddJSONDataToBuilder(NSData *data, id<HUBJSONCompatibleBuilder> builder) {
-    NSError *error;
-    NSObject *JSONObject = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:&error];
-    
-    if (error != nil || JSONObject == nil) {
-        return error;
+static inline BOOL HUBAddJSONDataToBuilder(NSData *data,
+                                           id<HUBJSONCompatibleBuilder> builder,
+                                           NSError * _Nullable __autoreleasing *outError)
+{
+    NSError *JSONError;
+    id JSONObject = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:&JSONError];
+
+    if (JSONObject == nil && JSONError != nil) {
+        return HUBSetOutError(outError, JSONError);
     }
-    
+
     if (![JSONObject isKindOfClass:[NSDictionary class]]) {
-        return [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil];
+        return HUBSetOutError(outError, [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil]);
     }
     
-    [builder addDataFromJSONDictionary:(NSDictionary *)JSONObject];
+    [builder addJSONDictionary:(NSDictionary *)JSONObject];
     
-    return nil;
+    return YES;
 }
 
 /**
@@ -101,7 +126,8 @@ static inline NSError * _Nullable HUBAddJSONDataToBuilder(NSData *data, id<HUBJS
  *  will be added to `dictionaryA`, overriding any values that have duplicate keys in both dictionaries.
  */
 static inline NSDictionary<NSString *, id> * _Nullable HUBMergeDictionaries(NSDictionary<NSString *, id> * _Nullable dictionaryA,
-                                                                            NSDictionary<NSString *, id> * _Nullable dictionaryB) {
+                                                                            NSDictionary<NSString *, id> * _Nullable dictionaryB)
+{
     if (dictionaryA == nil) {
         return dictionaryB;
     }
@@ -121,7 +147,8 @@ static inline NSDictionary<NSString *, id> * _Nullable HUBMergeDictionaries(NSDi
  *  This function is used to determine which properties should be compared or copied. Note that
  *  `HUBAutoEquatable` is not used here, since we don't control the implementation of the class.
  */
-static inline NSArray<NSString *> *HUBNavigationItemPropertyNames() {
+static inline NSArray<NSString *> *HUBNavigationItemPropertyNames()
+{
     return @[
         HUBKeyPath((UINavigationItem *)nil, title),
         HUBKeyPath((UINavigationItem *)nil, titleView),
@@ -143,7 +170,8 @@ static inline NSArray<NSString *> *HUBNavigationItemPropertyNames() {
  *  The two instances are considered equal if all properties which have names included in the array
  *  obtained by calling `HUBNavigationItemPropertyNames()` are equal.
  */
-static inline BOOL HUBNavigationItemEqualToNavigationItem(UINavigationItem *navigationItemA, UINavigationItem *navigationItemB) {
+static inline BOOL HUBNavigationItemEqualToNavigationItem(UINavigationItem *navigationItemA, UINavigationItem *navigationItemB)
+{
     for (NSString * const propertyName in HUBNavigationItemPropertyNames()) {
         if (!HUBPropertyIsEqual(navigationItemA, navigationItemB, propertyName)) {
             return NO;
@@ -164,7 +192,8 @@ static inline BOOL HUBNavigationItemEqualToNavigationItem(UINavigationItem *navi
  *  If `navigationItemB` is nil, all `navigationItemA` properties will be reset to `nil`. To determine
  *  which properties that should be handled, `HUBNavigationItemPropertyNames()` is called.
  */
-static inline UINavigationItem *HUBCopyNavigationItemProperties(UINavigationItem *navigationItemA, UINavigationItem * _Nullable navigationItemB) {
+static inline UINavigationItem *HUBCopyNavigationItemProperties(UINavigationItem *navigationItemA, UINavigationItem * _Nullable navigationItemB)
+{
     NSSet<NSString *> * const boolPropertyNames = [NSSet setWithObjects:HUBKeyPath(navigationItemA, hidesBackButton),
                                                                         HUBKeyPath(navigationItemA, leftItemsSupplementBackButton),
                                                                         nil];
@@ -192,7 +221,8 @@ static inline UINavigationItem *HUBCopyNavigationItemProperties(UINavigationItem
  *
  *  @return A string containing a serialized representation of the object (JSON), or nil if the operation failed
  */
-static inline NSString * _Nullable HUBSerializeToString(id<HUBSerializable> object) {
+static inline NSString * _Nullable HUBSerializeToString(id<HUBSerializable> object)
+{
     NSDictionary * const serialization = [object serialize];
     NSData * const jsonData = [NSJSONSerialization dataWithJSONObject:serialization options:NSJSONWritingPrettyPrinted error:nil];
     
@@ -211,7 +241,8 @@ static inline NSString * _Nullable HUBSerializeToString(id<HUBSerializable> obje
  *  The given block will be run synchronously in case this function is called on the main thread,
  *  or asynchronously if it's not.
  */
-static inline void HUBPerformOnMainQueue(dispatch_block_t block) {
+static inline void HUBPerformOnMainQueue(dispatch_block_t block)
+{
     if ([NSThread isMainThread]) {
         block();
         return;

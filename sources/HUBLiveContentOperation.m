@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
          viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
             previousError:(nullable NSError *)previousError
 {
-    [viewModelBuilder addJSONData:self.JSONData];
+    [viewModelBuilder addJSONData:self.JSONData error:nil];
     [self.delegate contentOperationDidFinish:self];
 }
 

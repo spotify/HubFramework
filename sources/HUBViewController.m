@@ -46,7 +46,6 @@
 #import "HUBComponentReusePool.h"
 #import "HUBActionContextImplementation.h"
 #import "HUBActionHandlerWrapper.h"
-#import "HUBActionPerformer.h"
 #import "HUBViewModelRenderer.h"
 #import "HUBFeatureInfo.h"
 
@@ -58,7 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
     HUBViewModelLoaderDelegate,
     HUBImageLoaderDelegate,
     HUBComponentWrapperDelegate,
-    HUBActionPerformer,
     UICollectionViewDataSource,
     HUBCollectionViewDelegate
 >
@@ -1056,7 +1054,16 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     CGRect frame = self.view.bounds;
     frame.origin.y = self.collectionView.contentInset.top;
     frame.size.height -= self.visibleKeyboardHeight + CGRectGetMinY(frame);
-    return CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+
+    CGPoint proposedCenterPoint = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+
+    id<HUBViewControllerDelegate> delegate = self.delegate;
+    if (delegate == nil) {
+        return proposedCenterPoint;
+    }
+
+    return [delegate centerPointForOverlayComponentInViewController:self
+                                                proposedCenterPoint:proposedCenterPoint];
 }
 
 - (void)updateOverlayComponentCenterPointsWithKeyboardNotification:(NSNotification *)notification
@@ -1296,10 +1303,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (contextsForURL == nil) {
         contextsForURL = [NSMutableArray arrayWithObject:context];
         self.componentImageLoadingContexts[imageURL] = contextsForURL;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
-        });
+        [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
     } else {
         [contextsForURL addObject:context];
     }
