@@ -31,7 +31,7 @@
  *  behavior, but still contain enough information for a `HUBComponentFallbackHandler` to create appropriate fallback
  *  components based on them.
  */
-typedef NSString * HUBComponentCategory NS_EXTENSIBLE_STRING_ENUM;
+typedef NSString * HUBComponentCategory HUBS_EXTENSIBLE_STRING_ENUM;
 
 /// Category for components that have a header-like appearance, usually used for header components
 static HUBComponentCategory const HUBComponentCategoryHeader = @"header";

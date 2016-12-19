@@ -31,10 +31,13 @@
     /** Unavailable. Use the designated initializer instead */ \
     - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
 
-/// This macro was introduced in Xcode 8, so adding this here for now (if not defined) to support Xcode 7 as well
-#ifndef NS_EXTENSIBLE_STRING_ENUM
-    #define NS_EXTENSIBLE_STRING_ENUM
-#endif
+/// This macro was introduced in Xcode 8, so adding this here for now (if not defined) to support Xcode 7 as well.
+#ifdef NS_EXTENSIBLE_STRING_ENUM
+    #define HUBS_EXTENSIBLE_STRING_ENUM NS_EXTENSIBLE_STRING_ENUM
+#else // NS_EXTENSIBLE_STRING_ENUM
+    #define HUBS_EXTENSIBLE_STRING_ENUM
+#endif // NS_EXTENSIBLE_STRING_ENUM
+
 
 /// Define an explicit `HUB_DEBUG` macro for conditionally compiling debug code
 #ifdef DEBUG
