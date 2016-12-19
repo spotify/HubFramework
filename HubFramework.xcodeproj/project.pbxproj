@@ -408,6 +408,7 @@
 		8AFF0F9A1C85C73300D5535B /* HUBCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF0F991C85C73300D5535B /* HUBCollectionViewLayout.m */; };
 		8AFF10071C87105C00D5535B /* HUBComponentFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */; };
 		B35E40F91DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */; };
+		DD244A821E04520F005E5C68 /* HUBErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = DD244A811E04520D005E5C68 /* HUBErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DDBCF36C1C68DD2300693038 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36B1C68DD2300693038 /* UIKit.framework */; };
 		DDBCF36E1C68DE2C00693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
 		DDBCF36F1C68DE4900693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
@@ -741,6 +742,7 @@
 		B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewFactoryTests.m; sourceTree = "<group>"; };
 		DD13758E1C68C76000AD3499 /* project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
 		DD13758F1C68C76000AD3499 /* spotify_os.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = spotify_os.xcconfig; sourceTree = "<group>"; };
+		DD244A811E04520D005E5C68 /* HUBErrors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBErrors.h; sourceTree = "<group>"; };
 		DD79C3B91D9F0A8800FA77E5 /* HUBKeyPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBKeyPath.h; sourceTree = "<group>"; };
 		DD81AFEF1DF725040063DDE0 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBUtilities.h; sourceTree = "<group>"; };
@@ -944,10 +946,11 @@
 		8A2061111CCA1992008C34E3 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				525E2F5C1DF4CEED008DCB85 /* HUBDefaults.h */,
+				DD244A811E04520D005E5C68 /* HUBErrors.h */,
 				8A5D7A5A1CB806E200B987BA /* HUBHeaderMacros.h */,
 				8AF21C9D1C6D044700960A06 /* HUBIdentifier.h */,
 				8A0E4B801CB69CD80019DE71 /* HUBSerializable.h */,
-				525E2F5C1DF4CEED008DCB85 /* HUBDefaults.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1623,6 +1626,7 @@
 				8AE6C0791DF6E4020063B2B1 /* HUBFeatureRegistryImplementation.h in Headers */,
 				8AE6C0441DF6E3D40063B2B1 /* HUBComponentModel.h in Headers */,
 				8AE6C0771DF6E3F90063B2B1 /* HUBJSONParsingOperation.h in Headers */,
+				DD244A821E04520F005E5C68 /* HUBErrors.h in Headers */,
 				8AE6C0511DF6E3D40063B2B1 /* HUBScrollPosition.h in Headers */,
 				8AE6C0A21DF6E4020063B2B1 /* HUBViewModelDiff.h in Headers */,
 				8AE6C01D1DF6E3BE0063B2B1 /* HUBComponentTargetJSONSchema.h in Headers */,

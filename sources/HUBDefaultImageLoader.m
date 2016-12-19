@@ -21,6 +21,7 @@
 
 
 #import "HUBDefaultImageLoader.h"
+#import "HUBErrors.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -60,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
         id<HUBImageLoaderDelegate> const delegate = strongSelf.delegate;
         
         if (data == nil || error != nil) {
-            NSError * const nonNilError = error ?: [strongSelf createErrorWithIdentifier:@"unknown"];
+            NSError * const nonNilError = error ?: [NSError errorWithDomain:HUBImageLoaderErrorDomain code:HUBImageLoaderErrorCodeUnknown userInfo:nil];
             [delegate imageLoader:strongSelf didFailLoadingImageForURL:imageURL error:nonNilError];
             return;
         }
@@ -69,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
         UIImage *image = [UIImage imageWithData:nonNilData scale:[UIScreen mainScreen].scale];
         
         if (image == nil) {
-            NSError * const dataError = [self createErrorWithIdentifier:@"invalidData"];
+            NSError * const dataError = [NSError errorWithDomain:HUBImageLoaderErrorDomain code:HUBImageLoaderErrorCodeInvalidData userInfo:nil];
             [delegate imageLoader:strongSelf didFailLoadingImageForURL:imageURL error:dataError];
             return;
         }
@@ -86,12 +87,6 @@ NS_ASSUME_NONNULL_BEGIN
     }];
 
     [task resume];
-}
-
-- (NSError *)createErrorWithIdentifier:(NSString *)identifier
-{
-    NSString * const domain = [NSString stringWithFormat:@"com.spotify.hubFramework.imageLoader.%@", identifier];
-    return [NSError errorWithDomain:domain code:-1 userInfo:nil];
 }
 
 @end
