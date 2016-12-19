@@ -23,6 +23,7 @@
 #import "HUBComponentLayoutTraits.h"
 #import "HUBComponentType.h"
 #import "HUBScrollPosition.h"
+#import "HUBActionPerformer.h"
 
 @protocol HUBViewModel;
 @protocol HUBComponentModel;
@@ -146,6 +147,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)viewControllerShouldAutomaticallyManageTopContentInset:(HUBViewController *)viewController;
 
+/**
+ *  Return the center point of overlay coponents used in a view controller.
+ *
+ *  @param viewController The view controller in question
+ *  @param proposedCenterPoint The center point that the Hub Framework is proposing
+ *
+ *  The Hub Framework will call this method every time a view controller is being laid out, which is usually in
+ *  response to that its view model has been changed. The returned value will be set as a center point of the overlay.
+ */
+- (CGPoint)centerPointForOverlayComponentInViewController:(HUBViewController *)viewController
+                                      proposedCenterPoint:(CGPoint)proposedCenterPoint;
+
 @end
 
 /**
@@ -156,7 +169,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  This view controller renders `HUBComponent` instances using a collection view. What components that are rendered
  *  are determined by `HUBContentOperation`s that build a `HUBViewModel`.
  */
-@interface HUBViewController : UIViewController
+@interface HUBViewController : UIViewController <HUBActionPerformer>
 
 /// The view controller's delegate. See `HUBViewControllerDelegate` for more information.
 @property (nonatomic, weak, nullable) id<HUBViewControllerDelegate> delegate;

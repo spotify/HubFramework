@@ -142,7 +142,7 @@
         }
     };
     
-    [self.builder addDataFromJSONDictionary:dictionary];
+    [self.builder addJSONDictionary:dictionary];
     
     XCTAssertEqualObjects(self.builder.URL, imageURL);
     XCTAssertEqualObjects(self.builder.placeholderIconIdentifier, @"place_holder");
@@ -164,7 +164,7 @@
     self.builder.localImage = localImage;
     self.builder.customData = @{@"custom": @"data"};
     
-    [self.builder addDataFromJSONDictionary:@{}];
+    [self.builder addJSONDictionary:@{}];
     
     XCTAssertEqualObjects(self.builder.placeholderIconIdentifier, @"placeholder");
     XCTAssertEqualObjects(self.builder.URL, imageURL);
@@ -175,10 +175,21 @@
 - (void)testAddingNonDictionaryJSONDataReturnsError
 {
     NSData * const stringData = [@"Not a dictionary" dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil([self.builder addJSONData:stringData]);
-    
+    NSError *error = nil;
+
+    const BOOL success = [self.builder addJSONData:stringData error:&error];
+
+    XCTAssertFalse(success, @"Should not return success when failed to add JSON data");
+    XCTAssertNotNil(error, @"Should set the output error parameter");
+}
+
+- (void)testAddingNonDictionaryJSONDataDoesNotCrash
+{
     NSData * const arrayData = [NSJSONSerialization dataWithJSONObject:@[] options:(NSJSONWritingOptions)0 error:nil];
-    XCTAssertNotNil([self.builder addJSONData:arrayData]);
+
+    const BOOL success = [self.builder addJSONData:arrayData error:nil];
+
+    XCTAssertFalse(success, @"Should not return success when failed to add JSON data");
 }
 
 - (void)testCopying

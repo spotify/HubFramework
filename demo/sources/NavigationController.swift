@@ -66,4 +66,8 @@ class NavigationController: UINavigationController, HUBViewControllerDelegate {
     func viewControllerShouldAutomaticallyManageTopContentInset(_ viewController: HUBViewController) -> Bool {
         return true
     }
+
+    func centerPointForOverlayComponent(in viewController: HUBViewController, proposedCenter proposedCenterPoint: CGPoint) -> CGPoint {
+        return proposedCenterPoint
+    }
 }
