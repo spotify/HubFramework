@@ -23,11 +23,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#pragma mark Xcode 7 Compatibility
+
+/// `NSErrorDomain` was introduced in Xcode 8 along with `NS_EXTENSIBLE_STRING_ENUM`. as such we need to fallback to
+/// the raw `NSString *` when we compile using Xcode 7.
+#ifdef NS_EXTENSIBLE_STRING_ENUM
+    #define HUBErrorDomain NSErrorDomain
+#else // NS_EXTENSIBLE_STRING_ENUM
+    #define HUBErrorDomain NSString *
+#endif // NS_EXTENSIBLE_STRING_ENUM
+
+
 #pragma mark - JSON Serialization Errors
 
 #pragma mark Error Domain
 /// Error domain for JSON serialization errors.
-FOUNDATION_EXPORT NSErrorDomain const HUBJSONSerializationErrorDomain;
+FOUNDATION_EXPORT HUBErrorDomain const HUBJSONSerializationErrorDomain;
 
 #pragma mark Error Codes
 /**
@@ -46,7 +57,7 @@ typedef NS_ENUM(NSInteger, HUBJSONSerializationErrorCode) {
 
 #pragma mark Error Domain
 /// Error domain for image loading errors.
-FOUNDATION_EXPORT NSErrorDomain const HUBImageLoaderErrorDomain;
+FOUNDATION_EXPORT HUBErrorDomain const HUBImageLoaderErrorDomain;
 
 #pragma mark Error Codes
 /**
