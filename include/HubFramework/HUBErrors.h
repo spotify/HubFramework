@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark Error Domain
 /// Error domain for JSON serialization errors.
-static NSErrorDomain const HUBJSONSerializationErrorDomain = @"com.spotify.hubframework.json-serialization";
+FOUNDATION_EXPORT NSErrorDomain const HUBJSONSerializationErrorDomain;
 
 #pragma mark Error Codes
 /**
@@ -46,7 +46,7 @@ typedef NS_ENUM(NSInteger, HUBJSONSerializationErrorCode) {
 
 #pragma mark Error Domain
 /// Error domain for image loading errors.
-static NSErrorDomain const HUBImageLoaderErrorDomain = @"com.spotify.hubframework.image-loader";
+FOUNDATION_EXPORT NSErrorDomain const HUBImageLoaderErrorDomain;
 
 #pragma mark Error Codes
 /**

@@ -409,6 +409,8 @@
 		8AFF10071C87105C00D5535B /* HUBComponentFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */; };
 		B35E40F91DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */; };
 		DD244A821E04520F005E5C68 /* HUBErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = DD244A811E04520D005E5C68 /* HUBErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DD244B191E086958005E5C68 /* HUBErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = DD244B181E086958005E5C68 /* HUBErrors.m */; };
+		DD244B1A1E086958005E5C68 /* HUBErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = DD244B181E086958005E5C68 /* HUBErrors.m */; };
 		DDBCF36C1C68DD2300693038 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36B1C68DD2300693038 /* UIKit.framework */; };
 		DDBCF36E1C68DE2C00693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
 		DDBCF36F1C68DE4900693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
@@ -743,6 +745,7 @@
 		DD13758E1C68C76000AD3499 /* project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
 		DD13758F1C68C76000AD3499 /* spotify_os.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = spotify_os.xcconfig; sourceTree = "<group>"; };
 		DD244A811E04520D005E5C68 /* HUBErrors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBErrors.h; sourceTree = "<group>"; };
+		DD244B181E086958005E5C68 /* HUBErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBErrors.m; sourceTree = "<group>"; };
 		DD79C3B91D9F0A8800FA77E5 /* HUBKeyPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBKeyPath.h; sourceTree = "<group>"; };
 		DD81AFEF1DF725040063DDE0 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBUtilities.h; sourceTree = "<group>"; };
@@ -936,6 +939,7 @@
 			children = (
 				8ADA48551D784C1400C27F21 /* HUBAutoEquatable.h */,
 				8ADA48561D784C1400C27F21 /* HUBAutoEquatable.m */,
+				DD244B181E086958005E5C68 /* HUBErrors.m */,
 				8ACB2A791C6A2F7C000741D7 /* HUBIdentifier.m */,
 				DD79C3B91D9F0A8800FA77E5 /* HUBKeyPath.h */,
 				DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */,
@@ -1832,6 +1836,7 @@
 				8A786BB81C5A4CB400B2AB9E /* HUBMutableJSONPathImplementation.m in Sources */,
 				8AD0646C1C68E7B00086C081 /* HUBComponentCollectionViewCell.m in Sources */,
 				8A2A72F31D4B75DA00141619 /* HUBActionRegistryImplementation.m in Sources */,
+				DD244B191E086958005E5C68 /* HUBErrors.m in Sources */,
 				8A6529F91D82DC33007B1A15 /* HUBActionHandlerWrapper.m in Sources */,
 				8A786BB21C5A383800B2AB9E /* HUBViewModelJSONSchemaImplementation.m in Sources */,
 				8A5035221DD473040008B499 /* HUBCollectionView.m in Sources */,
@@ -2041,6 +2046,7 @@
 				8AE6C06A1DF6E3F90063B2B1 /* HUBComponentModelJSONSchemaImplementation.m in Sources */,
 				8AE6C0821DF6E4020063B2B1 /* HUBContentOperationWrapper.m in Sources */,
 				8AE6C0961DF6E4020063B2B1 /* HUBViewControllerFactoryImplementation.m in Sources */,
+				DD244B1A1E086958005E5C68 /* HUBErrors.m in Sources */,
 				8AE6C0BA1DF6E40D0063B2B1 /* HUBComponentCollectionViewCell.m in Sources */,
 				8AE6C0681DF6E3F90063B2B1 /* HUBViewModelJSONSchemaImplementation.m in Sources */,
 				8AE6C0AB1DF6E40D0063B2B1 /* HUBComponentModelImplementation.m in Sources */,
