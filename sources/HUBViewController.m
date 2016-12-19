@@ -217,7 +217,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [notificationCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
     self.viewHasBeenLaidOut = NO;
 }
