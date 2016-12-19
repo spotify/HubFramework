@@ -33,9 +33,11 @@ static NSErrorDomain const HUBJSONSerializationErrorDomain = @"com.spotify.hubfr
 /**
  *  Error code identifying the type of JSON serialization error that occurred.
  *
+ *  - HUBJSONSerializationErrorCodeEmptyData: The given data object was empty or `nil`.
  *  - HUBJSONSerializationErrorCodeInvalidJSON: The data passed as JSON data was invalid.
  */
 typedef NS_ENUM(NSInteger, HUBJSONSerializationErrorCode) {
+    HUBJSONSerializationErrorCodeEmptyData,
     HUBJSONSerializationErrorCodeInvalidJSON,
 };
 

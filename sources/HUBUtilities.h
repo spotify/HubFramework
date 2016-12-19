@@ -101,6 +101,10 @@ static inline BOOL HUBAddJSONDataToBuilder(NSData *data,
                                            id<HUBJSONCompatibleBuilder> builder,
                                            NSError * _Nullable __autoreleasing *outError)
 {
+    if (data.length == 0) {
+        return HUBSetOutError(outError, [NSError errorWithDomain:HUBJSONSerializationErrorDomain code:HUBJSONSerializationErrorCodeEmptyData userInfo:nil]);
+    }
+
     NSError *JSONError;
     id JSONObject = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:&JSONError];
 
