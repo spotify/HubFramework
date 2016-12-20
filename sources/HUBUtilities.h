@@ -22,9 +22,10 @@
 #import <UIKit/UIKit.h>
 
 #import "HUBComponent.h"
+#import "HUBErrors.h"
 #import "HUBJSONCompatibleBuilder.h"
-#import "HUBSerializable.h"
 #import "HUBKeyPath.h"
+#import "HUBSerializable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -100,6 +101,10 @@ static inline BOOL HUBAddJSONDataToBuilder(NSData *data,
                                            id<HUBJSONCompatibleBuilder> builder,
                                            NSError * _Nullable __autoreleasing *outError)
 {
+    if (data.length == 0) {
+        return HUBSetOutError(outError, [NSError errorWithDomain:HUBJSONSerializationErrorDomain code:HUBJSONSerializationErrorCodeEmptyData userInfo:nil]);
+    }
+
     NSError *JSONError;
     id JSONObject = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:&JSONError];
 
@@ -108,7 +113,7 @@ static inline BOOL HUBAddJSONDataToBuilder(NSData *data,
     }
 
     if (![JSONObject isKindOfClass:[NSDictionary class]]) {
-        return HUBSetOutError(outError, [NSError errorWithDomain:@"spotify.com.hubFramework.invalidJSON" code:0 userInfo:nil]);
+        return HUBSetOutError(outError, [NSError errorWithDomain:HUBJSONSerializationErrorDomain code:HUBJSONSerializationErrorCodeInvalidJSON userInfo:nil]);
     }
     
     [builder addJSONDictionary:(NSDictionary *)JSONObject];
