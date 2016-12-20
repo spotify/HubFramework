@@ -60,6 +60,7 @@
 #import "HUBViewControllerFactory.h"
 #import "HUBViewController.h"
 #import "HUBViewControllerScrollHandler.h"
+#import "HUBViewControllerDefaultScrollHandler.h"
 #import "HUBViewURIPredicate.h"
 
 // Components

@@ -23,7 +23,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Default view controller scroll handler, used for features that don't define their own
+/**
+ *  Default view controller scroll handler, used for features that don't define their own or as a override point
+ *  when specifying different behaviour just for few of the methods specified in `HUBViewControllerScrollHandler`
+ */
 @interface HUBViewControllerDefaultScrollHandler : NSObject <HUBViewControllerScrollHandler>
 
 @end
