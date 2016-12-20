@@ -21,5 +21,5 @@
 
 #import "HUBErrors.h"
 
-NSErrorDomain const HUBJSONSerializationErrorDomain = @"com.spotify.hubframework.json-serialization";
-NSErrorDomain const HUBImageLoaderErrorDomain = @"com.spotify.hubframework.image-loader";
+HUBErrorDomain const HUBJSONSerializationErrorDomain = @"com.spotify.hubframework.json-serialization";
+HUBErrorDomain const HUBImageLoaderErrorDomain = @"com.spotify.hubframework.image-loader";
