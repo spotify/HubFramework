@@ -1141,14 +1141,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     contentInsets = [self.scrollHandler contentInsetsForViewController:self
                                                  proposedContentInsets:contentInsets];
 
-    if (!UIEdgeInsetsEqualToEdgeInsets(self.collectionView.contentInset, contentInsets)) {
-        self.collectionView.contentInset = contentInsets;
-        CGPoint contentOffset = self.collectionView.contentOffset;
-        contentOffset.y = -contentInsets.top;
-        [self setContentOffset:contentOffset animated:NO];
-    }
-
-    self.collectionView.scrollIndicatorInsets = self.collectionView.contentInset;
+    self.collectionView.contentInset = contentInsets;
+    self.collectionView.scrollIndicatorInsets = contentInsets;
 }
 
 - (void)collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell
