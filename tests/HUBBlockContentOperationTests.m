@@ -29,6 +29,8 @@
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBFeatureInfoImplementation.h"
 
+#import "HUBContentOperationDelegateMock.h"
+
 @interface HUBBlockContentOperationTests : XCTestCase
 
 @end
@@ -69,6 +71,18 @@
     
     XCTAssertEqualObjects(originalContext.viewModelBuilder.navigationBarTitle, @"Hello world!");
 }
+
+- (void)testSendsDelegateContentOperationDidFinish
+{
+    HUBContentOperationDelegateMock * const delegate = [HUBContentOperationDelegateMock new];
+    id<HUBContentOperationContext> const context = [self createContext];
+
+    HUBBlockContentOperation * const operation = [[HUBBlockContentOperation alloc] initWithBlock:^(id<HUBContentOperationContext> __unused _) {}];
+    operation.delegate = delegate;
+
+    [operation performInContext:context];
+
+    XCTAssertEqual(delegate.finishedContentOperations.firstObject, operation, @"The delegate should be notified");
 }
 
 #pragma mark - Utilities
