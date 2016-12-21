@@ -20,15 +20,14 @@
  */
 
 #import "HUBContentOperationMock.h"
+#import "HUBContentOperationContext.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBContentOperationMock ()
 
 @property (nonatomic, assign, readwrite) NSUInteger performCount;
-@property (nonatomic, strong, readwrite) id<HUBFeatureInfo> featureInfo;
-@property (nonatomic, assign, readwrite) HUBConnectivityState connectivityState;
-@property (nonatomic, strong, readwrite, nullable) NSError *previousContentOperationError;
+@property (nonatomic, strong, readwrite) id<HUBContentOperationContext> context;
 @property (nonatomic, strong, readwrite, nullable) id<HUBActionContext> actionContext;
 
 @end
@@ -38,18 +37,27 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize delegate = _delegate;
 @synthesize actionPerformer = _actionPerformer;
 
+- (id<HUBFeatureInfo>)featureInfo
+{
+    return self.context.featureInfo;
+}
+
+- (HUBConnectivityState)connectivityState
+{
+    return self.context.connectivityState;
+}
+
+- (nullable NSError *)previousContentOperationError
+{
+    return self.context.previousError;
+}
+
 #pragma mark - HUBContentOperation
 
-- (void)performForViewURI:(NSURL *)viewURI
-              featureInfo:(id<HUBFeatureInfo>)featureInfo
-        connectivityState:(HUBConnectivityState)connectivityState
-         viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
-            previousError:(nullable NSError *)previousError
+- (void)performInContext:(id<HUBContentOperationContext>)context
 {
     self.performCount++;
-    self.featureInfo = featureInfo;
-    self.connectivityState = connectivityState;
-    self.previousContentOperationError = previousError;
+    self.context = context;
     
     id<HUBContentOperationDelegate> const delegate = self.delegate;
     
@@ -57,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
         NSError * const error = self.error;
         [delegate contentOperation:self didFailWithError:error];
     } else if (self.contentLoadingBlock != nil) {
-        BOOL const shouldCallDelegate = self.contentLoadingBlock(viewModelBuilder);
+        BOOL const shouldCallDelegate = self.contentLoadingBlock(context.viewModelBuilder);
         
         if (shouldCallDelegate) {
             [delegate contentOperationDidFinish:self];
@@ -78,16 +86,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBContentOperationWithPaginatedContent
 
-- (void)appendContentForPageIndex:(NSUInteger)pageIndex
-               toViewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
-                          viewURI:(NSURL *)viewURI
-                      featureInfo:(id<HUBFeatureInfo>)featureInfo
-                connectivityState:(HUBConnectivityState)connectivityState
-                    previousError:(nullable NSError *)previousError
+- (void)appendContentForPageIndex:(NSUInteger)pageIndex inContext:(nonnull id<HUBContentOperationContext>)context
 {
-    self.featureInfo = featureInfo;
-    self.connectivityState = connectivityState;
-    self.previousContentOperationError = previousError;
+    self.context = context;
     
     id<HUBContentOperationDelegate> const delegate = self.delegate;
     
@@ -97,7 +98,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
-    BOOL const shouldCallDelegate = self.paginatedContentLoadingBlock(viewModelBuilder, pageIndex);
+    BOOL const shouldCallDelegate = self.paginatedContentLoadingBlock(context.viewModelBuilder, pageIndex);
     
     if (shouldCallDelegate) {
         [delegate contentOperationDidFinish:self];

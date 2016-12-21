@@ -20,6 +20,8 @@
  */
 
 #import "HUBContentOperationWrapper.h"
+
+#import "HUBContentOperationContextImplementation.h"
 #import "HUBContentOperationWithPaginatedContent.h"
 
 @interface HUBContentOperationWrapper () <HUBContentOperationDelegate>
@@ -56,29 +58,30 @@
                      previousError:(nullable NSError *)previousError
 {
     self.isExecuting = YES;
-    
+
+    id<HUBContentOperationContext> const context = ({
+        [[HUBContentOperationContextImplementation alloc] initWithViewURI:viewURI
+                                                              featureInfo:featureInfo
+                                                        connectivityState:connectivityState
+                                                         viewModelBuilder:viewModelBuilder
+                                                            previousError:previousError];
+    });
+
     if (pageIndex != nil) {
-        if ([self.contentOperation conformsToProtocol:@protocol(HUBContentOperationWithPaginatedContent)]) {
-            id<HUBContentOperationWithPaginatedContent> const paginatedOperation = (id<HUBContentOperationWithPaginatedContent>)self.contentOperation;
-            
-            [paginatedOperation appendContentForPageIndex:pageIndex.unsignedIntegerValue
-                                       toViewModelBuilder:viewModelBuilder
-                                                  viewURI:viewURI
-                                              featureInfo:featureInfo
-                                        connectivityState:connectivityState
-                                            previousError:previousError];
-        } else {
-            [self finishWithError:previousError];
-        }
-        
-        return;
+        [self appendContentForPageIndex:pageIndex.unsignedIntegerValue context:context];
+    } else {
+        [self.contentOperation performInContext:context];
     }
-    
-    [self.contentOperation performForViewURI:viewURI
-                                 featureInfo:featureInfo
-                           connectivityState:connectivityState
-                            viewModelBuilder:viewModelBuilder
-                               previousError:previousError];
+}
+
+- (void)appendContentForPageIndex:(NSUInteger)pageIndex context:(id<HUBContentOperationContext>)context
+{
+    if ([self.contentOperation conformsToProtocol:@protocol(HUBContentOperationWithPaginatedContent)]) {
+        id<HUBContentOperationWithPaginatedContent> const paginatedOperation = (id<HUBContentOperationWithPaginatedContent>)self.contentOperation;
+        [paginatedOperation appendContentForPageIndex:pageIndex inContext:context];
+    } else {
+        [self finishWithError:context.previousError];
+    }
 }
 
 #pragma mark - HUBContentOperationDelegate

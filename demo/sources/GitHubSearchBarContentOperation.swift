@@ -28,7 +28,9 @@ class GitHubSearchBarContentOperation: NSObject, HUBContentOperationActionObserv
     private var searchString: String?
     private var searchActionIdentifier: HUBIdentifier { return HUBIdentifier(namespace: "github", name: "search") }
 
-    func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
+    func perform(in context: HUBContentOperationContext) {
+        let viewModelBuilder = context.viewModelBuilder
+
         // Encode any search string that was passed from the search bar component
         // (through an action) into the view model builder's custom data
         viewModelBuilder.setCustomDataValue(searchString, forKey: GitHubSearchCustomDataKeys.searchString)

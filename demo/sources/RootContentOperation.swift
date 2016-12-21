@@ -26,11 +26,8 @@ import HubFramework
 class RootContentOperation: NSObject, HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
     
-    func perform(forViewURI viewURI: URL,
-                 featureInfo: HUBFeatureInfo,
-                 connectivityState: HUBConnectivityState,
-                 viewModelBuilder: HUBViewModelBuilder,
-                 previousError: Error?) {
+    func perform(in context: HUBContentOperationContext) {
+        let viewModelBuilder = context.viewModelBuilder
         viewModelBuilder.navigationBarTitle = "Hub Framework Demo App"
         
         let gitHubSearchRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "gitHubSearch")

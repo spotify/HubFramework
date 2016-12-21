@@ -21,8 +21,6 @@
 
 #import "HUBBlockContentOperation.h"
 
-#import "HUBContentOperationContextImplementation.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBBlockContentOperation ()
@@ -52,18 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBContentOperation
 
-- (void)performForViewURI:(NSURL *)viewURI
-              featureInfo:(id<HUBFeatureInfo>)featureInfo
-        connectivityState:(HUBConnectivityState)connectivityState
-         viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
-            previousError:(nullable NSError *)previousError
+- (void)performInContext:(id<HUBContentOperationContext>)context
 {
-    HUBContentOperationContextImplementation * const context = [[HUBContentOperationContextImplementation alloc] initWithViewURI:viewURI
-                                                                                                                     featureInfo:featureInfo
-                                                                                                               connectivityState:connectivityState
-                                                                                                                viewModelBuilder:viewModelBuilder
-                                                                                                                   previousError:previousError];
-    
     self.block(context);
     [self.delegate contentOperationDidFinish:self];
 }

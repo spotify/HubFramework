@@ -34,7 +34,9 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
     
     private var items = [String]()
 
-    func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
+    func perform(in context: HUBContentOperationContext) {
+        let viewModelBuilder = context.viewModelBuilder
+
         viewModelBuilder.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleAddButton))
         
         // Add a search bar if we have at least one item
@@ -47,7 +49,7 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
                 SearchBarComponentCustomDataKeys.actionDelay: 0
             ]
         }
-        
+
         items.enumerated().forEach { index, item in
             if let filter = self.filter {
                 if !item.lowercased().contains(filter) {

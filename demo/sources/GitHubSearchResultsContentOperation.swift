@@ -38,9 +38,11 @@ class GitHubSearchResultsContentOperation: NSObject, HUBContentOperation {
     private var dataTask: URLSessionDataTask?
     private var jsonData: Data?
 
-    func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
+    func perform(in context: HUBContentOperationContext) {
+        let viewModelBuilder = context.viewModelBuilder
+
         // If we're offline, we won't be able to call the GitHub web API, so let the user know by adding a label and exit early
-        guard connectivityState == .online else {
+        guard context.connectivityState == .online else {
             let offlineLabelBuilder = viewModelBuilder.builderForOverlayComponentModel(withIdentifier: "offlineLabel")
             offlineLabelBuilder.componentName = DefaultComponentNames.label
             offlineLabelBuilder.title = "You're offline.\nGo online to search GitHub."
