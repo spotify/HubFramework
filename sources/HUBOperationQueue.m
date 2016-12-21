@@ -22,6 +22,7 @@
 #import "HUBOperationQueue.h"
 
 #import "HUBOperation.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -76,14 +77,16 @@ NS_ASSUME_NONNULL_BEGIN
     __weak __typeof(self) weakSelf = self;
     
     [operation performWithCompletionHandler:^{
-        __typeof(self) strongSelf = weakSelf;
-        
-        if (strongSelf == nil) {
-            return;
-        }
-        
-        [strongSelf.operations removeObjectAtIndex:0];
-        [strongSelf performFirstOperation];
+        HUBPerformOnMainQueue(^{
+            __typeof(self) strongSelf = weakSelf;
+            
+            if (strongSelf == nil) {
+                return;
+            }
+            
+            [strongSelf.operations removeObjectAtIndex:0];
+            [strongSelf performFirstOperation];
+        });
     }];
 }
 
