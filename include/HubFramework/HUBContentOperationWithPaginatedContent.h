@@ -24,11 +24,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Extended content operation protocol that adds the ability to append paginated content to a view
+ *  Extended content operation protocol that adds the ability to append paginated content to a view.
  *
- *  Use this protocol in case you want to handle large datasets in your feature, which are not practical
- *  to load up front. Content operations conforming to this protocol will be called and asked to append
- *  content to an existing view model builder in either of 3 scenarios:
+ *  Use this protocol in case you want to handle large datasets in your feature, which are not practical to load up
+ *  front. Content operations conforming to this protocol will be called and asked to append content to an existing
+ *  view model builder in either of two scenarios:
  *
  *  - If the `loadNextPageForCurrentViewModel` method was called on a `HUBViewModelLoader`.
  *  - If the user is about to reach the bottom of the view's content when scrolling.
