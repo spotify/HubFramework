@@ -406,7 +406,7 @@
 		8AFF0F321C846DA700D5535B /* HUBComponentWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF0F311C846DA700D5535B /* HUBComponentWrapper.m */; };
 		8AFF0F9A1C85C73300D5535B /* HUBCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF0F991C85C73300D5535B /* HUBCollectionViewLayout.m */; };
 		8AFF10071C87105C00D5535B /* HUBComponentFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */; };
-		B30B7F4F1E005AB30049D013 /* HUBViewControllerDefaultScrollHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = B38EA90C1DFEF18400526587 /* HUBViewControllerDefaultScrollHandler.h */; };
+		B30B7F4F1E005AB30049D013 /* HUBViewControllerDefaultScrollHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = B38EA90C1DFEF18400526587 /* HUBViewControllerDefaultScrollHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B35E40F91DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */; };
 		DD244A821E04520F005E5C68 /* HUBErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = DD244A811E04520D005E5C68 /* HUBErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DD244B191E086958005E5C68 /* HUBErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = DD244B181E086958005E5C68 /* HUBErrors.m */; };
