@@ -27,11 +27,23 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  A concrete content operation type that is executed using a block
+ *  Type of a block which performs the task of a content operation.
  *
- *  You can use this type to implement lightweight content operations, that don't have the need
- *  to be asynchronous or support rescheduling. You simply give a block when initializing an
- *  instance of this class, and that block becomes the body of the content operation.
+ *  @param context The context in which the operation will be performed.
+ *
+ *  @seealso HUBBlockContentOperation
+ */
+typedef void (^HUBContentOperationBlock)(id<HUBContentOperationContext> context);
+
+/**
+ *  A concrete content operation type that is executed using a block.
+ *
+ *  You can use this type to implement lightweight content operations, that don’t need to be asynchronous nor support
+ *  rescheduling. You simply provide a block when initializing an instance of this class, and that block becomes the
+ *  body of the content operation.
+ *
+ *  @note The delegate is sent the `contentOperationDidFinish:` message immediately after the operation’s block has
+ *        been executed.
  *
  *  For more flexibility, implement your own content operation using `HUBContentOperation`.
  */
@@ -40,11 +52,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Initialize an instance of this class
  *
- *  @param block The block to use for the operation. The block will be copied by the operation and
- *         invoked each time the operation is performed. The contextual object passed to the block
- *         will contain all execution parameters that are passed to any `HUBContentOperation`.
+ *  @param block The block to use for the operation. The block will be copied by the operation and invoked each time
+ *         the operation is performed. The contextual object passed to the block will contain all execution parameters
+ *         that are passed to any `HUBContentOperation`.
+ *
+ *  @seealso HUBContentOperationBlock
  */
-- (instancetype)initWithBlock:(void(^)(id<HUBContentOperationContext>))block NS_SWIFT_NAME(init(closure:)) HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBlock:(HUBContentOperationBlock)block NS_SWIFT_NAME(init(closure:)) HUB_DESIGNATED_INITIALIZER;
 
 @end
 

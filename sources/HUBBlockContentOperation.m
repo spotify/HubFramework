@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBBlockContentOperation ()
 
-@property (nonatomic, copy, readonly) void(^block)(id<HUBContentOperationContext>);
+@property (nonatomic, copy, readonly) HUBContentOperationBlock block;
 
 @end
 
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initializer
 
-- (instancetype)initWithBlock:(void (^)(id<HUBContentOperationContext>))block
+- (instancetype)initWithBlock:(HUBContentOperationBlock)block
 {
     NSParameterAssert(block != nil);
     
