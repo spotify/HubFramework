@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'danger', '~> 4.0'
 gem 'danger-junit'
 gem 'danger-xcode_summary'
-gem 'fastlane', '~> 1.111'
+gem 'fastlane', '~> 2.2'
 gem 'jazzy', '~> 0.7.2'
 gem 'xcpretty-json-formatter'
 
