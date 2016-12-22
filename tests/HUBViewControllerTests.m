@@ -3127,14 +3127,14 @@
     // The 2nd model should NOT be set at this point as the 1st render hasn't finished
     XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
     // Only 1 render request has been made at this point (the 2nd is pending)
-    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)1);
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 1u);
     // Complete the 1st render request
     viewModelRenderer.completionBlocks[0]();
 
     // The 2nd model should now be set as the 1st render has finished and the 2nd is in progress
     XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title2");
     // 2 render requests have now been made
-    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)2);
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 2u);
 
     // While the 2nd render is in progress, a layout requests comes in.
     CGRect rect = self.viewController.view.bounds;
@@ -3143,12 +3143,12 @@
     [self.viewController.view layoutIfNeeded];
 
     // Only 2 render requests have been made at this point (the 3rd is pending)
-    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)2);
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 2u);
     // Complete the 2nd render request
     viewModelRenderer.completionBlocks[1]();
 
     // 3 render requests have now been made
-    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)3);
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 3u);
     // Complete the 3rd render request
     viewModelRenderer.completionBlocks[2]();
 }
