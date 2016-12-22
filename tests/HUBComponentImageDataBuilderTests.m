@@ -74,10 +74,10 @@
     
     HUBComponentImageDataImplementation * const imageData = [self.builder buildWithIdentifier:identifier type:type];
     
-    XCTAssertEqual(imageData.identifier, identifier);
+    XCTAssertEqualObjects(imageData.identifier, identifier);
     XCTAssertEqual(imageData.type, type);
     XCTAssertEqualObjects(imageData.URL, self.builder.URL);
-    XCTAssertEqual(imageData.localImage, self.builder.localImage);
+    XCTAssertEqualObjects(imageData.localImage, self.builder.localImage);
     XCTAssertEqualObjects(imageData.placeholderIcon.identifier, @"placeholder");
     XCTAssertEqualObjects(imageData.customData, @{@"custom": @"data"});
 }

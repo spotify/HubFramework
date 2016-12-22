@@ -57,7 +57,7 @@
 
 - (void)testGestureRecognizerAddedToView
 {
-    XCTAssertEqual(self.gestureRecognizer.view, self.view);
+    XCTAssertEqualObjects(self.gestureRecognizer.view, self.view);
 }
 
 - (void)testTouchesBeganSetsBeganState

@@ -43,8 +43,8 @@
     HUBComponentModelImplementation * const model = [self createComponentModelWithIdentifier:@"id" index:0];
     model.children = childModels;
     
-    XCTAssertEqual([model childAtIndex:0], childModels[0]);
-    XCTAssertEqual([model childAtIndex:1], childModels[1]);
+    XCTAssertEqualObjects([model childAtIndex:0], childModels[0]);
+    XCTAssertEqualObjects([model childAtIndex:1], childModels[1]);
     XCTAssertNil([model childAtIndex:2]);
 }
 
@@ -154,9 +154,9 @@
     HUBComponentModelImplementation * const childC = [self createComponentModelWithIdentifier:@"childC" index:2];
     parent.children = @[childA, childB, childC];
     
-    XCTAssertEqual([parent childWithIdentifier:@"childA"], childA);
-    XCTAssertEqual([parent childWithIdentifier:@"childB"], childB);
-    XCTAssertEqual([parent childWithIdentifier:@"childC"], childC);
+    XCTAssertEqualObjects([parent childWithIdentifier:@"childA"], childA);
+    XCTAssertEqualObjects([parent childWithIdentifier:@"childB"], childB);
+    XCTAssertEqualObjects([parent childWithIdentifier:@"childC"], childC);
     XCTAssertNil([parent childWithIdentifier:@"noChild"]);
 }
 
@@ -170,16 +170,16 @@
     parent.children = @[childA, childB];
     childB.children = @[grandchild];
 
-    XCTAssertEqual(parent.indexPath, [NSIndexPath indexPathWithIndex:0]);
+    XCTAssertEqualObjects(parent.indexPath, [NSIndexPath indexPathWithIndex:0]);
 
     NSUInteger childAIndexPathArray[] = {0,0};
-    XCTAssertEqual(childA.indexPath, [NSIndexPath indexPathWithIndexes:childAIndexPathArray length:2]);
+    XCTAssertEqualObjects(childA.indexPath, [NSIndexPath indexPathWithIndexes:childAIndexPathArray length:2]);
 
     NSUInteger childBIndexPathArray[] = {0,1};
-    XCTAssertEqual(childB.indexPath, [NSIndexPath indexPathWithIndexes:childBIndexPathArray length:2]);
+    XCTAssertEqualObjects(childB.indexPath, [NSIndexPath indexPathWithIndexes:childBIndexPathArray length:2]);
 
     NSUInteger grandchildIndexPathArray[] = {0,1,0};
-    XCTAssertEqual(grandchild.indexPath, [NSIndexPath indexPathWithIndexes:grandchildIndexPathArray length:3]);
+    XCTAssertEqualObjects(grandchild.indexPath, [NSIndexPath indexPathWithIndexes:grandchildIndexPathArray length:3]);
 }
 
 - (void)testPropertiesThatDoNotAffectEquality

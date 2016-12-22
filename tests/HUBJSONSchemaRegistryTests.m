@@ -106,8 +106,8 @@
     id<HUBViewModel> const originalViewModel = [originalSchema viewModelFromJSONDictionary:dictionary];
     id<HUBViewModel> const copiedViewModel = [copiedSchema viewModelFromJSONDictionary:dictionary];
     
-    XCTAssertEqual(originalViewModel.navigationItem.title, title);
-    XCTAssertEqual(originalViewModel.navigationItem.title, copiedViewModel.navigationItem.title);
+    XCTAssertEqualObjects(originalViewModel.navigationItem.title, title);
+    XCTAssertEqualObjects(originalViewModel.navigationItem.title, copiedViewModel.navigationItem.title);
 }
 
 - (void)testCopyingUknownSchemaReturningNil

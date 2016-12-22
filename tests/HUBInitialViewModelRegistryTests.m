@@ -57,7 +57,7 @@
     
     [self.registry registerInitialViewModel:viewModel forViewURI:viewURI];
     
-    XCTAssertEqual([self.registry initialViewModelForViewURI:viewURI], viewModel);
+    XCTAssertEqualObjects([self.registry initialViewModelForViewURI:viewURI], viewModel);
     
     NSURL * const unknownViewURI = [NSURL URLWithString:@"spotify:some:other:uri"];
     XCTAssertNil([self.registry initialViewModelForViewURI:unknownViewURI]);

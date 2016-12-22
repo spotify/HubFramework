@@ -81,7 +81,7 @@
                                                                              imageResolver:self.imageResolver
                                                                              isPlaceholder:NO];
     
-    XCTAssertEqual([icon imageWithSize:CGSizeZero color:[UIColor redColor]], image);
+    XCTAssertEqualObjects([icon imageWithSize:CGSizeZero color:[UIColor redColor]], image);
 }
 
 - (void)testResolvingPlaceholderImage
@@ -93,7 +93,7 @@
                                                                              imageResolver:self.imageResolver
                                                                              isPlaceholder:YES];
     
-    XCTAssertEqual([icon imageWithSize:CGSizeZero color:[UIColor redColor]], image);
+    XCTAssertEqualObjects([icon imageWithSize:CGSizeZero color:[UIColor redColor]], image);
 }
 
 @end

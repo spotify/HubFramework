@@ -81,7 +81,7 @@ static NSString * const DefaultNamespace = @"default";
     
     [self.registry registerComponentFactory:factory forNamespace:componentIdentifier.namespacePart];
 
-    XCTAssertEqual([self.registry createComponentForModel:componentModel], component);
+    XCTAssertEqualObjects([self.registry createComponentForModel:componentModel], component);
 }
 
 - (void)testRegisteringAlreadyRegisteredFactoryThrows
@@ -120,7 +120,7 @@ static NSString * const DefaultNamespace = @"default";
     id<HUBComponentModel> const componentModel = [self mockedComponentModelWithComponentIdentifier:unknownNamespaceIdentifier
                                                                                  componentCategory:componentCategory];
     
-    XCTAssertEqual([self.registry createComponentForModel:componentModel], fallbackComponent);
+    XCTAssertEqualObjects([self.registry createComponentForModel:componentModel], fallbackComponent);
 }
 
 - (void)testFallbackComponentCreatedWhenFactoryReturnsNil
@@ -137,7 +137,7 @@ static NSString * const DefaultNamespace = @"default";
     id<HUBComponentModel> const componentModel = [self mockedComponentModelWithComponentIdentifier:unknownNameIdentifier
                                                                                  componentCategory:componentCategory];
     
-    XCTAssertEqual([self.registry createComponentForModel:componentModel], fallbackComponent);
+    XCTAssertEqualObjects([self.registry createComponentForModel:componentModel], fallbackComponent);
 }
 
 - (void)testFallbackComponentsForDifferentCategories
@@ -163,8 +163,8 @@ static NSString * const DefaultNamespace = @"default";
     id<HUBComponentModel> const componentModelB = [self mockedComponentModelWithComponentIdentifier:unknownNameIdentifier
                                                                                   componentCategory:componentCategoryB];
     
-    XCTAssertEqual([self.registry createComponentForModel:componentModelA], fallbackComponentA);
-    XCTAssertEqual([self.registry createComponentForModel:componentModelB], fallbackComponentB);
+    XCTAssertEqualObjects([self.registry createComponentForModel:componentModelA], fallbackComponentA);
+    XCTAssertEqualObjects([self.registry createComponentForModel:componentModelB], fallbackComponentB);
 }
 
 - (void)testShowcaseableComponentIdentifiers

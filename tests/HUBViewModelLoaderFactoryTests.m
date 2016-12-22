@@ -173,8 +173,8 @@
     XCTAssertEqual(contentOperation.performCount, (NSUInteger)1);
     
     // Verify operation chain order by checking error forwarding
-    XCTAssertEqual(contentOperation.previousContentOperationError, prependedOperationError);
-    XCTAssertEqual(appendedOperation.previousContentOperationError, contentOperationError);
+    XCTAssertEqualObjects(contentOperation.previousContentOperationError, prependedOperationError);
+    XCTAssertEqualObjects(appendedOperation.previousContentOperationError, contentOperationError);
 }
 
 @end

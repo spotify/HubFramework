@@ -168,7 +168,7 @@
     [contentOperation.delegate contentOperation:contentOperation didFailWithError:error];
     
     XCTAssertNil(self.viewModelFromSuccessDelegateMethod);
-    XCTAssertEqual(error, self.errorFromFailureDelegateMethod);
+    XCTAssertEqualObjects(error, self.errorFromFailureDelegateMethod);
 }
 
 - (void)testContentOperationErrorRecovery
@@ -315,7 +315,7 @@
     
     [self.loader loadViewModel];
     
-    XCTAssertEqual(self.errorFromFailureDelegateMethod, nil);
+    XCTAssertNil(self.errorFromFailureDelegateMethod);
     XCTAssertEqual(self.didLoadViewModelErrorCount, (NSUInteger)0);
     XCTAssertEqual(self.didLoadViewModelCount, (NSUInteger)1);
 }
@@ -339,7 +339,7 @@
     
     [self.loader loadViewModel];
     
-    XCTAssertEqual(self.errorFromFailureDelegateMethod, error);
+    XCTAssertEqualObjects(self.errorFromFailureDelegateMethod, error);
     XCTAssertEqual(self.didLoadViewModelErrorCount, (NSUInteger)1);
     XCTAssertEqual(self.didLoadViewModelCount, (NSUInteger)0);
 }
@@ -514,7 +514,7 @@
     id<HUBContentOperationDelegate> const contentOperationDelegate = contentOperation.delegate;
     [contentOperationDelegate contentOperation:contentOperation didFailWithError:error];
     
-    XCTAssertEqual(self.errorFromFailureDelegateMethod, error);
+    XCTAssertEqualObjects(self.errorFromFailureDelegateMethod, error);
     self.errorFromFailureDelegateMethod = nil;
     contentOperation.contentLoadingBlock = nil;
     
@@ -625,7 +625,7 @@
     [self.loader loadViewModel];
     
     XCTAssertNotNil(contentOperation.featureInfo);
-    XCTAssertEqual(contentOperation.featureInfo, self.featureInfo);
+    XCTAssertEqualObjects(contentOperation.featureInfo, self.featureInfo);
 }
 
 - (void)testFeatureTitleAssignedAsViewTitleIfNil
