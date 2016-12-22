@@ -254,7 +254,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport (~> 4.0)
   danger (~> 4.0)
   danger-junit
   danger-xcode_summary
