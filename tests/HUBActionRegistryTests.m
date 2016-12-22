@@ -57,8 +57,9 @@
     HUBActionMock * const action = [[HUBActionMock alloc] initWithBlock:nil];
     HUBActionFactoryMock * const factory = [[HUBActionFactoryMock alloc] initWithActions:@{actionIdentifier.namePart: action}];
     [self.actionRegistry registerActionFactory:factory forNamespace:actionIdentifier.namespacePart];
-    
-    XCTAssertEqualObjects([self.actionRegistry createCustomActionForIdentifier:actionIdentifier], action);
+
+    // These should be the same instance.
+    XCTAssertTrue([self.actionRegistry createCustomActionForIdentifier:actionIdentifier] == action);
 }
 
 - (void)testRegisteringAlreadyRegisteredFactoryThrows
