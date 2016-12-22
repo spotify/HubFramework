@@ -3101,7 +3101,7 @@
     viewModelRenderer.completionBlocks[1]();
 }
 
-- (void)testThatModelIsNotSetImmediatelyOnOverlappingRenderAndLayoutRequests2
+- (void)testThatModelIsNotSetImmediatelyOnOverlappingRenderAndLayoutRequests
 {
     HUBViewModelRendererMock *viewModelRenderer = [HUBViewModelRendererMock new];
     [self createViewControllerWithViewModelRenderer:viewModelRenderer];
@@ -3136,26 +3136,17 @@
     // 2 render requests have now been made
     XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)2);
 
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        [viewModelBuilder headerComponentModelBuilder].title = @"title3";
-        return YES;
-    };
-
     // While the 2nd render is in progress, a layout requests comes in.
     CGRect rect = self.viewController.view.bounds;
     CGRect offsetRect = CGRectOffset(rect, 1, 1);
     self.viewController.view.bounds = offsetRect;
     [self.viewController.view layoutIfNeeded];
 
-    // The 3rd model should NOT be set at this point as the 2nd render hasn't finished
-    XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title2");
     // Only 2 render requests have been made at this point (the 3rd is pending)
     XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)2);
     // Complete the 2nd render request
     viewModelRenderer.completionBlocks[1]();
 
-    // The 3rd model should now be set as the 2nd render has finished and the 3rd is in progress
-    XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title3");
     // 3 render requests have now been made
     XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)3);
     // Complete the 3rd render request
