@@ -57,7 +57,11 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     id<HUBComponent> const nonNilComponent = component;
-    [self.contentView addSubview:HUBComponentLoadViewIfNeeded(nonNilComponent)];
+
+    UIView * const componentView = HUBComponentLoadViewIfNeeded(nonNilComponent);
+    componentView.autoresizingMask |= UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+    [self.contentView addSubview:componentView];
 }
 
 #pragma mark - UICollectionViewCell
