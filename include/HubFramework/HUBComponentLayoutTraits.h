@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Ideally, a layout trait should be generic enough to apply to a broad range of components, but still contain enough
  *  information for a `HUBComponentLayoutManager` to make correct decisions based on them.
  */
-typedef NSString * HUBComponentLayoutTrait NS_EXTENSIBLE_STRING_ENUM;
+typedef NSString * HUBComponentLayoutTrait HUBS_EXTENSIBLE_STRING_ENUM;
 
 /// Layout trait for components which width does not fill the screen and is considered compact
 static HUBComponentLayoutTrait const HUBComponentLayoutTraitCompactWidth = @"compactWidth";

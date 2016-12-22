@@ -5,7 +5,6 @@
 [![Documentation website](https://img.shields.io/badge/Documentation-website-blue.svg)](https://spotify.github.io/HubFramework)
 [![Spotify FOSS Slack](https://slackin.spotify.com/badge.svg)](https://slackin.spotify.com)
 
-
 Welcome to the Hub Framework - a toolkit for building native, component-driven UIs on iOS. It is designed to enable teams of any size to quickly build, tweak and ship new UI features, in either new or existing apps. It also makes it easy to build backend-driven UIs.
 
 The Hub Framework has two core concepts - **Components** & **Content Operations**.
@@ -119,6 +118,12 @@ There are also a series of **programming guides** that each introduce you to dif
 - [Layout programming guide](https://spotify.github.io/HubFramework/layout-programming-guide.html)
 - [JSON programming guide](https://spotify.github.io/HubFramework/json-programming-guide.html)
 - [Action programming guide](https://spotify.github.io/HubFramework/action-programming-guide.html)
+
+## Hub Framework Sessions
+
+To make it easier for you to learn some of the core concepts of the framework, we've started creating a series of YouTube videos that each explain one of those concepts. They're called "Hub Framework Sessions" and can be found here:
+
+- [Episode 1: Content Loading Chain](https://youtu.be/XbMFPtxk_4Q)
 
 ## Demo app
 

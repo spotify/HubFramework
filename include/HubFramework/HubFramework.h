@@ -22,6 +22,7 @@
 #import "HUBManager.h"
 #import "HUBConnectivityStateResolver.h"
 #import "HUBDefaults.h"
+#import "HUBErrors.h"
 
 // JSON
 #import "HUBJSONSchema.h"
@@ -59,6 +60,7 @@
 #import "HUBViewControllerFactory.h"
 #import "HUBViewController.h"
 #import "HUBViewControllerScrollHandler.h"
+#import "HUBViewControllerDefaultScrollHandler.h"
 #import "HUBViewURIPredicate.h"
 
 // Components
