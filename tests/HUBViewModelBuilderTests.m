@@ -108,7 +108,7 @@
     
     id<HUBViewModel> const model = [self.builder build];
     XCTAssertNotEqual(model.navigationItem, self.builder.navigationItem);
-    XCTAssertEqual(model.navigationItem.titleView, titleView);
+    XCTAssertEqualObjects(model.navigationItem.titleView, titleView);
 }
 
 - (void)testHeaderComponentBuilder
@@ -192,7 +192,7 @@
     XCTAssertNotNil(componentBuilder);
     XCTAssertEqualObjects(componentBuilder.componentNamespace, self.componentDefaults.componentNamespace);
     XCTAssertTrue([self.builder builderExistsForBodyComponentModelWithIdentifier:componentModelIdentifier]);
-    XCTAssertEqual(componentBuilder,  [self.builder builderForBodyComponentModelWithIdentifier:componentModelIdentifier]);
+    XCTAssertEqualObjects(componentBuilder,  [self.builder builderForBodyComponentModelWithIdentifier:componentModelIdentifier]);
 }
 
 - (void)testRemovalOfBodyComponentBuilders
@@ -520,8 +520,8 @@
     XCTAssertNotEqual(self.builder.navigationItem, builderCopy.navigationItem);
     XCTAssertEqualObjects(builderCopy.navigationItem.title, @"title");
     XCTAssertEqualObjects(builderCopy.navigationBarTitle, @"title");
-    XCTAssertEqual(builderCopy.navigationItem.titleView, titleView);
-    XCTAssertEqual(builderCopy.navigationItem.leftBarButtonItem, leftBarButtonItem);
+    XCTAssertEqualObjects(builderCopy.navigationItem.titleView, titleView);
+    XCTAssertEqualObjects(builderCopy.navigationItem.leftBarButtonItem, leftBarButtonItem);
     XCTAssertEqualObjects(builderCopy.navigationItem.rightBarButtonItems, rightBarButtonItems);
     
     XCTAssertEqualObjects(builderCopy.viewIdentifier, @"id");

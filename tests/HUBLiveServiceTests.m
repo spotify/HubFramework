@@ -122,7 +122,7 @@
     
     [stream.delegate stream:stream handleEvent:NSStreamEventHasBytesAvailable];
     
-    XCTAssertEqual(self.viewController, viewController, @"View controller should have been reused");
+    XCTAssertEqualObjects(self.viewController, viewController, @"View controller should have been reused");
     
     id<HUBViewModel> const newViewModel = viewController.viewModel;
     XCTAssertEqualObjects(newViewModel.navigationItem.title, @"A new title!");
@@ -132,7 +132,7 @@
 
 - (void)liveService:(id<HUBLiveService>)liveService didCreateViewController:(HUBViewController *)viewController
 {
-    XCTAssertEqual(self.service, liveService);
+    XCTAssertEqualObjects(self.service, liveService);
     self.viewController = viewController;
 }
 

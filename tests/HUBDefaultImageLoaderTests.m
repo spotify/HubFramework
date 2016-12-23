@@ -157,7 +157,7 @@
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL
 {
-    XCTAssertEqual(self.imageLoader, imageLoader);
+    XCTAssertEqualObjects(self.imageLoader, imageLoader);
     
     self.loadedImage = image;
     self.loadedImageURL = imageURL;
@@ -167,7 +167,7 @@
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didFailLoadingImageForURL:(NSURL *)imageURL error:(NSError *)error
 {
-    XCTAssertEqual(self.imageLoader, imageLoader);
+    XCTAssertEqualObjects(self.imageLoader, imageLoader);
     
     self.loadingError = error;
 }

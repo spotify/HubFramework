@@ -97,7 +97,7 @@
     HUBFeatureRegistration * const registration = [self.registry featureRegistrationForViewURI:rootViewURI];
     XCTAssertEqualObjects(registration.featureIdentifier, featureIdentifier);
     XCTAssertEqualObjects(registration.featureTitle, @"Title");
-    XCTAssertEqual(registration.viewURIPredicate, viewURIPredicate);
+    XCTAssertEqualObjects(registration.viewURIPredicate, viewURIPredicate);
     XCTAssertEqualObjects(registration.contentOperationFactories, @[contentOperationFactory]);
     XCTAssertEqualObjects(registration.customJSONSchemaIdentifier, customJSONSchemaIdentifier);
 }

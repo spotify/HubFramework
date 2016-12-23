@@ -144,9 +144,9 @@
     self.builder.backgroundImage = [UIImage new];
     
     XCTAssertEqualObjects(self.builder.mainImageDataBuilder.URL, self.builder.mainImageURL);
-    XCTAssertEqual(self.builder.mainImageDataBuilder.localImage, self.builder.mainImage);
+    XCTAssertEqualObjects(self.builder.mainImageDataBuilder.localImage, self.builder.mainImage);
     XCTAssertEqualObjects(self.builder.backgroundImageDataBuilder.URL, self.builder.backgroundImageURL);
-    XCTAssertEqual(self.builder.backgroundImageDataBuilder.localImage, self.builder.backgroundImage);
+    XCTAssertEqualObjects(self.builder.backgroundImageDataBuilder.localImage, self.builder.backgroundImage);
 }
 
 - (void)testCustomImageDataBuilder
@@ -208,7 +208,7 @@
     NSString * const childModelIdentifier = @"childModel";
     id<HUBComponentModelBuilder> const childBuilder = [self.builder builderForChildWithIdentifier:childModelIdentifier];
     
-    XCTAssertEqual([self.builder builderForChildWithIdentifier:childModelIdentifier], childBuilder);
+    XCTAssertEqualObjects([self.builder builderForChildWithIdentifier:childModelIdentifier], childBuilder);
 }
 
 - (void)testChildTypeSameAsParent
@@ -307,7 +307,7 @@
     id<HUBComponentModel> const child = [self.builder buildForIndex:0 parent:parent];
     id<HUBComponentModel> const actualParent = child.parent;
     
-    XCTAssertEqual(parent, actualParent);
+    XCTAssertEqualObjects(parent, actualParent);
 }
 
 - (void)testChildGrouping

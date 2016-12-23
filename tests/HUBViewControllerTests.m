@@ -363,7 +363,7 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    XCTAssertEqual(self.errorFromDelegateMethod, error);
+    XCTAssertEqualObjects(self.errorFromDelegateMethod, error);
 }
 
 - (void)testHeaderComponentImageLoading
@@ -423,7 +423,7 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     
-    XCTAssertEqual(self.component.mainImageData.localImage, localMainImage);
+    XCTAssertEqualObjects(self.component.mainImageData.localImage, localMainImage);
     XCTAssertNil(self.component.backgroundImageData);
     
     [self performAsynchronousTestWithDelay:0 block:^{
@@ -1090,7 +1090,7 @@
     XCTAssertNotNil(childComponentModelA);
     
     id<HUBComponent> const childComponentWrapper = [childDelegate component:component childComponentForModel:childComponentModelA];
-    XCTAssertEqual(childComponentWrapper.view, childComponent.view);
+    XCTAssertEqualObjects(childComponentWrapper.view, childComponent.view);
     XCTAssertTrue(CGSizeEqualToSize(childComponent.view.frame.size, childComponent.preferredViewSize),
                   @"Sizes not equal: %@ and %@",
                   NSStringFromCGSize(childComponent.view.frame.size),
@@ -1102,7 +1102,7 @@
     XCTAssertNotNil(childComponentModelB);
     
     id<HUBComponent> const reusedChildComponentWrapper = [childDelegate component:component childComponentForModel:childComponentModelB];
-    XCTAssertEqual(childComponentWrapper, reusedChildComponentWrapper);
+    XCTAssertEqualObjects(childComponentWrapper, reusedChildComponentWrapper);
 }
 
 - (void)testChildComponentsRemovedFromParentOnReuse
@@ -1153,7 +1153,7 @@
 
     [componentAChildDelegate component:componentA willDisplayChildAtIndex:0 view:childComponentView];
     NSIndexPath * const indexPathChildA = [NSIndexPath indexPathForItem:0 inSection:0];
-    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildA], childComponentView);
+    XCTAssertEqualObjects([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildA], childComponentView);
 
     [childComponentWrapperA prepareViewForReuse];
     XCTAssertNil([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildA]);
@@ -1161,11 +1161,11 @@
     id<HUBComponentChildDelegate> componentBChildDelegate = componentB.childDelegate;
     id<HUBComponentModel> const childComponentModelB = [componentB.model childAtIndex:0];
     id<HUBComponent> const childComponentWrapperB = [componentBChildDelegate component:componentB childComponentForModel:childComponentModelB];
-    XCTAssertEqual(childComponentWrapperA, childComponentWrapperB);
+    XCTAssertEqualObjects(childComponentWrapperA, childComponentWrapperB);
 
     [componentBChildDelegate component:componentB willDisplayChildAtIndex:0 view:childComponentView];
     NSIndexPath * const indexPathChildB = [NSIndexPath indexPathForItem:0 inSection:1];
-    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildB], childComponentView);
+    XCTAssertEqualObjects([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildB], childComponentView);
 
     [childComponentWrapperB prepareViewForReuse];
     XCTAssertNil([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:indexPathChildB]);
@@ -2332,7 +2332,7 @@
 
 - (void)testCollectionViewCreatedInLoadView
 {
-    XCTAssertEqual(self.viewController.view.subviews[0], self.collectionView);
+    XCTAssertEqualObjects(self.viewController.view.subviews[0], self.collectionView);
 }
 
 - (void)testCollectionViewSetupUsingScrollHandler
@@ -2548,10 +2548,10 @@
 
     NSDictionary<NSIndexPath *, UIView *> * const visibleHeaderViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeHeader];
     XCTAssertEqual(visibleHeaderViews.count, 1u);
-    XCTAssertEqual(visibleHeaderViews[[NSIndexPath indexPathWithIndex:0]], headerComponent.view);
+    XCTAssertEqualObjects(visibleHeaderViews[[NSIndexPath indexPathWithIndex:0]], headerComponent.view);
     
     NSIndexPath * const headerIndexPath = [NSIndexPath indexPathWithIndex:0];
-    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeHeader indexPath:headerIndexPath], headerComponent.view);
+    XCTAssertEqualObjects([self.viewController visibleViewForComponentOfType:HUBComponentTypeHeader indexPath:headerIndexPath], headerComponent.view);
 
     NSDictionary<NSIndexPath *, UIView *> * const visibleBodyViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeBody];
     XCTAssertEqual(visibleBodyViews.count, 3u);
@@ -2560,18 +2560,18 @@
     NSIndexPath * const bodyIndexPathB = [NSIndexPath indexPathWithIndex:1];
     NSIndexPath * const bodyIndexPathC = [NSIndexPath indexPathWithIndex:2];
     
-    XCTAssertEqual(visibleBodyViews[bodyIndexPathA], componentA.view);
-    XCTAssertEqual(visibleBodyViews[bodyIndexPathB], componentB.view);
-    XCTAssertEqual(visibleBodyViews[bodyIndexPathC], componentC.view);
+    XCTAssertEqualObjects(visibleBodyViews[bodyIndexPathA], componentA.view);
+    XCTAssertEqualObjects(visibleBodyViews[bodyIndexPathB], componentB.view);
+    XCTAssertEqualObjects(visibleBodyViews[bodyIndexPathC], componentC.view);
     
-    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:bodyIndexPathA], componentA.view);
-    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:bodyIndexPathB], componentB.view);
-    XCTAssertEqual([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:bodyIndexPathC], componentC.view);
+    XCTAssertEqualObjects([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:bodyIndexPathA], componentA.view);
+    XCTAssertEqualObjects([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:bodyIndexPathB], componentB.view);
+    XCTAssertEqualObjects([self.viewController visibleViewForComponentOfType:HUBComponentTypeBody indexPath:bodyIndexPathC], componentC.view);
 
     NSDictionary<NSIndexPath *, UIView *> * const visibleOverlayViews = [self.viewController visibleComponentViewsForComponentType:HUBComponentTypeOverlay];
     XCTAssertEqual(visibleOverlayViews.count, 2u);
-    XCTAssertEqual(visibleOverlayViews[[NSIndexPath indexPathWithIndex:0]], component1.view);
-    XCTAssertEqual(visibleOverlayViews[[NSIndexPath indexPathWithIndex:1]], component2.view);
+    XCTAssertEqualObjects(visibleOverlayViews[[NSIndexPath indexPathWithIndex:0]], component1.view);
+    XCTAssertEqualObjects(visibleOverlayViews[[NSIndexPath indexPathWithIndex:1]], component2.view);
 }
 
 - (void)testNoVisibleComponents
@@ -2613,7 +2613,7 @@
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
     [self.viewController selectComponentWithModel:componentModel customData:nil];
-    XCTAssertEqual(self.contentOperation.actionContext, actionContext);
+    XCTAssertEqualObjects(self.contentOperation.actionContext, actionContext);
 }
 
 - (void)testPerformingActionFromComponent
@@ -2656,7 +2656,7 @@
     XCTAssertEqualObjects(actionContext.customData, customActionData);
     XCTAssertEqual(actionContext.trigger, HUBActionTriggerComponent);
     XCTAssertEqualObjects(self.actionHandler.contexts, @[actionContext]);
-    XCTAssertEqual(self.contentOperation.actionContext, actionContext);
+    XCTAssertEqualObjects(self.contentOperation.actionContext, actionContext);
 }
 
 - (void)testObservingActionsByComponent
@@ -2701,7 +2701,7 @@
     XCTAssertEqualObjects(actionContext.customData, customActionData);
     XCTAssertEqual(actionContext.trigger, HUBActionTriggerComponent);
     XCTAssertEqualObjects(self.actionHandler.contexts, @[actionContext]);
-    XCTAssertEqual(self.contentOperation.actionContext, actionContext);
+    XCTAssertEqualObjects(self.contentOperation.actionContext, actionContext);
 }
 
 - (void)testPerformingActionFromContentOperation
@@ -2725,7 +2725,7 @@
     XCTAssertEqualObjects(actionContext.customData, customActionData);
     XCTAssertEqual(actionContext.trigger, HUBActionTriggerContentOperation);
     XCTAssertEqualObjects(self.actionHandler.contexts, @[actionContext]);
-    XCTAssertEqual(self.contentOperation.actionContext, actionContext);
+    XCTAssertEqualObjects(self.contentOperation.actionContext, actionContext);
 }
 
 - (void)testPerformingAsyncAction
@@ -3105,25 +3105,25 @@
 
 - (void)viewController:(HUBViewController *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
 {
-    XCTAssertEqual(viewController, self.viewController);
+    XCTAssertEqualObjects(viewController, self.viewController);
     self.viewModelFromDelegateMethod = viewModel;
 }
 
 - (void)viewControllerDidUpdate:(HUBViewController *)viewController
 {
-    XCTAssertEqual(viewController, self.viewController);
-    XCTAssertEqual(self.viewModelFromDelegateMethod, viewController.viewModel);
+    XCTAssertEqualObjects(viewController, self.viewController);
+    XCTAssertEqualObjects(self.viewModelFromDelegateMethod, viewController.viewModel);
 }
 
 - (void)viewController:(HUBViewController *)viewController didFailToUpdateWithError:(NSError *)error
 {
-    XCTAssertEqual(viewController, self.viewController);
+    XCTAssertEqualObjects(viewController, self.viewController);
     self.errorFromDelegateMethod = error;
 }
 
 - (void)viewControllerDidFinishRendering:(HUBViewController *)viewController
 {
-    XCTAssertEqual(viewController, self.viewController);
+    XCTAssertEqualObjects(viewController, self.viewController);
     self.didReceiveViewControllerDidFinishRendering = YES;
 
     if (self.viewControllerDidFinishRenderingBlock) {
@@ -3144,7 +3144,7 @@
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
       willAppearInView:(nonnull UIView *)componentView
 {
-    XCTAssertEqual(viewController, self.viewController);
+    XCTAssertEqualObjects(viewController, self.viewController);
     XCTAssertFalse([componentView isKindOfClass:[HUBComponentCollectionViewCell class]]);
 
     [self.componentViewsFromApperanceDelegateMethod addObject:componentView];
@@ -3157,7 +3157,7 @@
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
   didDisappearFromView:(UIView *)componentView
 {
-    XCTAssertEqual(viewController, self.viewController);
+    XCTAssertEqualObjects(viewController, self.viewController);
     
     [self.componentModelsFromDisapperanceDelegateMethod addObject:componentModel];
     [self.componentLayoutTraitsFromDisapperanceDelegateMethod addObject:layoutTraits];
@@ -3165,20 +3165,20 @@
 
 - (void)viewController:(HUBViewController *)viewController willReuseComponentWithView:(UIView *)componentView
 {
-    XCTAssertEqual(viewController, self.viewController);
+    XCTAssertEqualObjects(viewController, self.viewController);
 
     [self.componentViewsFromReuseDelegateMethod addObject:componentView];
 }
 
 - (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
 {
-    XCTAssertEqual(viewController, self.viewController);
+    XCTAssertEqualObjects(viewController, self.viewController);
     [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];
 }
 
 - (BOOL)viewControllerShouldAutomaticallyManageTopContentInset:(HUBViewController *)viewController
 {
-    XCTAssertEqual(viewController, self.viewController);
+    XCTAssertEqualObjects(viewController, self.viewController);
     if (self.viewControllerShouldAutomaticallyManageTopContentInset) {
         return self.viewControllerShouldAutomaticallyManageTopContentInset();
     }
@@ -3188,7 +3188,7 @@
 - (CGPoint)centerPointForOverlayComponentInViewController:(HUBViewController *)viewController
                                       proposedCenterPoint:(CGPoint)proposedCenterPoint
 {
-    XCTAssertEqual(viewController, self.viewController);
+    XCTAssertEqualObjects(viewController, self.viewController);
     if (self.centerPointForOverlayComponents == nil) {
         return proposedCenterPoint;
     } else {

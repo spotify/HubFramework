@@ -108,8 +108,8 @@
     [self waitForExpectationsWithTimeout:2 handler:nil];
 
     XCTAssertEqual([self.collectionViewLayout numberOfInvocations], 2u);
-    XCTAssertEqualObjects([self.collectionViewLayout capturedViewModelAtIndex:0], firstViewModel);
-    XCTAssertEqualObjects([self.collectionViewLayout capturedViewModelAtIndex:1], secondViewModel);
+    XCTAssertEqual([self.collectionViewLayout capturedViewModelAtIndex:0], firstViewModel);
+    XCTAssertEqual([self.collectionViewLayout capturedViewModelAtIndex:1], secondViewModel);
 
     XCTAssertEqual([self.collectionViewLayout numberOfInvocations], 2u);
     // The first invocation shouldn't generate a diff.
