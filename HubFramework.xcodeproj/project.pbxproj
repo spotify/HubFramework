@@ -7,6 +7,289 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		344C5E3E1E09CF9A00597B61 /* HUBComponentModelBuilderImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA29C8B1C4FAD6700E972B7 /* HUBComponentModelBuilderImplementation.m */; };
+		344C5E3F1E09CF9A00597B61 /* HUBBlockContentOperationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 52977AC91DA7D0B40064629E /* HUBBlockContentOperationFactory.m */; };
+		344C5E401E09CF9A00597B61 /* HUBActionHandlerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6529F81D82DC33007B1A15 /* HUBActionHandlerWrapper.m */; };
+		344C5E411E09CF9A00597B61 /* HUBCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5035211DD473030008B499 /* HUBCollectionView.m */; };
+		344C5E421E09CF9A00597B61 /* HUBViewModelBuilderImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786B931C57D62100B2AB9E /* HUBViewModelBuilderImplementation.m */; };
+		344C5E431E09CF9A00597B61 /* HUBLiveContentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1638BC1DC38B2E00AAD200 /* HUBLiveContentOperation.m */; };
+		344C5E441E09CF9A00597B61 /* HUBComponentModelBuilderShowcaseSnapshotGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ACA8C861D1818920015310F /* HUBComponentModelBuilderShowcaseSnapshotGenerator.m */; };
+		344C5E451E09CF9A00597B61 /* HUBComponentImageDataImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA29C871C4FAB6200E972B7 /* HUBComponentImageDataImplementation.m */; };
+		344C5E461E09CF9A00597B61 /* HUBDefaultConnectivityStateResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD732021D9AD30100E4B427 /* HUBDefaultConnectivityStateResolver.m */; };
+		344C5E471E09CF9A00597B61 /* HUBJSONSchemaRegistryImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BA71C5A2E8F00B2AB9E /* HUBJSONSchemaRegistryImplementation.m */; };
+		344C5E481E09CF9A00597B61 /* HUBComponentResizeObservingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFD56281D477E4700E80C00 /* HUBComponentResizeObservingView.m */; };
+		344C5E491E09CF9A00597B61 /* HUBActionContextImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6ACAB21D7D893400102EA9 /* HUBActionContextImplementation.m */; };
+		344C5E4A1E09CF9A00597B61 /* HUBIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB2A791C6A2F7C000741D7 /* HUBIdentifier.m */; };
+		344C5E4B1E09CF9A00597B61 /* HUBInitialViewModelRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDCAC41C8DD5920068DECC /* HUBInitialViewModelRegistry.m */; };
+		344C5E4C1E09CF9A00597B61 /* HUBComponentWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF0F311C846DA700D5535B /* HUBComponentWrapper.m */; };
+		344C5E4D1E09CF9A00597B61 /* HUBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD42911C21C81100D1A801 /* HUBManager.m */; };
+		344C5E4E1E09CF9A00597B61 /* HUBLiveServiceImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A15729A1D9E735C00E9DD4D /* HUBLiveServiceImplementation.m */; };
+		344C5E4F1E09CF9A00597B61 /* HUBSelectionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6529FB1D82DF18007B1A15 /* HUBSelectionAction.m */; };
+		344C5E501E09CF9A00597B61 /* HUBViewModelDiff.m in Sources */ = {isa = PBXBuildFile; fileRef = F66658D81D9925CC0097929F /* HUBViewModelDiff.m */; };
+		344C5E511E09CF9A00597B61 /* HUBComponentImageDataBuilderImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA29C8E1C4FAFC100E972B7 /* HUBComponentImageDataBuilderImplementation.m */; };
+		344C5E521E09CF9A00597B61 /* HUBViewControllerDefaultScrollHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AEDA0991D7710A300BEFD66 /* HUBViewControllerDefaultScrollHandler.m */; };
+		344C5E531E09CF9A00597B61 /* HUBViewModelLoaderFactoryImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064731C68F0820086C081 /* HUBViewModelLoaderFactoryImplementation.m */; };
+		344C5E541E09CF9A00597B61 /* HUBActionRegistryImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A72F21D4B75DA00141619 /* HUBActionRegistryImplementation.m */; };
+		344C5E551E09CF9A00597B61 /* HUBFeatureRegistryImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97C0C1C60BA4E0078F19D /* HUBFeatureRegistryImplementation.m */; };
+		344C5E561E09CF9A00597B61 /* HUBViewURIPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E4B791CB562140019DE71 /* HUBViewURIPredicate.m */; };
+		344C5E571E09CF9A00597B61 /* HUBContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD009FD1CC64EF80012A9AF /* HUBContainerView.m */; };
+		344C5E581E09CF9A00597B61 /* HUBIconImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD00A081CC77C950012A9AF /* HUBIconImplementation.m */; };
+		344C5E591E09CF9A00597B61 /* HUBFeatureInfoImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1132C01CDA4BA60053AA26 /* HUBFeatureInfoImplementation.m */; };
+		344C5E5A1E09CF9A00597B61 /* HUBComponentImageLoadingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A49BAF71C777FB0005F7453 /* HUBComponentImageLoadingContext.m */; };
+		344C5E5B1E09CF9A00597B61 /* HUBComponentGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C28161DB5120400152429 /* HUBComponentGestureRecognizer.m */; };
+		344C5E5C1E09CF9A00597B61 /* HUBComponentDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D7A611CBBAC2200B987BA /* HUBComponentDefaults.m */; };
+		344C5E5D1E09CF9A00597B61 /* HUBComponentModelJSONSchemaImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064551C64B6DB0086C081 /* HUBComponentModelJSONSchemaImplementation.m */; };
+		344C5E5E1E09CF9A00597B61 /* HUBContentOperationWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B48EB1CD77C8200130C25 /* HUBContentOperationWrapper.m */; };
+		344C5E5F1E09CF9A00597B61 /* HUBViewControllerFactoryImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD0646F1C68EDA20086C081 /* HUBViewControllerFactoryImplementation.m */; };
+		344C5E601E09CF9A00597B61 /* HUBComponentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD0646B1C68E7B00086C081 /* HUBComponentCollectionViewCell.m */; };
+		344C5E611E09CF9A00597B61 /* HUBViewModelJSONSchemaImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BB11C5A383800B2AB9E /* HUBViewModelJSONSchemaImplementation.m */; };
+		344C5E621E09CF9A00597B61 /* HUBComponentModelImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA29C841C4FAA9200E972B7 /* HUBComponentModelImplementation.m */; };
+		344C5E631E09CF9A00597B61 /* HUBComponentImageDataJSONSchemaImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AE2789F1C6236E400DFAF99 /* HUBComponentImageDataJSONSchemaImplementation.m */; };
+		344C5E641E09CF9A00597B61 /* HUBJSONSchemaImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BAA1C5A326300B2AB9E /* HUBJSONSchemaImplementation.m */; };
+		344C5E651E09CF9A00597B61 /* HUBComponentTargetBuilderImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A72E51D4B6F1700141619 /* HUBComponentTargetBuilderImplementation.m */; };
+		344C5E661E09CF9A00597B61 /* HUBDefaultImageLoaderFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD14E891D994BB40008E182 /* HUBDefaultImageLoaderFactory.m */; };
+		344C5E671E09CF9A00597B61 /* HUBMutableJSONPathImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BB71C5A4CB400B2AB9E /* HUBMutableJSONPathImplementation.m */; };
+		344C5E681E09CF9A00597B61 /* HUBViewModelImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF9FA061C5254F5003F3D6C /* HUBViewModelImplementation.m */; };
+		344C5E691E09CF9A00597B61 /* HUBAutoEquatable.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADA48561D784C1400C27F21 /* HUBAutoEquatable.m */; };
+		344C5E6A1E09CF9A00597B61 /* HUBDefaultImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD14E861D9946670008E182 /* HUBDefaultImageLoader.m */; };
+		344C5E6B1E09CF9A00597B61 /* HUBDefaultComponentFallbackHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA127ED1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.m */; };
+		344C5E6C1E09CF9A00597B61 /* HUBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064681C68DEA10086C081 /* HUBViewController.m */; };
+		344C5E6D1E09CF9A00597B61 /* HUBBlockContentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891E51DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m */; };
+		344C5E6E1E09CF9A00597B61 /* HUBViewModelRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = F64C5C2C1DB82CA30077E619 /* HUBViewModelRenderer.m */; };
+		344C5E6F1E09CF9A00597B61 /* HUBComponentUIStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFD98511D09C67D00AFF898 /* HUBComponentUIStateManager.m */; };
+		344C5E701E09CF9A00597B61 /* HUBComponentTargetImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A72E21D4B6E3300141619 /* HUBComponentTargetImplementation.m */; };
+		344C5E711E09CF9A00597B61 /* HUBComponentRegistryImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A88089F1C21AD0900ADB737 /* HUBComponentRegistryImplementation.m */; };
+		344C5E721E09CF9A00597B61 /* HUBJSONParsingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BBA1C5A4F1800B2AB9E /* HUBJSONParsingOperation.m */; };
+		344C5E731E09CF9A00597B61 /* HUBComponentReusePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ED75C1D4A049C006B27D8 /* HUBComponentReusePool.m */; };
+		344C5E741E09CF9A00597B61 /* HUBCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF0F991C85C73300D5535B /* HUBCollectionViewLayout.m */; };
+		344C5E751E09CF9A00597B61 /* HUBAsyncActionWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C9CFE1DDC71930070258F /* HUBAsyncActionWrapper.m */; };
+		344C5E761E09CF9A00597B61 /* HUBContentOperationExecutionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9894A1DD1E3C1006CA6AA /* HUBContentOperationExecutionInfo.m */; };
+		344C5E771E09CF9A00597B61 /* HUBViewModelLoaderImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF5B57E1C64B59E001FF228 /* HUBViewModelLoaderImplementation.m */; };
+		344C5E781E09CF9A00597B61 /* HUBCollectionViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A69DBA91C7DF8C000F5EFC6 /* HUBCollectionViewFactory.m */; };
+		344C5E791E09CF9A00597B61 /* HUBFeatureRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97C131C60BD6D0078F19D /* HUBFeatureRegistration.m */; };
+		344C5E7A1E09CF9A00597B61 /* HUBJSONPathImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786BBD1C5A595900B2AB9E /* HUBJSONPathImplementation.m */; };
+		344C5E7B1E09CF9A00597B61 /* HUBDefaultComponentLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA124E61DE89B530076582D /* HUBDefaultComponentLayoutManager.m */; };
+		344C5E7C1E09CF9A00597B61 /* HUBComponentTargetJSONSchemaImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A72EA1D4B726800141619 /* HUBComponentTargetJSONSchemaImplementation.m */; };
+		344C5E7D1E09CF9A00597B61 /* HUBContentOperationContextImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891E91DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.m */; };
+		344C5E7F1E09CF9A00597B61 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36B1C68DD2300693038 /* UIKit.framework */; };
+		344C5E801E09CF9A00597B61 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
+		344C5E811E09CF9A00597B61 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7335F1D9BE6F800E4B427 /* SystemConfiguration.framework */; };
+		344C5E831E09CF9A00597B61 /* HUBViewModelRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F64C5C2B1DB82CA30077E619 /* HUBViewModelRenderer.h */; };
+		344C5E841E09CF9A00597B61 /* HUBLiveService.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A1572941D9E728200E9DD4D /* HUBLiveService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E851E09CF9A00597B61 /* HUBComponentShowcaseManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ACA8C801D180EC80015310F /* HUBComponentShowcaseManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E861E09CF9A00597B61 /* HUBViewControllerScrollHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AED9F8F1D77090D00BEFD66 /* HUBViewControllerScrollHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E871E09CF9A00597B61 /* HUBConnectivityState.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A40B1301CAAB02700EBDDE2 /* HUBConnectivityState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E881E09CF9A00597B61 /* HUBComponentImageData.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA29C7F1C4FA5FE00E972B7 /* HUBComponentImageData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E891E09CF9A00597B61 /* HUBJSONPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BAC1C5A345D00B2AB9E /* HUBJSONPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E8A1E09CF9A00597B61 /* HUBActionPerformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD585B51DB4D38700DB7606 /* HUBActionPerformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E8B1E09CF9A00597B61 /* HUBConnectivityStateResolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD0645A1C64DF7D0086C081 /* HUBConnectivityStateResolver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E8C1E09CF9A00597B61 /* HUBViewControllerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD064771C6906B00086C081 /* HUBViewControllerFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E8D1E09CF9A00597B61 /* HUBIcon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD00A061CC77BD90012A9AF /* HUBIcon.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E8E1E09CF9A00597B61 /* HUBComponentWithImageHandling.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A1585941C8EFF1E0008FDF9 /* HUBComponentWithImageHandling.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E8F1E09CF9A00597B61 /* HUBJSONSchemaRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BA41C5A2E2A00B2AB9E /* HUBJSONSchemaRegistry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E901E09CF9A00597B61 /* HUBCollectionViewLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AFF0F981C85C73300D5535B /* HUBCollectionViewLayout.h */; };
+		344C5E911E09CF9A00597B61 /* HUBComponentFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9996E9691C6A42E000231D22 /* HUBComponentFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E921E09CF9A00597B61 /* HUBViewModelJSONSchemaImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BB01C5A383800B2AB9E /* HUBViewModelJSONSchemaImplementation.h */; };
+		344C5E931E09CF9A00597B61 /* HUBIconImageResolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD00A051CC777EC0012A9AF /* HUBIconImageResolver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E941E09CF9A00597B61 /* HUBContentOperationExecutionInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA989491DD1E3C1006CA6AA /* HUBContentOperationExecutionInfo.h */; };
+		344C5E951E09CF9A00597B61 /* HUBComponentViewObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A1627DD1CC915CB005CC3FB /* HUBComponentViewObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E961E09CF9A00597B61 /* HUBComponentWithRestorableUIState.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AFD984F1D09BCA500AFF898 /* HUBComponentWithRestorableUIState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E971E09CF9A00597B61 /* HUBComponentWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AFF0F301C846DA700D5535B /* HUBComponentWrapper.h */; };
+		344C5E981E09CF9A00597B61 /* HUBJSONCompatibleBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9383BF1D1ADF3C0085A2D5 /* HUBJSONCompatibleBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E991E09CF9A00597B61 /* HUBImageLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A49BA8D1C7770A7005F7453 /* HUBImageLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E9A1E09CF9A00597B61 /* HUBViewURIPredicate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A0E4B761CB561DE0019DE71 /* HUBViewURIPredicate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E9B1E09CF9A00597B61 /* HUBActionContext.h in Headers */ = {isa = PBXBuildFile; fileRef = F663FE7C1D10BECE003E19B6 /* HUBActionContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E9C1E09CF9A00597B61 /* HUBComponentModelBuilderShowcaseSnapshotGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ACA8C851D1818920015310F /* HUBComponentModelBuilderShowcaseSnapshotGenerator.h */; };
+		344C5E9D1E09CF9A00597B61 /* HUBContentReloadPolicy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5D7A471CB7D2DB00B987BA /* HUBContentReloadPolicy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E9E1E09CF9A00597B61 /* HUBContentOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A40B12D1CAAA71500EBDDE2 /* HUBContentOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5E9F1E09CF9A00597B61 /* HUBViewModelLoaderImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF5B57D1C64B59E001FF228 /* HUBViewModelLoaderImplementation.h */; };
+		344C5EA01E09CF9A00597B61 /* HUBComponentFallbackHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5D7A6F1CBE586700B987BA /* HUBComponentFallbackHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EA11E09CF9A00597B61 /* HUBViewModelLoaderFactoryImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD064721C68F0820086C081 /* HUBViewModelLoaderFactoryImplementation.h */; };
+		344C5EA21E09CF9A00597B61 /* HUBIdentifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF21C9D1C6D044700960A06 /* HUBIdentifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EA31E09CF9A00597B61 /* HUBDefaultImageLoaderFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD14E881D994BB40008E182 /* HUBDefaultImageLoaderFactory.h */; };
+		344C5EA41E09CF9A00597B61 /* HUBCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5035201DD473030008B499 /* HUBCollectionView.h */; };
+		344C5EA51E09CF9A00597B61 /* HUBJSONKeys.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A0E4B821CB69DDF0019DE71 /* HUBJSONKeys.h */; };
+		344C5EA61E09CF9A00597B61 /* HUBKeyPath.h in Headers */ = {isa = PBXBuildFile; fileRef = DD79C3B91D9F0A8800FA77E5 /* HUBKeyPath.h */; };
+		344C5EA71E09CF9A00597B61 /* HUBActionRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2A72ED1D4B744A00141619 /* HUBActionRegistry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EA81E09CF9A00597B61 /* HUBComponentLayoutTraits.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AFF10061C87015A00D5535B /* HUBComponentLayoutTraits.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EA91E09CF9A00597B61 /* HUBComponentLayoutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AFF0F9B1C85C89100D5535B /* HUBComponentLayoutManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EAA1E09CF9A00597B61 /* HUBComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A0754AC1C21A7C700AFAD38 /* HUBComponent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EAB1E09CF9A00597B61 /* HUBBlockContentOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 521891E21DEE3C3000FA3BF7 /* HUBBlockContentOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EAC1E09CF9A00597B61 /* HUBContentOperationFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A40B12F1CAAAF8F00EBDDE2 /* HUBContentOperationFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EAD1E09CF9A00597B61 /* HUBComponentResizeObservingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AFD56271D477E4700E80C00 /* HUBComponentResizeObservingView.h */; };
+		344C5EAE1E09CF9A00597B61 /* HUBDefaultComponentLayoutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA124E51DE89B530076582D /* HUBDefaultComponentLayoutManager.h */; };
+		344C5EAF1E09CF9A00597B61 /* HUBFeatureInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A1132BE1CDA477E0053AA26 /* HUBFeatureInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EB01E09CF9A00597B61 /* HUBViewController+Initializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9CA05E1DDDC3D70070258F /* HUBViewController+Initializer.h */; };
+		344C5EB11E09CF9A00597B61 /* HUBComponentFactoryShowcaseNameProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ACA8C7F1D1805420015310F /* HUBComponentFactoryShowcaseNameProvider.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EB21E09CF9A00597B61 /* HUBAsyncActionWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9C9CFD1DDC71930070258F /* HUBAsyncActionWrapper.h */; };
+		344C5EB31E09CF9A00597B61 /* HUBIconImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD00A071CC77C950012A9AF /* HUBIconImplementation.h */; };
+		344C5EB41E09CF9A00597B61 /* HUBDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 525E2F5C1DF4CEED008DCB85 /* HUBDefaults.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EB51E09CF9A00597B61 /* HUBComponentModelJSONSchemaImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD064541C64B6DB0086C081 /* HUBComponentModelJSONSchemaImplementation.h */; };
+		344C5EB61E09CF9A00597B61 /* HUBComponentModelBuilderImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA29C8A1C4FAD6700E972B7 /* HUBComponentModelBuilderImplementation.h */; };
+		344C5EB71E09CF9A00597B61 /* HUBManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADD42901C21C7BC00D1A801 /* HUBManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EB81E09CF9A00597B61 /* HUBContentOperationWithPaginatedContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A07A51F1DC8C48500CDBE9C /* HUBContentOperationWithPaginatedContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EB91E09CF9A00597B61 /* HUBViewModelBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786B911C57D53600B2AB9E /* HUBViewModelBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EBA1E09CF9A00597B61 /* HUBContentOperationWithInitialContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF82D831D12EEFA00D1B933 /* HUBContentOperationWithInitialContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EBB1E09CF9A00597B61 /* HUBComponentImageDataJSONSchema.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA97C1F1C60D8270078F19D /* HUBComponentImageDataJSONSchema.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EBC1E09CF9A00597B61 /* HUBComponentWithScrolling.h in Headers */ = {isa = PBXBuildFile; fileRef = F65C149A1DC93AEB0030958D /* HUBComponentWithScrolling.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EBD1E09CF9A00597B61 /* HUBComponentTargetBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2A72E71D4B6F2400141619 /* HUBComponentTargetBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EBE1E09CF9A00597B61 /* HUBComponentWithChildren.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A1585961C8F003C0008FDF9 /* HUBComponentWithChildren.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EBF1E09CF9A00597B61 /* HUBMutableJSONPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BAD1C5A34C000B2AB9E /* HUBMutableJSONPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EC01E09CF9A00597B61 /* HUBComponentType.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A1A199E1D86B5380022438F /* HUBComponentType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EC11E09CF9A00597B61 /* HUBImageLoaderFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A49BAF01C777399005F7453 /* HUBImageLoaderFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EC21E09CF9A00597B61 /* HUBComponentTargetImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2A72E11D4B6E3300141619 /* HUBComponentTargetImplementation.h */; };
+		344C5EC31E09CF9A00597B61 /* HUBComponentDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5D7A601CBBAC2200B987BA /* HUBComponentDefaults.h */; };
+		344C5EC41E09CF9A00597B61 /* HUBViewModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF9FA031C5254D5003F3D6C /* HUBViewModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EC51E09CF9A00597B61 /* HUBDefaultConnectivityStateResolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD732011D9AD30100E4B427 /* HUBDefaultConnectivityStateResolver.h */; };
+		344C5EC61E09CF9A00597B61 /* HUBLiveContentOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A1638BB1DC38B2E00AAD200 /* HUBLiveContentOperation.h */; };
+		344C5EC71E09CF9A00597B61 /* HUBCollectionViewFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A69DBA81C7DF8C000F5EFC6 /* HUBCollectionViewFactory.h */; };
+		344C5EC81E09CF9A00597B61 /* HUBJSONSchema.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BA11C5A29F800B2AB9E /* HUBJSONSchema.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EC91E09CF9A00597B61 /* HUBSerializable.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A0E4B801CB69CD80019DE71 /* HUBSerializable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5ECA1E09CF9A00597B61 /* HUBComponentActionObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D98E5BC1DC09FB500607097 /* HUBComponentActionObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5ECB1E09CF9A00597B61 /* HUBAsyncAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A4EB8B01DBA47E90004588C /* HUBAsyncAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5ECC1E09CF9A00597B61 /* HUBDefaultComponentFallbackHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA127EC1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.h */; };
+		344C5ECD1E09CF9A00597B61 /* HUBComponentModelBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA29C801C4FA7B600E972B7 /* HUBComponentModelBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5ECE1E09CF9A00597B61 /* HUBContentOperationActionObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6525371D815F4C007B1A15 /* HUBContentOperationActionObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5ECF1E09CF9A00597B61 /* HUBUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */; };
+		344C5ED01E09CF9A00597B61 /* HUBContentOperationWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7B48EA1CD77C8200130C25 /* HUBContentOperationWrapper.h */; };
+		344C5ED11E09CF9A00597B61 /* HUBInitialViewModelRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AFDCAC31C8DD5920068DECC /* HUBInitialViewModelRegistry.h */; };
+		344C5ED21E09CF9A00597B61 /* HUBComponentRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADD42931C21C94800D1A801 /* HUBComponentRegistry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5ED31E09CF9A00597B61 /* HUBComponentModelJSONSchema.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BAF1C5A37F000B2AB9E /* HUBComponentModelJSONSchema.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5ED41E09CF9A00597B61 /* HUBComponentUIStateManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AFD98501D09C67D00AFF898 /* HUBComponentUIStateManager.h */; };
+		344C5ED51E09CF9A00597B61 /* HUBComponentGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A4C28151DB5120400152429 /* HUBComponentGestureRecognizer.h */; };
+		344C5ED61E09CF9A00597B61 /* HUBViewModelLoaderFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD064761C69069A0086C081 /* HUBViewModelLoaderFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5ED71E09CF9A00597B61 /* HUBJSONSchemaRegistryImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BA61C5A2E8F00B2AB9E /* HUBJSONSchemaRegistryImplementation.h */; };
+		344C5ED81E09CF9A00597B61 /* HUBViewModelBuilderImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786B921C57D62100B2AB9E /* HUBViewModelBuilderImplementation.h */; };
+		344C5ED91E09CF9A00597B61 /* HUBActionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6529F51D82D1C7007B1A15 /* HUBActionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EDA1E09CF9A00597B61 /* HUBComponentWithSelectionState.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A4C28191DB6464B00152429 /* HUBComponentWithSelectionState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EDB1E09CF9A00597B61 /* HUBViewModelLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD064751C68FCAD0086C081 /* HUBViewModelLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EDC1E09CF9A00597B61 /* HUBViewControllerDefaultScrollHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AEDA0981D7710A300BEFD66 /* HUBViewControllerDefaultScrollHandler.h */; };
+		344C5EDD1E09CF9A00597B61 /* HUBDefaultImageLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD14E851D9946670008E182 /* HUBDefaultImageLoader.h */; };
+		344C5EDE1E09CF9A00597B61 /* HUBViewModelImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF9FA051C5254F5003F3D6C /* HUBViewModelImplementation.h */; };
+		344C5EDF1E09CF9A00597B61 /* HUBComponentImageDataImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA29C861C4FAB6200E972B7 /* HUBComponentImageDataImplementation.h */; };
+		344C5EE01E09CF9A00597B61 /* HUBComponentImageDataJSONSchemaImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE2789E1C6236E400DFAF99 /* HUBComponentImageDataJSONSchemaImplementation.h */; };
+		344C5EE11E09CF9A00597B61 /* HUBMutableJSONPathImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BB61C5A4CB400B2AB9E /* HUBMutableJSONPathImplementation.h */; };
+		344C5EE21E09CF9A00597B61 /* HUBFeatureRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA97C091C60B9FE0078F19D /* HUBFeatureRegistry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EE31E09CF9A00597B61 /* HUBFeatureInfoImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A1132BF1CDA4BA60053AA26 /* HUBFeatureInfoImplementation.h */; };
+		344C5EE41E09CF9A00597B61 /* HUBComponentModelImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA29C831C4FAA9200E972B7 /* HUBComponentModelImplementation.h */; };
+		344C5EE51E09CF9A00597B61 /* HUBFeatureRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA97C121C60BD6D0078F19D /* HUBFeatureRegistration.h */; };
+		344C5EE61E09CF9A00597B61 /* HUBComponentTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2A72E01D4B6D2700141619 /* HUBComponentTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EE71E09CF9A00597B61 /* HUBHeaderMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5D7A5A1CB806E200B987BA /* HUBHeaderMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EE81E09CF9A00597B61 /* HUBBlockContentOperationFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 52977AC61DA7D0890064629E /* HUBBlockContentOperationFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EE91E09CF9A00597B61 /* HUBViewModelJSONSchema.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BAE1C5A37E200B2AB9E /* HUBViewModelJSONSchema.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EEA1E09CF9A00597B61 /* HUBComponentCategories.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A0568F31CBFB073007C296A /* HUBComponentCategories.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EEB1E09CF9A00597B61 /* HUBContentOperationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 521891E71DEE3DA800FA3BF7 /* HUBContentOperationContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EEC1E09CF9A00597B61 /* HUBActionRegistryImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2A72F11D4B75DA00141619 /* HUBActionRegistryImplementation.h */; };
+		344C5EED1E09CF9A00597B61 /* HUBComponentTargetBuilderImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2A72E41D4B6F1700141619 /* HUBComponentTargetBuilderImplementation.h */; };
+		344C5EEE1E09CF9A00597B61 /* HubFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A880ACF1C21AE9000ADB737 /* HubFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EEF1E09CF9A00597B61 /* HUBViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9CA05F1DDDD3230070258F /* HUBViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EF01E09CF9A00597B61 /* HUBActionTrigger.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6529F61D82D7BE007B1A15 /* HUBActionTrigger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EF11E09CF9A00597B61 /* HUBActionContextImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6ACAB51D7D89CE00102EA9 /* HUBActionContextImplementation.h */; };
+		344C5EF21E09CF9A00597B61 /* HUBComponentActionPerformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6525381D819FBF007B1A15 /* HUBComponentActionPerformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EF31E09CF9A00597B61 /* HUBComponentRegistryImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A88089E1C21AD0900ADB737 /* HUBComponentRegistryImplementation.h */; };
+		344C5EF41E09CF9A00597B61 /* HUBComponentShowcaseShapshotGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ACA8C841D1816C90015310F /* HUBComponentShowcaseShapshotGenerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EF51E09CF9A00597B61 /* HUBContentOperationContextImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 521891E81DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.h */; };
+		344C5EF61E09CF9A00597B61 /* HUBLiveServiceImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A1572991D9E735C00E9DD4D /* HUBLiveServiceImplementation.h */; };
+		344C5EF71E09CF9A00597B61 /* HUBAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2A72EE1D4B749600141619 /* HUBAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EF81E09CF9A00597B61 /* HUBComponentImageLoadingContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A49BAF61C777FB0005F7453 /* HUBComponentImageLoadingContext.h */; };
+		344C5EF91E09CF9A00597B61 /* HUBJSONPathImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BBC1C5A595900B2AB9E /* HUBJSONPathImplementation.h */; };
+		344C5EFA1E09CF9A00597B61 /* HUBComponentContentOffsetObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A1585951C8EFF550008FDF9 /* HUBComponentContentOffsetObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EFB1E09CF9A00597B61 /* HUBComponentTargetJSONSchemaImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2A72E91D4B726800141619 /* HUBComponentTargetJSONSchemaImplementation.h */; };
+		344C5EFC1E09CF9A00597B61 /* HUBComponentReusePool.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9ED75B1D4A049C006B27D8 /* HUBComponentReusePool.h */; };
+		344C5EFD1E09CF9A00597B61 /* HUBFeatureRegistryImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA97C0B1C60BA4E0078F19D /* HUBFeatureRegistryImplementation.h */; };
+		344C5EFE1E09CF9A00597B61 /* HUBComponentModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADD42AD1C21D65600D1A801 /* HUBComponentModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5EFF1E09CF9A00597B61 /* HUBJSONParsingOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BB91C5A4F1800B2AB9E /* HUBJSONParsingOperation.h */; };
+		344C5F001E09CF9A00597B61 /* HUBScrollPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = F68DF5D41DCAA0D4004C538A /* HUBScrollPosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5F011E09CF9A00597B61 /* HUBViewModelDiff.h in Headers */ = {isa = PBXBuildFile; fileRef = F66658D71D9925CC0097929F /* HUBViewModelDiff.h */; };
+		344C5F021E09CF9A00597B61 /* HUBComponentTargetJSONSchema.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2A72E81D4B722200141619 /* HUBComponentTargetJSONSchema.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5F031E09CF9A00597B61 /* HUBActionHandlerWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6529F71D82DC33007B1A15 /* HUBActionHandlerWrapper.h */; };
+		344C5F041E09CF9A00597B61 /* HUBComponentImageDataBuilderImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA29C8D1C4FAFC100E972B7 /* HUBComponentImageDataBuilderImplementation.h */; };
+		344C5F051E09CF9A00597B61 /* HUBContainerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD009FC1CC64EF80012A9AF /* HUBContainerView.h */; };
+		344C5F061E09CF9A00597B61 /* HUBComponentCollectionViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AFD562A1D47B44E00E80C00 /* HUBComponentCollectionViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5F071E09CF9A00597B61 /* HUBActionFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A0C356C1D7DB656007C32D9 /* HUBActionFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5F081E09CF9A00597B61 /* HUBSelectionAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6529FA1D82DF18007B1A15 /* HUBSelectionAction.h */; };
+		344C5F091E09CF9A00597B61 /* HUBViewControllerFactoryImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD0646E1C68EDA20086C081 /* HUBViewControllerFactoryImplementation.h */; };
+		344C5F0A1E09CF9A00597B61 /* HUBContentOperationActionPerformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD585B91DB4F49600DB7606 /* HUBContentOperationActionPerformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5F0B1E09CF9A00597B61 /* HUBComponentImageDataBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA29C811C4FA8C400E972B7 /* HUBComponentImageDataBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		344C5F0C1E09CF9A00597B61 /* HUBJSONSchemaImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A786BA91C5A326300B2AB9E /* HUBJSONSchemaImplementation.h */; };
+		344C5F0D1E09CF9A00597B61 /* HUBAutoEquatable.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADA48551D784C1400C27F21 /* HUBAutoEquatable.h */; };
+		345AFDC91E0FEED300807DCC /* HUBComponentWithFocusState.h in Headers */ = {isa = PBXBuildFile; fileRef = 345AFDC81E0FEED300807DCC /* HUBComponentWithFocusState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		345AFDCA1E0FF39A00807DCC /* HUBComponentWithFocusState.h in Headers */ = {isa = PBXBuildFile; fileRef = 345AFDC81E0FEED300807DCC /* HUBComponentWithFocusState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		345AFDCB1E10287B00807DCC /* HUBViewControllerDefaultScrollHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = B38EA90C1DFEF18400526587 /* HUBViewControllerDefaultScrollHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		345AFDCC1E1028A100807DCC /* HUBErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = DD244A811E04520D005E5C68 /* HUBErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		345AFDCD1E1028FC00807DCC /* HUBOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2BD2091E0A7555008A5050 /* HUBOperation.h */; };
+		345AFDCE1E10290000807DCC /* HUBOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2BD20A1E0A7555008A5050 /* HUBOperation.m */; };
+		345AFDCF1E10290200807DCC /* HUBOperationQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2BD1FF1E0A6B40008A5050 /* HUBOperationQueue.h */; };
+		345AFDD01E10290500807DCC /* HUBOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2BD2001E0A6B40008A5050 /* HUBOperationQueue.m */; };
+		345AFDD11E10290A00807DCC /* HUBErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = DD244B181E086958005E5C68 /* HUBErrors.m */; };
+		345AFDD71E10797B00807DCC /* HUBManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD42A91C21D08100D1A801 /* HUBManagerTests.m */; };
+		345AFDD81E10797B00807DCC /* HUBViewModelUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 6500561F1DF98B89006D957C /* HUBViewModelUtilities.m */; };
+		345AFDD91E10797B00807DCC /* HUBURLSessionMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD151801D9966080008E182 /* HUBURLSessionMock.m */; };
+		345AFDDA1E10797B00807DCC /* HUBInitialViewModelRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A19A51D8813DB0022438F /* HUBInitialViewModelRegistryTests.m */; };
+		345AFDDB1E10797B00807DCC /* HUBURLProtocolMock.m in Sources */ = {isa = PBXBuildFile; fileRef = F6B6B7551D9A8E7E0000D7AF /* HUBURLProtocolMock.m */; };
+		345AFDDC1E10797B00807DCC /* HUBActionFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6525321D802DCD007B1A15 /* HUBActionFactoryMock.m */; };
+		345AFDDD1E10797B00807DCC /* HUBComponentReusePoolMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA124DC1DE8831B0076582D /* HUBComponentReusePoolMock.m */; };
+		345AFDDE1E10797B00807DCC /* HUBViewModelRendererTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 650056221DF98F8B006D957C /* HUBViewModelRendererTests.m */; };
+		345AFDDF1E10797B00807DCC /* HUBComponentRegistryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 650056B71DF9A23A006D957C /* HUBComponentRegistryMock.m */; };
+		345AFDE01E10797B00807DCC /* HUBActionMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6525351D802E3F007B1A15 /* HUBActionMock.m */; };
+		345AFDE11E10797B00807DCC /* HUBCollectionViewFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A69DBAC1C7DF9D300F5EFC6 /* HUBCollectionViewFactoryMock.m */; };
+		345AFDE21E10797B00807DCC /* HUBComponentTargetBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6386761D882CA700AED30F /* HUBComponentTargetBuilderTests.m */; };
+		345AFDE31E10797B00807DCC /* HUBBlockContentOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891EC1DEE410200FA3BF7 /* HUBBlockContentOperationTests.m */; };
+		345AFDE41E10797B00807DCC /* HUBContentReloadPolicyMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D7A491CB7EA5400B987BA /* HUBContentReloadPolicyMock.m */; };
+		345AFDE51E10797B00807DCC /* HUBCollectionViewMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A69DBAF1C7DFA1A00F5EFC6 /* HUBCollectionViewMock.m */; };
+		345AFDE61E10797B00807DCC /* HUBViewControllerScrollHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2EC3741D7971A500E4CAB3 /* HUBViewControllerScrollHandlerMock.m */; };
+		345AFDE71E10797B00807DCC /* HUBViewModelBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A786B951C57E6F300B2AB9E /* HUBViewModelBuilderTests.m */; };
+		345AFDE81E10797B00807DCC /* HUBComponentModelBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA29CF71C4FE59100E972B7 /* HUBComponentModelBuilderTests.m */; };
+		345AFDE91E10797B00807DCC /* HUBDefaultImageLoaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD1517D1D9963120008E182 /* HUBDefaultImageLoaderTests.m */; };
+		345AFDEA1E10797B00807DCC /* HUBContentOperationFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97C181C60C5CD0078F19D /* HUBContentOperationFactoryMock.m */; };
+		345AFDEB1E10797B00807DCC /* HUBInputStreamMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 5284988A1DC4FC1300291C0C /* HUBInputStreamMock.m */; };
+		345AFDEC1E10797B00807DCC /* HUBSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 650830161DD4E746008CFB43 /* HUBSerializationTests.m */; };
+		345AFDED1E10797B00807DCC /* HUBViewModelRendererMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 658A61A31DF00D6B0031284D /* HUBViewModelRendererMock.m */; };
+		345AFDEE1E10797B00807DCC /* HUBJSONSchemaRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064571C64B76B0086C081 /* HUBJSONSchemaRegistryTests.m */; };
+		345AFDEF1E10797B00807DCC /* HUBURLSessionDataTaskMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD151831D9968390008E182 /* HUBURLSessionDataTaskMock.m */; };
+		345AFDF01E10797B00807DCC /* HUBCollectionViewLayoutTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6BA04F1C899E1C0057485D /* HUBCollectionViewLayoutTests.m */; };
+		345AFDF11E10797B00807DCC /* HUBComponentLayoutManagerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6BA0551C89A00F0057485D /* HUBComponentLayoutManagerMock.m */; };
+		345AFDF21E10797B00807DCC /* HUBActionRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6529E51D82B313007B1A15 /* HUBActionRegistryTests.m */; };
+		345AFDF31E10797B00807DCC /* HUBComponentDefaults+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D7A6D1CBD0F0D00B987BA /* HUBComponentDefaults+Testing.m */; };
+		345AFDF41E10797B00807DCC /* HUBComponentFallbackHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D7A711CBE5CA700B987BA /* HUBComponentFallbackHandlerMock.m */; };
+		345AFDF51E10797B00807DCC /* HUBActionHandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F910C1D0EEBDD00C37FAE /* HUBActionHandlerMock.m */; };
+		345AFDF61E10797B00807DCC /* HUBComponentImageDataBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A58E1481C5FA62E00F41A5C /* HUBComponentImageDataBuilderTests.m */; };
+		345AFDF71E10797B00807DCC /* HUBIconTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD00A0D1CC79F850012A9AF /* HUBIconTests.m */; };
+		345AFDF81E10797B00807DCC /* HUBComponentGestureRecognizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A15132B1DB7AF4800DE8C7A /* HUBComponentGestureRecognizerTests.m */; };
+		345AFDF91E10797B00807DCC /* HUBViewModelDiffTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6665AA61D9947E00097929F /* HUBViewModelDiffTests.m */; };
+		345AFDFA1E10797B00807DCC /* HUBComponentModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ED75E1D4A24C2006B27D8 /* HUBComponentModelTests.m */; };
+		345AFDFB1E10797B00807DCC /* HUBViewModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6529DE1D81B14F007B1A15 /* HUBViewModelTests.m */; };
+		345AFDFC1E10797B00807DCC /* HUBImageLoaderFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A89EFE71C7C866500A27EE9 /* HUBImageLoaderFactoryMock.m */; };
+		345AFDFD1E10797B00807DCC /* HUBImageLoaderMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A89EFE41C7C728100A27EE9 /* HUBImageLoaderMock.m */; };
+		345AFDFE1E10797B00807DCC /* HUBIdentifierTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB2A7B1C6A2F99000741D7 /* HUBIdentifierTests.m */; };
+		345AFDFF1E10797B00807DCC /* HUBIconImageResolverMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD00A0B1CC794FB0012A9AF /* HUBIconImageResolverMock.m */; };
+		345AFE001E10797B00807DCC /* HUBContentOperationMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064651C64F7C30086C081 /* HUBContentOperationMock.m */; };
+		345AFE011E10797B00807DCC /* HUBLiveServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 528498861DC4E8E800291C0C /* HUBLiveServiceTests.m */; };
+		345AFE021E10797B00807DCC /* HUBViewModelLoaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD0645F1C64F5460086C081 /* HUBViewModelLoaderTests.m */; };
+		345AFE031E10797B00807DCC /* HUBCollectionViewLayoutMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 650056B31DF99FCF006D957C /* HUBCollectionViewLayoutMock.m */; };
+		345AFE041E10797B00807DCC /* HUBComponentWrapperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6AC23C11DA2863A001B1A6A /* HUBComponentWrapperTests.m */; };
+		345AFE051E10797B00807DCC /* HUBJSONSchemaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D83931CA3FC3500662B73 /* HUBJSONSchemaTests.m */; };
+		345AFE061E10797B00807DCC /* UIViewController+HUBSimulateLayoutCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC315831DED94790093AEA0 /* UIViewController+HUBSimulateLayoutCycle.m */; };
+		345AFE071E10797B00807DCC /* HUBComponentMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD43781C21DBE300D1A801 /* HUBComponentMock.m */; };
+		345AFE081E10797B00807DCC /* HUBTouchMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A15132F1DB7B5AD00DE8C7A /* HUBTouchMock.m */; };
+		345AFE091E10797B00807DCC /* HUBConnectivityStateResolverMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD0645C1C64F4510086C081 /* HUBConnectivityStateResolverMock.m */; };
+		345AFE0A1E10797B00807DCC /* HUBViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE24C61C6B650B0036240A /* HUBViewControllerFactoryTests.m */; };
+		345AFE0B1E10797B00807DCC /* HUBViewModelLoaderFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064781C69FFD00086C081 /* HUBViewModelLoaderFactoryTests.m */; };
+		345AFE0C1E10797B00807DCC /* HUBDefaultComponentLayoutManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC315861DEDAB490093AEA0 /* HUBDefaultComponentLayoutManagerTests.m */; };
+		345AFE0D1E10797B00807DCC /* HUBMutableJSONPathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A58E1461C5B79A900F41A5C /* HUBMutableJSONPathTests.m */; };
+		345AFE0E1E10797B00807DCC /* HUBJSONPathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A58E0E21C5A77C700F41A5C /* HUBJSONPathTests.m */; };
+		345AFE0F1E10797B00807DCC /* HUBViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A48F2FE1C7C94EC00B1467C /* HUBViewControllerTests.m */; };
+		345AFE101E10797B00807DCC /* HUBComponentRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD42A51C21CFE800D1A801 /* HUBComponentRegistryTests.m */; };
+		345AFE111E10797B00807DCC /* HUBComponentFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */; };
+		345AFE121E10797B00807DCC /* HUBViewURIPredicateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E4B7B1CB568D50019DE71 /* HUBViewURIPredicateTests.m */; };
+		345AFE131E10797B00807DCC /* HUBCollectionViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */; };
+		345AFE141E10797B00807DCC /* HUBFeatureRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97C151C60C5320078F19D /* HUBFeatureRegistryTests.m */; };
+		345AFE161E10797B00807DCC /* HubFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C0001DF6E3110063B2B1 /* HubFramework.framework */; };
+		345AFE171E10797B00807DCC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36B1C68DD2300693038 /* UIKit.framework */; };
+		345AFE181E10797B00807DCC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
+		345AFE191E10797B00807DCC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7335F1D9BE6F800E4B427 /* SystemConfiguration.framework */; };
+		345AFE1B1E10797B00807DCC /* HUBSerializationTests.json in Resources */ = {isa = PBXBuildFile; fileRef = 6508301A1DD4EBFB008CFB43 /* HUBSerializationTests.json */; };
+		345AFE1C1E10797B00807DCC /* testImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AC3158D1DEDE2D40093AEA0 /* testImage.png */; };
 		521891E61DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891E51DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m */; };
 		521891EA1DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891E91DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.m */; };
 		521891ED1DEE410200FA3BF7 /* HUBBlockContentOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891EC1DEE410200FA3BF7 /* HUBBlockContentOperationTests.m */; };
@@ -429,6 +712,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		345AFDD51E10797B00807DCC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A0754961C21A79200AFAD38 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AE6BFFF1DF6E3110063B2B1;
+			remoteInfo = "HubFramework-iOS";
+		};
 		8ABD6CAC1DF6EC36005BCB33 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8A0754961C21A79200AFAD38 /* Project object */;
@@ -461,6 +751,10 @@
 		1D98E5BC1DC09FB500607097 /* HUBComponentActionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentActionObserver.h; sourceTree = "<group>"; };
 		2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentFactoryMock.m; sourceTree = "<group>"; };
 		2932EAD3C06CBB869669B382 /* HUBComponentFactoryMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactoryMock.h; sourceTree = "<group>"; };
+		344C5F121E09CF9A00597B61 /* HubFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HubFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		344C5F131E09CF9A00597B61 /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-tvOS.plist"; path = "/Users/marmelroy/Documents/Projects/Contributions/HubFramework/Info-tvOS.plist"; sourceTree = "<absolute>"; };
+		345AFDC81E0FEED300807DCC /* HUBComponentWithFocusState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentWithFocusState.h; sourceTree = "<group>"; };
+		345AFE201E10797B00807DCC /* HubFrameworkTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "HubFrameworkTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E29FCF31DED2D9600856D20 /* HUBTestUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBTestUtilities.h; sourceTree = "<group>"; };
 		521891E21DEE3C3000FA3BF7 /* HUBBlockContentOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBBlockContentOperation.h; sourceTree = "<group>"; };
 		521891E51DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBBlockContentOperation.m; sourceTree = "<group>"; };
@@ -777,6 +1071,27 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		344C5E7E1E09CF9A00597B61 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				344C5E7F1E09CF9A00597B61 /* UIKit.framework in Frameworks */,
+				344C5E801E09CF9A00597B61 /* CoreGraphics.framework in Frameworks */,
+				344C5E811E09CF9A00597B61 /* SystemConfiguration.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		345AFE151E10797B00807DCC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				345AFE161E10797B00807DCC /* HubFramework.framework in Frameworks */,
+				345AFE171E10797B00807DCC /* UIKit.framework in Frameworks */,
+				345AFE181E10797B00807DCC /* CoreGraphics.framework in Frameworks */,
+				345AFE191E10797B00807DCC /* SystemConfiguration.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A07549B1C21A79200AFAD38 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -866,6 +1181,8 @@
 				8ADD42991C21CF6500D1A801 /* HubFrameworkTests.xctest */,
 				8AE6C0001DF6E3110063B2B1 /* HubFramework.framework */,
 				8ABD6CA61DF6EC36005BCB33 /* HubFrameworkTests.xctest */,
+				344C5F121E09CF9A00597B61 /* HubFramework.framework */,
+				345AFE201E10797B00807DCC /* HubFrameworkTests-tvOS.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1302,6 +1619,7 @@
 				DD13758E1C68C76000AD3499 /* project.xcconfig */,
 				DD13758F1C68C76000AD3499 /* spotify_os.xcconfig */,
 				8AE6C0081DF6E3330063B2B1 /* Info.plist */,
+				344C5F131E09CF9A00597B61 /* Info-tvOS.plist */,
 			);
 			name = "Build System";
 			sourceTree = "<group>";
@@ -1431,6 +1749,7 @@
 				8A1585941C8EFF1E0008FDF9 /* HUBComponentWithImageHandling.h */,
 				8AFD984F1D09BCA500AFF898 /* HUBComponentWithRestorableUIState.h */,
 				8A4C28191DB6464B00152429 /* HUBComponentWithSelectionState.h */,
+				345AFDC81E0FEED300807DCC /* HUBComponentWithFocusState.h */,
 				8A1585951C8EFF550008FDF9 /* HUBComponentContentOffsetObserver.h */,
 				8A1627DD1CC915CB005CC3FB /* HUBComponentViewObserver.h */,
 				8A6525381D819FBF007B1A15 /* HUBComponentActionPerformer.h */,
@@ -1526,6 +1845,156 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		344C5E821E09CF9A00597B61 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				344C5E831E09CF9A00597B61 /* HUBViewModelRenderer.h in Headers */,
+				344C5E841E09CF9A00597B61 /* HUBLiveService.h in Headers */,
+				344C5E851E09CF9A00597B61 /* HUBComponentShowcaseManager.h in Headers */,
+				344C5E861E09CF9A00597B61 /* HUBViewControllerScrollHandler.h in Headers */,
+				344C5E871E09CF9A00597B61 /* HUBConnectivityState.h in Headers */,
+				344C5E881E09CF9A00597B61 /* HUBComponentImageData.h in Headers */,
+				344C5E891E09CF9A00597B61 /* HUBJSONPath.h in Headers */,
+				344C5E8A1E09CF9A00597B61 /* HUBActionPerformer.h in Headers */,
+				344C5E8B1E09CF9A00597B61 /* HUBConnectivityStateResolver.h in Headers */,
+				344C5E8C1E09CF9A00597B61 /* HUBViewControllerFactory.h in Headers */,
+				344C5E8D1E09CF9A00597B61 /* HUBIcon.h in Headers */,
+				344C5E8E1E09CF9A00597B61 /* HUBComponentWithImageHandling.h in Headers */,
+				344C5E8F1E09CF9A00597B61 /* HUBJSONSchemaRegistry.h in Headers */,
+				344C5E901E09CF9A00597B61 /* HUBCollectionViewLayout.h in Headers */,
+				344C5E911E09CF9A00597B61 /* HUBComponentFactory.h in Headers */,
+				344C5E921E09CF9A00597B61 /* HUBViewModelJSONSchemaImplementation.h in Headers */,
+				344C5E931E09CF9A00597B61 /* HUBIconImageResolver.h in Headers */,
+				344C5E941E09CF9A00597B61 /* HUBContentOperationExecutionInfo.h in Headers */,
+				344C5E951E09CF9A00597B61 /* HUBComponentViewObserver.h in Headers */,
+				344C5E961E09CF9A00597B61 /* HUBComponentWithRestorableUIState.h in Headers */,
+				344C5E971E09CF9A00597B61 /* HUBComponentWrapper.h in Headers */,
+				344C5E981E09CF9A00597B61 /* HUBJSONCompatibleBuilder.h in Headers */,
+				344C5E991E09CF9A00597B61 /* HUBImageLoader.h in Headers */,
+				344C5E9A1E09CF9A00597B61 /* HUBViewURIPredicate.h in Headers */,
+				344C5E9B1E09CF9A00597B61 /* HUBActionContext.h in Headers */,
+				344C5E9C1E09CF9A00597B61 /* HUBComponentModelBuilderShowcaseSnapshotGenerator.h in Headers */,
+				344C5E9D1E09CF9A00597B61 /* HUBContentReloadPolicy.h in Headers */,
+				344C5E9E1E09CF9A00597B61 /* HUBContentOperation.h in Headers */,
+				344C5E9F1E09CF9A00597B61 /* HUBViewModelLoaderImplementation.h in Headers */,
+				344C5EA01E09CF9A00597B61 /* HUBComponentFallbackHandler.h in Headers */,
+				344C5EA11E09CF9A00597B61 /* HUBViewModelLoaderFactoryImplementation.h in Headers */,
+				344C5EA21E09CF9A00597B61 /* HUBIdentifier.h in Headers */,
+				344C5EA31E09CF9A00597B61 /* HUBDefaultImageLoaderFactory.h in Headers */,
+				344C5EA41E09CF9A00597B61 /* HUBCollectionView.h in Headers */,
+				344C5EA51E09CF9A00597B61 /* HUBJSONKeys.h in Headers */,
+				344C5EA61E09CF9A00597B61 /* HUBKeyPath.h in Headers */,
+				344C5EA71E09CF9A00597B61 /* HUBActionRegistry.h in Headers */,
+				344C5EA81E09CF9A00597B61 /* HUBComponentLayoutTraits.h in Headers */,
+				344C5EA91E09CF9A00597B61 /* HUBComponentLayoutManager.h in Headers */,
+				344C5EAA1E09CF9A00597B61 /* HUBComponent.h in Headers */,
+				344C5EAB1E09CF9A00597B61 /* HUBBlockContentOperation.h in Headers */,
+				344C5EAC1E09CF9A00597B61 /* HUBContentOperationFactory.h in Headers */,
+				344C5EAD1E09CF9A00597B61 /* HUBComponentResizeObservingView.h in Headers */,
+				344C5EAE1E09CF9A00597B61 /* HUBDefaultComponentLayoutManager.h in Headers */,
+				344C5EAF1E09CF9A00597B61 /* HUBFeatureInfo.h in Headers */,
+				344C5EB01E09CF9A00597B61 /* HUBViewController+Initializer.h in Headers */,
+				344C5EB11E09CF9A00597B61 /* HUBComponentFactoryShowcaseNameProvider.h in Headers */,
+				344C5EB21E09CF9A00597B61 /* HUBAsyncActionWrapper.h in Headers */,
+				344C5EB31E09CF9A00597B61 /* HUBIconImplementation.h in Headers */,
+				344C5EB41E09CF9A00597B61 /* HUBDefaults.h in Headers */,
+				344C5EB51E09CF9A00597B61 /* HUBComponentModelJSONSchemaImplementation.h in Headers */,
+				344C5EB61E09CF9A00597B61 /* HUBComponentModelBuilderImplementation.h in Headers */,
+				344C5EB71E09CF9A00597B61 /* HUBManager.h in Headers */,
+				344C5EB81E09CF9A00597B61 /* HUBContentOperationWithPaginatedContent.h in Headers */,
+				344C5EB91E09CF9A00597B61 /* HUBViewModelBuilder.h in Headers */,
+				344C5EBA1E09CF9A00597B61 /* HUBContentOperationWithInitialContent.h in Headers */,
+				344C5EBB1E09CF9A00597B61 /* HUBComponentImageDataJSONSchema.h in Headers */,
+				344C5EBC1E09CF9A00597B61 /* HUBComponentWithScrolling.h in Headers */,
+				344C5EBD1E09CF9A00597B61 /* HUBComponentTargetBuilder.h in Headers */,
+				345AFDCF1E10290200807DCC /* HUBOperationQueue.h in Headers */,
+				344C5EBE1E09CF9A00597B61 /* HUBComponentWithChildren.h in Headers */,
+				344C5EBF1E09CF9A00597B61 /* HUBMutableJSONPath.h in Headers */,
+				344C5EC01E09CF9A00597B61 /* HUBComponentType.h in Headers */,
+				344C5EC11E09CF9A00597B61 /* HUBImageLoaderFactory.h in Headers */,
+				344C5EC21E09CF9A00597B61 /* HUBComponentTargetImplementation.h in Headers */,
+				344C5EC31E09CF9A00597B61 /* HUBComponentDefaults.h in Headers */,
+				344C5EC41E09CF9A00597B61 /* HUBViewModel.h in Headers */,
+				344C5EC51E09CF9A00597B61 /* HUBDefaultConnectivityStateResolver.h in Headers */,
+				344C5EC61E09CF9A00597B61 /* HUBLiveContentOperation.h in Headers */,
+				344C5EC71E09CF9A00597B61 /* HUBCollectionViewFactory.h in Headers */,
+				344C5EC81E09CF9A00597B61 /* HUBJSONSchema.h in Headers */,
+				344C5EC91E09CF9A00597B61 /* HUBSerializable.h in Headers */,
+				344C5ECA1E09CF9A00597B61 /* HUBComponentActionObserver.h in Headers */,
+				344C5ECB1E09CF9A00597B61 /* HUBAsyncAction.h in Headers */,
+				344C5ECC1E09CF9A00597B61 /* HUBDefaultComponentFallbackHandler.h in Headers */,
+				344C5ECD1E09CF9A00597B61 /* HUBComponentModelBuilder.h in Headers */,
+				344C5ECE1E09CF9A00597B61 /* HUBContentOperationActionObserver.h in Headers */,
+				344C5ECF1E09CF9A00597B61 /* HUBUtilities.h in Headers */,
+				344C5ED01E09CF9A00597B61 /* HUBContentOperationWrapper.h in Headers */,
+				344C5ED11E09CF9A00597B61 /* HUBInitialViewModelRegistry.h in Headers */,
+				344C5ED21E09CF9A00597B61 /* HUBComponentRegistry.h in Headers */,
+				344C5ED31E09CF9A00597B61 /* HUBComponentModelJSONSchema.h in Headers */,
+				344C5ED41E09CF9A00597B61 /* HUBComponentUIStateManager.h in Headers */,
+				344C5ED51E09CF9A00597B61 /* HUBComponentGestureRecognizer.h in Headers */,
+				344C5ED61E09CF9A00597B61 /* HUBViewModelLoaderFactory.h in Headers */,
+				344C5ED71E09CF9A00597B61 /* HUBJSONSchemaRegistryImplementation.h in Headers */,
+				344C5ED81E09CF9A00597B61 /* HUBViewModelBuilderImplementation.h in Headers */,
+				344C5ED91E09CF9A00597B61 /* HUBActionHandler.h in Headers */,
+				344C5EDA1E09CF9A00597B61 /* HUBComponentWithSelectionState.h in Headers */,
+				344C5EDB1E09CF9A00597B61 /* HUBViewModelLoader.h in Headers */,
+				344C5EDD1E09CF9A00597B61 /* HUBDefaultImageLoader.h in Headers */,
+				344C5EDE1E09CF9A00597B61 /* HUBViewModelImplementation.h in Headers */,
+				344C5EDF1E09CF9A00597B61 /* HUBComponentImageDataImplementation.h in Headers */,
+				344C5EE01E09CF9A00597B61 /* HUBComponentImageDataJSONSchemaImplementation.h in Headers */,
+				344C5EE11E09CF9A00597B61 /* HUBMutableJSONPathImplementation.h in Headers */,
+				344C5EE21E09CF9A00597B61 /* HUBFeatureRegistry.h in Headers */,
+				344C5EE31E09CF9A00597B61 /* HUBFeatureInfoImplementation.h in Headers */,
+				344C5EE41E09CF9A00597B61 /* HUBComponentModelImplementation.h in Headers */,
+				344C5EE51E09CF9A00597B61 /* HUBFeatureRegistration.h in Headers */,
+				344C5EE61E09CF9A00597B61 /* HUBComponentTarget.h in Headers */,
+				344C5EE71E09CF9A00597B61 /* HUBHeaderMacros.h in Headers */,
+				344C5EE81E09CF9A00597B61 /* HUBBlockContentOperationFactory.h in Headers */,
+				344C5EE91E09CF9A00597B61 /* HUBViewModelJSONSchema.h in Headers */,
+				344C5EEA1E09CF9A00597B61 /* HUBComponentCategories.h in Headers */,
+				344C5EEB1E09CF9A00597B61 /* HUBContentOperationContext.h in Headers */,
+				344C5EEC1E09CF9A00597B61 /* HUBActionRegistryImplementation.h in Headers */,
+				345AFDCB1E10287B00807DCC /* HUBViewControllerDefaultScrollHandler.h in Headers */,
+				344C5EED1E09CF9A00597B61 /* HUBComponentTargetBuilderImplementation.h in Headers */,
+				344C5EEE1E09CF9A00597B61 /* HubFramework.h in Headers */,
+				344C5EEF1E09CF9A00597B61 /* HUBViewController.h in Headers */,
+				344C5EF01E09CF9A00597B61 /* HUBActionTrigger.h in Headers */,
+				344C5EF11E09CF9A00597B61 /* HUBActionContextImplementation.h in Headers */,
+				344C5EF21E09CF9A00597B61 /* HUBComponentActionPerformer.h in Headers */,
+				344C5EF31E09CF9A00597B61 /* HUBComponentRegistryImplementation.h in Headers */,
+				344C5EF41E09CF9A00597B61 /* HUBComponentShowcaseShapshotGenerator.h in Headers */,
+				344C5EF51E09CF9A00597B61 /* HUBContentOperationContextImplementation.h in Headers */,
+				344C5EF61E09CF9A00597B61 /* HUBLiveServiceImplementation.h in Headers */,
+				344C5EF71E09CF9A00597B61 /* HUBAction.h in Headers */,
+				345AFDCC1E1028A100807DCC /* HUBErrors.h in Headers */,
+				345AFDC91E0FEED300807DCC /* HUBComponentWithFocusState.h in Headers */,
+				344C5EF81E09CF9A00597B61 /* HUBComponentImageLoadingContext.h in Headers */,
+				344C5EF91E09CF9A00597B61 /* HUBJSONPathImplementation.h in Headers */,
+				344C5EFA1E09CF9A00597B61 /* HUBComponentContentOffsetObserver.h in Headers */,
+				345AFDCD1E1028FC00807DCC /* HUBOperation.h in Headers */,
+				344C5EFB1E09CF9A00597B61 /* HUBComponentTargetJSONSchemaImplementation.h in Headers */,
+				344C5EFC1E09CF9A00597B61 /* HUBComponentReusePool.h in Headers */,
+				344C5EFD1E09CF9A00597B61 /* HUBFeatureRegistryImplementation.h in Headers */,
+				344C5EFE1E09CF9A00597B61 /* HUBComponentModel.h in Headers */,
+				344C5EFF1E09CF9A00597B61 /* HUBJSONParsingOperation.h in Headers */,
+				344C5F001E09CF9A00597B61 /* HUBScrollPosition.h in Headers */,
+				344C5F011E09CF9A00597B61 /* HUBViewModelDiff.h in Headers */,
+				344C5F021E09CF9A00597B61 /* HUBComponentTargetJSONSchema.h in Headers */,
+				344C5F031E09CF9A00597B61 /* HUBActionHandlerWrapper.h in Headers */,
+				344C5F041E09CF9A00597B61 /* HUBComponentImageDataBuilderImplementation.h in Headers */,
+				344C5F051E09CF9A00597B61 /* HUBContainerView.h in Headers */,
+				344C5F061E09CF9A00597B61 /* HUBComponentCollectionViewCell.h in Headers */,
+				344C5F071E09CF9A00597B61 /* HUBActionFactory.h in Headers */,
+				344C5F081E09CF9A00597B61 /* HUBSelectionAction.h in Headers */,
+				344C5F091E09CF9A00597B61 /* HUBViewControllerFactoryImplementation.h in Headers */,
+				344C5F0A1E09CF9A00597B61 /* HUBContentOperationActionPerformer.h in Headers */,
+				344C5F0B1E09CF9A00597B61 /* HUBComponentImageDataBuilder.h in Headers */,
+				344C5F0C1E09CF9A00597B61 /* HUBJSONSchemaImplementation.h in Headers */,
+				344C5F0D1E09CF9A00597B61 /* HUBAutoEquatable.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8AE6BFFD1DF6E3110063B2B1 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1665,6 +2134,7 @@
 				8AE6C0B21DF6E40D0063B2B1 /* HUBComponentImageDataBuilderImplementation.h in Headers */,
 				8AE6C09E1DF6E4020063B2B1 /* HUBContainerView.h in Headers */,
 				8AE6C0401DF6E3D40063B2B1 /* HUBComponentCollectionViewCell.h in Headers */,
+				345AFDCA1E0FF39A00807DCC /* HUBComponentWithFocusState.h in Headers */,
 				8AE6C0581DF6E3E00063B2B1 /* HUBActionFactory.h in Headers */,
 				8AE6C0D51DF6E4140063B2B1 /* HUBSelectionAction.h in Headers */,
 				8AE6C0951DF6E4020063B2B1 /* HUBViewControllerFactoryImplementation.h in Headers */,
@@ -1678,6 +2148,42 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		344C5E3C1E09CF9A00597B61 /* HubFramework-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 344C5F0F1E09CF9A00597B61 /* Build configuration list for PBXNativeTarget "HubFramework-tvOS" */;
+			buildPhases = (
+				344C5E3D1E09CF9A00597B61 /* Sources */,
+				344C5E7E1E09CF9A00597B61 /* Frameworks */,
+				344C5E821E09CF9A00597B61 /* Headers */,
+				344C5F0E1E09CF9A00597B61 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "HubFramework-tvOS";
+			productName = "HubFramework-iOS";
+			productReference = 344C5F121E09CF9A00597B61 /* HubFramework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		345AFDD31E10797B00807DCC /* HubFrameworkTests-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 345AFE1D1E10797B00807DCC /* Build configuration list for PBXNativeTarget "HubFrameworkTests-tvOS" */;
+			buildPhases = (
+				345AFDD61E10797B00807DCC /* Sources */,
+				345AFE151E10797B00807DCC /* Frameworks */,
+				345AFE1A1E10797B00807DCC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				345AFDD41E10797B00807DCC /* PBXTargetDependency */,
+			);
+			name = "HubFrameworkTests-tvOS";
+			productName = "HubFrameworkTests-iOS";
+			productReference = 345AFE201E10797B00807DCC /* HubFrameworkTests-tvOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		8A07549D1C21A79200AFAD38 /* HubFramework */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A0754A71C21A79200AFAD38 /* Build configuration list for PBXNativeTarget "HubFramework" */;
@@ -1792,11 +2298,29 @@
 				8ADD42981C21CF6500D1A801 /* HubFrameworkTests */,
 				8AE6BFFF1DF6E3110063B2B1 /* HubFramework-iOS */,
 				8ABD6CA51DF6EC36005BCB33 /* HubFrameworkTests-iOS */,
+				344C5E3C1E09CF9A00597B61 /* HubFramework-tvOS */,
+				345AFDD31E10797B00807DCC /* HubFrameworkTests-tvOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		344C5F0E1E09CF9A00597B61 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		345AFE1A1E10797B00807DCC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				345AFE1B1E10797B00807DCC /* HUBSerializationTests.json in Resources */,
+				345AFE1C1E10797B00807DCC /* testImage.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8ABD6CA41DF6EC36005BCB33 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1825,6 +2349,149 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		344C5E3D1E09CF9A00597B61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				344C5E3E1E09CF9A00597B61 /* HUBComponentModelBuilderImplementation.m in Sources */,
+				344C5E3F1E09CF9A00597B61 /* HUBBlockContentOperationFactory.m in Sources */,
+				344C5E401E09CF9A00597B61 /* HUBActionHandlerWrapper.m in Sources */,
+				344C5E411E09CF9A00597B61 /* HUBCollectionView.m in Sources */,
+				344C5E421E09CF9A00597B61 /* HUBViewModelBuilderImplementation.m in Sources */,
+				344C5E431E09CF9A00597B61 /* HUBLiveContentOperation.m in Sources */,
+				344C5E441E09CF9A00597B61 /* HUBComponentModelBuilderShowcaseSnapshotGenerator.m in Sources */,
+				344C5E451E09CF9A00597B61 /* HUBComponentImageDataImplementation.m in Sources */,
+				344C5E461E09CF9A00597B61 /* HUBDefaultConnectivityStateResolver.m in Sources */,
+				344C5E471E09CF9A00597B61 /* HUBJSONSchemaRegistryImplementation.m in Sources */,
+				344C5E481E09CF9A00597B61 /* HUBComponentResizeObservingView.m in Sources */,
+				344C5E491E09CF9A00597B61 /* HUBActionContextImplementation.m in Sources */,
+				344C5E4A1E09CF9A00597B61 /* HUBIdentifier.m in Sources */,
+				344C5E4B1E09CF9A00597B61 /* HUBInitialViewModelRegistry.m in Sources */,
+				344C5E4C1E09CF9A00597B61 /* HUBComponentWrapper.m in Sources */,
+				344C5E4D1E09CF9A00597B61 /* HUBManager.m in Sources */,
+				344C5E4E1E09CF9A00597B61 /* HUBLiveServiceImplementation.m in Sources */,
+				344C5E4F1E09CF9A00597B61 /* HUBSelectionAction.m in Sources */,
+				344C5E501E09CF9A00597B61 /* HUBViewModelDiff.m in Sources */,
+				344C5E511E09CF9A00597B61 /* HUBComponentImageDataBuilderImplementation.m in Sources */,
+				344C5E521E09CF9A00597B61 /* HUBViewControllerDefaultScrollHandler.m in Sources */,
+				344C5E531E09CF9A00597B61 /* HUBViewModelLoaderFactoryImplementation.m in Sources */,
+				344C5E541E09CF9A00597B61 /* HUBActionRegistryImplementation.m in Sources */,
+				344C5E551E09CF9A00597B61 /* HUBFeatureRegistryImplementation.m in Sources */,
+				344C5E561E09CF9A00597B61 /* HUBViewURIPredicate.m in Sources */,
+				344C5E571E09CF9A00597B61 /* HUBContainerView.m in Sources */,
+				345AFDCE1E10290000807DCC /* HUBOperation.m in Sources */,
+				344C5E581E09CF9A00597B61 /* HUBIconImplementation.m in Sources */,
+				344C5E591E09CF9A00597B61 /* HUBFeatureInfoImplementation.m in Sources */,
+				344C5E5A1E09CF9A00597B61 /* HUBComponentImageLoadingContext.m in Sources */,
+				345AFDD11E10290A00807DCC /* HUBErrors.m in Sources */,
+				344C5E5B1E09CF9A00597B61 /* HUBComponentGestureRecognizer.m in Sources */,
+				344C5E5C1E09CF9A00597B61 /* HUBComponentDefaults.m in Sources */,
+				344C5E5D1E09CF9A00597B61 /* HUBComponentModelJSONSchemaImplementation.m in Sources */,
+				344C5E5E1E09CF9A00597B61 /* HUBContentOperationWrapper.m in Sources */,
+				344C5E5F1E09CF9A00597B61 /* HUBViewControllerFactoryImplementation.m in Sources */,
+				344C5E601E09CF9A00597B61 /* HUBComponentCollectionViewCell.m in Sources */,
+				344C5E611E09CF9A00597B61 /* HUBViewModelJSONSchemaImplementation.m in Sources */,
+				344C5E621E09CF9A00597B61 /* HUBComponentModelImplementation.m in Sources */,
+				344C5E631E09CF9A00597B61 /* HUBComponentImageDataJSONSchemaImplementation.m in Sources */,
+				345AFDD01E10290500807DCC /* HUBOperationQueue.m in Sources */,
+				344C5E641E09CF9A00597B61 /* HUBJSONSchemaImplementation.m in Sources */,
+				344C5E651E09CF9A00597B61 /* HUBComponentTargetBuilderImplementation.m in Sources */,
+				344C5E661E09CF9A00597B61 /* HUBDefaultImageLoaderFactory.m in Sources */,
+				344C5E671E09CF9A00597B61 /* HUBMutableJSONPathImplementation.m in Sources */,
+				344C5E681E09CF9A00597B61 /* HUBViewModelImplementation.m in Sources */,
+				344C5E691E09CF9A00597B61 /* HUBAutoEquatable.m in Sources */,
+				344C5E6A1E09CF9A00597B61 /* HUBDefaultImageLoader.m in Sources */,
+				344C5E6B1E09CF9A00597B61 /* HUBDefaultComponentFallbackHandler.m in Sources */,
+				344C5E6C1E09CF9A00597B61 /* HUBViewController.m in Sources */,
+				344C5E6D1E09CF9A00597B61 /* HUBBlockContentOperation.m in Sources */,
+				344C5E6E1E09CF9A00597B61 /* HUBViewModelRenderer.m in Sources */,
+				344C5E6F1E09CF9A00597B61 /* HUBComponentUIStateManager.m in Sources */,
+				344C5E701E09CF9A00597B61 /* HUBComponentTargetImplementation.m in Sources */,
+				344C5E711E09CF9A00597B61 /* HUBComponentRegistryImplementation.m in Sources */,
+				344C5E721E09CF9A00597B61 /* HUBJSONParsingOperation.m in Sources */,
+				344C5E731E09CF9A00597B61 /* HUBComponentReusePool.m in Sources */,
+				344C5E741E09CF9A00597B61 /* HUBCollectionViewLayout.m in Sources */,
+				344C5E751E09CF9A00597B61 /* HUBAsyncActionWrapper.m in Sources */,
+				344C5E761E09CF9A00597B61 /* HUBContentOperationExecutionInfo.m in Sources */,
+				344C5E771E09CF9A00597B61 /* HUBViewModelLoaderImplementation.m in Sources */,
+				344C5E781E09CF9A00597B61 /* HUBCollectionViewFactory.m in Sources */,
+				344C5E791E09CF9A00597B61 /* HUBFeatureRegistration.m in Sources */,
+				344C5E7A1E09CF9A00597B61 /* HUBJSONPathImplementation.m in Sources */,
+				344C5E7B1E09CF9A00597B61 /* HUBDefaultComponentLayoutManager.m in Sources */,
+				344C5E7C1E09CF9A00597B61 /* HUBComponentTargetJSONSchemaImplementation.m in Sources */,
+				344C5E7D1E09CF9A00597B61 /* HUBContentOperationContextImplementation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		345AFDD61E10797B00807DCC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				345AFDD71E10797B00807DCC /* HUBManagerTests.m in Sources */,
+				345AFDD81E10797B00807DCC /* HUBViewModelUtilities.m in Sources */,
+				345AFDD91E10797B00807DCC /* HUBURLSessionMock.m in Sources */,
+				345AFDDA1E10797B00807DCC /* HUBInitialViewModelRegistryTests.m in Sources */,
+				345AFDDB1E10797B00807DCC /* HUBURLProtocolMock.m in Sources */,
+				345AFDDC1E10797B00807DCC /* HUBActionFactoryMock.m in Sources */,
+				345AFDDD1E10797B00807DCC /* HUBComponentReusePoolMock.m in Sources */,
+				345AFDDE1E10797B00807DCC /* HUBViewModelRendererTests.m in Sources */,
+				345AFDDF1E10797B00807DCC /* HUBComponentRegistryMock.m in Sources */,
+				345AFDE01E10797B00807DCC /* HUBActionMock.m in Sources */,
+				345AFDE11E10797B00807DCC /* HUBCollectionViewFactoryMock.m in Sources */,
+				345AFDE21E10797B00807DCC /* HUBComponentTargetBuilderTests.m in Sources */,
+				345AFDE31E10797B00807DCC /* HUBBlockContentOperationTests.m in Sources */,
+				345AFDE41E10797B00807DCC /* HUBContentReloadPolicyMock.m in Sources */,
+				345AFDE51E10797B00807DCC /* HUBCollectionViewMock.m in Sources */,
+				345AFDE61E10797B00807DCC /* HUBViewControllerScrollHandlerMock.m in Sources */,
+				345AFDE71E10797B00807DCC /* HUBViewModelBuilderTests.m in Sources */,
+				345AFDE81E10797B00807DCC /* HUBComponentModelBuilderTests.m in Sources */,
+				345AFDE91E10797B00807DCC /* HUBDefaultImageLoaderTests.m in Sources */,
+				345AFDEA1E10797B00807DCC /* HUBContentOperationFactoryMock.m in Sources */,
+				345AFDEB1E10797B00807DCC /* HUBInputStreamMock.m in Sources */,
+				345AFDEC1E10797B00807DCC /* HUBSerializationTests.m in Sources */,
+				345AFDED1E10797B00807DCC /* HUBViewModelRendererMock.m in Sources */,
+				345AFDEE1E10797B00807DCC /* HUBJSONSchemaRegistryTests.m in Sources */,
+				345AFDEF1E10797B00807DCC /* HUBURLSessionDataTaskMock.m in Sources */,
+				345AFDF01E10797B00807DCC /* HUBCollectionViewLayoutTests.m in Sources */,
+				345AFDF11E10797B00807DCC /* HUBComponentLayoutManagerMock.m in Sources */,
+				345AFDF21E10797B00807DCC /* HUBActionRegistryTests.m in Sources */,
+				345AFDF31E10797B00807DCC /* HUBComponentDefaults+Testing.m in Sources */,
+				345AFDF41E10797B00807DCC /* HUBComponentFallbackHandlerMock.m in Sources */,
+				345AFDF51E10797B00807DCC /* HUBActionHandlerMock.m in Sources */,
+				345AFDF61E10797B00807DCC /* HUBComponentImageDataBuilderTests.m in Sources */,
+				345AFDF71E10797B00807DCC /* HUBIconTests.m in Sources */,
+				345AFDF81E10797B00807DCC /* HUBComponentGestureRecognizerTests.m in Sources */,
+				345AFDF91E10797B00807DCC /* HUBViewModelDiffTests.m in Sources */,
+				345AFDFA1E10797B00807DCC /* HUBComponentModelTests.m in Sources */,
+				345AFDFB1E10797B00807DCC /* HUBViewModelTests.m in Sources */,
+				345AFDFC1E10797B00807DCC /* HUBImageLoaderFactoryMock.m in Sources */,
+				345AFDFD1E10797B00807DCC /* HUBImageLoaderMock.m in Sources */,
+				345AFDFE1E10797B00807DCC /* HUBIdentifierTests.m in Sources */,
+				345AFDFF1E10797B00807DCC /* HUBIconImageResolverMock.m in Sources */,
+				345AFE001E10797B00807DCC /* HUBContentOperationMock.m in Sources */,
+				345AFE011E10797B00807DCC /* HUBLiveServiceTests.m in Sources */,
+				345AFE021E10797B00807DCC /* HUBViewModelLoaderTests.m in Sources */,
+				345AFE031E10797B00807DCC /* HUBCollectionViewLayoutMock.m in Sources */,
+				345AFE041E10797B00807DCC /* HUBComponentWrapperTests.m in Sources */,
+				345AFE051E10797B00807DCC /* HUBJSONSchemaTests.m in Sources */,
+				345AFE061E10797B00807DCC /* UIViewController+HUBSimulateLayoutCycle.m in Sources */,
+				345AFE071E10797B00807DCC /* HUBComponentMock.m in Sources */,
+				345AFE081E10797B00807DCC /* HUBTouchMock.m in Sources */,
+				345AFE091E10797B00807DCC /* HUBConnectivityStateResolverMock.m in Sources */,
+				345AFE0A1E10797B00807DCC /* HUBViewControllerFactoryTests.m in Sources */,
+				345AFE0B1E10797B00807DCC /* HUBViewModelLoaderFactoryTests.m in Sources */,
+				345AFE0C1E10797B00807DCC /* HUBDefaultComponentLayoutManagerTests.m in Sources */,
+				345AFE0D1E10797B00807DCC /* HUBMutableJSONPathTests.m in Sources */,
+				345AFE0E1E10797B00807DCC /* HUBJSONPathTests.m in Sources */,
+				345AFE0F1E10797B00807DCC /* HUBViewControllerTests.m in Sources */,
+				345AFE101E10797B00807DCC /* HUBComponentRegistryTests.m in Sources */,
+				345AFE111E10797B00807DCC /* HUBComponentFactoryMock.m in Sources */,
+				345AFE121E10797B00807DCC /* HUBViewURIPredicateTests.m in Sources */,
+				345AFE131E10797B00807DCC /* HUBCollectionViewFactoryTests.m in Sources */,
+				345AFE141E10797B00807DCC /* HUBFeatureRegistryTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A07549A1C21A79200AFAD38 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2115,6 +2782,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		345AFDD41E10797B00807DCC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AE6BFFF1DF6E3110063B2B1 /* HubFramework-iOS */;
+			targetProxy = 345AFDD51E10797B00807DCC /* PBXContainerItemProxy */;
+		};
 		8ABD6CAD1DF6EC36005BCB33 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8AE6BFFF1DF6E3110063B2B1 /* HubFramework-iOS */;
@@ -2128,13 +2800,172 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		344C5F101E09CF9A00597B61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/sources/Info-tvOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.spotify.HubFramework-tvOS";
+				PRODUCT_NAME = HubFramework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0.1;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		344C5F111E09CF9A00597B61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/sources/Info-tvOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.spotify.HubFramework-tvOS";
+				PRODUCT_NAME = HubFramework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0.1;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		345AFE1E1E10797B00807DCC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HUB_NON_ERROR_WARNINGS_0720 = "";
+				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
+				INFOPLIST_FILE = "$(SRCROOT)/sources/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos10.1;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+				WARNING_CFLAGS = (
+					"$(inherited)",
+					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
+					"-Wno-documentation-unknown-command",
+				);
+			};
+			name = Debug;
+		};
+		345AFE1F1E10797B00807DCC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HUB_NON_ERROR_WARNINGS_0720 = "";
+				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
+				INFOPLIST_FILE = "$(SRCROOT)/sources/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos10.1;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+				WARNING_CFLAGS = (
+					"$(inherited)",
+					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
+					"-Wno-documentation-unknown-command",
+				);
+			};
+			name = Release;
+		};
 		8A0754A51C21A79200AFAD38 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DD13758E1C68C76000AD3499 /* project.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_TESTABILITY = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -2351,6 +3182,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		344C5F0F1E09CF9A00597B61 /* Build configuration list for PBXNativeTarget "HubFramework-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				344C5F101E09CF9A00597B61 /* Debug */,
+				344C5F111E09CF9A00597B61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		345AFE1D1E10797B00807DCC /* Build configuration list for PBXNativeTarget "HubFrameworkTests-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				345AFE1E1E10797B00807DCC /* Debug */,
+				345AFE1F1E10797B00807DCC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8A0754991C21A79200AFAD38 /* Build configuration list for PBXProject "HubFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

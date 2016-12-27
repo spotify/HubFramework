@@ -71,6 +71,25 @@ NS_ASSUME_NONNULL_BEGIN
     self.state = UIGestureRecognizerStateCancelled;
 }
 
+#if TARGET_OS_TV
+
+- (void)pressesBegan:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event
+{
+    self.state = UIGestureRecognizerStateBegan;
+}
+
+- (void)pressesEnded:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event
+{
+    self.state = UIGestureRecognizerStateEnded;
+}
+
+- (void)pressesCancelled:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event
+{
+    self.state = UIGestureRecognizerStateCancelled;
+}
+
+#endif
+
 @end
 
 NS_ASSUME_NONNULL_END

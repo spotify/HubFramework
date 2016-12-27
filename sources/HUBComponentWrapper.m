@@ -573,6 +573,13 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+- (void)updateViewForFocusState:(HUBComponentFocusState)focusState
+{
+    if ([self.component conformsToProtocol:@protocol(HUBComponentWithFocusState)]) {
+        [(id<HUBComponentWithFocusState>)self.component updateViewForFocusState:focusState];
+    }
+}
+
 - (CGRect)calculateViewFrameInWindow
 {
     UIView * const view = HUBComponentLoadViewIfNeeded(self);

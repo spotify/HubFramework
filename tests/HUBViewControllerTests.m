@@ -1849,6 +1849,7 @@
 
 - (void)testProposedContentInsetIsDefaultIfHeaderMissing
 {
+    #if !TARGET_OS_TV
     CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
     CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
     CGFloat const navigationBarWidth = CGRectGetWidth(self.viewController.navigationController.navigationBar.frame);
@@ -1873,7 +1874,9 @@
 
     [self simulateViewControllerLayoutCycle];
     [self waitForExpectationsWithTimeout:5 handler:nil];
+    #endif
 }
+
 
 - (void)testProposedContentInsetNotAffectedByHeaderComponent
 {
@@ -2799,6 +2802,7 @@
     XCTAssertEqualObjects(self.viewController.navigationItem.rightBarButtonItem, rightBarButtonItem);
 }
 
+#if !TARGET_OS_TV
 - (void)testAdaptingOverlayComponentCenterPointToKeyboard
 {
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
@@ -2844,6 +2848,7 @@
     HUBAssertEqualFloatValues(self.component.view.center.x, 160);
     HUBAssertEqualFloatValues(self.component.view.center.y, 200);
 }
+#endif
 
 - (void)testScrollingToComponentAfterViewModelFinishesRendering
 {
