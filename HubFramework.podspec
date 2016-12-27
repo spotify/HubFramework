@@ -13,6 +13,7 @@ Pod::Spec.new do |s|
                      DESC
 
     s.ios.deployment_target     = "8.0"
+    s.tvos.deployment_target    = "9.0"
 
     s.homepage          = "https://github.com/spotify/HubFramework"
     s.social_media_url  = "https://twitter.com/spotifyeng"
