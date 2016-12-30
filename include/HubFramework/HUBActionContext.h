@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  information that an action can use to make decisions on how to execute, and is always
  *  relative to the component for which the action will be performed.
  */
-@protocol HUBActionContext <NSObject>
+@protocol HUBActionContext
 
 /// The type of event that triggered the action to be performed
 @property (nonatomic, assign, readonly) HUBActionTrigger trigger;

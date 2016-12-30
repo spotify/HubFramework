@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  uses them to retrieve data internally. You might want to construct paths yourself, though, and for that you
  *  use the mutable version of this API; `HUBMutableJSONPath`.
  */
-@protocol HUBJSONPath <NSObject>
+@protocol HUBJSONPath
 
 /**
  *  Return an array of values by following this path in a JSON dictionary

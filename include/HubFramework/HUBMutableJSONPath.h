@@ -61,7 +61,7 @@ typedef id _Nullable(^HUBMutableJSONPathBlock)(NSObject *input);
  *  [[[path goTo:@"date"] goTo:@"weekday"] stringPath];
  *  @endcode
  */
-@protocol HUBMutableJSONPath <NSObject>
+@protocol HUBMutableJSONPath
 
 #pragma mark - Operations
 

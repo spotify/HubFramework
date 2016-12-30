@@ -27,7 +27,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Delegate protocol used by `HUBAsyncAction` types to notify the Hub Framework when they finish
-@protocol HUBAsyncActionDelegate <NSObject>
+@protocol HUBAsyncActionDelegate
 
 /**
  *  Notify the Hub Framework that an asynchronous action finished

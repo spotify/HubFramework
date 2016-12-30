@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  All paths in this schema are relative to a dictionary containing target data for a component.
  */
-@protocol HUBComponentTargetJSONSchema <NSObject>
+@protocol HUBComponentTargetJSONSchema
 
 /// The path to follow to extract a target URI string. Maps to `URI`.
 @property (nonatomic, strong) id<HUBJSONURLPath> URIPath;

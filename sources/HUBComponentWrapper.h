@@ -39,7 +39,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Delegate protocol for `HUBComponentWrapper`
-@protocol HUBComponentWrapperDelegate <NSObject>
+@protocol HUBComponentWrapperDelegate
 
 /**
  *  Notify the delegate that a component wrapper will update its selection state

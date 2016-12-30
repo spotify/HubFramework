@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  All paths in this schema are relative to a JSON dictionary defining view model data.
  */
-@protocol HUBViewModelJSONSchema <NSObject>
+@protocol HUBViewModelJSONSchema
 
 /// The path to follow to extract a view model identifier. Maps to `identifier`.
 @property (nonatomic, strong) id<HUBJSONStringPath> identifierPath;

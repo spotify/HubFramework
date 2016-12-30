@@ -29,6 +29,7 @@
 #import "HUBIdentifier.h"
 #import "HUBComponentLayoutManager.h"
 #import "HUBViewModelDiff.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -287,7 +288,7 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBComponent> const newComponent = [self.componentRegistry createComponentForModel:model];
     self.componentCache[model.componentIdentifier] = newComponent;
     
-    if ([newComponent conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
+    if (HUBConformsToProtocol(newComponent, @protocol(HUBComponentWithChildren))) {
         ((id<HUBComponentWithChildren>)newComponent).childDelegate = self;
     }
     

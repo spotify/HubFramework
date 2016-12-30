@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Conform to this protocol in a custom object to get notified of events occuring in a Hub Framework view controller
  */
-@protocol HUBViewControllerDelegate <NSObject>
+@protocol HUBViewControllerDelegate
 
 /**
  *  Sent to a Hub Framework view controller's delegate when it is about to be updated with a new view model

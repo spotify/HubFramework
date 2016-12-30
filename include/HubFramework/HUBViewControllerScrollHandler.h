@@ -31,7 +31,7 @@
  *  (through `HUBFeatureRegistry`). This enables a feature to customize how scrolling is handled
  *  for all view controllers that will be created on its behalf.
  */
-@protocol HUBViewControllerScrollHandler <NSObject>
+@protocol HUBViewControllerScrollHandler
 
 /**
  *  Return whether scroll indicators should be shown in a view controller

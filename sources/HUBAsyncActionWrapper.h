@@ -29,7 +29,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Delegate protocol for `HUBAsyncActionWrapper`
-@protocol HUBAsyncActionWrapperDelegate <NSObject>
+@protocol HUBAsyncActionWrapperDelegate
 
 /**
  *  Notify an async action wrapper's delegate that it finished

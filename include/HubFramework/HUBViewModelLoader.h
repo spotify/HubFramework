@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Conform to this protocol in a custom object to get notified when a view model was loaded, or if an
  *  error occured in the loading process.
  */
-@protocol HUBViewModelLoaderDelegate <NSObject>
+@protocol HUBViewModelLoaderDelegate
 
 /**
  *  Sent to a view model loader's delegate when a view model was loaded
@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  this protocol internally. This API is currently not accessible from outside of the Hub Framework, but will
  *  be soon as part of the external data API.
  */
-@protocol HUBViewModelLoader <NSObject>
+@protocol HUBViewModelLoader
 
 /**
  *  The view model loader's delegate

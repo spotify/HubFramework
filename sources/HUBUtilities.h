@@ -20,6 +20,7 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <objc/runtime.h>
 
 #import "HUBComponent.h"
 #import "HUBErrors.h"
@@ -48,6 +49,23 @@ static inline BOOL HUBPropertyIsEqual(NSObject * _Nullable objectA, NSObject * _
     }
     
     return [valueA isEqual:valueB];
+}
+
+/**
+ *  Return whether an object conforms to a protocol
+ *
+ *  @param object The object
+ *  @param aProtocol The protocol
+ *
+ *  This function allows checking protocol conformance without inheriting from NSObject.
+ */
+static inline BOOL HUBConformsToProtocol(id _Nullable object, Protocol *aProtocol)
+{
+    if ([object respondsToSelector:@selector(conformsToProtocol:)]) {
+        return [object conformsToProtocol:aProtocol];
+    } else {
+        return class_conformsToProtocol([object class], aProtocol);
+    }
 }
 
 /**

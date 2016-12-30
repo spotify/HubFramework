@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Each factory is registered with `HUBComponentRegistry` for a certain namespace, and will be used
  *  whenever a component model declares that namespace as part of its component identifier.
  */
-@protocol HUBComponentFactory <NSObject>
+@protocol HUBComponentFactory
 
 /**
  *  Create a new component matching a name

@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Builders that support JSON data will conform to this protocol. Most builders only support Dictionary-based JSON,
  *  except for `HUBViewModelBuilder` that supports Array-based JSON for defining an array of body component models.
  */
-@protocol HUBJSONCompatibleBuilder <NSObject>
+@protocol HUBJSONCompatibleBuilder
 
 /**
  *  Add the contents of the given JSON data to the builder.

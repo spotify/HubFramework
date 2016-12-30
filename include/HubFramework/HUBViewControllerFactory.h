@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Framework uses URL-based navigation (per default), a recommended place to create view controllers
  *  using this factory, would be when you are responding to opening URLs, for example in your App Delegate.
  */
-@protocol HUBViewControllerFactory <NSObject>
+@protocol HUBViewControllerFactory
 
 /**
  *  Return whether the factory is able to create a view controller for a given view URI

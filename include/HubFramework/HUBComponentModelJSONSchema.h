@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  All paths in this schema are relative to a JSON dictionary defining component model data.
  */
-@protocol HUBComponentModelJSONSchema <NSObject>
+@protocol HUBComponentModelJSONSchema
 
 /// The path to follow to extract a component model identifier. Maps to `identifier`.
 @property (nonatomic, strong) id<HUBJSONStringPath> identifierPath;

@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  property, which the Hub Framework will assign. You may then use the methods defined in this protocol to
  *  communicate content operation events back to the framework.
  */
-@protocol HUBContentOperationDelegate <NSObject>
+@protocol HUBContentOperationDelegate
 
 /**
  *  Notify the Hub Framework that a content operation finished
@@ -105,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  main content loading chain is started - it can conform to `HUBContentOperationWithInitialContent` to be able to
  *  do so.
  */
-@protocol HUBContentOperation <NSObject>
+@protocol HUBContentOperation
 
 /// The content operation's delegate. Don't assign this property yourself, it will be set by the Hub Framework.
 @property (nonatomic, weak, nullable) id<HUBContentOperationDelegate> delegate;

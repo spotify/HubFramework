@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  For a more in-depth description on how paths work, see the documentation for `HUBJSONPath` and `HUBMutableJSONPath`.
  */
-@protocol HUBJSONSchema <NSObject>
+@protocol HUBJSONSchema
 
 /// The schema used to retrieve data for `HUBViewModel` objects
 @property (nonatomic, strong, readonly) id<HUBViewModelJSONSchema> viewModelSchema;

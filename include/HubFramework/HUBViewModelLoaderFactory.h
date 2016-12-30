@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  in case you want to use data from a Hub Framework-powered feature in a part of the app that does not
  *  use the framework.
  */
-@protocol HUBViewModelLoaderFactory <NSObject>
+@protocol HUBViewModelLoaderFactory
 
 /**
  *  Return whether the factory is able to create a view model loader for a given view URI

@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  for a certain namespace with `HUBActionRegistry`, and will be invoked when an action identifier
  *  with the matching namespace was encountered as part of the handling of an event.
  */
-@protocol HUBActionFactory <NSObject>
+@protocol HUBActionFactory
 
 /**
  *  Create an action for a certain name

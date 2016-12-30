@@ -118,7 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)actionPerformedWithContext:(id<HUBActionContext>)context
 {
     for (id<HUBContentOperation> const operation in self.contentOperations) {
-        if (![operation conformsToProtocol:@protocol(HUBContentOperationActionObserver)]) {
+        if (!HUBConformsToProtocol(operation, @protocol(HUBContentOperationActionObserver))) {
             continue;
         }
         
@@ -135,7 +135,7 @@ NS_ASSUME_NONNULL_BEGIN
     _actionPerformer = actionPerformer;
     
     for (id<HUBContentOperation> const operation in self.contentOperations) {
-        if (![operation conformsToProtocol:@protocol(HUBContentOperationActionPerformer)]) {
+        if (!HUBConformsToProtocol(operation, @protocol(HUBContentOperationActionPerformer))) {
             continue;
         }
         
@@ -156,7 +156,7 @@ NS_ASSUME_NONNULL_BEGIN
     HUBViewModelBuilderImplementation * const builder = [self createBuilder];
     
     for (id<HUBContentOperation> const operation in self.contentOperations) {
-        if ([operation conformsToProtocol:@protocol(HUBContentOperationWithInitialContent)]) {
+        if (HUBConformsToProtocol(operation, @protocol(HUBContentOperationWithInitialContent))) {
             id<HUBContentOperationWithInitialContent> const initialContentOperation = (id<HUBContentOperationWithInitialContent>)operation;
             [initialContentOperation addInitialContentForViewURI:self.viewURI toViewModelBuilder:builder];
         }
@@ -391,7 +391,7 @@ NS_ASSUME_NONNULL_BEGIN
     newOperationWrapper.delegate = self;
     self.contentOperationWrappers[@(operationIndex)] = newOperationWrapper;
     
-    if ([operation conformsToProtocol:@protocol(HUBContentOperationWithPaginatedContent)]) {
+    if (HUBConformsToProtocol(operation, @protocol(HUBContentOperationWithPaginatedContent))) {
         self.anyContentOperationSupportsPagination = YES;
     }
     

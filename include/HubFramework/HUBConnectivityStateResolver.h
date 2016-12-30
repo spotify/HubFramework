@@ -26,7 +26,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol used to observe a connectivity state resolver for changes in connectivity state
-@protocol HUBConnectivityStateResolverObserver <NSObject>
+@protocol HUBConnectivityStateResolverObserver
 
 /**
  *  Notifiy an observer that the application's connectivity state changed
@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The resolver should also support observations; to enable the Hub Framework to react to changes
  *  in connectivity state. Whenever the resolver detected a change, it should call its observers.
  */
-@protocol HUBConnectivityStateResolver <NSObject>
+@protocol HUBConnectivityStateResolver
 
 /**
  *  Resolve the current connectivity state of the application
