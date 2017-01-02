@@ -38,9 +38,8 @@ class HeaderComponentUITests: UITestCase {
         navigateToStickyHeaderFeature()
         
         let collectionView = XCUIApplication().collectionViews.element(boundBy: 0)
-        let header = XCUIApplication().otherElements["header"]
         let firstCell = collectionView.cells.element(boundBy: 0)
-        XCTAssertEqual(firstCell.frame.minY, header.frame.height)
+        XCTAssertEqual(firstCell.frame.minY, 250)
     }
     
     func testCollapsedHeaderNotUpdatingContentOffsetWhenViewIsUpdated() {
