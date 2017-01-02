@@ -124,6 +124,7 @@ There are also a series of **programming guides** that each introduce you to dif
 To make it easier for you to learn some of the core concepts of the framework, we've started creating a series of YouTube videos that each explain one of those concepts. They're called "Hub Framework Sessions" and can be found here:
 
 - [Episode 1: Content Loading Chain](https://youtu.be/XbMFPtxk_4Q)
+- [Episode 2: Creating Components](https://youtu.be/JpeQhKAen8M)
 
 ## Demo app
 
