@@ -414,11 +414,23 @@ NS_ASSUME_NONNULL_BEGIN
                                      lastComponentX:(CGFloat)lastComponentX
                                            rowWidth:(CGFloat)rowWidth
 {
-    NSArray<NSSet<HUBComponentLayoutTrait> *> *componentsTraits = [components valueForKey:NSStringFromSelector(@selector(layoutTraits))];
+
+
+    NSArray<NSSet<HUBComponentLayoutTrait> *> *componentsTraits = [self.class layoutTraitsFromComponents:components];
     CGFloat adjustment = [self.componentLayoutManager horizontalOffsetForComponentsWithLayoutTraits:componentsTraits
                                                               firstComponentLeadingHorizontalOffset:firstComponentX
                                                               lastComponentTrailingHorizontalOffset:rowWidth - lastComponentX];
+
     [self updateLayoutAttributesForComponents:components horizontalAdjustment:adjustment lastComponentIndex:lastComponentIndex];
+}
+
++ (NSArray<NSSet<HUBComponentLayoutTrait> *> *)layoutTraitsFromComponents:(NSArray<id<HUBComponent>> *)components
+{
+    NSMutableArray *layoutTraints = [NSMutableArray new];
+    for (id<HUBComponent> component in components) {
+        [layoutTraints addObject:component.layoutTraits];
+    }
+    return [layoutTraints copy];
 }
 
 - (void)updateLayoutAttributesForComponents:(NSArray<id<HUBComponent>> *)components
