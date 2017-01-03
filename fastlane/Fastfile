@@ -118,7 +118,7 @@ platform :ios do
 
   desc 'Validate changes according to a set of rules'
   lane :validate_changes do
-    danger
+    danger --verbose
   end
 
 
