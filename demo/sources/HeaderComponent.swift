@@ -30,7 +30,7 @@ import HubFramework
  *  - title
  *  - backgroundImageData
  */
-class HeaderComponent: NSObject, HUBComponentContentOffsetObserver, HUBComponentWithImageHandling, HUBComponentViewObserver {
+class HeaderComponent: HUBComponentContentOffsetObserver, HUBComponentWithImageHandling, HUBComponentViewObserver {
     var view: UIView?
     private lazy var imageView = UIImageView()
     private lazy var titleLabel = UILabel()

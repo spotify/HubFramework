@@ -40,7 +40,7 @@ struct SearchBarComponentCustomDataKeys {
  *  This component uses the `customData` dictionary of `HUBComponentModel` for customization.
  *  See `SearchBarComponentCustomKeys` for what keys are used for what data.
  */
-class SearchBarComponent: NSObject, HUBComponentActionPerformer, UISearchBarDelegate, HUBComponentContentOffsetObserver {
+class SearchBarComponent: NSObject, HUBComponentActionPerformer, HUBComponentContentOffsetObserver, UISearchBarDelegate {
     var view: UIView?
     weak var actionPerformer: HUBActionPerformer?
 

@@ -23,7 +23,7 @@ import Foundation
 import HubFramework
 
 /// A component that renders a system default activity indicator view
-class ActivityIndicatorComponent: NSObject, HUBComponentViewObserver {
+class ActivityIndicatorComponent: HUBComponentViewObserver {
     var view: UIView?
     
     private lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)

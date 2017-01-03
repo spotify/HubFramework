@@ -29,7 +29,7 @@ struct TodoListAddActionCustomDataKeys {
 }
 
 /// Action that presents an alert to add a todo list item
-class TodoListAddAction: NSObject, HUBAsyncAction {
+class TodoListAddAction: HUBAsyncAction {
     weak var delegate: HUBAsyncActionDelegate?
     
     func perform(with context: HUBActionContext) -> Bool {

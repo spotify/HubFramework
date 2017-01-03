@@ -31,7 +31,7 @@ struct TodoListActionNames {
 }
 
 /// Action factory used by the "Todo list" feature
-class TodoListActionFactory: NSObject, HUBActionFactory {
+class TodoListActionFactory: HUBActionFactory {
     /// The namespace that this action factory is registered for with `HUBActionRegistry`
     static var namespace: String { return "namespace" }
     

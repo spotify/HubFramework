@@ -23,7 +23,7 @@ import Foundation
 import HubFramework
 
 /// Content operation factory used for the "Really Long List" feature
-class ReallyLongListContentOperationFactory: NSObject, HUBContentOperationFactory {
+class ReallyLongListContentOperationFactory: HUBContentOperationFactory {
     func createContentOperations(forViewURI viewURI: URL) -> [HUBContentOperation] {
         return [ReallyLongListContentOperation()]
     }

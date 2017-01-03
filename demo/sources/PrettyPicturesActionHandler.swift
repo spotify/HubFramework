@@ -24,7 +24,7 @@ import HubFramework
 import SafariServices
 
 /// Action handler that opens a URL in a Safari VC
-class PrettyPicturesActionHandler: NSObject, HUBActionHandler {
+class PrettyPicturesActionHandler: HUBActionHandler {
     func handleAction(with context: HUBActionContext) -> Bool {
         guard let uri = context.componentModel?.target?.uri else {
             return false

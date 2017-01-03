@@ -23,7 +23,7 @@ import Foundation
 import HubFramework
 
 /// Content operation that adds a grid of pictures to the "Pretty pictures" feature
-class PrettyPicturesContentOperation: NSObject, HUBContentOperation {
+class PrettyPicturesContentOperation: HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {

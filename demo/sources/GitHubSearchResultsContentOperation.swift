@@ -33,7 +33,7 @@ import HubFramework
  *  to add the data to the view model builder. The reason we don't simply wait until the API response has been downloaded,
  *  is because we don't want to block the rendering of the view.
  */
-class GitHubSearchResultsContentOperation: NSObject, HUBContentOperation {
+class GitHubSearchResultsContentOperation: HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
     private var dataTask: URLSessionDataTask?
     private var jsonData: Data?

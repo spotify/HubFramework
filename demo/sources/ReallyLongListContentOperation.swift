@@ -23,7 +23,7 @@ import Foundation
 import HubFramework
 
 /// Content operation that adds 10,000 rows as part of the "Really Long List" feature
-class ReallyLongListContentOperation: NSObject, HUBContentOperationWithPaginatedContent {
+class ReallyLongListContentOperation: HUBContentOperationWithPaginatedContent {
     weak var delegate: HUBContentOperationDelegate?
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {

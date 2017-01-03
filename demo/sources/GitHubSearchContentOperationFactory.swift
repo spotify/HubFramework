@@ -23,7 +23,7 @@ import Foundation
 import HubFramework
 
 /// Content operation factory used for the GitHub search feature
-class GitHubSearchContentOperationFactory: NSObject, HUBContentOperationFactory {
+class GitHubSearchContentOperationFactory: HUBContentOperationFactory {
     func createContentOperations(forViewURI viewURI: URL) -> [HUBContentOperation] {
         return [
             GitHubSearchBarContentOperation(),
