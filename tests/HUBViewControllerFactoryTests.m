@@ -180,7 +180,7 @@
     [viewController viewWillAppear:YES];
     
     XCTAssertEqualObjects(self.defaultContentReloadPolicy.lastViewURI, viewURI);
-    XCTAssertEqual(self.defaultContentReloadPolicy.numberOfRequests, (NSUInteger)1);
+    XCTAssertEqual(self.defaultContentReloadPolicy.numberOfRequests, 1u);
 }
 
 - (void)testDefaultActionHandlerUsedIfFeatureDidNotSupplyOne
@@ -217,7 +217,7 @@
     
     [viewController selectComponentWithModel:componentModel customData:customData];
     
-    XCTAssertEqual(self.defaultActionHandler.contexts.count, (NSUInteger)1);
+    XCTAssertEqual(self.defaultActionHandler.contexts.count, 1u);
     XCTAssertEqualObjects(self.defaultActionHandler.contexts[0].componentModel, componentModel);
     XCTAssertEqualObjects(self.defaultActionHandler.contexts[0].customData, customData);
 }

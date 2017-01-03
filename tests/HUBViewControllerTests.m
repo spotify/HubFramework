@@ -680,7 +680,7 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)0);
+    XCTAssertEqual(self.component.numberOfReuses, 0u);
     
     self.contentReloadPolicy.shouldReload = YES;
     
@@ -689,7 +689,7 @@
     [self.viewController viewWillAppear:YES];
     [self.viewController viewDidLayoutSubviews];
     
-    XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
+    XCTAssertEqual(self.component.numberOfReuses, 2u);
 }
 
 - (void)testHeaderComponentNotReconfiguredForSameModel
@@ -725,12 +725,12 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfAppearances, 1u);
     
     [self.viewController viewWillAppear:YES];
     [self.viewController viewWillAppear:YES];
     
-    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)3);
+    XCTAssertEqual(self.component.numberOfAppearances, 3u);
 }
 
 - (void)testRemovingHeaderComponent
@@ -797,8 +797,8 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    XCTAssertEqual(componentA.numberOfReuses, (NSUInteger)0);
-    XCTAssertEqual(componentB.numberOfReuses, (NSUInteger)0);
+    XCTAssertEqual(componentA.numberOfReuses, 0u);
+    XCTAssertEqual(componentB.numberOfReuses, 0u);
     
     self.contentReloadPolicy.shouldReload = YES;
     
@@ -807,16 +807,16 @@
     [self.viewController viewWillAppear:YES];
     [self.viewController viewDidLayoutSubviews];
     
-    XCTAssertEqual(componentA.numberOfReuses, (NSUInteger)2);
-    XCTAssertEqual(componentB.numberOfReuses, (NSUInteger)0);
+    XCTAssertEqual(componentA.numberOfReuses, 2u);
+    XCTAssertEqual(componentB.numberOfReuses, 0u);
     
     [self.viewController viewWillAppear:YES];
     [self.viewController viewDidLayoutSubviews];
     [self.viewController viewWillAppear:YES];
     [self.viewController viewDidLayoutSubviews];
     
-    XCTAssertEqual(componentA.numberOfReuses, (NSUInteger)2);
-    XCTAssertEqual(componentB.numberOfReuses, (NSUInteger)1);
+    XCTAssertEqual(componentA.numberOfReuses, 2u);
+    XCTAssertEqual(componentB.numberOfReuses, 1u);
 }
 
 - (void)testOverlayComponentNotReconfiguredForSameModel
@@ -925,12 +925,12 @@
     
     [self simulateViewControllerLayoutCycle];
     
-    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfAppearances, 1u);
     
     [self.viewController viewWillAppear:YES];
     [self.viewController viewWillAppear:YES];
     
-    XCTAssertEqual(self.component.numberOfAppearances, (NSUInteger)3);
+    XCTAssertEqual(self.component.numberOfAppearances, 3u);
 }
 
 - (void)testInitialViewModelForTargetViewControllerRegistered
@@ -1207,11 +1207,11 @@
     
     id<HUBComponentModel> const nonSelectableComponentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
     [self.viewController selectComponentWithModel:nonSelectableComponentModel customData:nil];
-    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)0);
+    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, 0u);
     
     id<HUBComponentModel> const selectableComponentModel = self.viewModelFromDelegateMethod.bodyComponentModels[1];
     [self.viewController selectComponentWithModel:selectableComponentModel customData:nil];
-    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
+    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, 1u);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].identifier, selectableIdentifier);
     
     // Test custom selection action handling
@@ -1220,7 +1220,7 @@
     };
     
     [self.viewController selectComponentWithModel:selectableComponentModel customData:nil];
-    XCTAssertEqual(self.actionHandler.contexts.count, (NSUInteger)1);
+    XCTAssertEqual(self.actionHandler.contexts.count, 1u);
 
     id<HUBActionContext> actionContext = self.actionHandler.contexts.firstObject;
     XCTAssertEqualObjects(actionContext.componentModel.identifier, selectableIdentifier);
@@ -1264,7 +1264,7 @@
     // Make sure bounds-checking is performed for child component index
     [childDelegate component:self.component childWithCustomViewSelectedAtIndex:99 customData:nil];
     
-    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)1);
+    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, 1u);
     XCTAssertEqualObjects(self.componentModelsFromSelectionDelegateMethod[0].target.URI,
                           [NSURL URLWithString:@"spotify:hub:child-component"]);
     
@@ -1274,7 +1274,7 @@
     };
     
     [childDelegate component:self.component childWithCustomViewSelectedAtIndex:0 customData:customData];
-    XCTAssertEqual(self.actionHandler.contexts.count, (NSUInteger)1);
+    XCTAssertEqual(self.actionHandler.contexts.count, 1u);
 
     id<HUBActionContext> actionContext = self.actionHandler.contexts.firstObject;
     XCTAssertEqualObjects(actionContext.componentModel.target.URI, [NSURL URLWithString:@"spotify:hub:child-component"]);
@@ -1370,7 +1370,7 @@
     
     id<HUBComponentModel> const componentModel = self.viewModelFromDelegateMethod.bodyComponentModels[0];
     XCTAssertFalse([self.viewController selectComponentWithModel:componentModel customData:nil]);
-    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, (NSUInteger)0);
+    XCTAssertEqual(self.componentModelsFromSelectionDelegateMethod.count, 0u);
 }
 
 - (void)testComponentNotifiedOfResize
@@ -1393,17 +1393,17 @@
     UICollectionViewCell * const cell = [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     cell.frame = CGRectMake(0, 0, 300, 200);
     [self simulateLayoutForViewHierarchyStartingWithView:cell];
-    XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfResizes, 1u);
     
     // Subsequent layout passes should not notify the component, unless the size has changed
     [self simulateLayoutForViewHierarchyStartingWithView:cell];
     [self simulateLayoutForViewHierarchyStartingWithView:cell];
     [self simulateLayoutForViewHierarchyStartingWithView:cell];
-    XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfResizes, 1u);
     
     cell.frame = CGRectMake(0, 0, 300, 100);
     [self simulateLayoutForViewHierarchyStartingWithView:cell];
-    XCTAssertEqual(self.component.numberOfResizes, (NSUInteger)2);
+    XCTAssertEqual(self.component.numberOfResizes, 2u);
 }
 
 - (void)testComponentNotifiedOfViewWillAppearWhenCellIsDisplayed
@@ -1488,9 +1488,9 @@
     [childDelegate component:self.component willDisplayChildAtIndex:1 view:(UIView *)childComponentB.view];
     [childDelegate component:self.component willDisplayChildAtIndex:2 view:(UIView *)childComponentC.view];
     
-    XCTAssertEqual(childComponentA.numberOfAppearances, (NSUInteger)1);
-    XCTAssertEqual(childComponentB.numberOfAppearances, (NSUInteger)1);
-    XCTAssertEqual(childComponentC.numberOfAppearances, (NSUInteger)1);
+    XCTAssertEqual(childComponentA.numberOfAppearances, 1u);
+    XCTAssertEqual(childComponentB.numberOfAppearances, 1u);
+    XCTAssertEqual(childComponentC.numberOfAppearances, 1u);
     
     NSArray * const expectedAppearanceComponentModels = @[
         componentModel,
@@ -1506,12 +1506,12 @@
     
     [collectionViewDelegate scrollViewDidEndDecelerating:self.collectionView];
     
-    XCTAssertEqual(childComponentA.numberOfAppearances, (NSUInteger)2);
-    XCTAssertEqual(childComponentB.numberOfAppearances, (NSUInteger)2);
-    XCTAssertEqual(childComponentC.numberOfAppearances, (NSUInteger)2);
+    XCTAssertEqual(childComponentA.numberOfAppearances, 2u);
+    XCTAssertEqual(childComponentB.numberOfAppearances, 2u);
+    XCTAssertEqual(childComponentC.numberOfAppearances, 2u);
     
     /// All children + root component should now have appeared twice: (3 + 1) * 2 = 8.
-    XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, (NSUInteger)8);
+    XCTAssertEqual(self.componentModelsFromAppearanceDelegateMethod.count, 8u);
 }
 
 - (void)testDelegateNotifiedWhenRootComponentDisappeared
@@ -1549,7 +1549,7 @@
     [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     [self.component.childDelegate component:self.component didStopDisplayingChildAtIndex:0 view:[UIView new]];
     
-    XCTAssertEqual(self.componentModelsFromDisapperanceDelegateMethod.count, (NSUInteger)1);
+    XCTAssertEqual(self.componentModelsFromDisapperanceDelegateMethod.count, 1u);
     XCTAssertEqualObjects(self.componentModelsFromDisapperanceDelegateMethod[0].title, @"Child title");
 }
 
@@ -1645,7 +1645,7 @@
     XCTAssertEqualObjects(self.component.restoredUIStates, @[state]);
     
     // Make sure that the component was actually reused
-    XCTAssertEqual(self.component.numberOfReuses, (NSUInteger)2);
+    XCTAssertEqual(self.component.numberOfReuses, 2u);
 }
 
 - (void)testViewControllerDelegateIsNotifiedWhenComponentIsReused
@@ -2169,26 +2169,26 @@
     id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
     [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
     // Component should be notified on the first appearance
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 1u);
     
     self.collectionView.cells[indexPath] = cell;
     self.collectionView.mockedIndexPathsForVisibleItems = @[indexPath];
     [self.viewController viewWillAppear:NO];
     // Content offset hasn't been changed so the component shouldn't be notified
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 1u);
     
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
     [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
     // Content offset has been changed so the component should be notified
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 2u);
 
     // Component shouldn't be notified because content offset hasn't changed
     [self.viewController viewWillAppear:NO];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 2u);
 
     // Component isn't notified if view is reloaded
     [self.viewController reload];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 2u);
 }
 
 - (void)testBodyComponentNotifiedOfContentOffsetChangeOnFirstAppearanceWithContentOffsetSetBefore
@@ -2210,7 +2210,7 @@
     id<UICollectionViewDelegate> const collectionViewDelegate = self.collectionView.delegate;
     [collectionViewDelegate collectionView:self.collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
 
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 1u);
 }
 
 - (void)testHeaderComponentNotifiedOfContentOffsetChange
@@ -2223,13 +2223,13 @@
     };
     
     [self simulateViewControllerLayoutCycle];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 1u);
     
     [self.viewController scrollToContentOffset:CGPointMake(0, 100) animated:NO];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 2u);
 
     [self.viewController reload];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 2u);
 }
 
 - (void)testHeaderComponentNotifiedOfContentOffsetChangeOnFirstAppearanceWithContentOffsetSetBefore
@@ -2245,7 +2245,7 @@
     [self.viewController scrollToContentOffset:CGPointMake(0, 0) animated:NO];
     [self simulateViewControllerLayoutCycle];
 
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 1u);
 }
 
 - (void)testOverlayComponentNotifiedOfContentOffsetChange
@@ -2258,14 +2258,14 @@
     };
     
     [self simulateViewControllerLayoutCycle];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 1u);
     
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
     [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 2u);
     
     [self.viewController reload];
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)2);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 2u);
 }
 
 - (void)testOverlayComponentNotifiedOfContentOffsetChangeOnFirstAppearanceWithContentOffsetSetBefore
@@ -2281,7 +2281,7 @@
     [self.viewController scrollToContentOffset:CGPointMake(0, 0) animated:NO];
     [self simulateViewControllerLayoutCycle];
 
-    XCTAssertEqual(self.component.numberOfContentOffsetChanges, (NSUInteger)1);
+    XCTAssertEqual(self.component.numberOfContentOffsetChanges, 1u);
 }
 
 - (void)testChildComponentNotifiedOfContentOffsetChange
@@ -2327,7 +2327,7 @@
 
     const CGPoint expectedContentOffset = CGPointMake(99, 77);
     [self.viewController scrollToContentOffset:expectedContentOffset animated:NO];
-    XCTAssertEqual(childComponent.numberOfContentOffsetChanges, (NSUInteger)1);
+    XCTAssertEqual(childComponent.numberOfContentOffsetChanges, 1u);
 }
 
 - (void)testCollectionViewCreatedInLoadView
@@ -3057,7 +3057,7 @@
     XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
 
     // Only 1 render request was made
-    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)1);
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 1u);
 
     // Don't finish the test until rendering has stopped.
     viewModelRenderer.completionBlocks[0]();
@@ -3089,14 +3089,14 @@
     // The 2nd model should NOT be set at this point as the 1st render hasn't finished
     XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title1");
     // Only 1 render request has been made at this point (the 2nd is pending)
-    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)1);
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 1u);
     // Complete the 1st render request
     viewModelRenderer.completionBlocks[0]();
 
     // The 2nd model should now be set as the 1st render has finished and the 2nd is in progress
     XCTAssertEqualObjects(self.viewController.viewModel.headerComponentModel.title, @"title2");
     // 2 render requests have now been made
-    XCTAssertEqual(viewModelRenderer.completionBlocks.count, (NSUInteger)2);
+    XCTAssertEqual(viewModelRenderer.completionBlocks.count, 2u);
     // Complete the 2nd render request
     viewModelRenderer.completionBlocks[1]();
 }

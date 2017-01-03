@@ -99,7 +99,7 @@
     XCTAssertEqualObjects(self.loader.initialViewModel.navigationItem.title, @"A title");
     XCTAssertEqualObjects(self.loader.initialViewModel.navigationItem.title, @"A title");
     
-    XCTAssertEqual(numberOfInitialViewModelRequests, (NSUInteger)1);
+    XCTAssertEqual(numberOfInitialViewModelRequests, 1u);
 }
 
 - (void)testInjectedInitialViewModelUsedInsteadOfContentOperations
@@ -295,7 +295,7 @@
     
     [self.loader loadViewModel];
     
-    XCTAssertEqual(contentOperationBRequestCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperationBRequestCount, 1u);
 }
 
 - (void)testSynchronousContentOperationDoesNotCallDelegateTwice
@@ -316,8 +316,8 @@
     [self.loader loadViewModel];
     
     XCTAssertEqual(self.errorFromFailureDelegateMethod, nil);
-    XCTAssertEqual(self.didLoadViewModelErrorCount, (NSUInteger)0);
-    XCTAssertEqual(self.didLoadViewModelCount, (NSUInteger)1);
+    XCTAssertEqual(self.didLoadViewModelErrorCount, 0u);
+    XCTAssertEqual(self.didLoadViewModelCount, 1u);
 }
 
 - (void)testSynchronousContentOperationCallingErrorCallback
@@ -340,8 +340,8 @@
     [self.loader loadViewModel];
     
     XCTAssertEqual(self.errorFromFailureDelegateMethod, error);
-    XCTAssertEqual(self.didLoadViewModelErrorCount, (NSUInteger)1);
-    XCTAssertEqual(self.didLoadViewModelCount, (NSUInteger)0);
+    XCTAssertEqual(self.didLoadViewModelErrorCount, 1u);
+    XCTAssertEqual(self.didLoadViewModelCount, 0u);
 }
 
 - (void)testSubsequentlyLoadedContentNotAppendedToViewModel
@@ -360,10 +360,10 @@
     
     [self.loader loadViewModel];
     
-    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)1);
+    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, 1u);
     
     [self.loader loadViewModel];
-    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, (NSUInteger)1);
+    XCTAssertEqual(self.viewModelFromSuccessDelegateMethod.bodyComponentModels.count, 1u);
 }
 
 - (void)testViewModelBuilderSnapshotting
@@ -412,27 +412,27 @@
     
     [self.loader loadViewModel];
     
-    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)1);
-    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)1);
-    XCTAssertEqual(contentOperationC.performCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperationA.performCount, 1u);
+    XCTAssertEqual(contentOperationB.performCount, 1u);
+    XCTAssertEqual(contentOperationC.performCount, 1u);
     
     [contentOperationA.delegate contentOperationRequiresRescheduling:contentOperationA];
     
-    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)2);
-    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)2);
-    XCTAssertEqual(contentOperationC.performCount, (NSUInteger)2);
+    XCTAssertEqual(contentOperationA.performCount, 2u);
+    XCTAssertEqual(contentOperationB.performCount, 2u);
+    XCTAssertEqual(contentOperationC.performCount, 2u);
     
     [contentOperationB.delegate contentOperationRequiresRescheduling:contentOperationB];
     
-    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)2);
-    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)3);
-    XCTAssertEqual(contentOperationC.performCount, (NSUInteger)3);
+    XCTAssertEqual(contentOperationA.performCount, 2u);
+    XCTAssertEqual(contentOperationB.performCount, 3u);
+    XCTAssertEqual(contentOperationC.performCount, 3u);
     
     [contentOperationC.delegate contentOperationRequiresRescheduling:contentOperationC];
     
-    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)2);
-    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)3);
-    XCTAssertEqual(contentOperationC.performCount, (NSUInteger)4);
+    XCTAssertEqual(contentOperationA.performCount, 2u);
+    XCTAssertEqual(contentOperationB.performCount, 3u);
+    XCTAssertEqual(contentOperationC.performCount, 4u);
 }
 
 - (void)testErrorSnapshotting
@@ -491,10 +491,10 @@
     [contentOperationDelegate contentOperationRequiresRescheduling:contentOperationB];
     [contentOperationDelegate contentOperationRequiresRescheduling:contentOperationB];
     
-    XCTAssertEqual(self.didLoadViewModelCount, (NSUInteger)3);
-    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)1);
-    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)3);
-    XCTAssertEqual(contentOperationC.performCount, (NSUInteger)3);
+    XCTAssertEqual(self.didLoadViewModelCount, 3u);
+    XCTAssertEqual(contentOperationA.performCount, 1u);
+    XCTAssertEqual(contentOperationB.performCount, 3u);
+    XCTAssertEqual(contentOperationC.performCount, 3u);
 }
 
 - (void)testErrorFromFirstContentLoadingChainNotPassedToRescheduledOperation
@@ -521,7 +521,7 @@
     [contentOperationDelegate contentOperationRequiresRescheduling:contentOperation];
     
     XCTAssertNil(contentOperation.previousContentOperationError);
-    XCTAssertEqual(contentOperation.performCount, (NSUInteger)2);
+    XCTAssertEqual(contentOperation.performCount, 2u);
     XCTAssertNil(self.errorFromFailureDelegateMethod);
     XCTAssertNotNil(self.viewModelFromSuccessDelegateMethod);
 }
@@ -578,15 +578,15 @@
     
     [self.loader loadViewModel];
     
-    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)1);
-    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperationA.performCount, 1u);
+    XCTAssertEqual(contentOperationB.performCount, 1u);
     
     self.connectivityStateResolver.state = HUBConnectivityStateOffline;
     [self.connectivityStateResolver callObservers];
     
     XCTAssertEqual(initialContentLoadingCount, 1);
-    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)2);
-    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)2);
+    XCTAssertEqual(contentOperationA.performCount, 2u);
+    XCTAssertEqual(contentOperationB.performCount, 2u);
 }
 
 - (void)testIncorrectlyIndicatedConnectivityChangeIgnored
@@ -602,16 +602,16 @@
     
     [self.loader loadViewModel];
     
-    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)1);
-    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperationA.performCount, 1u);
+    XCTAssertEqual(contentOperationB.performCount, 1u);
     
     [self.connectivityStateResolver callObservers];
     [self.connectivityStateResolver callObservers];
     [self.connectivityStateResolver callObservers];
     [self.connectivityStateResolver callObservers];
     
-    XCTAssertEqual(contentOperationA.performCount, (NSUInteger)1);
-    XCTAssertEqual(contentOperationB.performCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperationA.performCount, 1u);
+    XCTAssertEqual(contentOperationB.performCount, 1u);
 }
 
 - (void)testCorrectFeatureInfoSentToContentOperations
@@ -657,7 +657,7 @@
     [self.loader loadViewModel];
     [self.loader loadViewModel];
     
-    XCTAssertEqual(contentOperation.performCount, (NSUInteger)1);
+    XCTAssertEqual(contentOperation.performCount, 1u);
 }
 
 - (void)testNilReloadPolicyAlwaysResultingInReload
@@ -674,7 +674,7 @@
     [self.loader loadViewModel];
     [self.loader loadViewModel];
     
-    XCTAssertEqual(contentOperation.performCount, (NSUInteger)3);
+    XCTAssertEqual(contentOperation.performCount, 3u);
 }
 
 - (void)testAppendingPaginatedContent
