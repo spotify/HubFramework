@@ -22,7 +22,7 @@
 #import "HUBComponent.h"
 
 /// Enum defining various focus states that a component can be in
-typedef NS_ENUM(NSUInteger, HUBComponentFocusState) {
+typedef NS_ENUM(NSInteger, HUBComponentFocusState) {
     /// The component is not in focus
     HUBComponentFocusStateNone,
     /// The component is in focus, either programmatically or by the user

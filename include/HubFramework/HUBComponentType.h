@@ -22,7 +22,7 @@
 #import <Foundation/Foundation.h>
 
 /// Enum describing various types of components used in the Hub Framework
-typedef NS_ENUM(NSUInteger, HUBComponentType) {
+typedef NS_ENUM(NSInteger, HUBComponentType) {
     /// Type of components used in the header of a view
     HUBComponentTypeHeader,
     /// Type of components used in the body of a view

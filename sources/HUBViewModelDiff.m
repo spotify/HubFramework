@@ -181,7 +181,7 @@ static inline HUBDiffPoint HUBDiffPointMake(NSInteger x, NSInteger y) {
     return (HUBDiffPoint){ .x = x, .y = y };
 }
 
-typedef NS_ENUM(NSUInteger, HUBDiffStepType) {
+typedef NS_ENUM(NSInteger, HUBDiffStepType) {
     HUBDiffStepTypeInsert,
     HUBDiffStepTypeDelete,
     HUBDiffStepTypeMatchPoint

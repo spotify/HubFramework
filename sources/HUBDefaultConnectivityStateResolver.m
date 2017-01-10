@@ -78,7 +78,7 @@ void HUBReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkConnectio
 - (HUBConnectivityState)resolveConnectivityState
 {
     if (self.connectivityState != nil) {
-        return [self.connectivityState unsignedIntegerValue];
+        return [self.connectivityState integerValue];
     }
     
     SCNetworkReachabilityFlags reachabilityFlags;
