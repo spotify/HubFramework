@@ -1847,9 +1847,9 @@
     assertInsetsEqualToCollectionViewInsets(secondInsets);
 }
 
+#if !TARGET_OS_TV
 - (void)testProposedContentInsetIsDefaultIfHeaderMissing
 {
-    #if !TARGET_OS_TV
     CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
     CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
     CGFloat const navigationBarWidth = CGRectGetWidth(self.viewController.navigationController.navigationBar.frame);
@@ -1874,8 +1874,8 @@
 
     [self simulateViewControllerLayoutCycle];
     [self waitForExpectationsWithTimeout:5 handler:nil];
-    #endif
 }
+#endif
 
 
 - (void)testProposedContentInsetNotAffectedByHeaderComponent
