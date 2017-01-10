@@ -2887,10 +2887,10 @@
 			buildSettings = {
 				HUB_NON_ERROR_WARNINGS_0720 = "";
 				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
-				INFOPLIST_FILE = "$(SRCROOT)/sources/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/sources/Info-tvOS.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos10.1;
+				SDKROOT = appletvos;
 				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
 				WARNING_CFLAGS = (
 					"$(inherited)",
@@ -2905,10 +2905,10 @@
 			buildSettings = {
 				HUB_NON_ERROR_WARNINGS_0720 = "";
 				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
-				INFOPLIST_FILE = "$(SRCROOT)/sources/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/sources/Info-tvOS.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos10.1;
+				SDKROOT = appletvos;
 				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
 				WARNING_CFLAGS = (
 					"$(inherited)",
