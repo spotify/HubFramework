@@ -463,6 +463,7 @@ NS_ASSUME_NONNULL_BEGIN
         self.viewModel = viewModel;
         self.viewModelHasChangedSinceLastLayoutUpdate = YES;
         [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
     }];
     
     HUBOperation * const reloadCollectionViewOperation = [self createReloadCollectionViewOperation];
