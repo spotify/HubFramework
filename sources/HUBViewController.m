@@ -220,6 +220,7 @@ NS_ASSUME_NONNULL_BEGIN
     [notificationCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
     self.viewHasBeenLaidOut = NO;
+    self.viewHasAppeared = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -463,7 +464,6 @@ NS_ASSUME_NONNULL_BEGIN
         self.viewModel = viewModel;
         self.viewModelHasChangedSinceLastLayoutUpdate = YES;
         [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
     }];
     
     HUBOperation * const reloadCollectionViewOperation = [self createReloadCollectionViewOperation];
