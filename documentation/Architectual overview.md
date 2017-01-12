@@ -2,7 +2,7 @@
 
 Welcome to the Hub Framework architectual overview. This document is aimed at developers who are looking to contribute to the framework, as well as people who want to get a more thorough understanding of how the internals of the framework work. It’s also meant to document what patterns that are used and why.
 
-For information on how to actually use the framework - see the other available guides, that will each introduce you to the various aspects of the API.
+For information on how to use the framework see the other [available guides](https://spotify.github.io/HubFramework/index.html). Each guide introduces you to the various aspects of the framework, its APIs and [concepts](https://spotify.github.io/HubFramework/concept-guide.html).
 
 |  ℹ️  | _In progress_ |  ℹ️  |
 | ----- | :-----------: | ----- |
@@ -12,7 +12,7 @@ For information on how to actually use the framework - see the other available g
 
 `HUBManager` represents an insance of the Hub Framework. It’s not a singleton, but rather a core object that an application using the framework creates and holds a reference to. The manager then provides access to all of the framework’s features in a modular fashion.
 
-## Registries & factories
+## Registries and factories
 
 The top-level APIs that the Hub Framework offers are exposed as **Registries** and **Factories**. Instead of having `HUBManager` directly contain all APIs, we opted for this pattern for the following reasons:
 
@@ -36,7 +36,7 @@ So what registries and factories do `HUBManager` currently contain?
 - `HUBViewModelLoaderFactory` for creating [view model loaders](https://spotify.github.io/HubFramework/Protocols/HUBViewModelLoader.html).
 - `HUBViewControllerFactory` for creating [view controllers](https://spotify.github.io/HubFramework/Classes/HUBViewController.html).
 
-## Protocols defining public APIs
+## Protocols as public APIs
 
 A core design principle used in the Hub Framework is the use of protocols to define public APIs, and then having matching classes for the actual implementation. This technique is used to get a clear separation between the public API and the internals. 
 
