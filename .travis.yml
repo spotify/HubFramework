@@ -2,6 +2,7 @@ branches:
   only:
     - master
     - /^release-.*$/
+    - /^spotify-release-.*$/
 
 language: objective-c
 
