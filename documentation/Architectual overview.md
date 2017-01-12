@@ -1,6 +1,6 @@
 # Hub Framework architectual overview
 
-Welcome to the Hub Framework architectual overview. This document is aimed at developers who are looking to contribute to the framework, as well as people who want to get a more thorough understanding of how the internals of the framework work. It's also meant to document what patterns that are used and why.
+Welcome to the Hub Framework architectual overview. This document is aimed at developers who are looking to contribute to the framework, as well as people who want to get a more thorough understanding of how the internals of the framework work. It’s also meant to document what patterns that are used and why.
 
 For information on how to actually use the framework - see the other available guides, that will each introduce you to the various aspects of the API.
 
@@ -8,7 +8,7 @@ For information on how to actually use the framework - see the other available g
 
 ## `HUBManager`
 
-`HUBManager` represents an insance of the Hub Framework. It's not a singleton, but rather a core object that an application using the framework creates and holds a reference to. The manager then provides access to all of the framework's features in a modular fashion.
+`HUBManager` represents an insance of the Hub Framework. It’s not a singleton, but rather a core object that an application using the framework creates and holds a reference to. The manager then provides access to all of the framework’s features in a modular fashion.
 
 ## Registries & factories
 
