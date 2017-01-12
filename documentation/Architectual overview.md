@@ -4,7 +4,9 @@ Welcome to the Hub Framework architectual overview. This document is aimed at de
 
 For information on how to actually use the framework - see the other available guides, that will each introduce you to the various aspects of the API.
 
-**Note:** This docment is currently "Work-in-progress" and does not yet offer a complete picture of the Hub Framework architecture.
+|  ℹ️  | _In progress_ |  ℹ️  |
+| ----- | :-----------: | ----- |
+| ℹ️ | **This docment is currently “work-in-progress” and does not yet offer a complete picture of the Hub Framework architecture.** | ℹ️ |
 
 ## `HUBManager`
 
