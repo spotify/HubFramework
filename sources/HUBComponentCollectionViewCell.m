@@ -60,6 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     UIView * const componentView = HUBComponentLoadViewIfNeeded(nonNilComponent);
     componentView.autoresizingMask |= UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    componentView.frame = self.bounds;
 
     [self.contentView addSubview:componentView];
 }
