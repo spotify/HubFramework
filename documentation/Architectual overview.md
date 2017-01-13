@@ -10,7 +10,7 @@ For information on how to use the framework see the other [available guides](htt
 
 ## `HUBManager`
 
-`HUBManager` represents an insance of the Hub Framework. It’s not a singleton, but rather a core object that an application using the framework creates and holds a reference to. The manager then provides access to all of the framework’s features in a modular fashion.
+`HUBManager` represents an instance of the Hub Framework. It’s not a singleton, but rather a core object that an application using the framework creates and holds a reference to. The manager then provides access to all of the framework’s features in a modular fashion.
 
 ## Registries and factories
 
