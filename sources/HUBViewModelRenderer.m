@@ -69,6 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
         diff = [HUBViewModelDiff diffFromViewModel:nonnullViewModel toViewModel:viewModel];
     }
 
+    BOOL const hasDiffChanges = (diff == nil || diff.hasChanges);
     HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)collectionView.collectionViewLayout;
 
     /*
@@ -91,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
     };
 
     if (!usingBatchUpdates || diff == nil) {
-        if (diff == nil || diff.hasChanges) {
+        if (hasDiffChanges) {
             [collectionView reloadData];
         }
 
@@ -111,7 +112,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
         postLayoutBlock();
     } else {
-        if (diff == nil || diff.hasChanges) {
+        if (hasDiffChanges) {
             [collectionView performBatchUpdates:^{
                 [collectionView insertItemsAtIndexPaths:diff.insertedBodyComponentIndexPaths];
                 [collectionView deleteItemsAtIndexPaths:diff.deletedBodyComponentIndexPaths];
