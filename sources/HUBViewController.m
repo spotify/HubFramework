@@ -714,6 +714,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     if (![self.registeredCollectionViewCellReuseIdentifiers containsObject:cellReuseIdentifier]) {
         [collectionView registerClass:[HUBComponentCollectionViewCell class] forCellWithReuseIdentifier:cellReuseIdentifier];
+        [self.registeredCollectionViewCellReuseIdentifiers addObject:cellReuseIdentifier];
     }
     
     HUBComponentCollectionViewCell * const cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier
