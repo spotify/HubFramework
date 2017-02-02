@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  A content edge is where the rendering of content "stops", such as at the screen edge or when
  *  an area covered by a navigation bar begins. Content edges have a 1:1 mapping to content insets.
  */
-typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
+typedef NS_ENUM(NSInteger, HUBComponentLayoutContentEdge) {
     /// The top content edge, usually where a navigation bar begins
     HUBComponentLayoutContentEdgeTop,
     /// The right content edge, usually at the screen edge

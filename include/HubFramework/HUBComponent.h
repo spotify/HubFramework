@@ -53,6 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  `HUBComponentWithSelectionState`: For responding to highlight & selection events in a component.
  *
+ *  `HUBComponentWithFocusState`: For responding to focus events in a component (tvOS only).
+ *
  *  `HUBComponentContentOffsetObserver`: For components that react to the view's content offset.
  *
  *  `HUBComponentViewObserver`: For components that observe their view for various events.

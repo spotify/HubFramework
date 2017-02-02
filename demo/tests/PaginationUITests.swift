@@ -34,7 +34,7 @@ class PaginationUITests: UITestCase {
             numberOfSwipes += 1
             
             if numberOfSwipes > 20 {
-                XCTFail("Should not have taken over 20 swipes to load paginated content")
+                XCTFail("It took \(numberOfSwipes) to load paginated content. Test assumed it should not have taken over 20 swipes.")
                 break
             }
         }

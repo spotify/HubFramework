@@ -154,6 +154,14 @@ static inline NSDictionary<NSString *, id> * _Nullable HUBMergeDictionaries(NSDi
  */
 static inline NSArray<NSString *> *HUBNavigationItemPropertyNames()
 {
+    #if TARGET_OS_TV
+    return @[
+        HUBKeyPath((UINavigationItem *)nil, title),
+        HUBKeyPath((UINavigationItem *)nil, titleView),
+        HUBKeyPath((UINavigationItem *)nil, leftBarButtonItems),
+        HUBKeyPath((UINavigationItem *)nil, rightBarButtonItems),
+    ];
+    #else
     return @[
         HUBKeyPath((UINavigationItem *)nil, title),
         HUBKeyPath((UINavigationItem *)nil, titleView),
@@ -164,6 +172,7 @@ static inline NSArray<NSString *> *HUBNavigationItemPropertyNames()
         HUBKeyPath((UINavigationItem *)nil, rightBarButtonItems),
         HUBKeyPath((UINavigationItem *)nil, leftItemsSupplementBackButton)
     ];
+    #endif
 }
 
 /**
@@ -199,20 +208,22 @@ static inline BOOL HUBNavigationItemEqualToNavigationItem(UINavigationItem *navi
  */
 static inline UINavigationItem *HUBCopyNavigationItemProperties(UINavigationItem *navigationItemA, UINavigationItem * _Nullable navigationItemB)
 {
+    #if !TARGET_OS_TV
     NSSet<NSString *> * const boolPropertyNames = [NSSet setWithObjects:HUBKeyPath(navigationItemA, hidesBackButton),
                                                                         HUBKeyPath(navigationItemA, leftItemsSupplementBackButton),
                                                                         nil];
-    
+    #endif
     for (NSString * const propertyName in HUBNavigationItemPropertyNames()) {
         id const value = [navigationItemB valueForKey:propertyName];
-        
+
+        #if !TARGET_OS_TV
         if (value == nil) {
             if ([boolPropertyNames containsObject:propertyName]) {
                 navigationItemA.hidesBackButton = NO;
                 continue;
             }
         }
-        
+        #endif
         [navigationItemA setValue:value forKey:propertyName];
     }
     

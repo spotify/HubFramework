@@ -177,6 +177,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    #if !TARGET_OS_TV
     
     NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
     
@@ -189,6 +191,8 @@ NS_ASSUME_NONNULL_BEGIN
                            selector:@selector(handleKeyboardWillHideNotification:)
                                name:UIKeyboardWillHideNotification
                              object:nil];
+
+    #endif
     
     if (self.viewModel == nil) {
         self.viewModel = self.viewModelLoader.initialViewModel;
@@ -214,11 +218,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
+    #if !TARGET_OS_TV
+
     NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [notificationCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    
+
+    #endif
+
     self.viewHasBeenLaidOut = NO;
     self.viewHasAppeared = NO;
 }
@@ -776,6 +784,15 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     return [delegate viewControllerShouldStartScrolling:self];
 }
 
+#if TARGET_OS_TV
+- (BOOL)collectionView:(UICollectionView *)collectionView canFocusItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    HUBComponentCollectionViewCell *cell = (HUBComponentCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    HUBComponentWrapper * const wrapper = [self componentWrapperFromCell:cell];
+    return wrapper.visibleChildren.count == 0;
+}
+#endif
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -860,6 +877,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 }
 
 #pragma mark - Notification handling
+#if !TARGET_OS_TV
 
 - (void)handleKeyboardWillShowNotification:(NSNotification *)notification
 {
@@ -873,6 +891,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     self.visibleKeyboardHeight = 0;
     [self updateOverlayComponentCenterPointsWithKeyboardNotification:notification];
 }
+#endif
 
 #pragma mark - Private utilities
 
@@ -986,9 +1005,13 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (self.headerComponentWrapper != nil) {
         return 0;
     }
-
+    #if !TARGET_OS_TV
     CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
     CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+    #else
+    CGFloat const statusBarWidth = 0.0;
+    CGFloat const statusBarHeight = 0.0;
+    #endif
     CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
     CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
     CGFloat const topBarHeight = MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
@@ -1068,6 +1091,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                 proposedCenterPoint:proposedCenterPoint];
 }
 
+#if !TARGET_OS_TV
 - (void)updateOverlayComponentCenterPointsWithKeyboardNotification:(NSNotification *)notification
 {
     NSTimeInterval const animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -1083,6 +1107,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     [UIView commitAnimations];
 }
+#endif
 
 - (HUBComponentWrapper *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel
                                                   previousComponentWrapper:(nullable HUBComponentWrapper *)previousComponentWrapper
@@ -1537,6 +1562,20 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     self.lastContentOffset = contentOffset;
     [self.collectionView setContentOffset:contentOffset animated:animated];
 }
+
+#pragma mark - Focus engine
+#if TARGET_OS_TV
+
+- (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator {
+    HUBComponentCollectionViewCell *previousItem = (HUBComponentCollectionViewCell *)context.previouslyFocusedView;
+    HUBComponentWrapper * const previousWrapper = [self componentWrapperFromCell:previousItem];
+    [previousWrapper updateViewForFocusState:HUBComponentFocusStateNone];
+    HUBComponentCollectionViewCell *nextItem = (HUBComponentCollectionViewCell *)context.nextFocusedView;
+    HUBComponentWrapper * const nextWrapper = [self componentWrapperFromCell:nextItem];
+    [nextWrapper updateViewForFocusState:HUBComponentFocusStateInFocus];
+}
+
+#endif
 
 @end
 

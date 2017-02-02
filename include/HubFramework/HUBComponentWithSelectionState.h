@@ -22,7 +22,7 @@
 #import "HUBComponent.h"
 
 /// Enum defining various selection states that a component can be in
-typedef NS_ENUM(NSUInteger, HUBComponentSelectionState) {
+typedef NS_ENUM(NSInteger, HUBComponentSelectionState) {
     /// The component is neither selected or highlighted
     HUBComponentSelectionStateNone,
     /// The component is currently highlighted through a user interaction
