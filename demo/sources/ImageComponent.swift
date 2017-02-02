@@ -34,7 +34,7 @@ struct ImageComponentCustomDataKeys {
  *  This component uses the `customData` dictionary of `HUBComponentModel` for customization.
  *  See `ImageComponentCustomDataKeys` for what keys are used for what data.
  */
-class ImageComponent: NSObject, HUBComponentWithImageHandling, HUBComponentWithSelectionState {
+class ImageComponent: HUBComponentWithImageHandling, HUBComponentWithSelectionState {
     var view: UIView?
     
     private lazy var imageView = UIImageView()

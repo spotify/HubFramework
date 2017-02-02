@@ -23,7 +23,7 @@ import Foundation
 import HubFramework
 
 /// Content operation used by the "Todo list" feature
-class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HUBContentOperationActionObserver {
+class TodoListContentOperation: HUBContentOperationActionPerformer, HUBContentOperationActionObserver {
     weak var delegate: HUBContentOperationDelegate?
     weak var actionPerformer: HUBActionPerformer?
     private var addActionIdentifier: HUBIdentifier {

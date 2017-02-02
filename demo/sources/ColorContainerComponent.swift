@@ -30,7 +30,7 @@ import HubFramework
  *  - customData["color"] (as String)
  *  - children (only the first one is handled)
  */
-class ColorContainerComponent: NSObject, HUBComponentWithChildren, HUBComponentViewObserver {
+class ColorContainerComponent: HUBComponentWithChildren, HUBComponentViewObserver {
     /// Structure containing custom data keys used by `ColorContainerComponent`
     struct CustomDataKeys {
         /// The key used to encode a color (a String value is expected)

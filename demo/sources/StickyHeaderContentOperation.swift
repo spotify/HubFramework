@@ -23,7 +23,7 @@ import Foundation
 import HubFramework
 
 /// Content operation that adds a sticky header and a few rows beneath it
-class StickyHeaderContentOperation: NSObject, HUBContentOperation {
+class StickyHeaderContentOperation: HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
     private var performCount = 0
 

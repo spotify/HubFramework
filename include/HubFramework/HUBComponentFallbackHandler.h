@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  provided by a fallback handler is used to set up all component model builders with default values, and
  *  the fallback handler also acts as a last line of defence for backwards compatibility.
  */
-@protocol HUBComponentFallbackHandler <NSObject>
+@protocol HUBComponentFallbackHandler
 
 /**
  *  The default component namespace, that all component model builders should have when created

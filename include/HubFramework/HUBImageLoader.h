@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  that conforms to this protocol as the delegate of any image loader. You use the methods defined in this
  *  protocol to communicate an image loader's outcomes back to the framework.
  */
-@protocol HUBImageLoaderDelegate <NSObject>
+@protocol HUBImageLoaderDelegate
 
 /**
  *  Notify the Hub Framework that an image loader finished loading an image
@@ -74,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  See also `HUBImageLoaderFactory` which is used to create instances conforming to this protocol.
  */
-@protocol HUBImageLoader <NSObject>
+@protocol HUBImageLoader
 
 /// The image loader's delegate. Don't assign this property yourself, it will be set by the Hub Framework.
 @property (nonatomic, weak, nullable) id<HUBImageLoaderDelegate> delegate;

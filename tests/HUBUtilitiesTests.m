@@ -19,27 +19,28 @@
  *  under the License.
  */
 
-import Foundation
-import HubFramework
+#import <XCTest/XCTest.h>
+#import "HUBUtilities.h"
+#import "HUBComponentMock.h"
+#import "HUBActionHandler.h"
 
-/// Action names used by `TodoListActionFactory`
-struct TodoListActionNames {
-    /// The name of an action to display an alert to add a todo item
-    static var add: String { return "add" }
-    /// The name of an action that gets performed once a todo item has been added
-    static var addCompleted: String { return "add-completed" }
+@interface HUBUtilitiesTests : XCTestCase
+
+@end
+
+@implementation HUBUtilitiesTests
+
+#pragma mark - Tests
+
+- (void)testHUBConformsToProtocol{
+    HUBComponentMock *componentMock = [[HUBComponentMock alloc] init];
+    // Check conformance
+    XCTAssertTrue(HUBConformsToProtocol(componentMock, @protocol(HUBComponentWithImageHandling)));
+    // Check non-conformance
+    XCTAssertFalse(HUBConformsToProtocol(componentMock, @protocol(HUBActionHandler)));
+    // Check override
+    componentMock.canHandleImages = NO;
+    XCTAssertFalse(HUBConformsToProtocol(componentMock, @protocol(HUBComponentWithImageHandling)));
 }
 
-/// Action factory used by the "Todo list" feature
-class TodoListActionFactory: HUBActionFactory {
-    /// The namespace that this action factory is registered for with `HUBActionRegistry`
-    static var namespace: String { return "namespace" }
-    
-    func createAction(forName name: String) -> HUBAction? {
-        if (name == TodoListActionNames.add) {
-            return TodoListAddAction()
-        }
-        
-        return nil
-    }
-}
+@end

@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  You don't conform to this protocol yourself, instead the Hub Framework will create instances conforming
  *  to this protocol based on the information a feature provided when it was registered with the framework.
  */
-@protocol HUBFeatureInfo <NSObject>
+@protocol HUBFeatureInfo
 
 /// The identifier of the feature
 @property (nonatomic, copy, readonly) NSString *identifier;

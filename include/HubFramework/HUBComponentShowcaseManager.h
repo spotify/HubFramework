@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  You don't conform to this protocol yourself, instead the application's `HUBManager` comes setup with a
  *  showcase manager that you can use.
  */
-@protocol HUBComponentShowcaseManager <NSObject>
+@protocol HUBComponentShowcaseManager
 
 /**
  *  The component identifiers that have been declared as showcaseable

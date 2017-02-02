@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Actions are created by an implementation of `HUBActionFactory`, which are registered for a certain
  *  namespace with `HUBActionRegistry`.
  */
-@protocol HUBAction <NSObject>
+@protocol HUBAction
 
 /**
  *  Perform the action in a certain context

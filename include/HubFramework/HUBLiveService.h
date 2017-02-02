@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Implement this to recieve view controllers created by the service (using JSON passed from the
  *  `hublive` command line application).
  */
-@protocol HUBLiveServiceDelegate <NSObject>
+@protocol HUBLiveServiceDelegate
 
 /**
  *  Sent to the delegate whenever the live service created a new view controller
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Note though that this implementation is only compiled when the application hosting the framework is
  *  compiled for DEBUG.
  */
-@protocol HUBLiveService <NSObject>
+@protocol HUBLiveService
 
 /// The service's delegate. See `HUBLiveServiceDelegate` for more information.
 @property (nonatomic, weak, nullable) id<HUBLiveServiceDelegate> delegate;

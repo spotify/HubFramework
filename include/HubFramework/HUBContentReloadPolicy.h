@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Each application using the Hub Framework also has a default content reload policy used for features that
  *  do not declare their own. This reload policy is passed when setting up `HUBManager`.
  */
-@protocol HUBContentReloadPolicy <NSObject>
+@protocol HUBContentReloadPolicy
 
 /**
  *  Return whether the content for a view should be reloaded

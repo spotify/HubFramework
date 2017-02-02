@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  about the properties that are part of this API, refer to `HUBContentOperation`, or to
  *  the "Content programming guide".
  */
-@protocol HUBContentOperationContext <NSObject>
+@protocol HUBContentOperationContext
 
 /// The URI of the view that the content operation is being used in
 @property (nonatomic, copy, readonly) NSURL *viewURI;

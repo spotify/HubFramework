@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  It's definitely recommended to use this protocol as much as possible when using child components, since
  *  you can leverage the framework's built-in capabilities for selection, image loading & other events.
  */
-@protocol HUBComponentChildDelegate <NSObject>
+@protocol HUBComponentChildDelegate
 
 /**
  *  Return a child component for a given model

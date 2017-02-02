@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  For more information, see `HUBContentOperation`.
  */
-@protocol HUBContentOperationFactory <NSObject>
+@protocol HUBContentOperationFactory
 
 /**
  *  Create an array of content operations to use for a view with a certain URI
