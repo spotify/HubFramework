@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  can be materialized into an image of any size. Images are resolved using the `HUBIconImageResolver`
  *  passed when setting up `HUBManager`.
  */
-@protocol HUBIcon <NSObject>
+@protocol HUBIcon
 
 /// The identifier of the icon. Can be used for custom image resolving.
 @property (nonatomic, copy, readonly) NSString *identifier;

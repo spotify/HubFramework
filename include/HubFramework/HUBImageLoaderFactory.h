@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  See `HUBImageLoader` for more information.
  */
-@protocol HUBImageLoaderFactory <NSObject>
+@protocol HUBImageLoaderFactory
 
 /**
  *  Create an image loader

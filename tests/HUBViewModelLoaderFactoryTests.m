@@ -168,9 +168,9 @@
     [prependedOperation.delegate contentOperation:prependedOperation didFailWithError:prependedOperationError];
     [contentOperation.delegate contentOperation:contentOperation didFailWithError:contentOperationError];
     
-    XCTAssertEqual(prependedOperation.performCount, (NSUInteger)1);
-    XCTAssertEqual(appendedOperation.performCount, (NSUInteger)1);
-    XCTAssertEqual(contentOperation.performCount, (NSUInteger)1);
+    XCTAssertEqual(prependedOperation.performCount, 1u);
+    XCTAssertEqual(appendedOperation.performCount, 1u);
+    XCTAssertEqual(contentOperation.performCount, 1u);
     
     // Verify operation chain order by checking error forwarding
     XCTAssertEqual(contentOperation.previousContentOperationError, prependedOperationError);

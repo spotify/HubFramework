@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  `HUBComponentActionObserver`: For components that can observe actions (see `HUBAction`).
  */
-@protocol HUBComponent <NSObject>
+@protocol HUBComponent
 
 #pragma mark - Configuring the Component's layout
 

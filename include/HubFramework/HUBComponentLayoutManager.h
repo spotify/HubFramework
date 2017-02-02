@@ -50,7 +50,7 @@ typedef NS_ENUM(NSUInteger, HUBComponentLayoutContentEdge) {
  *  A layout manager is always given a set of layout traits for the component(s) in question, to be able to make good
  *  decisions on what margins to use. For more information about layout traits; see `HUBComponentLayoutTrait`.
  */
-@protocol HUBComponentLayoutManager <NSObject>
+@protocol HUBComponentLayoutManager
 
 /**
  *  Return the margin to use between a component with a set of layout traits and a content edge

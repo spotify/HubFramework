@@ -26,7 +26,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Delegate protocol for `HUBComponentResizeObservingView`
-@protocol HUBComponentResizeObservingViewDelegate <NSObject>
+@protocol HUBComponentResizeObservingViewDelegate
 
 /**
  *  Notifies the delegate that a resize observing view was resized

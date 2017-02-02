@@ -19,13 +19,28 @@
  *  under the License.
  */
 
-#import "HUBViewControllerScrollHandler.h"
+#import <XCTest/XCTest.h>
+#import "HUBUtilities.h"
+#import "HUBComponentMock.h"
+#import "HUBActionHandler.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-/// Default view controller scroll handler, used for features that don't define their own
-@interface HUBViewControllerDefaultScrollHandler : NSObject <HUBViewControllerScrollHandler>
+@interface HUBUtilitiesTests : XCTestCase
 
 @end
 
-NS_ASSUME_NONNULL_END
+@implementation HUBUtilitiesTests
+
+#pragma mark - Tests
+
+- (void)testHUBConformsToProtocol{
+    HUBComponentMock *componentMock = [[HUBComponentMock alloc] init];
+    // Check conformance
+    XCTAssertTrue(HUBConformsToProtocol(componentMock, @protocol(HUBComponentWithImageHandling)));
+    // Check non-conformance
+    XCTAssertFalse(HUBConformsToProtocol(componentMock, @protocol(HUBActionHandler)));
+    // Check override
+    componentMock.canHandleImages = NO;
+    XCTAssertFalse(HUBConformsToProtocol(componentMock, @protocol(HUBComponentWithImageHandling)));
+}
+
+@end

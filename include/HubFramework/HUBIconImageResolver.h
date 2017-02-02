@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  `HUBManager`. The Hub Framework uses this object whenever an image needs to be resolved from a
  *  `HUBIcon` instance.
  */
-@protocol HUBIconImageResolver <NSObject>
+@protocol HUBIconImageResolver
 
 /**
  *  Resolve an image for component icon

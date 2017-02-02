@@ -19,27 +19,16 @@
  *  under the License.
  */
 
-import Foundation
-import HubFramework
+#import "HUBViewControllerScrollHandler.h"
 
-/// Action names used by `TodoListActionFactory`
-struct TodoListActionNames {
-    /// The name of an action to display an alert to add a todo item
-    static var add: String { return "add" }
-    /// The name of an action that gets performed once a todo item has been added
-    static var addCompleted: String { return "add-completed" }
-}
+NS_ASSUME_NONNULL_BEGIN
 
-/// Action factory used by the "Todo list" feature
-class TodoListActionFactory: HUBActionFactory {
-    /// The namespace that this action factory is registered for with `HUBActionRegistry`
-    static var namespace: String { return "namespace" }
-    
-    func createAction(forName name: String) -> HUBAction? {
-        if (name == TodoListActionNames.add) {
-            return TodoListAddAction()
-        }
-        
-        return nil
-    }
-}
+/**
+ *  Default view controller scroll handler, used for features that don't define their own or as a override point
+ *  when specifying different behaviour just for few of the methods specified in `HUBViewControllerScrollHandler`
+ */
+@interface HUBViewControllerDefaultScrollHandler : NSObject <HUBViewControllerScrollHandler>
+
+@end
+
+NS_ASSUME_NONNULL_END

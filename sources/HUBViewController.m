@@ -48,6 +48,8 @@
 #import "HUBActionHandlerWrapper.h"
 #import "HUBViewModelRenderer.h"
 #import "HUBFeatureInfo.h"
+#import "HUBOperation.h"
+#import "HUBOperationQueue.h"
 
 static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
 
@@ -84,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByCellIdentifier;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentWrapper *> *componentWrappersByModelIdentifier;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *highlightedComponentWrapper;
-@property (nonatomic, strong, nullable) id<HUBViewModel> pendingViewModel;
+@property (nonatomic, strong, readonly) HUBOperationQueue *renderingOperationQueue;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
@@ -92,7 +94,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) CGPoint lastContentOffset;
 @property (nonatomic, copy, nullable) void(^pendingScrollAnimationCallback)(void);
-@property (nonatomic, getter=isRendering) BOOL rendering;
 
 @end
 
@@ -147,6 +148,7 @@ NS_ASSUME_NONNULL_BEGIN
     _componentWrappersByIdentifier = [NSMutableDictionary new];
     _componentWrappersByCellIdentifier = [NSMutableDictionary new];
     _componentWrappersByModelIdentifier = [NSMutableDictionary new];
+    _renderingOperationQueue = [HUBOperationQueue new];
     
     viewModelLoader.delegate = self;
     viewModelLoader.actionPerformer = self;
@@ -218,6 +220,7 @@ NS_ASSUME_NONNULL_BEGIN
     [notificationCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
     self.viewHasBeenLaidOut = NO;
+    self.viewHasAppeared = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -226,12 +229,14 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.viewHasBeenLaidOut = YES;
 
-    if (self.viewModel != nil) {
-        if (self.viewModelHasChangedSinceLastLayoutUpdate || !CGRectEqualToRect(self.collectionView.frame, self.view.bounds)) {
-            self.collectionView.frame = self.view.bounds;
-            id<HUBViewModel> const viewModel = self.viewModel;
-            [self reloadCollectionViewWithViewModel:viewModel animated:NO];
-        }
+    if (self.viewModel == nil) {
+        return;
+    }
+    
+    if (self.viewModelHasChangedSinceLastLayoutUpdate || !CGRectEqualToRect(self.collectionView.frame, self.view.bounds)) {
+        self.collectionView.frame = self.view.bounds;
+        HUBOperation * const reloadOperation = [self createReloadCollectionViewOperation];
+        [self.renderingOperationQueue addOperation:reloadOperation];
     }
 }
 
@@ -450,31 +455,29 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didLoadViewModel:(id<HUBViewModel>)viewModel
 {
-    if ([self.viewModel.buildDate isEqual:viewModel.buildDate]) {
-        return;
-    }
-
-    if (self.isRendering) {
-        self.pendingViewModel = viewModel;
-        return;
-    }
-
-    self.rendering = YES;
-
-    id<HUBViewControllerDelegate> const delegate = self.delegate;
-    [delegate viewController:self willUpdateWithViewModel:viewModel];
+    HUBOperation * const willUpdateDelegateOperation = [HUBOperation synchronousOperationWithBlock:^{
+        [self.delegate viewController:self willUpdateWithViewModel:viewModel];
+    }];
     
-    HUBCopyNavigationItemProperties(self.navigationItem, viewModel.navigationItem);
+    HUBOperation * const updateViewModelOperation = [HUBOperation synchronousOperationWithBlock:^{
+        HUBCopyNavigationItemProperties(self.navigationItem, viewModel.navigationItem);
+        self.viewModel = viewModel;
+        self.viewModelHasChangedSinceLastLayoutUpdate = YES;
+        [self.view setNeedsLayout];
+    }];
     
-    self.viewModel = viewModel;
-    self.viewModelHasChangedSinceLastLayoutUpdate = YES;
-    [self.view setNeedsLayout];
+    HUBOperation * const reloadCollectionViewOperation = [self createReloadCollectionViewOperation];
     
-    if (self.viewHasBeenLaidOut) {
-        [self reloadCollectionViewWithViewModel:viewModel animated:NO];
-    }
+    HUBOperation * const didUpdateDelegateOperation = [HUBOperation synchronousOperationWithBlock:^{
+        [self.delegate viewControllerDidUpdate:self];
+    }];
     
-    [delegate viewControllerDidUpdate:self];
+    [self.renderingOperationQueue addOperations:@[
+        willUpdateDelegateOperation,
+        updateViewModelOperation,
+        reloadCollectionViewOperation,
+        didUpdateDelegateOperation
+    ]];
 }
 
 - (void)viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader didFailLoadingWithError:(NSError *)error
@@ -711,6 +714,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     if (![self.registeredCollectionViewCellReuseIdentifiers containsObject:cellReuseIdentifier]) {
         [collectionView registerClass:[HUBComponentCollectionViewCell class] forCellWithReuseIdentifier:cellReuseIdentifier];
+        [self.registeredCollectionViewCellReuseIdentifiers addObject:cellReuseIdentifier];
     }
     
     HUBComponentCollectionViewCell * const cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier
@@ -893,45 +897,43 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     containerView.collectionView = self.collectionView;
 }
 
-- (void)reloadCollectionViewWithViewModel:(id<HUBViewModel>)viewModel animated:(BOOL)animated
+
+- (HUBOperation *)createReloadCollectionViewOperation
 {
-    if (![self.collectionView.collectionViewLayout isKindOfClass:[HUBCollectionViewLayout class]]) {
-        self.collectionView.collectionViewLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
-                                                                                       componentLayoutManager:self.componentLayoutManager];
-    }
-
-    [self saveStatesForVisibleComponents];
-
-    [self configureHeaderComponent];
-    [self configureOverlayComponents];
-    [self adjustCollectionViewContentInsetWithProposedTopValue:[self calculateTopContentInset]];
-    
-    BOOL const shouldAddHeaderMargin = [self shouldAutomaticallyManageTopContentInset];
-    
-    UICollectionView * const nonnullCollectionView = self.collectionView;
-    [self.viewModelRenderer renderViewModel:viewModel
-                           inCollectionView:nonnullCollectionView
-                          usingBatchUpdates:self.viewHasAppeared
-                                   animated:animated
-                            addHeaderMargin:shouldAddHeaderMargin
-                                 completion:^{
-        self.rendering = NO;
-
-        if (self.pendingViewModel != nil) {
-            id<HUBViewModel> pendingViewModel = self.pendingViewModel;
-            self.pendingViewModel = nil;
-            [self viewModelLoader:self.viewModelLoader didLoadViewModel:pendingViewModel];
+    return [HUBOperation asynchronousOperationWithBlock:^(HUBOperationCompletionBlock completionHandler){
+        if (!self.viewHasBeenLaidOut) {
+            completionHandler();
             return;
         }
-
-        id<HUBViewControllerDelegate> delegate = self.delegate;
-
-        [self headerAndOverlayComponentViewsWillAppear];
+        
+        if (![self.collectionView.collectionViewLayout isKindOfClass:[HUBCollectionViewLayout class]]) {
+            self.collectionView.collectionViewLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                           componentLayoutManager:self.componentLayoutManager];
+        }
+        
+        [self saveStatesForVisibleComponents];
+        [self configureHeaderComponent];
+        [self configureOverlayComponents];
         [self adjustCollectionViewContentInsetWithProposedTopValue:[self calculateTopContentInset]];
-        [delegate viewControllerDidFinishRendering:self];
+        
+        self.viewModelHasChangedSinceLastLayoutUpdate = NO;
+        
+        BOOL const shouldAddHeaderMargin = [self shouldAutomaticallyManageTopContentInset];
+        id<HUBViewModel> const viewModel = self.viewModel;
+        UICollectionView * const collectionView = self.collectionView;
+        
+        [self.viewModelRenderer renderViewModel:viewModel
+                               inCollectionView:collectionView
+                              usingBatchUpdates:self.viewHasAppeared
+                                       animated:NO
+                                addHeaderMargin:shouldAddHeaderMargin
+                                     completion:^{
+                                         [self headerAndOverlayComponentViewsWillAppear];
+                                         [self adjustCollectionViewContentInsetWithProposedTopValue:[self calculateTopContentInset]];
+                                         [self.delegate viewControllerDidFinishRendering:self];
+                                         completionHandler();
+                                     }];
     }];
-    
-    self.viewModelHasChangedSinceLastLayoutUpdate = NO;
 }
 
 - (void)saveStatesForVisibleComponents
@@ -1141,14 +1143,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     contentInsets = [self.scrollHandler contentInsetsForViewController:self
                                                  proposedContentInsets:contentInsets];
 
-    if (!UIEdgeInsetsEqualToEdgeInsets(self.collectionView.contentInset, contentInsets)) {
-        self.collectionView.contentInset = contentInsets;
-        CGPoint contentOffset = self.collectionView.contentOffset;
-        contentOffset.y = -contentInsets.top;
-        [self setContentOffset:contentOffset animated:NO];
-    }
-
-    self.collectionView.scrollIndicatorInsets = self.collectionView.contentInset;
+    self.collectionView.contentInset = contentInsets;
+    self.collectionView.scrollIndicatorInsets = contentInsets;
 }
 
 - (void)collectionViewCellWillAppear:(HUBComponentCollectionViewCell *)cell

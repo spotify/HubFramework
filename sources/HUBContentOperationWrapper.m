@@ -23,6 +23,7 @@
 
 #import "HUBContentOperationContextImplementation.h"
 #import "HUBContentOperationWithPaginatedContent.h"
+#import "HUBUtilities.h"
 
 @interface HUBContentOperationWrapper () <HUBContentOperationDelegate>
 
@@ -76,7 +77,7 @@
 
 - (void)appendContentForPageIndex:(NSUInteger)pageIndex context:(id<HUBContentOperationContext>)context
 {
-    if ([self.contentOperation conformsToProtocol:@protocol(HUBContentOperationWithPaginatedContent)]) {
+    if (HUBConformsToProtocol(self.contentOperation, @protocol(HUBContentOperationWithPaginatedContent))) {
         id<HUBContentOperationWithPaginatedContent> const paginatedOperation = (id<HUBContentOperationWithPaginatedContent>)self.contentOperation;
         [paginatedOperation appendContentForPageIndex:pageIndex inContext:context];
     } else {

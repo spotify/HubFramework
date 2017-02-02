@@ -23,7 +23,7 @@ import Foundation
 import HubFramework
 
 /// Default component factory, used as the implicit factory when no namespace was given
-class DefaultComponentFactory: NSObject, HUBComponentFactory {
+class DefaultComponentFactory: HUBComponentFactory {
     static var namespace = "default"
     
     private lazy var creationMap: [String: () -> HUBComponent] = [

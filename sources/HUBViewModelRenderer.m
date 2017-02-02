@@ -40,58 +40,91 @@ NS_ASSUME_NONNULL_BEGIN
         addHeaderMargin:(BOOL)addHeaderMargin
              completion:(void (^)(void))completionBlock
 {
+    __weak __typeof(self) weakSelf = self;
+    void (^renderBlock)() = ^{
+        __strong __typeof(self) strongSelf = weakSelf;
+        [strongSelf renderViewModel:viewModel
+                   inCollectionView:collectionView
+                  usingBatchUpdates:usingBatchUpdates
+                    addHeaderMargin:addHeaderMargin
+                         completion:completionBlock];
+    };
+
+    if (animated) {
+        renderBlock();
+    } else {
+        [UIView performWithoutAnimation:renderBlock];
+    }
+}
+
+- (void)renderViewModel:(id<HUBViewModel>)viewModel
+       inCollectionView:(UICollectionView *)collectionView
+      usingBatchUpdates:(BOOL)usingBatchUpdates
+        addHeaderMargin:(BOOL)addHeaderMargin
+             completion:(void (^)(void))completionBlock
+{
     HUBViewModelDiff *diff;
     if (self.lastRenderedViewModel != nil) {
         id<HUBViewModel> nonnullViewModel = self.lastRenderedViewModel;
         diff = [HUBViewModelDiff diffFromViewModel:nonnullViewModel toViewModel:viewModel];
     }
 
+    BOOL const hasDiffChanges = (diff == nil || diff.hasChanges);
     HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)collectionView.collectionViewLayout;
 
-    if (!usingBatchUpdates || diff == nil) {
-        [collectionView reloadData];
-        
+    /*
+     Because of the different ways we can trigger the layout and post-layout logic (i.e. whether it's being called
+     synchronously, or called from either of of the collection view's performBatchUpdates:completion: blocks), I've
+     tried to separate that logic out into 2 block methods: layoutBlock and postLayoutBlock.
+     */
+    void (^layoutBlock)() = ^{
         [layout computeForCollectionViewSize:collectionView.frame.size
                                    viewModel:viewModel
                                         diff:diff
                              addHeaderMargin:addHeaderMargin];
+    };
+
+    __weak __typeof(self) weakSelf = self;
+    void (^postLayoutBlock)() = ^{
+        __strong __typeof(self) strongSelf = weakSelf;
+        strongSelf.lastRenderedViewModel = viewModel;
+        completionBlock();
+    };
+
+    if (!usingBatchUpdates || diff == nil) {
+        if (hasDiffChanges) {
+            [collectionView reloadData];
+        }
+
+        layoutBlock();
 
         /* Below is a workaround for an issue caused by UICollectionView not asking for numberOfItemsInSection
-           before viewDidAppear is called or instantly after a call to reloadData. If reloadData is called
-           after viewDidAppear has been called, followed by a call to performBatchUpdates, UICollectionView will
-           ask for the initial number of items right before the batch updates, and for the new count while inside
-           the update block. This will often trigger an assertion if there are any insertions / deletions, as
-           the data model has already changed before the update. Forcing a layoutSubviews however, manually
-           triggers the numberOfItems call.
+         before viewDidAppear is called or instantly after a call to reloadData. If reloadData is called
+         after viewDidAppear has been called, followed by a call to performBatchUpdates, UICollectionView will
+         ask for the initial number of items right before the batch updates, and for the new count while inside
+         the update block. This will often trigger an assertion if there are any insertions / deletions, as
+         the data model has already changed before the update. Forcing a layoutSubviews however, manually
+         triggers the numberOfItems call.
          */
         if (usingBatchUpdates && diff == nil) {
             [collectionView setNeedsLayout];
             [collectionView layoutIfNeeded];
         }
-        self.lastRenderedViewModel = viewModel;
-        completionBlock();
+        postLayoutBlock();
     } else {
-        void (^updateBlock)() = ^{
+        if (hasDiffChanges) {
             [collectionView performBatchUpdates:^{
                 [collectionView insertItemsAtIndexPaths:diff.insertedBodyComponentIndexPaths];
                 [collectionView deleteItemsAtIndexPaths:diff.deletedBodyComponentIndexPaths];
                 [collectionView reloadItemsAtIndexPaths:diff.reloadedBodyComponentIndexPaths];
-                
-                [layout computeForCollectionViewSize:collectionView.frame.size
-                                           viewModel:viewModel
-                                                diff:diff
-                                     addHeaderMargin:addHeaderMargin];
-                
+
+                layoutBlock();
             } completion:^(BOOL finished) {
-                self.lastRenderedViewModel = viewModel;
-                completionBlock();
+                postLayoutBlock();
             }];
-        };
-        
-        if (animated) {
-            updateBlock();
         } else {
-            [UIView performWithoutAnimation:updateBlock];
+            layoutBlock();
+            postLayoutBlock();
         }
     }
 }

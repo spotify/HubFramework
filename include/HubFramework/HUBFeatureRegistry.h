@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  A feature is the top-level entity in the Hub Framework, that is used to ecapsulate related views into a logical group.
  *  Views that belong to the same feature share the same setup, such as a view URI predicate, content operation factories, etc.
  */
-@protocol HUBFeatureRegistry <NSObject>
+@protocol HUBFeatureRegistry
 
 /**
  *  Register a feature with the Hub Framework

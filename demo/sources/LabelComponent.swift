@@ -29,7 +29,7 @@ import HubFramework
  *
  *  - title
  */
-class LabelComponent: NSObject, HUBComponent {
+class LabelComponent: HUBComponent {
     var view: UIView?
 
     private lazy var label = UILabel()

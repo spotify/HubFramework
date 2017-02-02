@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  A default action handler to be used system-wide can also be supplied when setting up this
  *  application's `HUBManager`.
  */
-@protocol HUBActionHandler <NSObject>
+@protocol HUBActionHandler
 
 /**
  *  Handle an action with a given context

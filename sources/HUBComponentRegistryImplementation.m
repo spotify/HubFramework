@@ -29,6 +29,7 @@
 #import "HUBComponentFallbackHandler.h"
 #import "HUBComponentModelBuilderShowcaseSnapshotGenerator.h"
 #import "HUBJSONSchemaRegistryImplementation.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -105,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
     for (NSString * const namespace in self.componentFactories) {
         id<HUBComponentFactory> const factory = self.componentFactories[namespace];
         
-        if (![factory conformsToProtocol:@protocol(HUBComponentFactoryShowcaseNameProvider)]) {
+        if (!HUBConformsToProtocol(factory, @protocol(HUBComponentFactoryShowcaseNameProvider))) {
             continue;
         }
         
@@ -124,7 +125,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBComponentFactory> const factory = self.componentFactories[componentIdentifier.namespacePart];
     
-    if (![factory conformsToProtocol:@protocol(HUBComponentFactoryShowcaseNameProvider)]) {
+    if (!HUBConformsToProtocol(factory, @protocol(HUBComponentFactoryShowcaseNameProvider))) {
         return nil;
     }
     

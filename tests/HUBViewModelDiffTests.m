@@ -34,6 +34,33 @@
 
 @implementation HUBViewModelDiffTests
 
+- (void)testIdenticalModelMyers
+{
+    [self runIdenticalModelTestWithAlgorithm:HUBDiffMyersAlgorithm];
+}
+
+- (void)testIdenticalModelLCS
+{
+    [self runIdenticalModelTestWithAlgorithm:HUBDiffLCSAlgorithm];
+}
+
+- (void)runIdenticalModelTestWithAlgorithm:(HUBDiffAlgorithm)algorithm
+{
+    NSArray<id<HUBComponentModel>> *components = @[
+                                                   [HUBViewModelUtilities createComponentModelWithIdentifier:@"component-1" customData:nil],
+                                                   [HUBViewModelUtilities createComponentModelWithIdentifier:@"component-2" customData:nil],
+                                                   [HUBViewModelUtilities createComponentModelWithIdentifier:@"component-3" customData:nil],
+                                                   [HUBViewModelUtilities createComponentModelWithIdentifier:@"component-4" customData:nil]
+                                                   ];
+    id<HUBViewModel> viewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test" components:components];
+
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:viewModel toViewModel:viewModel algorithm:algorithm];
+    XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 0);
+    XCTAssert(diff.insertedBodyComponentIndexPaths.count == 0);
+    XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
+    XCTAssertFalse(diff.hasChanges);
+}
+
 - (void)testInsertionsMyers
 {
     [self runInsertionsTestWithAlgorithm:HUBDiffMyersAlgorithm];
@@ -65,6 +92,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 0);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 4);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
+    XCTAssertTrue(diff.hasChanges);
 }
 
 - (void)testReloadsMyers
@@ -103,6 +131,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 2);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 0);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
+    XCTAssertTrue(diff.hasChanges);
 }
 
 - (void)testDeletionsMyers
@@ -138,6 +167,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 0);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 0);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
+    XCTAssertTrue(diff.hasChanges);
 }
 
 - (void)testComplexChangeSetMyers
@@ -191,6 +221,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 2);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 2);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
+    XCTAssertTrue(diff.hasChanges);
 }
 
 - (void)testInsertionOfSingleComponentModelAtStartWithDataChangesMyers
@@ -225,6 +256,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 3);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 1);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
+    XCTAssertTrue(diff.hasChanges);
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:1 inSection:0]]);
@@ -264,6 +296,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 3);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 2);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
+    XCTAssertTrue(diff.hasChanges);
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:1 inSection:0]]);
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);

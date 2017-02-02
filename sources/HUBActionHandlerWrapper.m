@@ -30,6 +30,7 @@
 #import "HUBComponentModel.h"
 #import "HUBComponentTarget.h"
 #import "HUBViewModelLoaderImplementation.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -95,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
     if ([self.actionHandler handleActionWithContext:context]) {
         actionPerformed = YES;
     } else {
-        if ([action conformsToProtocol:@protocol(HUBAsyncAction)]) {
+        if (HUBConformsToProtocol(action, @protocol(HUBAsyncAction))) {
             id<HUBAsyncAction> const asyncAction = (id<HUBAsyncAction>)action;
             HUBAsyncActionWrapper * const wrapper = [[HUBAsyncActionWrapper alloc] initWithAction:asyncAction context:context];
             wrapper.delegate = self;

@@ -31,7 +31,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Delegate protocol for `HUBContentOperationWrapper`
-@protocol HUBContentOperationWrapperDelegate <NSObject>
+@protocol HUBContentOperationWrapperDelegate
 
 /**
  *  Notify the operation wrapper's delegate that the underlying operation finished

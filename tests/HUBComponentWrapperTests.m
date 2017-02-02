@@ -144,13 +144,16 @@
     
     HUBComponentMock * const component = [HUBComponentMock new];
     id<HUBComponentModel> const model = [self componentModelWithIdentifier:@"model"];
-    HUBComponentWrapper *componentWrapper = [self componentWrapperForComponent:component model:model];
-    [componentWrapper viewDidMoveToSuperview:superview];
+
+    @autoreleasepool {
+        HUBComponentWrapper *componentWrapper = [self componentWrapperForComponent:component model:model];
+        [componentWrapper viewDidMoveToSuperview:superview];
     
-    XCTAssertEqualObjects(superview.gestureRecognizers, @[self.gestureRecognizer]);
+        XCTAssertEqualObjects(superview.gestureRecognizers, @[self.gestureRecognizer]);
     
-    // When a component wrapper is deallocated, the gesture recognizer for it should automatically be removed
-    componentWrapper = nil;
+        // When a component wrapper is deallocated, the gesture recognizer for it should automatically be removed
+        componentWrapper = nil;
+    }
     XCTAssertEqualObjects(superview.gestureRecognizers, @[]);
 }
 

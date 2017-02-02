@@ -23,7 +23,7 @@ import Foundation
 import HubFramework
 
 /// Content operation used to populate the "Root" feature
-class RootContentOperation: NSObject, HUBContentOperation {
+class RootContentOperation: HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
     
     func perform(in context: HUBContentOperationContext) {

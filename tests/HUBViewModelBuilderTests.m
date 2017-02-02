@@ -140,11 +140,11 @@
     [self.builder builderForBodyComponentModelWithIdentifier:@"B"];
     [self.builder builderForBodyComponentModelWithIdentifier:@"C"];
     
-    XCTAssertEqual(self.builder.numberOfBodyComponentModelBuilders, (NSUInteger)3);
+    XCTAssertEqual(self.builder.numberOfBodyComponentModelBuilders, 3u);
     
     [self.builder removeBuilderForBodyComponentModelWithIdentifier:@"B"];
     
-    XCTAssertEqual(self.builder.numberOfBodyComponentModelBuilders, (NSUInteger)2);
+    XCTAssertEqual(self.builder.numberOfBodyComponentModelBuilders, 2u);
 }
 
 - (void)testAllBodyComponentModelBuilders
@@ -164,11 +164,11 @@
     [self.builder builderForOverlayComponentModelWithIdentifier:@"B"];
     [self.builder builderForOverlayComponentModelWithIdentifier:@"C"];
     
-    XCTAssertEqual(self.builder.numberOfOverlayComponentModelBuilders, (NSUInteger)3);
+    XCTAssertEqual(self.builder.numberOfOverlayComponentModelBuilders, 3u);
     
     [self.builder removeBuilderForOverlayComponentModelWithIdentifier:@"B"];
     
-    XCTAssertEqual(self.builder.numberOfOverlayComponentModelBuilders, (NSUInteger)2);
+    XCTAssertEqual(self.builder.numberOfOverlayComponentModelBuilders, 2u);
 }
 
 - (void)testAllOverlayComponentModelBuilders
@@ -239,11 +239,11 @@
 
     id<HUBViewModel> const model = [self.builder build];
     
-    XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)2);
+    XCTAssertEqual(model.bodyComponentModels.count, 2u);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifierB);
-    XCTAssertEqual(model.bodyComponentModels[0].index, (NSUInteger)0);
+    XCTAssertEqual(model.bodyComponentModels[0].index, 0u);
     XCTAssertEqualObjects(model.bodyComponentModels[1].identifier, componentIdentifierA);
-    XCTAssertEqual(model.bodyComponentModels[1].index, (NSUInteger)1);
+    XCTAssertEqual(model.bodyComponentModels[1].index, 1u);
 }
 
 - (void)testBodyComponentOutOfBoundsPreferredIndexHandled
@@ -255,9 +255,9 @@
     
     id<HUBViewModel> const model = [self.builder build];
     
-    XCTAssertEqual(model.bodyComponentModels.count, (NSUInteger)1);
+    XCTAssertEqual(model.bodyComponentModels.count, 1u);
     XCTAssertEqualObjects(model.bodyComponentModels[0].identifier, componentIdentifier);
-    XCTAssertEqual(model.bodyComponentModels[0].index, (NSUInteger)0);
+    XCTAssertEqual(model.bodyComponentModels[0].index, 0u);
 }
 
 - (void)testOverlayComponentModelBuilders
@@ -279,11 +279,11 @@
     
     id<HUBViewModel> const model = [self.builder build];
     
-    XCTAssertEqual(model.overlayComponentModels.count, (NSUInteger)2);
+    XCTAssertEqual(model.overlayComponentModels.count, 2u);
     XCTAssertEqualObjects(model.overlayComponentModels[0].identifier, @"componentB");
-    XCTAssertEqual(model.overlayComponentModels[0].index, (NSUInteger)0);
+    XCTAssertEqual(model.overlayComponentModels[0].index, 0u);
     XCTAssertEqualObjects(model.overlayComponentModels[1].identifier, @"componentA");
-    XCTAssertEqual(model.overlayComponentModels[1].index, (NSUInteger)1);
+    XCTAssertEqual(model.overlayComponentModels[1].index, 1u);
 }
 
 - (void)testOverlayComponentOutOfBoundsPreferredIndexHandled
@@ -292,9 +292,9 @@
 
     id<HUBViewModel> const model = [self.builder build];
     
-    XCTAssertEqual(model.overlayComponentModels.count, (NSUInteger)1);
+    XCTAssertEqual(model.overlayComponentModels.count, 1u);
     XCTAssertEqualObjects(model.overlayComponentModels[0].identifier, @"overlay");
-    XCTAssertEqual(model.overlayComponentModels[0].index, (NSUInteger)0);
+    XCTAssertEqual(model.overlayComponentModels[0].index, 0u);
 }
 
 - (void)testEnumeratingAllComponentModelBuilders

@@ -81,11 +81,11 @@ NS_ASSUME_NONNULL_BEGIN
         _gestureRecognizer.delegate = self;
         [_gestureRecognizer addTarget:self action:@selector(handleGestureRecognizer:)];
         
-        if ([_component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
+        if (HUBConformsToProtocol(_component, @protocol(HUBComponentWithChildren))) {
             ((id<HUBComponentWithChildren>)_component).childDelegate = self;
         }
         
-        if ([_component conformsToProtocol:@protocol(HUBComponentActionPerformer)]) {
+        if (HUBConformsToProtocol(_component, @protocol(HUBComponentActionPerformer))) {
             ((id<HUBComponentActionPerformer>)_component).actionPerformer = self;
         }
     }
@@ -108,7 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)saveComponentUIState
 {
-    if (![self.component conformsToProtocol:@protocol(HUBComponentWithRestorableUIState)]) {
+    if (!HUBConformsToProtocol(self.component, @protocol(HUBComponentWithRestorableUIState))) {
         return;
     }
     
@@ -146,17 +146,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)handlesImages
 {
-    return [self.component conformsToProtocol:@protocol(HUBComponentWithImageHandling)];
+    return HUBConformsToProtocol(self.component, @protocol(HUBComponentWithImageHandling));
 }
 
 - (BOOL)isContentOffsetObserver
 {
-    return [self.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)];
+    return HUBConformsToProtocol(self.component, @protocol(HUBComponentContentOffsetObserver));
 }
 
 - (BOOL)isActionObserver
 {
-    return [self.component conformsToProtocol:@protocol(HUBComponentActionObserver)];
+    return HUBConformsToProtocol(self.component, @protocol(HUBComponentActionObserver));
 }
 
 - (BOOL)isRootComponent
@@ -187,7 +187,7 @@ NS_ASSUME_NONNULL_BEGIN
     UIView * const view = HUBComponentLoadViewIfNeeded(self.component);
     
     if (!viewLoaded) {
-        if ([self.component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
+        if (HUBConformsToProtocol(self.component, @protocol(HUBComponentViewObserver))) {
             HUBComponentResizeObservingView * const resizeObservingView = [[HUBComponentResizeObservingView alloc] initWithFrame:view.bounds];
             resizeObservingView.delegate = self;
             [view addSubview:resizeObservingView];
@@ -242,7 +242,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGSize)preferredSizeForImageFromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
-    if (![self.component conformsToProtocol:@protocol(HUBComponentWithImageHandling)]) {
+    if (!HUBConformsToProtocol(self.component, @protocol(HUBComponentWithImageHandling))) {
         return CGSizeZero;
     }
     
@@ -253,7 +253,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateViewForLoadedImage:(UIImage *)image fromData:(id<HUBComponentImageData>)imageData model:(id<HUBComponentModel>)model animated:(BOOL)animated
 {
-    if (![self.component conformsToProtocol:@protocol(HUBComponentWithImageHandling)]) {
+    if (!HUBConformsToProtocol(self.component, @protocol(HUBComponentWithImageHandling))) {
         return;
     }
     
@@ -269,7 +269,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     self.appearanceCount++;
     
-    if ([self.component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
+    if (HUBConformsToProtocol(self.component, @protocol(HUBComponentViewObserver))) {
         [(id<HUBComponentViewObserver>)self.component viewWillAppear];
     }
     
@@ -292,7 +292,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewDidResize
 {
-    if (![self.component conformsToProtocol:@protocol(HUBComponentViewObserver)]) {
+    if (!HUBConformsToProtocol(self.component, @protocol(HUBComponentViewObserver))) {
         return;
     }
     
@@ -303,7 +303,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateViewForChangedContentOffset:(CGPoint)contentOffset
 {
-    if (![self.component conformsToProtocol:@protocol(HUBComponentContentOffsetObserver)]) {
+    if (!HUBConformsToProtocol(self.component, @protocol(HUBComponentContentOffsetObserver))) {
         return;
     }
     
@@ -314,7 +314,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)actionPerformedWithContext:(id<HUBActionContext>)context
 {
-    if (![self.component conformsToProtocol:@protocol(HUBComponentActionObserver)]) {
+    if (!HUBConformsToProtocol(self.component, @protocol(HUBComponentActionObserver))) {
         return;
     }
     
@@ -335,7 +335,7 @@ NS_ASSUME_NONNULL_BEGIN
                         animated:(BOOL)animated
                       completion:(void (^)(void))completion
 {
-    if ([self.component conformsToProtocol:@protocol(HUBComponentWithScrolling)]) {
+    if (HUBConformsToProtocol(self.component, @protocol(HUBComponentWithScrolling))) {
         [(id<HUBComponentWithScrolling>)self.component scrollToComponentAtIndex:childIndex
                                                                  scrollPosition:scrollPosition
                                                                        animated:animated
@@ -505,7 +505,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)restoreComponentUIStateForModel:(id<HUBComponentModel>)model
 {
-    if (![self.component conformsToProtocol:@protocol(HUBComponentWithRestorableUIState)]) {
+    if (!HUBConformsToProtocol(self.component, @protocol(HUBComponentWithRestorableUIState))) {
         return;
     }
     
@@ -530,7 +530,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.selectionState = selectionState;
     
-    if ([self.component conformsToProtocol:@protocol(HUBComponentWithSelectionState)]) {
+    if (HUBConformsToProtocol(self.component, @protocol(HUBComponentWithSelectionState))) {
         [(id<HUBComponentWithSelectionState>)self.component updateViewForSelectionState:selectionState];
     } else if ([self.view isKindOfClass:[UITableViewCell class]]) {
         UITableViewCell * const tableViewCell = self.view;

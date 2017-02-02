@@ -29,6 +29,7 @@
 #import "HUBIdentifier.h"
 #import "HUBComponentLayoutManager.h"
 #import "HUBViewModelDiff.h"
+#import "HUBUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -287,7 +288,7 @@ NS_ASSUME_NONNULL_BEGIN
     id<HUBComponent> const newComponent = [self.componentRegistry createComponentForModel:model];
     self.componentCache[model.componentIdentifier] = newComponent;
     
-    if ([newComponent conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
+    if (HUBConformsToProtocol(newComponent, @protocol(HUBComponentWithChildren))) {
         ((id<HUBComponentWithChildren>)newComponent).childDelegate = self;
     }
     
@@ -413,11 +414,23 @@ NS_ASSUME_NONNULL_BEGIN
                                      lastComponentX:(CGFloat)lastComponentX
                                            rowWidth:(CGFloat)rowWidth
 {
-    NSArray<NSSet<HUBComponentLayoutTrait> *> *componentsTraits = [components valueForKey:NSStringFromSelector(@selector(layoutTraits))];
+
+
+    NSArray<NSSet<HUBComponentLayoutTrait> *> *componentsTraits = [self.class layoutTraitsFromComponents:components];
     CGFloat adjustment = [self.componentLayoutManager horizontalOffsetForComponentsWithLayoutTraits:componentsTraits
                                                               firstComponentLeadingHorizontalOffset:firstComponentX
                                                               lastComponentTrailingHorizontalOffset:rowWidth - lastComponentX];
+
     [self updateLayoutAttributesForComponents:components horizontalAdjustment:adjustment lastComponentIndex:lastComponentIndex];
+}
+
++ (NSArray<NSSet<HUBComponentLayoutTrait> *> *)layoutTraitsFromComponents:(NSArray<id<HUBComponent>> *)components
+{
+    NSMutableArray *layoutTraints = [NSMutableArray new];
+    for (id<HUBComponent> component in components) {
+        [layoutTraints addObject:component.layoutTraits];
+    }
+    return [layoutTraints copy];
 }
 
 - (void)updateLayoutAttributesForComponents:(NSArray<id<HUBComponent>> *)components

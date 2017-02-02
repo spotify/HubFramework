@@ -21,28 +21,37 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol HUBComponent;
+@class HUBOperation;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Protocol implemented by objects that create Hub Framework components
+ *  An operation queue that keeps executing scheduled operations whenever the previous one finished
  *
- *  You implement a component factory to be able to integrate your component(s) with the framework.
- *  Each factory is registered with `HUBComponentRegistry` for a certain namespace, and will be used
- *  whenever a component model declares that namespace as part of its component identifier.
+ *  See the documentation for `HUBOperation` for a discussion why `NSOperation(Queue)` is not used here.
  */
-@protocol HUBComponentFactory
+@interface HUBOperationQueue : NSObject
 
 /**
- *  Create a new component matching a name
+ *  Add an operation to the queue
  *
- *  @param name The name of the component to create
+ *  @param operation The operation to add
  *
- *  Returning `nil` from this method will cause a fallback component to be used, using the application's
- *  `HUBComponentFallbackHandler` and the component model's `HUBComponentCategory`.
+ *  If the queue is empty, the operation will start directly. Otherwise, it'll start whenever the queue
+ *  became idle.
  */
-- (nullable id<HUBComponent>)createComponentForName:(NSString *)name;
+- (void)addOperation:(HUBOperation *)operation;
+
+/**
+ *  Add an array of operations to the queue
+ *
+ *  @param operations The operations to add
+ *
+ *  All operations will be added to the queue before any of them are started. If the queue was empty when
+ *  added, the first operation in the array will then start. Otherwise, it'll start whenever the queue
+ *  became idle.
+ */
+- (void)addOperations:(NSArray<HUBOperation *> *)operations;
 
 @end
 

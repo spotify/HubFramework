@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  You don't conform to this protocol yourself, instead the application's `HUBManager` comes setup
  *  with a registry that you can use.
  */
-@protocol HUBActionRegistry <NSObject>
+@protocol HUBActionRegistry
 
 /**
  *  Register an action factory with the Hub Framework

@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  an object conforming to this protocol to the `actionPerformer` property of either a
  *  component or content operation.
  */
-@protocol HUBActionPerformer <NSObject>
+@protocol HUBActionPerformer
 
 /**
  *  Perform an action with a given identifier, optionally passing custom data as well

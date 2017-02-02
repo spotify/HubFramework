@@ -23,8 +23,7 @@ import Foundation
 import HubFramework
 
 /// Content operation that adds an activity indicator when loading results from the GitHub search API
-class GitHubSearchActivityIndicatorContentOperation: NSObject, HUBContentOperation {
-
+class GitHubSearchActivityIndicatorContentOperation: HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
 
     func perform(in context: HUBContentOperationContext) {

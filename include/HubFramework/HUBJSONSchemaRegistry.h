@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  For more information on how Hub Framework JSON schemas work; see `HUBJSONSchema`.
  */
-@protocol HUBJSONSchemaRegistry <NSObject>
+@protocol HUBJSONSchemaRegistry
 
 /**
  *  Create a new JSON schema that can be customized for a custom JSON format

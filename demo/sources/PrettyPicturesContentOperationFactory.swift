@@ -23,7 +23,7 @@ import Foundation
 import HubFramework
 
 /// Content operation factory used in the "Pretty pictures" feature
-class PrettyPicturesContentOperationFactory: NSObject, HUBContentOperationFactory {
+class PrettyPicturesContentOperationFactory: HUBContentOperationFactory {
     func createContentOperations(forViewURI viewURI: URL) -> [HUBContentOperation] {
         return [PrettyPicturesContentOperation()]
     }

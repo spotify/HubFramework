@@ -247,15 +247,15 @@
     childBuilderE.componentName = @"component";
 
     id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
-    XCTAssertEqual(model.children.count, (NSUInteger)5);
+    XCTAssertEqual(model.children.count, 5u);
     XCTAssertEqualObjects(model.children[0].identifier, childIdentifierE);
-    XCTAssertEqual(model.children[0].index, (NSUInteger)0);
+    XCTAssertEqual(model.children[0].index, 0u);
     XCTAssertEqualObjects(model.children[1].identifier, childIdentifierD);
-    XCTAssertEqual(model.children[1].index, (NSUInteger)1);
+    XCTAssertEqual(model.children[1].index, 1u);
     XCTAssertEqualObjects(model.children[2].identifier, childIdentifierA);
-    XCTAssertEqual(model.children[2].index, (NSUInteger)2);
+    XCTAssertEqual(model.children[2].index, 2u);
     XCTAssertEqualObjects(model.children[3].identifier, childIdentifierC);
-    XCTAssertEqual(model.children[3].index, (NSUInteger)3);
+    XCTAssertEqual(model.children[3].index, 3u);
 }
 
 - (void)testChildOutOfBoundsPreferredIndexHandled
@@ -268,9 +268,9 @@
     childBuilder.preferredIndex = @99;
 
     id<HUBComponentModel> const model = [self.builder buildForIndex:0 parent:nil];
-    XCTAssertEqual(model.children.count, (NSUInteger)1);
+    XCTAssertEqual(model.children.count, 1u);
     XCTAssertEqualObjects(model.children[0].identifier, childIdentifier);
-    XCTAssertEqual(model.children[0].index, (NSUInteger)0);
+    XCTAssertEqual(model.children[0].index, 0u);
 }
 
 - (void)testRemovingChildComponentModel
@@ -294,11 +294,11 @@
     [self.builder builderForChildWithIdentifier:@"child2"].componentName = @"component";
     [self.builder builderForChildWithIdentifier:@"child3"].componentName = @"component";
     
-    XCTAssertEqual([self.builder buildForIndex:0 parent:nil].children.count, (NSUInteger)3);
+    XCTAssertEqual([self.builder buildForIndex:0 parent:nil].children.count, 3u);
     
     [self.builder removeAllChildBuilders];
     
-    XCTAssertEqual([self.builder buildForIndex:0 parent:nil].children.count, (NSUInteger)0);
+    XCTAssertEqual([self.builder buildForIndex:0 parent:nil].children.count, 0u);
 }
 
 - (void)testChildReferenceToParent
@@ -432,7 +432,7 @@
     XCTAssertEqualObjects(model.icon.identifier, iconIdentifier);
     XCTAssertEqualObjects(model.target.URI, targetURL);
     XCTAssertEqualObjects(model.target.initialViewModel.navigationItem.title, targetTitle);
-    XCTAssertEqual(model.target.actionIdentifiers.count, (NSUInteger)1);
+    XCTAssertEqual(model.target.actionIdentifiers.count, 1u);
     XCTAssertEqualObjects(model.target.actionIdentifiers.firstObject, targetActionIdentifier);
     
     XCTAssertEqualObjects(model.metadata, metadata);

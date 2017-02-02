@@ -31,7 +31,7 @@
  *  You don't conform to this protocol yourself, instead request an instance conforming
  *  to it from the application's `HUBComponentShowcaseManager`.
  */
-@protocol HUBComponentShowcaseSnapshotGenerator <NSObject>
+@protocol HUBComponentShowcaseSnapshotGenerator
 
 /**
  *  Generate a snapshot of the component that this object represents

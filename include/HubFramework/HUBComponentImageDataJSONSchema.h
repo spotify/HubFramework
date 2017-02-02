@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  All paths in this schema are relative to a dictionary containing image data for a component.
  */
-@protocol HUBComponentImageDataJSONSchema <NSObject>
+@protocol HUBComponentImageDataJSONSchema
 
 /// The path that points to a HTTP image URL for the image that the data is for. Maps to `URL`.
 @property (nonatomic, strong) id<HUBJSONURLPath> URLPath;
