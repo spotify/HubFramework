@@ -214,6 +214,13 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
  */
 - (nullable HUBComponentWrapper *)visibleChildComponentAtIndex:(NSUInteger)index;
 
+/**
+ *  Reconfigures the component's view to use the new container view size.
+ *
+ *  @param containerViewSize the new container view size.
+ */
+- (void)reconfigureViewWithContainerViewSize:(CGSize)containerViewSize;
+
 @end
 
 NS_ASSUME_NONNULL_END
