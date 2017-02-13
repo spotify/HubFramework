@@ -243,7 +243,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    [self.collectionView.collectionViewLayout invalidateLayout];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [self reconfigureVisibleCellsForSize:size];
+        [self.collectionView.collectionViewLayout invalidateLayout];
+    } completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -735,6 +739,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                              childIndex:nil];
 
     return cell;
+}
+
+- (void)reconfigureVisibleCellsForSize:(CGSize)size
+{
+    for (HUBComponentCollectionViewCell *visibleCell in [self.collectionView visibleCells]) {
+        HUBComponentWrapper * const componentWrapper = self.componentWrappersByCellIdentifier[visibleCell.identifier];
+        [componentWrapper reconfigureViewWithContainerViewSize:size];
+    }
 }
 
 #pragma mark - HUBCollectionViewDelegate

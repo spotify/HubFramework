@@ -223,6 +223,11 @@ NS_ASSUME_NONNULL_BEGIN
     self.hasBeenConfigured = YES;
 }
 
+- (void)reconfigureViewWithContainerViewSize:(CGSize)containerViewSize
+{
+    [self.component configureViewWithModel:self.model containerViewSize:containerViewSize];
+}
+
 - (void)prepareViewForReuse
 {
     NSNumber * const index = @(self.model.index);
