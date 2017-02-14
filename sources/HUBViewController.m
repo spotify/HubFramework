@@ -250,29 +250,6 @@ NS_ASSUME_NONNULL_BEGIN
     } completion:nil];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-
-    if (!self.isViewLoaded) {
-        return;
-    }
-
-    if (self.view.window != nil) {
-        return;
-    }
-
-    if (self.collectionView != nil) {
-        UICollectionView * const collectionView = self.collectionView;
-        [collectionView removeFromSuperview];
-        [self.view removeGestureRecognizer:collectionView.panGestureRecognizer];
-        
-        self.collectionView = nil;
-    }
-    
-    self.viewModel = nil;
-}
-
 #pragma mark - HUBViewController
 
 - (NSString *)featureIdentifier
