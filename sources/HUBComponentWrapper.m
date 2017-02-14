@@ -432,6 +432,11 @@ NS_ASSUME_NONNULL_BEGIN
     UIView *currentView = touch.view;
     
     while (currentView != nil && currentView != self.view) {
+
+        if ([currentView isKindOfClass:[UISegmentedControl class]]) {
+            return NO;
+        }
+
         if ([currentView isKindOfClass:[UIButton class]]) {
             return NO;
         }
