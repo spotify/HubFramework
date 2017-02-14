@@ -724,10 +724,13 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     HUBComponentCollectionViewCell * const cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier
                                                                                             forIndexPath:indexPath];
 
-    HUBComponentWrapper * const componentWrapper = [self.componentReusePool componentWrapperForModel:componentModel
-                                                                                            delegate:self
-                                                                                              parent:nil];
+    HUBComponentWrapper * componentWrapper = self.componentWrappersByModelIdentifier[componentModel.identifier];
 
+    if (componentWrapper == nil) {
+        componentWrapper = [self.componentReusePool componentWrapperForModel:componentModel
+                                                                    delegate:self
+                                                                      parent:nil];
+    }
     self.componentWrappersByCellIdentifier[cell.identifier] = componentWrapper;
     cell.component = componentWrapper;
     [componentWrapper viewDidMoveToSuperview:cell];
