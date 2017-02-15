@@ -69,6 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)prepareForReuse
 {
+    [super prepareForReuse];
+
     [self.component prepareViewForReuse];
     self.component = nil;
 }
