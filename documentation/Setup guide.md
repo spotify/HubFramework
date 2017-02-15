@@ -48,7 +48,7 @@ By default, the framework calls `[UIApplication openURL:]` for any `target.URI` 
 To make iOS route some/all of those URIs to your app, define what URL types and schemes that your app supports in your `Info.plist` file. Here's an example where we add support for the `hub-demo` scheme:
 
 ```xml
-<key>CGBundleURLTypes</key>
+<key>CFBundleURLTypes</key>
 <array>
     <dict>
         <key>CFBundleURLName</key>
