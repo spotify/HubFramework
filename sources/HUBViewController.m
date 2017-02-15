@@ -73,10 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBViewControllerScrollHandler> scrollHandler;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, nullable, readonly) id<HUBImageLoader> imageLoader;
-@property (nonatomic, strong, nullable) UICollectionView *collectionView;
+@property (nonatomic, strong, nullable) HUBCollectionView *collectionView;
 @property (nonatomic, strong, readonly) HUBViewModelRenderer *viewModelRenderer;
 @property (nonatomic, assign) BOOL collectionViewIsScrolling;
-@property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponentWrappers;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentActionObserver>> *actionObservingComponentWrappers;
@@ -140,7 +139,6 @@ NS_ASSUME_NONNULL_BEGIN
     _actionHandler = actionHandler;
     _scrollHandler = scrollHandler;
     _imageLoader = imageLoader;
-    _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
     _componentImageLoadingContexts = [NSMutableDictionary new];
     _contentOffsetObservingComponentWrappers = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     _actionObservingComponentWrappers = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
@@ -693,13 +691,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     id<HUBComponentModel> const componentModel = self.viewModel.bodyComponentModels[(NSUInteger)indexPath.item];
     NSString * const cellReuseIdentifier = componentModel.componentIdentifier.identifierString;
     
-    if (![self.registeredCollectionViewCellReuseIdentifiers containsObject:cellReuseIdentifier]) {
-        [collectionView registerClass:[HUBComponentCollectionViewCell class] forCellWithReuseIdentifier:cellReuseIdentifier];
-        [self.registeredCollectionViewCellReuseIdentifiers addObject:cellReuseIdentifier];
-    }
-    
-    HUBComponentCollectionViewCell * const cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier
-                                                                                            forIndexPath:indexPath];
+    HUBComponentCollectionViewCell * const cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier
+                                                                                                 forIndexPath:indexPath
+                                                                                    cellClassWhenUnregistered:[HUBComponentCollectionViewCell class]];
 
     HUBComponentWrapper * const componentWrapper = [self.componentReusePool componentWrapperForModel:componentModel
                                                                                             delegate:self
