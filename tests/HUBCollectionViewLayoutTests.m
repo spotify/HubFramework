@@ -283,11 +283,11 @@
 
     NSIndexPath * const componentIndexPath1 = [NSIndexPath indexPathForItem:0 inSection:0];
     CGRect const componentViewFrame1 = [layout layoutAttributesForItemAtIndexPath:componentIndexPath1].frame;
-    HUBAssertEqualFloatValues(componentViewFrame1.origin.x, 110);
+    HUBAssertEqualCGFloatValues(componentViewFrame1.origin.x, 110);
     
     NSIndexPath * const componentIndexPath2 = [NSIndexPath indexPathForItem:1 inSection:0];
     CGRect const componentViewFrame2 = [layout layoutAttributesForItemAtIndexPath:componentIndexPath2].frame;
-    HUBAssertEqualFloatValues(componentViewFrame2.origin.x, 160);
+    HUBAssertEqualCGFloatValues(componentViewFrame2.origin.x, 160);
 }
 
 - (void)testProposedContentOffsetWithoutRecomputing
@@ -299,7 +299,7 @@
     HUBCollectionViewLayout * const layout = [self computeLayoutWithHeaderMargin:NO];
 
     CGPoint const proposedOffset = CGPointMake(0.0, 1200.0);
-    HUBAssertEqualFloatValues([layout targetContentOffsetForProposedContentOffset:proposedOffset].y, proposedOffset.y);
+    HUBAssertEqualCGFloatValues([layout targetContentOffsetForProposedContentOffset:proposedOffset].y, proposedOffset.y);
 }
 
 - (void)testProposedContentOffsetForInitiallyAddedComponents
@@ -384,7 +384,7 @@
 
     CGFloat expectedOffset = contentOffset.y - deletionHeight + insertionHeight;
     
-    HUBAssertEqualFloatValues([layout targetContentOffsetForProposedContentOffset:contentOffset].y, expectedOffset);
+    HUBAssertEqualCGFloatValues([layout targetContentOffsetForProposedContentOffset:contentOffset].y, expectedOffset);
 }
 
 - (void)testProposedContentOffsetBeyondBounds
@@ -411,7 +411,7 @@
     [layout computeForCollectionViewSize:self.collectionViewSize viewModel:secondViewModel diff:firstDiff addHeaderMargin:YES];
 
     CGFloat expectedOffset = layout.collectionViewContentSize.height + collectionView.contentInset.bottom - self.collectionViewSize.height;
-    HUBAssertEqualFloatValues([layout targetContentOffsetForProposedContentOffset:collectionView.contentOffset].y, expectedOffset);
+    HUBAssertEqualCGFloatValues([layout targetContentOffsetForProposedContentOffset:collectionView.contentOffset].y, expectedOffset);
     
     for (NSUInteger i = 0; i < 10; i++) {
         [self removeBodyComponentAtIndex:i];
@@ -425,7 +425,7 @@
     [layout computeForCollectionViewSize:self.collectionViewSize viewModel:newViewModel diff:secondDiff addHeaderMargin:YES];
 
     expectedOffset = -collectionView.contentInset.top;
-    HUBAssertEqualFloatValues([layout targetContentOffsetForProposedContentOffset:collectionView.contentOffset].y, expectedOffset);
+    HUBAssertEqualCGFloatValues([layout targetContentOffsetForProposedContentOffset:collectionView.contentOffset].y, expectedOffset);
 }
 
 #pragma mark - Utilities

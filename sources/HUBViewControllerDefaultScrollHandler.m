@@ -22,6 +22,8 @@
 #import "HUBViewControllerDefaultScrollHandler.h"
 #import "HUBViewController.h"
 
+#import "CGFloat+HUBMath.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewControllerDefaultScrollHandler
@@ -83,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
     CGFloat targetOffset = 0.0;
 
     if (scrollPosition & HUBScrollPositionCenteredVertically) {
-        targetOffset = CGRectGetMidY(componentFrame) - (viewHeight / 2.0);
+        targetOffset = CGRectGetMidY(componentFrame) - (viewHeight / (CGFloat)2.0);
     } else if (scrollPosition & HUBScrollPositionBottom) {
         targetOffset = CGRectGetMaxY(componentFrame) - viewHeight;
     } else {
@@ -91,8 +93,8 @@ NS_ASSUME_NONNULL_BEGIN
         targetOffset = CGRectGetMinY(componentFrame);
     }
 
-    targetOffset = MAX(-contentInset.top, MIN(contentSize.height - viewHeight, targetOffset));
-    return CGPointMake(0.0, (CGFloat)floor((double)targetOffset));
+    targetOffset = HUBCGFloatMax(-contentInset.top, MIN(contentSize.height - viewHeight, targetOffset));
+    return CGPointMake(0.0, HUBCGFloatFloor(targetOffset));
 }
 
 @end
