@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
     CGFloat targetOffset = 0.0;
 
     if (scrollPosition & HUBScrollPositionCenteredVertically) {
-        targetOffset = CGRectGetMidY(componentFrame) - (viewHeight / 2.0f);
+        targetOffset = CGRectGetMidY(componentFrame) - (viewHeight / 2.0);
     } else if (scrollPosition & HUBScrollPositionBottom) {
         targetOffset = CGRectGetMaxY(componentFrame) - viewHeight;
     } else {
