@@ -2176,15 +2176,13 @@
 		8ABD6CAE1DF6EC36005BCB33 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HUB_NON_ERROR_WARNINGS_0720 = "";
-				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = HubFrameworkTests;
 				WARNING_CFLAGS = (
 					"$(inherited)",
-					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
 					"-Wno-documentation-unknown-command",
+					"-Wno-partial-availability",
 				);
 			};
 			name = Debug;
@@ -2192,15 +2190,13 @@
 		8ABD6CAF1DF6EC36005BCB33 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HUB_NON_ERROR_WARNINGS_0720 = "";
-				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = HubFrameworkTests;
 				WARNING_CFLAGS = (
 					"$(inherited)",
-					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
 					"-Wno-documentation-unknown-command",
+					"-Wno-partial-availability",
 				);
 			};
 			name = Release;
@@ -2209,15 +2205,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = NO;
-				HUB_NON_ERROR_WARNINGS_0720 = "";
-				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = (
 					"$(inherited)",
-					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
 					"-Wno-documentation-unknown-command",
+					"-Wno-partial-availability",
 				);
 			};
 			name = Debug;
@@ -2226,15 +2220,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = NO;
-				HUB_NON_ERROR_WARNINGS_0720 = "";
-				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = (
 					"$(inherited)",
-					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
 					"-Wno-documentation-unknown-command",
+					"-Wno-partial-availability",
 				);
 			};
 			name = Release;
