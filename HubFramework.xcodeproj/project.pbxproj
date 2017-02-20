@@ -762,7 +762,7 @@
 		DD244A811E04520D005E5C68 /* HUBErrors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBErrors.h; sourceTree = "<group>"; };
 		DD244B181E086958005E5C68 /* HUBErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBErrors.m; sourceTree = "<group>"; };
 		DD79C3B91D9F0A8800FA77E5 /* HUBKeyPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBKeyPath.h; sourceTree = "<group>"; };
-		DD81AFEF1DF725040063DDE0 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		DD81AFEF1DF725040063DDE0 /* HubFramework.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = HubFramework.modulemap; sourceTree = "<group>"; };
 		DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBUtilities.h; sourceTree = "<group>"; };
 		DDBCF36B1C68DD2300693038 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -876,7 +876,7 @@
 		8A0754AA1C21A7B600AFAD38 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				DD81AFEF1DF725040063DDE0 /* module.modulemap */,
+				DD81AFEF1DF725040063DDE0 /* HubFramework.modulemap */,
 				8A880ACF1C21AE9000ADB737 /* HubFramework.h */,
 				8ADD42901C21C7BC00D1A801 /* HUBManager.h */,
 				8A0E4B7F1CB69CB30019DE71 /* Connectivity */,
@@ -2159,6 +2159,7 @@
 		8A0754A81C21A79200AFAD38 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				MODULEMAP_FILE = include/HubFramework.modulemap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2168,6 +2169,7 @@
 		8A0754A91C21A79200AFAD38 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				MODULEMAP_FILE = include/HubFramework.modulemap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
