@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		344E43D11E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */; };
 		344E43D21E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */; };
+		3E73B3C01E5BD48C00B26842 /* HUBGestureRecognizerSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E73B3BF1E5BD48C00B26842 /* HUBGestureRecognizerSynchronizer.m */; };
+		3E73B3CD1E5BD89700B26842 /* HUBGestureRecognizerSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E73B3BF1E5BD48C00B26842 /* HUBGestureRecognizerSynchronizer.m */; };
 		521891E61DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891E51DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m */; };
 		521891EA1DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891E91DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.m */; };
 		521891ED1DEE410200FA3BF7 /* HUBBlockContentOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891EC1DEE410200FA3BF7 /* HUBBlockContentOperationTests.m */; };
@@ -464,6 +466,9 @@
 		2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentFactoryMock.m; sourceTree = "<group>"; };
 		2932EAD3C06CBB869669B382 /* HUBComponentFactoryMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactoryMock.h; sourceTree = "<group>"; };
 		344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBUtilitiesTests.m; sourceTree = "<group>"; };
+		3E73B3BE1E5BD48C00B26842 /* HUBGestureRecognizerSynchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBGestureRecognizerSynchronizer.h; sourceTree = "<group>"; };
+		3E73B3BF1E5BD48C00B26842 /* HUBGestureRecognizerSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBGestureRecognizerSynchronizer.m; sourceTree = "<group>"; };
+		3E8FB7CE1E5B40820085B978 /* HUBGestureRecognizerSynchronizing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBGestureRecognizerSynchronizing.h; sourceTree = "<group>"; };
 		4E29FCF31DED2D9600856D20 /* HUBTestUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBTestUtilities.h; sourceTree = "<group>"; };
 		521891E21DEE3C3000FA3BF7 /* HUBBlockContentOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBBlockContentOperation.h; sourceTree = "<group>"; };
 		521891E51DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBBlockContentOperation.m; sourceTree = "<group>"; };
@@ -959,6 +964,7 @@
 				8ACB2A791C6A2F7C000741D7 /* HUBIdentifier.m */,
 				DD79C3B91D9F0A8800FA77E5 /* HUBKeyPath.h */,
 				DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */,
+				3E8FB7CE1E5B40820085B978 /* HUBGestureRecognizerSynchronizing.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1346,6 +1352,8 @@
 				8A9ED75C1D4A049C006B27D8 /* HUBComponentReusePool.m */,
 				8A4C28151DB5120400152429 /* HUBComponentGestureRecognizer.h */,
 				8A4C28161DB5120400152429 /* HUBComponentGestureRecognizer.m */,
+				3E73B3BE1E5BD48C00B26842 /* HUBGestureRecognizerSynchronizer.h */,
+				3E73B3BF1E5BD48C00B26842 /* HUBGestureRecognizerSynchronizer.m */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -1870,6 +1878,7 @@
 				DD244B191E086958005E5C68 /* HUBErrors.m in Sources */,
 				8A6529F91D82DC33007B1A15 /* HUBActionHandlerWrapper.m in Sources */,
 				8A786BB21C5A383800B2AB9E /* HUBViewModelJSONSchemaImplementation.m in Sources */,
+				3E73B3C01E5BD48C00B26842 /* HUBGestureRecognizerSynchronizer.m in Sources */,
 				8A5035221DD473040008B499 /* HUBCollectionView.m in Sources */,
 				8AF5B57F1C64B59E001FF228 /* HUBViewModelLoaderImplementation.m in Sources */,
 				8A2BD2021E0A6B40008A5050 /* HUBOperationQueue.m in Sources */,
@@ -2085,6 +2094,7 @@
 				DD244B1A1E086958005E5C68 /* HUBErrors.m in Sources */,
 				8AE6C0BA1DF6E40D0063B2B1 /* HUBComponentCollectionViewCell.m in Sources */,
 				8AE6C0681DF6E3F90063B2B1 /* HUBViewModelJSONSchemaImplementation.m in Sources */,
+				3E73B3CD1E5BD89700B26842 /* HUBGestureRecognizerSynchronizer.m in Sources */,
 				8AE6C0AB1DF6E40D0063B2B1 /* HUBComponentModelImplementation.m in Sources */,
 				8AE6C06C1DF6E3F90063B2B1 /* HUBComponentImageDataJSONSchemaImplementation.m in Sources */,
 				8A2BD2031E0A6B41008A5050 /* HUBOperationQueue.m in Sources */,
