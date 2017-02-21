@@ -21,6 +21,7 @@
 
 #import "HUBGestureRecognizerSynchronizing.h"
 
+/// A concrete implementation of HUBGestureRecognizerSynchronizing.
 @interface HUBGestureRecognizerSynchronizer : NSObject <HUBGestureRecognizerSynchronizing>
 
 @end
