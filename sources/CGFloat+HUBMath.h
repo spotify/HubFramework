@@ -47,8 +47,8 @@ static inline CGFloat HUBCGFloatFloor(CGFloat value)
 /**
  Returns the absolute value of the given floating `value`.
  
- - `HUBFabs(±0)` returns `0`
- - `HUBFabs(±infinity) returns `+infinity`.
+ - `HUBCGFloatAbs(±0)` returns `0`
+ - `HUBCGFloatAbs(±infinity) returns `+infinity`.
 
  @param value The value.
  @return The absolute value.
@@ -113,6 +113,8 @@ static const CGFloat HUBCGFloatDefaultEpsilon = (CGFloat)0.00001;
  @param rhs The second value.
  @param epsilon The epsilon (i.e. tolerated deviance from true equality).
  @return `YES` if the `lhs` is approximately equal to `rhs` (±epsilon); otherwise `NO`.
+ 
+ @seealso `HUBCGFloatIsZero(CGFloat)` for a function to check if a values is ≈0.
  */
 static inline BOOL HUBCGFloatIsNearlyEqual(CGFloat lhs, CGFloat rhs, CGFloat epsilon)
 {
