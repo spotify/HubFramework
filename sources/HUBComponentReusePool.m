@@ -27,6 +27,7 @@
 #import "HUBComponentModel.h"
 #import "HUBComponentRegistry.h"
 #import "HUBComponentGestureRecognizer.h"
+#import "HUBGestureRecognizerSynchronizer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBIdentifier *, NSMutableSet<HUBComponentWrapper *> *> *componentWrappers;
+@property (nonatomic, strong, readonly) id<HUBGestureRecognizerSynchronizing> gestureRecognizerSynchronizer;
 
 @end
 
@@ -50,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
         _componentRegistry = componentRegistry;
         _UIStateManager = [HUBComponentUIStateManager new];
         _componentWrappers = [NSMutableDictionary new];
+        _gestureRecognizerSynchronizer = [HUBGestureRecognizerSynchronizer new];
     }
     
     return self;
@@ -82,12 +85,15 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     id<HUBComponent> const component = [self.componentRegistry createComponentForModel:model];
-    
+
+    HUBComponentGestureRecognizer *gestureRecognizer = [[HUBComponentGestureRecognizer alloc]
+                                                        initWithSynchronizer:self.gestureRecognizerSynchronizer];
+
     return [[HUBComponentWrapper alloc] initWithComponent:component
                                                     model:model
                                            UIStateManager:self.UIStateManager
                                                  delegate:delegate
-                                        gestureRecognizer:[HUBComponentGestureRecognizer new]
+                                        gestureRecognizer:gestureRecognizer
                                                    parent:parent];
 }
 
