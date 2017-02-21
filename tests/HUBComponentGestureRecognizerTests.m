@@ -24,11 +24,13 @@
 
 #import "HUBComponentGestureRecognizer.h"
 #import "HUBTouchMock.h"
+#import "HUBGestureRecognizerSynchronizer.h"
 
 @interface HUBComponentGestureRecognizerTests : XCTestCase
 
 @property (nonatomic, strong) HUBComponentGestureRecognizer *gestureRecognizer;
 @property (nonatomic, strong) UIView *view;
+@property (nonatomic, strong) id<HUBGestureRecognizerSynchronizing> mockSynchronizer;
 
 @end
 
@@ -39,8 +41,9 @@
 - (void)setUp
 {
     [super setUp];
-    
-    self.gestureRecognizer = [HUBComponentGestureRecognizer new];
+
+    self.mockSynchronizer = [HUBGestureRecognizerSynchronizer new];
+    self.gestureRecognizer = [[HUBComponentGestureRecognizer alloc] initWithSynchronizer:self.mockSynchronizer];
     self.view =  [[UIView alloc] initWithFrame:CGRectZero];;
     [self.view addGestureRecognizer:self.gestureRecognizer];
 }
@@ -49,6 +52,7 @@
 {
     self.gestureRecognizer = nil;
     self.view = nil;
+    self.mockSynchronizer = nil;
 
     [super tearDown];
 }
@@ -115,16 +119,76 @@
     XCTAssertEqual(self.gestureRecognizer.state, UIGestureRecognizerStateFailed);
 }
 
-- (void)testTouchesCancelledSetsFailedState
+- (void)testTouchesCancelledSetsCancelledState
 {
+    NSSet<UITouch *> *touches = [NSSet setWithObject:[UITouch new]];
+
+    [self.gestureRecognizer touchesBegan:touches withEvent:[UIEvent new]];
     [self.gestureRecognizer touchesCancelled:[NSSet setWithObject:[UITouch new]] withEvent:[UIEvent new]];
-    XCTAssertEqual(self.gestureRecognizer.state, UIGestureRecognizerStateFailed);
+
+    XCTAssertEqual(self.gestureRecognizer.state, UIGestureRecognizerStateCancelled);
 }
 
-- (void)testManualCancelSetsFailedState
+- (void)testManualCancelSetsCancelledState
 {
+    NSSet<UITouch *> *touches = [NSSet setWithObject:[UITouch new]];
+
+    [self.gestureRecognizer touchesBegan:touches withEvent:[UIEvent new]];
     [self.gestureRecognizer cancel];
-    XCTAssertEqual(self.gestureRecognizer.state, UIGestureRecognizerStateFailed);
+
+    XCTAssertEqual(self.gestureRecognizer.state, UIGestureRecognizerStateCancelled);
+}
+
+- (void)testIfInitialTouchLocksAndUnlocksSynchronizer
+{
+    HUBComponentGestureRecognizer *gr1 = [[HUBComponentGestureRecognizer alloc]
+                                          initWithSynchronizer:self.mockSynchronizer];
+    HUBComponentGestureRecognizer *gr2 = [[HUBComponentGestureRecognizer alloc]
+                                          initWithSynchronizer:self.mockSynchronizer];
+
+    UIView *view1 = [UIView new];
+    UIView *view2 = [UIView new];
+
+    [view1 addGestureRecognizer:gr1];
+    [view2 addGestureRecognizer:gr2];
+
+    XCTAssertEqual(self.mockSynchronizer.locked, NO);
+
+    [gr1 touchesBegan:[NSSet setWithObject:[UITouch new]] withEvent:[UIEvent new]];
+    XCTAssertEqual(self.mockSynchronizer.locked, YES);
+
+    [gr2 touchesBegan:[NSSet setWithObject:[UITouch new]] withEvent:[UIEvent new]];
+    XCTAssertEqual(self.mockSynchronizer.locked, YES);
+
+    [gr1 cancel];
+    XCTAssertEqual(self.mockSynchronizer.locked, NO);
+}
+
+- (void)testIfSecondGestureFailsWhenPerformedSimultaneously
+{
+    HUBComponentGestureRecognizer *gr1 = [[HUBComponentGestureRecognizer alloc]
+                                          initWithSynchronizer:self.mockSynchronizer];
+    HUBComponentGestureRecognizer *gr2 = [[HUBComponentGestureRecognizer alloc]
+                                          initWithSynchronizer:self.mockSynchronizer];
+
+    UIView *view1 = [UIView new];
+    UIView *view2 = [UIView new];
+
+    [view1 addGestureRecognizer:gr1];
+    [view2 addGestureRecognizer:gr2];
+
+    XCTAssertEqual(gr1.state, UIGestureRecognizerStatePossible);
+    XCTAssertEqual(gr2.state, UIGestureRecognizerStatePossible);
+
+    [gr1 touchesBegan:[NSSet setWithObject:[UITouch new]] withEvent:[UIEvent new]];
+
+    XCTAssertEqual(gr1.state, UIGestureRecognizerStateBegan);
+    XCTAssertEqual(gr2.state, UIGestureRecognizerStatePossible);
+
+    [gr2 touchesBegan:[NSSet setWithObject:[UITouch new]] withEvent:[UIEvent new]];
+
+    XCTAssertEqual(gr1.state, UIGestureRecognizerStateBegan);
+    XCTAssertEqual(gr2.state, UIGestureRecognizerStateFailed);
 }
 
 @end
