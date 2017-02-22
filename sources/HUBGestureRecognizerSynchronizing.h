@@ -24,14 +24,37 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  `HUBGestureRecognizerSynchronizing` object is used to keep track of active `HUBComponentGestureRecognizers` so they
- *  can be performed one at a time. It is passed to `HUBComponentGestureRecognizers` when initialized.
+ *  `HUBGestureRecognizerSynchronizing` object is used to control if `HUBComponentGestureRecognizer`s should be allowed
+ *  to handle touches. This can be used for example to prevent multiple `HUBComponentGestureRecognizer`s from performing
+ *  simultaneously.
  */
 @protocol HUBGestureRecognizerSynchronizing
 
-- (void)gestureRecognizerDidBeginHandlingTouches:(UIGestureRecognizer *)gestureRecognizer;
-- (void)gestureRecognizerDidFinishHandlingTouches:(UIGestureRecognizer *)gestureRecognizer;
-- (BOOL)gestureRecognizerShouldBeginHandlingTouches:(UIGestureRecognizer *)gestureRecognizer;
+/**
+ *  This method should be called ba a `gesture recognizer` to notify the `synchronizer` that it started handling
+ *  touch events.
+ *
+ *  @note This method must not be called if `-gestureRecognizerShouldBeginHandlingTouches:` returns `NO`.
+ *
+ *  @param gestureRecognizer A gesture recognizer that started handling touches.
+ */
+- (void)gestureRecognizerDidBeginHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer;
+
+/**
+ *  This method should be called ba a `gesture recognizer` to notify the `synchronizer` that it finished handling
+ *  touch events.
+ *
+ *  @param gestureRecognizer A gesture recognizer that started handling touches.
+ */
+- (void)gestureRecognizerDidFinishHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer;
+
+/**
+ *  `Gesture recognizer` should call this method before calling `-gestureRecognizerDidBeginHandlingTouches:` and move
+ *  to a failed state if it returns `NO`. If it returns `YES` it should proceed with handling touches.
+ *
+ *  @param gestureRecognizer A gesture recognizer that wants to begin handling touches.
+ */
+- (BOOL)gestureRecognizerShouldBeginHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer;
 
 @end
 
