@@ -24,7 +24,7 @@
 
 #import "HUBComponentGestureRecognizer.h"
 #import "HUBTouchMock.h"
-#import "HUBGestureRecognizerSynchronizer.h"
+#import "HUBSingleGestureRecognizerSynchronizer.h"
 
 @interface HUBComponentGestureRecognizerTests : XCTestCase
 
@@ -42,7 +42,7 @@
 {
     [super setUp];
 
-    self.mockSynchronizer = [HUBGestureRecognizerSynchronizer new];
+    self.mockSynchronizer = [HUBSingleGestureRecognizerSynchronizer new];
     self.gestureRecognizer = [[HUBComponentGestureRecognizer alloc] initWithSynchronizer:self.mockSynchronizer];
     self.view =  [[UIView alloc] initWithFrame:CGRectZero];;
     [self.view addGestureRecognizer:self.gestureRecognizer];
@@ -152,16 +152,16 @@
     [view1 addGestureRecognizer:gr1];
     [view2 addGestureRecognizer:gr2];
 
-    XCTAssertEqual(self.mockSynchronizer.locked, NO);
+    XCTAssertEqual([self.mockSynchronizer gestureRecognizerShouldBeginHandlingTouches:gr2], YES);
 
     [gr1 touchesBegan:[NSSet setWithObject:[UITouch new]] withEvent:[UIEvent new]];
-    XCTAssertEqual(self.mockSynchronizer.locked, YES);
+    XCTAssertEqual([self.mockSynchronizer gestureRecognizerShouldBeginHandlingTouches:gr2], NO);
 
     [gr2 touchesBegan:[NSSet setWithObject:[UITouch new]] withEvent:[UIEvent new]];
-    XCTAssertEqual(self.mockSynchronizer.locked, YES);
+    XCTAssertEqual([self.mockSynchronizer gestureRecognizerShouldBeginHandlingTouches:gr2], NO);
 
     [gr1 cancel];
-    XCTAssertEqual(self.mockSynchronizer.locked, NO);
+    XCTAssertEqual([self.mockSynchronizer gestureRecognizerShouldBeginHandlingTouches:gr2], YES);
 }
 
 - (void)testIfSecondGestureFailsWhenPerformedSimultaneously

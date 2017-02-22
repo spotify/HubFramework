@@ -28,7 +28,7 @@
 #import "HUBComponentWrapper.h"
 #import "HUBComponentMock.h"
 #import "HUBIdentifier.h"
-#import "HUBGestureRecognizerSynchronizer.h"
+#import "HUBSingleGestureRecognizerSynchronizer.h"
 
 /**
  *  Class extension used to expose the method that the component wrapper uses to handle its gesture recognizer
@@ -59,7 +59,7 @@
 {
     [super setUp];
 
-    self.gestureRecognizerSynchronizer = [HUBGestureRecognizerSynchronizer new];
+    self.gestureRecognizerSynchronizer = [HUBSingleGestureRecognizerSynchronizer new];
     self.UIStateManager = [HUBComponentUIStateManager new];
     self.gestureRecognizer = [[HUBComponentGestureRecognizer alloc] initWithSynchronizer:self.gestureRecognizerSynchronizer];
 }
