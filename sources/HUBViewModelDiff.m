@@ -22,7 +22,6 @@
 
 #import "HUBViewModelDiff.h"
 #import "HUBComponentModel.h"
-#import "HUBIdentifier.h"
 
 #import <UIKit/UIKit.h>
 
@@ -40,7 +39,7 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
 
 @interface  HUBViewModelDiff ()
 
-@property (nonatomic, assign) BOOL headerComponentIdentifierHasChanged;
+@property (nonatomic, assign) BOOL headerComponentHasChanged;
 
 @end
 
@@ -80,7 +79,7 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
     return self.insertedBodyComponentIndexPaths.count > 0
         || self.deletedBodyComponentIndexPaths.count > 0
         || self.reloadedBodyComponentIndexPaths.count > 0
-        || self.headerComponentIdentifierHasChanged;
+        || self.headerComponentHasChanged;
 }
 
 - (void)calculateHeaderChangesFromViewModel:(id<HUBViewModel>)fromViewModel toViewModel:(id<HUBViewModel>)toViewModel
@@ -93,7 +92,7 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
     }
 
     if (![fromHeaderModel isEqual:toHeaderModel]) {
-        self.headerComponentIdentifierHasChanged = YES;
+        self.headerComponentHasChanged = YES;
     }
 }
 
@@ -104,7 +103,7 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
         insertions: %@\n\
         reloads: %@\n\
         header: %d\n\
-    \t}", self.deletedBodyComponentIndexPaths, self.insertedBodyComponentIndexPaths, self.reloadedBodyComponentIndexPaths, self.headerComponentIdentifierHasChanged];
+    \t}", self.deletedBodyComponentIndexPaths, self.insertedBodyComponentIndexPaths, self.reloadedBodyComponentIndexPaths, self.headerComponentHasChanged];
 }
 
 @end
