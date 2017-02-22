@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)beginIfPossible
 {
-    if ([self.synchronizer gestureRecognizerShouldBeginHandlingTouches:self]) {
+    if ([self.synchronizer gestureRecognizerShouldBeginHandlingTouches:self] == NO) {
         [self finishWithState:UIGestureRecognizerStateFailed];
         return;
     }

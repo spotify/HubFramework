@@ -39,7 +39,7 @@
 
 - (BOOL)gestureRecognizerShouldBeginHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer
 {
-    return self.shouldPreventGestureRecognizersFromHandlingTouches;
+    return self.shouldPreventGestureRecognizersFromHandlingTouches == NO;
 }
 
 @end
