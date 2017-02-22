@@ -19,27 +19,9 @@
  *  under the License.
  */
 
-#import "HUBGestureRecognizerSynchronizer.h"
+#import "HUBGestureRecognizerSynchronizing.h"
 
-@interface HUBGestureRecognizerSynchronizer ()
-@property (nonatomic, assign) BOOL shouldPreventGestureRecognizersFromHandlingTouches;
-@end
-
-@implementation HUBGestureRecognizerSynchronizer
-
-- (void)gestureRecognizerDidBeginHandlingTouches:(UIGestureRecognizer *)gestureRecognizer
-{
-    self.shouldPreventGestureRecognizersFromHandlingTouches = YES;
-}
-
-- (void)gestureRecognizerDidFinishHandlingTouches:(UIGestureRecognizer *)gestureRecognizer
-{
-    self.shouldPreventGestureRecognizersFromHandlingTouches = NO;
-}
-
-- (BOOL)gestureRecognizerShouldBeginHandlingTouches:(UIGestureRecognizer *)gestureRecognizer
-{
-    return self.shouldPreventGestureRecognizersFromHandlingTouches;
-}
+/// A synchronizer that allows only one gesture recognizer to handle touches at a time.
+@interface HUBSingleGestureRecognizerSynchronizer : NSObject <HUBGestureRecognizerSynchronizing>
 
 @end

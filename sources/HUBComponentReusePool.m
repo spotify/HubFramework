@@ -27,7 +27,7 @@
 #import "HUBComponentModel.h"
 #import "HUBComponentRegistry.h"
 #import "HUBComponentGestureRecognizer.h"
-#import "HUBGestureRecognizerSynchronizer.h"
+#import "HUBSingleGestureRecognizerSynchronizer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
         _componentRegistry = componentRegistry;
         _UIStateManager = [HUBComponentUIStateManager new];
         _componentWrappers = [NSMutableDictionary new];
-        _gestureRecognizerSynchronizer = [HUBGestureRecognizerSynchronizer new];
+        _gestureRecognizerSynchronizer = [HUBSingleGestureRecognizerSynchronizer new];
     }
     
     return self;

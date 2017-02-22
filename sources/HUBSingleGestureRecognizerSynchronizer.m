@@ -19,9 +19,27 @@
  *  under the License.
  */
 
-#import "HUBGestureRecognizerSynchronizing.h"
+#import "HUBSingleGestureRecognizerSynchronizer.h"
 
-/// A concrete implementation of HUBGestureRecognizerSynchronizing.
-@interface HUBGestureRecognizerSynchronizer : NSObject <HUBGestureRecognizerSynchronizing>
+@interface HUBSingleGestureRecognizerSynchronizer ()
+@property (nonatomic, assign) BOOL shouldPreventGestureRecognizersFromHandlingTouches;
+@end
+
+@implementation HUBSingleGestureRecognizerSynchronizer
+
+- (void)gestureRecognizerDidBeginHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer
+{
+    self.shouldPreventGestureRecognizersFromHandlingTouches = YES;
+}
+
+- (void)gestureRecognizerDidFinishHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer
+{
+    self.shouldPreventGestureRecognizersFromHandlingTouches = NO;
+}
+
+- (BOOL)gestureRecognizerShouldBeginHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer
+{
+    return self.shouldPreventGestureRecognizersFromHandlingTouches;
+}
 
 @end

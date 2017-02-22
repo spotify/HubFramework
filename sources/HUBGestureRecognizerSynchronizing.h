@@ -23,6 +23,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class HUBComponentGestureRecognizer;
+
 /**
  *  `HUBGestureRecognizerSynchronizing` object is used to control if `HUBComponentGestureRecognizer`s should be allowed
  *  to handle touches. This can be used for example to prevent multiple `HUBComponentGestureRecognizer`s from performing
