@@ -21,6 +21,25 @@
 
 #import "HUBGestureRecognizerSynchronizer.h"
 
+@interface HUBGestureRecognizerSynchronizer ()
+@property (nonatomic, assign) BOOL shouldPreventGestureRecognizersFromHandlingTouches;
+@end
+
 @implementation HUBGestureRecognizerSynchronizer
-@synthesize locked = _locked;
+
+- (void)gestureRecognizerDidBeginHandlingTouches:(UIGestureRecognizer *)gestureRecognizer
+{
+    self.shouldPreventGestureRecognizersFromHandlingTouches = YES;
+}
+
+- (void)gestureRecognizerDidFinishHandlingTouches:(UIGestureRecognizer *)gestureRecognizer
+{
+    self.shouldPreventGestureRecognizersFromHandlingTouches = NO;
+}
+
+- (BOOL)gestureRecognizerShouldBeginHandlingTouches:(UIGestureRecognizer *)gestureRecognizer
+{
+    return self.shouldPreventGestureRecognizersFromHandlingTouches;
+}
+
 @end

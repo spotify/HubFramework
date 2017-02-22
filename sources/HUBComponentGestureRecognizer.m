@@ -52,13 +52,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)begin
 {
     self.state = UIGestureRecognizerStateBegan;
-    self.synchronizer.locked = YES;
+    [self.synchronizer gestureRecognizerDidBeginHandlingTouches:self];
+}
+
+- (void)beginIfPossible
+{
+    if ([self.synchronizer gestureRecognizerShouldBeginHandlingTouches:self]) {
+        [self finishWithState:UIGestureRecognizerStateFailed];
+        return;
+    }
+
+    [self begin];
 }
 
 - (void)finishWithState:(UIGestureRecognizerState)state
 {
     if ([self isHandlingTouch]) {
-        self.synchronizer.locked = NO;
+        [self.synchronizer gestureRecognizerDidFinishHandlingTouches:self];
     }
     self.state = state;
 }
@@ -77,13 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
-
-    if (self.synchronizer.locked) {
-        [self finishWithState:UIGestureRecognizerStateFailed];
-        return;
-    }
-   
-    [self begin];
+    [self beginIfPossible];
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
