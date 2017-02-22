@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
         diff = [HUBViewModelDiff diffFromViewModel:nonnullViewModel toViewModel:viewModel];
     }
 
-    BOOL const hasDiffChanges = (diff == nil || diff.hasChanges);
+    BOOL const hasDiffChanges = (diff == nil || diff.hasBodyChanges || diff.hasHeaderChanges);
     HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)collectionView.collectionViewLayout;
 
     /*

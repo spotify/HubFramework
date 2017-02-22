@@ -22,6 +22,7 @@
 
 #import "HUBViewModelDiff.h"
 #import "HUBComponentModel.h"
+#import "HUBIdentifier.h"
 
 #import <UIKit/UIKit.h>
 
@@ -36,6 +37,12 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
 
     return [indexPaths copy];
 }
+
+@interface  HUBViewModelDiff ()
+
+@property (nonatomic, assign) BOOL headerComponentIdentifierHasChanged;
+
+@end
 
 @implementation HUBViewModelDiff
 
@@ -57,7 +64,9 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
                         algorithm:(HUBDiffAlgorithm)algorithm
 {
     NSParameterAssert(algorithm);
-    return algorithm(fromViewModel, toViewModel);
+    HUBViewModelDiff *diff =  algorithm(fromViewModel, toViewModel);
+    [diff calculateHeaderChangesFromViewModel:fromViewModel toViewModel:toViewModel];
+    return diff;
 }
 
 + (instancetype)diffFromViewModel:(id<HUBViewModel>)fromViewModel
@@ -66,11 +75,30 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
     return [self diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
 }
 
-- (BOOL)hasChanges
+- (BOOL)hasBodyChanges
 {
     return self.insertedBodyComponentIndexPaths.count > 0
         || self.deletedBodyComponentIndexPaths.count > 0
         || self.reloadedBodyComponentIndexPaths.count > 0;
+}
+
+- (BOOL)hasHeaderChanges
+{
+    return self.headerComponentIdentifierHasChanged;
+}
+
+- (void)calculateHeaderChangesFromViewModel:(id<HUBViewModel>)fromViewModel toViewModel:(id<HUBViewModel>)toViewModel
+{
+    id<HUBComponentModel> fromHeaderModel = fromViewModel.headerComponentModel;
+    id<HUBComponentModel> toHeaderModel = toViewModel.headerComponentModel;
+
+    if (!fromHeaderModel && !toHeaderModel) {
+        return;
+    }
+
+    if (![fromHeaderModel isEqual:toHeaderModel]) {
+        self.headerComponentIdentifierHasChanged = YES;
+    }
 }
 
 - (NSString *)debugDescription
@@ -79,7 +107,8 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
         deletions: %@\n\
         insertions: %@\n\
         reloads: %@\n\
-    \t}", self.deletedBodyComponentIndexPaths, self.insertedBodyComponentIndexPaths, self.reloadedBodyComponentIndexPaths];
+        header: %d\n\
+    \t}", self.deletedBodyComponentIndexPaths, self.insertedBodyComponentIndexPaths, self.reloadedBodyComponentIndexPaths, self.headerComponentIdentifierHasChanged];
 }
 
 @end
