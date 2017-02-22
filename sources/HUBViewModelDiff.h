@@ -70,12 +70,8 @@ extern HUBViewModelDiff *HUBDiffMyersAlgorithm(id<HUBViewModel>, id<HUBViewModel
 /// The index paths of any body components that were modified in the new view model. 
 @property (nonatomic, strong, readonly) NSArray<NSIndexPath *> *reloadedBodyComponentIndexPaths;
 
-/// A convenience property that returns YES if there are any inserts, deletes or reloads in body components of this diff.
-@property (nonatomic, readonly) BOOL hasBodyChanges;
-
-/// A convenience property that returns YES if there is change in header component of this diff.
-@property (nonatomic, readonly) BOOL hasHeaderChanges;
-
+/// A convenience property that returns YES if there are any inserts, deletes or reloads in body or header components of this diff.
+@property (nonatomic, readonly) BOOL hasChanges;
 
 /**
  * Initializes a @c HUBViewModelDiff using the two view models by finding the longest common subsequence

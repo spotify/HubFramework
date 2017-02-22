@@ -58,7 +58,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 0);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 0);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
-    XCTAssertFalse(diff.hasBodyChanges);
+    XCTAssertFalse(diff.hasChanges);
 }
 
 - (void)testInsertionsMyers
@@ -92,7 +92,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 0);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 4);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
-    XCTAssertTrue(diff.hasBodyChanges);
+    XCTAssertTrue(diff.hasChanges);
 }
 
 - (void)testReloadsMyers
@@ -131,7 +131,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 2);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 0);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
-    XCTAssertTrue(diff.hasBodyChanges);
+    XCTAssertTrue(diff.hasChanges);
 }
 
 - (void)testDeletionsMyers
@@ -167,7 +167,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 0);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 0);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
-    XCTAssertTrue(diff.hasBodyChanges);
+    XCTAssertTrue(diff.hasChanges);
 }
 
 - (void)testComplexChangeSetMyers
@@ -221,7 +221,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 2);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 2);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 2);
-    XCTAssertTrue(diff.hasBodyChanges);
+    XCTAssertTrue(diff.hasChanges);
 }
 
 - (void)testInsertionOfSingleComponentModelAtStartWithDataChangesMyers
@@ -256,7 +256,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 3);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 1);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
-    XCTAssertTrue(diff.hasBodyChanges);
+    XCTAssertTrue(diff.hasChanges);
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:1 inSection:0]]);
@@ -296,7 +296,7 @@
     XCTAssert(diff.reloadedBodyComponentIndexPaths.count == 3);
     XCTAssert(diff.insertedBodyComponentIndexPaths.count == 2);
     XCTAssert(diff.deletedBodyComponentIndexPaths.count == 0);
-    XCTAssertTrue(diff.hasBodyChanges);
+    XCTAssertTrue(diff.hasChanges);
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
     XCTAssert([diff.insertedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:1 inSection:0]]);
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:0 inSection:0]]);
@@ -320,7 +320,7 @@
     id<HUBViewModel> toViewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test" bodyComponents:@[] headerComponent:nil];
 
     HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
-    XCTAssertFalse(diff.hasHeaderChanges);
+    XCTAssertFalse(diff.hasChanges);
 }
 
 - (void)testHeaderChangeIsTrueWhenFromAndToAreDifferent
@@ -329,7 +329,7 @@
     id<HUBViewModel> toViewModel = [self viewModelWithHeaderComponentName:@"L"];
 
     HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
-    XCTAssertTrue(diff.hasHeaderChanges);
+    XCTAssertTrue(diff.hasChanges);
 }
 
 - (void)testHeaderChangeIsFalseWhenFromAndToAreSame
@@ -338,7 +338,7 @@
     id<HUBViewModel> toViewModel = [self viewModelWithHeaderComponentName:@"U"];
 
     HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
-    XCTAssertFalse(diff.hasHeaderChanges);
+    XCTAssertFalse(diff.hasChanges);
 }
 
 - (void)testHeaderChangeIsTrueWhenFromIsEmpty
@@ -347,7 +347,7 @@
     id<HUBViewModel> toViewModel = [self viewModelWithHeaderComponentName:@"C"];
 
     HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
-    XCTAssertTrue(diff.hasHeaderChanges);
+    XCTAssertTrue(diff.hasChanges);
 }
 
 - (void)testHeaderChangeIsTrueWhenToIsEmpty
@@ -356,7 +356,7 @@
     id<HUBViewModel> toViewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test" bodyComponents:@[] headerComponent:nil];
 
     HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
-    XCTAssertTrue(diff.hasHeaderChanges);
+    XCTAssertTrue(diff.hasChanges);
 }
 
 @end

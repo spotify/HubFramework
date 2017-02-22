@@ -75,16 +75,12 @@ static inline NSArray<NSIndexPath *> *HUBIndexSetToIndexPathArray(NSIndexSet *in
     return [self diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
 }
 
-- (BOOL)hasBodyChanges
+- (BOOL)hasChanges
 {
     return self.insertedBodyComponentIndexPaths.count > 0
         || self.deletedBodyComponentIndexPaths.count > 0
-        || self.reloadedBodyComponentIndexPaths.count > 0;
-}
-
-- (BOOL)hasHeaderChanges
-{
-    return self.headerComponentIdentifierHasChanged;
+        || self.reloadedBodyComponentIndexPaths.count > 0
+        || self.headerComponentIdentifierHasChanged;
 }
 
 - (void)calculateHeaderChangesFromViewModel:(id<HUBViewModel>)fromViewModel toViewModel:(id<HUBViewModel>)toViewModel
