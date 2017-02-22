@@ -24,8 +24,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol HUBGestureRecognizerSynchronizing;
+
 /// Gesture recognizer used to recognize highlights & selections for a component
 @interface HUBComponentGestureRecognizer : UIGestureRecognizer
+
+/**
+ *  Initialize an instance of this class with a synchronizer used to keep track of active gesture so only one is
+ *  performed at the same time. This is used to prevent interactions with multiple components at the same time
+ *  (i.e. multiple selections).
+ *
+ *  @param synchronizer The HUBGestureRecognizerSynchronizing object keeping track of active gestures.
+ */
+- (instancetype)initWithSynchronizer:(id<HUBGestureRecognizerSynchronizing>)synchronizer HUB_DESIGNATED_INITIALIZER;
+
+/// Unavailable. Use the designated initializer instead
+- (instancetype)initWithTarget:(nullable id)target action:(nullable SEL)action NS_UNAVAILABLE;
 
 /// Cancel any current gesture that it being recognized (will set the state to cancelled).
 - (void)cancel;

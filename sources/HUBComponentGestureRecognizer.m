@@ -20,18 +20,66 @@
  */
 
 #import "HUBComponentGestureRecognizer.h"
+#import "HUBGestureRecognizerSynchronizing.h"
 
 #import <UIKit/UIGestureRecognizerSubclass.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface HUBComponentGestureRecognizer ()
+@property (nonatomic, strong, readonly) id<HUBGestureRecognizerSynchronizing> synchronizer;
+@end
+
 @implementation HUBComponentGestureRecognizer
+
+#pragma mark - Object lifecycle
+
+- (instancetype)initWithSynchronizer:(id<HUBGestureRecognizerSynchronizing>)synchronizer
+{
+    NSParameterAssert(synchronizer);
+
+    self = [super initWithTarget:nil action:nil];
+
+    if (self) {
+        _synchronizer = synchronizer;
+    }
+
+    return self;
+}
+
+#pragma mark - Changing state
+
+- (void)begin
+{
+    self.state = UIGestureRecognizerStateBegan;
+    [self.synchronizer gestureRecognizerDidBeginHandlingTouches:self];
+}
+
+- (void)beginIfPossible
+{
+    if ([self.synchronizer gestureRecognizerShouldBeginHandlingTouches:self] == NO) {
+        [self finishWithState:UIGestureRecognizerStateFailed];
+        return;
+    }
+
+    [self begin];
+}
+
+- (void)finishWithState:(UIGestureRecognizerState)state
+{
+    if ([self isHandlingTouch]) {
+        [self.synchronizer gestureRecognizerDidFinishHandlingTouches:self];
+    }
+    self.state = state;
+}
 
 #pragma mark - API
 
 - (void)cancel
 {
-    self.state = UIGestureRecognizerStateCancelled;
+    if ([self isHandlingTouch]) {
+        [self finishWithState:UIGestureRecognizerStateCancelled];
+    }
 }
 
 #pragma mark - UIGestureRecognizer
@@ -39,36 +87,38 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
-    self.state = UIGestureRecognizerStateBegan;
+    [self beginIfPossible];
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesMoved:touches withEvent:event];
-    
+
     UITouch * const touch = [touches anyObject];
     CGPoint const touchLocation = [touch locationInView:self.view];
-    
-    if (touchLocation.y < 0 || touchLocation.y > CGRectGetHeight(self.view.bounds)) {
-        self.state = UIGestureRecognizerStateFailed;
-    } else if (touchLocation.x < 0 || touchLocation.x > CGRectGetWidth(self.view.bounds)) {
-        self.state = UIGestureRecognizerStateFailed;
+
+    if (!CGRectContainsPoint(self.view.bounds, touchLocation)) {
+        [self finishWithState:UIGestureRecognizerStateFailed];
     }
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
-    
-    if (self.state != UIGestureRecognizerStateCancelled) {
-        self.state = UIGestureRecognizerStateEnded;
-    }
+    [self finishWithState:UIGestureRecognizerStateEnded];
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesCancelled:touches withEvent:event];
-    self.state = UIGestureRecognizerStateCancelled;
+    [self cancel];
+}
+
+#pragma mark - Helpers
+
+- (BOOL)isHandlingTouch
+{
+    return self.state == UIGestureRecognizerStateBegan || self.state == UIGestureRecognizerStateChanged;
 }
 
 @end
