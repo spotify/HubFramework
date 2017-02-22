@@ -11,6 +11,7 @@
 		344E43D21E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */; };
 		3E73B3C01E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E73B3BF1E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m */; };
 		3E73B3CD1E5BD89700B26842 /* HUBSingleGestureRecognizerSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E73B3BF1E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m */; };
+		3ECDD5851E5DC115006BBB83 /* HUBSingleGestureRecognizerSynchronizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECDD5841E5DC115006BBB83 /* HUBSingleGestureRecognizerSynchronizerTests.m */; };
 		521891E61DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891E51DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m */; };
 		521891EA1DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891E91DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.m */; };
 		521891ED1DEE410200FA3BF7 /* HUBBlockContentOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891EC1DEE410200FA3BF7 /* HUBBlockContentOperationTests.m */; };
@@ -469,6 +470,7 @@
 		3E73B3BE1E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBSingleGestureRecognizerSynchronizer.h; sourceTree = "<group>"; };
 		3E73B3BF1E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBSingleGestureRecognizerSynchronizer.m; sourceTree = "<group>"; };
 		3E8FB7CE1E5B40820085B978 /* HUBGestureRecognizerSynchronizing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBGestureRecognizerSynchronizing.h; sourceTree = "<group>"; };
+		3ECDD5841E5DC115006BBB83 /* HUBSingleGestureRecognizerSynchronizerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBSingleGestureRecognizerSynchronizerTests.m; sourceTree = "<group>"; };
 		4E29FCF31DED2D9600856D20 /* HUBTestUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBTestUtilities.h; sourceTree = "<group>"; };
 		521891E21DEE3C3000FA3BF7 /* HUBBlockContentOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBBlockContentOperation.h; sourceTree = "<group>"; };
 		521891E51DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBBlockContentOperation.m; sourceTree = "<group>"; };
@@ -1122,6 +1124,7 @@
 				8A58E1481C5FA62E00F41A5C /* HUBComponentImageDataBuilderTests.m */,
 				8A6386761D882CA700AED30F /* HUBComponentTargetBuilderTests.m */,
 				8A15132B1DB7AF4800DE8C7A /* HUBComponentGestureRecognizerTests.m */,
+				3ECDD5841E5DC115006BBB83 /* HUBSingleGestureRecognizerSynchronizerTests.m */,
 				8AC315861DEDAB490093AEA0 /* HUBDefaultComponentLayoutManagerTests.m */,
 			);
 			name = Components;
@@ -2034,6 +2037,7 @@
 				8ACB2A7C1C6A2F99000741D7 /* HUBIdentifierTests.m in Sources */,
 				650056B41DF99FCF006D957C /* HUBCollectionViewLayoutMock.m in Sources */,
 				F6665AA71D9947E00097929F /* HUBViewModelDiffTests.m in Sources */,
+				3ECDD5851E5DC115006BBB83 /* HUBSingleGestureRecognizerSynchronizerTests.m in Sources */,
 				8A6386771D882CA700AED30F /* HUBComponentTargetBuilderTests.m in Sources */,
 				F6AC23C21DA2863A001B1A6A /* HUBComponentWrapperTests.m in Sources */,
 				521891ED1DEE410200FA3BF7 /* HUBBlockContentOperationTests.m in Sources */,
