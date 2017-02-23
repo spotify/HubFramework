@@ -304,4 +304,59 @@
     XCTAssert([diff.reloadedBodyComponentIndexPaths containsObject:[NSIndexPath indexPathForItem:2 inSection:0]]);
 }
 
+#pragma mark - Header changes tests
+
+- (id<HUBViewModel>)viewModelWithHeaderComponentName:(NSString *)headerComponentIdentifierName
+{
+    HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"Test" name:headerComponentIdentifierName];
+    id<HUBComponentModel> headerComponent = [HUBViewModelUtilities createComponentModelWithIdentifier:@"header" type:HUBComponentTypeHeader componentIdentifier:componentIdentifier customData:nil];
+    id<HUBViewModel> viewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test" bodyComponents:@[] headerComponent:headerComponent];
+    return viewModel;
+}
+
+- (void)testHeaderChangeIsFalseWhenFromAndToAreEmpty
+{
+    id<HUBViewModel> fromViewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test" bodyComponents:@[] headerComponent:nil];
+    id<HUBViewModel> toViewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test" bodyComponents:@[] headerComponent:nil];
+
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
+    XCTAssertFalse(diff.hasChanges);
+}
+
+- (void)testHeaderChangeIsTrueWhenFromAndToAreDifferent
+{
+    id<HUBViewModel> fromViewModel = [self viewModelWithHeaderComponentName:@"I"];
+    id<HUBViewModel> toViewModel = [self viewModelWithHeaderComponentName:@"L"];
+
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
+    XCTAssertTrue(diff.hasChanges);
+}
+
+- (void)testHeaderChangeIsFalseWhenFromAndToAreSame
+{
+    id<HUBViewModel> fromViewModel = [self viewModelWithHeaderComponentName:@"U"];
+    id<HUBViewModel> toViewModel = [self viewModelWithHeaderComponentName:@"U"];
+
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
+    XCTAssertFalse(diff.hasChanges);
+}
+
+- (void)testHeaderChangeIsTrueWhenFromIsEmpty
+{
+    id<HUBViewModel> fromViewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test" bodyComponents:@[] headerComponent:nil];
+    id<HUBViewModel> toViewModel = [self viewModelWithHeaderComponentName:@"C"];
+
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
+    XCTAssertTrue(diff.hasChanges);
+}
+
+- (void)testHeaderChangeIsTrueWhenToIsEmpty
+{
+    id<HUBViewModel> fromViewModel = [self viewModelWithHeaderComponentName:@"T"];
+    id<HUBViewModel> toViewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test" bodyComponents:@[] headerComponent:nil];
+
+    HUBViewModelDiff *diff = [HUBViewModelDiff diffFromViewModel:fromViewModel toViewModel:toViewModel algorithm:HUBDiffMyersAlgorithm];
+    XCTAssertTrue(diff.hasChanges);
+}
+
 @end
