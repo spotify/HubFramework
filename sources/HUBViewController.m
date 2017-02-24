@@ -717,6 +717,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     for (HUBComponentCollectionViewCell *visibleCell in [self.collectionView visibleCells]) {
         HUBComponentWrapper * const componentWrapper = self.componentWrappersByCellIdentifier[visibleCell.identifier];
         [componentWrapper reconfigureViewWithContainerViewSize:size];
+        [self loadImagesForComponentWrapper:componentWrapper
+                                 childIndex:nil];
     }
 }
 
