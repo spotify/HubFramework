@@ -197,9 +197,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether the view controller's content view should allow drag vertically even if content is smaller than bounds
 @property (nonatomic, assign) BOOL alwaysBounceVertical;
 
-/// Whether the view controller's content view should allow drag horizontally even if content is smaller than bounds
-@property (nonatomic, assign) BOOL alwaysBounceHorizontal;
-
 /**
  *  Return the frame used to render a body component at a given index
  *

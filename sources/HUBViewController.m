@@ -447,17 +447,10 @@ NS_ASSUME_NONNULL_BEGIN
     [self updateCollectionViewBounceSettings];
 }
 
-- (void)setAlwaysBounceHorizontal:(BOOL)alwaysBounceHorizontal
-{
-    _alwaysBounceHorizontal = alwaysBounceHorizontal;
-    [self updateCollectionViewBounceSettings];
-}
-
 - (void)updateCollectionViewBounceSettings
 {
     self.collectionView.bounces = self.bounces;
     self.collectionView.alwaysBounceVertical = self.alwaysBounceVertical;
-    self.collectionView.alwaysBounceHorizontal = self.alwaysBounceHorizontal;
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
