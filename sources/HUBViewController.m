@@ -149,6 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
     _componentWrappersByCellIdentifier = [NSMutableDictionary new];
     _componentWrappersByModelIdentifier = [NSMutableDictionary new];
     _renderingOperationQueue = [HUBOperationQueue new];
+    _bounces = YES;
     
     viewModelLoader.delegate = self;
     viewModelLoader.actionPerformer = self;
@@ -430,6 +431,33 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)reload
 {
     [self.viewModelLoader loadViewModelRegardlessOfReloadPolicy];
+}
+
+#pragma mark - Bounce control
+
+- (void)setBounces:(BOOL)bounces
+{
+    _bounces = bounces;
+    [self updateCollectionViewBounceSettings];
+}
+
+- (void)setAlwaysBounceVertical:(BOOL)alwaysBounceVertical
+{
+    _alwaysBounceVertical = alwaysBounceVertical;
+    [self updateCollectionViewBounceSettings];
+}
+
+- (void)setAlwaysBounceHorizontal:(BOOL)alwaysBounceHorizontal
+{
+    _alwaysBounceHorizontal = alwaysBounceHorizontal;
+    [self updateCollectionViewBounceSettings];
+}
+
+- (void)updateCollectionViewBounceSettings
+{
+    self.collectionView.bounces = self.bounces;
+    self.collectionView.alwaysBounceVertical = self.alwaysBounceVertical;
+    self.collectionView.alwaysBounceHorizontal = self.alwaysBounceHorizontal;
 }
 
 #pragma mark - HUBViewModelLoaderDelegate
@@ -879,6 +907,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
     collectionView.dataSource = self;
     collectionView.delegate = self;
+    [self updateCollectionViewBounceSettings];
 
     self.lastContentOffset = self.collectionView.contentOffset;
 

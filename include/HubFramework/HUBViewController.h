@@ -191,6 +191,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether the view controller's content view is currently being scrolled
 @property (nonatomic, assign, readonly) BOOL isViewScrolling;
 
+/// Whether the view controller's content view should bounce when scrolled
+@property (nonatomic, assign) BOOL bounces;
+
+/// Whether the view controller's content view should allow drag vertically even if content is smaller than bounds
+@property (nonatomic, assign) BOOL alwaysBounceVertical;
+
+/// Whether the view controller's content view should allow drag horizontally even if content is smaller than bounds
+@property (nonatomic, assign) BOOL alwaysBounceHorizontal;
+
 /**
  *  Return the frame used to render a body component at a given index
  *
