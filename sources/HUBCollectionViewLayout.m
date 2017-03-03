@@ -31,6 +31,8 @@
 #import "HUBViewModelDiff.h"
 #import "HUBUtilities.h"
 
+#import "CGFloat+HUBMath.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBCollectionViewLayout () <HUBComponentChildDelegate>
@@ -146,7 +148,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                 margins:margins];
         
         currentPoint.x = CGRectGetMaxX(componentViewFrame);
-        currentRowMaxY = MAX(currentRowMaxY, CGRectGetMaxY(componentViewFrame));
+        currentRowMaxY = HUBCGFloatMax(currentRowMaxY, CGRectGetMaxY(componentViewFrame));
         
         [self registerComponentViewFrame:componentViewFrame forIndex:componentIndex];
         
@@ -206,10 +208,10 @@ NS_ASSUME_NONNULL_BEGIN
     
     // Making sure the content offset doesn't go through the roof.
     CGFloat const minContentOffset = -self.collectionView.contentInset.top;
-    offset.y = MAX(minContentOffset, offset.y);
+    offset.y = HUBCGFloatMax(minContentOffset, offset.y);
     // ...or beyond the bottom.
     CGFloat maxContentOffset = MAX(self.contentSize.height + self.collectionView.contentInset.bottom - CGRectGetHeight(self.collectionView.frame), minContentOffset);
-    offset.y = MIN(maxContentOffset, offset.y);
+    offset.y = HUBCGFloatMin(maxContentOffset, offset.y);
     
     self.previousLayoutAttributesByIndexPath = nil;
     self.lastViewModelDiff = nil;
@@ -298,8 +300,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)forEachVerticalGroupInRect:(CGRect)rect runBlock:(void(^)(NSInteger groupIndex))block
 {
     CGFloat const verticalGroupSize = 100;
-    NSInteger const maxVerticalGroup = (NSInteger)(floor(CGRectGetMaxY(rect) / verticalGroupSize));
-    NSInteger currentVerticalGroup = (NSInteger)(floor(CGRectGetMinY(rect) / verticalGroupSize));
+    NSInteger const maxVerticalGroup = (NSInteger)(HUBCGFloatFloor(CGRectGetMaxY(rect) / verticalGroupSize));
+    NSInteger currentVerticalGroup = (NSInteger)(HUBCGFloatFloor(CGRectGetMinY(rect) / verticalGroupSize));
     
     while (currentVerticalGroup <= maxVerticalGroup) {
         block(currentVerticalGroup);
@@ -400,10 +402,10 @@ NS_ASSUME_NONNULL_BEGIN
         CGFloat const componentBottomMargin = [self.componentLayoutManager marginBetweenComponentWithLayoutTraits:component.layoutTraits
                                                                                                    andContentEdge:HUBComponentLayoutContentEdgeBottom];
         
-        viewBottomMargin = MAX(viewBottomMargin, componentBottomMargin);
+        viewBottomMargin = HUBCGFloatMax(viewBottomMargin, componentBottomMargin);
     }
     
-    contentHeight += MAX(viewBottomMargin, minimumBottomMargin);
+    contentHeight += HUBCGFloatMax(viewBottomMargin, minimumBottomMargin);
     
     return CGSizeMake(collectionViewSize.width, contentHeight);
 }
@@ -437,7 +439,7 @@ NS_ASSUME_NONNULL_BEGIN
                        horizontalAdjustment:(CGFloat)horizontalAdjustment
                          lastComponentIndex:(NSInteger)lastComponentIndex
 {
-    if (horizontalAdjustment == 0.0 || lastComponentIndex < 0) {
+    if (HUBCGFloatIsZero(horizontalAdjustment) || lastComponentIndex < 0) {
         return;
     }
 

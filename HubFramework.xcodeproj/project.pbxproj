@@ -423,6 +423,9 @@
 		DD244A821E04520F005E5C68 /* HUBErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = DD244A811E04520D005E5C68 /* HUBErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DD244B191E086958005E5C68 /* HUBErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = DD244B181E086958005E5C68 /* HUBErrors.m */; };
 		DD244B1A1E086958005E5C68 /* HUBErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = DD244B181E086958005E5C68 /* HUBErrors.m */; };
+		DD561C891E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DD561C881E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m */; };
+		DD561C8A1E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DD561C881E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m */; };
+		DD561C8B1E5BAE6A00BE0A5E /* CGFloat+HUBMath.h in Headers */ = {isa = PBXBuildFile; fileRef = DD561C871E5BA44500BE0A5E /* CGFloat+HUBMath.h */; };
 		DDBCF36C1C68DD2300693038 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36B1C68DD2300693038 /* UIKit.framework */; };
 		DDBCF36E1C68DE2C00693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
 		DDBCF36F1C68DE4900693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
@@ -768,6 +771,8 @@
 		DD13758F1C68C76000AD3499 /* spotify_os.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = spotify_os.xcconfig; sourceTree = "<group>"; };
 		DD244A811E04520D005E5C68 /* HUBErrors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBErrors.h; sourceTree = "<group>"; };
 		DD244B181E086958005E5C68 /* HUBErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBErrors.m; sourceTree = "<group>"; };
+		DD561C871E5BA44500BE0A5E /* CGFloat+HUBMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CGFloat+HUBMath.h"; sourceTree = "<group>"; };
+		DD561C881E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGFloat+HUBMathTests.m"; sourceTree = "<group>"; };
 		DD79C3B91D9F0A8800FA77E5 /* HUBKeyPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBKeyPath.h; sourceTree = "<group>"; };
 		DD81AFEF1DF725040063DDE0 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBUtilities.h; sourceTree = "<group>"; };
@@ -960,6 +965,7 @@
 			isa = PBXGroup;
 			children = (
 				8A2BD20E1E0AA2CF008A5050 /* Operations */,
+				DD561C871E5BA44500BE0A5E /* CGFloat+HUBMath.h */,
 				8ADA48551D784C1400C27F21 /* HUBAutoEquatable.h */,
 				8ADA48561D784C1400C27F21 /* HUBAutoEquatable.m */,
 				DD244B181E086958005E5C68 /* HUBErrors.m */,
@@ -1057,11 +1063,11 @@
 			children = (
 				8A5D7A6C1CBD0F0D00B987BA /* HUBComponentDefaults+Testing.h */,
 				8A5D7A6D1CBD0F0D00B987BA /* HUBComponentDefaults+Testing.m */,
+				4E29FCF31DED2D9600856D20 /* HUBTestUtilities.h */,
 				6500561E1DF98B89006D957C /* HUBViewModelUtilities.h */,
 				6500561F1DF98B89006D957C /* HUBViewModelUtilities.m */,
 				8AC315821DED94790093AEA0 /* UIViewController+HUBSimulateLayoutCycle.h */,
 				8AC315831DED94790093AEA0 /* UIViewController+HUBSimulateLayoutCycle.m */,
-				4E29FCF31DED2D9600856D20 /* HUBTestUtilities.h */,
 			);
 			name = Utilities;
 			path = utilities;
@@ -1074,6 +1080,7 @@
 				8ACB2A7B1C6A2F99000741D7 /* HUBIdentifierTests.m */,
 				8A2BD20F1E0AA444008A5050 /* HUBOperationQueueTests.m */,
 				344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */,
+				DD561C881E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m */,
 				8A6529E81D82B349007B1A15 /* JSON */,
 				8A6529E11D81B176007B1A15 /* View */,
 				8A6529E91D82B35F007B1A15 /* Feature */,
@@ -1551,6 +1558,7 @@
 				8AE6C0351DF6E3CE0063B2B1 /* HUBViewControllerScrollHandler.h in Headers */,
 				8AE6C0171DF6E3B10063B2B1 /* HUBConnectivityState.h in Headers */,
 				8AE6C0461DF6E3D40063B2B1 /* HUBComponentImageData.h in Headers */,
+				DD561C8B1E5BAE6A00BE0A5E /* CGFloat+HUBMath.h in Headers */,
 				8AE6C0201DF6E3BE0063B2B1 /* HUBJSONPath.h in Headers */,
 				8AE6C05A1DF6E3E00063B2B1 /* HUBActionPerformer.h in Headers */,
 				8AE6C0181DF6E3B10063B2B1 /* HUBConnectivityStateResolver.h in Headers */,
@@ -1919,6 +1927,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD561C8A1E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m in Sources */,
 				8ABD6CCB1DF6ECF3005BCB33 /* HUBManagerTests.m in Sources */,
 				650056211DF98B89006D957C /* HUBViewModelUtilities.m in Sources */,
 				8ABD6CC61DF6ECF3005BCB33 /* HUBURLSessionMock.m in Sources */,
@@ -2017,6 +2026,7 @@
 				8A2BD2101E0AA444008A5050 /* HUBOperationQueueTests.m in Sources */,
 				8AA29CF81C4FE59100E972B7 /* HUBComponentModelBuilderTests.m in Sources */,
 				8A6BA0561C89A00F0057485D /* HUBComponentLayoutManagerMock.m in Sources */,
+				DD561C891E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m in Sources */,
 				344E43D11E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */,
 				B35E40F91DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m in Sources */,
 				8A1513311DB7B5B100DE8C7A /* HUBTouchMock.m in Sources */,
@@ -2190,15 +2200,13 @@
 		8ABD6CAE1DF6EC36005BCB33 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HUB_NON_ERROR_WARNINGS_0720 = "";
-				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = HubFrameworkTests;
 				WARNING_CFLAGS = (
 					"$(inherited)",
-					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
 					"-Wno-documentation-unknown-command",
+					"-Wno-partial-availability",
 				);
 			};
 			name = Debug;
@@ -2206,15 +2214,13 @@
 		8ABD6CAF1DF6EC36005BCB33 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HUB_NON_ERROR_WARNINGS_0720 = "";
-				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = HubFrameworkTests;
 				WARNING_CFLAGS = (
 					"$(inherited)",
-					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
 					"-Wno-documentation-unknown-command",
+					"-Wno-partial-availability",
 				);
 			};
 			name = Release;
@@ -2223,15 +2229,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = NO;
-				HUB_NON_ERROR_WARNINGS_0720 = "";
-				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = (
 					"$(inherited)",
-					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
 					"-Wno-documentation-unknown-command",
+					"-Wno-partial-availability",
 				);
 			};
 			name = Debug;
@@ -2240,15 +2244,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = NO;
-				HUB_NON_ERROR_WARNINGS_0720 = "";
-				HUB_NON_ERROR_WARNINGS_0730 = "$(HUB_NON_ERROR_WARNING_0720) -Wno-error=partial-availability";
 				INFOPLIST_FILE = tests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = (
 					"$(inherited)",
-					"$(HUB_NON_ERROR_WARNINGS_$(XCODE_VERSION_MINOR))",
 					"-Wno-documentation-unknown-command",
+					"-Wno-partial-availability",
 				);
 			};
 			name = Release;

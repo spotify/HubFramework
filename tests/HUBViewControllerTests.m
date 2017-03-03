@@ -1924,12 +1924,12 @@
 
     [self simulateViewControllerLayoutCycle];
     
-    HUBAssertEqualFloatValues(self.collectionView.contentInset.top, 0);
+    HUBAssertEqualCGFloatValues(self.collectionView.contentInset.top, 0);
     
     // Now, let's enable and reload - content inset should now be reset
     self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return YES; };
     [self.viewController reload];
-    HUBAssertEqualFloatValues(self.collectionView.contentInset.top, 44);
+    HUBAssertEqualCGFloatValues(self.collectionView.contentInset.top, 44);
 }
 
 - (void)testDisablingAutomaticTopInsetManagementWithHeaderComponent
@@ -1959,15 +1959,15 @@
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     UICollectionViewLayoutAttributes * const layoutAttributesA = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
     
-    HUBAssertEqualFloatValues(self.collectionView.contentInset.top, 0);
-    HUBAssertEqualFloatValues(layoutAttributesA.frame.origin.y, 0);
+    HUBAssertEqualCGFloatValues(self.collectionView.contentInset.top, 0);
+    HUBAssertEqualCGFloatValues(layoutAttributesA.frame.origin.y, 0);
     
     // Now, let's enable and reload - the first component should now have been pushed down by the header
     self.viewControllerShouldAutomaticallyManageTopContentInset = ^{ return YES; };
     [self.viewController reload];
     
     UICollectionViewLayoutAttributes * const layoutAttributesB = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
-    HUBAssertEqualFloatValues(layoutAttributesB.frame.origin.y, 400);
+    HUBAssertEqualCGFloatValues(layoutAttributesB.frame.origin.y, 400);
 }
 
 - (void)testHeaderMarginAlwaysBasedOnComponentPreferredViewSize
@@ -2000,7 +2000,7 @@
     
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     UICollectionViewLayoutAttributes * const layoutAttributesA = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
-    HUBAssertEqualFloatValues(layoutAttributesA.frame.origin.y, 400);
+    HUBAssertEqualCGFloatValues(layoutAttributesA.frame.origin.y, 400);
     
     // If the header height is changed (for example, by the header itself, it shouldn't affect content inset)
     self.component.view.frame = CGRectMake(0, 0, 320, 100);
@@ -2010,7 +2010,7 @@
     XCTAssertEqual(self.contentOperation.performCount, 2u);
     
     UICollectionViewLayoutAttributes * const layoutAttributesB = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
-    HUBAssertEqualFloatValues(layoutAttributesB.frame.origin.y, 400);
+    HUBAssertEqualCGFloatValues(layoutAttributesB.frame.origin.y, 400);
 }
 
 - (void)testScrollingToRootComponentUsesScrollHandler
@@ -2350,7 +2350,7 @@
     XCTAssertEqual(self.collectionView.showsHorizontalScrollIndicator, YES);
     XCTAssertEqual(self.collectionView.showsVerticalScrollIndicator, YES);
     XCTAssertEqual(self.collectionView.keyboardDismissMode, UIScrollViewKeyboardDismissModeOnDrag);
-    HUBAssertEqualFloatValues(self.collectionView.decelerationRate, UIScrollViewDecelerationRateNormal);
+    HUBAssertEqualCGFloatValues(self.collectionView.decelerationRate, UIScrollViewDecelerationRateNormal);
     XCTAssertTrue(UIEdgeInsetsEqualToEdgeInsets(self.collectionView.contentInset, UIEdgeInsetsMake(100, 30, 40, 200)));
 }
 
@@ -2365,32 +2365,32 @@
     id<UIScrollViewDelegate> const scrollViewDelegate = self.collectionView.delegate;
     [scrollViewDelegate scrollViewWillBeginDragging:self.collectionView];
     
-    HUBAssertEqualFloatValues(CGRectGetMinX(self.scrollHandler.startContentRect), 0);
-    HUBAssertEqualFloatValues(CGRectGetMinY(self.scrollHandler.startContentRect), 200);
-    HUBAssertEqualFloatValues(CGRectGetWidth(self.scrollHandler.startContentRect), 320);
-    HUBAssertEqualFloatValues(CGRectGetHeight(self.scrollHandler.startContentRect), 480);
+    HUBAssertEqualCGFloatValues(CGRectGetMinX(self.scrollHandler.startContentRect), 0);
+    HUBAssertEqualCGFloatValues(CGRectGetMinY(self.scrollHandler.startContentRect), 200);
+    HUBAssertEqualCGFloatValues(CGRectGetWidth(self.scrollHandler.startContentRect), 320);
+    HUBAssertEqualCGFloatValues(CGRectGetHeight(self.scrollHandler.startContentRect), 480);
     
     self.collectionView.contentOffset = CGPointMake(0, 800);
     [scrollViewDelegate scrollViewWillBeginDragging:self.collectionView];
     
-    HUBAssertEqualFloatValues(CGRectGetMinX(self.scrollHandler.startContentRect), 0);
-    HUBAssertEqualFloatValues(CGRectGetMinY(self.scrollHandler.startContentRect), 800);
-    HUBAssertEqualFloatValues(CGRectGetWidth(self.scrollHandler.startContentRect), 320);
-    HUBAssertEqualFloatValues(CGRectGetHeight(self.scrollHandler.startContentRect), 480);
+    HUBAssertEqualCGFloatValues(CGRectGetMinX(self.scrollHandler.startContentRect), 0);
+    HUBAssertEqualCGFloatValues(CGRectGetMinY(self.scrollHandler.startContentRect), 800);
+    HUBAssertEqualCGFloatValues(CGRectGetWidth(self.scrollHandler.startContentRect), 320);
+    HUBAssertEqualCGFloatValues(CGRectGetHeight(self.scrollHandler.startContentRect), 480);
 
     self.collectionView.contentOffset = CGPointMake(0, 1200);
     [scrollViewDelegate scrollViewDidEndDragging:self.collectionView willDecelerate:NO];
-    HUBAssertEqualFloatValues(CGRectGetMinX(self.scrollHandler.startContentRect), 0);
-    HUBAssertEqualFloatValues(CGRectGetMinY(self.scrollHandler.endContentRect), 1200);
-    HUBAssertEqualFloatValues(CGRectGetWidth(self.scrollHandler.endContentRect), 320);
-    HUBAssertEqualFloatValues(CGRectGetHeight(self.scrollHandler.endContentRect), 400);
+    HUBAssertEqualCGFloatValues(CGRectGetMinX(self.scrollHandler.startContentRect), 0);
+    HUBAssertEqualCGFloatValues(CGRectGetMinY(self.scrollHandler.endContentRect), 1200);
+    HUBAssertEqualCGFloatValues(CGRectGetWidth(self.scrollHandler.endContentRect), 320);
+    HUBAssertEqualCGFloatValues(CGRectGetHeight(self.scrollHandler.endContentRect), 400);
 
     self.collectionView.contentOffset = CGPointMake(0, 1240);
     [scrollViewDelegate scrollViewDidEndDecelerating:self.collectionView];
-    HUBAssertEqualFloatValues(CGRectGetMinX(self.scrollHandler.endContentRect), 0);
-    HUBAssertEqualFloatValues(CGRectGetMinY(self.scrollHandler.endContentRect), 1240);
-    HUBAssertEqualFloatValues(CGRectGetWidth(self.scrollHandler.endContentRect), 320);
-    HUBAssertEqualFloatValues(CGRectGetHeight(self.scrollHandler.endContentRect), 360);
+    HUBAssertEqualCGFloatValues(CGRectGetMinX(self.scrollHandler.endContentRect), 0);
+    HUBAssertEqualCGFloatValues(CGRectGetMinY(self.scrollHandler.endContentRect), 1240);
+    HUBAssertEqualCGFloatValues(CGRectGetWidth(self.scrollHandler.endContentRect), 320);
+    HUBAssertEqualCGFloatValues(CGRectGetHeight(self.scrollHandler.endContentRect), 360);
 }
 
 - (void)testScrollHandlerModifyingTargetContentOffset
@@ -2404,8 +2404,8 @@
                                                withVelocity:CGPointZero
                                         targetContentOffset:&targetContentOffset];
     
-    HUBAssertEqualFloatValues(targetContentOffset.x, 300);
-    HUBAssertEqualFloatValues(targetContentOffset.y, 500);
+    HUBAssertEqualCGFloatValues(targetContentOffset.x, 300);
+    HUBAssertEqualCGFloatValues(targetContentOffset.y, 500);
 }
 
 - (void)testIsViewScrolling
@@ -2857,8 +2857,8 @@
     // Sets view controller's view frame to {0, 0, 320, 400}
     [self simulateViewControllerLayoutCycle];
     
-    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
-    HUBAssertEqualFloatValues(self.component.view.center.y, 200);
+    HUBAssertEqualCGFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualCGFloatValues(self.component.view.center.y, 200);
     
     CGRect const keyboardEndFrame = CGRectMake(0, 200, 320, 200);
     NSDictionary * const notificationUserInfo = @{
@@ -2872,25 +2872,25 @@
     NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter postNotification:keyboardNotification];
     
-    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
-    HUBAssertEqualFloatValues(self.component.view.center.y, 100);
+    HUBAssertEqualCGFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualCGFloatValues(self.component.view.center.y, 100);
     
     // Hide keyboard, which should pull the overlay component back down
     [notificationCenter postNotificationName:UIKeyboardWillHideNotification object:nil];
     
-    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
-    HUBAssertEqualFloatValues(self.component.view.center.y, 200);
+    HUBAssertEqualCGFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualCGFloatValues(self.component.view.center.y, 200);
 
     self.centerPointForOverlayComponents = [NSValue valueWithCGPoint:CGPointMake(80, 100)];
     [notificationCenter postNotification:keyboardNotification];
-    HUBAssertEqualFloatValues(self.component.view.center.x, 80);
-    HUBAssertEqualFloatValues(self.component.view.center.y, 100);
+    HUBAssertEqualCGFloatValues(self.component.view.center.x, 80);
+    HUBAssertEqualCGFloatValues(self.component.view.center.y, 100);
 
     self.viewController.delegate = nil;
     self.centerPointForOverlayComponents = nil;
     [notificationCenter postNotificationName:UIKeyboardWillHideNotification object:nil];
-    HUBAssertEqualFloatValues(self.component.view.center.x, 160);
-    HUBAssertEqualFloatValues(self.component.view.center.y, 200);
+    HUBAssertEqualCGFloatValues(self.component.view.center.x, 160);
+    HUBAssertEqualCGFloatValues(self.component.view.center.y, 200);
 }
 
 - (void)testScrollingToComponentAfterViewModelFinishesRendering
@@ -2964,7 +2964,7 @@
     
     // Here we force update the collection view's content size as it doesn't do it automatically when not attached to a proper window
     self.collectionView.contentSize = self.collectionView.collectionViewLayout.collectionViewContentSize;
-    HUBAssertEqualFloatValues(self.collectionView.contentSize.height, 500);
+    HUBAssertEqualCGFloatValues(self.collectionView.contentSize.height, 500);
     
     CGPoint targetContentOffset = CGPointMake(0, 500);
     self.scrollHandler.targetContentOffset = targetContentOffset;
@@ -2979,7 +2979,7 @@
     XCTAssertEqualObjects(self.viewController.viewModel.bodyComponentModels[5].identifier, @"extended-component-page-1");
     
     self.collectionView.contentSize = self.collectionView.collectionViewLayout.collectionViewContentSize;
-    HUBAssertEqualFloatValues(self.collectionView.contentSize.height, 600);
+    HUBAssertEqualCGFloatValues(self.collectionView.contentSize.height, 600);
     
     targetContentOffset = CGPointMake(0, 600);
     self.scrollHandler.targetContentOffset = targetContentOffset;
@@ -3016,16 +3016,16 @@
     
     // First verify that we can scroll the view per default
     self.collectionView.contentOffset = CGPointMake(0, 500);
-    HUBAssertEqualFloatValues(self.collectionView.contentOffset.y, 500);
+    HUBAssertEqualCGFloatValues(self.collectionView.contentOffset.y, 500);
     
     self.viewControllerShouldStartScrollingBlock = ^{ return NO; };
     self.collectionView.contentOffset = CGPointMake(0, 600);
-    HUBAssertEqualFloatValues(self.collectionView.contentOffset.y, 500);
+    HUBAssertEqualCGFloatValues(self.collectionView.contentOffset.y, 500);
     
     // Verify that scrolling works again as soon as we switch back
     self.viewControllerShouldStartScrollingBlock = ^{ return YES; };
     self.collectionView.contentOffset = CGPointMake(0, 700);
-    HUBAssertEqualFloatValues(self.collectionView.contentOffset.y, 700);
+    HUBAssertEqualCGFloatValues(self.collectionView.contentOffset.y, 700);
 }
 
 - (void)testViewControllerWithoutDelegateIsAlwaysScrollable
@@ -3054,11 +3054,11 @@
     
     // Here we force update the collection view's content size as it doesn't do it automatically when not attached to a proper window
     self.collectionView.contentSize = self.collectionView.collectionViewLayout.collectionViewContentSize;
-    HUBAssertEqualFloatValues(self.collectionView.contentSize.height, 1000);
+    HUBAssertEqualCGFloatValues(self.collectionView.contentSize.height, 1000);
     XCTAssertGreaterThan(self.collectionView.contentSize.height, CGRectGetHeight(self.collectionView.frame));
     
     self.collectionView.contentOffset = CGPointMake(0, 500);
-    HUBAssertEqualFloatValues(self.collectionView.contentOffset.y, 500);
+    HUBAssertEqualCGFloatValues(self.collectionView.contentOffset.y, 500);
 }
 
 - (void)testThatDelegateIsNotifiedWhenOverlayAppears

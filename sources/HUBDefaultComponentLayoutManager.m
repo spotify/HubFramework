@@ -20,6 +20,7 @@
  */
 
 #import "HUBDefaultComponentLayoutManager.h"
+#import "CGFloat+HUBMath.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -118,7 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     /// Center the component
-    return (CGFloat)floor((firstComponentLeadingOffsetX + lastComponentTrailingOffsetX) / 2 - firstComponentLeadingOffsetX);
+    return HUBCGFloatFloor((firstComponentLeadingOffsetX + lastComponentTrailingOffsetX) / 2 - firstComponentLeadingOffsetX);
 }
 
 #pragma mark - Private utilities

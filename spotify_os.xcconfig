@@ -80,13 +80,7 @@ GCC_PREPROCESSOR_DEFINITIONS = $SPOTIFY_OS_CONFIG_PREPROCESSOR_DEFINITIONS
 // Warnings:
 // Attribution: https://github.com/jonreid/XcodeWarnings
 
-// Warnings, by Xcode version, we want to ignore.
-HF_IGNORED_WARNINGS_0730 = -Wno-double-promotion -Wno-partial-availability
-HF_IGNORED_WARNINGS_0800 = $(HF_IGNORED_WARNINGS_0730)
-HF_IGNORED_WARNINGS_0810 = $(HF_IGNORED_WARNINGS_0800)
-HF_IGNORED_WARNINGS_0820 = $(HF_IGNORED_WARNINGS_0810)
-
-WARNING_CFLAGS = -Weverything -Wno-error=deprecated -Wno-objc-missing-property-synthesis -Wno-gnu-conditional-omitted-operand -Wno-gnu -Wno-reserved-id-macro -Wno-auto-import -Wno-missing-variable-declarations -Wno-vla -Werror $(HF_IGNORED_WARNINGS_$(XCODE_VERSION_MINOR))
+WARNING_CFLAGS = -Weverything -Wno-error=deprecated -Wno-objc-missing-property-synthesis -Wno-gnu-conditional-omitted-operand -Wno-gnu -Wno-reserved-id-macro -Wno-auto-import -Wno-missing-variable-declarations -Wno-vla -Werror
 
 // Apple LLVM 8.0 - Warnings - All languages
 CLANG_WARN_INFINITE_RECURSION = YES
