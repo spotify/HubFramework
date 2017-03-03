@@ -70,6 +70,24 @@ class ReloadUITests: UITestCase {
         XCTAssertFalse(secondItem.exists)
         XCTAssertFalse(thirdItem.exists)
     }
+
+    func testIfAlwaysBounceVerticalIsDisabled() {
+        let app = XCUIApplication()
+        app.collectionViews.staticTexts["Todo list"].tap()
+
+        // Search bar should not appear until we add our first item
+        let searchBar = XCUIApplication().searchFields.element(boundBy: 0)
+        XCTAssertFalse(searchBar.exists)
+
+        // Add an item, which should make both the item and the search bar appear
+        addItem(named: "First item")
+
+        // Use search bar to present keyboard and check if scroll is disabled, so that scrolling doesn't hide keybaord
+        searchBar.tap()
+        XCTAssert(app.keyboards.count > 0, "The keyboard is not shown")
+        app.collectionViews.element(boundBy: 0).swipeDown()
+        XCTAssert(app.keyboards.count > 0, "The keyboard is dismissed")
+    }
     
     private func addItem(named itemName: String) {
         let app = XCUIApplication()

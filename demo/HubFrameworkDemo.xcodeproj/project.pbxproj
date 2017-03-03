@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3EB3D3491E69990000064452 /* ScrollingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB3D3471E69988300064452 /* ScrollingUITests.swift */; };
 		6510FD791DD1D182002FA2DC /* PrettyPicturesActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */; };
 		657DFE1B1DC8E21700F20C0E /* SelectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DFE191DC8E21700F20C0E /* SelectionUITests.swift */; };
 		65A790361DDDA8FC00AD4078 /* NavigationItemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A790351DDDA8FC00AD4078 /* NavigationItemUITests.swift */; };
@@ -48,11 +49,18 @@
 		8AD98C561DD5F5FE00F01A62 /* StickyHeaderContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C551DD5F5FE00F01A62 /* StickyHeaderContentOperation.swift */; };
 		8AD98C591DD6062100F01A62 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C581DD6062100F01A62 /* NavigationController.swift */; };
 		8AE6BD2E1DF1BF780063B2B1 /* ColorContainerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6BD2D1DF1BF780063B2B1 /* ColorContainerComponent.swift */; };
-		8AE6C0101DF6E3560063B2B1 /* HubFramework-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */; };
-		8AE6C0111DF6E3560063B2B1 /* HubFramework-iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8AE6C0101DF6E3560063B2B1 /* HubFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework.framework */; };
+		8AE6C0111DF6E3560063B2B1 /* HubFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3EB3D3421E6990ED00064452 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8ABD6CA61DF6EC36005BCB33;
+			remoteInfo = "HubFrameworkTests-iOS";
+		};
 		657DFE141DC8E1B600F20C0E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8A42E08A1D8C36A3004FAC33 /* Project object */;
@@ -97,7 +105,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8AE6C0111DF6E3560063B2B1 /* HubFramework-iOS.framework in Embed Frameworks */,
+				8AE6C0111DF6E3560063B2B1 /* HubFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,6 +113,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3EB3D3471E69988300064452 /* ScrollingUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScrollingUITests.swift; path = tests/ScrollingUITests.swift; sourceTree = SOURCE_ROOT; };
 		6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrettyPicturesActionHandler.swift; sourceTree = "<group>"; };
 		657DFE0F1DC8E1B600F20C0E /* HubFrameworkDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HubFrameworkDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		657DFE191DC8E21700F20C0E /* SelectionUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectionUITests.swift; path = tests/SelectionUITests.swift; sourceTree = SOURCE_ROOT; };
@@ -165,7 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AE6C0101DF6E3560063B2B1 /* HubFramework-iOS.framework in Frameworks */,
+				8AE6C0101DF6E3560063B2B1 /* HubFramework.framework in Frameworks */,
 				8AD732081D9AD63700E4B427 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -176,6 +185,7 @@
 		657DFE101DC8E1B600F20C0E /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				3EB3D3471E69988300064452 /* ScrollingUITests.swift */,
 				8A9204FE1DDE07AF0081E0B5 /* UITestCase.swift */,
 				657DFE191DC8E21700F20C0E /* SelectionUITests.swift */,
 				8AA98C441DD3778B006CA6AA /* PaginationUITests.swift */,
@@ -248,7 +258,8 @@
 			children = (
 				8A42E0BB1D8C37B4004FAC33 /* libHubFramework.a */,
 				8A42E0BD1D8C37B4004FAC33 /* HubFrameworkTests.xctest */,
-				8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */,
+				8AE6C00F1DF6E3560063B2B1 /* HubFramework.framework */,
+				3EB3D3431E6990ED00064452 /* HubFrameworkTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -438,6 +449,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		3EB3D3431E6990ED00064452 /* HubFrameworkTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = HubFrameworkTests.xctest;
+			remoteRef = 3EB3D3421E6990ED00064452 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8A42E0BB1D8C37B4004FAC33 /* libHubFramework.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -452,10 +470,10 @@
 			remoteRef = 8A42E0BC1D8C37B4004FAC33 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */ = {
+		8AE6C00F1DF6E3560063B2B1 /* HubFramework.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = "HubFramework-iOS.framework";
+			path = HubFramework.framework;
 			remoteRef = 8AE6C00E1DF6E3560063B2B1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -487,6 +505,7 @@
 			files = (
 				8A9204FD1DDE07810081E0B5 /* HeaderComponentUITests.swift in Sources */,
 				657DFE1B1DC8E21700F20C0E /* SelectionUITests.swift in Sources */,
+				3EB3D3491E69990000064452 /* ScrollingUITests.swift in Sources */,
 				65A790361DDDA8FC00AD4078 /* NavigationItemUITests.swift in Sources */,
 				8A9204FF1DDE07AF0081E0B5 /* UITestCase.swift in Sources */,
 				8AA124D11DE758300076582D /* ReloadUITests.swift in Sources */,
