@@ -2417,6 +2417,54 @@
     XCTAssertTrue(self.viewController.isViewScrolling);
 }
 
+- (void)testSettingAlwaysBounceVertically
+{
+    [self simulateViewControllerLayoutCycle];
+
+    self.viewController.alwaysBounceVertical = YES;
+    XCTAssertTrue(self.collectionView.alwaysBounceVertical);
+    self.viewController.alwaysBounceVertical = NO;
+    XCTAssertFalse(self.collectionView.alwaysBounceVertical);
+}
+
+- (void)testEnablingAlwaysBounceVerticallyBeforeLoadingView
+{
+    self.viewController.alwaysBounceVertical = YES;
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertTrue(self.collectionView.alwaysBounceVertical);
+}
+
+- (void)testDisablingAlwaysBounceVerticallyBeforeLoadingView
+{
+    self.viewController.alwaysBounceVertical = NO;
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertFalse(self.collectionView.alwaysBounceVertical);
+}
+
+- (void)testSettingBounces
+{
+    [self simulateViewControllerLayoutCycle];
+
+    self.viewController.bounces = NO;
+    XCTAssertFalse(self.collectionView.bounces);
+    self.viewController.bounces = YES;
+    XCTAssertTrue(self.collectionView.bounces);
+}
+
+- (void)testEnablingBouncesBeforeLoadingView
+{
+    self.viewController.bounces = YES;
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertTrue(self.collectionView.bounces);
+}
+
+- (void)testDisablingBouncesBeforeLoadingView
+{
+    self.viewController.bounces = NO;
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertFalse(self.collectionView.bounces);
+}
+
 - (void)testFrameForBodyComponentAtIndex
 {
     HUBComponentMock * const componentA = [HUBComponentMock new];
