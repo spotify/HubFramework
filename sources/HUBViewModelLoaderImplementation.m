@@ -101,8 +101,6 @@ NS_ASSUME_NONNULL_BEGIN
         _cachedInitialViewModel = initialViewModel;
         _builderSnapshots = [NSMutableDictionary new];
         _errorSnapshots = [NSMutableDictionary new];
-        
-        [connectivityStateResolver addObserver:self];
     }
     
     return self;
@@ -174,6 +172,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadViewModel
 {
+    [self connectivityStateResolverStateDidChange:self.connectivityStateResolver];
+    [self.connectivityStateResolver addObserver:self];
+
     if (self.contentReloadPolicy != nil) {
         if (self.previouslyLoadedViewModel != nil) {
             id<HUBViewModel> const previouslyLoadedViewModel = self.previouslyLoadedViewModel;
