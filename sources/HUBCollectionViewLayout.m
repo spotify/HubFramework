@@ -355,7 +355,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:(NSInteger)componentIndex inSection:0];
     UICollectionViewLayoutAttributes * const layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
     layoutAttributes.frame = componentViewFrame;
-    self.layoutAttributesByIndexPath[indexPath] = layoutAttributes;    
+    self.layoutAttributesByIndexPath[indexPath] = layoutAttributes;
 }
 
 - (CGSize)contentSizeForContentHeight:(CGFloat)contentHeight
