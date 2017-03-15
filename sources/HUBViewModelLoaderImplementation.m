@@ -64,6 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBViewModelLoaderImplementation
 
 @synthesize delegate = _delegate;
+@synthesize actionPerformer = _actionPerformer;
 
 #pragma mark - Lifecycle
 
@@ -132,7 +133,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setActionPerformer:(nullable id<HUBActionPerformer>)actionPerformer
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdirect-ivar-access"
     _actionPerformer = actionPerformer;
+#pragma clang diagnostic pop
     
     for (id<HUBContentOperation> const operation in self.contentOperations) {
         if (!HUBConformsToProtocol(operation, @protocol(HUBContentOperationActionPerformer))) {
@@ -187,8 +191,9 @@ NS_ASSUME_NONNULL_BEGIN
     [self scheduleContentOperationsFromIndex:0 executionMode:HUBContentOperationExecutionModeMain];
 }
 
-- (void)loadViewModelRegardlessOfReloadPolicy
+- (void)reloadViewModel
 {
+    // Ignore reload policy and always reload
     [self scheduleContentOperationsFromIndex:0 executionMode:HUBContentOperationExecutionModeMain];
 }
 

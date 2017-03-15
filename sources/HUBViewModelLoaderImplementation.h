@@ -34,11 +34,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Concrete implementation of the `HUBViewModelLoader` API
-@interface HUBViewModelLoaderImplementation : NSObject <HUBViewModelLoader>
+
+/// Protocol used for the internal `HUBViewModelLoaderImplementation` to support content operations sending actions
+@protocol HUBViewModelLoaderWithActions <HUBViewModelLoader>
 
 /// Any object that performs actions on behalf of this view model loader
 @property (nonatomic, weak, nullable) id<HUBActionPerformer> actionPerformer;
+
+@end
+
+/// Concrete implementation of the `HUBViewModelLoader` API
+@interface HUBViewModelLoaderImplementation : NSObject <HUBViewModelLoaderWithActions>
+
 
 /**
  *  Initialize an instance of this class with its required dependencies & values
@@ -72,12 +79,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  that an action was performed.
  */
 - (void)actionPerformedWithContext:(id<HUBActionContext>)context;
-
-
-/**
- *  Load a view model using this loader regard less of reload policy
- */
-- (void)loadViewModelRegardlessOfReloadPolicy;
 
 @end
 

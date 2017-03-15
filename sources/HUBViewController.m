@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 >
 
 @property (nonatomic, strong, readonly) id<HUBFeatureInfo> featureInfo;
-@property (nonatomic, strong, readonly) HUBViewModelLoaderImplementation *viewModelLoader;
+@property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
 @property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
 @property (nonatomic, strong, readonly) HUBComponentReusePool *componentReusePool;
@@ -102,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithViewURI:(NSURL *)viewURI
                     featureInfo:(id<HUBFeatureInfo>)featureInfo
-                viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
+                viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
               viewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(id<HUBComponentRegistry>)componentRegistry
@@ -150,7 +150,9 @@ NS_ASSUME_NONNULL_BEGIN
     _bounces = YES;
     
     viewModelLoader.delegate = self;
-    viewModelLoader.actionPerformer = self;
+    if (HUBConformsToProtocol(viewModelLoader, @protocol(HUBViewModelLoaderWithActions))) {
+        ((id<HUBViewModelLoaderWithActions>)viewModelLoader).actionPerformer = self;
+    }
     imageLoader.delegate = self;
     
     self.automaticallyAdjustsScrollViewInsets = [_scrollHandler shouldAutomaticallyAdjustContentInsetsInViewController:self];
@@ -428,7 +430,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)reload
 {
-    [self.viewModelLoader loadViewModelRegardlessOfReloadPolicy];
+    [self.viewModelLoader reloadViewModel];
 }
 
 #pragma mark - Bounce control
