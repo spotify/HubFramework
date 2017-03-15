@@ -614,6 +614,65 @@
     XCTAssertEqual(contentOperationB.performCount, 1u);
 }
 
+- (void)testConnectivityStateChangeDoesNotStartLoadingUntilRequested
+{
+    self.connectivityStateResolver.state = HUBConnectivityStateOffline;
+
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    contentOperationA.initialContentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"initial"].title = @"Initial component";
+    };
+
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
+    contentOperationB.contentLoadingBlock = ^BOOL(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"final"].title = @"Final component";
+        return YES;
+    };
+
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
+                          connectivityState:HUBConnectivityStateOffline
+                           initialViewModel:nil];
+
+    self.connectivityStateResolver.state = HUBConnectivityStateOnline;
+    [self.connectivityStateResolver callObservers];
+
+    XCTAssertEqual(contentOperationA.performCount, 0u);
+    XCTAssertEqual(contentOperationB.performCount, 0u);
+
+    [self.loader loadViewModel];
+
+    XCTAssertEqual(contentOperationA.performCount, 1u);
+    XCTAssertEqual(contentOperationB.performCount, 1u);
+}
+
+- (void)testResolveConnectivityStateWhenLoading
+{
+    self.connectivityStateResolver.state = HUBConnectivityStateOnline;
+
+    HUBContentOperationMock * const contentOperationA = [HUBContentOperationMock new];
+    contentOperationA.initialContentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"initial"].title = @"Initial component";
+    };
+
+    HUBContentOperationMock * const contentOperationB = [HUBContentOperationMock new];
+    contentOperationB.contentLoadingBlock = ^BOOL(id<HUBViewModelBuilder> viewModelBuilder) {
+        [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"final"].title = @"Final component";
+        return YES;
+    };
+
+    [self createLoaderWithContentOperations:@[contentOperationA, contentOperationB]
+                          connectivityState:HUBConnectivityStateOnline
+                           initialViewModel:nil];
+
+    self.connectivityStateResolver.state = HUBConnectivityStateOffline;
+    [self.connectivityStateResolver callObservers];
+
+    [self.loader loadViewModel];
+
+    XCTAssertEqual(contentOperationA.connectivityState, HUBConnectivityStateOffline);
+    XCTAssertEqual(contentOperationB.connectivityState, HUBConnectivityStateOffline);
+}
+
 - (void)testCorrectFeatureInfoSentToContentOperations
 {
     HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
