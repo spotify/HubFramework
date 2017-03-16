@@ -27,7 +27,7 @@
 @protocol HUBActionHandler;
 @protocol HUBViewControllerScrollHandler;
 @protocol HUBImageLoader;
-@class HUBViewModelLoaderImplementation;
+@protocol HUBViewModelLoader;
 @class HUBCollectionViewFactory;
 @class HUBComponentReusePool;
 @class HUBViewModelRenderer;
@@ -54,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
                     featureInfo:(id<HUBFeatureInfo>)featureInfo
-                viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
+                viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
               viewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(id<HUBComponentRegistry>)componentRegistry
