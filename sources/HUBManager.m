@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         HUBComponentRegistryImplementation * const componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler
                                                                                                                          componentDefaults:componentDefaults
-                                                                                                                        JSONSchemaRegistry:JSONSchemaRegistry
+                                                                                                                        JSONSchema:JSONSchemaRegistry.defaultSchema
                                                                                                                          iconImageResolver:iconImageResolver];
         
         HUBViewModelLoaderFactoryImplementation * const viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:featureRegistry

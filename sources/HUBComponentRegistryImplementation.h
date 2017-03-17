@@ -28,7 +28,7 @@
 @protocol HUBComponentFallbackHandler;
 @protocol HUBIconImageResolver;
 @class HUBComponentDefaults;
-@class HUBJSONSchemaRegistryImplementation;
+@protocol HUBJSONSchema;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -40,12 +40,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param fallbackHandler The object to use to create fallback components
  *  @param componentDefaults The default component values to use for component models
- *  @param JSONSchemaRegistry The JSON schema registry used in this instance of the Hub Framework
+ *  @param JSONSchema The JSON schema used in this instance of the Hub Framework
  *  @param iconImageResolver The resolver to use to convert icons into renderable images
  */
 - (instancetype)initWithFallbackHandler:(id<HUBComponentFallbackHandler>)fallbackHandler
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
-                     JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
+                             JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver HUB_DESIGNATED_INITIALIZER;
 
 @end
