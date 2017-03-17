@@ -428,6 +428,12 @@
 		8AFF0F321C846DA700D5535B /* HUBComponentWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF0F311C846DA700D5535B /* HUBComponentWrapper.m */; };
 		8AFF0F9A1C85C73300D5535B /* HUBCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF0F991C85C73300D5535B /* HUBCollectionViewLayout.m */; };
 		8AFF10071C87105C00D5535B /* HUBComponentFactoryMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */; };
+		9902B7201E7ABFEC00823187 /* HUBConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902B71F1E7ABFEC00823187 /* HUBConfig.m */; };
+		9902B7211E7ABFFE00823187 /* HUBConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902B71F1E7ABFEC00823187 /* HUBConfig.m */; };
+		9902B7241E7AC03400823187 /* HUBConfigOptionsImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9902B7221E7AC03400823187 /* HUBConfigOptionsImplementation.h */; };
+		9902B7251E7AC03400823187 /* HUBConfigOptionsImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902B7231E7AC03400823187 /* HUBConfigOptionsImplementation.m */; };
+		9902B7261E7AC03400823187 /* HUBConfigOptionsImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902B7231E7AC03400823187 /* HUBConfigOptionsImplementation.m */; };
+		9902B7281E7BDF3400823187 /* HUBConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 9902B6851E79374600823187 /* HUBConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B30B7F4F1E005AB30049D013 /* HUBViewControllerDefaultScrollHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = B38EA90C1DFEF18400526587 /* HUBViewControllerDefaultScrollHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B35E40F91DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */; };
 		DD244A821E04520F005E5C68 /* HUBErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = DD244A811E04520D005E5C68 /* HUBErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -780,6 +786,11 @@
 		8AFF0F991C85C73300D5535B /* HUBCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewLayout.m; sourceTree = "<group>"; };
 		8AFF0F9B1C85C89100D5535B /* HUBComponentLayoutManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentLayoutManager.h; sourceTree = "<group>"; };
 		8AFF10061C87015A00D5535B /* HUBComponentLayoutTraits.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBComponentLayoutTraits.h; sourceTree = "<group>"; };
+		9902B6851E79374600823187 /* HUBConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBConfig.h; sourceTree = "<group>"; };
+		9902B71F1E7ABFEC00823187 /* HUBConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBConfig.m; sourceTree = "<group>"; };
+		9902B7221E7AC03400823187 /* HUBConfigOptionsImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBConfigOptionsImplementation.h; sourceTree = "<group>"; };
+		9902B7231E7AC03400823187 /* HUBConfigOptionsImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBConfigOptionsImplementation.m; sourceTree = "<group>"; };
+		9902B7271E7ACB1400823187 /* HUBConfig+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HUBConfig+Internal.h"; sourceTree = "<group>"; };
 		9996E9691C6A42E000231D22 /* HUBComponentFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactory.h; sourceTree = "<group>"; };
 		B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewFactoryTests.m; sourceTree = "<group>"; };
 		B38EA90C1DFEF18400526587 /* HUBViewControllerDefaultScrollHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewControllerDefaultScrollHandler.h; sourceTree = "<group>"; };
@@ -906,6 +917,7 @@
 			children = (
 				DD81AFEF1DF725040063DDE0 /* HubFramework.modulemap */,
 				8A880ACF1C21AE9000ADB737 /* HubFramework.h */,
+				9902B6851E79374600823187 /* HUBConfig.h */,
 				8ADD42901C21C7BC00D1A801 /* HUBManager.h */,
 				8A0E4B7F1CB69CB30019DE71 /* Connectivity */,
 				8A786BA01C5A29E000B2AB9E /* JSON */,
@@ -925,6 +937,10 @@
 		8A0754AB1C21A7B600AFAD38 /* sources */ = {
 			isa = PBXGroup;
 			children = (
+				9902B71F1E7ABFEC00823187 /* HUBConfig.m */,
+				9902B7271E7ACB1400823187 /* HUBConfig+Internal.h */,
+				9902B7221E7AC03400823187 /* HUBConfigOptionsImplementation.h */,
+				9902B7231E7AC03400823187 /* HUBConfigOptionsImplementation.m */,
 				8ADD42911C21C81100D1A801 /* HUBManager.m */,
 				8AD732001D9AD2EA00E4B427 /* Connectivity */,
 				8A786BA51C5A2E7B00B2AB9E /* JSON */,
@@ -1598,6 +1614,7 @@
 				8AE6C03B1DF6E3D40063B2B1 /* HUBComponentWithRestorableUIState.h in Headers */,
 				8AE6C0BB1DF6E40D0063B2B1 /* HUBComponentWrapper.h in Headers */,
 				8AE6C01E1DF6E3BE0063B2B1 /* HUBJSONCompatibleBuilder.h in Headers */,
+				9902B7281E7BDF3400823187 /* HUBConfig.h in Headers */,
 				8AE6C0531DF6E3DB0063B2B1 /* HUBImageLoader.h in Headers */,
 				8AE6C0341DF6E3CE0063B2B1 /* HUBViewURIPredicate.h in Headers */,
 				8AE6C05C1DF6E3E00063B2B1 /* HUBActionContext.h in Headers */,
@@ -1645,6 +1662,7 @@
 				8AE6C02E1DF6E3CE0063B2B1 /* HUBViewModel.h in Headers */,
 				8AE6C0641DF6E3F20063B2B1 /* HUBDefaultConnectivityStateResolver.h in Headers */,
 				8AE6C0D91DF6E4180063B2B1 /* HUBLiveContentOperation.h in Headers */,
+				9902B7241E7AC03400823187 /* HUBConfigOptionsImplementation.h in Headers */,
 				8AE6C0971DF6E4020063B2B1 /* HUBCollectionViewFactory.h in Headers */,
 				8AE6C0191DF6E3BE0063B2B1 /* HUBJSONSchema.h in Headers */,
 				8AE6C0611DF6E3E60063B2B1 /* HUBSerializable.h in Headers */,
@@ -1877,6 +1895,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A8808A01C21AD0900ADB737 /* HUBComponentRegistryImplementation.m in Sources */,
+				9902B7201E7ABFEC00823187 /* HUBConfig.m in Sources */,
 				8AA29C881C4FAB6200E972B7 /* HUBComponentImageDataImplementation.m in Sources */,
 				52977ACA1DA7D0B40064629E /* HUBBlockContentOperationFactory.m in Sources */,
 				8A6ACAB31D7D893400102EA9 /* HUBActionContextImplementation.m in Sources */,
@@ -1925,6 +1944,7 @@
 				8AD00A091CC77C950012A9AF /* HUBIconImplementation.m in Sources */,
 				8AA127EE1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.m in Sources */,
 				8AA9894B1DD1E3C1006CA6AA /* HUBContentOperationExecutionInfo.m in Sources */,
+				9902B7251E7AC03400823187 /* HUBConfigOptionsImplementation.m in Sources */,
 				8A786BAB1C5A326300B2AB9E /* HUBJSONSchemaImplementation.m in Sources */,
 				8A2A72EB1D4B726800141619 /* HUBComponentTargetJSONSchemaImplementation.m in Sources */,
 				8AD064561C64B6DB0086C081 /* HUBComponentModelJSONSchemaImplementation.m in Sources */,
@@ -2101,6 +2121,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AE6C0AD1DF6E40D0063B2B1 /* HUBComponentModelBuilderImplementation.m in Sources */,
+				9902B7211E7ABFFE00823187 /* HUBConfig.m in Sources */,
 				8AE6C07F1DF6E4020063B2B1 /* HUBBlockContentOperationFactory.m in Sources */,
 				8AE6C0D21DF6E4140063B2B1 /* HUBActionHandlerWrapper.m in Sources */,
 				8AE6C09A1DF6E4020063B2B1 /* HUBCollectionView.m in Sources */,
@@ -2149,6 +2170,7 @@
 				8AE6C0741DF6E3F90063B2B1 /* HUBMutableJSONPathImplementation.m in Sources */,
 				8AE6C08A1DF6E4020063B2B1 /* HUBViewModelImplementation.m in Sources */,
 				8AE6C0DC1DF6E41B0063B2B1 /* HUBAutoEquatable.m in Sources */,
+				9902B7261E7AC03400823187 /* HUBConfigOptionsImplementation.m in Sources */,
 				8AE6C0C81DF6E4100063B2B1 /* HUBDefaultImageLoader.m in Sources */,
 				8AE6C0A91DF6E40D0063B2B1 /* HUBDefaultComponentFallbackHandler.m in Sources */,
 				8AE6C0881DF6E4020063B2B1 /* HUBViewController.m in Sources */,

@@ -19,6 +19,7 @@
  *  under the License.
  */
 
+#import "HUBConfig.h"
 #import "HUBManager.h"
 #import "HUBConnectivityStateResolver.h"
 #import "HUBDefaults.h"
