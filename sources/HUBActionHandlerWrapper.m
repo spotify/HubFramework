@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly, nullable) id<HUBActionHandler> actionHandler;
 @property (nonatomic, strong, readonly) HUBActionRegistryImplementation *actionRegistry;
-@property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
+@property (nonatomic, strong, readonly, nullable) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong, readonly) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong, readonly) NSMutableSet<HUBAsyncActionWrapper *> *ongoingAsyncActions;
 
@@ -50,11 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithActionHandler:(nullable id<HUBActionHandler>)actionHandler
                        actionRegistry:(HUBActionRegistryImplementation *)actionRegistry
-             initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
+             initialViewModelRegistry:(nullable HUBInitialViewModelRegistry *)initialViewModelRegistry
                       viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
 {
     NSParameterAssert(actionRegistry != nil);
-    NSParameterAssert(initialViewModelRegistry != nil);
     NSParameterAssert(viewModelLoader != nil);
     
     self = [super init];

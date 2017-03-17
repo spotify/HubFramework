@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithActionHandler:(nullable id<HUBActionHandler>)actionHandler
                        actionRegistry:(HUBActionRegistryImplementation *)actionRegistry
-             initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
+             initialViewModelRegistry:(nullable HUBInitialViewModelRegistry *)initialViewModelRegistry
                       viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader HUB_DESIGNATED_INITIALIZER;
 
 @end
