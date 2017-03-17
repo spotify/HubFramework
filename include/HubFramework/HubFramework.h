@@ -20,6 +20,7 @@
  */
 
 #import "HUBConfig.h"
+#import "HUBFactory.h"
 #import "HUBManager.h"
 #import "HUBConnectivityStateResolver.h"
 #import "HUBDefaults.h"
