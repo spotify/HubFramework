@@ -19,28 +19,38 @@
  *  under the License.
  */
 
-#import "HUBComponentImageLoadingContext.h"
+#import <Foundation/Foundation.h>
+#import <CoreGraphics/CoreGraphics.h>
+
+#import "HUBHeaderMacros.h"
+
+@protocol HUBImageLoader;
+
+@class HUBComponentWrapper;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation HUBComponentImageLoadingContext
+/**
+ A class that wraps a HUBImageLoader and handles the image loading logic for component wrappers.
+ */
+@interface HUBComponentWrapperImageLoader : NSObject
 
-- (instancetype)initWithImageType:(HUBComponentImageType)imageType
-                  imageIdentifier:(nullable NSString *)imageIdentifier
-                          wrapper:(HUBComponentWrapper *)wrapper
-                        timestamp:(NSTimeInterval)timestamp
-{
-    self = [super init];
-    
-    if (self) {
-        _imageType = imageType;
-        _imageIdentifier = [imageIdentifier copy];
-        _wrapper = wrapper;
-        _timestamp = timestamp;
-    }
-    
-    return self;
-}
+/**
+ Designated initializer.
+
+ @param imageLoader The image loader.
+ */
+- (instancetype)initWithImageLoader:(id<HUBImageLoader>)imageLoader HUB_DESIGNATED_INITIALIZER;
+
+
+/**
+ Loads all images (main, background and custom) in the component wrapper's model.
+
+ @param componentWrapper The component wrapper.
+ @param containerViewSize The container view's size.
+ */
+- (void)loadImagesForComponentWrapper:(HUBComponentWrapper *)componentWrapper
+                    containerViewSize:(CGSize)containerViewSize;
 
 @end
 
