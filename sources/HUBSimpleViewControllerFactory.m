@@ -63,9 +63,8 @@
     HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:config.componentRegistry];
 
     id<HUBActionHandler> const actionHandlerWrapper = [[HUBActionHandlerWrapper alloc] initWithActionHandler:actionHandler
-                                                                                              actionRegistry:(HUBActionRegistryImplementation *)config.actionRegistry // FIXME: This is populated from HUBManager
-
-                                                                                    initialViewModelRegistry:nil // FIXME Also from HUBManager
+                                                                                              actionRegistry:config.actionRegistry
+                                                                                    initialViewModelRegistry:nil
                                                                                              viewModelLoader:viewModelLoader];
     id<HUBViewControllerScrollHandler> const scrollHandlerToUse = config.viewControllerScrollHandler ?: [HUBViewControllerDefaultScrollHandler new];
 

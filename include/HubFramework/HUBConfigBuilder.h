@@ -24,9 +24,10 @@
 
 #import "HUBComponentCategories.h"
 
+@class HUBConfig;
 @protocol HUBActionRegistry;
-@protocol HUBJSONSchema;
 @protocol HUBComponent;
+@protocol HUBJSONSchema;
 @protocol HUBComponentFallbackHandler;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
@@ -39,24 +40,24 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBConfig : NSObject
-@property(nonatomic, readonly, strong) id<HUBComponentLayoutManager> componentLayoutManager;
-@property(nonatomic, readonly, strong) id<HUBComponentFallbackHandler> componentFallbackHandler;
-@property(nonatomic, readonly, strong) id<HUBJSONSchema> jsonSchema;
-@property(nonatomic, readonly, strong) id<HUBImageLoaderFactory> imageLoaderFactory;
-@property(nonatomic, readonly, strong) id<HUBConnectivityStateResolver> connectivityStateResolver;
-@property(nonatomic, nullable, readonly, strong) id<HUBContentReloadPolicy> contentReloadPolicy;
-@property(nonatomic, nullable, readonly, strong) id<HUBIconImageResolver> iconImageResolver;
-@property(nonatomic, nullable, readonly, strong) id<HUBViewControllerScrollHandler> viewControllerScrollHandler;
-@property(nonatomic, readonly, strong) id<HUBActionRegistry> actionRegistry;
-@property(nonatomic, readonly, strong) id<HUBComponentRegistry> componentRegistry;
+@interface HUBConfigBuilder : NSObject
+@property(nonatomic, nullable, strong) id<HUBJSONSchema> jsonSchema;
+@property(nonatomic, nullable, strong) id<HUBContentReloadPolicy> contentReloadPolicy;
+@property(nonatomic, nullable, strong) id<HUBImageLoaderFactory> imageLoaderFactory;
+@property(nonatomic, nullable, strong) id<HUBConnectivityStateResolver> connectivityStateResolver;
+@property(nonatomic, nullable, strong) id<HUBIconImageResolver> iconImageResolver;
+@property(nonatomic, nullable, strong) id<HUBViewControllerScrollHandler> viewControllerScrollHandler;
 
-/// Use `HUBConfigBuilder` to create instances of this class
-+ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                      componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler;
 
-/// Use `HUBConfigBuilder` to create instances of this class
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithComponentMargin:(CGFloat)componentMargin
+                 componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:));
+
+
+- (HUBConfig *)build;
 
 @end
-
 NS_ASSUME_NONNULL_END
+
+

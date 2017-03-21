@@ -24,9 +24,24 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class HUBComponentDefaults;
+@class HUBActionRegistryImplementation;
+@class HUBComponentRegistryImplementation;
 
 @interface HUBConfig ()
-@property(nonatomic, readonly, strong) HUBComponentDefaults *componentDefaults;
+@property(nonatomic, strong) HUBComponentDefaults *componentDefaults;
+
+- (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+                      componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                             componentDefaults:(HUBComponentDefaults *)componentDefaults
+                                    jsonSchema:(id<HUBJSONSchema>)JSONSchema
+                            imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
+                     connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+                                actionRegistry:(HUBActionRegistryImplementation *)actionRegistry
+                             componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+                           contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
+                             iconImageResolver:(nullable id<HUBIconImageResolver>) iconImageResolver
+                   viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END

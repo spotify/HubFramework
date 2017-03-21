@@ -22,7 +22,7 @@
 #import <Foundation/Foundation.h>
 
 #import "HUBConfig.h"
-#import "HUBConfigOptionsImplementation.h"
+#import "HUBConfig+Internal.h"
 #import "HUBComponentDefaults.h"
 #import "HUBComponentFallbackHandler.h"
 #import "HUBJSONSchemaImplementation.h"
@@ -37,81 +37,63 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBConfig ()
-@property(nonatomic, readwrite, strong) HUBComponentDefaults *componentDefaults;
+
 @property(nonatomic, readwrite, strong) id<HUBJSONSchema> jsonSchema;                                // For view model loader
 @property(nonatomic, readwrite, strong) id<HUBConnectivityStateResolver> connectivityStateResolver;
 @property(nonatomic, readwrite, strong) id<HUBComponentRegistry> componentRegistry;
 @property(nonatomic, readwrite, strong) id<HUBImageLoaderFactory> imageLoaderFactory;
-@property(nonatomic, readwrite, strong) HUBActionRegistryImplementation *actionRegistry;
 @property(nonatomic, nullable, readwrite, strong) id<HUBContentReloadPolicy> contentReloadPolicy;              // For view model loader
 @property(nonatomic, nullable, readwrite, strong) id<HUBIconImageResolver> iconImageResolver;                  // For the view model loader
 @property(nonatomic, nullable, readwrite, strong) id<HUBViewControllerScrollHandler> viewControllerScrollHandler;
 @end
 
 @implementation HUBConfig
-
-+ (instancetype)buildConfigWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                             componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                                         optionsBlock:(void (^__nullable)(id<HUBConfigOptions>))block
-{
-    HUBConfigOptionsImplementation * const configBuilder = [HUBConfigOptionsImplementation new];
-    if (block) {
-        block(configBuilder);
-    }
-
-    return [[HUBConfig alloc] initWithComponentLayoutManager:componentLayoutManager
-                                    componentFallbackHandler:componentFallbackHandler
-                                               configBuilder:configBuilder];
-}
-
-+ (instancetype)buildConfigWithComponentMargin:(CGFloat)componentMargin
-                        componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
-                                  optionsBlock:(void (^__nullable)(id<HUBConfigOptions>))optionsBlock
-{
-    id<HUBComponentLayoutManager> const componentLayoutManager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:componentMargin];
-    id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBDefaultComponentFallbackHandler alloc] initWithFallbackBlock:componentFallbackBlock];
-
-    return [self buildConfigWithComponentLayoutManager:componentLayoutManager
-                              componentFallbackHandler:componentFallbackHandler
-                                          optionsBlock:optionsBlock];
-}
+HUBComponentRegistryImplementation * _componentRegistry;
+HUBActionRegistryImplementation *_actionRegistry;
 
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                       componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                                 configBuilder:(HUBConfigOptionsImplementation *)configBuilder
+                             componentDefaults:(HUBComponentDefaults *)componentDefaults
+                                    jsonSchema:(id<HUBJSONSchema>)jsonSchema
+                            imageLoaderFactory:(id<HUBImageLoaderFactory>)imageLoaderFactory
+                     connectivityStateResolver:(id<HUBConnectivityStateResolver>)connectivityStateResolver
+                                actionRegistry:(HUBActionRegistryImplementation *)actionRegistry
+                             componentRegistry:(HUBComponentRegistryImplementation *)componentRegistry
+                           contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
+                             iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
+                   viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler
 {
+    NSParameterAssert(componentLayoutManager != nil);
+    NSParameterAssert(componentFallbackHandler != nil);
+    NSParameterAssert(componentDefaults != nil);
+    NSParameterAssert(jsonSchema != nil);
+    NSParameterAssert(imageLoaderFactory != nil);
+    NSParameterAssert(connectivityStateResolver != nil);
+    NSParameterAssert(actionRegistry != nil);
+    NSParameterAssert(componentRegistry != nil);
+
     self = [super init];
     if (self) {
-        _componentLayoutManager = componentLayoutManager;
         _componentFallbackHandler = componentFallbackHandler;
-
-        HUBComponentDefaults * const componentDefaults =
-        [[HUBComponentDefaults alloc] initWithComponentNamespace:componentFallbackHandler.defaultComponentNamespace
-                                                   componentName:componentFallbackHandler.defaultComponentName
-                                               componentCategory:componentFallbackHandler.defaultComponentCategory];
+        _componentLayoutManager = componentLayoutManager;
         _componentDefaults = componentDefaults;
-
-        id<HUBJSONSchema> defaultJSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults
-                                                                                           iconImageResolver:configBuilder.iconImageResolver];
-        _componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler
-                                                                               componentDefaults:componentDefaults
-                                                                                      JSONSchema:defaultJSONSchema
-                                                                               iconImageResolver:configBuilder.iconImageResolver];
-        _actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionAction];
-        _jsonSchema = (id)configBuilder.jsonSchema ?: defaultJSONSchema;
-
-        _contentReloadPolicy = configBuilder.contentReloadPolicy;
-        _imageLoaderFactory = (id)configBuilder.imageLoaderFactory ?: [HUBDefaultImageLoaderFactory new];
-
-        _connectivityStateResolver = (id)configBuilder.connectivityStateResolver ?: [HUBDefaultConnectivityStateResolver new];
-        _iconImageResolver = configBuilder.iconImageResolver;
-        _viewControllerScrollHandler = configBuilder.viewControllerScrollHandler;
+        _jsonSchema = jsonSchema;
+        _imageLoaderFactory = imageLoaderFactory;
+        _connectivityStateResolver = connectivityStateResolver;
+        _actionRegistry = actionRegistry;
+        _componentRegistry = componentRegistry;
+        _contentReloadPolicy = contentReloadPolicy;
+        _iconImageResolver = iconImageResolver;
+        _viewControllerScrollHandler = viewControllerScrollHandler;
     }
 
     return self;
 }
 
 @end
+
+
+
 
 NS_ASSUME_NONNULL_END
 

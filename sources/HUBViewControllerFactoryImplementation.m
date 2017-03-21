@@ -21,6 +21,7 @@
 
 #import "HUBViewControllerFactoryImplementation.h"
 
+#import "HUBActionRegistryImplementation.h"
 #import "HUBViewModelLoaderFactoryImplementation.h"
 #import "HUBFeatureRegistryImplementation.h"
 #import "HUBComponentRegistryImplementation.h"

@@ -92,19 +92,19 @@ import HubFramework
     // MARK: - Private
 
     private func setupDefaultConfig() {
-        defaultConfig = HUBConfig.build(componentMargin: ComponentMargin, componentFallbackClosure: componentFallbackClosure,
-                                        optionsClosure: nil)
-        defaultConfig.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)
+        defaultConfig = HUBConfigBuilder(componentMargin: ComponentMargin, componentFallbackClosure: componentFallbackClosure).build()
 
+        defaultConfig.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)
         defaultConfig.actionRegistry.register(TodoListActionFactory(), forNamespace: TodoListActionFactory.namespace)
     }
 
     private func setupGithubConfig() {
         let githubSchema = createGitHubSearchSchema()
-        githubConfig = HUBConfig.build(componentMargin: ComponentMargin, componentFallbackClosure: componentFallbackClosure,
-                                       optionsClosure: { options in
-                                        options.jsonSchema = githubSchema
-        })
+
+        let hubConfigBuilder = HUBConfigBuilder(componentMargin: ComponentMargin, componentFallbackClosure: componentFallbackClosure)
+        hubConfigBuilder.jsonSchema = githubSchema
+        githubConfig = hubConfigBuilder.build()
+        
         githubConfig.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)
     }
 

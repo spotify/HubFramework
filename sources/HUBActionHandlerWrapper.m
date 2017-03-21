@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBActionHandlerWrapper () <HUBAsyncActionWrapperDelegate>
 
 @property (nonatomic, strong, readonly, nullable) id<HUBActionHandler> actionHandler;
-@property (nonatomic, strong, readonly) HUBActionRegistryImplementation *actionRegistry;
+@property (nonatomic, strong, readonly) id<HUBActionRegistry> actionRegistry;
 @property (nonatomic, strong, readonly, nullable) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong, readonly) HUBViewModelLoaderImplementation *viewModelLoader;
 @property (nonatomic, strong, readonly) NSMutableSet<HUBAsyncActionWrapper *> *ongoingAsyncActions;
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Initializer
 
 - (instancetype)initWithActionHandler:(nullable id<HUBActionHandler>)actionHandler
-                       actionRegistry:(HUBActionRegistryImplementation *)actionRegistry
+                       actionRegistry:(id<HUBActionRegistry>)actionRegistry
              initialViewModelRegistry:(nullable HUBInitialViewModelRegistry *)initialViewModelRegistry
                       viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
 {

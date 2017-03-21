@@ -22,7 +22,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class HUBIdentifier;
+@protocol HUBAction;
 @protocol HUBActionFactory;
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -37,6 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  with a registry that you can use.
  */
 @protocol HUBActionRegistry
+
+/// The action that should be performed whenever a selection event occured
+@property (nonatomic, strong, readonly) id<HUBAction> selectionAction;
 
 /**
  *  Register an action factory with the Hub Framework
@@ -60,6 +66,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  not exist, this method does nothing.
  */
 - (void)unregisterActionFactoryForNamespace:(NSString *)actionNamespace;
+
+/**
+ *  Return an action for a certain identifier
+ *
+ *  @param identifier The identifier to return an action for
+ *
+ *  This method will return `nil` if no `HUBActionFactory` was found matching
+ *  the given identifier's namespace, or if that factory in turn returned `nil`.
+ */
+- (nullable id<HUBAction>)createCustomActionForIdentifier:(HUBIdentifier *)identifier;
 
 @end
 
