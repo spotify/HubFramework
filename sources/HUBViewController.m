@@ -32,11 +32,10 @@
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentWrapper.h"
+#import "HUBComponentWrapperImageLoader.h"
 #import "HUBComponentRegistry.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBUtilities.h"
-#import "HUBImageLoader.h"
-#import "HUBComponentImageLoadingContext.h"
 #import "HUBCollectionViewFactory.h"
 #import "HUBCollectionView.h"
 #import "HUBCollectionViewLayout.h"
@@ -51,13 +50,10 @@
 #import "HUBOperation.h"
 #import "HUBOperationQueue.h"
 
-static NSTimeInterval const HUBImageDownloadTimeThreshold = 0.07;
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewController () <
     HUBViewModelLoaderDelegate,
-    HUBImageLoaderDelegate,
     HUBComponentWrapperDelegate,
     UICollectionViewDataSource,
     HUBCollectionViewDelegate
@@ -72,11 +68,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBActionHandler> actionHandler;
 @property (nonatomic, strong, readonly) id<HUBViewControllerScrollHandler> scrollHandler;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
-@property (nonatomic, strong, nullable, readonly) id<HUBImageLoader> imageLoader;
+@property (nonatomic, strong, readonly) HUBComponentWrapperImageLoader *componentWrapperImageLoader;
 @property (nonatomic, strong, nullable) HUBCollectionView *collectionView;
 @property (nonatomic, strong, readonly) HUBViewModelRenderer *viewModelRenderer;
 @property (nonatomic, assign) BOOL collectionViewIsScrolling;
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSURL *, NSMutableArray<HUBComponentImageLoadingContext *> *> *componentImageLoadingContexts;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponentWrappers;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentActionObserver>> *actionObservingComponentWrappers;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *headerComponentWrapper;
@@ -138,12 +133,10 @@ NS_ASSUME_NONNULL_BEGIN
     _componentLayoutManager = componentLayoutManager;
     _actionHandler = actionHandler;
     _scrollHandler = scrollHandler;
-    _imageLoader = imageLoader;
-    _componentImageLoadingContexts = [NSMutableDictionary new];
+    _componentWrapperImageLoader = [[HUBComponentWrapperImageLoader alloc] initWithImageLoader:imageLoader];
     _contentOffsetObservingComponentWrappers = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     _actionObservingComponentWrappers = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     _overlayComponentWrappers = [NSMutableArray new];
-    _componentWrappersByIdentifier = [NSMutableDictionary new];
     _componentWrappersByCellIdentifier = [NSMutableDictionary new];
     _componentWrappersByModelIdentifier = [NSMutableDictionary new];
     _renderingOperationQueue = [HUBOperationQueue new];
@@ -153,7 +146,6 @@ NS_ASSUME_NONNULL_BEGIN
     if (HUBConformsToProtocol(viewModelLoader, @protocol(HUBViewModelLoaderWithActions))) {
         ((id<HUBViewModelLoaderWithActions>)viewModelLoader).actionPerformer = self;
     }
-    imageLoader.delegate = self;
     
     self.automaticallyAdjustsScrollViewInsets = [_scrollHandler shouldAutomaticallyAdjustContentInsetsInViewController:self];
     
@@ -536,27 +528,6 @@ NS_ASSUME_NONNULL_BEGIN
     [self.highlightedComponentWrapper updateViewForSelectionState:HUBComponentSelectionStateNone];
 }
 
-#pragma mark - HUBImageLoaderDelegate
-
-- (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL
-{
-    HUBPerformOnMainQueue(^{
-        NSArray * const contexts = self.componentImageLoadingContexts[imageURL];
-        self.componentImageLoadingContexts[imageURL] = nil;
-        
-        for (HUBComponentImageLoadingContext * const context in contexts) {
-            [self handleLoadedComponentImage:image forURL:imageURL context:context];
-        }
-    });
-}
-
-- (void)imageLoader:(id<HUBImageLoader>)imageLoader didFailLoadingImageForURL:(NSURL *)imageURL error:(NSError *)error
-{
-    HUBPerformOnMainQueue(^{
-        self.componentImageLoadingContexts[imageURL] = nil;
-    });
-}
-
 #pragma mark - HUBComponentWrapperDelegate
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
@@ -603,7 +574,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     
     childComponentView.frame = CGRectMake(0, 0, preferredViewSize.width, preferredViewSize.height);
     
-    [self loadImagesForComponentWrapper:childComponentWrapper childIndex:nil];
+    [self.componentWrapperImageLoader loadImagesForComponentWrapper:childComponentWrapper containerViewSize:self.view.frame.size];
     [childComponentWrapper viewDidMoveToSuperview:HUBComponentLoadViewIfNeeded(componentWrapper)];
     
     return childComponentWrapper;
@@ -619,8 +590,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (childIndex >= componentModel.children.count) {
         return;
     }
-    
-    [self loadImagesForComponentWrapper:componentWrapper childIndex:@(childIndex)];
+
+    if (childComponent != nil) {
+        HUBComponentWrapper *nonNilChildComponent = childComponent;
+        [self.componentWrapperImageLoader loadImagesForComponentWrapper:nonNilChildComponent containerViewSize:self.view.frame.size];
+    }
 
     id<HUBComponentModel> const childComponentModel = componentModel.children[childIndex];
     NSSet<HUBComponentLayoutTrait> * const layoutTraits = childComponent.layoutTraits ?: [NSSet new];
@@ -729,8 +703,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
     [self configureComponentWrapper:componentWrapper withModel:componentModel containerViewSize:collectionView.frame.size];
     
-    [self loadImagesForComponentWrapper:componentWrapper
-                             childIndex:nil];
+    [self.componentWrapperImageLoader loadImagesForComponentWrapper:componentWrapper
+                                                  containerViewSize:self.view.frame.size];
 
     return cell;
 }
@@ -740,8 +714,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     for (HUBComponentCollectionViewCell *visibleCell in [self.collectionView visibleCells]) {
         HUBComponentWrapper * const componentWrapper = self.componentWrappersByCellIdentifier[visibleCell.identifier];
         [componentWrapper reconfigureViewWithContainerViewSize:size];
-        [self loadImagesForComponentWrapper:componentWrapper
-                                 childIndex:nil];
+        [self.componentWrapperImageLoader loadImagesForComponentWrapper:componentWrapper
+                                                      containerViewSize:size];
     }
 }
 
@@ -1124,8 +1098,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     [self configureComponentWrapper:componentWrapper withModel:componentModel containerViewSize:containerViewSize];
     componentView.frame = CGRectMake(0, 0, componentViewSize.width, componentViewSize.height);
     
-    [self loadImagesForComponentWrapper:componentWrapper
-                             childIndex:nil];
+    [self.componentWrapperImageLoader loadImagesForComponentWrapper:componentWrapper
+                                                  containerViewSize:self.view.frame.size];
     
     if (!shouldReuseCurrentComponent) {
         [self.view addSubview:componentView];
@@ -1225,158 +1199,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     if (componentWrapper.isContentOffsetObserver && wasContentOffsetUpdated) {
         [componentWrapper updateViewForChangedContentOffset:self.collectionView.contentOffset];
     }
-}
-
-- (void)loadImagesForComponentWrapper:(HUBComponentWrapper *)componentWrapper
-                           childIndex:(nullable NSNumber *)childIndex
-{
-    if (!componentWrapper.handlesImages) {
-        return;
-    }
-    
-    id<HUBComponentModel> componentModel = componentWrapper.model;
-    
-    if (childIndex != nil) {
-        componentModel = [self childModelAtIndex:childIndex.unsignedIntegerValue
-                            fromComponentWrapper:componentWrapper];
-    }
-    
-    if (componentModel == nil) {
-        return;
-    }
-    
-    id<HUBComponentImageData> const mainImageData = componentModel.mainImageData;
-    id<HUBComponentImageData> const backgroundImageData = componentModel.backgroundImageData;
-    
-    if (mainImageData != nil) {
-        [self loadImageFromData:mainImageData
-                          model:componentModel
-               componentWrapper:componentWrapper
-                     childIndex:childIndex];
-    }
-    
-    if (backgroundImageData != nil) {
-        [self loadImageFromData:backgroundImageData
-                          model:componentModel
-               componentWrapper:componentWrapper
-                     childIndex:childIndex];
-    }
-    
-    for (id<HUBComponentImageData> const customImageData in componentModel.customImageData.allValues) {
-        [self loadImageFromData:customImageData
-                          model:componentModel
-               componentWrapper:componentWrapper
-                     childIndex:childIndex];
-    }
-}
-
-- (void)loadImageFromData:(id<HUBComponentImageData>)imageData
-                    model:(id<HUBComponentModel>)model
-         componentWrapper:(HUBComponentWrapper *)componentWrapper
-               childIndex:(nullable NSNumber *)childIndex
-{
-    if (imageData.localImage != nil) {
-        UIImage * const localImage = imageData.localImage;
-        [componentWrapper updateViewForLoadedImage:localImage
-                                          fromData:imageData
-                                             model:model
-                                          animated:NO];
-    }
-    
-    NSURL * const imageURL = imageData.URL;
-    
-    if (imageURL == nil) {
-        return;
-    }
-    
-    CGSize const preferredSize = [componentWrapper preferredSizeForImageFromData:imageData
-                                                                           model:model
-                                                               containerViewSize:self.view.frame.size];
-    
-    if (CGSizeEqualToSize(preferredSize, CGSizeZero)) {
-        return;
-    }
-
-    HUBComponentImageLoadingContext * const context = [[HUBComponentImageLoadingContext alloc] initWithImageType:imageData.type
-                                                                                                 imageIdentifier:imageData.identifier
-                                                                                               wrapperIdentifier:componentWrapper.identifier
-                                                                                                      childIndex:childIndex
-                                                                                                       timestamp:[NSDate date].timeIntervalSinceReferenceDate];
-    
-    NSMutableArray *contextsForURL = self.componentImageLoadingContexts[imageURL];
-
-    if (contextsForURL == nil) {
-        contextsForURL = [NSMutableArray arrayWithObject:context];
-        self.componentImageLoadingContexts[imageURL] = contextsForURL;
-        [self.imageLoader loadImageForURL:imageURL targetSize:preferredSize];
-    } else {
-        [contextsForURL addObject:context];
-    }
-}
-
-- (void)handleLoadedComponentImage:(UIImage *)image forURL:(NSURL *)imageURL context:(HUBComponentImageLoadingContext *)context
-{
-    id<HUBViewModel> const viewModel = self.viewModel;
-    
-    if (context == nil || viewModel == nil) {
-        return;
-    }
-    
-    HUBComponentWrapper * const componentWrapper = self.componentWrappersByIdentifier[context.wrapperIdentifier];
-    id<HUBComponentModel> componentModel = componentWrapper.model;
-    NSNumber * const childIndex = context.childIndex;
-    
-    if (childIndex != nil) {
-        componentModel = [self childModelAtIndex:childIndex.unsignedIntegerValue
-                            fromComponentWrapper:componentWrapper];
-    }
-    
-    if (componentModel == nil) {
-        return;
-    }
-    
-    id<HUBComponentImageData> imageData = nil;
-    
-    switch (context.imageType) {
-        case HUBComponentImageTypeMain:
-            imageData = componentModel.mainImageData;
-            break;
-        case HUBComponentImageTypeBackground:
-            imageData = componentModel.backgroundImageData;
-            break;
-        case HUBComponentImageTypeCustom: {
-            NSString * const imageIdentifier = context.imageIdentifier;
-            
-            if (imageIdentifier != nil) {
-                imageData = componentModel.customImageData[imageIdentifier];
-            }
-            
-            break;
-        }
-    }
-    
-    if (![imageData.URL isEqual:imageURL]) {
-        return;
-    }
-
-    NSTimeInterval downloadTime = [NSDate date].timeIntervalSinceReferenceDate - context.timestamp;
-    BOOL animated = downloadTime > HUBImageDownloadTimeThreshold;
-
-    [componentWrapper updateViewForLoadedImage:image
-                                      fromData:imageData
-                                         model:componentModel
-                                      animated:animated];
-}
-
-- (nullable id<HUBComponentModel>)childModelAtIndex:(NSUInteger)childIndex fromComponentWrapper:(HUBComponentWrapper *)componentWrapper
-{
-    id<HUBComponentModel> parentModel = componentWrapper.model;
-    
-    if (childIndex >= parentModel.children.count) {
-        return nil;
-    }
-    
-    return parentModel.children[childIndex];
 }
 
 - (BOOL)performActionForTrigger:(HUBActionTrigger)trigger
