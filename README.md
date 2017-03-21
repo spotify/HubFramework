@@ -80,7 +80,7 @@ $ pod update
 First, add `HubFramework` to your `Cartfile`:
 
 ```
-github "spotify/HubFramework"
+github "spotify/HubFramework" "hubframework-2.x"
 ```
 
 Then, run Carthage:
