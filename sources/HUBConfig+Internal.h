@@ -27,9 +27,32 @@ NS_ASSUME_NONNULL_BEGIN
 @class HUBActionRegistryImplementation;
 @class HUBComponentRegistryImplementation;
 
+/**
+ *  Additions to HUBConfig used internally for creation (from the `HUBConfigBuilder`) and
+ *  exposing the `HUBComponentDefaults` which is internal.
+ */
 @interface HUBConfig ()
+
+/// The component defaults.
 @property(nonatomic, strong) HUBComponentDefaults *componentDefaults;
 
+/**
+ *  Internal initializer only used by the `HUBConfigBuilder`.
+ *
+ *  @param componentLayoutManager The component layout manager.
+ *  @param componentFallbackHandler The component fallback handler.
+ *  @param componentDefaults The component defaults.
+ *  @param JSONSchema The JSON Schema.
+ *  @param imageLoaderFactory The image loader factory.
+ *  @param connectivityStateResolver The connectivity state resolver.
+ *  @param actionRegistry The action registry.
+ *  @param componentRegistry The component registry.
+ *  @param contentReloadPolicy The content reload policy.
+ *  @param iconImageResolver The icon image resolver.
+ *  @param viewControllerScrollHandler The view controller scroll handler.
+ *
+ *  See `HUBConfig` for more in-depth description of the various parameters.
+ */
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                       componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
                              componentDefaults:(HUBComponentDefaults *)componentDefaults

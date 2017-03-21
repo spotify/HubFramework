@@ -39,16 +39,45 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  Configuration used to create view controllers when using Hub Framework without `HUBManager`.
+ *
+ *  This allows for using Hub Framework without the `HubManager` and feature registration.
+ */
 @interface HUBConfig : NSObject
+/// The object to use to manage layout for components, computing margins using layout traits.
+/// See `HUBComponentLayoutManager` for more information.
 @property(nonatomic, readonly, strong) id<HUBComponentLayoutManager> componentLayoutManager;
+
+/// The object to use to fall back to default components in case a component couldn't be resolved using the standard mechanism.
+/// See `HUBComponentFallbackHandler` for more information.
 @property(nonatomic, readonly, strong) id<HUBComponentFallbackHandler> componentFallbackHandler;
+
+/// JSON schema used for this configuration.
 @property(nonatomic, readonly, strong) id<HUBJSONSchema> jsonSchema;
+
+/// A factory that creates image loaders that are used to load remote images for components. See `HUBImageLoaderFactory` for more info.
 @property(nonatomic, readonly, strong) id<HUBImageLoaderFactory> imageLoaderFactory;
+
+/// An object responsible for determining the current connectivity state of the application.
 @property(nonatomic, readonly, strong) id<HUBConnectivityStateResolver> connectivityStateResolver;
+
+/// A content reload policy determines whenever a view should have its content reloaded. If `nil`, it will always be reloaded
+/// when the view re-appears. See `HUBContentReloadPolicy` for more information.
 @property(nonatomic, nullable, readonly, strong) id<HUBContentReloadPolicy> contentReloadPolicy;
+
+/// An object responsible for converting icons into renderable images. If nil, this configuration won't support icons. See
+/// `HUBIconImageResolver` for more information.
 @property(nonatomic, nullable, readonly, strong) id<HUBIconImageResolver> iconImageResolver;
+
+/// A custom scroll handler to use to handle scroll events and customize scrolling behavior of view controllers created with this
+/// configuration. See `HUBViewControllerScrollHandler` for more info.
 @property(nonatomic, nullable, readonly, strong) id<HUBViewControllerScrollHandler> viewControllerScrollHandler;
+
+/// The registry used to register actions with the framework. See the documentation for `HUBFeatureRegistry` for more info.
 @property(nonatomic, readonly, strong) id<HUBActionRegistry> actionRegistry;
+
+/// The registry used to register components with the framework. See the documentation for `HUBComponentRegistry` for more info.
 @property(nonatomic, readonly, strong) id<HUBComponentRegistry> componentRegistry;
 
 /// Use `HUBConfigBuilder` to create instances of this class

@@ -110,7 +110,13 @@ import HubFramework
 
     /// Register the JSON schema for the GitHub search feature
     func createGitHubSearchSchema() -> HUBJSONSchema {
-        let schema = hubFactory.createDefaultJSONSchema(with: hubComponentFallbackHandler, iconImageResolver: nil)
+        let defaultNamespace = hubComponentFallbackHandler.defaultComponentNamespace
+        let defaultName = hubComponentFallbackHandler.defaultComponentName
+        let defaultCategory = hubComponentFallbackHandler.defaultComponentCategory
+        let schema = hubFactory.createDefaultJSONSchema(withDefaultComponentNamespace: defaultNamespace,
+                                                        defaultComponentName: defaultName,
+                                                        defaultComponentCategory: defaultCategory,
+                                                        iconImageResolver: nil)
 
         schema.viewModelSchema.bodyComponentModelDictionariesPath = schema.createNewPath().go(to: "items").forEach().dictionaryPath()
 
@@ -134,33 +140,36 @@ import HubFramework
                                                                  contentOperations: [StickyHeaderContentOperation()],
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "stickyHeader",
-                                                                 featureTitle: "Sticky Header")
+                                                                 featureTitle: "Sticky Header",
+                                                                 actionHandler: nil)
         } else if (HUBViewURIPredicate(viewURI: .rootViewURI).evaluateViewURI(viewURI)) {
             return hubViewControllerFactory.createViewController(with: defaultConfig,
                                                                  contentOperations: [RootContentOperation()],
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "root",
-                                                                 featureTitle: "Root feature")
+                                                                 featureTitle: "Root feature",
+                                                                 actionHandler: nil)
         } else if (HUBViewURIPredicate(viewURI: .todoListViewURI).evaluateViewURI(viewURI)) {
             return hubViewControllerFactory.createViewController(with: defaultConfig,
                                                                  contentOperations: [TodoListContentOperation()],
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "todoList",
-                                                                 featureTitle: "Todo List")
+                                                                 featureTitle: "Todo List",
+                                                                 actionHandler: nil)
         } else if (HUBViewURIPredicate(viewURI: .prettyPicturesViewURI).evaluateViewURI(viewURI)) {
             return hubViewControllerFactory.createViewController(with: defaultConfig,
                                                                  contentOperations: [PrettyPicturesContentOperation()],
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "prettyPictures",
                                                                  featureTitle: "Pretty Pictures",
-                                                                 actionHandler: PrettyPicturesActionHandler(),
-                                                                 initialViewModel: nil)
+                                                                 actionHandler: PrettyPicturesActionHandler())
         } else if (HUBViewURIPredicate(viewURI: .reallyLongListViewURI).evaluateViewURI(viewURI)) {
             return hubViewControllerFactory.createViewController(with: defaultConfig,
                                                                  contentOperations: [ReallyLongListContentOperation()],
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "reallyLongList",
-                                                                 featureTitle: "Really Long List")
+                                                                 featureTitle: "Really Long List",
+                                                                 actionHandler: nil)
         } else if (HUBViewURIPredicate(viewURI: .gitHubSearchViewURI).evaluateViewURI(viewURI)) {
             let contentOperations: [HUBContentOperation] = [
                 GitHubSearchBarContentOperation(),
@@ -172,7 +181,8 @@ import HubFramework
                                                                  contentOperations: contentOperations,
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "gitHubSearch",
-                                                                 featureTitle: "GitHub Search")
+                                                                 featureTitle: "GitHub Search",
+                                                                 actionHandler: nil)
         }
         return nil
     }

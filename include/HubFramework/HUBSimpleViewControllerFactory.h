@@ -29,22 +29,31 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  `HUBViewController` factory that uses a `HUBConfig` for all the configuration needed to create a view controller.
+ *
+ *  This view controller allows for a fully configured `HUBViewController` to be created without going through the 
+ *  `HUBManager` and `HUBFeatureRegistration`.
+ */
 @interface HUBSimpleViewControllerFactory : NSObject
 
+/**
+ *  Creates a view controller based on the `config` passed to it.
+ *
+ *  @param config The configuration used to setup the view controller.
+ *  @param contentOperations Content operations to load data for the created view controller.
+ *         See `HUBContentOperation` and "Content Programming Guide" for more information.
+ *  @param viewURI Used to set the `viewURI` on the created view controller.
+ *  @param featureIdentifier Used to set the `featureInfo` on the created view controller.
+ *  @param featureTitle Used to set the `featureInfo` on the created view controller.
+ *  @param actionHandler Optional custom action handler. See `HUBActionHandler` for more info.
+ */
 - (HUBViewController *)createViewControllerWithConfig:(HUBConfig *)config
                                     contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
                                               viewURI:(NSURL *)viewURI
                                     featureIdentifier:(NSString *)featureIdentifier
                                          featureTitle:(NSString *)featureTitle
-                                        actionHandler:(nullable id<HUBActionHandler>)actionHandler
-                                     initialViewModel:(nullable id<HUBViewModel>)initialViewModel;
-
-// Convinience
-- (HUBViewController *)createViewControllerWithConfig:(HUBConfig *)config
-                                    contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
-                                              viewURI:(NSURL *)viewURI
-                                    featureIdentifier:(NSString *)featureIdentifier
-                                         featureTitle:(NSString *)featureTitle;
+                                        actionHandler:(nullable id<HUBActionHandler>)actionHandler;
 
 @end
 

@@ -30,12 +30,38 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+
+/**
+ *  Factory to create some commonly used default implementations from Hub Framework.
+ */
 @interface HUBFactory : NSObject
 
+
+/**
+ *  Creates a block based `HUBComponentFallbackHandler`.
+ *
+ *  This is a simple fallback handler that uses a factory block to create components.
+ *
+ *  @param block The factory block to create components.
+ *
+ *  @return A newly created `HUBComponentFallbackHandler`.
+ */
 - (id<HUBComponentFallbackHandler>)createComponentFallbackHandlerWithBlock:(id<HUBComponent>(^)(HUBComponentCategory))block;
 
-- (id<HUBJSONSchema>)createDefaultJSONSchemaWithComponentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                                                    iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver;
+/**
+ *  Create a new instance of the default JSON schema with specified parameters.
+ *
+ *  @param defaultComponentNamespace The default component namespace.
+ *  @param defaultComponentName The default component name.
+ *  @param defaultComponentCategory The default component category.
+ *  @param iconImageResolver The resolver to use to convert icons into renderable images
+*
+ *  @return A newly created `HUBJSONSchema`.
+ */
+- (id<HUBJSONSchema>)createDefaultJSONSchemaWithDefaultComponentNamespace:(NSString *)defaultComponentNamespace
+                                                     defaultComponentName:(NSString *)defaultComponentName
+                                                 defaultComponentCategory:(HUBComponentCategory)defaultComponentCategory
+                                                        iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver;
 
 @end
 

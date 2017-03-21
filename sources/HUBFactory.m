@@ -22,26 +22,26 @@
 #import "HUBFactory.h"
 
 #import "HUBComponentDefaults.h"
-#import "HUBComponentFallbackHandler.h"
 #import "HUBDefaultComponentFallbackHandler.h"
 #import "HUBJSONSchemaImplementation.h"
 
 
 @implementation HUBFactory
 
-
 - (id<HUBComponentFallbackHandler>)createComponentFallbackHandlerWithBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
 {
     return [[HUBDefaultComponentFallbackHandler alloc] initWithFallbackBlock:componentFallbackBlock];
 }
 
-- (id<HUBJSONSchema>)createDefaultJSONSchemaWithComponentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                                                    iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
+- (id<HUBJSONSchema>)createDefaultJSONSchemaWithDefaultComponentNamespace:(NSString *)defaultComponentNamespace
+                                                     defaultComponentName:(NSString *)defaultComponentName
+                                                 defaultComponentCategory:(HUBComponentCategory)defaultComponentCategory
+                                                        iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
 {
     HUBComponentDefaults * const componentDefaults =
-    [[HUBComponentDefaults alloc] initWithComponentNamespace:componentFallbackHandler.defaultComponentNamespace
-                                               componentName:componentFallbackHandler.defaultComponentName
-                                           componentCategory:componentFallbackHandler.defaultComponentCategory];
+    [[HUBComponentDefaults alloc] initWithComponentNamespace:defaultComponentNamespace
+                                               componentName:defaultComponentName
+                                           componentCategory:defaultComponentCategory];
 
     return [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults
                                                         iconImageResolver:iconImageResolver];

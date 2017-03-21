@@ -42,7 +42,6 @@
                                     featureIdentifier:(NSString *)featureIdentifier
                                          featureTitle:(NSString *)featureTitle
                                         actionHandler:(nullable id<HUBActionHandler>)actionHandler
-                                     initialViewModel:(nullable id<HUBViewModel>)initialViewModel
 {
     id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureIdentifier
                                                                                               title:featureTitle];
@@ -55,7 +54,7 @@
                                                                                                        componentDefaults:config.componentDefaults
                                                                                                connectivityStateResolver:config.connectivityStateResolver
                                                                                                        iconImageResolver:config.iconImageResolver
-                                                                                                        initialViewModel:initialViewModel];
+                                                                                                        initialViewModel:nil];
 
 
     HUBViewModelRenderer * const viewModelRenderer = [HUBViewModelRenderer new];
@@ -82,21 +81,6 @@
                                         scrollHandler:scrollHandlerToUse
                                           imageLoader:imageLoader];
     
-}
-
-- (HUBViewController *)createViewControllerWithConfig:(HUBConfig *)config
-                                    contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
-                                              viewURI:(NSURL *)viewURI
-                                    featureIdentifier:(NSString *)featureIdentifier
-                                         featureTitle:(NSString *)featureTitle
-{
-    return [self createViewControllerWithConfig:config
-                              contentOperations:contentOperations
-                                        viewURI:viewURI
-                              featureIdentifier:featureIdentifier
-                                   featureTitle:featureTitle
-                                  actionHandler:nil
-                               initialViewModel:nil];
 }
 
 @end
