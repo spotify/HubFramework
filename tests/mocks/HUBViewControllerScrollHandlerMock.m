@@ -97,6 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
                                          contentInset:(UIEdgeInsets)contentInset
                                           contentSize:(CGSize)contentSize
                                        viewController:(HUBViewController *)viewController
+                                proposedContentOffset:(CGPoint)proposedContentOffset
 {
     return self.targetContentOffset;
 }
