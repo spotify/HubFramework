@@ -311,10 +311,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Use `HUBViewControllerFactory` to create instances of this class
 - (instancetype)initWithCoder:(NSCoder *)decoder NS_UNAVAILABLE;
 
-/// Use `HUBViewControllerFactory` to create instances of this class
-- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil
-                         bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
-
 @end
 
 NS_ASSUME_NONNULL_END

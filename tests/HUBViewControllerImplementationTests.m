@@ -21,7 +21,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "HUBViewController+Initializer.h"
+#import "HUBViewControllerImplementation.h"
 #import "HUBViewModelLoaderImplementation.h"
 #import "HUBContentOperationMock.h"
 #import "HUBComponentRegistryImplementation.h"
@@ -62,7 +62,7 @@
 #import "HUBUtilities.h"
 #import "HUBTestUtilities.h"
 
-@interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
+@interface HUBViewControllerImplementationTests : XCTestCase <HUBViewControllerDelegate>
 
 @property (nonatomic, strong) HUBContentOperationMock *contentOperation;
 @property (nonatomic, strong) HUBContentReloadPolicyMock *contentReloadPolicy;
@@ -101,7 +101,7 @@
 
 @end
 
-@implementation HUBViewControllerTests
+@implementation HUBViewControllerImplementationTests
 
 #pragma mark - XCTestCase
 
@@ -224,17 +224,17 @@
                                                                              initialViewModelRegistry:self.initialViewModelRegistry
                                                                                       viewModelLoader:self.viewModelLoader];
     
-    self.viewController = [[HUBViewController alloc] initWithViewURI:self.viewURI
-                                                         featureInfo:self.featureInfo
-                                                     viewModelLoader:self.viewModelLoader
-                                                   viewModelRenderer:viewModelRenderer
-                                               collectionViewFactory:self.collectionViewFactory
-                                                   componentRegistry:self.componentRegistry
-                                                  componentReusePool:self.componentReusePool
-                                              componentLayoutManager:componentLayoutManager
-                                                       actionHandler:actionHandler
-                                                       scrollHandler:self.scrollHandler
-                                                         imageLoader:self.imageLoader];
+    self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:self.viewURI
+                                                                       featureInfo:self.featureInfo
+                                                                   viewModelLoader:self.viewModelLoader
+                                                                 viewModelRenderer:viewModelRenderer
+                                                             collectionViewFactory:self.collectionViewFactory
+                                                                 componentRegistry:self.componentRegistry
+                                                                componentReusePool:self.componentReusePool
+                                                            componentLayoutManager:componentLayoutManager
+                                                                     actionHandler:actionHandler
+                                                                     scrollHandler:self.scrollHandler
+                                                                       imageLoader:self.imageLoader];
     
     self.viewController.delegate = self;
 }
@@ -1659,9 +1659,9 @@
     UIEdgeInsets const firstInsets = UIEdgeInsetsMake(100, 30, 40, 200);
     UIEdgeInsets const secondInsets = UIEdgeInsetsMake(50, 0, 0, 0);
 
-    __weak HUBViewControllerTests *weakSelf = self;
+    __weak HUBViewControllerImplementationTests *weakSelf = self;
     void (^assertInsetsEqualToCollectionViewInsets)(UIEdgeInsets insets) = ^(UIEdgeInsets insets) {
-        HUBViewControllerTests *strongSelf = weakSelf;
+        HUBViewControllerImplementationTests *strongSelf = weakSelf;
         XCTAssertTrue(UIEdgeInsetsEqualToEdgeInsets(strongSelf.collectionView.contentInset, insets));
     };
     
@@ -2751,10 +2751,10 @@
         return UIEdgeInsetsMake(100, 30, 40, 200);
     };
 
-    __weak HUBViewControllerTests *weakSelf = self;
+    __weak HUBViewControllerImplementationTests *weakSelf = self;
     __block CGPoint expectedOffset = CGPointZero;
     self.viewControllerDidFinishRenderingBlock = ^{
-        HUBViewControllerTests *strongSelf = weakSelf;
+        HUBViewControllerImplementationTests *strongSelf = weakSelf;
         CGRect componentFrame = [strongSelf.viewController frameForBodyComponentAtIndex:3];
         CGPoint offset = CGPointMake(0.0, CGRectGetMinY(componentFrame));
         expectedOffset = CGPointMake(offset.x, offset.y - 100);

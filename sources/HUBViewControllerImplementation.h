@@ -34,8 +34,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Extension enabling a HUBViewController instance to be initialized by the framework
-@interface HUBViewController ()
+/// Extension enabling a HUBViewControllerImplementation instance to be initialized by the framework
+@interface HUBViewControllerImplementation : HUBViewController
 
 /**
  *  Initialize an instance of this class with its required dependencies
@@ -62,7 +62,22 @@ NS_ASSUME_NONNULL_BEGIN
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
-                    imageLoader:(id<HUBImageLoader>)imageLoader HUB_DESIGNATED_INITIALIZER;
+                    imageLoader:(id<HUBImageLoader>)imageLoader NS_DESIGNATED_INITIALIZER;
+
+#pragma mark - Unavailable initializers
+
+/// Use `HUBViewControllerFactory` to create instances of this class
++ (instancetype)new NS_UNAVAILABLE;
+
+/// Use `HUBViewControllerFactory` to create instances of this class
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Use `HUBViewControllerFactory` to create instances of this class
+- (instancetype)initWithCoder:(NSCoder *)decoder NS_UNAVAILABLE;
+
+/// Use `HUBViewControllerFactory` to create instances of this class
+- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil
+                         bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 
 @end
 
