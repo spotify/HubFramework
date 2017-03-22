@@ -28,7 +28,7 @@ import HubFramework
     var navigationController: NavigationController?
     var hubFactory: HUBFactory!
     var hubComponentFallbackHandler: HUBComponentFallbackHandler!
-    var hubViewControllerFactory = HUBSimpleViewControllerFactory()
+    var hubViewControllerFactory = HUBConfigViewControllerFactory()
     var defaultConfig: HUBConfig!
     var githubConfig: HUBConfig!
 
@@ -60,8 +60,7 @@ import HubFramework
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
 
-        setupDefaultConfig()
-        setupGithubConfig()
+        setupConfigs()
 
         open(viewURI: .rootViewURI, animated: false)
         startLiveService()
@@ -91,21 +90,20 @@ import HubFramework
 
     // MARK: - Private
 
-    private func setupDefaultConfig() {
-        defaultConfig = HUBConfigBuilder(componentMargin: ComponentMargin, componentFallbackClosure: componentFallbackClosure).build()
+    private func setupConfigs() {
+        let builder = HUBConfigBuilder(componentMargin: ComponentMargin, componentFallbackClosure: componentFallbackClosure)
 
-        defaultConfig.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)
+        defaultConfig = builder.build()
+        defaultConfig.componentRegistry.register(componentFactory: DefaultComponentFactory(),
+                                                 namespace: DefaultComponentFactory.namespace)
         defaultConfig.actionRegistry.register(TodoListActionFactory(), forNamespace: TodoListActionFactory.namespace)
-    }
 
-    private func setupGithubConfig() {
         let githubSchema = createGitHubSearchSchema()
+        builder.jsonSchema = githubSchema
+        githubConfig = builder.build()
 
-        let hubConfigBuilder = HUBConfigBuilder(componentMargin: ComponentMargin, componentFallbackClosure: componentFallbackClosure)
-        hubConfigBuilder.jsonSchema = githubSchema
-        githubConfig = hubConfigBuilder.build()
-        
-        githubConfig.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)
+        githubConfig.componentRegistry.register(componentFactory: DefaultComponentFactory(),
+                                                namespace: DefaultComponentFactory.namespace)
     }
 
     /// Register the JSON schema for the GitHub search feature

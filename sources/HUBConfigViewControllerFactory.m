@@ -19,7 +19,7 @@
  *  under the License.
  */
 
-#import "HUBSimpleViewControllerFactory.h"
+#import "HUBConfigViewControllerFactory.h"
 
 #import "HUBFeatureInfoImplementation.h"
 #import "HUBViewModelLoaderImplementation.h"
@@ -34,7 +34,7 @@
 #import "HUBViewController+Initializer.h"
 
 
-@implementation HUBSimpleViewControllerFactory
+@implementation HUBConfigViewControllerFactory
 
 - (HUBViewController *)createViewControllerWithConfig:(HUBConfig *)config
                                     contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations

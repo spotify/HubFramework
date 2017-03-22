@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  This view controller allows for a fully configured `HUBViewController` to be created without going through the 
  *  `HUBManager` and `HUBFeatureRegistration`.
  */
-@interface HUBSimpleViewControllerFactory : NSObject
+@interface HUBConfigViewControllerFactory : NSObject
 
 /**
  *  Creates a view controller based on the `config` passed to it.
