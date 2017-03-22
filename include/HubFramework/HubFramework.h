@@ -21,7 +21,6 @@
 
 #import "HUBConfig.h"
 #import "HUBConfigBuilder.h"
-#import "HUBFactory.h"
 #import "HUBManager.h"
 #import "HUBConnectivityStateResolver.h"
 #import "HUBDefaults.h"
@@ -29,6 +28,7 @@
 
 // JSON
 #import "HUBJSONSchema.h"
+#import "HUBJSONSchemaFactory.h"
 #import "HUBViewModelJSONSchema.h"
 #import "HUBComponentModelJSONSchema.h"
 #import "HUBComponentTargetJSONSchema.h"
@@ -95,6 +95,7 @@
 #import "HUBComponentFallbackHandler.h"
 #import "HUBComponentShowcaseManager.h"
 #import "HUBComponentShowcaseShapshotGenerator.h"
+#import "HUBDefaultComponentFallbackHandler.h"
 #import "HUBScrollPosition.h"
 
 // Images & Icons

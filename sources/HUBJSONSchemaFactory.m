@@ -19,19 +19,16 @@
  *  under the License.
  */
 
-#import "HUBFactory.h"
+#import <Foundation/Foundation.h>
 
+#import "HUBJSONSchemaFactory.h"
+
+#import "HUBComponentCategories.h"
 #import "HUBComponentDefaults.h"
-#import "HUBDefaultComponentFallbackHandler.h"
 #import "HUBJSONSchemaImplementation.h"
 
 
-@implementation HUBFactory
-
-- (id<HUBComponentFallbackHandler>)createComponentFallbackHandlerWithBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
-{
-    return [[HUBDefaultComponentFallbackHandler alloc] initWithFallbackBlock:componentFallbackBlock];
-}
+@implementation HUBJSONSchemaFactory
 
 - (id<HUBJSONSchema>)createDefaultJSONSchemaWithDefaultComponentNamespace:(NSString *)defaultComponentNamespace
                                                      defaultComponentName:(NSString *)defaultComponentName

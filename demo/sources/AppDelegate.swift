@@ -26,7 +26,6 @@ import HubFramework
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate, HUBLiveServiceDelegate {
     var window: UIWindow?
     var navigationController: NavigationController?
-    var hubFactory: HUBFactory!
     var hubComponentFallbackHandler: HUBComponentFallbackHandler!
     var hubViewControllerFactory = HUBConfigViewControllerFactory()
     var defaultConfig: HUBConfig!
@@ -48,14 +47,13 @@ import HubFramework
         self.window = window
         navigationController = NavigationController()
 
-        hubFactory = HUBFactory()
-        hubComponentFallbackHandler = hubFactory.createComponentFallbackHandler { category in
+        hubComponentFallbackHandler = HUBDefaultComponentFallbackHandler(fallbackBlock: { category in
             if category == .card {
                 return ImageComponent()
             }
 
             return RowComponent()
-        }
+        })
 
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
@@ -111,10 +109,10 @@ import HubFramework
         let defaultNamespace = hubComponentFallbackHandler.defaultComponentNamespace
         let defaultName = hubComponentFallbackHandler.defaultComponentName
         let defaultCategory = hubComponentFallbackHandler.defaultComponentCategory
-        let schema = hubFactory.createDefaultJSONSchema(withDefaultComponentNamespace: defaultNamespace,
-                                                        defaultComponentName: defaultName,
-                                                        defaultComponentCategory: defaultCategory,
-                                                        iconImageResolver: nil)
+        let schema = HUBJSONSchemaFactory().createDefaultJSONSchema(withDefaultComponentNamespace: defaultNamespace,
+                                                                    defaultComponentName: defaultName,
+                                                                    defaultComponentCategory: defaultCategory,
+                                                                    iconImageResolver: nil)
 
         schema.viewModelSchema.bodyComponentModelDictionariesPath = schema.createNewPath().go(to: "items").forEach().dictionaryPath()
 
