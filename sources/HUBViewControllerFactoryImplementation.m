@@ -131,7 +131,11 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                              title:featureTitle
                                                                                                   viewURIPredicate:viewURIPredicate
                                                                                          contentOperationFactories:@[contentOperationFactory]
-                                                                                               contentReloadPolicy:nil customJSONSchemaIdentifier:nil actionHandler:nil viewControllerScrollHandler:nil];
+                                                                                               contentReloadPolicy:nil
+                                                                                        customJSONSchemaIdentifier:nil
+                                                                                                     actionHandler:nil
+                                                                                       viewControllerScrollHandler:nil
+                                                                                                           options:nil];
     
     return [self createViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
 }
