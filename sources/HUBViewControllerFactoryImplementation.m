@@ -28,7 +28,7 @@
 #import "HUBImageLoaderFactory.h"
 #import "HUBFeatureRegistration.h"
 #import "HUBFeatureInfoImplementation.h"
-#import "HUBViewController+Initializer.h"
+#import "HUBViewControllerImplementation.h"
 #import "HUBCollectionViewFactory.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBViewControllerDefaultScrollHandler.h"
@@ -160,17 +160,17 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBViewControllerScrollHandler> const scrollHandlerToUse = featureRegistration.viewControllerScrollHandler ?: [HUBViewControllerDefaultScrollHandler new];
     
-    return [[HUBViewController alloc] initWithViewURI:viewURI
-                                          featureInfo:featureInfo
-                                      viewModelLoader:viewModelLoader
-                                    viewModelRenderer:viewModelRenderer
-                                collectionViewFactory:collectionViewFactory
-                                    componentRegistry:self.componentRegistry
-                                   componentReusePool:componentReusePool
-                               componentLayoutManager:self.componentLayoutManager
-                                        actionHandler:actionHandlerWrapper
-                                        scrollHandler:scrollHandlerToUse
-                                          imageLoader:imageLoader];
+    return [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
+                                                        featureInfo:featureInfo
+                                                    viewModelLoader:viewModelLoader
+                                                  viewModelRenderer:viewModelRenderer
+                                              collectionViewFactory:collectionViewFactory
+                                                  componentRegistry:self.componentRegistry
+                                                 componentReusePool:componentReusePool
+                                             componentLayoutManager:self.componentLayoutManager
+                                                      actionHandler:actionHandlerWrapper
+                                                      scrollHandler:scrollHandlerToUse
+                                                        imageLoader:imageLoader];
 }
 
 @end
