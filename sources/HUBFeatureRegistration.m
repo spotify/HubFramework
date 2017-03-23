@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
                             actionHandler:(nullable id<HUBActionHandler>)actionHandler
               viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler
+                                  options:(nullable NSDictionary<NSString *,NSString *> *)options
 {
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(featureTitle != nil);
@@ -50,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
         _customJSONSchemaIdentifier = [customJSONSchemaIdentifier copy];
         _actionHandler = actionHandler;
         _viewControllerScrollHandler = viewControllerScrollHandler;
+        _options = options;
     }
     
     return self;

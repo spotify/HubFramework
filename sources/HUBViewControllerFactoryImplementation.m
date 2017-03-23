@@ -108,6 +108,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (HUBViewController *)createViewControllerWithContentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
                                                     featureTitle:(NSString *)featureTitle
 {
+    return [self createViewControllerWithContentOperations:contentOperations featureTitle:featureTitle options:nil];
+}
+
+- (HUBViewController *)createViewControllerWithContentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+                                                    featureTitle:(NSString *)featureTitle
+                                                         options:(nullable NSDictionary<NSString *, NSString *> *)options
+{
     NSString * const identifier = [featureTitle lowercaseString];
     NSURL * const viewURI = [NSURL URLWithString:identifier];
     
@@ -122,6 +129,19 @@ NS_ASSUME_NONNULL_BEGIN
                                     featureIdentifier:(NSString *)featureIdentifier
                                          featureTitle:(NSString *)featureTitle
 {
+    return [self createViewControllerForViewURI:viewURI
+                              contentOperations:contentOperations
+                              featureIdentifier:featureIdentifier
+                                   featureTitle:featureTitle
+                                        options:nil];
+}
+
+- (HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
+                                    contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+                                    featureIdentifier:(NSString *)featureIdentifier
+                                         featureTitle:(NSString *)featureTitle
+                                              options:(nullable NSDictionary<NSString *, NSString *> *)options
+{
     HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithViewURI:viewURI];
     id<HUBContentOperationFactory> const contentOperationFactory = [[HUBBlockContentOperationFactory alloc] initWithBlock:^NSArray<id<HUBContentOperation>> *(NSURL *_) {
         return contentOperations;
@@ -131,7 +151,11 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                              title:featureTitle
                                                                                                   viewURIPredicate:viewURIPredicate
                                                                                          contentOperationFactories:@[contentOperationFactory]
-                                                                                               contentReloadPolicy:nil customJSONSchemaIdentifier:nil actionHandler:nil viewControllerScrollHandler:nil];
+                                                                                               contentReloadPolicy:nil
+                                                                                        customJSONSchemaIdentifier:nil
+                                                                                                     actionHandler:nil
+                                                                                       viewControllerScrollHandler:nil
+                                                                                                           options:options];
     
     return [self createViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
 }

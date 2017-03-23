@@ -56,6 +56,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Any custom view controller scroll handler that the feature is using
 @property (nonatomic, strong, nullable, readonly) id<HUBViewControllerScrollHandler> viewControllerScrollHandler;
 
+/// A set of internal options that can be used to provide feature-specific functionality
+@property (nonatomic, copy, nullable, readonly) NSDictionary<NSString *, NSString *> *options;
+
 /**
  *  Initialize an instance of this class with its possible values
  *
@@ -75,7 +78,8 @@ NS_ASSUME_NONNULL_BEGIN
                       contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
                customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
                             actionHandler:(nullable id<HUBActionHandler>)actionHandler
-              viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler HUB_DESIGNATED_INITIALIZER;
+              viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler
+                                  options:(nullable NSDictionary<NSString *, NSString *> *)options HUB_DESIGNATED_INITIALIZER;
 
 @end
 

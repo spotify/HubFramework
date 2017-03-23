@@ -93,4 +93,47 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@protocol HUBViewControllerFactoryWithOptions <HUBViewControllerFactory>
+
+/**
+ *  Create a view controller without a feature registration, with implicit identifiers
+ *
+ *  @param contentOperations The content operations to use to load the content for the view controller.
+ *  @param featureTitle The title of the feature that the view controller will belong to. Used for its
+ *         default title, and also made available to content operations as part of `HUBFeatureInfo`.
+ *  @param options A set of internal options that can be used to provide feature-specific functionality.
+ *
+ *  The view controller's feature identifier and view URI will be set by transforming the given feature
+ *  title into lowercase characters.
+ *
+ *  @discussion This API should be considered experimental and for internal use only. Always use the method without the
+ *              options: parameter until the options API is stable.
+ */
+- (HUBViewController *)createViewControllerWithContentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+                                                    featureTitle:(NSString *)featureTitle
+                                                         options:(nullable NSDictionary<NSString *, NSString *> *)options NS_SWIFT_NAME(createViewController(withContentOperations:featureTitle:options:));
+
+/**
+ *  Create a view controller without a feature registration, with explicit identifiers
+ *
+ *  @param viewURI The URI of the view controller to create. This view URI will not be looked up in the
+ *         Hub Framework's feature registry, it will simply be assigned to the view controller.
+ *  @param contentOperations The content operations to use to load the content for the view controller.
+ *  @param featureIdentifier The identifier of the feature that the view controller will belong to. Will
+ *         be made available to content operations as part of `HUBFeatureInfo`.
+ *  @param featureTitle The title of the feature that the view controller will belong to. Used for its
+ *         default title, and also made available to contnet operations as part of `HUBFeatureInfo`.
+ *  @param options A set of internal options that can be used to provide feature-specific functionality.
+ *
+ *  @discussion This API should be considered experimental and for internal use only. Always use the method without the
+ *              options: parameter until the options API is stable.
+ */
+- (HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
+                                    contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+                                    featureIdentifier:(NSString *)featureIdentifier
+                                         featureTitle:(NSString *)featureTitle
+                                              options:(nullable NSDictionary<NSString *, NSString *> *)options;
+
+@end
+
 NS_ASSUME_NONNULL_END
