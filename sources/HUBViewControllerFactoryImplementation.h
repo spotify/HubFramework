@@ -35,7 +35,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Concrete implementation of the `HUBViewControllerFactory` API
-@interface HUBViewControllerFactoryImplementation : NSObject <HUBViewControllerFactoryWithOptions>
+@interface HUBViewControllerFactoryImplementation : NSObject <HUBViewControllerFactory>
 
 /**
  *  Initialize an instance of this class with its required dependencies
