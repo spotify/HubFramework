@@ -135,7 +135,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                contentReloadPolicy:nil
                                                                                         customJSONSchemaIdentifier:nil
                                                                                                      actionHandler:nil
-                                                                                       viewControllerScrollHandler:nil];
+                                                                                       viewControllerScrollHandler:nil
+                                                                                                           options:nil];
     
     return [self createViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
 }
