@@ -146,11 +146,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
                                   featureRegistration:(HUBFeatureRegistration *)featureRegistration
 {
-    BOOL someCondition = YES ? YES : NO;
-    if (someCondition) {
-        return [self createStandardViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
-    } else {
+    NSString *hubViewControllerString = featureRegistration.options[@"HUBViewController"];
+    BOOL useV2 = [hubViewControllerString isEqualToString:@"v2"];
+    if (useV2) {
         return [self createExperimentalViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
+    } else {
+        return [self createStandardViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
     }
 }
 
