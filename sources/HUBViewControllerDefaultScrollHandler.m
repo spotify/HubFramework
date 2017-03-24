@@ -52,6 +52,12 @@ NS_ASSUME_NONNULL_BEGIN
     return proposedContentInsets;
 }
 
+
+- (void)scrollViewDidScrollInViewController:(HUBViewController *)viewController withContentOffset:(CGPoint)contentOffest
+{
+    // No-op
+}
+
 - (void)scrollingWillStartInViewController:(HUBViewController *)viewController
                         currentContentRect:(CGRect)currentContentRect
 {

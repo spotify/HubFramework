@@ -773,10 +773,10 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    [self.scrollHandler scrollViewDidScrollInViewController:self withContentOffset:scrollView.contentOffset];
     for (HUBComponentWrapper * const componentWrapper in self.contentOffsetObservingComponentWrappers) {
         [componentWrapper updateViewForChangedContentOffset:scrollView.contentOffset];
     }
-
     [self.highlightedComponentWrapper updateViewForSelectionState:HUBComponentSelectionStateNone];
 }
 
