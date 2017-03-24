@@ -30,6 +30,8 @@
 #import "HUBContentOperationMock.h"
 #import "HUBComponentLayoutManagerMock.h"
 #import "HUBViewURIPredicate.h"
+#import "HUBViewControllerImplementation.h"
+#import "HUBViewControllerExperimentalImplementation.h"
 #import "HUBContentReloadPolicyMock.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBComponentFallbackHandlerMock.h"
@@ -86,9 +88,9 @@
 
 #pragma mark - Tests
 
-- (void)testCreatingViewControllerForValidViewURI
+- (void)registerFeatureWithViewURI:(NSURL *)viewURI
+                           options:(nullable NSDictionary<NSString *, NSString *> *)options
 {
-    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     HUBViewURIPredicate * const viewURIPredicate = [HUBViewURIPredicate predicateWithViewURI:viewURI];
     HUBContentOperationMock * const contentOperation = [HUBContentOperationMock new];
     HUBContentOperationFactoryMock * const contentOperationFactory = [[HUBContentOperationFactoryMock alloc] initWithContentOperations:@[contentOperation]];
@@ -100,8 +102,44 @@
                                             contentReloadPolicy:nil
                                      customJSONSchemaIdentifier:nil
                                                   actionHandler:nil
-                                    viewControllerScrollHandler:nil];
-    
+                                    viewControllerScrollHandler:nil
+                                                        options:options];
+}
+
+- (void)testCreatingViewControllerWithoutOptions
+{
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    [self registerFeatureWithViewURI:viewURI options:nil];
+    XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
+
+    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    XCTAssertTrue([viewController isKindOfClass:[HUBViewControllerImplementation class]]);
+}
+
+- (void)testCreatingViewControllerWithIncorrectHUBViewControllerOptions
+{
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    [self registerFeatureWithViewURI:viewURI options:@{@"HUBViewController" : @"unexpectedValue"}];
+    XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
+
+    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    XCTAssertTrue([viewController isKindOfClass:[HUBViewControllerImplementation class]]);
+}
+
+- (void)testCreatingViewControllerWithExperimentalHUBViewControllerOptions
+{
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    [self registerFeatureWithViewURI:viewURI options:@{@"HUBViewController" : @"v2"}];
+    XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
+
+    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    XCTAssertTrue([viewController isKindOfClass:[HUBViewControllerExperimentalImplementation class]]);
+}
+
+- (void)testCreatingViewControllerForValidViewURI
+{
+    NSURL * const viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
+    [self registerFeatureWithViewURI:viewURI options:nil];
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
     
     HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
