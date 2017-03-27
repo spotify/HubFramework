@@ -1874,6 +1874,40 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testScrollingDoesNotifyDidScrollHandler
+{
+    [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
+                                       componentSize:CGSizeMake(200.0, 200.0)
+                                      componentCount:20];
+
+    [self simulateViewControllerLayoutCycle];
+    // Makes sure the collection view updates its content size
+    [self.collectionView setNeedsLayout];
+    [self.collectionView layoutIfNeeded];
+
+    self.scrollHandler.targetContentOffset = CGPointMake(0.0, 1400);
+
+    __block BOOL scrollingDidScrollHandlerNotified = NO;
+    self.scrollHandler.scrollingDidScrollHandler = ^(CGPoint contentOffset) {
+        scrollingDidScrollHandlerNotified = YES;
+    };
+
+    __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
+    NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
+    [self.viewController scrollToComponentOfType:HUBComponentTypeBody
+                                       indexPath:indexPath
+                                  scrollPosition:HUBScrollPositionTop
+                                        animated:YES
+                                      completion:^(NSIndexPath *visibleIndexPath) {
+                                          XCTAssertTrue(scrollingDidScrollHandlerNotified);
+
+                                          [expectation fulfill];
+                                      }];
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+
+}
+
 - (void)testScrollingToRootComponentDoesNotNotifyScrollHandler
 {
     [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
@@ -1906,6 +1940,7 @@
                                       completion:^(NSIndexPath *visibleIndexPath) {
         XCTAssertFalse(willStartScrollHandlerNotified);
         XCTAssertFalse(didEndScrollHandlerNotified);
+
         [expectation fulfill];
     }];
 
