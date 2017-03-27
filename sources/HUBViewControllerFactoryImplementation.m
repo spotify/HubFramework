@@ -198,7 +198,6 @@ NS_ASSUME_NONNULL_BEGIN
     HUBViewModelLoaderImplementation * const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI
                                                                                                         featureRegistration:featureRegistration];
 
-    HUBViewModelRenderer * const viewModelRenderer = [HUBViewModelRenderer new];
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
     HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:self.componentRegistry];
@@ -214,7 +213,6 @@ NS_ASSUME_NONNULL_BEGIN
     return [[HUBViewControllerExperimentalImplementation alloc] initWithViewURI:viewURI
                                                                     featureInfo:featureInfo
                                                                 viewModelLoader:viewModelLoader
-                                                              viewModelRenderer:viewModelRenderer
                                                           collectionViewFactory:collectionViewFactory
                                                               componentRegistry:self.componentRegistry
                                                              componentReusePool:componentReusePool

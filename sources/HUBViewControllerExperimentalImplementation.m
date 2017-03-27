@@ -45,7 +45,7 @@
 #import "HUBComponentReusePool.h"
 #import "HUBActionContextImplementation.h"
 #import "HUBActionHandlerWrapper.h"
-#import "HUBViewModelRenderer.h"
+#import "HUBViewModelDiff.h"
 #import "HUBFeatureInfo.h"
 #import "HUBOperation.h"
 #import "HUBOperationQueue.h"
@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
 @property (nonatomic, strong, readonly) HUBComponentWrapperImageLoader *componentWrapperImageLoader;
 @property (nonatomic, strong, nullable) HUBCollectionView *collectionView;
-@property (nonatomic, strong, readonly) HUBViewModelRenderer *viewModelRenderer;
+@property (nonatomic, strong, nullable) id<HUBViewModel> lastRenderedViewModel;
 @property (nonatomic, assign) BOOL collectionViewIsScrolling;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentContentOffsetObserver>> *contentOffsetObservingComponentWrappers;
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentActionObserver>> *actionObservingComponentWrappers;
@@ -82,7 +82,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) HUBComponentWrapper *highlightedComponentWrapper;
 @property (nonatomic, strong, readonly) HUBOperationQueue *renderingOperationQueue;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
-@property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
 @property (nonatomic) CGFloat visibleKeyboardHeight;
@@ -103,7 +102,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewURI:(NSURL *)viewURI
                     featureInfo:(id<HUBFeatureInfo>)featureInfo
                 viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
-              viewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(id<HUBComponentRegistry>)componentRegistry
              componentReusePool:(HUBComponentReusePool *)componentReusePool
@@ -115,7 +113,6 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(featureInfo != nil);
     NSParameterAssert(viewModelLoader != nil);
-    NSParameterAssert(viewModelRenderer != nil);
     NSParameterAssert(collectionViewFactory != nil);
     NSParameterAssert(componentRegistry != nil);
     NSParameterAssert(componentReusePool != nil);
@@ -131,7 +128,6 @@ NS_ASSUME_NONNULL_BEGIN
     _viewURI = [viewURI copy];
     _featureInfo = featureInfo;
     _viewModelLoader = viewModelLoader;
-    _viewModelRenderer = viewModelRenderer;
     _collectionViewFactory = collectionViewFactory;
     _componentRegistry = componentRegistry;
     _componentReusePool = componentReusePool;
@@ -203,12 +199,6 @@ NS_ASSUME_NONNULL_BEGIN
     [self headerAndOverlayComponentViewsWillAppear];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    self.viewHasAppeared = YES;
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -218,7 +208,6 @@ NS_ASSUME_NONNULL_BEGIN
     [notificationCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 
     self.viewHasBeenLaidOut = NO;
-    self.viewHasAppeared = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -867,6 +856,55 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     [self updateOverlayComponentCenterPointsWithKeyboardNotification:notification];
 }
 
+#pragma mark - Rendering
+
+- (void)renderViewModel:(id<HUBViewModel>)viewModel
+               animated:(BOOL)animated
+        addHeaderMargin:(BOOL)addHeaderMargin
+             completion:(void (^)(void))completionBlock
+{
+    __weak __typeof(self) weakSelf = self;
+    void (^renderBlock)() = ^{
+        __strong __typeof(self) strongSelf = weakSelf;
+        [strongSelf renderViewModel:viewModel
+                    addHeaderMargin:addHeaderMargin
+                         completion:completionBlock];
+    };
+
+    if (animated) {
+        renderBlock();
+    } else {
+        [UIView performWithoutAnimation:renderBlock];
+    }
+}
+
+- (void)renderViewModel:(id<HUBViewModel>)viewModel
+        addHeaderMargin:(BOOL)addHeaderMargin
+             completion:(void (^)(void))completionBlock
+{
+    HUBViewModelDiff *diff;
+    if (self.lastRenderedViewModel != nil) {
+        id<HUBViewModel> nonnullViewModel = self.lastRenderedViewModel;
+        diff = [HUBViewModelDiff diffFromViewModel:nonnullViewModel toViewModel:viewModel];
+    }
+
+    BOOL const hasDiffChanges = (diff == nil || diff.hasChanges);
+    UICollectionView *collectionView = self.collectionView;
+    HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)collectionView.collectionViewLayout;
+
+    if (hasDiffChanges) {
+        [collectionView reloadData];
+    }
+
+    [layout computeForCollectionViewSize:collectionView.frame.size
+                               viewModel:viewModel
+                                    diff:diff
+                         addHeaderMargin:addHeaderMargin];
+
+    self.lastRenderedViewModel = viewModel;
+    completionBlock();
+}
+
 #pragma mark - Private utilities
 
 - (void)createCollectionViewIfNeeded
@@ -914,19 +952,16 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
         BOOL const shouldAddHeaderMargin = [self shouldAutomaticallyManageTopContentInset];
         id<HUBViewModel> const viewModel = self.viewModel;
-        UICollectionView * const collectionView = self.collectionView;
 
-        [self.viewModelRenderer renderViewModel:viewModel
-                               inCollectionView:collectionView
-                              usingBatchUpdates:self.viewHasAppeared
-                                       animated:NO
-                                addHeaderMargin:shouldAddHeaderMargin
-                                     completion:^{
-                                         [self headerAndOverlayComponentViewsWillAppear];
-                                         [self adjustCollectionViewContentInsetWithProposedTopValue:[self calculateTopContentInset]];
-                                         [self.delegate viewControllerDidFinishRendering:self];
-                                         completionHandler();
-                                     }];
+        [self renderViewModel:viewModel
+                     animated:NO
+              addHeaderMargin:shouldAddHeaderMargin
+                   completion:^{
+                       [self headerAndOverlayComponentViewsWillAppear];
+                       [self adjustCollectionViewContentInsetWithProposedTopValue:[self calculateTopContentInset]];
+                       [self.delegate viewControllerDidFinishRendering:self];
+                       completionHandler();
+                   }];
     }];
 }
 
