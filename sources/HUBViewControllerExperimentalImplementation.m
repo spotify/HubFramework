@@ -82,7 +82,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) HUBComponentWrapper *highlightedComponentWrapper;
 @property (nonatomic, strong, readonly) HUBOperationQueue *renderingOperationQueue;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
-@property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
 @property (nonatomic) CGFloat visibleKeyboardHeight;
@@ -200,12 +199,6 @@ NS_ASSUME_NONNULL_BEGIN
     [self headerAndOverlayComponentViewsWillAppear];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    self.viewHasAppeared = YES;
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -215,7 +208,6 @@ NS_ASSUME_NONNULL_BEGIN
     [notificationCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 
     self.viewHasBeenLaidOut = NO;
-    self.viewHasAppeared = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -867,7 +859,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 #pragma mark - Rendering
 
 - (void)renderViewModel:(id<HUBViewModel>)viewModel
-      usingBatchUpdates:(BOOL)usingBatchUpdates
                animated:(BOOL)animated
         addHeaderMargin:(BOOL)addHeaderMargin
              completion:(void (^)(void))completionBlock
@@ -876,7 +867,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     void (^renderBlock)() = ^{
         __strong __typeof(self) strongSelf = weakSelf;
         [strongSelf renderViewModel:viewModel
-                  usingBatchUpdates:usingBatchUpdates
                     addHeaderMargin:addHeaderMargin
                          completion:completionBlock];
     };
@@ -889,7 +879,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 }
 
 - (void)renderViewModel:(id<HUBViewModel>)viewModel
-      usingBatchUpdates:(BOOL)usingBatchUpdates
         addHeaderMargin:(BOOL)addHeaderMargin
              completion:(void (^)(void))completionBlock
 {
@@ -903,61 +892,17 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     UICollectionView *collectionView = self.collectionView;
     HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)collectionView.collectionViewLayout;
 
-    /*
-     Because of the different ways we can trigger the layout and post-layout logic (i.e. whether it's being called
-     synchronously, or called from either of of the collection view's performBatchUpdates:completion: blocks), I've
-     tried to separate that logic out into 2 block methods: layoutBlock and postLayoutBlock.
-     */
-    void (^layoutBlock)() = ^{
-        [layout computeForCollectionViewSize:collectionView.frame.size
-                                   viewModel:viewModel
-                                        diff:diff
-                             addHeaderMargin:addHeaderMargin];
-    };
-
-    __weak __typeof(self) weakSelf = self;
-    void (^postLayoutBlock)() = ^{
-        __strong __typeof(self) strongSelf = weakSelf;
-        strongSelf.lastRenderedViewModel = viewModel;
-        completionBlock();
-    };
-
-    if (!usingBatchUpdates || diff == nil) {
-        if (hasDiffChanges) {
-            [collectionView reloadData];
-        }
-
-        layoutBlock();
-
-        /* Below is a workaround for an issue caused by UICollectionView not asking for numberOfItemsInSection
-         before viewDidAppear is called or instantly after a call to reloadData. If reloadData is called
-         after viewDidAppear has been called, followed by a call to performBatchUpdates, UICollectionView will
-         ask for the initial number of items right before the batch updates, and for the new count while inside
-         the update block. This will often trigger an assertion if there are any insertions / deletions, as
-         the data model has already changed before the update. Forcing a layoutSubviews however, manually
-         triggers the numberOfItems call.
-         */
-        if (usingBatchUpdates && diff == nil) {
-            [collectionView setNeedsLayout];
-            [collectionView layoutIfNeeded];
-        }
-        postLayoutBlock();
-    } else {
-        if (hasDiffChanges) {
-            [collectionView performBatchUpdates:^{
-                [collectionView insertItemsAtIndexPaths:diff.insertedBodyComponentIndexPaths];
-                [collectionView deleteItemsAtIndexPaths:diff.deletedBodyComponentIndexPaths];
-                [collectionView reloadItemsAtIndexPaths:diff.reloadedBodyComponentIndexPaths];
-
-                layoutBlock();
-            } completion:^(BOOL finished) {
-                postLayoutBlock();
-            }];
-        } else {
-            layoutBlock();
-            postLayoutBlock();
-        }
+    if (hasDiffChanges) {
+        [collectionView reloadData];
     }
+
+    [layout computeForCollectionViewSize:collectionView.frame.size
+                               viewModel:viewModel
+                                    diff:diff
+                         addHeaderMargin:addHeaderMargin];
+
+    self.lastRenderedViewModel = viewModel;
+    completionBlock();
 }
 
 #pragma mark - Private utilities
@@ -1009,7 +954,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         id<HUBViewModel> const viewModel = self.viewModel;
 
         [self renderViewModel:viewModel
-            usingBatchUpdates:self.viewHasAppeared
                      animated:NO
               addHeaderMargin:shouldAddHeaderMargin
                    completion:^{
