@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
         _customJSONSchemaIdentifier = [customJSONSchemaIdentifier copy];
         _actionHandler = actionHandler;
         _viewControllerScrollHandler = viewControllerScrollHandler;
-        _options = options;
+        _options = [options copy];
     }
     
     return self;
