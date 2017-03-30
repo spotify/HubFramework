@@ -23,76 +23,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#pragma mark Computing Values from CGFloats
+#pragma mark Computing, testing and comparing values from CGFloats
 
-/**
- Round to largest integral value not greater than `value`.
- 
- @note Consider using this function instead of the standard `floor` and `floorf` functions for `CGFloat` values. This
-       function helps avoid implicit double promotion and loss of precision. Keeping the types correct regardless of
-       if the backing type is `double` or `float`.
-
- @param value The value that should be floored.
- @return The largest integral value not greater than `value`.
- */
-static inline CGFloat HUBCGFloatFloor(CGFloat value)
-{
 #if CGFLOAT_IS_DOUBLE
-    return floor(value);
+#define HUBCGFloatFloor floor
+#define HUBCGFloatAbs fabs
+#define HUBCGFloatMax fmax
+#define HUBCGFloatMin fmin
 #else
-    return floorf(value);
-#endif // CGFLOAT_IS_DOUBLE
-}
-
-/**
- Returns the absolute value of the given floating `value`.
- 
- - `HUBCGFloatAbs(±0)` returns `0`
- - `HUBCGFloatAbs(±infinity) returns `+infinity`.
-
- @param value The value.
- @return The absolute value.
- */
-static inline CGFloat HUBCGFloatAbs(CGFloat value)
-{
-#if CGFLOAT_IS_DOUBLE
-    return fabs(value);
-#else
-    return fabsf(value);
-#endif // CGFLOAT_IS_DOUBLE
-}
-
-/**
- Returns the maximum value.
-
- @param a The first value.
- @param b The second value.
- @return `a` if it’s larger than `b`; otherwise `b`.
- */
-static inline CGFloat HUBCGFloatMax(CGFloat a, CGFloat b)
-{
-#if CGFLOAT_IS_DOUBLE
-    return fmax(a, b);
-#else
-    return fmaxf(a, b);
-#endif // CGFLOAT_IS_DOUBLE
-}
-
-/**
- Returns the minimum value.
-
- @param a The first value.
- @param b The second value.
- @return `a` if it’s smaller than `b`; otherwise `b`.
- */
-static inline CGFloat HUBCGFloatMin(CGFloat a, CGFloat b)
-{
-#if CGFLOAT_IS_DOUBLE
-    return fmin(a, b);
-#else
-    return fminf(a, b);
-#endif // CGFLOAT_IS_DOUBLE
-}
+#define HUBCGFloatFloor floorf
+#define HUBCGFloatAbs fabsf
+#define HUBCGFloatMax fmaxf
+#define HUBCGFloatMin fminf
+#endif
 
 #pragma mark - Testing and Comparing CGFloats
 
