@@ -75,11 +75,12 @@ import HubFramework
     }
     
     // MARK: - HUBLiveServiceDelegate
-    
-    func liveService(_ liveService: HUBLiveService, didCreateViewController viewController: HUBViewController) {
+    func liveService(_ liveService: HUBLiveService, didCreateContentOperation contentOperation: HUBContentOperation) {
+        let viewController = hubManager.viewControllerFactory.createViewController(withContentOperations: [contentOperation],
+                                                                                   featureTitle: "Live")
         prepareAndPush(viewController: viewController, animated: true)
     }
-    
+
     // MARK: - Private
     
     private func registerDefaultComponentFactory() {
