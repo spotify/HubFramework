@@ -31,7 +31,7 @@
 #import "HUBViewControllerDefaultScrollHandler.h"
 #import "HUBImageLoader.h"
 #import "HUBImageLoaderFactory.h"
-#import "HUBViewController+Initializer.h"
+#import "HUBViewControllerImplementation.h"
 
 
 @implementation HUBConfigViewControllerFactory
@@ -69,17 +69,17 @@
 
     id<HUBImageLoader> const imageLoader = [config.imageLoaderFactory createImageLoader];
 
-    return [[HUBViewController alloc] initWithViewURI:viewURI
-                                          featureInfo:featureInfo
-                                      viewModelLoader:viewModelLoader
-                                    viewModelRenderer:viewModelRenderer
-                                collectionViewFactory:collectionViewFactory
-                                    componentRegistry:config.componentRegistry
-                                   componentReusePool:componentReusePool
-                               componentLayoutManager:config.componentLayoutManager
-                                        actionHandler:actionHandlerWrapper
-                                        scrollHandler:scrollHandlerToUse
-                                          imageLoader:imageLoader];
+    return [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
+                                                        featureInfo:featureInfo
+                                                    viewModelLoader:viewModelLoader
+                                                  viewModelRenderer:viewModelRenderer
+                                              collectionViewFactory:collectionViewFactory
+                                                  componentRegistry:config.componentRegistry
+                                                 componentReusePool:componentReusePool
+                                             componentLayoutManager:config.componentLayoutManager
+                                                      actionHandler:actionHandlerWrapper
+                                                      scrollHandler:scrollHandlerToUse
+                                                        imageLoader:imageLoader];
     
 }
 
