@@ -115,3 +115,4 @@
 
 // Live
 #import "HUBLiveService.h"
+#import "HUBLiveServiceFactory.h"

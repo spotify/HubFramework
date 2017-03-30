@@ -34,7 +34,7 @@
 #import "HUBDefaultImageLoaderFactory.h"
 #import "HUBDefaultComponentLayoutManager.h"
 #import "HUBDefaultComponentFallbackHandler.h"
-#import "HUBLiveServiceImplementation.h"
+#import "HUBLiveServiceFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -129,11 +129,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id<HUBLiveService>)liveService
 {
-#if HUB_DEBUG
     if (_liveService == nil) {
-        _liveService = [HUBLiveServiceImplementation new];
+        _liveService = [[HUBLiveServiceFactory new] createLiveService];
     }
-#endif
     
     return _liveService;
 }

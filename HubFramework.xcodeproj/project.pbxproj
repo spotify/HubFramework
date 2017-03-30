@@ -440,6 +440,9 @@
 		9902B7431E82723F00823187 /* HUBJSONSchemaFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902B7421E82723F00823187 /* HUBJSONSchemaFactory.m */; };
 		9902B7441E82723F00823187 /* HUBJSONSchemaFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902B7421E82723F00823187 /* HUBJSONSchemaFactory.m */; };
 		9902B7461E82746E00823187 /* HUBJSONSchemaFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9902B7451E82745800823187 /* HUBJSONSchemaFactory.h */; };
+		9990736B1E8D1BF100A6FB26 /* HUBLiveServiceFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9990736A1E8D1BF100A6FB26 /* HUBLiveServiceFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9990736D1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9990736C1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m */; };
+		9990736E1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9990736C1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m */; };
 		B30B7F4F1E005AB30049D013 /* HUBViewControllerDefaultScrollHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = B38EA90C1DFEF18400526587 /* HUBViewControllerDefaultScrollHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B35E40F91DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */; };
 		DD244A821E04520F005E5C68 /* HUBErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = DD244A811E04520D005E5C68 /* HUBErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -801,6 +804,8 @@
 		9902B7401E8041A900823187 /* HUBConfigBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBConfigBuilder.h; sourceTree = "<group>"; };
 		9902B7421E82723F00823187 /* HUBJSONSchemaFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBJSONSchemaFactory.m; sourceTree = "<group>"; };
 		9902B7451E82745800823187 /* HUBJSONSchemaFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBJSONSchemaFactory.h; sourceTree = "<group>"; };
+		9990736A1E8D1BF100A6FB26 /* HUBLiveServiceFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBLiveServiceFactory.h; sourceTree = "<group>"; };
+		9990736C1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBLiveServiceFactory.m; sourceTree = "<group>"; };
 		9996E9691C6A42E000231D22 /* HUBComponentFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactory.h; sourceTree = "<group>"; };
 		B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewFactoryTests.m; sourceTree = "<group>"; };
 		B38EA90C1DFEF18400526587 /* HUBViewControllerDefaultScrollHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewControllerDefaultScrollHandler.h; sourceTree = "<group>"; };
@@ -988,6 +993,7 @@
 			isa = PBXGroup;
 			children = (
 				8A1572941D9E728200E9DD4D /* HUBLiveService.h */,
+				9990736A1E8D1BF100A6FB26 /* HUBLiveServiceFactory.h */,
 			);
 			name = Live;
 			sourceTree = "<group>";
@@ -997,6 +1003,7 @@
 			children = (
 				8A1572991D9E735C00E9DD4D /* HUBLiveServiceImplementation.h */,
 				8A15729A1D9E735C00E9DD4D /* HUBLiveServiceImplementation.m */,
+				9990736C1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m */,
 				8A1638BB1DC38B2E00AAD200 /* HUBLiveContentOperation.h */,
 				8A1638BC1DC38B2E00AAD200 /* HUBLiveContentOperation.m */,
 			);
@@ -1686,6 +1693,7 @@
 				8AE6C0A81DF6E40D0063B2B1 /* HUBDefaultComponentFallbackHandler.h in Headers */,
 				8AE6C0451DF6E3D40063B2B1 /* HUBComponentModelBuilder.h in Headers */,
 				8AE6C0281DF6E3C80063B2B1 /* HUBContentOperationActionObserver.h in Headers */,
+				9990736B1E8D1BF100A6FB26 /* HUBLiveServiceFactory.h in Headers */,
 				8AE6C0DF1DF6E41B0063B2B1 /* HUBUtilities.h in Headers */,
 				8AE6C0811DF6E4020063B2B1 /* HUBContentOperationWrapper.h in Headers */,
 				8AE6C0931DF6E4020063B2B1 /* HUBInitialViewModelRegistry.h in Headers */,
@@ -1912,6 +1920,7 @@
 			files = (
 				8A8808A01C21AD0900ADB737 /* HUBComponentRegistryImplementation.m in Sources */,
 				9902B7201E7ABFEC00823187 /* HUBConfig.m in Sources */,
+				9990736D1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m in Sources */,
 				8AA29C881C4FAB6200E972B7 /* HUBComponentImageDataImplementation.m in Sources */,
 				52977ACA1DA7D0B40064629E /* HUBBlockContentOperationFactory.m in Sources */,
 				8A6ACAB31D7D893400102EA9 /* HUBActionContextImplementation.m in Sources */,
@@ -2140,6 +2149,7 @@
 			files = (
 				8AE6C0AD1DF6E40D0063B2B1 /* HUBComponentModelBuilderImplementation.m in Sources */,
 				9902B7211E7ABFFE00823187 /* HUBConfig.m in Sources */,
+				9990736E1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m in Sources */,
 				8AE6C07F1DF6E4020063B2B1 /* HUBBlockContentOperationFactory.m in Sources */,
 				8AE6C0D21DF6E4140063B2B1 /* HUBActionHandlerWrapper.m in Sources */,
 				8AE6C09A1DF6E4020063B2B1 /* HUBCollectionView.m in Sources */,

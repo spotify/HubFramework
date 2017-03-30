@@ -30,6 +30,7 @@ import HubFramework
     var defaultConfig: HUBConfig!
     var githubConfig: HUBConfig!
     let hubComponentFallbackHandler = ComponentFallbackHandler()
+    var liveService: HUBLiveService?
 
     // MARK: - UIApplicationDelegate
 
@@ -59,7 +60,7 @@ import HubFramework
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-//        hubManager.liveService?.stop()
+        liveService?.stop()
     }
     
     // MARK: - HUBLiveServiceDelegate
@@ -169,8 +170,9 @@ import HubFramework
 
     private func startLiveService() {
         #if DEBUG
-//        hubManager.liveService?.delegate = self
-//        hubManager.liveService?.start(onPort: 7777)
+            liveService = HUBLiveServiceFactory().createLiveService()
+            liveService?.delegate = self
+            liveService?.start(onPort: 7777)
         #endif
     }
     
