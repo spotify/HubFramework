@@ -363,7 +363,7 @@
 		8AE6C0A51DF6E40D0063B2B1 /* HUBComponentDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D7A611CBBAC2200B987BA /* HUBComponentDefaults.m */; };
 		8AE6C0A61DF6E40D0063B2B1 /* HUBDefaultComponentLayoutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA124E51DE89B530076582D /* HUBDefaultComponentLayoutManager.h */; };
 		8AE6C0A71DF6E40D0063B2B1 /* HUBDefaultComponentLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA124E61DE89B530076582D /* HUBDefaultComponentLayoutManager.m */; };
-		8AE6C0A81DF6E40D0063B2B1 /* HUBDefaultComponentFallbackHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA127EC1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8AE6C0A81DF6E40D0063B2B1 /* HUBDefaultComponentFallbackHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA127EC1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.h */; };
 		8AE6C0A91DF6E40D0063B2B1 /* HUBDefaultComponentFallbackHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA127ED1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.m */; };
 		8AE6C0AA1DF6E40D0063B2B1 /* HUBComponentModelImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA29C831C4FAA9200E972B7 /* HUBComponentModelImplementation.h */; };
 		8AE6C0AB1DF6E40D0063B2B1 /* HUBComponentModelImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA29C841C4FAA9200E972B7 /* HUBComponentModelImplementation.m */; };
@@ -1378,6 +1378,7 @@
 				8A5D7A611CBBAC2200B987BA /* HUBComponentDefaults.m */,
 				8AA124E51DE89B530076582D /* HUBDefaultComponentLayoutManager.h */,
 				8AA124E61DE89B530076582D /* HUBDefaultComponentLayoutManager.m */,
+				8AA127EC1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.h */,
 				8AA127ED1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.m */,
 				8AA29C831C4FAA9200E972B7 /* HUBComponentModelImplementation.h */,
 				8AA29C841C4FAA9200E972B7 /* HUBComponentModelImplementation.m */,
@@ -1517,7 +1518,6 @@
 				8A5D7A6F1CBE586700B987BA /* HUBComponentFallbackHandler.h */,
 				8ACA8C801D180EC80015310F /* HUBComponentShowcaseManager.h */,
 				8ACA8C841D1816C90015310F /* HUBComponentShowcaseShapshotGenerator.h */,
-				8AA127EC1DE8A1010076582D /* HUBDefaultComponentFallbackHandler.h */,
 				F68DF5D41DCAA0D4004C538A /* HUBScrollPosition.h */,
 			);
 			name = Components;

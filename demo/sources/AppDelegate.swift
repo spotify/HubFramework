@@ -26,18 +26,10 @@ import HubFramework
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate, HUBLiveServiceDelegate {
     var window: UIWindow?
     var navigationController: NavigationController?
-    var hubComponentFallbackHandler: HUBComponentFallbackHandler!
     var hubViewControllerFactory = HUBConfigViewControllerFactory()
     var defaultConfig: HUBConfig!
     var githubConfig: HUBConfig!
-
-    let componentFallbackClosure = { (category: HUBComponentCategory) -> HUBComponent in
-        if category == .card {
-            return ImageComponent()
-        }
-
-        return RowComponent()
-    }
+    let hubComponentFallbackHandler = ComponentFallbackHandler()
 
     // MARK: - UIApplicationDelegate
 
@@ -46,14 +38,6 @@ import HubFramework
         
         self.window = window
         navigationController = NavigationController()
-
-        hubComponentFallbackHandler = HUBDefaultComponentFallbackHandler(fallbackBlock: { category in
-            if category == .card {
-                return ImageComponent()
-            }
-
-            return RowComponent()
-        })
 
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
@@ -89,7 +73,7 @@ import HubFramework
     // MARK: - Private
 
     private func setupConfigs() {
-        let builder = HUBConfigBuilder(componentMargin: ComponentMargin, componentFallbackClosure: componentFallbackClosure)
+        let builder = HUBConfigBuilder(componentMargin: ComponentMargin, componentFallbackHandler: hubComponentFallbackHandler)
 
         defaultConfig = builder.build()
         defaultConfig.componentRegistry.register(componentFactory: DefaultComponentFactory(),

@@ -95,7 +95,6 @@
 #import "HUBComponentFallbackHandler.h"
 #import "HUBComponentShowcaseManager.h"
 #import "HUBComponentShowcaseShapshotGenerator.h"
-#import "HUBDefaultComponentFallbackHandler.h"
 #import "HUBScrollPosition.h"
 
 // Images & Icons

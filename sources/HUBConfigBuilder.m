@@ -41,10 +41,9 @@
 @implementation HUBConfigBuilder
 
 - (instancetype)initWithComponentMargin:(CGFloat)componentMargin
-                 componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
+               componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
 {
     id<HUBComponentLayoutManager> const componentLayoutManager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:componentMargin];
-    id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBDefaultComponentFallbackHandler alloc] initWithFallbackBlock:componentFallbackBlock];
 
     return [self initWithComponentLayoutManager:componentLayoutManager
                        componentFallbackHandler:componentFallbackHandler];

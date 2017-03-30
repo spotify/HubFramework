@@ -86,12 +86,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentMargin The margin to use in between components. Margin will be applied between two components except
  *         when both of them are not stackable (vertical) or when one of them is full width (horizontal). For more information,
  *         see the "Layout programming guide".
- *  @param componentFallbackBlock A block that should return a fallback component in case one couldn't be resolved for a given
- *         component model. The block must always return a `HUBComponent` instance.
+ *  @param componentFallbackHandler The object to use to fall back to default components in case a component couldn't be
+ *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
  */
 - (instancetype)initWithComponentMargin:(CGFloat)componentMargin
-                 componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:));
-
+               componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler;
 
 /**
  *  Builds a configuration based on builder properties.
