@@ -21,16 +21,31 @@
 
 #import <Foundation/Foundation.h>
 
+#import "HUBComponentType.h"
+
 @protocol HUBComponentModel;
 @protocol HUBViewModel;
+@class HUBIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewModelUtilities : NSObject
 
+
+/// Creates a component model with given identifier, type, component identifier and custom data
++ (id<HUBComponentModel>)createComponentModelWithIdentifier:(NSString *)identifier
+                                                       type:(HUBComponentType)type
+                                        componentIdentifier:(HUBIdentifier *)componentIdentifier
+                                                 customData:(nullable NSDictionary *)customData;
+
 /// Creates a component model with the given identifier and custom data.
 + (id<HUBComponentModel>)createComponentModelWithIdentifier:(NSString *)identifier
                                                  customData:(nullable NSDictionary *)customData;
+
+/// Creates a view model with the given identifier and body components and header component
++ (id<HUBViewModel>)createViewModelWithIdentifier:(NSString *)identifier
+                                   bodyComponents:(NSArray<id<HUBComponentModel>> *)components
+                                  headerComponent:(nullable id<HUBComponentModel>)headerComponent;
 
 /// Creates a view model with the given identifier and components.
 + (id<HUBViewModel>)createViewModelWithIdentifier:(NSString *)identifier components:(NSArray<id<HUBComponentModel>> *)components;

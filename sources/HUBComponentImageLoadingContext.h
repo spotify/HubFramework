@@ -23,6 +23,8 @@
 #import "HUBComponentType.h"
 #import "HUBHeaderMacros.h"
 
+@class HUBComponentWrapper;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Contextual object used to track image downloads for components
@@ -34,11 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The identifier of the image that this object is for
 @property (nonatomic, copy, readonly, nullable) NSString *imageIdentifier;
 
-/// The identifier of the wrapper for the component that the image is for
-@property (nonatomic, copy, readonly) NSUUID *wrapperIdentifier;
-
-/// Any index of a child component that the image is for
-@property (nonatomic, copy, readonly, nullable) NSNumber *childIndex;
+/// The wrapper for the component that the image is for
+@property (nonatomic, weak, readonly) HUBComponentWrapper *wrapper;
 
 /// The creation timestamp
 @property (nonatomic, assign, readonly) NSTimeInterval timestamp;
@@ -48,14 +47,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param imageType The type of the image that this object is for
  *  @param imageIdentifier Any identifier for the image that this object is for
- *  @param wrapperIdentifier The identifier of the wrapper for the component that the image is for
- *  @param childIndex Any index of a child component that the image is for
+ *  @param wrapper The wrapper for the component that the image is for
  *  @param timestamp The creation timestamp
  */
 - (instancetype)initWithImageType:(HUBComponentImageType)imageType
                   imageIdentifier:(nullable NSString *)imageIdentifier
-                wrapperIdentifier:(NSUUID *)wrapperIdentifier
-                       childIndex:(nullable NSNumber *)childIndex
+                          wrapper:(HUBComponentWrapper *)wrapper
                         timestamp:(NSTimeInterval)timestamp HUB_DESIGNATED_INITIALIZER;
 
 @end

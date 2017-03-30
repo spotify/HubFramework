@@ -19,29 +19,27 @@
  *  under the License.
  */
 
-#import "HUBComponentImageLoadingContext.h"
+#import "HUBSingleGestureRecognizerSynchronizer.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@interface HUBSingleGestureRecognizerSynchronizer ()
+@property (nonatomic, assign) BOOL shouldPreventGestureRecognizersFromHandlingTouches;
+@end
 
-@implementation HUBComponentImageLoadingContext
+@implementation HUBSingleGestureRecognizerSynchronizer
 
-- (instancetype)initWithImageType:(HUBComponentImageType)imageType
-                  imageIdentifier:(nullable NSString *)imageIdentifier
-                          wrapper:(HUBComponentWrapper *)wrapper
-                        timestamp:(NSTimeInterval)timestamp
+- (void)gestureRecognizerDidBeginHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer
 {
-    self = [super init];
-    
-    if (self) {
-        _imageType = imageType;
-        _imageIdentifier = [imageIdentifier copy];
-        _wrapper = wrapper;
-        _timestamp = timestamp;
-    }
-    
-    return self;
+    self.shouldPreventGestureRecognizersFromHandlingTouches = YES;
+}
+
+- (void)gestureRecognizerDidFinishHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer
+{
+    self.shouldPreventGestureRecognizersFromHandlingTouches = NO;
+}
+
+- (BOOL)gestureRecognizerShouldBeginHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer
+{
+    return self.shouldPreventGestureRecognizersFromHandlingTouches == NO;
 }
 
 @end
-
-NS_ASSUME_NONNULL_END

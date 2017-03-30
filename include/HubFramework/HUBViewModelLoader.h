@@ -94,13 +94,23 @@ NS_ASSUME_NONNULL_BEGIN
  *  Load a view model using this loader
  *
  *  Depending on the current connectivity state (determined by the current `HUBConnectivityStateResolver`),
- *  and the configuration of the feature that his view model is serving, a combination of remote and local
+ *  and the configuration of the feature that this view model is serving, a combination of remote and local
  *  content will be loaded using the respective content operations.
  *
  *  The loader will notify its delegate once the operation was completed or if it failed.
  *  See `HUBViewModelLoaderDelegate` for more information.
  */
 - (void)loadViewModel;
+
+/**
+ *  Force a reload of the view model
+ *
+ *  This is triggered by the `reload` action of `HUBViewController`. An implementation of this
+ *  protocol should disregard any reload policy that would prevent a reload.
+ *
+ *  See `loadViewModel` for more information of view model loading.
+ */
+- (void)reloadViewModel;
 
 /**
  *  Load the next set of paginated content for the current view model this loader is for

@@ -46,6 +46,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// The collection view's delegate. See `HUBCollectionViewDelegate` for more information.
 @property (nonatomic, weak, nullable) id <HUBCollectionViewDelegate> delegate;
 
+/**
+ * Returns a reusable cell object located by the identifier. This method will register the cellClass
+ * if it is not already registered with the collection view.
+ *
+ * @param identifier The reuse identifier for the specified cell. This parameter must not be nil.
+ * @param indexPath The index path specifying the location of the cell. The data source receives this information when it is asked for the cell and should just pass it along. This method uses the index path to perform additional configuration based on the cell’s position in the collection view.
+ * @param cellClass The class of a cell that you want to use in the collection view.
+ *
+ * @return A valid UICollectionReusableView object.
+ */
+- (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier
+                                                             forIndexPath:(NSIndexPath *)indexPath
+                                                cellClassWhenUnregistered:(Class)cellClass;
+
 @end
 
 NS_ASSUME_NONNULL_END

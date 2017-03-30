@@ -32,11 +32,12 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBViewModelUtilities
 
 + (id<HUBComponentModel>)createComponentModelWithIdentifier:(NSString *)identifier
+                                                       type:(HUBComponentType)type
+                                        componentIdentifier:(HUBIdentifier *)componentIdentifier
                                                  customData:(nullable NSDictionary *)customData
 {
-    HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
     return [[HUBComponentModelImplementation alloc] initWithIdentifier:identifier
-                                                                  type:HUBComponentTypeBody
+                                                                  type:type
                                                                  index:0
                                                        groupIdentifier:nil
                                                    componentIdentifier:componentIdentifier
@@ -56,16 +57,35 @@ NS_ASSUME_NONNULL_BEGIN
                                                                 parent:nil];
 }
 
-+ (id<HUBViewModel>)createViewModelWithIdentifier:(NSString *)identifier components:(NSArray<id<HUBComponentModel>> *)components
+
++ (id<HUBComponentModel>)createComponentModelWithIdentifier:(NSString *)identifier
+                                                 customData:(nullable NSDictionary *)customData
+{
+    HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
+    return [self createComponentModelWithIdentifier:identifier
+                                               type:HUBComponentTypeBody
+                                componentIdentifier:componentIdentifier
+                                         customData:customData];
+}
+
++ (id<HUBViewModel>)createViewModelWithIdentifier:(NSString *)identifier
+                                   bodyComponents:(NSArray<id<HUBComponentModel>> *)components
+                                  headerComponent:(nullable id<HUBComponentModel>)headerComponent
 {
     UINavigationItem * const navigationItem = [[UINavigationItem alloc] initWithTitle:@"Title"];
 
     return [[HUBViewModelImplementation alloc] initWithIdentifier:identifier
                                                    navigationItem:navigationItem
-                                             headerComponentModel:nil
+                                             headerComponentModel:headerComponent
                                               bodyComponentModels:components
                                            overlayComponentModels:@[]
                                                        customData:@{@"custom": @"data"}];
+}
+
+
++ (id<HUBViewModel>)createViewModelWithIdentifier:(NSString *)identifier components:(NSArray<id<HUBComponentModel>> *)components
+{
+    return [self createViewModelWithIdentifier:identifier bodyComponents:components headerComponent:nil];
 }
 
 @end

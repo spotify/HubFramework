@@ -44,3 +44,6 @@ documentation/output/
 
 # Ignore changes to our project.xcconfig that gets overridden by the build system
 project.xcconfig
+
+# Swift Package Manager
+.build

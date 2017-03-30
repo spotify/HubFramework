@@ -19,29 +19,9 @@
  *  under the License.
  */
 
-#import "HUBComponentImageLoadingContext.h"
+#import "HUBGestureRecognizerSynchronizing.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@implementation HUBComponentImageLoadingContext
-
-- (instancetype)initWithImageType:(HUBComponentImageType)imageType
-                  imageIdentifier:(nullable NSString *)imageIdentifier
-                          wrapper:(HUBComponentWrapper *)wrapper
-                        timestamp:(NSTimeInterval)timestamp
-{
-    self = [super init];
-    
-    if (self) {
-        _imageType = imageType;
-        _imageIdentifier = [imageIdentifier copy];
-        _wrapper = wrapper;
-        _timestamp = timestamp;
-    }
-    
-    return self;
-}
+/// A synchronizer that allows only one gesture recognizer to handle touches at a time.
+@interface HUBSingleGestureRecognizerSynchronizer : NSObject <HUBGestureRecognizerSynchronizing>
 
 @end
-
-NS_ASSUME_NONNULL_END

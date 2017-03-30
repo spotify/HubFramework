@@ -23,8 +23,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation HUBCollectionView
+@interface HUBCollectionView ()
+@property (nonatomic, strong, readonly) NSMutableSet<NSString *> *registeredCollectionViewCellReuseIdentifiers;
+@end
 
+@implementation HUBCollectionView
+@synthesize registeredCollectionViewCellReuseIdentifiers = _registeredCollectionViewCellReuseIdentifiers;
 @dynamic delegate;
 
 - (void)setContentOffset:(CGPoint)contentOffset
@@ -40,6 +44,27 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     [super setContentOffset:contentOffset];
+}
+
+- (NSMutableSet<NSString *> *)registeredCollectionViewCellReuseIdentifiers
+{
+    if (!_registeredCollectionViewCellReuseIdentifiers) {
+        _registeredCollectionViewCellReuseIdentifiers = [NSMutableSet new];
+    }
+
+    return _registeredCollectionViewCellReuseIdentifiers;
+}
+
+- (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier
+                                                             forIndexPath:(NSIndexPath *)indexPath
+                                                cellClassWhenUnregistered:(Class)cellClass
+{
+    if (![self.registeredCollectionViewCellReuseIdentifiers containsObject:identifier]) {
+        [self registerClass:cellClass forCellWithReuseIdentifier:identifier];
+    }
+
+    return [self dequeueReusableCellWithReuseIdentifier:identifier
+                                           forIndexPath:indexPath];
 }
 
 @end

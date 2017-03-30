@@ -191,6 +191,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether the view controller's content view is currently being scrolled
 @property (nonatomic, assign, readonly) BOOL isViewScrolling;
 
+/// Whether the view controller's content view should bounce when scrolled
+@property (nonatomic, assign) BOOL bounces;
+
+/// Whether the view controller's content view should allow drag vertically even if content is smaller than bounds
+@property (nonatomic, assign) BOOL alwaysBounceVertical;
+
 /**
  *  Return the frame used to render a body component at a given index
  *
@@ -304,10 +310,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Use `HUBViewControllerFactory` to create instances of this class
 - (instancetype)initWithCoder:(NSCoder *)decoder NS_UNAVAILABLE;
-
-/// Use `HUBViewControllerFactory` to create instances of this class
-- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil
-                         bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 
 @end
 

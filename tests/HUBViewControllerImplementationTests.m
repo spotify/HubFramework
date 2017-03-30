@@ -21,7 +21,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "HUBViewController+Initializer.h"
+#import "HUBViewControllerImplementation.h"
 #import "HUBViewModelLoaderImplementation.h"
 #import "HUBContentOperationMock.h"
 #import "HUBComponentRegistryImplementation.h"
@@ -62,7 +62,7 @@
 #import "HUBUtilities.h"
 #import "HUBTestUtilities.h"
 
-@interface HUBViewControllerTests : XCTestCase <HUBViewControllerDelegate>
+@interface HUBViewControllerImplementationTests : XCTestCase <HUBViewControllerDelegate>
 
 @property (nonatomic, strong) HUBContentOperationMock *contentOperation;
 @property (nonatomic, strong) HUBContentReloadPolicyMock *contentReloadPolicy;
@@ -101,7 +101,7 @@
 
 @end
 
-@implementation HUBViewControllerTests
+@implementation HUBViewControllerImplementationTests
 
 #pragma mark - XCTestCase
 
@@ -224,17 +224,17 @@
                                                                              initialViewModelRegistry:self.initialViewModelRegistry
                                                                                       viewModelLoader:self.viewModelLoader];
     
-    self.viewController = [[HUBViewController alloc] initWithViewURI:self.viewURI
-                                                         featureInfo:self.featureInfo
-                                                     viewModelLoader:self.viewModelLoader
-                                                   viewModelRenderer:viewModelRenderer
-                                               collectionViewFactory:self.collectionViewFactory
-                                                   componentRegistry:self.componentRegistry
-                                                  componentReusePool:self.componentReusePool
-                                              componentLayoutManager:componentLayoutManager
-                                                       actionHandler:actionHandler
-                                                       scrollHandler:self.scrollHandler
-                                                         imageLoader:self.imageLoader];
+    self.viewController = [[HUBViewControllerImplementation alloc] initWithViewURI:self.viewURI
+                                                                       featureInfo:self.featureInfo
+                                                                   viewModelLoader:self.viewModelLoader
+                                                                 viewModelRenderer:viewModelRenderer
+                                                             collectionViewFactory:self.collectionViewFactory
+                                                                 componentRegistry:self.componentRegistry
+                                                                componentReusePool:self.componentReusePool
+                                                            componentLayoutManager:componentLayoutManager
+                                                                     actionHandler:actionHandler
+                                                                     scrollHandler:self.scrollHandler
+                                                                       imageLoader:self.imageLoader];
     
     self.viewController.delegate = self;
 }
@@ -471,53 +471,6 @@
     [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
 }
 
-- (void)testImageLoadingForMultipleComponentsSharingTheSameImageURL
-{
-    NSURL * const imageURL = [NSURL URLWithString:@"https://image.url"];
-    
-    NSString * const componentNamespace = @"sameImage";
-    NSString * const componentNameA = @"componentA";
-    NSString * const componentNameB = @"componentB";
-    HUBComponentMock * const componentA = [HUBComponentMock new];
-    HUBComponentMock * const componentB = [HUBComponentMock new];
-    
-    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
-        componentNameA: componentA,
-        componentNameB: componentB
-    }];
-    
-    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
-    
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        id<HUBComponentModelBuilder> const componentModelBuilderA = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"componentA"];
-        componentModelBuilderA.componentNamespace = componentNamespace;
-        componentModelBuilderA.componentName = componentNameA;
-        componentModelBuilderA.mainImageDataBuilder.URL = imageURL;
-        
-        id<HUBComponentModelBuilder> const componentModelBuilderB = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"componentB"];
-        componentModelBuilderB.componentNamespace = componentNamespace;
-        componentModelBuilderB.componentName = componentNameB;
-        componentModelBuilderB.mainImageDataBuilder.URL = imageURL;
-        
-        return YES;
-    };
-    
-    [self simulateViewControllerLayoutCycle];
-    
-    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
-    
-    NSIndexPath * const indexPathA = [NSIndexPath indexPathForItem:0 inSection:0];
-    NSIndexPath * const indexPathB = [NSIndexPath indexPathForItem:1 inSection:0];
-    
-    self.collectionView.cells[indexPathA] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathA];
-    self.collectionView.cells[indexPathB] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPathB];
-    
-    [self.imageLoader.delegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
-    
-    XCTAssertEqualObjects(componentA.mainImageData.URL, imageURL);
-    XCTAssertEqualObjects(componentB.mainImageData.URL, imageURL);
-}
-
 - (void)testReloadingImage
 {
     NSURL * const imageURL = [NSURL URLWithString:@"https://image.url"];
@@ -546,125 +499,6 @@
     
     [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
     XCTAssertEqualObjects(self.component.mainImageData.URL, imageURL);
-}
-
-- (void)testDownloadFromNetworkImageAnimation
-{
-    NSURL * const imageURL = [NSURL URLWithString:@"https://image.url"];
-
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
-        componentModelBuilder.mainImageURL = imageURL;
-        return YES;
-    };
-
-    [self simulateViewControllerLayoutCycle];
-
-    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
-    id<HUBImageLoaderDelegate> const imageLoaderDelegate = self.imageLoader.delegate;
-    
-    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-
-    NSTimeInterval downloadFromNetworkTime = 2;
-    [NSThread sleepForTimeInterval:downloadFromNetworkTime];
-    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
-    XCTAssertTrue(self.component.imageWasAnimated);
-}
-
-- (void)testDownloadFromCacheImageAnimation
-{
-    NSURL * const imageURL = [NSURL URLWithString:@"https://image.url"];
-
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
-        componentModelBuilder.mainImageURL = imageURL;
-        return YES;
-    };
-
-    [self simulateViewControllerLayoutCycle];
-
-    id<UICollectionViewDataSource> const collectionViewDataSource = self.collectionView.dataSource;
-    id<HUBImageLoaderDelegate> const imageLoaderDelegate = self.imageLoader.delegate;
-    
-    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    self.collectionView.cells[indexPath] = [collectionViewDataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-
-    [imageLoaderDelegate imageLoader:self.imageLoader didLoadImage:[UIImage new] forURL:imageURL];
-    XCTAssertFalse(self.component.imageWasAnimated);
-}
-
-- (void)testImageLoadingForChildComponent
-{
-    NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
-    NSURL * const backgroundImageURL = [NSURL URLWithString:@"https://image.background"];
-    NSURL * const customImageURL = [NSURL URLWithString:@"https://image.custom"];
-    NSString * const customImageIdentifier = @"custom";
-    
-    NSString * const componentNamespace = @"childComponentImageLoading";
-    NSString * const componentName = @"component";
-    NSString * const childComponentName = @"componentB";
-    HUBComponentMock * const component = [HUBComponentMock new];
-    HUBComponentMock * const childComponent = [HUBComponentMock new];
-    
-    HUBComponentFactoryMock * const componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{
-        componentName: component,
-        childComponentName: childComponent
-    }];
-    
-    [self.componentRegistry registerComponentFactory:componentFactory forNamespace:componentNamespace];
-    
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
-        componentModelBuilder.componentNamespace = componentNamespace;
-        componentModelBuilder.componentName = componentName;
-        
-        id<HUBComponentModelBuilder> const childComponentModelBuilder = [componentModelBuilder builderForChildWithIdentifier:@"child"];
-        childComponentModelBuilder.componentNamespace = componentNamespace;
-        childComponentModelBuilder.componentName = childComponentName;
-        childComponentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
-        childComponentModelBuilder.backgroundImageDataBuilder.URL = backgroundImageURL;
-        [childComponentModelBuilder builderForCustomImageDataWithIdentifier:customImageIdentifier].URL = customImageURL;
-        
-        return YES;
-    };
-    
-    [self simulateViewControllerLayoutCycle];
-    
-    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-    [component.childDelegate component:component willDisplayChildAtIndex:0 view:[UIView new]];
-    
-    [self performAsynchronousTestWithDelay:0 block:^{
-        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:mainImageURL]);
-        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:backgroundImageURL]);
-        XCTAssertTrue([self.imageLoader hasLoadedImageForURL:customImageURL]);
-    }];
-}
-
-- (void)testNoImagesLoadedIfComponentDoesNotHandleImages
-{
-    self.component.canHandleImages = NO;
-    
-    NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.main"];
-    __weak __typeof(self) weakSelf = self;
-    
-    self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
-        __typeof(self) strongSelf = weakSelf;
-        
-        id<HUBComponentModelBuilder> const componentModelBuilder = [viewModelBuilder builderForBodyComponentModelWithIdentifier:@"component"];
-        componentModelBuilder.componentName = strongSelf.componentIdentifier.namePart;
-        componentModelBuilder.mainImageDataBuilder.URL = mainImageURL;
-        
-        return YES;
-    };
-    
-    [self simulateViewControllerLayoutCycle];
-    
-    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    [self.collectionView.dataSource collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-    
-    XCTAssertFalse([self.imageLoader hasLoadedImageForURL:mainImageURL]);
 }
 
 - (void)testHeaderComponentReuse
@@ -1825,9 +1659,9 @@
     UIEdgeInsets const firstInsets = UIEdgeInsetsMake(100, 30, 40, 200);
     UIEdgeInsets const secondInsets = UIEdgeInsetsMake(50, 0, 0, 0);
 
-    __weak HUBViewControllerTests *weakSelf = self;
+    __weak HUBViewControllerImplementationTests *weakSelf = self;
     void (^assertInsetsEqualToCollectionViewInsets)(UIEdgeInsets insets) = ^(UIEdgeInsets insets) {
-        HUBViewControllerTests *strongSelf = weakSelf;
+        HUBViewControllerImplementationTests *strongSelf = weakSelf;
         XCTAssertTrue(UIEdgeInsetsEqualToEdgeInsets(strongSelf.collectionView.contentInset, insets));
     };
     
@@ -2040,6 +1874,40 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testScrollingDoesNotifyDidScrollHandler
+{
+    [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
+                                       componentSize:CGSizeMake(200.0, 200.0)
+                                      componentCount:20];
+
+    [self simulateViewControllerLayoutCycle];
+    // Makes sure the collection view updates its content size
+    [self.collectionView setNeedsLayout];
+    [self.collectionView layoutIfNeeded];
+
+    self.scrollHandler.targetContentOffset = CGPointMake(0.0, 1400);
+
+    __block BOOL scrollingDidScrollHandlerNotified = NO;
+    self.scrollHandler.scrollingDidScrollHandler = ^(CGPoint contentOffset) {
+        scrollingDidScrollHandlerNotified = YES;
+    };
+
+    __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"Scrolling should complete and call the handler"];
+    NSIndexPath * const indexPath = [NSIndexPath indexPathWithIndex:8];
+    [self.viewController scrollToComponentOfType:HUBComponentTypeBody
+                                       indexPath:indexPath
+                                  scrollPosition:HUBScrollPositionTop
+                                        animated:YES
+                                      completion:^(NSIndexPath *visibleIndexPath) {
+                                          XCTAssertTrue(scrollingDidScrollHandlerNotified);
+
+                                          [expectation fulfill];
+                                      }];
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+
+}
+
 - (void)testScrollingToRootComponentDoesNotNotifyScrollHandler
 {
     [self registerAndGenerateComponentsWithNamespace:@"scrollToComponent"
@@ -2072,6 +1940,7 @@
                                       completion:^(NSIndexPath *visibleIndexPath) {
         XCTAssertFalse(willStartScrollHandlerNotified);
         XCTAssertFalse(didEndScrollHandlerNotified);
+
         [expectation fulfill];
     }];
 
@@ -2415,6 +2284,54 @@
     XCTAssertFalse(self.viewController.isViewScrolling);
     self.collectionView.mockedIsDragging = YES;
     XCTAssertTrue(self.viewController.isViewScrolling);
+}
+
+- (void)testSettingAlwaysBounceVertically
+{
+    [self simulateViewControllerLayoutCycle];
+
+    self.viewController.alwaysBounceVertical = YES;
+    XCTAssertTrue(self.collectionView.alwaysBounceVertical);
+    self.viewController.alwaysBounceVertical = NO;
+    XCTAssertFalse(self.collectionView.alwaysBounceVertical);
+}
+
+- (void)testEnablingAlwaysBounceVerticallyBeforeLoadingView
+{
+    self.viewController.alwaysBounceVertical = YES;
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertTrue(self.collectionView.alwaysBounceVertical);
+}
+
+- (void)testDisablingAlwaysBounceVerticallyBeforeLoadingView
+{
+    self.viewController.alwaysBounceVertical = NO;
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertFalse(self.collectionView.alwaysBounceVertical);
+}
+
+- (void)testSettingBounces
+{
+    [self simulateViewControllerLayoutCycle];
+
+    self.viewController.bounces = NO;
+    XCTAssertFalse(self.collectionView.bounces);
+    self.viewController.bounces = YES;
+    XCTAssertTrue(self.collectionView.bounces);
+}
+
+- (void)testEnablingBouncesBeforeLoadingView
+{
+    self.viewController.bounces = YES;
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertTrue(self.collectionView.bounces);
+}
+
+- (void)testDisablingBouncesBeforeLoadingView
+{
+    self.viewController.bounces = NO;
+    [self simulateViewControllerLayoutCycle];
+    XCTAssertFalse(self.collectionView.bounces);
 }
 
 - (void)testFrameForBodyComponentAtIndex
@@ -2869,10 +2786,10 @@
         return UIEdgeInsetsMake(100, 30, 40, 200);
     };
 
-    __weak HUBViewControllerTests *weakSelf = self;
+    __weak HUBViewControllerImplementationTests *weakSelf = self;
     __block CGPoint expectedOffset = CGPointZero;
     self.viewControllerDidFinishRenderingBlock = ^{
-        HUBViewControllerTests *strongSelf = weakSelf;
+        HUBViewControllerImplementationTests *strongSelf = weakSelf;
         CGRect componentFrame = [strongSelf.viewController frameForBodyComponentAtIndex:3];
         CGPoint offset = CGPointMake(0.0, CGRectGetMinY(componentFrame));
         expectedOffset = CGPointMake(offset.x, offset.y - 100);

@@ -19,29 +19,21 @@
  *  under the License.
  */
 
-#import "HUBComponentImageLoadingContext.h"
+import XCTest
 
-NS_ASSUME_NONNULL_BEGIN
+class ScrollingUITests: UITestCase {
 
-@implementation HUBComponentImageLoadingContext
+    func testIfAlwaysBounceVerticalIsEnabled() {
+        let app = XCUIApplication()
+        app.collectionViews.staticTexts["GitHub Search"].tap()
 
-- (instancetype)initWithImageType:(HUBComponentImageType)imageType
-                  imageIdentifier:(nullable NSString *)imageIdentifier
-                          wrapper:(HUBComponentWrapper *)wrapper
-                        timestamp:(NSTimeInterval)timestamp
-{
-    self = [super init];
-    
-    if (self) {
-        _imageType = imageType;
-        _imageIdentifier = [imageIdentifier copy];
-        _wrapper = wrapper;
-        _timestamp = timestamp;
+        let searchBar = XCUIApplication().searchFields.element(boundBy: 0)
+
+        // Use search bar to present keyboard and check if scroll is disabled, so that scrolling doesn't hide keybaord
+        searchBar.tap()
+        XCTAssert(app.keyboards.count > 0, "The keyboard is not shown")
+        app.collectionViews.element(boundBy: 0).swipeDown()
+        XCTAssert(app.keyboards.count == 0, "The keyboard is not dismissed")
     }
     
-    return self;
 }
-
-@end
-
-NS_ASSUME_NONNULL_END

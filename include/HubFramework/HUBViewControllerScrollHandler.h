@@ -99,6 +99,15 @@
                         currentContentRect:(CGRect)currentContentRect;
 
 /**
+ *  React to that an ongoing scrolling event in a view controller
+ *
+ *  @param viewController The view controller in question
+ *  @param contentOffest The scroll view's content offset
+ */
+- (void)scrollViewDidScrollInViewController:(HUBViewController *)viewController
+                          withContentOffset:(CGPoint)contentOffest;
+
+/**
  *  React to that a scrolling event ended in a view controller
  *
  *  @param viewController The view controller in question

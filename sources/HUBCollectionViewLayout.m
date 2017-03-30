@@ -42,7 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBIdentifier *, id<HUBComponent>> *componentCache;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *layoutAttributesByIndexPath;
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, NSMutableSet<NSIndexPath *> *> *indexPathsByVerticalGroup;
 @property (nonatomic, strong, nullable) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *previousLayoutAttributesByIndexPath;
 @property (nonatomic, strong, nullable) HUBViewModelDiff *lastViewModelDiff;
 
@@ -62,7 +61,6 @@ NS_ASSUME_NONNULL_BEGIN
         _componentLayoutManager = componentLayoutManager;
         _componentCache = [NSMutableDictionary new];
         _layoutAttributesByIndexPath = [NSMutableDictionary new];
-        _indexPathsByVerticalGroup = [NSMutableDictionary new];
     }
     
     return self;
@@ -79,7 +77,6 @@ NS_ASSUME_NONNULL_BEGIN
     self.previousLayoutAttributesByIndexPath = [self.layoutAttributesByIndexPath copy];
 
     [self.layoutAttributesByIndexPath removeAllObjects];
-    [self.indexPathsByVerticalGroup removeAllObjects];
     
     BOOL componentIsInTopRow = YES;
     NSMutableArray<id<HUBComponent>> * const componentsOnCurrentRow = [NSMutableArray new];
@@ -248,17 +245,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSMutableArray<UICollectionViewLayoutAttributes *> * const layoutAttributes = [NSMutableArray new];
-    
-    [self forEachVerticalGroupInRect:rect runBlock:^(NSInteger groupIndex) {
-        for (NSIndexPath * const indexPath in self.indexPathsByVerticalGroup[@(groupIndex)]) {
-            UICollectionViewLayoutAttributes * const layoutAttributesForIndexPath = [self layoutAttributesForItemAtIndexPath:indexPath];
 
-            if (layoutAttributesForIndexPath != nil) {
-                [layoutAttributes addObject:layoutAttributesForIndexPath];
-            }
+    for (UICollectionViewLayoutAttributes *attributes in self.layoutAttributesByIndexPath.allValues) {
+        if (CGRectIntersectsRect(rect, attributes.frame)) {
+            [layoutAttributes addObject:attributes];
         }
-    }];
-    
+    }
+
     return layoutAttributes;
 }
 
@@ -295,18 +288,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return newComponent;
-}
-
-- (void)forEachVerticalGroupInRect:(CGRect)rect runBlock:(void(^)(NSInteger groupIndex))block
-{
-    CGFloat const verticalGroupSize = 100;
-    NSInteger const maxVerticalGroup = (NSInteger)(HUBCGFloatFloor(CGRectGetMaxY(rect) / verticalGroupSize));
-    NSInteger currentVerticalGroup = (NSInteger)(HUBCGFloatFloor(CGRectGetMinY(rect) / verticalGroupSize));
-    
-    while (currentVerticalGroup <= maxVerticalGroup) {
-        block(currentVerticalGroup);
-        currentVerticalGroup++;
-    }
 }
 
 - (UIEdgeInsets)defaultMarginsForComponent:(id<HUBComponent>)component
@@ -377,18 +358,6 @@ NS_ASSUME_NONNULL_BEGIN
     UICollectionViewLayoutAttributes * const layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
     layoutAttributes.frame = componentViewFrame;
     self.layoutAttributesByIndexPath[indexPath] = layoutAttributes;
-    
-    [self forEachVerticalGroupInRect:componentViewFrame runBlock:^(NSInteger groupIndex) {
-        NSNumber * const encodedGroupIndex = @(groupIndex);
-        NSMutableSet<NSIndexPath *> *indexPathsInGroup = self.indexPathsByVerticalGroup[encodedGroupIndex];
-        
-        if (indexPathsInGroup == nil) {
-            indexPathsInGroup = [NSMutableSet new];
-            self.indexPathsByVerticalGroup[encodedGroupIndex] = indexPathsInGroup;
-        }
-        
-        [indexPathsInGroup addObject:indexPath];
-    }];
 }
 
 - (CGSize)contentSizeForContentHeight:(CGFloat)contentHeight

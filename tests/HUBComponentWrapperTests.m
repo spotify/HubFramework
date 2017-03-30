@@ -28,6 +28,7 @@
 #import "HUBComponentWrapper.h"
 #import "HUBComponentMock.h"
 #import "HUBIdentifier.h"
+#import "HUBSingleGestureRecognizerSynchronizer.h"
 
 /**
  *  Class extension used to expose the method that the component wrapper uses to handle its gesture recognizer
@@ -46,6 +47,7 @@
 @property (nonatomic, strong) HUBComponentGestureRecognizer *gestureRecognizer;
 @property (nonatomic, assign) HUBComponentSelectionState selectionStateFromWillUpdateDelegateMethod;
 @property (nonatomic, assign) HUBComponentSelectionState selectionStateFromDidUpdateDelegateMethod;
+@property (nonatomic, strong) id<HUBGestureRecognizerSynchronizing> gestureRecognizerSynchronizer;
 
 @end
 
@@ -56,13 +58,15 @@
 - (void)setUp
 {
     [super setUp];
-    
+
+    self.gestureRecognizerSynchronizer = [HUBSingleGestureRecognizerSynchronizer new];
     self.UIStateManager = [HUBComponentUIStateManager new];
-    self.gestureRecognizer = [HUBComponentGestureRecognizer new];
+    self.gestureRecognizer = [[HUBComponentGestureRecognizer alloc] initWithSynchronizer:self.gestureRecognizerSynchronizer];
 }
 
 - (void)tearDown
 {
+    self.gestureRecognizerSynchronizer = nil;
     self.UIStateManager = nil;
     self.gestureRecognizer = nil;
 

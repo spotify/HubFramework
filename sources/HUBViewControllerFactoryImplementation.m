@@ -28,7 +28,8 @@
 #import "HUBImageLoaderFactory.h"
 #import "HUBFeatureRegistration.h"
 #import "HUBFeatureInfoImplementation.h"
-#import "HUBViewController+Initializer.h"
+#import "HUBViewControllerImplementation.h"
+#import "HUBViewControllerExperimentalImplementation.h"
 #import "HUBCollectionViewFactory.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBViewControllerDefaultScrollHandler.h"
@@ -131,7 +132,11 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                              title:featureTitle
                                                                                                   viewURIPredicate:viewURIPredicate
                                                                                          contentOperationFactories:@[contentOperationFactory]
-                                                                                               contentReloadPolicy:nil customJSONSchemaIdentifier:nil actionHandler:nil viewControllerScrollHandler:nil];
+                                                                                               contentReloadPolicy:nil
+                                                                                        customJSONSchemaIdentifier:nil
+                                                                                                     actionHandler:nil
+                                                                                       viewControllerScrollHandler:nil
+                                                                                                           options:nil];
     
     return [self createViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
 }
@@ -140,6 +145,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
                                   featureRegistration:(HUBFeatureRegistration *)featureRegistration
+{
+    BOOL useV2 = [featureRegistration.options[@"HUBViewController"] isEqualToString:@"v2"];
+    if (useV2) {
+        return [self createExperimentalViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
+    } else {
+        return [self createStandardViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
+    }
+}
+
+- (HUBViewController *)createStandardViewControllerForViewURI:(NSURL *)viewURI
+                                          featureRegistration:(HUBFeatureRegistration *)featureRegistration
 {
     id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureRegistration.featureIdentifier
                                                                                               title:featureRegistration.featureTitle];
@@ -160,17 +176,50 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<HUBViewControllerScrollHandler> const scrollHandlerToUse = featureRegistration.viewControllerScrollHandler ?: [HUBViewControllerDefaultScrollHandler new];
     
-    return [[HUBViewController alloc] initWithViewURI:viewURI
-                                          featureInfo:featureInfo
-                                      viewModelLoader:viewModelLoader
-                                    viewModelRenderer:viewModelRenderer
-                                collectionViewFactory:collectionViewFactory
-                                    componentRegistry:self.componentRegistry
-                                   componentReusePool:componentReusePool
-                               componentLayoutManager:self.componentLayoutManager
-                                        actionHandler:actionHandlerWrapper
-                                        scrollHandler:scrollHandlerToUse
-                                          imageLoader:imageLoader];
+    return [[HUBViewControllerImplementation alloc] initWithViewURI:viewURI
+                                                        featureInfo:featureInfo
+                                                    viewModelLoader:viewModelLoader
+                                                  viewModelRenderer:viewModelRenderer
+                                              collectionViewFactory:collectionViewFactory
+                                                  componentRegistry:self.componentRegistry
+                                                 componentReusePool:componentReusePool
+                                             componentLayoutManager:self.componentLayoutManager
+                                                      actionHandler:actionHandlerWrapper
+                                                      scrollHandler:scrollHandlerToUse
+                                                        imageLoader:imageLoader];
+}
+
+- (HUBViewController *)createExperimentalViewControllerForViewURI:(NSURL *)viewURI
+                                              featureRegistration:(HUBFeatureRegistration *)featureRegistration
+{
+    id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureRegistration.featureIdentifier
+                                                                                              title:featureRegistration.featureTitle];
+
+    HUBViewModelLoaderImplementation * const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI
+                                                                                                        featureRegistration:featureRegistration];
+
+    id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
+    HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
+    HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:self.componentRegistry];
+
+    id<HUBActionHandler> const actionHandler = featureRegistration.actionHandler ?: self.defaultActionHandler;
+    id<HUBActionHandler> const actionHandlerWrapper = [[HUBActionHandlerWrapper alloc] initWithActionHandler:actionHandler
+                                                                                              actionRegistry:self.actionRegistry
+                                                                                    initialViewModelRegistry:self.initialViewModelRegistry
+                                                                                             viewModelLoader:viewModelLoader];
+
+    id<HUBViewControllerScrollHandler> const scrollHandlerToUse = featureRegistration.viewControllerScrollHandler ?: [HUBViewControllerDefaultScrollHandler new];
+
+    return [[HUBViewControllerExperimentalImplementation alloc] initWithViewURI:viewURI
+                                                                    featureInfo:featureInfo
+                                                                viewModelLoader:viewModelLoader
+                                                          collectionViewFactory:collectionViewFactory
+                                                              componentRegistry:self.componentRegistry
+                                                             componentReusePool:componentReusePool
+                                                         componentLayoutManager:self.componentLayoutManager
+                                                                  actionHandler:actionHandlerWrapper
+                                                                  scrollHandler:scrollHandlerToUse
+                                                                    imageLoader:imageLoader];
 }
 
 @end

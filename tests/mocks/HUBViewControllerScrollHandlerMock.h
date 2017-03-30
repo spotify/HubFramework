@@ -50,6 +50,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// A block that is called when the scroll handler is notified that scrolling has started.
 @property (nonatomic, copy) void (^ _Nullable scrollingWillStartHandler)(CGRect contentRect);
 
+/// A block that is called when the scroll handler is notified that scrolling is ongoing.
+@property (nonatomic, copy) void (^ _Nullable scrollingDidScrollHandler)(CGPoint contentOffset);
+
 /// A block that is called when the scroll handler is notified that scrolling has ended.
 @property (nonatomic, copy) void (^ _Nullable scrollingDidEndHandler)(CGRect contentRect);
 

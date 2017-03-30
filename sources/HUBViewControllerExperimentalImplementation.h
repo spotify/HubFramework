@@ -27,15 +27,14 @@
 @protocol HUBActionHandler;
 @protocol HUBViewControllerScrollHandler;
 @protocol HUBImageLoader;
-@class HUBViewModelLoaderImplementation;
+@protocol HUBViewModelLoader;
 @class HUBCollectionViewFactory;
 @class HUBComponentReusePool;
-@class HUBViewModelRenderer;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Extension enabling a HUBViewController instance to be initialized by the framework
-@interface HUBViewController ()
+/// Extension enabling a HUBViewControllerExperimentalImplementation instance to be initialized by the framework
+@interface HUBViewControllerExperimentalImplementation : HUBViewController
 
 /**
  *  Initialize an instance of this class with its required dependencies
@@ -43,7 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewURI The view URI that this view controller is for
  *  @param featureInfo Information about the feature that the view controller is for
  *  @param viewModelLoader The object to use to load view models for the view controller
- *  @param viewModelRenderer The object used to render the view model
  *  @param collectionViewFactory The factory to use to create collection views
  *  @param componentRegistry The registry to use to lookup component information
  *  @param componentReusePool The reuse pool to use to manage component wrappers
@@ -54,15 +52,29 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
                     featureInfo:(id<HUBFeatureInfo>)featureInfo
-                viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader
-              viewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
+                viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
               componentRegistry:(id<HUBComponentRegistry>)componentRegistry
              componentReusePool:(HUBComponentReusePool *)componentReusePool
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
-                    imageLoader:(id<HUBImageLoader>)imageLoader HUB_DESIGNATED_INITIALIZER;
+                    imageLoader:(id<HUBImageLoader>)imageLoader NS_DESIGNATED_INITIALIZER;
+
+#pragma mark - Unavailable initializers
+
+/// Use `HUBViewControllerFactory` to create instances of this class
++ (instancetype)new NS_UNAVAILABLE;
+
+/// Use `HUBViewControllerFactory` to create instances of this class
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Use `HUBViewControllerFactory` to create instances of this class
+- (instancetype)initWithCoder:(NSCoder *)decoder NS_UNAVAILABLE;
+
+/// Use `HUBViewControllerFactory` to create instances of this class
+- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil
+                         bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 
 @end
 

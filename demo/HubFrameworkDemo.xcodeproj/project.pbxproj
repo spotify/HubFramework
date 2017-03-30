@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3EB3D3491E69990000064452 /* ScrollingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB3D3471E69988300064452 /* ScrollingUITests.swift */; };
 		6510FD791DD1D182002FA2DC /* PrettyPicturesActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */; };
 		657DFE1B1DC8E21700F20C0E /* SelectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DFE191DC8E21700F20C0E /* SelectionUITests.swift */; };
 		65A790361DDDA8FC00AD4078 /* NavigationItemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A790351DDDA8FC00AD4078 /* NavigationItemUITests.swift */; };
@@ -105,6 +106,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3EB3D3471E69988300064452 /* ScrollingUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScrollingUITests.swift; path = tests/ScrollingUITests.swift; sourceTree = SOURCE_ROOT; };
 		6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrettyPicturesActionHandler.swift; sourceTree = "<group>"; };
 		657DFE0F1DC8E1B600F20C0E /* HubFrameworkDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HubFrameworkDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		657DFE191DC8E21700F20C0E /* SelectionUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectionUITests.swift; path = tests/SelectionUITests.swift; sourceTree = SOURCE_ROOT; };
@@ -176,6 +178,7 @@
 		657DFE101DC8E1B600F20C0E /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				3EB3D3471E69988300064452 /* ScrollingUITests.swift */,
 				8A9204FE1DDE07AF0081E0B5 /* UITestCase.swift */,
 				657DFE191DC8E21700F20C0E /* SelectionUITests.swift */,
 				8AA98C441DD3778B006CA6AA /* PaginationUITests.swift */,
@@ -487,6 +490,7 @@
 			files = (
 				8A9204FD1DDE07810081E0B5 /* HeaderComponentUITests.swift in Sources */,
 				657DFE1B1DC8E21700F20C0E /* SelectionUITests.swift in Sources */,
+				3EB3D3491E69990000064452 /* ScrollingUITests.swift in Sources */,
 				65A790361DDDA8FC00AD4078 /* NavigationItemUITests.swift in Sources */,
 				8A9204FF1DDE07AF0081E0B5 /* UITestCase.swift in Sources */,
 				8AA124D11DE758300076582D /* ReloadUITests.swift in Sources */,

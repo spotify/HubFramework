@@ -73,6 +73,27 @@ NS_ASSUME_NONNULL_BEGIN
                         actionHandler:(nullable id<HUBActionHandler>)actionHandler
           viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler
 {
+    [self registerFeatureWithIdentifier:featureIdentifier
+                       viewURIPredicate:viewURIPredicate
+                                  title:title
+              contentOperationFactories:contentOperationFactories
+                    contentReloadPolicy:contentReloadPolicy
+             customJSONSchemaIdentifier:customJSONSchemaIdentifier
+                          actionHandler:actionHandler
+            viewControllerScrollHandler:viewControllerScrollHandler
+                                options:nil];
+}
+
+- (void)registerFeatureWithIdentifier:(NSString *)featureIdentifier
+                     viewURIPredicate:(HUBViewURIPredicate *)viewURIPredicate
+                                title:(NSString *)title
+            contentOperationFactories:(NSArray<id<HUBContentOperationFactory>> *)contentOperationFactories
+                  contentReloadPolicy:(nullable id<HUBContentReloadPolicy>)contentReloadPolicy
+           customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
+                        actionHandler:(nullable id<HUBActionHandler>)actionHandler
+          viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler
+                              options:(nullable NSDictionary<NSString *, NSString *> *)options
+{
     NSParameterAssert(featureIdentifier != nil);
     NSParameterAssert(viewURIPredicate != nil);
     NSParameterAssert(title != nil);
@@ -92,7 +113,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                         contentReloadPolicy:contentReloadPolicy
                                                                                  customJSONSchemaIdentifier:customJSONSchemaIdentifier
                                                                                               actionHandler:actionHandler
-                                                                                viewControllerScrollHandler:viewControllerScrollHandler];
+                                                                                viewControllerScrollHandler:viewControllerScrollHandler
+                                                                                                    options:options];
     
     self.registrationsByIdentifier[registration.featureIdentifier] = registration;
     [self.registrationIdentifierOrder addObject:registration.featureIdentifier];
