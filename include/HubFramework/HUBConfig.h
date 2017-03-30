@@ -42,7 +42,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Configuration used to create view controllers when using Hub Framework without `HUBManager`.
  *
+ *  A `HUBConfig` is not created directly but built through the `HUBConfigBuilder`.
+ *
  *  This allows for using Hub Framework without the `HubManager` and feature registration.
+ *
  */
 @interface HUBConfig : NSObject
 /// The object to use to manage layout for components, computing margins using layout traits.
