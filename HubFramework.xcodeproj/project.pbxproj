@@ -447,6 +447,10 @@
 		9990737A1E8D34BE00A6FB26 /* HUBConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 999073781E8D34BE00A6FB26 /* HUBConfigTests.m */; };
 		9990737C1E8D3F1200A6FB26 /* HUBJSONSchemaFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9990737B1E8D3F1200A6FB26 /* HUBJSONSchemaFactoryTests.m */; };
 		9990737D1E8D3F1200A6FB26 /* HUBJSONSchemaFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9990737B1E8D3F1200A6FB26 /* HUBJSONSchemaFactoryTests.m */; };
+		9990737F1E8D40C500A6FB26 /* HUBConfigViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9990737E1E8D40C500A6FB26 /* HUBConfigViewControllerFactoryTests.m */; };
+		999073801E8D40C500A6FB26 /* HUBConfigViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9990737E1E8D40C500A6FB26 /* HUBConfigViewControllerFactoryTests.m */; };
+		999073831E8D415100A6FB26 /* HUBConfig+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = 999073821E8D415100A6FB26 /* HUBConfig+Testing.m */; };
+		999073841E8D415100A6FB26 /* HUBConfig+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = 999073821E8D415100A6FB26 /* HUBConfig+Testing.m */; };
 		B30B7F4F1E005AB30049D013 /* HUBViewControllerDefaultScrollHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = B38EA90C1DFEF18400526587 /* HUBViewControllerDefaultScrollHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B35E40F91DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */; };
 		DD244A821E04520F005E5C68 /* HUBErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = DD244A811E04520D005E5C68 /* HUBErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -812,6 +816,9 @@
 		9990736C1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBLiveServiceFactory.m; sourceTree = "<group>"; };
 		999073781E8D34BE00A6FB26 /* HUBConfigTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBConfigTests.m; sourceTree = "<group>"; };
 		9990737B1E8D3F1200A6FB26 /* HUBJSONSchemaFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBJSONSchemaFactoryTests.m; sourceTree = "<group>"; };
+		9990737E1E8D40C500A6FB26 /* HUBConfigViewControllerFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBConfigViewControllerFactoryTests.m; sourceTree = "<group>"; };
+		999073811E8D415100A6FB26 /* HUBConfig+Testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HUBConfig+Testing.h"; sourceTree = "<group>"; };
+		999073821E8D415100A6FB26 /* HUBConfig+Testing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "HUBConfig+Testing.m"; sourceTree = "<group>"; };
 		9996E9691C6A42E000231D22 /* HUBComponentFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactory.h; sourceTree = "<group>"; };
 		B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewFactoryTests.m; sourceTree = "<group>"; };
 		B38EA90C1DFEF18400526587 /* HUBViewControllerDefaultScrollHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewControllerDefaultScrollHandler.h; sourceTree = "<group>"; };
@@ -1123,6 +1130,9 @@
 				6500561F1DF98B89006D957C /* HUBViewModelUtilities.m */,
 				8AC315821DED94790093AEA0 /* UIViewController+HUBSimulateLayoutCycle.h */,
 				8AC315831DED94790093AEA0 /* UIViewController+HUBSimulateLayoutCycle.m */,
+				4E29FCF31DED2D9600856D20 /* HUBTestUtilities.h */,
+				999073811E8D415100A6FB26 /* HUBConfig+Testing.h */,
+				999073821E8D415100A6FB26 /* HUBConfig+Testing.m */,
 			);
 			name = Utilities;
 			path = utilities;
@@ -1167,6 +1177,7 @@
 				B35E40F81DD4B32F00C0D4F9 /* HUBCollectionViewFactoryTests.m */,
 				650830161DD4E746008CFB43 /* HUBSerializationTests.m */,
 				650056221DF98F8B006D957C /* HUBViewModelRendererTests.m */,
+				9990737E1E8D40C500A6FB26 /* HUBConfigViewControllerFactoryTests.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2032,6 +2043,7 @@
 				8ABD6CD41DF6ECF3005BCB33 /* HUBViewModelBuilderTests.m in Sources */,
 				8ABD6CE21DF6ECFA005BCB33 /* HUBComponentModelBuilderTests.m in Sources */,
 				8ABD6CE71DF6ECFF005BCB33 /* HUBDefaultImageLoaderTests.m in Sources */,
+				999073801E8D40C500A6FB26 /* HUBConfigViewControllerFactoryTests.m in Sources */,
 				8ABD6CB41DF6ECF3005BCB33 /* HUBContentOperationFactoryMock.m in Sources */,
 				8ABD6CC91DF6ECF3005BCB33 /* HUBInputStreamMock.m in Sources */,
 				8ABD6CDD1DF6ECF3005BCB33 /* HUBSerializationTests.m in Sources */,
@@ -2041,6 +2053,7 @@
 				8ABD6CD81DF6ECF3005BCB33 /* HUBCollectionViewLayoutTests.m in Sources */,
 				8ABD6CBD1DF6ECF3005BCB33 /* HUBComponentLayoutManagerMock.m in Sources */,
 				8ABD6CE91DF6ECFF005BCB33 /* HUBActionRegistryTests.m in Sources */,
+				999073841E8D415100A6FB26 /* HUBConfig+Testing.m in Sources */,
 				8ABD6CB11DF6ECCD005BCB33 /* HUBComponentDefaults+Testing.m in Sources */,
 				8ABD6CBE1DF6ECF3005BCB33 /* HUBComponentFallbackHandlerMock.m in Sources */,
 				8ABD6CBF1DF6ECF3005BCB33 /* HUBActionHandlerMock.m in Sources */,
@@ -2130,6 +2143,7 @@
 				8A6BA0501C899E1C0057485D /* HUBCollectionViewLayoutTests.m in Sources */,
 				8AFF10071C87105C00D5535B /* HUBComponentFactoryMock.m in Sources */,
 				8ADD43791C21DBE300D1A801 /* HUBComponentMock.m in Sources */,
+				9990737F1E8D40C500A6FB26 /* HUBConfigViewControllerFactoryTests.m in Sources */,
 				8AD064601C64F5460086C081 /* HUBViewModelLoaderTests.m in Sources */,
 				8ACB2A7C1C6A2F99000741D7 /* HUBIdentifierTests.m in Sources */,
 				650056B41DF99FCF006D957C /* HUBCollectionViewLayoutMock.m in Sources */,
@@ -2149,6 +2163,7 @@
 				8A3D83941CA3FC3500662B73 /* HUBJSONSchemaTests.m in Sources */,
 				8AD064661C64F7C30086C081 /* HUBContentOperationMock.m in Sources */,
 				8A786B961C57E6F300B2AB9E /* HUBViewModelBuilderTests.m in Sources */,
+				999073831E8D415100A6FB26 /* HUBConfig+Testing.m in Sources */,
 				8ADD42AA1C21D08100D1A801 /* HUBManagerTests.m in Sources */,
 				8A58E1471C5B79A900F41A5C /* HUBMutableJSONPathTests.m in Sources */,
 				8AC315871DEDAB490093AEA0 /* HUBDefaultComponentLayoutManagerTests.m in Sources */,
