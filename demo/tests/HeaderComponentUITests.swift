@@ -30,8 +30,9 @@ class HeaderComponentUITests: UITestCase {
         XCTAssertEqual(header.frame.height, 250)
         
         let collectionView = XCUIApplication().collectionViews.element(boundBy: 0)
-        collectionView.swipeUp()
-        XCTAssertEqual(header.frame.height, 64)
+        execute(block: {
+            collectionView.swipeUp()
+        }, until: header, hasHeight: 64)
     }
     
     func testCollectionViewContentInsetEqualToHeaderHeight() {
@@ -80,18 +81,38 @@ class HeaderComponentUITests: UITestCase {
         let header = XCUIApplication().otherElements["header"]
         XCTAssertTrue(header.exists)
         
-        // Go to the top of the view
-        (0..<numberOfSwipes + 1).forEach { _ in
+        // Go to the top of the view and make sure that the header is now uncollapsed
+        execute(block: {
             collectionView.swipeDown()
-        }
-        
-        // Make sure that the header is now uncollapsed
-        XCTAssertEqual(header.frame.height, 250)
+        }, until: header, hasHeight: 250)
     }
     
     // MARK: - Utilities
     
     private func navigateToStickyHeaderFeature() {
         XCUIApplication().collectionViews.staticTexts["Sticky header"].tap()
+    }
+
+    private func execute(block:() -> Void, until header:XCUIElement, hasHeight expectedHeight:CGFloat) {
+        var numberOfSwipes = 0
+
+        // Perform the block until the header is the expected height
+        while (header.frame.height != expectedHeight) {
+            block()
+            numberOfSwipes += 1
+
+            if numberOfSwipes > 20 {
+                XCTFail("Should not have taken over 20 swipes to reach the desired header height")
+                break
+            }
+        }
+
+        // Make sure we actually swiped
+        XCTAssertNotEqual(numberOfSwipes, 0)
+
+        // Execute the block one more time to make sure the bounce takes effect
+        block()
+
+        XCTAssertEqual(header.frame.height, expectedHeight)
     }
 }
