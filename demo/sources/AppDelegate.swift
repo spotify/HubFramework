@@ -65,8 +65,13 @@ import HubFramework
     
     // MARK: - HUBLiveServiceDelegate
     func liveService(_ liveService: HUBLiveService, didCreateContentOperation contentOperation: HUBContentOperation) {
-        let viewController = hubManager.viewControllerFactory.createViewController(withContentOperations: [contentOperation],
-                                                                                   featureTitle: "Live")
+        let uri = URL(string: "hubframework-demo:live")
+        let viewController = hubViewControllerFactory.createViewController(with: defaultConfig,
+                                                                           contentOperations: [contentOperation],
+                                                                           viewURI: uri!,
+                                                                           featureIdentifier: "live",
+                                                                           featureTitle: "Hub Framework Live",
+                                                                           actionHandler: nil)
 
         prepareAndPush(viewController: viewController, animated: true)
     }
