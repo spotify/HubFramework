@@ -78,6 +78,7 @@ import HubFramework
     func liveService(_ liveService: HUBLiveService, didCreateContentOperation contentOperation: HUBContentOperation) {
         let viewController = hubManager.viewControllerFactory.createViewController(withContentOperations: [contentOperation],
                                                                                    featureTitle: "Live")
+
         prepareAndPush(viewController: viewController, animated: true)
     }
 
