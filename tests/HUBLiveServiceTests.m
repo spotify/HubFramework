@@ -28,6 +28,7 @@
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBInputStreamMock.h"
 #import "HUBViewController.h"
+#import "HUBViewControllerFactory.h"
 #import "HUBViewModel.h"
 
 #if HUB_DEBUG
@@ -36,7 +37,7 @@
 
 @property (nonatomic, strong) HUBManager *hubManager;
 @property (nonatomic, strong) HUBLiveServiceImplementation *service;
-@property (nonatomic, strong) HUBViewController *viewController;
+@property (nonatomic, strong) id<HUBContentOperation> contentOperation;
 
 @end
 
@@ -53,7 +54,7 @@
     id<HUBComponentFallbackHandler> const fallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
     
     self.hubManager = [HUBManager managerWithComponentLayoutManager:layoutManager componentFallbackHandler:fallbackHandler];
-    self.service = [[HUBLiveServiceImplementation alloc] initWithViewControllerFactory:self.hubManager.viewControllerFactory];
+    self.service = [HUBLiveServiceImplementation new];
     self.service.delegate = self;
 }
 
@@ -61,7 +62,7 @@
 {
     self.hubManager = nil;
     self.service = nil;
-    self.viewController = nil;
+    self.contentOperation = nil;
 
     [super tearDown];
 }
@@ -104,9 +105,11 @@
     
     [stream.delegate stream:stream handleEvent:NSStreamEventHasBytesAvailable];
     
-    HUBViewController * const viewController = self.viewController;
-    XCTAssertNotNil(viewController);
-    
+    id<HUBContentOperation> const contentOperation = self.contentOperation;
+    XCTAssertNotNil(contentOperation);
+
+    HUBViewController *viewController = [self.hubManager.viewControllerFactory createViewControllerWithContentOperations:@[contentOperation]
+                                                                                                            featureTitle:@"Test"];
     [viewController viewWillAppear:YES];
     [viewController viewDidLayoutSubviews];
 
@@ -122,7 +125,7 @@
     
     [stream.delegate stream:stream handleEvent:NSStreamEventHasBytesAvailable];
     
-    XCTAssertEqual(self.viewController, viewController, @"View controller should have been reused");
+    XCTAssertEqual(self.contentOperation, contentOperation, @"Content operation should have been reused");
     
     id<HUBViewModel> const newViewModel = viewController.viewModel;
     XCTAssertEqualObjects(newViewModel.navigationItem.title, @"A new title!");
@@ -130,10 +133,10 @@
 
 #pragma mark - HUBLiveServiceDelegate
 
-- (void)liveService:(id<HUBLiveService>)liveService didCreateViewController:(HUBViewController *)viewController
+- (void)liveService:(id<HUBLiveService>)liveService didCreateContentOperation:(nonnull id<HUBContentOperation>)contentOperation
 {
     XCTAssertEqual(self.service, liveService);
-    self.viewController = viewController;
+    self.contentOperation = contentOperation;
 }
 
 @end
