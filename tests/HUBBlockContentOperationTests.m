@@ -23,10 +23,13 @@
 
 #import "HUBBlockContentOperation.h"
 #import "HUBContentOperationContext.h"
+#import "HUBContentOperationContextImplementation.h"
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBComponentDefaults+Testing.h"
 #import "HUBFeatureInfoImplementation.h"
+
+#import "HUBContentOperationDelegateMock.h"
 
 @interface HUBBlockContentOperationTests : XCTestCase
 
@@ -36,58 +39,72 @@
 
 - (void)testContextMatchesInputParameters
 {
-    NSURL * const viewURI = [NSURL URLWithString:@"view-uri"];
-    id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
-    id<HUBViewModelBuilder> const viewModelBuilder = [self createViewModelBuilder];
-    NSError * const previousError = [NSError errorWithDomain:@"hubFramework" code:1 userInfo:nil];
-    
+    id<HUBContentOperationContext> const originalContext = [self createContext];
+
     __block BOOL contentOperationCalled = NO;
-    
-    HUBBlockContentOperation * const operation = [[HUBBlockContentOperation alloc] initWithBlock:^(id<HUBContentOperationContext> context) {
-        XCTAssertEqualObjects(context.viewURI, viewURI);
-        XCTAssertEqualObjects(context.featureInfo, featureInfo);
-        XCTAssertEqual(context.connectivityState, HUBConnectivityStateOnline);
-        XCTAssertEqualObjects(context.viewModelBuilder, viewModelBuilder);
-        XCTAssertEqualObjects(context.previousError, previousError);
-        
+
+    HUBContentOperationBlock const block = ^(id<HUBContentOperationContext> context) {
+        XCTAssertEqualObjects(context.viewURI, originalContext.viewURI);
+        XCTAssertEqualObjects(context.featureInfo, originalContext.featureInfo);
+        XCTAssertEqual(context.connectivityState, originalContext.connectivityState);
+        XCTAssertEqualObjects(context.viewModelBuilder, originalContext.viewModelBuilder);
+        XCTAssertEqualObjects(context.previousError, originalContext.previousError);
+
         contentOperationCalled = YES;
-    }];
-    
-    [operation performForViewURI:viewURI
-                     featureInfo:featureInfo
-               connectivityState:HUBConnectivityStateOnline
-                viewModelBuilder:viewModelBuilder
-                   previousError:previousError];
+    };
+    HUBBlockContentOperation * const operation = [[HUBBlockContentOperation alloc] initWithBlock:block];
+
+    [operation performInContext:originalContext];
     
     XCTAssertTrue(contentOperationCalled);
 }
 
 - (void)testAddingContentToViewModelBuilder
 {
-    NSURL * const viewURI = [NSURL URLWithString:@"view-uri"];
-    id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
-    id<HUBViewModelBuilder> const viewModelBuilder = [self createViewModelBuilder];
-    NSError * const previousError = [NSError errorWithDomain:@"hubFramework" code:1 userInfo:nil];
+    id<HUBContentOperationContext> const originalContext = [self createContext];
     
     HUBBlockContentOperation * const operation = [[HUBBlockContentOperation alloc] initWithBlock:^(id<HUBContentOperationContext> context) {
         context.viewModelBuilder.navigationBarTitle = @"Hello world!";
     }];
     
-    [operation performForViewURI:viewURI
-                     featureInfo:featureInfo
-               connectivityState:HUBConnectivityStateOnline
-                viewModelBuilder:viewModelBuilder
-                   previousError:previousError];
+    [operation performInContext:originalContext];
     
-    XCTAssertEqualObjects(viewModelBuilder.navigationBarTitle, @"Hello world!");
+    XCTAssertEqualObjects(originalContext.viewModelBuilder.navigationBarTitle, @"Hello world!");
+}
+
+- (void)testSendsDelegateContentOperationDidFinish
+{
+    HUBContentOperationDelegateMock * const delegate = [HUBContentOperationDelegateMock new];
+    id<HUBContentOperationContext> const context = [self createContext];
+
+    HUBBlockContentOperation * const operation = [[HUBBlockContentOperation alloc] initWithBlock:^(id<HUBContentOperationContext> __unused _) {}];
+    operation.delegate = delegate;
+
+    [operation performInContext:context];
+
+    XCTAssertEqual(delegate.finishedContentOperations.firstObject, operation, @"The delegate should be notified");
 }
 
 #pragma mark - Utilities
 
+- (id<HUBContentOperationContext>)createContext
+{
+    NSURL * const viewURI = [NSURL URLWithString:@"view-uri"];
+    id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
+    id<HUBViewModelBuilder> const viewModelBuilder = [self createViewModelBuilder];
+    NSError * const previousError = [NSError errorWithDomain:@"hubFramework" code:1 userInfo:nil];
+
+    return [[HUBContentOperationContextImplementation alloc] initWithViewURI:viewURI
+                                                                 featureInfo:featureInfo
+                                                           connectivityState:HUBConnectivityStateOnline
+                                                            viewModelBuilder:viewModelBuilder
+                                                               previousError:previousError];
+}
+
 - (id<HUBViewModelBuilder>)createViewModelBuilder
 {
     HUBComponentDefaults * const defaults = [HUBComponentDefaults defaultsForTesting];
-    
+
     id<HUBJSONSchema> const JSONSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:defaults
                                                                                       iconImageResolver:nil];
     

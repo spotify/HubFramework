@@ -26,7 +26,9 @@ import HubFramework
 class GitHubSearchActivityIndicatorContentOperation: HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
 
-    func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
+    func perform(in context: HUBContentOperationContext) {
+        let viewModelBuilder = context.viewModelBuilder
+
         // If no search is in progress, there's no need for an activity indicator
         guard viewModelBuilder.customData?[GitHubSearchCustomDataKeys.searchInProgress] as? Bool == true else {
             delegate?.contentOperationDidFinish(self)

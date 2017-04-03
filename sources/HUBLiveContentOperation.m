@@ -21,6 +21,7 @@
 
 #import "HUBLiveContentOperation.h"
 
+#import "HUBContentOperationContext.h"
 #import "HUBViewModelBuilder.h"
 
 #if HUB_DEBUG
@@ -56,13 +57,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - HUBContentOperation
 
-- (void)performForViewURI:(NSURL *)viewURI
-              featureInfo:(id<HUBFeatureInfo>)featureInfo
-        connectivityState:(HUBConnectivityState)connectivityState
-         viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
-            previousError:(nullable NSError *)previousError
+- (void)performInContext:(id<HUBContentOperationContext>)context
 {
-    [viewModelBuilder addJSONData:self.JSONData error:nil];
+    [context.viewModelBuilder addJSONData:self.JSONData error:nil];
     [self.delegate contentOperationDidFinish:self];
 }
 

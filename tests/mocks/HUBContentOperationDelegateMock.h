@@ -19,42 +19,20 @@
  *  under the License.
  */
 
-#import "HUBBlockContentOperation.h"
+#import <Foundation/Foundation.h>
+#import "HUBContentOperation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBBlockContentOperation ()
+/// Mocked content operation delegate. Records all delegate messages sent to it.
+@interface HUBContentOperationDelegateMock : NSObject <HUBContentOperationDelegate>
 
-@property (nonatomic, copy, readonly) HUBContentOperationBlock block;
-
-@end
-
-@implementation HUBBlockContentOperation
-
-@synthesize delegate = _delegate;
-
-#pragma mark - Initializer
-
-- (instancetype)initWithBlock:(HUBContentOperationBlock)block
-{
-    NSParameterAssert(block != nil);
-    
-    self = [super init];
-    
-    if (self != nil) {
-        _block = [block copy];
-    }
-    
-    return self;
-}
-
-#pragma mark - HUBContentOperation
-
-- (void)performInContext:(id<HUBContentOperationContext>)context
-{
-    self.block(context);
-    [self.delegate contentOperationDidFinish:self];
-}
+/// All content operation that has sent the `-contentOperationDidFinish:` message.
+@property (nonatomic, copy, readonly) NSArray<id<HUBContentOperation>> *finishedContentOperations;
+/// All content operation that has sent the `-contentOperation:didFailWithError:` message and the error passed.
+@property (nonatomic, copy, readonly) NSMapTable<id<HUBContentOperation>, NSError *> *failedContentOperations;
+/// All content operation that has sent the `-contentOperationRequiresRescheduling:` message.
+@property (nonatomic, copy, readonly) NSArray<id<HUBContentOperation>> *rescheduledContentOperations;
 
 @end
 

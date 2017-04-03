@@ -54,6 +54,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The number of times this operation has been performed (not including appending paginated content)
 @property (nonatomic, assign, readonly) NSUInteger performCount;
 
+/// The context in which the operation was most recently executed in.
+@property (nonatomic, strong, readonly) id<HUBContentOperationContext> context;
+
 /// The feature info that was most recently sent to this operation
 @property (nonatomic, strong, readonly) id<HUBFeatureInfo> featureInfo;
 

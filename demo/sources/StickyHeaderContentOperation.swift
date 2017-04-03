@@ -27,7 +27,9 @@ class StickyHeaderContentOperation: HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
     private var performCount = 0
 
-    func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
+    func perform(in context: HUBContentOperationContext) {
+        let viewModelBuilder = context.viewModelBuilder
+
         let headerBuilder = viewModelBuilder.headerComponentModelBuilder
         headerBuilder.componentName = DefaultComponentNames.header
         headerBuilder.title = "A sticky header!"

@@ -22,6 +22,7 @@
 #import "HUBConnectivityState.h"
 
 @protocol HUBContentOperation;
+@protocol HUBContentOperationContext;
 @protocol HUBViewModelBuilder;
 @protocol HUBFeatureInfo;
 
@@ -110,28 +111,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// The content operation's delegate. Don't assign this property yourself, it will be set by the Hub Framework.
 @property (nonatomic, weak, nullable) id<HUBContentOperationDelegate> delegate;
 
-
 /**
- *  Perform the operation for a view with a certain view URI
+ *  Perform the operation for the given context.
  *
- *  @param viewURI The URI of the view that the content operation is being used in
- *  @param featureInfo An object containing information about the feature that the operation is being used in
- *  @param connectivityState The current connectivity state, as resolved by `HUBConnectivityStateResolver`
- *  @param viewModelBuilder The builder that can be used to add, change or remove content to/from the view
- *  @param previousError Any error encountered by a previous content operation in the view's content loading chain.
- *         If this is non-`nil`, you can attempt to recover the error in this content operation, to provide any relevant
- *         content to avoid displaying an error screen for the user. In case this content operation can't recover the error,
- *         it should propagate the error using the error delegate callback method.
+ *  The operation should perform any work to add, change or remove content to/from the view, and then call its delegate
+ *  once done (either using the success or failure method). If the operation cannot perform any work at this point, it
+ *  still needs to call the delegate to make the content loading chain progress.
  *
- *  The operation should perform any work to add, change or remove content to/from the view, and then call its delegate once
- *  done (either using the success or failure method). If the operation cannot perform any work at this point, it still needs
- *  to call the delegate to make the content loading chain progress.
+ *  @discussion If the context contains errors from previous content operations (i.e. `context.previousError` is
+ *              non-`nil`) you can attempt to recover the error. This can for example be done by showing relevant
+ *              content instead of an error view. If you’re unable to recover the error please propagate it to the
+ *              delegate.
+ *
+ *  @param context The context in which the operation is performed.
  */
-- (void)performForViewURI:(NSURL *)viewURI
-              featureInfo:(id<HUBFeatureInfo>)featureInfo
-        connectivityState:(HUBConnectivityState)connectivityState
-         viewModelBuilder:(id<HUBViewModelBuilder>)viewModelBuilder
-            previousError:(nullable NSError *)previousError;
+- (void)performInContext:(id<HUBContentOperationContext>)context;
 
 @end
 

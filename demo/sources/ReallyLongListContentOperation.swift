@@ -26,12 +26,13 @@ import HubFramework
 class ReallyLongListContentOperation: HUBContentOperationWithPaginatedContent {
     weak var delegate: HUBContentOperationDelegate?
 
-    func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
-        addRows(toViewModelBuilder: viewModelBuilder, pageIndex: 0)
+
+    func perform(in context: HUBContentOperationContext) {
+        addRows(toViewModelBuilder: context.viewModelBuilder, pageIndex: 0)
     }
-    
-    func appendContent(pageIndex: UInt, viewModelBuilder: HUBViewModelBuilder, viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, previousError: Error?) {
-        addRows(toViewModelBuilder: viewModelBuilder, pageIndex: pageIndex)
+
+    func appendContent(atPageIndex pageIndex: UInt, in context: HUBContentOperationContext) {
+        addRows(toViewModelBuilder: context.viewModelBuilder, pageIndex: pageIndex)
     }
     
     private func addRows(toViewModelBuilder viewModelBuilder: HUBViewModelBuilder, pageIndex: UInt) {

@@ -26,7 +26,9 @@ import HubFramework
 class PrettyPicturesContentOperation: HUBContentOperation {
     weak var delegate: HUBContentOperationDelegate?
 
-    func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
+    func perform(in context: HUBContentOperationContext) {
+        let viewModelBuilder = context.viewModelBuilder
+
         let pictureIdentifiers = [
             "gothenburg",
             "kiev",
