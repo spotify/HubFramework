@@ -19,6 +19,5 @@
  *  under the License.
  */
 
-
-//Macro that wraps assertion of equal values with accuracy
-#define HUBAssertEqualFloatValues(realValue, expectedValue) XCTAssertEqualWithAccuracy(realValue, expectedValue, 0.001)
+/// Assert that a CGFloat value is (approximately) equal to the expected value.
+#define HUBAssertEqualCGFloatValues(realValue, expectedValue, ...) XCTAssertEqualWithAccuracy(realValue, (CGFloat)expectedValue, (CGFloat)0.001, __VA_ARGS__)

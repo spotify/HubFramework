@@ -41,8 +41,8 @@
     CGFloat const verticalMargin = [manager verticalMarginBetweenComponentWithLayoutTraits:layoutTraits
                                                         andHeaderComponentWithLayoutTraits:layoutTraits];
     
-    HUBAssertEqualFloatValues(horizontalMargin, 10);
-    HUBAssertEqualFloatValues(verticalMargin, 10);
+    HUBAssertEqualCGFloatValues(horizontalMargin, 10);
+    HUBAssertEqualCGFloatValues(verticalMargin, 10);
 }
 
 - (void)testApplyingMarginBetweenCompactWithComponentAndContentEdge
@@ -50,10 +50,10 @@
     HUBDefaultComponentLayoutManager * const manager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:10];
     NSSet * const layoutTraits = [NSSet setWithObject:HUBComponentLayoutTraitCompactWidth];
     
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeTop], 10);
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeRight], 10);
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeBottom], 10);
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeLeft], 10);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeTop], 10);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeRight], 10);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeBottom], 10);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeLeft], 10);
 }
 
 - (void)testNotApplyingHorizontalMarginBetweenFullWidthComponents
@@ -67,8 +67,8 @@
     CGFloat const verticalMargin = [manager verticalMarginBetweenComponentWithLayoutTraits:layoutTraits
                                                         andHeaderComponentWithLayoutTraits:layoutTraits];
     
-    HUBAssertEqualFloatValues(horizontalMargin, 0);
-    HUBAssertEqualFloatValues(verticalMargin, 10);
+    HUBAssertEqualCGFloatValues(horizontalMargin, 0);
+    HUBAssertEqualCGFloatValues(verticalMargin, 10);
 }
 
 - (void)testNotApplyingHorizontalMarginBetweenFullWidthComponentAndContentEdge
@@ -76,10 +76,10 @@
     HUBDefaultComponentLayoutManager * const manager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:10];
     NSSet * const layoutTraits = [NSSet setWithObject:HUBComponentLayoutTraitFullWidth];
     
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeTop], 10);
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeRight], 0);
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeBottom], 10);
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeLeft], 0);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeTop], 10);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeRight], 0);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeBottom], 10);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeLeft], 0);
 }
 
 - (void)testNotApplyingVerticalMarginBetweenStackableComponents
@@ -93,8 +93,8 @@
     CGFloat const verticalMargin = [manager verticalMarginBetweenComponentWithLayoutTraits:layoutTraits
                                                         andHeaderComponentWithLayoutTraits:layoutTraits];
     
-    HUBAssertEqualFloatValues(horizontalMargin, 10);
-    HUBAssertEqualFloatValues(verticalMargin, 0);
+    HUBAssertEqualCGFloatValues(horizontalMargin, 10);
+    HUBAssertEqualCGFloatValues(verticalMargin, 0);
 }
 
 - (void)testNotApplyingVerticalMarginBetweenStackableComponentAndContentEdge
@@ -102,10 +102,10 @@
     HUBDefaultComponentLayoutManager * const manager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:10];
     NSSet * const layoutTraits = [NSSet setWithObject:HUBComponentLayoutTraitStackable];
     
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeTop], 0);
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeRight], 10);
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeBottom], 0);
-    HUBAssertEqualFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeLeft], 10);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeTop], 0);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeRight], 10);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeBottom], 0);
+    HUBAssertEqualCGFloatValues([manager marginBetweenComponentWithLayoutTraits:layoutTraits andContentEdge:HUBComponentLayoutContentEdgeLeft], 10);
 }
 
 - (void)testApplyingVerticalMarginBetweenStackableAndNonStackableComponent
@@ -121,8 +121,8 @@
     CGFloat const marginB = [manager verticalMarginForComponentWithLayoutTraits:layoutTraitsB
                                                  precedingComponentLayoutTraits:layoutTraitsA];
     
-    HUBAssertEqualFloatValues(marginA, 10);
-    HUBAssertEqualFloatValues(marginB, 10);
+    HUBAssertEqualCGFloatValues(marginA, 10);
+    HUBAssertEqualCGFloatValues(marginB, 10);
 }
 
 - (void)testNotApplyingVerticalMarginUpwardsForAlwaysStackUpwardsComponent
@@ -137,8 +137,8 @@
     CGFloat const downwardsMargin = [manager verticalMarginForComponentWithLayoutTraits:layoutTraitsB
                                                          precedingComponentLayoutTraits:layoutTraitsA];
     
-    HUBAssertEqualFloatValues(upwardsMargin, 0);
-    HUBAssertEqualFloatValues(downwardsMargin, 10);
+    HUBAssertEqualCGFloatValues(upwardsMargin, 0);
+    HUBAssertEqualCGFloatValues(downwardsMargin, 10);
 }
 
 - (void)testCentering
@@ -150,7 +150,7 @@
                                             firstComponentLeadingHorizontalOffset:10
                                             lastComponentTrailingHorizontalOffset:300];
     
-    HUBAssertEqualFloatValues(offset, 145);
+    HUBAssertEqualCGFloatValues(offset, 145);
 }
 
 @end

@@ -107,8 +107,8 @@
     
     // Assert that the component margin given when setting up the manager is used
     CGRect const componentFrame = [viewController frameForBodyComponentAtIndex:0];
-    HUBAssertEqualFloatValues(componentFrame.origin.x, 15);
-    HUBAssertEqualFloatValues(componentFrame.origin.y, 15);
+    HUBAssertEqualCGFloatValues(componentFrame.origin.x, 15);
+    HUBAssertEqualCGFloatValues(componentFrame.origin.y, 15);
     
     // Assert that the fallback component was used
     XCTAssertTrue(fallbackComponentUsed);
