@@ -439,7 +439,7 @@
 		9902B7411E8041A900823187 /* HUBConfigBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 9902B7401E8041A900823187 /* HUBConfigBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9902B7431E82723F00823187 /* HUBJSONSchemaFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902B7421E82723F00823187 /* HUBJSONSchemaFactory.m */; };
 		9902B7441E82723F00823187 /* HUBJSONSchemaFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902B7421E82723F00823187 /* HUBJSONSchemaFactory.m */; };
-		9902B7461E82746E00823187 /* HUBJSONSchemaFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9902B7451E82745800823187 /* HUBJSONSchemaFactory.h */; };
+		9902B7461E82746E00823187 /* HUBJSONSchemaFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9902B7451E82745800823187 /* HUBJSONSchemaFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9990736B1E8D1BF100A6FB26 /* HUBLiveServiceFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9990736A1E8D1BF100A6FB26 /* HUBLiveServiceFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9990736D1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9990736C1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m */; };
 		9990736E1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9990736C1E8D1C2D00A6FB26 /* HUBLiveServiceFactory.m */; };
