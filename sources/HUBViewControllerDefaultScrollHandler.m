@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
         targetOffset = CGRectGetMinY(componentFrame);
     }
 
-    targetOffset = HUBCGFloatMax(-contentInset.top, MIN(contentSize.height - viewHeight, targetOffset));
+    targetOffset = HUBCGFloatMax(-contentInset.top, HUBCGFloatMin(contentSize.height - viewHeight, targetOffset));
     return CGPointMake(0.0, HUBCGFloatFloor(targetOffset));
 }
 
