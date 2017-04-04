@@ -34,7 +34,6 @@
 #import "HUBTestUtilities.h"
 #import "HUBViewControllerScrollHandlerMock.h"
 
-
 @interface HUBConfigTests : XCTestCase
 @property(nonatomic, strong) HUBComponentDefaults *componentDefaults;
 @property(nonatomic, strong) HUBComponentFallbackHandlerMock *componentFallbackHandler;
@@ -71,7 +70,7 @@
     id<HUBComponentLayoutManager> const layoutManager = config.componentLayoutManager;
     CGFloat margin = [layoutManager marginBetweenComponentWithLayoutTraits:[NSSet setWithObject:HUBComponentLayoutTraitCentered]
                                                             andContentEdge:HUBComponentLayoutContentEdgeTop];
-    HUBAssertEqualFloatValues(margin, 57);
+    HUBAssertEqualCGFloatValues(margin, 57);
 }
 
 - (void)testBuilderCreatesDefaultConfigPropertiesWhenUndefined
