@@ -790,7 +790,7 @@
 		DD561C871E5BA44500BE0A5E /* CGFloat+HUBMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CGFloat+HUBMath.h"; sourceTree = "<group>"; };
 		DD561C881E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGFloat+HUBMathTests.m"; sourceTree = "<group>"; };
 		DD79C3B91D9F0A8800FA77E5 /* HUBKeyPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBKeyPath.h; sourceTree = "<group>"; };
-		DD81AFEF1DF725040063DDE0 /* HubFramework.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = HubFramework.modulemap; sourceTree = "<group>"; };
+		DD81AFEF1DF725040063DDE0 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBUtilities.h; sourceTree = "<group>"; };
 		DDBCF36B1C68DD2300693038 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -904,7 +904,7 @@
 		8A0754AA1C21A7B600AFAD38 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				DD81AFEF1DF725040063DDE0 /* HubFramework.modulemap */,
+				DD81AFEF1DF725040063DDE0 /* module.modulemap */,
 				8A880ACF1C21AE9000ADB737 /* HubFramework.h */,
 				8ADD42901C21C7BC00D1A801 /* HUBManager.h */,
 				8A0E4B7F1CB69CB30019DE71 /* Connectivity */,
@@ -2294,7 +2294,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -2355,7 +2355,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
