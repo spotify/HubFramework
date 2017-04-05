@@ -58,7 +58,7 @@ static NSString * const DefaultNamespace = @"default";
     
     self.registry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:self.componentFallbackHandler
                                                                       componentDefaults:componentDefaults
-                                                                     JSONSchemaRegistry:JSONSchemaRegistry
+                                                                             JSONSchema:JSONSchemaRegistry.defaultSchema
                                                                       iconImageResolver:nil];
 }
 

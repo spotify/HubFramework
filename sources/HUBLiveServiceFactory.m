@@ -19,16 +19,19 @@
  *  under the License.
  */
 
-import Foundation
-import HubFramework
+#import "HUBLiveServiceFactory.h"
+#import "HUBHeaderMacros.h"
+#import "HUBLiveServiceImplementation.h"
 
-/// Content operation factory used for the GitHub search feature
-class GitHubSearchContentOperationFactory: HUBContentOperationFactory {
-    func createContentOperations(forViewURI viewURI: URL) -> [HUBContentOperation] {
-        return [
-            GitHubSearchBarContentOperation(),
-            GitHubSearchResultsContentOperation(),
-            GitHubSearchActivityIndicatorContentOperation()
-        ]
-    }
+@implementation HUBLiveServiceFactory
+
+- (id)createLiveService
+{
+#if HUB_DEBUG
+    return [HUBLiveServiceImplementation new];
+#endif
+
+    return nil;
 }
+
+@end

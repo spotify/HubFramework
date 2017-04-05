@@ -125,7 +125,7 @@
     
     self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler
                                                                                componentDefaults:componentDefaults
-                                                                              JSONSchemaRegistry:JSONSchemaRegistry
+                                                                                      JSONSchema:JSONSchemaRegistry.defaultSchema
                                                                                iconImageResolver:iconImageResolver];
     
     self.componentReusePool = [[HUBComponentReusePoolMock alloc] initWithComponentRegistry:self.componentRegistry];

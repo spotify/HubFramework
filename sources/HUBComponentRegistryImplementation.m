@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) id<HUBComponentFallbackHandler> fallbackHandler;
 @property (nonatomic, strong, readonly) HUBComponentDefaults *componentDefaults;
-@property (nonatomic, strong, readonly) HUBJSONSchemaRegistryImplementation *JSONSchemaRegistry;
+@property (nonatomic, strong, readonly) id<HUBJSONSchema> JSONSchema;
 @property (nonatomic, strong, nullable, readonly) id<HUBIconImageResolver> iconImageResolver;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id<HUBComponentFactory>> *componentFactories;
 
@@ -47,19 +47,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFallbackHandler:(id<HUBComponentFallbackHandler>)fallbackHandler
                       componentDefaults:(HUBComponentDefaults *)componentDefaults
-                     JSONSchemaRegistry:(HUBJSONSchemaRegistryImplementation *)JSONSchemaRegistry
+                             JSONSchema:(id<HUBJSONSchema>)JSONSchema
                       iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
 {
     NSParameterAssert(fallbackHandler != nil);
     NSParameterAssert(componentDefaults != nil);
-    NSParameterAssert(JSONSchemaRegistry != nil);
+    NSParameterAssert(JSONSchema != nil);
     
     self = [super init];
     
     if (self) {
         _fallbackHandler = fallbackHandler;
         _componentDefaults = componentDefaults;
-        _JSONSchemaRegistry = JSONSchemaRegistry;
+        _JSONSchema = JSONSchema;
         _iconImageResolver = iconImageResolver;
         _componentFactories = [NSMutableDictionary new];
     }
@@ -135,7 +135,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<HUBComponentModelBuilder, HUBComponentShowcaseSnapshotGenerator>)createShowcaseSnapshotComponentModelBuilder
 {
-    return [[HUBComponentModelBuilderShowcaseSnapshotGenerator alloc] initWithJSONSchema:self.JSONSchemaRegistry.defaultSchema
+    return [[HUBComponentModelBuilderShowcaseSnapshotGenerator alloc] initWithJSONSchema:self.JSONSchema
                                                                        componentRegistry:self
                                                                        componentDefaults:self.componentDefaults
                                                                        iconImageResolver:self.iconImageResolver

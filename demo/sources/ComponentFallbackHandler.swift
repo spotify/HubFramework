@@ -19,12 +19,27 @@
  *  under the License.
  */
 
-import Foundation
 import HubFramework
 
-/// Content operation factory used for the "Root" feature
-class RootContentOperationFactory: HUBContentOperationFactory {
-    func createContentOperations(forViewURI viewURI: URL) -> [HUBContentOperation] {
-        return [RootContentOperation()]
+class ComponentFallbackHandler: HUBComponentFallbackHandler {
+    public var defaultComponentNamespace: String {
+        return "default"
+    }
+
+    public var defaultComponentName: String {
+        return "row"
+    }
+
+    public var defaultComponentCategory: HUBComponentCategory {
+        return .row
+    }
+
+    public func createFallbackComponent(forCategory componentCategory: HUBComponentCategory) -> HUBComponent {
+        if componentCategory == .card {
+            return ImageComponent()
+        }
+
+        return RowComponent()
     }
 }
+

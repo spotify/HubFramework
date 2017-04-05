@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation HUBActionRegistryImplementation
+@synthesize selectionAction = _selectionAction;
 
 #pragma mark - Initializers
 

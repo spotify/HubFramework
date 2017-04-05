@@ -27,6 +27,7 @@
 @class HUBActionRegistryImplementation;
 @class HUBInitialViewModelRegistry;
 @class HUBViewModelLoaderImplementation;
+@protocol HUBActionRegistry;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -43,8 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewModelLoader The loader that will be used to load view models for the view that this handler is for
  */
 - (instancetype)initWithActionHandler:(nullable id<HUBActionHandler>)actionHandler
-                       actionRegistry:(HUBActionRegistryImplementation *)actionRegistry
-             initialViewModelRegistry:(HUBInitialViewModelRegistry *)initialViewModelRegistry
+                       actionRegistry:(id<HUBActionRegistry>)actionRegistry
+             initialViewModelRegistry:(nullable HUBInitialViewModelRegistry *)initialViewModelRegistry
                       viewModelLoader:(HUBViewModelLoaderImplementation *)viewModelLoader HUB_DESIGNATED_INITIALIZER;
 
 @end

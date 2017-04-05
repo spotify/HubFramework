@@ -26,8 +26,12 @@ import HubFramework
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate, HUBLiveServiceDelegate {
     var window: UIWindow?
     var navigationController: NavigationController?
-    var hubManager: HUBManager!
-    
+    var hubViewControllerFactory = HUBConfigViewControllerFactory()
+    var defaultConfig: HUBConfig!
+    var githubConfig: HUBConfig!
+    let hubComponentFallbackHandler = ComponentFallbackHandler()
+    var liveService: HUBLiveService?
+
     // MARK: - UIApplicationDelegate
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -35,28 +39,13 @@ import HubFramework
         
         self.window = window
         navigationController = NavigationController()
-        
-        hubManager = HUBManager(
-            componentMargin: ComponentMargin,
-            componentFallbackClosure: { category in
-                if category == .card {
-                    return ImageComponent()
-                }
-                
-                return RowComponent()
-            }
-        )
-        
+
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
-        registerDefaultComponentFactory()
-        registerAndOpenRootFeature()
-        registerGitHubSearchFeature()
-        registerPrettyPicturesFeature()
-        registerReallyLongListFeature()
-        registerTodoListFeature()
-        registerStickyHeaderFeature()
+
+        setupConfigs()
+
+        open(viewURI: .rootViewURI, animated: false)
         startLiveService()
         
         return true
@@ -71,126 +60,132 @@ import HubFramework
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        hubManager.liveService?.stop()
+        liveService?.stop()
     }
     
     // MARK: - HUBLiveServiceDelegate
-    
-    func liveService(_ liveService: HUBLiveService, didCreateViewController viewController: HUBViewController) {
+    func liveService(_ liveService: HUBLiveService, didCreateContentOperation contentOperation: HUBContentOperation) {
+        let uri = URL(string: "hubframework-demo:live")
+        let viewController = hubViewControllerFactory.createViewController(with: defaultConfig,
+                                                                           contentOperations: [contentOperation],
+                                                                           viewURI: uri!,
+                                                                           featureIdentifier: "live",
+                                                                           featureTitle: "Hub Framework Live",
+                                                                           actionHandler: nil)
+
         prepareAndPush(viewController: viewController, animated: true)
     }
-    
+
     // MARK: - Private
-    
-    private func registerDefaultComponentFactory() {
-        hubManager.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)
+
+    private func setupConfigs() {
+        let builder = HUBConfigBuilder(componentMargin: ComponentMargin, componentFallbackHandler: hubComponentFallbackHandler)
+
+        defaultConfig = builder.build()
+        defaultConfig.componentRegistry.register(componentFactory: DefaultComponentFactory(),
+                                                 namespace: DefaultComponentFactory.namespace)
+        defaultConfig.actionRegistry.register(TodoListActionFactory(), forNamespace: TodoListActionFactory.namespace)
+
+        let githubSchema = createGitHubSearchSchema()
+        builder.jsonSchema = githubSchema
+        githubConfig = builder.build()
+
+        githubConfig.componentRegistry.register(componentFactory: DefaultComponentFactory(),
+                                                namespace: DefaultComponentFactory.namespace)
     }
-    
-    // MARK: - Feature registrations
-    
-    private func registerAndOpenRootFeature() {
-        hubManager.featureRegistry.registerFeature(
-            withIdentifier: "root",
-            viewURIPredicate: HUBViewURIPredicate(viewURI: .rootViewURI),
-            title: "Root feature",
-            contentOperationFactories: [RootContentOperationFactory()],
-            contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: nil,
-            actionHandler: nil,
-            viewControllerScrollHandler: nil
-        )
-        
-        open(viewURI: .rootViewURI, animated: false)
+
+    /// Register the JSON schema for the GitHub search feature
+    func createGitHubSearchSchema() -> HUBJSONSchema {
+        let defaultNamespace = hubComponentFallbackHandler.defaultComponentNamespace
+        let defaultName = hubComponentFallbackHandler.defaultComponentName
+        let defaultCategory = hubComponentFallbackHandler.defaultComponentCategory
+        let schema = HUBJSONSchemaFactory().createDefaultJSONSchema(withDefaultComponentNamespace: defaultNamespace,
+                                                                    defaultComponentName: defaultName,
+                                                                    defaultComponentCategory: defaultCategory,
+                                                                    iconImageResolver: nil)
+
+        schema.viewModelSchema.bodyComponentModelDictionariesPath = schema.createNewPath().go(to: "items").forEach().dictionaryPath()
+
+        schema.componentModelSchema.targetDictionaryPath = schema.createNewPath().dictionaryPath()
+        schema.componentModelSchema.titlePath = schema.createNewPath().go(to: "name").stringPath()
+        schema.componentModelSchema.subtitlePath = schema.createNewPath().go(to: "owner").go(to: "login").run({ input in
+            guard let authorName = input as? String else {
+                return nil
+            }
+
+            return "Author: " + authorName
+        }).stringPath()
+
+        schema.componentTargetSchema.uriPath = schema.createNewPath().go(to: "html_url").urlPath()
+        return schema
     }
-    
-    private func registerGitHubSearchFeature() {
-        hubManager.featureRegistry.registerFeature(
-            withIdentifier: "gitHubSearch",
-            viewURIPredicate: HUBViewURIPredicate(viewURI: .gitHubSearchViewURI),
-            title: "GitHub Search",
-            contentOperationFactories: [GitHubSearchContentOperationFactory()],
-            contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: hubManager.jsonSchemaRegistry.gitHubSearchSchemaIdentifier,
-            actionHandler: nil,
-            viewControllerScrollHandler: nil
-        )
-        
-        hubManager.jsonSchemaRegistry.registerGitHubSearchSchema()
-    }
-    
-    private func registerPrettyPicturesFeature() {
-        hubManager.featureRegistry.registerFeature(
-            withIdentifier: "prettyPictures",
-            viewURIPredicate: HUBViewURIPredicate(viewURI: .prettyPicturesViewURI),
-            title: "Pretty Pictures",
-            contentOperationFactories: [PrettyPicturesContentOperationFactory()],
-            contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: nil,
-            actionHandler: PrettyPicturesActionHandler(),
-            viewControllerScrollHandler: nil
-        )
-    }
-    
-    private func registerReallyLongListFeature() {
-        hubManager.featureRegistry.registerFeature(
-            withIdentifier: "reallyLongList",
-            viewURIPredicate: HUBViewURIPredicate(viewURI: .reallyLongListViewURI),
-            title: "Really Long List",
-            contentOperationFactories: [ReallyLongListContentOperationFactory()],
-            contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: nil,
-            actionHandler: nil,
-            viewControllerScrollHandler: nil
-        )
-    }
-    
-    private func registerTodoListFeature() {
-        let contentOperationFactory = HUBBlockContentOperationFactory() { _ in
-            return [TodoListContentOperation()]
+
+    private func createViewController(viewURI: URL) -> HUBViewController? {
+        if (HUBViewURIPredicate(viewURI: .stickyHeaderViewURI).evaluateViewURI(viewURI)) {
+            return hubViewControllerFactory.createViewController(with: defaultConfig,
+                                                                 contentOperations: [StickyHeaderContentOperation()],
+                                                                 viewURI: viewURI,
+                                                                 featureIdentifier: "stickyHeader",
+                                                                 featureTitle: "Sticky Header",
+                                                                 actionHandler: nil)
+        } else if (HUBViewURIPredicate(viewURI: .rootViewURI).evaluateViewURI(viewURI)) {
+            return hubViewControllerFactory.createViewController(with: defaultConfig,
+                                                                 contentOperations: [RootContentOperation()],
+                                                                 viewURI: viewURI,
+                                                                 featureIdentifier: "root",
+                                                                 featureTitle: "Root feature",
+                                                                 actionHandler: nil)
+        } else if (HUBViewURIPredicate(viewURI: .todoListViewURI).evaluateViewURI(viewURI)) {
+            return hubViewControllerFactory.createViewController(with: defaultConfig,
+                                                                 contentOperations: [TodoListContentOperation()],
+                                                                 viewURI: viewURI,
+                                                                 featureIdentifier: "todoList",
+                                                                 featureTitle: "Todo List",
+                                                                 actionHandler: nil)
+        } else if (HUBViewURIPredicate(viewURI: .prettyPicturesViewURI).evaluateViewURI(viewURI)) {
+            return hubViewControllerFactory.createViewController(with: defaultConfig,
+                                                                 contentOperations: [PrettyPicturesContentOperation()],
+                                                                 viewURI: viewURI,
+                                                                 featureIdentifier: "prettyPictures",
+                                                                 featureTitle: "Pretty Pictures",
+                                                                 actionHandler: PrettyPicturesActionHandler())
+        } else if (HUBViewURIPredicate(viewURI: .reallyLongListViewURI).evaluateViewURI(viewURI)) {
+            return hubViewControllerFactory.createViewController(with: defaultConfig,
+                                                                 contentOperations: [ReallyLongListContentOperation()],
+                                                                 viewURI: viewURI,
+                                                                 featureIdentifier: "reallyLongList",
+                                                                 featureTitle: "Really Long List",
+                                                                 actionHandler: nil)
+        } else if (HUBViewURIPredicate(viewURI: .gitHubSearchViewURI).evaluateViewURI(viewURI)) {
+            let contentOperations: [HUBContentOperation] = [
+                GitHubSearchBarContentOperation(),
+                GitHubSearchResultsContentOperation(),
+                GitHubSearchActivityIndicatorContentOperation()
+            ]
+
+            return hubViewControllerFactory.createViewController(with: githubConfig,
+                                                                 contentOperations: contentOperations,
+                                                                 viewURI: viewURI,
+                                                                 featureIdentifier: "gitHubSearch",
+                                                                 featureTitle: "GitHub Search",
+                                                                 actionHandler: nil)
         }
-        
-        hubManager.featureRegistry.registerFeature(
-            withIdentifier: "todoList",
-            viewURIPredicate: HUBViewURIPredicate(viewURI: .todoListViewURI),
-            title: "Todo List",
-            contentOperationFactories: [contentOperationFactory],
-            contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: nil,
-            actionHandler: nil,
-            viewControllerScrollHandler: nil
-        )
-        
-        hubManager.actionRegistry.register(TodoListActionFactory(), forNamespace: TodoListActionFactory.namespace)
+        return nil
     }
-    
-    private func registerStickyHeaderFeature() {
-        let contentOperationFactory = HUBBlockContentOperationFactory() { _ in
-            return [StickyHeaderContentOperation()]
-        }
-        
-        hubManager.featureRegistry.registerFeature(
-            withIdentifier: "stickyHeader",
-            viewURIPredicate: HUBViewURIPredicate(viewURI: .stickyHeaderViewURI),
-            title: "Sticky Header",
-            contentOperationFactories: [contentOperationFactory],
-            contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: nil,
-            actionHandler: nil,
-            viewControllerScrollHandler: nil
-        )
-    }
-    
+
     private func startLiveService() {
         #if DEBUG
-        hubManager.liveService?.delegate = self
-        hubManager.liveService?.start(onPort: 7777)
+            liveService = HUBLiveServiceFactory().createLiveService()
+            liveService?.delegate = self
+            liveService?.start(onPort: 7777)
         #endif
     }
     
     // MARK: - Opening view URIs
-    
+
     @discardableResult private func open(viewURI: URL, animated: Bool) -> Bool {
-        guard let viewController = hubManager?.viewControllerFactory.createViewController(forViewURI: viewURI) else {
+        guard let viewController = createViewController(viewURI: viewURI) else {
+            print("No view controller for URI \(viewURI)")
             return false
         }
         

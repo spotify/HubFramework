@@ -24,7 +24,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol HUBLiveService;
-@class HUBViewController;
+@protocol HUBContentOperation;
+
 
 /**
  *  Delegate protocol for `HUBLiveService`
@@ -35,18 +36,17 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HUBLiveServiceDelegate
 
 /**
- *  Sent to the delegate whenever the live service created a new view controller
+ *  Sent to the delegate whenever the live service created a new content operation
  *
  *  @param liveService The live service in question
- *  @param viewController The view controller that was created
+ *  @param contentOperation The contentOperation that will feed live data
  *
- *  The live service will reuse any existing view controller if possible. The service does not
- *  retain the view controllers it creates. Whenever this method is called, you should perform
- *  any manual configuration of the view controller you wish to do, then push it onto your app's
- *  navigation stack.
+ *  The live service will reuse any existing content operation if possible. The service does not
+ *  retain the content operations it create. An implementor of this protocol should create a
+ *  view controller based on the provided content operation app's navigation stack.
  */
 - (void)liveService:(id<HUBLiveService>)liveService
-        didCreateViewController:(HUBViewController *)viewController;
+didCreateContentOperation:(id<HUBContentOperation>)contentOperation;
 
 @end
 

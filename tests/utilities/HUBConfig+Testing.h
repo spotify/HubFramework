@@ -19,12 +19,11 @@
  *  under the License.
  */
 
-import Foundation
-import HubFramework
+#import <Foundation/Foundation.h>
+#import "HUBConfig.h"
 
-/// Content operation factory used for the "Really Long List" feature
-class ReallyLongListContentOperationFactory: HUBContentOperationFactory {
-    func createContentOperations(forViewURI viewURI: URL) -> [HUBContentOperation] {
-        return [ReallyLongListContentOperation()]
-    }
-}
+@interface HUBConfig (Testing)
+
++ (HUBConfig *)configForTesting;
+
+@end

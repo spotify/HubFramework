@@ -34,7 +34,7 @@
 #import "HUBDefaultImageLoaderFactory.h"
 #import "HUBDefaultComponentLayoutManager.h"
 #import "HUBDefaultComponentFallbackHandler.h"
-#import "HUBLiveServiceImplementation.h"
+#import "HUBLiveServiceFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         HUBComponentRegistryImplementation * const componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler
                                                                                                                          componentDefaults:componentDefaults
-                                                                                                                        JSONSchemaRegistry:JSONSchemaRegistry
+                                                                                                                        JSONSchema:JSONSchemaRegistry.defaultSchema
                                                                                                                          iconImageResolver:iconImageResolver];
         
         HUBViewModelLoaderFactoryImplementation * const viewModelLoaderFactory = [[HUBViewModelLoaderFactoryImplementation alloc] initWithFeatureRegistry:featureRegistry
@@ -129,11 +129,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id<HUBLiveService>)liveService
 {
-#if HUB_DEBUG
     if (_liveService == nil) {
-        _liveService = [[HUBLiveServiceImplementation alloc] initWithViewControllerFactory:self.viewControllerFactory];
+        _liveService = [[HUBLiveServiceFactory new] createLiveService];
     }
-#endif
     
     return _liveService;
 }

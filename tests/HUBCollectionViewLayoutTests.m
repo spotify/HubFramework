@@ -102,7 +102,7 @@
     
     self.componentRegistry = [[HUBComponentRegistryImplementation alloc] initWithFallbackHandler:componentFallbackHandler
                                                                                componentDefaults:componentDefaults
-                                                                              JSONSchemaRegistry:JSONSchemaRegistry
+                                                                                      JSONSchema:JSONSchemaRegistry.defaultSchema
                                                                                iconImageResolver:nil];
     
     [self.componentRegistry registerComponentFactory:self.componentFactory forNamespace:componentNamespace];

@@ -19,12 +19,23 @@
  *  under the License.
  */
 
-import Foundation
-import HubFramework
+#import <Foundation/Foundation.h>
 
-/// Content operation factory used in the "Pretty pictures" feature
-class PrettyPicturesContentOperationFactory: HUBContentOperationFactory {
-    func createContentOperations(forViewURI viewURI: URL) -> [HUBContentOperation] {
-        return [PrettyPicturesContentOperation()]
-    }
-}
+@protocol HUBLiveService;
+
+NS_ASSUME_NONNULL_BEGIN
+
+// Factory to create a `HUBLiveService`
+@interface HUBLiveServiceFactory : NSObject
+
+
+/**
+ *  Creates a live service which can be used to open a socket to feed live data to the app.
+ *
+ *  Always returns `nil` in production builds.
+ */
+- (nullable id<HUBLiveService>)createLiveService;
+
+@end
+
+NS_ASSUME_NONNULL_END

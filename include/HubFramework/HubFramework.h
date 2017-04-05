@@ -19,6 +19,8 @@
  *  under the License.
  */
 
+#import "HUBConfig.h"
+#import "HUBConfigBuilder.h"
 #import "HUBManager.h"
 #import "HUBConnectivityStateResolver.h"
 #import "HUBDefaults.h"
@@ -26,6 +28,7 @@
 
 // JSON
 #import "HUBJSONSchema.h"
+#import "HUBJSONSchemaFactory.h"
 #import "HUBViewModelJSONSchema.h"
 #import "HUBComponentModelJSONSchema.h"
 #import "HUBComponentTargetJSONSchema.h"
@@ -62,6 +65,7 @@
 #import "HUBViewControllerScrollHandler.h"
 #import "HUBViewControllerDefaultScrollHandler.h"
 #import "HUBViewURIPredicate.h"
+#import "HUBConfigViewControllerFactory.h"
 
 // Components
 #import "HUBComponent.h"
@@ -111,3 +115,4 @@
 
 // Live
 #import "HUBLiveService.h"
+#import "HUBLiveServiceFactory.h"
