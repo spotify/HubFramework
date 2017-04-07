@@ -19,8 +19,12 @@
  *  under the License.
  */
 
+#import <UIKit/UIKit.h>
 
 #import "HUBAction.h"
+#import "HUBHeaderMacros.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  An action that gets performed whenever a component is selected
@@ -30,4 +34,8 @@
  */
 @interface HUBSelectionAction : NSObject <HUBAction>
 
+- (instancetype)initWithApplication:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
+
 @end
+
+NS_ASSUME_NONNULL_END
