@@ -93,7 +93,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewControllerImplementation
 
-@synthesize bounces = _bounces;
 @synthesize alwaysBounceVertical = _alwaysBounceVertical;
 @synthesize viewModel = _viewModel;
 @synthesize viewURI = _viewURI;
@@ -145,7 +144,6 @@ NS_ASSUME_NONNULL_BEGIN
     _componentWrappersByCellIdentifier = [NSMutableDictionary new];
     _componentWrappersByModelIdentifier = [NSMutableDictionary new];
     _renderingOperationQueue = [HUBOperationQueue new];
-    _bounces = YES;
 
     viewModelLoader.delegate = self;
     if (HUBConformsToProtocol(viewModelLoader, @protocol(HUBViewModelLoaderWithActions))) {
@@ -175,6 +173,7 @@ NS_ASSUME_NONNULL_BEGIN
     collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;
     collectionView.keyboardDismissMode = [self.scrollHandler keyboardDismissModeForViewController:self];
     collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
+    collectionView.bounces = YES;
     collectionView.dataSource = self;
     collectionView.delegate = self;
     [self updateCollectionViewBounceSettings];
@@ -444,15 +443,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Bounce control
 
-- (void)setBounces:(BOOL)bounces
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdirect-ivar-access"
-    _bounces = bounces;
-#pragma clang diagnostic pop
-    [self updateCollectionViewBounceSettings];
-}
-
 - (void)setAlwaysBounceVertical:(BOOL)alwaysBounceVertical
 {
 #pragma clang diagnostic push
@@ -464,7 +454,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateCollectionViewBounceSettings
 {
-    self.collectionView.bounces = self.bounces;
     self.collectionView.alwaysBounceVertical = self.alwaysBounceVertical;
 }
 
