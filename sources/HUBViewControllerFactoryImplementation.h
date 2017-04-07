@@ -56,7 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
                                 actionRegistry:(HUBActionRegistryImplementation *)actionRegistry
                           defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
                         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                            imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory HUB_DESIGNATED_INITIALIZER;
+                            imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
+                                   application:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
 
 @end
 

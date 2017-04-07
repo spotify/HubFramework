@@ -66,6 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
                           defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
                         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                             imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
+                                   application:(UIApplication *)application
 {
     NSParameterAssert(viewModelLoaderFactory != nil);
     NSParameterAssert(featureRegistry != nil);
@@ -73,6 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(initialViewModelRegistry != nil);
     NSParameterAssert(actionRegistry != nil);
     NSParameterAssert(componentLayoutManager != nil);
+    NSParameterAssert(application != nil);
     
     self = [super init];
     
@@ -85,6 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
         _defaultActionHandler = defaultActionHandler;
         _componentLayoutManager = componentLayoutManager;
         _imageLoaderFactory = imageLoaderFactory;
+        _application = application;
     }
     
     return self;
