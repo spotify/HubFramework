@@ -92,7 +92,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewControllerExperimentalImplementation
 
-@synthesize alwaysBounceVertical = _alwaysBounceVertical;
 @synthesize viewModel = _viewModel;
 @synthesize viewURI = _viewURI;
 
@@ -172,7 +171,6 @@ NS_ASSUME_NONNULL_BEGIN
     collectionView.bounces = YES;
     collectionView.dataSource = self;
     collectionView.delegate = self;
-    [self updateCollectionViewBounceSettings];
 
     self.lastContentOffset = self.collectionView.contentOffset;
 
@@ -253,11 +251,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)featureIdentifier
 {
     return self.featureInfo.identifier;
-}
-
-- (BOOL)isViewScrolling
-{
-    return self.collectionView.isDragging || self.collectionView.isDecelerating;
 }
 
 - (NSDictionary<NSIndexPath *, UIView *> *)visibleComponentViewsForComponentType:(HUBComponentType)componentType
@@ -428,22 +421,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)reload
 {
     [self.viewModelLoader reloadViewModel];
-}
-
-#pragma mark - Bounce control
-
-- (void)setAlwaysBounceVertical:(BOOL)alwaysBounceVertical
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdirect-ivar-access"
-    _alwaysBounceVertical = alwaysBounceVertical;
-#pragma clang diagnostic pop
-    [self updateCollectionViewBounceSettings];
-}
-
-- (void)updateCollectionViewBounceSettings
-{
-    self.collectionView.alwaysBounceVertical = self.alwaysBounceVertical;
 }
 
 #pragma mark - HUBViewModelLoaderDelegate

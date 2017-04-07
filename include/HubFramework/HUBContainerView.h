@@ -26,8 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// View that acts as a container view for a Hub Framework view controller
 @interface HUBContainerView : UIView
 
-///The content view of this container.
+/// The content view of this container.
 @property (nonatomic, strong, readonly, nullable) UIScrollView *contentView;
+
+/// A convenience getter to determine if the content view is scrolling.
+@property (nonatomic, readonly, getter=isContentViewScrolling) BOOL contentViewScrolling;
 
 @end
 

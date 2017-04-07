@@ -25,6 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBContainerView
 
+- (BOOL)isContentViewScrolling
+{
+    return self.contentView.isDragging || self.contentView.isDecelerating;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

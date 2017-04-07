@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewController
 
+@dynamic view;
+
 - (NSDictionary<NSIndexPath *, UIView *> *)visibleComponentViewsForComponentType:(HUBComponentType)componentType
 {
     return @{};

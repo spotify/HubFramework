@@ -2277,45 +2277,6 @@
     HUBAssertEqualCGFloatValues(targetContentOffset.y, 500);
 }
 
-- (void)testIsViewScrolling
-{
-    [self simulateViewControllerLayoutCycle];
-    
-    XCTAssertFalse(self.viewController.isViewScrolling);
-    self.collectionView.mockedIsDragging = YES;
-    XCTAssertTrue(self.viewController.isViewScrolling);
-}
-
-- (void)testSettingAlwaysBounceVertically
-{
-    [self simulateViewControllerLayoutCycle];
-
-    self.viewController.alwaysBounceVertical = YES;
-    XCTAssertTrue(self.collectionView.alwaysBounceVertical);
-    self.viewController.alwaysBounceVertical = NO;
-    XCTAssertFalse(self.collectionView.alwaysBounceVertical);
-}
-
-- (void)testEnablingAlwaysBounceVerticallyBeforeLoadingView
-{
-    self.viewController.alwaysBounceVertical = YES;
-    [self simulateViewControllerLayoutCycle];
-    XCTAssertTrue(self.collectionView.alwaysBounceVertical);
-}
-
-- (void)testDisablingAlwaysBounceVerticallyBeforeLoadingView
-{
-    self.viewController.alwaysBounceVertical = NO;
-    [self simulateViewControllerLayoutCycle];
-    XCTAssertFalse(self.collectionView.alwaysBounceVertical);
-}
-
-- (void)testEnablingBouncesBeforeLoadingView
-{
-    [self simulateViewControllerLayoutCycle];
-    XCTAssertTrue(self.collectionView.bounces);
-}
-
 - (void)testFrameForBodyComponentAtIndex
 {
     HUBComponentMock * const componentA = [HUBComponentMock new];
