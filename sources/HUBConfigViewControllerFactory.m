@@ -58,7 +58,8 @@
 
 
     HUBViewModelRenderer * const viewModelRenderer = [HUBViewModelRenderer new];
-    HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
+    HUBCollectionViewFactory * const collectionViewFactory = [[HUBCollectionViewFactory alloc] initWithComponentRegistry:config.componentRegistry
+                                                                                                  componentLayoutManager:config.componentLayoutManager];
     HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:config.componentRegistry];
 
     id<HUBActionHandler> const actionHandlerWrapper = [[HUBActionHandlerWrapper alloc] initWithActionHandler:actionHandler
@@ -74,9 +75,7 @@
                                                     viewModelLoader:viewModelLoader
                                                   viewModelRenderer:viewModelRenderer
                                               collectionViewFactory:collectionViewFactory
-                                                  componentRegistry:config.componentRegistry
                                                  componentReusePool:componentReusePool
-                                             componentLayoutManager:config.componentLayoutManager
                                                       actionHandler:actionHandlerWrapper
                                                       scrollHandler:scrollHandlerToUse
                                                         imageLoader:imageLoader];

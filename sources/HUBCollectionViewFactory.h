@@ -19,7 +19,11 @@
  *  under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "HUBHeaderMacros.h"
+
+@protocol HUBComponentLayoutManager;
+@protocol HUBComponentRegistry;
 
 @class HUBCollectionView;
 
@@ -27,6 +31,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Factory used to create collection views for use in a `HUBViewController`
 @interface HUBCollectionViewFactory : NSObject
+
+/**
+ Designated initializer.
+
+ @param componentRegistry The registry to use to lookup component information
+ @param componentLayoutManager The object that manages layout for components in the view controller
+ */
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
+                   componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager HUB_DESIGNATED_INITIALIZER;
 
 /// Create a collection view. It will be setup with a default layout.
 - (HUBCollectionView *)createCollectionView;

@@ -20,16 +20,42 @@
  */
 
 #import "HUBCollectionViewFactory.h"
+
 #import "HUBCollectionView.h"
+#import "HUBCollectionViewLayout.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface HUBCollectionViewFactory ()
+
+@property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
+@property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
+
+@end
+
 @implementation HUBCollectionViewFactory
+
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
+                   componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
+{
+    NSParameterAssert(componentRegistry != nil);
+    NSParameterAssert(componentLayoutManager != nil);
+
+    self = [super init];
+    if (self) {
+        _componentRegistry = componentRegistry;
+        _componentLayoutManager = componentLayoutManager;
+    }
+    return self;
+}
 
 - (HUBCollectionView *)createCollectionView
 {
+    HUBCollectionViewLayout *collectionViewLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                        componentLayoutManager:self.componentLayoutManager];
+
     HUBCollectionView *collectionView = [[HUBCollectionView alloc] initWithFrame:CGRectZero
-                                                            collectionViewLayout:[UICollectionViewLayout new]];
+                                                            collectionViewLayout:collectionViewLayout];
     
     collectionView.accessibilityIdentifier = @"collectionView";
     return collectionView;

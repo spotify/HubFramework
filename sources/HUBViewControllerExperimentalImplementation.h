@@ -22,8 +22,6 @@
 #import "HUBViewController.h"
 
 @protocol HUBFeatureInfo;
-@protocol HUBComponentRegistry;
-@protocol HUBComponentLayoutManager;
 @protocol HUBActionHandler;
 @protocol HUBViewControllerScrollHandler;
 @protocol HUBImageLoader;
@@ -43,9 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureInfo Information about the feature that the view controller is for
  *  @param viewModelLoader The object to use to load view models for the view controller
  *  @param collectionViewFactory The factory to use to create collection views
- *  @param componentRegistry The registry to use to lookup component information
  *  @param componentReusePool The reuse pool to use to manage component wrappers
- *  @param componentLayoutManager The object that manages layout for components in the view controller
  *  @param actionHandler The object that will handle actions for this view controller
  *  @param scrollHandler The object that will handle scrolling for the view controller
  *  @param imageLoader The loader to use to load images for components
@@ -54,9 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
                     featureInfo:(id<HUBFeatureInfo>)featureInfo
                 viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
-              componentRegistry:(id<HUBComponentRegistry>)componentRegistry
              componentReusePool:(HUBComponentReusePool *)componentReusePool
-         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader NS_DESIGNATED_INITIALIZER;

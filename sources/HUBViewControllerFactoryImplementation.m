@@ -166,7 +166,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     HUBViewModelRenderer * const viewModelRenderer = [HUBViewModelRenderer new];
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
-    HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
+    HUBCollectionViewFactory * const collectionViewFactory = [[HUBCollectionViewFactory alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                                  componentLayoutManager:self.componentLayoutManager];
     HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:self.componentRegistry];
     
     id<HUBActionHandler> const actionHandler = featureRegistration.actionHandler ?: self.defaultActionHandler;
@@ -182,9 +183,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                     viewModelLoader:viewModelLoader
                                                   viewModelRenderer:viewModelRenderer
                                               collectionViewFactory:collectionViewFactory
-                                                  componentRegistry:self.componentRegistry
                                                  componentReusePool:componentReusePool
-                                             componentLayoutManager:self.componentLayoutManager
                                                       actionHandler:actionHandlerWrapper
                                                       scrollHandler:scrollHandlerToUse
                                                         imageLoader:imageLoader];
@@ -200,7 +199,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                         featureRegistration:featureRegistration];
 
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
-    HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
+    HUBCollectionViewFactory * const collectionViewFactory = [[HUBCollectionViewFactory alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                                  componentLayoutManager:self.componentLayoutManager];
     HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:self.componentRegistry];
 
     id<HUBActionHandler> const actionHandler = featureRegistration.actionHandler ?: self.defaultActionHandler;
@@ -215,9 +215,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                     featureInfo:featureInfo
                                                                 viewModelLoader:viewModelLoader
                                                           collectionViewFactory:collectionViewFactory
-                                                              componentRegistry:self.componentRegistry
                                                              componentReusePool:componentReusePool
-                                                         componentLayoutManager:self.componentLayoutManager
                                                                   actionHandler:actionHandlerWrapper
                                                                   scrollHandler:scrollHandlerToUse
                                                                     imageLoader:imageLoader];

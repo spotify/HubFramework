@@ -33,7 +33,6 @@
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentWrapper.h"
 #import "HUBComponentWrapperImageLoader.h"
-#import "HUBComponentRegistry.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "HUBUtilities.h"
 #import "HUBCollectionViewFactory.h"
@@ -62,9 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBFeatureInfo> featureInfo;
 @property (nonatomic, strong, readonly) id<HUBViewModelLoader> viewModelLoader;
 @property (nonatomic, strong, readonly) HUBCollectionViewFactory *collectionViewFactory;
-@property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
 @property (nonatomic, strong, readonly) HUBComponentReusePool *componentReusePool;
-@property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) id<HUBActionHandler> actionHandler;
 @property (nonatomic, strong, readonly) id<HUBViewControllerScrollHandler> scrollHandler;
 @property (nonatomic, strong, nullable, readonly) id<HUBContentReloadPolicy> contentReloadPolicy;
@@ -103,9 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
                 viewModelLoader:(id<HUBViewModelLoader>)viewModelLoader
               viewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
           collectionViewFactory:(HUBCollectionViewFactory *)collectionViewFactory
-              componentRegistry:(id<HUBComponentRegistry>)componentRegistry
              componentReusePool:(HUBComponentReusePool *)componentReusePool
-         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader
@@ -115,9 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(viewModelLoader != nil);
     NSParameterAssert(viewModelRenderer != nil);
     NSParameterAssert(collectionViewFactory != nil);
-    NSParameterAssert(componentRegistry != nil);
     NSParameterAssert(componentReusePool != nil);
-    NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(actionHandler != nil);
     NSParameterAssert(scrollHandler != nil);
     NSParameterAssert(imageLoader != nil);
@@ -131,9 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
     _viewModelLoader = viewModelLoader;
     _viewModelRenderer = viewModelRenderer;
     _collectionViewFactory = collectionViewFactory;
-    _componentRegistry = componentRegistry;
     _componentReusePool = componentReusePool;
-    _componentLayoutManager = componentLayoutManager;
     _actionHandler = actionHandler;
     _scrollHandler = scrollHandler;
     _componentWrapperImageLoader = [[HUBComponentWrapperImageLoader alloc] initWithImageLoader:imageLoader];
@@ -853,11 +844,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         if (!self.viewHasBeenLaidOut) {
             completionHandler();
             return;
-        }
-
-        if (![self.collectionView.collectionViewLayout isKindOfClass:[HUBCollectionViewLayout class]]) {
-            self.collectionView.collectionViewLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
-                                                                                           componentLayoutManager:self.componentLayoutManager];
         }
 
         [self saveStatesForVisibleComponents];
