@@ -19,6 +19,8 @@
  *  under the License.
  */
 
+#import <UIKit/UIKit.h>
+
 #import "HUBHeaderMacros.h"
 
 @protocol HUBComponentModel;
@@ -37,7 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param componentRegistry The component registry to use to create new component instances
  */
-- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
+                              application:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Add a component wrapper to the reuse pool, enabling it to be used for other models

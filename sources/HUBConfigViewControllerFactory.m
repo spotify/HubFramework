@@ -33,6 +33,11 @@
 #import "HUBImageLoaderFactory.h"
 #import "HUBViewControllerImplementation.h"
 
+@interface HUBConfigViewControllerFactory()
+
+@property (nonatomic, strong, readonly) UIApplication *application;
+
+@end
 
 @implementation HUBConfigViewControllerFactory
 
@@ -59,7 +64,8 @@
 
     HUBViewModelRenderer * const viewModelRenderer = [HUBViewModelRenderer new];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
-    HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:config.componentRegistry];
+    HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:config.componentRegistry
+                                                                                                    application:self.application];
 
     id<HUBActionHandler> const actionHandlerWrapper = [[HUBActionHandlerWrapper alloc] initWithActionHandler:actionHandler
                                                                                               actionRegistry:config.actionRegistry

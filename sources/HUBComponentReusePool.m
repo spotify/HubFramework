@@ -44,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBComponentReusePool
 
 - (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
+                              application:(UIApplication *)application
 {
     NSParameterAssert(componentRegistry != nil);
     
@@ -54,6 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
         _UIStateManager = [HUBComponentUIStateManager new];
         _componentWrappers = [NSMutableDictionary new];
         _gestureRecognizerSynchronizer = [HUBSingleGestureRecognizerSynchronizer new];
+        _application = application;
     }
     
     return self;

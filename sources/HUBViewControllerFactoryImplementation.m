@@ -52,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly, nullable) id<HUBActionHandler> defaultActionHandler;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly, nullable) id<HUBImageLoaderFactory> imageLoaderFactory;
+@property (nonatomic, strong, readonly) UIApplication *application;
 
 @end
 
@@ -167,7 +168,8 @@ NS_ASSUME_NONNULL_BEGIN
     HUBViewModelRenderer * const viewModelRenderer = [HUBViewModelRenderer new];
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
-    HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:self.componentRegistry];
+    HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                                    application:self.application];
     
     id<HUBActionHandler> const actionHandler = featureRegistration.actionHandler ?: self.defaultActionHandler;
     id<HUBActionHandler> const actionHandlerWrapper = [[HUBActionHandlerWrapper alloc] initWithActionHandler:actionHandler
@@ -201,7 +203,8 @@ NS_ASSUME_NONNULL_BEGIN
 
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
-    HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:self.componentRegistry];
+    HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                                    application:self.application];
 
     id<HUBActionHandler> const actionHandler = featureRegistration.actionHandler ?: self.defaultActionHandler;
     id<HUBActionHandler> const actionHandlerWrapper = [[HUBActionHandlerWrapper alloc] initWithActionHandler:actionHandler
