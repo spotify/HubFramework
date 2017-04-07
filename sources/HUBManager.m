@@ -43,7 +43,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistryImplementation;
-@property (nonatomic, strong, readonly) UIApplication *application;
 
 @end
 
@@ -60,9 +59,11 @@ NS_ASSUME_NONNULL_BEGIN
                     defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
               prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
+                                   application:(UIApplication *)application
 {
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentFallbackHandler != nil);
+    NSParameterAssert(application != nil);
     
     self = [super init];
     
@@ -96,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                           appendedContentOperationFactory:appendedContentOperationFactory
                                                                                                                                defaultContentReloadPolicy:defaultContentReloadPolicy];
         
-        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionActionAndApplication:_application];
+        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionActionAndApplication:application];
         
         id<HUBImageLoaderFactory> const imageLoaderFactoryToUse = imageLoaderFactory ?: [HUBDefaultImageLoaderFactory new];
         
@@ -143,16 +144,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
                     componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
+                               application:(UIApplication *)application
 {
     id<HUBComponentLayoutManager> const componentLayoutManager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:componentMargin];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBDefaultComponentFallbackHandler alloc] initWithFallbackBlock:componentFallbackBlock];
     
     return [self managerWithComponentLayoutManager:componentLayoutManager
-                          componentFallbackHandler:componentFallbackHandler];
+                          componentFallbackHandler:componentFallbackHandler
+                                       application:application];
 }
 
 + (instancetype)managerWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                                      application:(UIApplication *)application
 {
     return [[self alloc] initWithComponentLayoutManager:componentLayoutManager
                                componentFallbackHandler:componentFallbackHandler
@@ -162,7 +166,8 @@ NS_ASSUME_NONNULL_BEGIN
                                    defaultActionHandler:nil
                              defaultContentReloadPolicy:nil
                        prependedContentOperationFactory:nil
-                        appendedContentOperationFactory:nil];
+                        appendedContentOperationFactory:nil
+                                            application:application];
 }
 
 @end

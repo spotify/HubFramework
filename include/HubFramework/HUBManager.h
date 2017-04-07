@@ -18,10 +18,10 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
+#import <UIKit/UIKit.h>
 
 #import "HUBHeaderMacros.h"
 #import "HUBComponentCategories.h"
-#import <CoreGraphics/CoreGraphics.h>
 
 @protocol HUBFeatureRegistry;
 @protocol HUBComponent;
@@ -113,7 +113,8 @@ NS_ASSUME_NONNULL_BEGIN
                           defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
                     defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
               prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
-               appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory HUB_DESIGNATED_INITIALIZER;
+               appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
+                                   application:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -134,7 +135,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  the `componentFallbackBlock` will be used for a default `HUBComponentFallbackHandler`.
  */
 + (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
-                    componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:));
+                    componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
+                               application:(UIApplication *)application NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:application:));
 
 /**
  *  Create an instance of this class with its required dependencies
@@ -148,7 +150,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  For more customization options, see this class' designated initializer.
  */
 + (instancetype)managerWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler;
+                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                                      application:(UIApplication *)application;
 
 @end
 
