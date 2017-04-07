@@ -93,7 +93,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewControllerImplementation
 
-@synthesize bounces = _bounces;
 @synthesize alwaysBounceVertical = _alwaysBounceVertical;
 @synthesize viewModel = _viewModel;
 @synthesize viewURI = _viewURI;
@@ -145,7 +144,6 @@ NS_ASSUME_NONNULL_BEGIN
     _componentWrappersByCellIdentifier = [NSMutableDictionary new];
     _componentWrappersByModelIdentifier = [NSMutableDictionary new];
     _renderingOperationQueue = [HUBOperationQueue new];
-    _bounces = YES;
 
     viewModelLoader.delegate = self;
     if (HUBConformsToProtocol(viewModelLoader, @protocol(HUBViewModelLoaderWithActions))) {
@@ -167,9 +165,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadView
 {
-    self.view = [[HUBContainerView alloc] initWithFrame:CGRectZero];
+    HUBContainerView *containerView = [[HUBContainerView alloc] initWithFrame:CGRectZero];
 
-    [self createCollectionViewIfNeeded];
+    HUBCollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
+    self.collectionView = collectionView;
+    collectionView.showsVerticalScrollIndicator = [self.scrollHandler shouldShowScrollIndicatorsInViewController:self];
+    collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;
+    collectionView.keyboardDismissMode = [self.scrollHandler keyboardDismissModeForViewController:self];
+    collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
+    collectionView.bounces = YES;
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    [self updateCollectionViewBounceSettings];
+
+    self.lastContentOffset = self.collectionView.contentOffset;
+
+    containerView.collectionView = self.collectionView;
+    self.view = containerView;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -192,7 +204,6 @@ NS_ASSUME_NONNULL_BEGIN
         self.viewModel = self.viewModelLoader.initialViewModel;
     }
 
-    [self createCollectionViewIfNeeded];
     [self.viewModelLoader loadViewModel];
 
     for (NSIndexPath * const indexPath in self.collectionView.indexPathsForVisibleItems) {
@@ -432,15 +443,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Bounce control
 
-- (void)setBounces:(BOOL)bounces
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdirect-ivar-access"
-    _bounces = bounces;
-#pragma clang diagnostic pop
-    [self updateCollectionViewBounceSettings];
-}
-
 - (void)setAlwaysBounceVertical:(BOOL)alwaysBounceVertical
 {
 #pragma clang diagnostic push
@@ -452,7 +454,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateCollectionViewBounceSettings
 {
-    self.collectionView.bounces = self.bounces;
     self.collectionView.alwaysBounceVertical = self.alwaysBounceVertical;
 }
 
@@ -868,29 +869,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 }
 
 #pragma mark - Private utilities
-
-- (void)createCollectionViewIfNeeded
-{
-    if (self.collectionView != nil) {
-        return;
-    }
-
-    HUBCollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
-    self.collectionView = collectionView;
-    collectionView.showsVerticalScrollIndicator = [self.scrollHandler shouldShowScrollIndicatorsInViewController:self];
-    collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;
-    collectionView.keyboardDismissMode = [self.scrollHandler keyboardDismissModeForViewController:self];
-    collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
-    collectionView.dataSource = self;
-    collectionView.delegate = self;
-    [self updateCollectionViewBounceSettings];
-
-    self.lastContentOffset = self.collectionView.contentOffset;
-
-    HUBContainerView *containerView = (HUBContainerView *)self.view;
-    containerView.collectionView = self.collectionView;
-}
-
 
 - (HUBOperation *)createReloadCollectionViewOperation
 {

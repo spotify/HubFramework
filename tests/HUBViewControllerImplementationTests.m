@@ -2310,28 +2310,10 @@
     XCTAssertFalse(self.collectionView.alwaysBounceVertical);
 }
 
-- (void)testSettingBounces
-{
-    [self simulateViewControllerLayoutCycle];
-
-    self.viewController.bounces = NO;
-    XCTAssertFalse(self.collectionView.bounces);
-    self.viewController.bounces = YES;
-    XCTAssertTrue(self.collectionView.bounces);
-}
-
 - (void)testEnablingBouncesBeforeLoadingView
 {
-    self.viewController.bounces = YES;
     [self simulateViewControllerLayoutCycle];
     XCTAssertTrue(self.collectionView.bounces);
-}
-
-- (void)testDisablingBouncesBeforeLoadingView
-{
-    self.viewController.bounces = NO;
-    [self simulateViewControllerLayoutCycle];
-    XCTAssertFalse(self.collectionView.bounces);
 }
 
 - (void)testFrameForBodyComponentAtIndex
