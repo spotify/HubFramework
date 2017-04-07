@@ -25,20 +25,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBCollectionContainerView
 
-- (void)setContainerView:(nullable UICollectionView *)containerView
+@synthesize contentView = _contentView;
+
+- (void)setContentView:(nullable UICollectionView *)contentView
 {
-    if (_containerView == containerView) {
+    if (_contentView == contentView) {
         return;
     }
 
-    [_containerView removeFromSuperview];
-    _containerView = nil;
+    [_contentView removeFromSuperview];
+    _contentView = nil;
 
-    if (containerView != nil) {
-        UICollectionView * const nonNilContainerView = containerView;
-        _containerView = nonNilContainerView;
-        [self insertSubview:nonNilContainerView atIndex:0];
-        [self addGestureRecognizer:nonNilContainerView.panGestureRecognizer];
+    if (contentView != nil) {
+        UICollectionView * const nonNilContentView = contentView;
+        _contentView = nonNilContentView;
+        [self insertSubview:nonNilContentView atIndex:0];
+        [self addGestureRecognizer:nonNilContentView.panGestureRecognizer];
     }
 }
 
@@ -46,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super setBackgroundColor:backgroundColor];
 
-    self.containerView.backgroundColor = backgroundColor;
+    self.contentView.backgroundColor = backgroundColor;
 }
 
 @end

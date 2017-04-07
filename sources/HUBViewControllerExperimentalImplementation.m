@@ -174,7 +174,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     self.lastContentOffset = self.collectionView.contentOffset;
 
-    containerView.containerView = self.collectionView;
+    containerView.contentView = self.collectionView;
     self.view = containerView;
 }
 
