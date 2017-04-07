@@ -43,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) id<HUBConnectivityStateResolver> connectivityStateResolver;
 @property (nonatomic, strong, readonly) HUBInitialViewModelRegistry *initialViewModelRegistry;
 @property (nonatomic, strong, readonly) HUBComponentRegistryImplementation *componentRegistryImplementation;
+@property (nonatomic, strong, readonly) UIApplication *application;
 
 @end
 
@@ -95,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                           appendedContentOperationFactory:appendedContentOperationFactory
                                                                                                                                defaultContentReloadPolicy:defaultContentReloadPolicy];
         
-        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionAction];
+        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionActionAndApplication:_application];
         
         id<HUBImageLoaderFactory> const imageLoaderFactoryToUse = imageLoaderFactory ?: [HUBDefaultImageLoaderFactory new];
         

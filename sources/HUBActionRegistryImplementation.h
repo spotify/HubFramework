@@ -19,6 +19,8 @@
  *  under the License.
  */
 
+#import <UIKit/UIKit.h>
+
 #import "HUBActionRegistry.h"
 #import "HUBHeaderMacros.h"
 
@@ -37,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  To be able to specify which selection action to use (useful for tests), use this class'
  *  designated initializer instead of this class constructor.
  */
-+ (instancetype)registryWithDefaultSelectionAction;
++ (instancetype)registryWithDefaultSelectionActionAndApplication:(UIApplication *)application;
 
 /**
  *  Initialize an instance of this class with a selection action

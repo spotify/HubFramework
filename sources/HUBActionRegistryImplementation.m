@@ -38,9 +38,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initializers
 
-+ (instancetype)registryWithDefaultSelectionAction
++ (instancetype)registryWithDefaultSelectionActionAndApplication:(UIApplication *)application
 {
-    return [[self alloc] initWithSelectionAction:[HUBSelectionAction new]];
+    HUBSelectionAction * const selectionAction = [[HUBSelectionAction alloc] initWithApplication:application];
+    return [[self alloc] initWithSelectionAction:selectionAction];
 }
 
 - (instancetype)initWithSelectionAction:(id<HUBAction>)selectionAction
