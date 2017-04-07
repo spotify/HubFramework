@@ -163,9 +163,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadView
 {
-    self.view = [[HUBContainerView alloc] initWithFrame:CGRectZero];
+    HUBContainerView *containerView = [[HUBContainerView alloc] initWithFrame:CGRectZero];
 
-    [self createCollectionViewIfNeeded];
+    HUBCollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
+    self.collectionView = collectionView;
+    collectionView.showsVerticalScrollIndicator = [self.scrollHandler shouldShowScrollIndicatorsInViewController:self];
+    collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;
+    collectionView.keyboardDismissMode = [self.scrollHandler keyboardDismissModeForViewController:self];
+    collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    [self updateCollectionViewBounceSettings];
+
+    self.lastContentOffset = self.collectionView.contentOffset;
+
+    containerView.collectionView = self.collectionView;
+    self.view = containerView;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -188,7 +201,6 @@ NS_ASSUME_NONNULL_BEGIN
         self.viewModel = self.viewModelLoader.initialViewModel;
     }
 
-    [self createCollectionViewIfNeeded];
     [self.viewModelLoader loadViewModel];
 
     for (NSIndexPath * const indexPath in self.collectionView.indexPathsForVisibleItems) {
@@ -906,29 +918,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 }
 
 #pragma mark - Private utilities
-
-- (void)createCollectionViewIfNeeded
-{
-    if (self.collectionView != nil) {
-        return;
-    }
-
-    HUBCollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
-    self.collectionView = collectionView;
-    collectionView.showsVerticalScrollIndicator = [self.scrollHandler shouldShowScrollIndicatorsInViewController:self];
-    collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;
-    collectionView.keyboardDismissMode = [self.scrollHandler keyboardDismissModeForViewController:self];
-    collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
-    collectionView.dataSource = self;
-    collectionView.delegate = self;
-    [self updateCollectionViewBounceSettings];
-
-    self.lastContentOffset = self.collectionView.contentOffset;
-
-    HUBContainerView *containerView = (HUBContainerView *)self.view;
-    containerView.collectionView = self.collectionView;
-}
-
 
 - (HUBOperation *)createReloadCollectionViewOperation
 {
