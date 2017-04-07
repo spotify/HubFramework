@@ -19,11 +19,15 @@
  *  under the License.
  */
 
-#import "HUBContainerView.h"
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation HUBContainerView
+/// View that acts as a container view for a Hub Framework view controller
+@interface HUBContainerView : UIView
+
+///The content view of this container.
+@property (nonatomic, strong, readonly, nullable) UIScrollView *contentView;
 
 @end
 

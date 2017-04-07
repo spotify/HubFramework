@@ -19,20 +19,35 @@
  *  under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "HUBCollectionContainerView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// View that acts as a container view for a Hub Framework view controller
-@interface HUBContainerView : UIView
+@implementation HUBCollectionContainerView
 
-/**
- *  Collection view contained by the container.
- *
- *  When a collectionView is set it's also added as a subview, and its pan gesture
- *  recognizer is added to this view.
- */
-@property (nonatomic, strong, nullable) UICollectionView *collectionView;
+- (void)setContainerView:(nullable UICollectionView *)containerView
+{
+    if (_containerView == containerView) {
+        return;
+    }
+
+    [_containerView removeFromSuperview];
+    _containerView = nil;
+
+    if (containerView != nil) {
+        UICollectionView * const nonNilContainerView = containerView;
+        _containerView = nonNilContainerView;
+        [self insertSubview:nonNilContainerView atIndex:0];
+        [self addGestureRecognizer:nonNilContainerView.panGestureRecognizer];
+    }
+}
+
+- (void)setBackgroundColor:(nullable UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+
+    self.containerView.backgroundColor = backgroundColor;
+}
 
 @end
 

@@ -39,7 +39,7 @@
 #import "HUBCollectionViewFactory.h"
 #import "HUBCollectionView.h"
 #import "HUBCollectionViewLayout.h"
-#import "HUBContainerView.h"
+#import "HUBCollectionContainerView.h"
 #import "HUBContentReloadPolicy.h"
 #import "HUBViewControllerScrollHandler.h"
 #import "HUBComponentReusePool.h"
@@ -161,7 +161,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadView
 {
-    HUBContainerView *containerView = [[HUBContainerView alloc] initWithFrame:CGRectZero];
+    HUBCollectionContainerView *containerView = [[HUBCollectionContainerView alloc] initWithFrame:CGRectZero];
 
     HUBCollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
     self.collectionView = collectionView;
@@ -176,7 +176,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     self.lastContentOffset = self.collectionView.contentOffset;
 
-    containerView.collectionView = self.collectionView;
+    containerView.containerView = self.collectionView;
     self.view = containerView;
 }
 

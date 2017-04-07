@@ -60,6 +60,7 @@
 #import "HUBViewModelLoader.h"
 #import "HUBViewModelLoaderFactory.h"
 #import "HUBViewModelBuilder.h"
+#import "HUBContainerView.h"
 #import "HUBViewControllerFactory.h"
 #import "HUBViewController.h"
 #import "HUBViewControllerScrollHandler.h"
