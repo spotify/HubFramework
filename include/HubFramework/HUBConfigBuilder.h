@@ -19,8 +19,7 @@
  *  under the License.
  */
 
-#import <CoreGraphics/CoreGraphics.h>
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import "HUBComponentCategories.h"
 
@@ -78,7 +77,8 @@ NS_ASSUME_NONNULL_BEGIN
  *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
  */
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                      componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler HUB_DESIGNATED_INITIALIZER;
+                      componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                                   application:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Convenience initializer with default layout and using a block for fallback handling.
@@ -90,7 +90,8 @@ NS_ASSUME_NONNULL_BEGIN
  *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
  */
 - (instancetype)initWithComponentMargin:(CGFloat)componentMargin
-               componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler;
+               componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                            application:(UIApplication *)application;
 
 /**
  *  Builds a configuration based on builder properties.

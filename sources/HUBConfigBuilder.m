@@ -43,21 +43,25 @@
 
 - (instancetype)initWithComponentMargin:(CGFloat)componentMargin
                componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                            application:(UIApplication *)application
 {
     id<HUBComponentLayoutManager> const componentLayoutManager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:componentMargin];
 
     return [self initWithComponentLayoutManager:componentLayoutManager
-                       componentFallbackHandler:componentFallbackHandler];
+                       componentFallbackHandler:componentFallbackHandler
+                                    application:application];
 }
 
 
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                       componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
+                                   application:(UIApplication *)application
 {
     self = [super init];
     if (self) {
         _componentLayoutManager = componentLayoutManager;
         _componentFallbackHandler = componentFallbackHandler;
+        _application = application;
     }
 
     return self;
