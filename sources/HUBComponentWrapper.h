@@ -192,7 +192,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
                 gestureRecognizer:(HUBComponentGestureRecognizer *)gestureRecognizer
-                           parent:(nullable HUBComponentWrapper *)parent HUB_DESIGNATED_INITIALIZER;
+                           parent:(nullable HUBComponentWrapper *)parent
+                      application:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Notify the component wrapper that its view was added to a new superview

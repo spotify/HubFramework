@@ -40,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, HUBComponentWrapper *> *childrenByIndex;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, UIView *> *visibleChildViewsByIndex;
 @property (nonatomic, strong, readonly) HUBComponentGestureRecognizer *gestureRecognizer;
+@property (nonatomic, strong, readonly) UIApplication *application;
 @property (nonatomic, assign) BOOL hasBeenConfigured;
 @property (nonatomic, assign) BOOL shouldPerformDelayedHighlight;
 @property (nonatomic, assign) NSUInteger appearanceCount;
@@ -58,12 +59,14 @@ NS_ASSUME_NONNULL_BEGIN
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
                 gestureRecognizer:(HUBComponentGestureRecognizer *)gestureRecognizer
                            parent:(nullable HUBComponentWrapper *)parent
+                      application:(UIApplication *)application
 {
     NSParameterAssert(component != nil);
     NSParameterAssert(model != nil);
     NSParameterAssert(UIStateManager != nil);
     NSParameterAssert(gestureRecognizer != nil);
     NSParameterAssert(delegate != nil);
+    NSParameterAssert(application != nil);
     
     self = [super init];
     
@@ -73,6 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
         _component = component;
         _UIStateManager = UIStateManager;
         _gestureRecognizer = gestureRecognizer;
+        _application = application;
         _delegate = delegate;
         _parent = parent;
         _childrenByIndex = [NSMutableDictionary new];
@@ -586,7 +590,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGRect)calculateViewFrameInWindow
 {
     UIView * const view = HUBComponentLoadViewIfNeeded(self);
-    UIWindow * const window = [UIApplication sharedApplication].keyWindow;
+    UIWindow * const window = self.application.keyWindow;
     return [window convertRect:view.frame fromView:view.superview];
 }
 

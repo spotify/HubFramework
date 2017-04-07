@@ -37,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBIdentifier *, NSMutableSet<HUBComponentWrapper *> *> *componentWrappers;
 @property (nonatomic, strong, readonly) id<HUBGestureRecognizerSynchronizing> gestureRecognizerSynchronizer;
+@property (nonatomic, strong, readonly) UIApplication *application;
 
 @end
 
@@ -94,7 +95,8 @@ NS_ASSUME_NONNULL_BEGIN
                                            UIStateManager:self.UIStateManager
                                                  delegate:delegate
                                         gestureRecognizer:gestureRecognizer
-                                                   parent:parent];
+                                                   parent:parent
+                                              application:self.application];
 }
 
 @end
