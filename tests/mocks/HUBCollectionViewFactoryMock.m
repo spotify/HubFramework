@@ -21,6 +21,9 @@
 
 #import "HUBCollectionViewFactoryMock.h"
 
+#import "HUBComponentLayoutManagerMock.h"
+#import "HUBComponentRegistryMock.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBCollectionViewFactoryMock ()
@@ -32,8 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBCollectionViewFactoryMock
 
 - (instancetype)initWithCollectionView:(HUBCollectionView *)collectionView
+                     componentRegistry:(id<HUBComponentRegistry>)componentRegistry
 {
-    self = [super init];
+    self = [super initWithComponentRegistry:componentRegistry
+                     componentLayoutManager:[HUBComponentLayoutManagerMock new]];
     
     if (self) {
         _collectionView = collectionView;

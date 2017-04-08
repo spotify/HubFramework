@@ -26,13 +26,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Mocked collection view factory, for use in tests only
 @interface HUBCollectionViewFactoryMock : HUBCollectionViewFactory
-
 /**
  *  Initialize an instance of this class with a collection view
  *
  *  @param collectionView A collection view that this factory will always create
  */
-- (instancetype)initWithCollectionView:(HUBCollectionView *)collectionView HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCollectionView:(HUBCollectionView *)collectionView
+                     componentRegistry:(id<HUBComponentRegistry>)componentRegistry HUB_DESIGNATED_INITIALIZER;
+
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
+                   componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager NS_UNAVAILABLE;
 
 @end
 

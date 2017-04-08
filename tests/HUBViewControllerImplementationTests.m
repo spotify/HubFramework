@@ -43,7 +43,6 @@
 #import "HUBComponentWrapper.h"
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
-#import "HUBComponentLayoutManagerMock.h"
 #import "HUBActionHandlerMock.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBActionRegistryImplementation.h"
@@ -137,7 +136,8 @@
     [self.componentRegistry registerComponentFactory:self.componentFactory forNamespace:componentDefaults.componentNamespace];
     
     self.collectionView = [HUBCollectionViewMock new];
-    self.collectionViewFactory = [[HUBCollectionViewFactoryMock alloc] initWithCollectionView:self.collectionView];
+    self.collectionViewFactory = [[HUBCollectionViewFactoryMock alloc] initWithCollectionView:self.collectionView
+                                                                            componentRegistry:self.componentRegistry];
     
     self.viewURI = [NSURL URLWithString:@"spotify:hub:framework"];
     self.featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:@"id" title:@"title"];
@@ -218,7 +218,6 @@
 
 - (void)createViewControllerWithViewModelRenderer:(HUBViewModelRenderer *)viewModelRenderer
 {
-    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     id<HUBActionHandler> const actionHandler = [[HUBActionHandlerWrapper alloc] initWithActionHandler:self.actionHandler
                                                                                        actionRegistry:self.actionRegistry
                                                                              initialViewModelRegistry:self.initialViewModelRegistry
@@ -229,9 +228,7 @@
                                                                    viewModelLoader:self.viewModelLoader
                                                                  viewModelRenderer:viewModelRenderer
                                                              collectionViewFactory:self.collectionViewFactory
-                                                                 componentRegistry:self.componentRegistry
                                                                 componentReusePool:self.componentReusePool
-                                                            componentLayoutManager:componentLayoutManager
                                                                      actionHandler:actionHandler
                                                                      scrollHandler:self.scrollHandler
                                                                        imageLoader:self.imageLoader];
