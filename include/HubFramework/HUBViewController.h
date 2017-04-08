@@ -176,7 +176,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) id<HUBViewControllerDelegate> delegate;
 
 /// Redeclare the view property to be a HUBContainerView.
-@property(null_resettable, nonatomic, strong) HUBContainerView *view;
+@property (null_resettable, nonatomic, strong) HUBContainerView *view;
 
 /// The identifier of the feature that this view controller belongs to
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
