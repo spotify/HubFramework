@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBCollectionContainerView : HUBContainerView
 
 /**
- *  Redefine the content view property to be a UICollectionView, and makde it readwrite for internal use.
+ *  Redefine the content view property to be a UICollectionView, and make it readwrite for internal use.
  *
  *  When a collectionView is set it's also added as a subview, and its pan gesture
  *  recognizer is added to this view.
