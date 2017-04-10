@@ -24,6 +24,7 @@
 #import "HUBContentOperationMock.h"
 #import "HUBConfigViewControllerFactory.h"
 #import "HUBViewController.h"
+#import "HUBApplicationMock.h"
 
 
 @interface HUBConfigViewControllerFactoryTests : XCTestCase
@@ -44,7 +45,8 @@
                                                                                viewURI:viewURI
                                                                      featureIdentifier:@"test"
                                                                           featureTitle:@"Test"
-                                                                         actionHandler:nil];
+                                                                         actionHandler:nil
+                                                                           application:[HUBApplicationMock new]];
     XCTAssertEqualObjects(viewController.viewURI, viewURI);
 }
 @end

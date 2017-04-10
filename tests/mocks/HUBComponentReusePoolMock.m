@@ -33,9 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initializer
 
-- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry application:(id<HUBApplication>)application
 {
-    self = [super initWithComponentRegistry:componentRegistry];
+    self = [super initWithComponentRegistry:componentRegistry application:application];
     
     if (self) {
         _mutableComponentsInUse = [NSHashTable weakObjectsHashTable];

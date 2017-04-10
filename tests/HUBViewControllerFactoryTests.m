@@ -41,6 +41,7 @@
 #import "HUBComponentModel.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBActionContext.h"
+#import "HUBApplicationMock.h"
 
 @interface HUBViewControllerFactoryTests : XCTestCase
 
@@ -74,7 +75,8 @@
                                                  defaultActionHandler:self.defaultActionHandler
                                            defaultContentReloadPolicy:self.defaultContentReloadPolicy
                                      prependedContentOperationFactory:nil
-                                      appendedContentOperationFactory:nil];
+                                      appendedContentOperationFactory:nil
+                                                          application:[HUBApplicationMock new]];
 }
 
 - (void)tearDown

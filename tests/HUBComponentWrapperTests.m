@@ -29,6 +29,7 @@
 #import "HUBComponentMock.h"
 #import "HUBIdentifier.h"
 #import "HUBSingleGestureRecognizerSynchronizer.h"
+#import "HUBApplicationMock.h"
 
 /**
  *  Class extension used to expose the method that the component wrapper uses to handle its gesture recognizer
@@ -48,6 +49,7 @@
 @property (nonatomic, assign) HUBComponentSelectionState selectionStateFromWillUpdateDelegateMethod;
 @property (nonatomic, assign) HUBComponentSelectionState selectionStateFromDidUpdateDelegateMethod;
 @property (nonatomic, strong) id<HUBGestureRecognizerSynchronizing> gestureRecognizerSynchronizer;
+@property (nonatomic, strong) HUBApplicationMock *applicationMock;
 
 @end
 
@@ -62,6 +64,7 @@
     self.gestureRecognizerSynchronizer = [HUBSingleGestureRecognizerSynchronizer new];
     self.UIStateManager = [HUBComponentUIStateManager new];
     self.gestureRecognizer = [[HUBComponentGestureRecognizer alloc] initWithSynchronizer:self.gestureRecognizerSynchronizer];
+    self.applicationMock = [HUBApplicationMock new];
 }
 
 - (void)tearDown
@@ -171,7 +174,8 @@
                                            UIStateManager:self.UIStateManager
                                                  delegate:self
                                         gestureRecognizer:self.gestureRecognizer
-                                                   parent:nil];
+                                                   parent:nil
+                                              application:self.applicationMock];
 }
 
 - (id<HUBComponentModel>)componentModelWithIdentifier:(NSString *)identifier
@@ -234,7 +238,8 @@
                                            UIStateManager:self.UIStateManager
                                                  delegate:self
                                         gestureRecognizer:self.gestureRecognizer
-                                                   parent:nil];
+                                                   parent:nil
+                                              application:self.applicationMock];
 }
 
 - (void)componentWrapper:(HUBComponentWrapper *)componentWrapper childComponent:(HUBComponentWrapper *)childComponent childView:(UIView *)childView willAppearAtIndex:(NSUInteger)childIndex

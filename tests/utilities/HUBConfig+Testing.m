@@ -30,6 +30,7 @@
 #import "HUBIconImageResolverMock.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBViewControllerScrollHandlerMock.h"
+#import "HUBApplicationMock.h"
 
 @implementation HUBConfig(Testing)
 
@@ -40,7 +41,8 @@
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
 
     HUBConfigBuilder * const builder = [[HUBConfigBuilder alloc] initWithComponentLayoutManager:componentLayoutManager
-                                                                       componentFallbackHandler:componentFallbackHandler];
+                                                                       componentFallbackHandler:componentFallbackHandler
+                                                                                    application:[HUBApplicationMock new]];
 
     id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
     id<HUBJSONSchema> const jsonSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults

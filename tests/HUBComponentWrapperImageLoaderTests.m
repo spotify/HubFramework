@@ -31,6 +31,7 @@
 #import "HUBIdentifier.h"
 #import "HUBImageLoaderMock.h"
 #import "HUBSingleGestureRecognizerSynchronizer.h"
+#import "HUBApplicationMock.h"
 
 @interface HUBComponentWrapper (HUBExposeInternalsForTesting)
 
@@ -44,6 +45,7 @@
 @property (nonatomic, strong) HUBComponentGestureRecognizer *gestureRecognizer;
 @property (nonatomic, strong) HUBImageLoaderMock *imageLoaderMock;
 @property (nonatomic, strong) HUBComponentWrapperImageLoader *wrapperImageLoader;
+@property (nonatomic, strong) HUBApplicationMock *applicationMock;
 
 @end
 
@@ -57,6 +59,7 @@
     self.gestureRecognizer = [[HUBComponentGestureRecognizer alloc] initWithSynchronizer:[HUBSingleGestureRecognizerSynchronizer new]];
     self.imageLoaderMock = [HUBImageLoaderMock new];
     self.wrapperImageLoader = [[HUBComponentWrapperImageLoader alloc] initWithImageLoader:self.imageLoaderMock];
+    self.applicationMock = [HUBApplicationMock new];
 }
 
 - (void)tearDown
@@ -78,7 +81,8 @@
                                                                             UIStateManager:self.stateManager
                                                                                   delegate:self
                                                                          gestureRecognizer:self.gestureRecognizer
-                                                                                    parent:parent];
+                                                                                    parent:parent
+                                                                               application:self.applicationMock];
     return componentWrapper;
 }
 
