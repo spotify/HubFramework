@@ -31,6 +31,7 @@ import HubFramework
     var githubConfig: HUBConfig!
     let hubComponentFallbackHandler = ComponentFallbackHandler()
     var liveService: HUBLiveService?
+    let application: UIApplication = UIApplication.shared
 
     // MARK: - UIApplicationDelegate
 
@@ -71,7 +72,8 @@ import HubFramework
                                                                            viewURI: uri!,
                                                                            featureIdentifier: "live",
                                                                            featureTitle: "Hub Framework Live",
-                                                                           actionHandler: nil)
+                                                                           actionHandler: nil,
+                                                                           application: application)
 
         prepareAndPush(viewController: viewController, animated: true)
     }
@@ -79,7 +81,7 @@ import HubFramework
     // MARK: - Private
 
     private func setupConfigs() {
-        let builder = HUBConfigBuilder(componentMargin: ComponentMargin, componentFallbackHandler: hubComponentFallbackHandler)
+        let builder = HUBConfigBuilder(componentMargin: ComponentMargin, componentFallbackHandler: hubComponentFallbackHandler, application: application)
 
         defaultConfig = builder.build()
         defaultConfig.componentRegistry.register(componentFactory: DefaultComponentFactory(),
@@ -127,35 +129,40 @@ import HubFramework
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "stickyHeader",
                                                                  featureTitle: "Sticky Header",
-                                                                 actionHandler: nil)
+                                                                 actionHandler: nil,
+                                                                 application: application)
         } else if (HUBViewURIPredicate(viewURI: .rootViewURI).evaluateViewURI(viewURI)) {
             return hubViewControllerFactory.createViewController(with: defaultConfig,
                                                                  contentOperations: [RootContentOperation()],
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "root",
                                                                  featureTitle: "Root feature",
-                                                                 actionHandler: nil)
+                                                                 actionHandler: nil,
+                                                                 application: application)
         } else if (HUBViewURIPredicate(viewURI: .todoListViewURI).evaluateViewURI(viewURI)) {
             return hubViewControllerFactory.createViewController(with: defaultConfig,
                                                                  contentOperations: [TodoListContentOperation()],
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "todoList",
                                                                  featureTitle: "Todo List",
-                                                                 actionHandler: nil)
+                                                                 actionHandler: nil,
+                                                                 application: application)
         } else if (HUBViewURIPredicate(viewURI: .prettyPicturesViewURI).evaluateViewURI(viewURI)) {
             return hubViewControllerFactory.createViewController(with: defaultConfig,
                                                                  contentOperations: [PrettyPicturesContentOperation()],
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "prettyPictures",
                                                                  featureTitle: "Pretty Pictures",
-                                                                 actionHandler: PrettyPicturesActionHandler())
+                                                                 actionHandler: PrettyPicturesActionHandler(),
+                                                                 application: application)
         } else if (HUBViewURIPredicate(viewURI: .reallyLongListViewURI).evaluateViewURI(viewURI)) {
             return hubViewControllerFactory.createViewController(with: defaultConfig,
                                                                  contentOperations: [ReallyLongListContentOperation()],
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "reallyLongList",
                                                                  featureTitle: "Really Long List",
-                                                                 actionHandler: nil)
+                                                                 actionHandler: nil,
+                                                                 application: application)
         } else if (HUBViewURIPredicate(viewURI: .gitHubSearchViewURI).evaluateViewURI(viewURI)) {
             let contentOperations: [HUBContentOperation] = [
                 GitHubSearchBarContentOperation(),
@@ -168,7 +175,8 @@ import HubFramework
                                                                  viewURI: viewURI,
                                                                  featureIdentifier: "gitHubSearch",
                                                                  featureTitle: "GitHub Search",
-                                                                 actionHandler: nil)
+                                                                 actionHandler: nil,
+                                                                 application: application)
         }
         return nil
     }
