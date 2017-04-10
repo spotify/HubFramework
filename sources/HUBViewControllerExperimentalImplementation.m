@@ -143,6 +143,7 @@ NS_ASSUME_NONNULL_BEGIN
     _componentWrappersByCellIdentifier = [NSMutableDictionary new];
     _componentWrappersByModelIdentifier = [NSMutableDictionary new];
     _renderingOperationQueue = [HUBOperationQueue new];
+    _application = application;
 
     viewModelLoader.delegate = self;
     if (HUBConformsToProtocol(viewModelLoader, @protocol(HUBViewModelLoaderWithActions))) {
