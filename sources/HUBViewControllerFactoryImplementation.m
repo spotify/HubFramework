@@ -226,7 +226,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                          componentLayoutManager:self.componentLayoutManager
                                                                   actionHandler:actionHandlerWrapper
                                                                   scrollHandler:scrollHandlerToUse
-                                                                    imageLoader:imageLoader];
+                                                                    imageLoader:imageLoader
+                                                                    application:self.application];
 }
 
 @end

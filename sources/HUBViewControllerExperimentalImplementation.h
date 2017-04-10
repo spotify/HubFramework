@@ -59,7 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
          componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
-                    imageLoader:(id<HUBImageLoader>)imageLoader NS_DESIGNATED_INITIALIZER;
+                    imageLoader:(id<HUBImageLoader>)imageLoader
+                    application:(UIApplication *)application NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 

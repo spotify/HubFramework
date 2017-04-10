@@ -81,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentWrapper *> *componentWrappersByModelIdentifier;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *highlightedComponentWrapper;
 @property (nonatomic, strong, readonly) HUBOperationQueue *renderingOperationQueue;
+@property (nonatomic, strong, readonly) UIApplication *application;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
 @property (nonatomic) BOOL viewModelHasChangedSinceLastLayoutUpdate;
@@ -107,6 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader
+                    application:(UIApplication *)application
 {
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(featureInfo != nil);
@@ -118,6 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(actionHandler != nil);
     NSParameterAssert(scrollHandler != nil);
     NSParameterAssert(imageLoader != nil);
+    NSParameterAssert(application!= nil);
 
     if (!(self = [super initWithNibName:nil bundle:nil])) {
         return nil;
@@ -971,8 +974,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         return 0;
     }
 
-    CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
-    CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+    CGFloat const statusBarWidth = CGRectGetWidth(self.application.statusBarFrame);
+    CGFloat const statusBarHeight = CGRectGetHeight(self.application.statusBarFrame);
     CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
     CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
     CGFloat const topBarHeight = MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
