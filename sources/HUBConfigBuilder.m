@@ -36,14 +36,14 @@
 @interface HUBConfigBuilder ()
 @property (nonatomic, strong) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong) id<HUBComponentFallbackHandler> componentFallbackHandler;
-@property (nonatomic, strong, readonly) UIApplication *application;
+@property (nonatomic, strong, readonly) id<HUBApplication> application;
 @end
 
 @implementation HUBConfigBuilder
 
 - (instancetype)initWithComponentMargin:(CGFloat)componentMargin
                componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                            application:(UIApplication *)application
+                            application:(id<HUBApplication>)application
 {
     id<HUBComponentLayoutManager> const componentLayoutManager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:componentMargin];
 
@@ -55,7 +55,7 @@
 
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                       componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                                   application:(UIApplication *)application
+                                   application:(id<HUBApplication>)application
 {
     self = [super init];
     if (self) {

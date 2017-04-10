@@ -39,6 +39,7 @@
 #import "HUBViewModelRenderer.h"
 #import "HUBViewURIPredicate.h"
 #import "HUBBlockContentOperationFactory.h"
+#import "HUBApplication.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -52,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly, nullable) id<HUBActionHandler> defaultActionHandler;
 @property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly, nullable) id<HUBImageLoaderFactory> imageLoaderFactory;
-@property (nonatomic, strong, readonly) UIApplication *application;
+@property (nonatomic, strong, readonly) id<HUBApplication>application;
 
 @end
 
@@ -66,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
                           defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
                         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                             imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
-                                   application:(UIApplication *)application
+                                   application:(id<HUBApplication>)application
 {
     NSParameterAssert(viewModelLoaderFactory != nil);
     NSParameterAssert(featureRegistry != nil);

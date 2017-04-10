@@ -26,6 +26,7 @@
 @protocol HUBComponentModel;
 @protocol HUBComponentWrapperDelegate;
 @protocol HUBComponentRegistry;
+@protocol HUBApplication;
 @class HUBComponentWrapper;
 @class HUBComponentUIStateManager;
 
@@ -40,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentRegistry The component registry to use to create new component instances
  */
 - (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
-                              application:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
+                              application:(id<HUBApplication>)application HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Add a component wrapper to the reuse pool, enabling it to be used for other models

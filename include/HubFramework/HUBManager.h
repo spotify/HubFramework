@@ -41,6 +41,7 @@
 @protocol HUBComponentLayoutManager;
 @protocol HUBComponentFallbackHandler;
 @protocol HUBContentOperationFactory;
+@protocol HUBApplication;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -114,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
                     defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
               prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
-                                   application:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
+                                   application:(id<HUBApplication>)application HUB_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -136,7 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
                     componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
-                               application:(UIApplication *)application NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:application:));
+                               application:(id<HUBApplication>)application NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:application:));
 
 /**
  *  Create an instance of this class with its required dependencies
@@ -151,7 +152,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (instancetype)managerWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                                      application:(UIApplication *)application;
+                                      application:(id<HUBApplication>)application;
 
 @end
 

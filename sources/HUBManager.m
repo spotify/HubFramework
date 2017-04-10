@@ -35,6 +35,7 @@
 #import "HUBDefaultComponentLayoutManager.h"
 #import "HUBDefaultComponentFallbackHandler.h"
 #import "HUBLiveServiceFactory.h"
+#import "HUBApplication.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -59,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
                     defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
               prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
-                                   application:(UIApplication *)application
+                                   application:(id<HUBApplication>)application
 {
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentFallbackHandler != nil);
@@ -145,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
                     componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
-                               application:(UIApplication *)application
+                               application:(id<HUBApplication>)application
 {
     id<HUBComponentLayoutManager> const componentLayoutManager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:componentMargin];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBDefaultComponentFallbackHandler alloc] initWithFallbackBlock:componentFallbackBlock];
@@ -157,7 +158,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)managerWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                                      application:(UIApplication *)application
+                                      application:(id<HUBApplication>)application
 {
     return [[self alloc] initWithComponentLayoutManager:componentLayoutManager
                                componentFallbackHandler:componentFallbackHandler

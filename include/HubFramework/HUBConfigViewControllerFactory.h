@@ -26,6 +26,7 @@
 @protocol HUBActionHandler;
 @protocol HUBContentOperation;
 @protocol HUBViewModel;
+@protocol HUBApplication;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -54,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
                                     featureIdentifier:(NSString *)featureIdentifier
                                          featureTitle:(NSString *)featureTitle
                                         actionHandler:(nullable id<HUBActionHandler>)actionHandler
-                                          application:(UIApplication *)application;
+                                          application:(id<HUBApplication>)application;
 
 @end
 

@@ -24,16 +24,17 @@
 #import "HUBActionContext.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentTarget.h"
+#import "HUBApplication.h"
 
 @interface HUBSelectionAction()
 
-@property (nonatomic, strong, readonly) UIApplication *application;
+@property (nonatomic, strong, readonly) id<HUBApplication> application;
 
 @end
 
 @implementation HUBSelectionAction
 
-- (instancetype)initWithApplication:(UIApplication *)application
+- (instancetype)initWithApplication:(id<HUBApplication>)application
 {
     NSParameterAssert(application != nil);
 

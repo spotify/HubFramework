@@ -23,6 +23,7 @@
 
 #import "HUBActionRegistry.h"
 #import "HUBHeaderMacros.h"
+#import "HUBApplication.h"
 
 @protocol HUBAction;
 @class HUBIdentifier;
@@ -39,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  To be able to specify which selection action to use (useful for tests), use this class'
  *  designated initializer instead of this class constructor.
  */
-+ (instancetype)registryWithDefaultSelectionActionAndApplication:(UIApplication *)application;
++ (instancetype)registryWithDefaultSelectionActionAndApplication:(id<HUBApplication>)application;
 
 /**
  *  Initialize an instance of this class with a selection action

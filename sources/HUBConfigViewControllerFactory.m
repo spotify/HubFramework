@@ -32,6 +32,7 @@
 #import "HUBImageLoader.h"
 #import "HUBImageLoaderFactory.h"
 #import "HUBViewControllerImplementation.h"
+#import "HUBApplication.h"
 
 @implementation HUBConfigViewControllerFactory
 
@@ -41,7 +42,7 @@
                                     featureIdentifier:(NSString *)featureIdentifier
                                          featureTitle:(NSString *)featureTitle
                                         actionHandler:(nullable id<HUBActionHandler>)actionHandler
-                                          application:(UIApplication *)application
+                                          application:(id<HUBApplication>)application
 {
     id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureIdentifier
                                                                                               title:featureTitle];

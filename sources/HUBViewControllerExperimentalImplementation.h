@@ -28,6 +28,7 @@
 @protocol HUBViewControllerScrollHandler;
 @protocol HUBImageLoader;
 @protocol HUBViewModelLoader;
+@protocol HUBApplication;
 @class HUBCollectionViewFactory;
 @class HUBComponentReusePool;
 
@@ -60,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader
-                    application:(UIApplication *)application NS_DESIGNATED_INITIALIZER;
+                    application:(id<HUBApplication>)application NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - Unavailable initializers
 
