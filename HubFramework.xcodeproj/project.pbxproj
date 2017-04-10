@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1D5216EE1E9BACB20001B887 /* HUBApplicationImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5216ED1E9BACB20001B887 /* HUBApplicationImplementation.m */; };
+		1D5216F21E9BB3950001B887 /* HUBApplicationMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5216F11E9BB3950001B887 /* HUBApplicationMock.m */; };
 		344E43D11E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */; };
 		344E43D21E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */; };
 		3E73B3C01E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E73B3BF1E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m */; };
@@ -506,6 +507,8 @@
 		1D5216E81E9BAC130001B887 /* HUBApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBApplication.h; sourceTree = "<group>"; };
 		1D5216EC1E9BACB20001B887 /* HUBApplicationImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBApplicationImplementation.h; sourceTree = "<group>"; };
 		1D5216ED1E9BACB20001B887 /* HUBApplicationImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBApplicationImplementation.m; sourceTree = "<group>"; };
+		1D5216F01E9BB3950001B887 /* HUBApplicationMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBApplicationMock.h; sourceTree = "<group>"; };
+		1D5216F11E9BB3950001B887 /* HUBApplicationMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBApplicationMock.m; sourceTree = "<group>"; };
 		1D98E5BC1DC09FB500607097 /* HUBComponentActionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentActionObserver.h; sourceTree = "<group>"; };
 		2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentFactoryMock.m; sourceTree = "<group>"; };
 		2932EAD3C06CBB869669B382 /* HUBComponentFactoryMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactoryMock.h; sourceTree = "<group>"; };
@@ -901,6 +904,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D5216EF1E9BB3730001B887 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				1D5216F01E9BB3950001B887 /* HUBApplicationMock.h */,
+				1D5216F11E9BB3950001B887 /* HUBApplicationMock.m */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
 		521891EB1DEE40ED00FA3BF7 /* Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -1571,6 +1583,7 @@
 				8A6529F01D82B4BD007B1A15 /* Actions */,
 				8AD152101D9972850008E182 /* Networking */,
 				8A15132D1DB7B59300DE8C7A /* Touches */,
+				1D5216EF1E9BB3730001B887 /* Utilities */,
 			);
 			name = Mocks;
 			path = mocks;
@@ -1986,6 +1999,7 @@
 				521891EA1DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.m in Sources */,
 				6563FF481E97A4D000070763 /* HUBCollectionContainerView.m in Sources */,
 				521891E61DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m in Sources */,
+				1D5216F21E9BB3950001B887 /* HUBApplicationMock.m in Sources */,
 				8ACB2A7A1C6A2F7C000741D7 /* HUBIdentifier.m in Sources */,
 				8A786BB81C5A4CB400B2AB9E /* HUBMutableJSONPathImplementation.m in Sources */,
 				8AD0646C1C68E7B00086C081 /* HUBComponentCollectionViewCell.m in Sources */,

@@ -24,6 +24,7 @@
 #import "HUBActionRegistryImplementation.h"
 #import "HUBActionFactoryMock.h"
 #import "HUBActionMock.h"
+#import "HUBApplicationMock.h"
 #import "HUBIdentifier.h"
 
 @interface HUBActionRegistryTests : XCTestCase
@@ -39,7 +40,8 @@
 - (void)setUp
 {
     [super setUp];
-    self.actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionAction];
+    HUBApplicationMock * const applicationMock = [HUBApplicationMock new];
+    self.actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionActionAndApplication:applicationMock];
 }
 
 - (void)tearDown
