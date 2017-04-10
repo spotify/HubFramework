@@ -35,7 +35,7 @@
 @protocol HUBIconImageResolver;
 @protocol HUBViewControllerScrollHandler;
 @protocol HUBComponentRegistry;
-@protocol HUBApplication;
+@protocol HUBApplicationProtocol;
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                       componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                                   application:(id<HUBApplication>)application HUB_DESIGNATED_INITIALIZER;
+                                   application:(id<HUBApplicationProtocol>)application HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Convenience initializer with default layout and using a block for fallback handling.
@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithComponentMargin:(CGFloat)componentMargin
                componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                            application:(id<HUBApplication>)application;
+                            application:(id<HUBApplicationProtocol>)application;
 
 /**
  *  Builds a configuration based on builder properties.

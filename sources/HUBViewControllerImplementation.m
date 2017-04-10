@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentWrapper *> *componentWrappersByModelIdentifier;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *highlightedComponentWrapper;
 @property (nonatomic, strong, readonly) HUBOperationQueue *renderingOperationQueue;
-@property (nonatomic, strong, readonly) id<HUBApplication> application;
+@property (nonatomic, strong, readonly) id<HUBApplicationProtocol> application;
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, assign) BOOL viewHasBeenLaidOut;
@@ -111,7 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
                   actionHandler:(id<HUBActionHandler>)actionHandler
                   scrollHandler:(id<HUBViewControllerScrollHandler>)scrollHandler
                     imageLoader:(id<HUBImageLoader>)imageLoader
-                    application:(id<HUBApplication>)application
+                    application:(id<HUBApplicationProtocol>)application
 {
     NSParameterAssert(viewURI != nil);
     NSParameterAssert(featureInfo != nil);

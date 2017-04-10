@@ -42,7 +42,7 @@
                                     featureIdentifier:(NSString *)featureIdentifier
                                          featureTitle:(NSString *)featureTitle
                                         actionHandler:(nullable id<HUBActionHandler>)actionHandler
-                                          application:(id<HUBApplication>)application
+                                          application:(id<HUBApplicationProtocol>)application
 {
     id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureIdentifier
                                                                                               title:featureTitle];

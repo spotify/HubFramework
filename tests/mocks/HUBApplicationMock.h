@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The `HUBApplicationMock` class <#what does it do#>
  */
-@interface HUBApplicationMock : NSObject <HUBApplication>
+@interface HUBApplicationMock : NSObject <HUBApplicationProtocol>
 
 @end
 

@@ -28,13 +28,13 @@
 
 @interface HUBSelectionAction()
 
-@property (nonatomic, strong, readonly) id<HUBApplication> application;
+@property (nonatomic, strong, readonly) id<HUBApplicationProtocol> application;
 
 @end
 
 @implementation HUBSelectionAction
 
-- (instancetype)initWithApplication:(id<HUBApplication>)application
+- (instancetype)initWithApplication:(id<HUBApplicationProtocol>)application
 {
     NSParameterAssert(application != nil);
 

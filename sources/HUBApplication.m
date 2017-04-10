@@ -1,12 +1,12 @@
-#import "HUBApplicationImplementation.h"
+#import "HUBApplication.h"
 
-@interface HUBApplicationImplementation()
+@interface HUBApplication()
 
 @property (nonatomic, strong, readonly) UIApplication *application;
 
 @end
 
-@implementation HUBApplicationImplementation
+@implementation HUBApplication
 
 - (instancetype)initWithApplication:(UIApplication *)application
 {

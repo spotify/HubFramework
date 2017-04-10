@@ -31,7 +31,7 @@ import HubFramework
     var githubConfig: HUBConfig!
     let hubComponentFallbackHandler = ComponentFallbackHandler()
     var liveService: HUBLiveService?
-    let application: UIApplication = UIApplication.shared
+    var application: HUBApplicationProtocol!
 
     // MARK: - UIApplicationDelegate
 
@@ -81,6 +81,7 @@ import HubFramework
     // MARK: - Private
 
     private func setupConfigs() {
+        application = HUBApplication(application: UIApplication.shared)
         let builder = HUBConfigBuilder(componentMargin: ComponentMargin, componentFallbackHandler: hubComponentFallbackHandler, application: application)
 
         defaultConfig = builder.build()

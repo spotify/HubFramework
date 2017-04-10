@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
                     defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
               prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
-                                   application:(id<HUBApplication>)application
+                                   application:(id<HUBApplicationProtocol>)application
 {
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentFallbackHandler != nil);
@@ -146,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
                     componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
-                               application:(id<HUBApplication>)application
+                               application:(id<HUBApplicationProtocol>)application
 {
     id<HUBComponentLayoutManager> const componentLayoutManager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:componentMargin];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBDefaultComponentFallbackHandler alloc] initWithFallbackBlock:componentFallbackBlock];
@@ -158,7 +158,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)managerWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                                      application:(id<HUBApplication>)application
+                                      application:(id<HUBApplicationProtocol>)application
 {
     return [[self alloc] initWithComponentLayoutManager:componentLayoutManager
                                componentFallbackHandler:componentFallbackHandler

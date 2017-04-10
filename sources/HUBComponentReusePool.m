@@ -39,14 +39,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBIdentifier *, NSMutableSet<HUBComponentWrapper *> *> *componentWrappers;
 @property (nonatomic, strong, readonly) id<HUBGestureRecognizerSynchronizing> gestureRecognizerSynchronizer;
-@property (nonatomic, strong, readonly) id<HUBApplication> application;
+@property (nonatomic, strong, readonly) id<HUBApplicationProtocol> application;
 
 @end
 
 @implementation HUBComponentReusePool
 
 - (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
-                              application:(id<HUBApplication>)application
+                              application:(id<HUBApplicationProtocol>)application
 {
     NSParameterAssert(componentRegistry != nil);
     

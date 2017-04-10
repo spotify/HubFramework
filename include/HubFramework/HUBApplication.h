@@ -21,14 +21,23 @@
 
 #import <UIKit/UIKit.h>
 
+#import "HUBHeaderMacros.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol HUBApplication <NSObject>
+@protocol HUBApplicationProtocol <NSObject>
 
 @property(nonatomic, strong, readonly, nullable) UIWindow *keyWindow;
 @property(nonatomic, assign, readonly) CGRect statusBarFrame;
 
 - (BOOL)openURL:(NSURL *)url;
+
+@end
+
+
+@interface HUBApplication: NSObject <HUBApplicationProtocol>
+
+- (instancetype)initWithApplication:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
 
 @end
 

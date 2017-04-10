@@ -33,7 +33,7 @@
 @protocol HUBComponent;
 @protocol HUBComponentModel;
 @protocol HUBComponentImageData;
-@protocol HUBApplication;
+@protocol HUBApplicationProtocol;
 @class HUBIdentifier;
 @class HUBComponentWrapper;
 @class HUBComponentUIStateManager;
@@ -196,7 +196,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
                 gestureRecognizer:(HUBComponentGestureRecognizer *)gestureRecognizer
                            parent:(nullable HUBComponentWrapper *)parent
-                      application:(id<HUBApplication>)application HUB_DESIGNATED_INITIALIZER;
+                      application:(id<HUBApplicationProtocol>)application HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Notify the component wrapper that its view was added to a new superview

@@ -26,7 +26,7 @@
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
 @protocol HUBActionHandler;
-@protocol HUBApplication;
+@protocol HUBApplicationProtocol;
 @class HUBViewModelLoaderFactoryImplementation;
 @class HUBFeatureRegistryImplementation;
 @class HUBComponentRegistryImplementation;
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
                           defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
                         componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                             imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
-                                   application:(id<HUBApplication>)application HUB_DESIGNATED_INITIALIZER;
+                                   application:(id<HUBApplicationProtocol>)application HUB_DESIGNATED_INITIALIZER;
 
 @end
 

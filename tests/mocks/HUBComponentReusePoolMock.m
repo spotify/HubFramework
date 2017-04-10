@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initializer
 
-- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry application:(id<HUBApplication>)application
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry application:(id<HUBApplicationProtocol>)application
 {
     self = [super initWithComponentRegistry:componentRegistry application:application];
     

@@ -24,7 +24,7 @@
 #import "HUBAction.h"
 #import "HUBHeaderMacros.h"
 
-@protocol HUBApplication;
+@protocol HUBApplicationProtocol;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface HUBSelectionAction : NSObject <HUBAction>
 
-- (instancetype)initWithApplication:(id<HUBApplication>)application HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithApplication:(id<HUBApplicationProtocol>)application HUB_DESIGNATED_INITIALIZER;
 
 @end
 
