@@ -33,12 +33,6 @@
 #import "HUBImageLoaderFactory.h"
 #import "HUBViewControllerImplementation.h"
 
-@interface HUBConfigViewControllerFactory()
-
-@property (nonatomic, strong, readonly) UIApplication *application;
-
-@end
-
 @implementation HUBConfigViewControllerFactory
 
 - (HUBViewController *)createViewControllerWithConfig:(HUBConfig *)config
@@ -47,6 +41,7 @@
                                     featureIdentifier:(NSString *)featureIdentifier
                                          featureTitle:(NSString *)featureTitle
                                         actionHandler:(nullable id<HUBActionHandler>)actionHandler
+                                          application:(UIApplication *)application
 {
     id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureIdentifier
                                                                                               title:featureTitle];
@@ -65,7 +60,7 @@
     HUBViewModelRenderer * const viewModelRenderer = [HUBViewModelRenderer new];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
     HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:config.componentRegistry
-                                                                                                    application:self.application];
+                                                                                                    application:application];
 
     id<HUBActionHandler> const actionHandlerWrapper = [[HUBActionHandlerWrapper alloc] initWithActionHandler:actionHandler
                                                                                               actionRegistry:config.actionRegistry
@@ -86,7 +81,7 @@
                                                       actionHandler:actionHandlerWrapper
                                                       scrollHandler:scrollHandlerToUse
                                                         imageLoader:imageLoader
-                                                        application:self.application];
+                                                        application:application];
     
 }
 

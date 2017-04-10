@@ -19,7 +19,7 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class HUBConfig;
 @class HUBViewController;
@@ -53,7 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
                                               viewURI:(NSURL *)viewURI
                                     featureIdentifier:(NSString *)featureIdentifier
                                          featureTitle:(NSString *)featureTitle
-                                        actionHandler:(nullable id<HUBActionHandler>)actionHandler;
+                                        actionHandler:(nullable id<HUBActionHandler>)actionHandler
+                                          application:(UIApplication *)application;
 
 @end
 
