@@ -85,7 +85,8 @@
                                              componentLayoutManager:config.componentLayoutManager
                                                       actionHandler:actionHandlerWrapper
                                                       scrollHandler:scrollHandlerToUse
-                                                        imageLoader:imageLoader];
+                                                        imageLoader:imageLoader
+                                                        application:self.application];
     
 }
 
