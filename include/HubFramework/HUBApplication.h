@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol HUBApplication <NSObject>
 
-@property(nonatomic, strong, readonly) UIWindow *keyWindow;
+@property(nonatomic, strong, readonly, nullable) UIWindow *keyWindow;
 @property(nonatomic, assign, readonly) CGRect statusBarFrame;
 
 - (BOOL)openURL:(NSURL *)url;

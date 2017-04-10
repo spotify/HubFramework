@@ -22,10 +22,13 @@
 #import <Foundation/Foundation.h>
 
 #import "HUBApplication.h"
+#import "HUBHeaderMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBApplicationImplementation : NSObject <HUBApplication>
+
+- (instancetype)initWithApplication:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
 
 @end
 
