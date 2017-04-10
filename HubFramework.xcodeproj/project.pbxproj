@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D5216EE1E9BACB20001B887 /* HUBApplicationImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5216ED1E9BACB20001B887 /* HUBApplicationImplementation.m */; };
 		344E43D11E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */; };
 		344E43D21E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */; };
 		3E73B3C01E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E73B3BF1E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m */; };
@@ -502,6 +503,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1D5216E81E9BAC130001B887 /* HUBApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBApplication.h; sourceTree = "<group>"; };
+		1D5216EC1E9BACB20001B887 /* HUBApplicationImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBApplicationImplementation.h; sourceTree = "<group>"; };
+		1D5216ED1E9BACB20001B887 /* HUBApplicationImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBApplicationImplementation.m; sourceTree = "<group>"; };
 		1D98E5BC1DC09FB500607097 /* HUBComponentActionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentActionObserver.h; sourceTree = "<group>"; };
 		2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentFactoryMock.m; sourceTree = "<group>"; };
 		2932EAD3C06CBB869669B382 /* HUBComponentFactoryMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactoryMock.h; sourceTree = "<group>"; };
@@ -1040,6 +1044,8 @@
 				DD79C3B91D9F0A8800FA77E5 /* HUBKeyPath.h */,
 				DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */,
 				3E8FB7CE1E5B40820085B978 /* HUBGestureRecognizerSynchronizing.h */,
+				1D5216EC1E9BACB20001B887 /* HUBApplicationImplementation.h */,
+				1D5216ED1E9BACB20001B887 /* HUBApplicationImplementation.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1052,6 +1058,7 @@
 				8A5D7A5A1CB806E200B987BA /* HUBHeaderMacros.h */,
 				8AF21C9D1C6D044700960A06 /* HUBIdentifier.h */,
 				8A0E4B801CB69CD80019DE71 /* HUBSerializable.h */,
+				1D5216E81E9BAC130001B887 /* HUBApplication.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1987,6 +1994,7 @@
 				8A6529F91D82DC33007B1A15 /* HUBActionHandlerWrapper.m in Sources */,
 				8A786BB21C5A383800B2AB9E /* HUBViewModelJSONSchemaImplementation.m in Sources */,
 				3E73B3C01E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m in Sources */,
+				1D5216EE1E9BACB20001B887 /* HUBApplicationImplementation.m in Sources */,
 				652382BD1E7A9B3900B99784 /* HUBComponentWrapperImageLoader.m in Sources */,
 				8A5035221DD473040008B499 /* HUBCollectionView.m in Sources */,
 				8AF5B57F1C64B59E001FF228 /* HUBViewModelLoaderImplementation.m in Sources */,
