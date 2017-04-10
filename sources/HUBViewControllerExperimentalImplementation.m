@@ -151,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadView
 {
-    HUBCollectionContainerView *containerView = [[HUBCollectionContainerView alloc] initWithFrame:CGRectZero];
+    HUBCollectionContainerView * const containerView = [[HUBCollectionContainerView alloc] initWithFrame:CGRectZero];
 
     HUBCollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
     self.collectionView = collectionView;
