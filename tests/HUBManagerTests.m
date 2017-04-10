@@ -83,8 +83,8 @@
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
     
     HUBManager * const manager = [HUBManager managerWithComponentLayoutManager:componentLayoutManager
-                                                      componentFallbackHandler:componentFallbackHandler
-                                                                   application:self.applicationMock];
+                                                                   application:self.applicationMock
+                                                      componentFallbackHandler:componentFallbackHandler];
     
     [self verifyManager:manager];
 }
@@ -94,11 +94,12 @@
     __block BOOL fallbackComponentUsed = NO;
     
     HUBManager * const manager = [HUBManager managerWithComponentMargin:15
+                                                            application:self.applicationMock
                                                  componentFallbackBlock:^id<HUBComponent>(HUBComponentCategory category) {
                                                      XCTAssertEqualObjects(category, HUBComponentCategoryRow);
                                                      fallbackComponentUsed = YES;
                                                      return [HUBComponentMock new];
-                                                 } application:self.applicationMock];
+                                                 }];
     
     [self verifyManager:manager];
     

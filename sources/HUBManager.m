@@ -145,20 +145,20 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBManager (Convenience)
 
 + (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
-                    componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
                                application:(id<HUBApplicationProtocol>)application
+                    componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
 {
     id<HUBComponentLayoutManager> const componentLayoutManager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:componentMargin];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBDefaultComponentFallbackHandler alloc] initWithFallbackBlock:componentFallbackBlock];
     
     return [self managerWithComponentLayoutManager:componentLayoutManager
-                          componentFallbackHandler:componentFallbackHandler
-                                       application:application];
+                                       application:application
+                          componentFallbackHandler:componentFallbackHandler];
 }
 
 + (instancetype)managerWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
                                       application:(id<HUBApplicationProtocol>)application
+                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
 {
     return [[self alloc] initWithComponentLayoutManager:componentLayoutManager
                                componentFallbackHandler:componentFallbackHandler

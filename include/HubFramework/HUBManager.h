@@ -136,8 +136,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  the `componentFallbackBlock` will be used for a default `HUBComponentFallbackHandler`.
  */
 + (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
+                               application:(id<HUBApplicationProtocol>)application
                     componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
-                               application:(id<HUBApplicationProtocol>)application NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:application:));
+NS_SWIFT_NAME(init(componentMargin:application:componentFallbackClosure:));
 
 /**
  *  Create an instance of this class with its required dependencies
@@ -151,8 +152,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  For more customization options, see this class' designated initializer.
  */
 + (instancetype)managerWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
-                                      application:(id<HUBApplicationProtocol>)application;
+                                      application:(id<HUBApplicationProtocol>)application
+                         componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler;
 
 @end
 
