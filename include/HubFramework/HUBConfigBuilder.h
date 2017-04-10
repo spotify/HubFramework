@@ -19,7 +19,8 @@
  *  under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import <CoreGraphics/CoreGraphics.h>
+#import <Foundation/Foundation.h>
 
 #import "HUBComponentCategories.h"
 

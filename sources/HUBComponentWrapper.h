@@ -19,8 +19,6 @@
  *  under the License.
  */
 
-#import <UIKit/UIKit.h>
-
 #import "HUBComponentWithImageHandling.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentContentOffsetObserver.h"

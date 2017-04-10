@@ -19,8 +19,6 @@
  *  under the License.
  */
 
-#import <UIKit/UIKit.h>
-
 #import "HUBActionRegistry.h"
 #import "HUBHeaderMacros.h"
 #import "HUBApplication.h"

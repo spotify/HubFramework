@@ -19,8 +19,6 @@
  *  under the License.
  */
 
-#import <UIKit/UIKit.h>
-
 #import "HUBHeaderMacros.h"
 
 @protocol HUBComponentModel;

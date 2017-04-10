@@ -18,10 +18,10 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-#import <UIKit/UIKit.h>
 
 #import "HUBHeaderMacros.h"
 #import "HUBComponentCategories.h"
+#import <CoreGraphics/CoreGraphics.h>
 
 @protocol HUBFeatureRegistry;
 @protocol HUBComponent;

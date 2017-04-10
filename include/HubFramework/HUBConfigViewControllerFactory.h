@@ -19,7 +19,7 @@
  *  under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 @class HUBConfig;
 @class HUBViewController;
