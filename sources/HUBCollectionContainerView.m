@@ -19,15 +19,36 @@
  *  under the License.
  */
 
-#import "HUBContainerView.h"
+#import "HUBCollectionContainerView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation HUBContainerView
+@implementation HUBCollectionContainerView
 
-- (BOOL)isContentViewScrolling
+@synthesize contentView = _contentView;
+
+- (void)setContentView:(nullable UICollectionView *)contentView
 {
-    return self.contentView.isDragging || self.contentView.isDecelerating;
+    if (_contentView == contentView) {
+        return;
+    }
+
+    [_contentView removeFromSuperview];
+    _contentView = nil;
+
+    if (contentView != nil) {
+        UICollectionView * const nonNilContentView = contentView;
+        _contentView = nonNilContentView;
+        [self insertSubview:nonNilContentView atIndex:0];
+        [self addGestureRecognizer:nonNilContentView.panGestureRecognizer];
+    }
+}
+
+- (void)setBackgroundColor:(nullable UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+
+    self.contentView.backgroundColor = backgroundColor;
 }
 
 @end

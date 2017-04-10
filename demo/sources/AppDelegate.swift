@@ -199,7 +199,7 @@ import HubFramework
     private func prepareAndPush(viewController: HUBViewController, animated: Bool) {
         viewController.delegate = navigationController
         viewController.view.backgroundColor = .white
-        viewController.alwaysBounceVertical = (viewController.viewURI == URL.gitHubSearchViewURI)
+        viewController.view.contentView?.alwaysBounceVertical = (viewController.viewURI == URL.gitHubSearchViewURI)
         navigationController?.pushViewController(viewController, animated: animated)
     }
 }

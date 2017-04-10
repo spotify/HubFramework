@@ -26,13 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// View that acts as a container view for a Hub Framework view controller
 @interface HUBContainerView : UIView
 
-/**
- *  Collection view contained by the container.
- *
- *  When a collectionView is set it's also added as a subview, and its pan gesture
- *  recognizer is added to this view.
- */
-@property (nonatomic, strong, nullable) UICollectionView *collectionView;
+/// The content view of this container.
+@property (nonatomic, strong, readonly, nullable) UIScrollView *contentView;
+
+/// A convenience getter to determine if the content view is scrolling.
+@property (nonatomic, readonly, getter=isContentViewScrolling) BOOL contentViewScrolling;
 
 @end
 

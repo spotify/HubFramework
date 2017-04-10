@@ -22,6 +22,7 @@
 #import "HUBHeaderMacros.h"
 #import "HUBComponentLayoutTraits.h"
 #import "HUBComponentType.h"
+#import "HUBContainerView.h"
 #import "HUBScrollPosition.h"
 #import "HUBActionPerformer.h"
 
@@ -174,6 +175,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The view controller's delegate. See `HUBViewControllerDelegate` for more information.
 @property (nonatomic, weak, nullable) id<HUBViewControllerDelegate> delegate;
 
+/// Redeclare the view property to be a HUBContainerView.
+@property (null_resettable, nonatomic, strong) HUBContainerView *view;
+
 /// The identifier of the feature that this view controller belongs to
 @property (nonatomic, copy, readonly) NSString *featureIdentifier;
 
@@ -187,12 +191,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  method. You can also use `-viewControllerDidUpdate`, which gets called once a new view model has been assigned.
  */
 @property (nonatomic, nullable, readonly) id<HUBViewModel> viewModel;
-
-/// Whether the view controller's content view is currently being scrolled
-@property (nonatomic, assign, readonly) BOOL isViewScrolling;
-
-/// Whether the view controller's content view should allow drag vertically even if content is smaller than bounds
-@property (nonatomic, assign) BOOL alwaysBounceVertical;
 
 /**
  *  Return the frame used to render a body component at a given index
