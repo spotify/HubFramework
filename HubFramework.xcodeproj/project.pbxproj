@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D4553861E9CEDF700DA6BF5 /* HUBApplicationMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5216F11E9BB3950001B887 /* HUBApplicationMock.m */; };
 		1D5216EE1E9BACB20001B887 /* HUBApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5216ED1E9BACB20001B887 /* HUBApplication.m */; };
 		1D5216F21E9BB3950001B887 /* HUBApplicationMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5216F11E9BB3950001B887 /* HUBApplicationMock.m */; };
 		1DF8F3541E9BCD6E0045D66D /* HUBApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D5216E81E9BAC130001B887 /* HUBApplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2107,6 +2108,7 @@
 				8ABD6CB21DF6ECCD005BCB33 /* UIViewController+HUBSimulateLayoutCycle.m in Sources */,
 				8ABD6CBC1DF6ECF3005BCB33 /* HUBComponentMock.m in Sources */,
 				8ABD6CCA1DF6ECF3005BCB33 /* HUBTouchMock.m in Sources */,
+				1D4553861E9CEDF700DA6BF5 /* HUBApplicationMock.m in Sources */,
 				8ABD6CB31DF6ECF3005BCB33 /* HUBConnectivityStateResolverMock.m in Sources */,
 				8ABD6CD61DF6ECF3005BCB33 /* HUBViewControllerFactoryTests.m in Sources */,
 				8ABD6CD31DF6ECF3005BCB33 /* HUBViewModelLoaderFactoryTests.m in Sources */,
