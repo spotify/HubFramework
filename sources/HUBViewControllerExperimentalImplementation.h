@@ -50,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param actionHandler The object that will handle actions for this view controller
  *  @param scrollHandler The object that will handle scrolling for the view controller
  *  @param imageLoader The loader to use to load images for components
+ *  @param application The object exposing UIApplication's properties and methods.
  */
 - (instancetype)initWithViewURI:(NSURL *)viewURI
                     featureInfo:(id<HUBFeatureInfo>)featureInfo

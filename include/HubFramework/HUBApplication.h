@@ -25,18 +25,29 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Protocol that exposes UIApplication's properties and methods
 @protocol HUBApplicationProtocol <NSObject>
 
+/// The app's key window.
 @property(nonatomic, strong, readonly, nullable) UIWindow *keyWindow;
+
+/// The frame rectangle defining the area of the status bar.
 @property(nonatomic, assign, readonly) CGRect statusBarFrame;
 
+/// Attempts to open the resource at the specified URL.
 - (BOOL)openURL:(NSURL *)url;
 
 @end
 
 
+/// Class exposing needed properties and methods of UIApplication
 @interface HUBApplication: NSObject <HUBApplicationProtocol>
 
+/**
+ Initialize an instance of this class
+
+ @param application An instance of UIApplication.
+ */
 - (instancetype)initWithApplication:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
 
 @end

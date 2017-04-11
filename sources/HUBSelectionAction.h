@@ -34,6 +34,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface HUBSelectionAction : NSObject <HUBAction>
 
+/**
+ *  Initialize an instance of this class.
+ *
+ *  @param application The object exposing UIApplication's properties and methods.
+ */
 - (instancetype)initWithApplication:(id<HUBApplicationProtocol>)application HUB_DESIGNATED_INITIALIZER;
 
 @end

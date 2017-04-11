@@ -49,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param defaultActionHandler Any user-defined action handler to use for features that don't define their own
  *  @param componentLayoutManager The object that manages layout for components for created view controllers
  *  @param imageLoaderFactory The factory to use to create image loaders
+ *  @param application The object exposing UIApplication's properties and methods.
  */
 - (instancetype)initWithViewModelLoaderFactory:(HUBViewModelLoaderFactoryImplementation *)viewModelLoaderFactory
                                featureRegistry:(HUBFeatureRegistryImplementation *)featureRegistry

@@ -37,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Initialize an instance of this class with a component registry and a UI state manager
  *
  *  @param componentRegistry The component registry to use to create new component instances
+ *  @param application The object exposing UIApplication's properties and methods
  */
 - (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
                               application:(id<HUBApplicationProtocol>)application HUB_DESIGNATED_INITIALIZER;

@@ -77,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
  *         See `HUBComponentLayoutManager` for more information.
  *  @param componentFallbackHandler The object to use to fall back to default components in case a component couldn't be
  *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
+ *  @param application The object exposing UIApplication's properties and methods.
  */
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                       componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler

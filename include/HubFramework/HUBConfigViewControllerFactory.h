@@ -48,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureIdentifier Used to set the `featureInfo` on the created view controller.
  *  @param featureTitle Used to set the `featureInfo` on the created view controller.
  *  @param actionHandler Optional custom action handler. See `HUBActionHandler` for more info.
+ *  @param application The object exposing UIApplication's properties and methods.
  */
 - (HUBViewController *)createViewControllerWithConfig:(HUBConfig *)config
                                     contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations

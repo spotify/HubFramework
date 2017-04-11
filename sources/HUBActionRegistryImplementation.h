@@ -37,6 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  To be able to specify which selection action to use (useful for tests), use this class'
  *  designated initializer instead of this class constructor.
+ *
+ *  @param application The object exposing UIApplication's properties and methods
  */
 + (instancetype)registryWithDefaultSelectionActionAndApplication:(id<HUBApplicationProtocol>)application;
 

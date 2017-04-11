@@ -187,6 +187,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
  *  @param delegate The object that will act as the component wrapper's delegate
  *  @param gestureRecognizer The gesture recognizer to use to detect touches & taps for highlight & selection
  *  @param parent The parent component wrapper if this component wrapper is a child component
+ *  @param application The object exposing UIApplication's properties and methods
  */
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
