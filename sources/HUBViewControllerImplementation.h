@@ -28,6 +28,8 @@
 @protocol HUBViewControllerScrollHandler;
 @protocol HUBImageLoader;
 @protocol HUBViewModelLoader;
+@protocol HUBViewController;
+
 @class HUBCollectionViewFactory;
 @class HUBComponentReusePool;
 @class HUBViewModelRenderer;
@@ -35,7 +37,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Extension enabling a HUBViewControllerImplementation instance to be initialized by the framework
-@interface HUBViewControllerImplementation : HUBViewController
+@interface HUBViewControllerImplementation : UIViewController<HUBViewController, HUBActionPerformer>
 
 /**
  *  Initialize an instance of this class with its required dependencies

@@ -197,10 +197,11 @@ import HubFramework
     // MARK: - View controller handling
     
     private func prepareAndPush(viewController: HUBViewController, animated: Bool) {
+        guard let vc = viewController as? UIViewController else { return }
         viewController.delegate = navigationController
         viewController.view.backgroundColor = .white
         viewController.view.contentView?.alwaysBounceVertical = (viewController.viewURI == URL.gitHubSearchViewURI)
-        navigationController?.pushViewController(viewController, animated: animated)
+        navigationController?.pushViewController(vc, animated: animated)
     }
 }
 

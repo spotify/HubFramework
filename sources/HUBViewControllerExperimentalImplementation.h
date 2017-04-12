@@ -34,7 +34,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Extension enabling a HUBViewControllerExperimentalImplementation instance to be initialized by the framework
-@interface HUBViewControllerExperimentalImplementation : HUBViewController
+@interface HUBViewControllerExperimentalImplementation : UIViewController<HUBViewController, HUBActionPerformer>
 
 /**
  *  Initialize an instance of this class with its required dependencies

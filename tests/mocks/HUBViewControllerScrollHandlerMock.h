@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) void (^ _Nullable scrollingDidEndHandler)(CGRect contentRect);
 
 /// A block that can be used instead of the @c contentInset property to determine the content inset.
-@property (nonatomic, copy) UIEdgeInsets (^ _Nullable contentInsetHandler)(HUBViewController *controller, UIEdgeInsets proposedOffset);
+@property (nonatomic, copy) UIEdgeInsets (^ _Nullable contentInsetHandler)(id<HUBViewController>controller, UIEdgeInsets proposedOffset);
 
 @end
 

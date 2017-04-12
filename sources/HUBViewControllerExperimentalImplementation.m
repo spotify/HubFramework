@@ -94,6 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize viewModel = _viewModel;
 @synthesize viewURI = _viewURI;
+@synthesize delegate = _delegate;
 
 #pragma mark - Lifecycle
 

@@ -22,7 +22,7 @@
 #import <UIKit/UIKit.h>
 #import "HUBScrollPosition.h"
 
-@class HUBViewController;
+@protocol HUBViewController;
 
 /**
  *  Protocol used to define custom scroll handlers for Hub Framework view controllers
@@ -41,7 +41,7 @@
  *  The Hub Framework will call this method when a view controller is being set up. The returned
  *  value will be used for both horizontal & vertical scroll indicators.
  */
-- (BOOL)shouldShowScrollIndicatorsInViewController:(HUBViewController *)viewController;
+- (BOOL)shouldShowScrollIndicatorsInViewController:(id<HUBViewController>)viewController;
 
 /**
  *  Return whether the system's automatic adjustment of content insets should be used for a view controller
@@ -52,7 +52,7 @@
  *  assigned to its `automaticallyAdjustsScrollViewInsets` property, so see the documentation for that property
  *  on `UIViewController` for more information.
  */
-- (BOOL)shouldAutomaticallyAdjustContentInsetsInViewController:(HUBViewController *)viewController;
+- (BOOL)shouldAutomaticallyAdjustContentInsetsInViewController:(id<HUBViewController>)viewController;
 
 /**
  *  Return the manner in which the keyboard is dismissed when the content in the view controller is dragged
@@ -63,7 +63,7 @@
  *  assigned to the `keyboardDismissMode` property of the used scroll view, so see the documentation for that property
  *  on `UIScrollView` for more information.
  */
-- (UIScrollViewKeyboardDismissMode)keyboardDismissModeForViewController:(HUBViewController *)viewController;
+- (UIScrollViewKeyboardDismissMode)keyboardDismissModeForViewController:(id<HUBViewController>)viewController;
 
 /**
  *  Return the deceleration rate to use for scrolling in a view controller
@@ -73,7 +73,7 @@
  *  The Hub Framework will call this method when a view controller is being set up. The returned value will be
  *  assied to the `decelerationRate` property of its internal scroll view.
  */
-- (CGFloat)scrollDecelerationRateForViewController:(HUBViewController *)viewController;
+- (CGFloat)scrollDecelerationRateForViewController:(id<HUBViewController>)viewController;
 
 /**
  *  Return the content insets to use for a view controller
@@ -86,7 +86,7 @@
  *  response to that its view model has been changed. The returned value will be assigned to the `contentInset`
  *  property of its internal scroll view.
  */
-- (UIEdgeInsets)contentInsetsForViewController:(HUBViewController *)viewController
+- (UIEdgeInsets)contentInsetsForViewController:(id<HUBViewController>)viewController
                          proposedContentInsets:(UIEdgeInsets)proposedContentInsets;
 
 /**
@@ -95,7 +95,7 @@
  *  @param viewController The view controller in question
  *  @param currentContentRect The rectangle of the currently visible content in the view controller's scroll view
  */
-- (void)scrollingWillStartInViewController:(HUBViewController *)viewController
+- (void)scrollingWillStartInViewController:(id<HUBViewController>)viewController
                         currentContentRect:(CGRect)currentContentRect;
 
 /**
@@ -104,7 +104,7 @@
  *  @param viewController The view controller in question
  *  @param contentOffest The scroll view's content offset
  */
-- (void)scrollViewDidScrollInViewController:(HUBViewController *)viewController
+- (void)scrollViewDidScrollInViewController:(id<HUBViewController>)viewController
                           withContentOffset:(CGPoint)contentOffest;
 
 /**
@@ -113,7 +113,7 @@
  *  @param viewController The view controller in question
  *  @param currentContentRect The rectangle of the currently visible content in the view controller's scroll view
  */
-- (void)scrollingDidEndInViewController:(HUBViewController *)viewController
+- (void)scrollingDidEndInViewController:(id<HUBViewController>)viewController
                      currentContentRect:(CGRect)currentContentRect;
 
 /**
@@ -125,7 +125,7 @@
  *  @param currentContentOffset The current scrolling content offset
  *  @param proposedContentOffset The target content offset that the Hub Framework is proposing will be used
  */
-- (CGPoint)targetContentOffsetForEndedScrollInViewController:(HUBViewController *)viewController
+- (CGPoint)targetContentOffsetForEndedScrollInViewController:(id<HUBViewController>)viewController
                                                     velocity:(CGVector)velocity
                                                 contentInset:(UIEdgeInsets)contentInset
                                         currentContentOffset:(CGPoint)currentContentOffset
@@ -144,6 +144,6 @@
                                        scrollPosition:(HUBScrollPosition)scrollPosition
                                          contentInset:(UIEdgeInsets)contentInset
                                           contentSize:(CGSize)contentSize
-                                       viewController:(HUBViewController *)viewController;
+                                       viewController:(id<HUBViewController>)viewController;
 
 @end

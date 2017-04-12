@@ -36,7 +36,7 @@
 
 @implementation HUBConfigViewControllerFactory
 
-- (HUBViewController *)createViewControllerWithConfig:(HUBConfig *)config
+- (id<HUBViewController>)createViewControllerWithConfig:(HUBConfig *)config
                                     contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
                                               viewURI:(NSURL *)viewURI
                                     featureIdentifier:(NSString *)featureIdentifier

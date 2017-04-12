@@ -198,7 +198,6 @@
 		8AD0645E1C64F45A0086C081 /* HUBConnectivityStateResolverMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD0645C1C64F4510086C081 /* HUBConnectivityStateResolverMock.m */; };
 		8AD064601C64F5460086C081 /* HUBViewModelLoaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD0645F1C64F5460086C081 /* HUBViewModelLoaderTests.m */; };
 		8AD064661C64F7C30086C081 /* HUBContentOperationMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064651C64F7C30086C081 /* HUBContentOperationMock.m */; };
-		8AD064691C68DEA10086C081 /* HUBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064681C68DEA10086C081 /* HUBViewController.m */; };
 		8AD0646C1C68E7B00086C081 /* HUBComponentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD0646B1C68E7B00086C081 /* HUBComponentCollectionViewCell.m */; };
 		8AD064701C68EDA20086C081 /* HUBViewControllerFactoryImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD0646F1C68EDA20086C081 /* HUBViewControllerFactoryImplementation.m */; };
 		8AD064741C68F0820086C081 /* HUBViewModelLoaderFactoryImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064731C68F0820086C081 /* HUBViewModelLoaderFactoryImplementation.m */; };
@@ -335,7 +334,6 @@
 		8AE6C0841DF6E4020063B2B1 /* HUBContentOperationExecutionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9894A1DD1E3C1006CA6AA /* HUBContentOperationExecutionInfo.m */; };
 		8AE6C0851DF6E4020063B2B1 /* HUBContentOperationContextImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 521891E81DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.h */; };
 		8AE6C0861DF6E4020063B2B1 /* HUBContentOperationContextImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 521891E91DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.m */; };
-		8AE6C0881DF6E4020063B2B1 /* HUBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD064681C68DEA10086C081 /* HUBViewController.m */; };
 		8AE6C0891DF6E4020063B2B1 /* HUBViewModelImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF9FA051C5254F5003F3D6C /* HUBViewModelImplementation.h */; };
 		8AE6C08A1DF6E4020063B2B1 /* HUBViewModelImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF9FA061C5254F5003F3D6C /* HUBViewModelImplementation.m */; };
 		8AE6C08B1DF6E4020063B2B1 /* HUBViewModelRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F64C5C2B1DB82CA30077E619 /* HUBViewModelRenderer.h */; };
@@ -745,7 +743,6 @@
 		8AD0645F1C64F5460086C081 /* HUBViewModelLoaderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBViewModelLoaderTests.m; sourceTree = "<group>"; };
 		8AD064641C64F7C30086C081 /* HUBContentOperationMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBContentOperationMock.h; sourceTree = "<group>"; };
 		8AD064651C64F7C30086C081 /* HUBContentOperationMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBContentOperationMock.m; sourceTree = "<group>"; };
-		8AD064681C68DEA10086C081 /* HUBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBViewController.m; sourceTree = "<group>"; };
 		8AD0646B1C68E7B00086C081 /* HUBComponentCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentCollectionViewCell.m; sourceTree = "<group>"; };
 		8AD0646E1C68EDA20086C081 /* HUBViewControllerFactoryImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBViewControllerFactoryImplementation.h; sourceTree = "<group>"; };
 		8AD0646F1C68EDA20086C081 /* HUBViewControllerFactoryImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBViewControllerFactoryImplementation.m; sourceTree = "<group>"; };
@@ -1590,7 +1587,6 @@
 		8AF9FA041C5254E8003F3D6C /* View */ = {
 			isa = PBXGroup;
 			children = (
-				8AD064681C68DEA10086C081 /* HUBViewController.m */,
 				6584D5881E82BBA10042666A /* HUBViewControllerImplementation.h */,
 				6584D5891E82BBA10042666A /* HUBViewControllerImplementation.m */,
 				6584D6281E82C6A30042666A /* HUBViewControllerExperimentalImplementation.h */,
@@ -2001,7 +1997,6 @@
 				8A2A72EB1D4B726800141619 /* HUBComponentTargetJSONSchemaImplementation.m in Sources */,
 				8AD064561C64B6DB0086C081 /* HUBComponentModelJSONSchemaImplementation.m in Sources */,
 				8A15729B1D9E735C00E9DD4D /* HUBLiveServiceImplementation.m in Sources */,
-				8AD064691C68DEA10086C081 /* HUBViewController.m in Sources */,
 				8A786BA81C5A2E8F00B2AB9E /* HUBJSONSchemaRegistryImplementation.m in Sources */,
 				8A2A72E61D4B6F1700141619 /* HUBComponentTargetBuilderImplementation.m in Sources */,
 				8ADA48571D784C1400C27F21 /* HUBAutoEquatable.m in Sources */,
@@ -2237,7 +2232,6 @@
 				8AE6C0DC1DF6E41B0063B2B1 /* HUBAutoEquatable.m in Sources */,
 				8AE6C0C81DF6E4100063B2B1 /* HUBDefaultImageLoader.m in Sources */,
 				8AE6C0A91DF6E40D0063B2B1 /* HUBDefaultComponentFallbackHandler.m in Sources */,
-				8AE6C0881DF6E4020063B2B1 /* HUBViewController.m in Sources */,
 				8AE6C0801DF6E4020063B2B1 /* HUBBlockContentOperation.m in Sources */,
 				8AE6C08C1DF6E4020063B2B1 /* HUBViewModelRenderer.m in Sources */,
 				8AE6C0BE1DF6E40D0063B2B1 /* HUBComponentUIStateManager.m in Sources */,
