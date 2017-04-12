@@ -50,6 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether the collection view should act like the user is dragging its content
 @property (nonatomic) BOOL mockedIsDragging;
 
+- (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout;
+
 @end
 
 NS_ASSUME_NONNULL_END

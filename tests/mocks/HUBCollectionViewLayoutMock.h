@@ -30,8 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface HUBCollectionViewLayoutMock : HUBCollectionViewLayout
 
-/// Default constructor takes no arguments.
-- (instancetype)init;
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry;
 
 /**
  *  Returns the number of times that computeForCollectionViewSize:viewModel:diff:addHeaderMargin: was called.

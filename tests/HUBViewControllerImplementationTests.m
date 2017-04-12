@@ -33,6 +33,7 @@
 #import "HUBImageLoaderMock.h"
 #import "HUBViewModelBuilder.h"
 #import "HUBViewModelRendererMock.h"
+#import "HUBCollectionViewLayoutMock.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentImageDataBuilder.h"
@@ -69,6 +70,7 @@
 @property (nonatomic, strong) HUBComponentMock *component;
 @property (nonatomic, strong) HUBComponentFactoryMock *componentFactory;
 @property (nonatomic, strong) HUBCollectionViewMock *collectionView;
+@property (nonatomic, strong) HUBCollectionViewLayoutMock *collectionViewLayout;
 @property (nonatomic, strong) HUBCollectionViewFactoryMock *collectionViewFactory;
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong) HUBComponentReusePoolMock *componentReusePool;
@@ -134,8 +136,9 @@
     self.component = [HUBComponentMock new];
     self.componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{componentDefaults.componentName: self.component}];
     [self.componentRegistry registerComponentFactory:self.componentFactory forNamespace:componentDefaults.componentNamespace];
-    
-    self.collectionView = [HUBCollectionViewMock new];
+
+    self.collectionViewLayout = [[HUBCollectionViewLayoutMock alloc] initWithComponentRegistry:self.componentRegistry];
+    self.collectionView = [[HUBCollectionViewMock alloc] initWithCollectionViewLayout:self.collectionViewLayout];
     self.collectionViewFactory = [[HUBCollectionViewFactoryMock alloc] initWithCollectionView:self.collectionView
                                                                             componentRegistry:self.componentRegistry];
     

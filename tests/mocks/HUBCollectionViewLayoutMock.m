@@ -22,7 +22,6 @@
 #import "HUBCollectionViewLayoutMock.h"
 
 #import "HUBComponentLayoutManagerMock.h"
-#import "HUBComponentRegistryMock.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,9 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBCollectionViewLayoutMock
 
-- (instancetype)init
+- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
 {
-    self = [super initWithComponentRegistry:[HUBComponentRegistryMock new] componentLayoutManager:[HUBComponentLayoutManagerMock new]];
+    self = [super initWithComponentRegistry:componentRegistry componentLayoutManager:[HUBComponentLayoutManagerMock new]];
     if (self) {
         _capturedViewModels = [NSMutableArray array];
         _capturedViewModelDiffs = [NSMutableArray array];
@@ -50,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 diff:(nullable HUBViewModelDiff *)diff
                      addHeaderMargin:(BOOL)addHeaderMargin
 {
+    [super computeForCollectionViewSize:collectionViewSize viewModel:viewModel diff:diff addHeaderMargin:addHeaderMargin];
     [self.capturedViewModels addObject:viewModel];
     HUBViewModelDiff *nonNullDiff = (diff == nil) ? (HUBViewModelDiff *)[NSNull null] : diff;
     [self.capturedViewModelDiffs addObject:nonNullDiff];
