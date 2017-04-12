@@ -33,7 +33,6 @@
 #import "HUBImageLoaderMock.h"
 #import "HUBViewModelBuilder.h"
 #import "HUBViewModelRendererMock.h"
-#import "HUBCollectionViewLayoutMock.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentImageDataBuilder.h"
@@ -44,6 +43,7 @@
 #import "HUBComponentWrapper.h"
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
+#import "HUBCollectionViewLayoutMock.h"
 #import "HUBActionHandlerMock.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBActionRegistryImplementation.h"
@@ -70,7 +70,6 @@
 @property (nonatomic, strong) HUBComponentMock *component;
 @property (nonatomic, strong) HUBComponentFactoryMock *componentFactory;
 @property (nonatomic, strong) HUBCollectionViewMock *collectionView;
-@property (nonatomic, strong) HUBCollectionViewLayoutMock *collectionViewLayout;
 @property (nonatomic, strong) HUBCollectionViewFactoryMock *collectionViewFactory;
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong) HUBComponentReusePoolMock *componentReusePool;
@@ -137,8 +136,8 @@
     self.componentFactory = [[HUBComponentFactoryMock alloc] initWithComponents:@{componentDefaults.componentName: self.component}];
     [self.componentRegistry registerComponentFactory:self.componentFactory forNamespace:componentDefaults.componentNamespace];
 
-    self.collectionViewLayout = [[HUBCollectionViewLayoutMock alloc] initWithComponentRegistry:self.componentRegistry];
-    self.collectionView = [[HUBCollectionViewMock alloc] initWithCollectionViewLayout:self.collectionViewLayout];
+    HUBCollectionViewLayoutMock *layout = [[HUBCollectionViewLayoutMock alloc] initWithComponentRegistry:self.componentRegistry];
+    self.collectionView = [[HUBCollectionViewMock alloc] initWithCollectionViewLayout:layout];
     self.collectionViewFactory = [[HUBCollectionViewFactoryMock alloc] initWithCollectionView:self.collectionView
                                                                             componentRegistry:self.componentRegistry];
     
