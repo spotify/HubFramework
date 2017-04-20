@@ -41,8 +41,7 @@
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
 
     HUBConfigBuilder * const builder = [[HUBConfigBuilder alloc] initWithComponentLayoutManager:componentLayoutManager
-                                                                       componentFallbackHandler:componentFallbackHandler
-                                                                                    application:[HUBApplicationMock new]];
+                                                                       componentFallbackHandler:componentFallbackHandler];
 
     id<HUBIconImageResolver> const iconImageResolver = [HUBIconImageResolverMock new];
     id<HUBJSONSchema> const jsonSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:componentDefaults

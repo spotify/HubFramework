@@ -39,7 +39,6 @@
 @property(nonatomic, strong) HUBComponentDefaults *componentDefaults;
 @property(nonatomic, strong) HUBComponentFallbackHandlerMock *componentFallbackHandler;
 @property(nonatomic, strong) HUBComponentLayoutManagerMock *componentLayoutManager;
-@property(nonatomic, strong) HUBApplicationMock *applicationMock;
 @end
 
 @implementation HUBConfigTests
@@ -49,15 +48,13 @@
     self.componentDefaults = [HUBComponentDefaults defaultsForTesting];
     self.componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:self.componentDefaults];
     self.componentLayoutManager = [HUBComponentLayoutManagerMock new];
-    self.applicationMock = [HUBApplicationMock new];
 }
 
 
 - (void)testBuilderCanCreateConfigWithNoOptionalParameters
 {
     HUBConfigBuilder *builder = [[HUBConfigBuilder alloc] initWithComponentLayoutManager:self.componentLayoutManager
-                                                                componentFallbackHandler:self.componentFallbackHandler
-                                                                             application:self.applicationMock];
+                                                                componentFallbackHandler:self.componentFallbackHandler];
 
     HUBConfig *config = [builder build];
     XCTAssertNotNil(config);
@@ -68,8 +65,7 @@
 - (void)testBuilderCanCreateConfigThroughConvinienceMethod
 {
     HUBConfigBuilder * const builder = [[HUBConfigBuilder alloc] initWithComponentMargin:57
-                                                                componentFallbackHandler:self.componentFallbackHandler
-                                                                             application:self.applicationMock];
+                                                                componentFallbackHandler:self.componentFallbackHandler];
     HUBConfig * const config = [builder build];
 
     XCTAssertNotNil(config);
@@ -82,8 +78,7 @@
 - (void)testBuilderCreatesDefaultConfigPropertiesWhenUndefined
 {
     HUBConfigBuilder *builder = [[HUBConfigBuilder alloc] initWithComponentLayoutManager:self.componentLayoutManager
-                                                                componentFallbackHandler:self.componentFallbackHandler
-                                                                             application:self.applicationMock];
+                                                                componentFallbackHandler:self.componentFallbackHandler];
 
     HUBConfig *config = [builder build];
     XCTAssertNotNil(config.jsonSchema);
@@ -94,8 +89,7 @@
 - (void)testBuilderCreatesActionAndComponentRegistry
 {
     HUBConfigBuilder *builder = [[HUBConfigBuilder alloc] initWithComponentLayoutManager:self.componentLayoutManager
-                                                                componentFallbackHandler:self.componentFallbackHandler
-                                                                             application:self.applicationMock];
+                                                                componentFallbackHandler:self.componentFallbackHandler];
 
     HUBConfig *config = [builder build];
 
@@ -106,8 +100,7 @@
 - (void)testBuilderCanCreateConfigWithOptionalValuesDefines
 {
     HUBConfigBuilder * const builder = [[HUBConfigBuilder alloc] initWithComponentLayoutManager:self.componentLayoutManager
-                                                                       componentFallbackHandler:self.componentFallbackHandler
-                                                                                    application:self.applicationMock];
+                                                                       componentFallbackHandler:self.componentFallbackHandler];
 
 
     id<HUBJSONSchema> const jsonSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults

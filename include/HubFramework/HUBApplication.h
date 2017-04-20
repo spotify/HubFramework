@@ -43,12 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Class exposing needed properties and methods of UIApplication
 @interface HUBApplication: NSObject <HUBApplicationProtocol>
 
-/**
- Initialize an instance of this class
-
- @param application An instance of UIApplication.
- */
-- (instancetype)initWithApplication:(UIApplication *)application HUB_DESIGNATED_INITIALIZER;
+/// Returns singleton instance
++ (instancetype)sharedApplication;
 
 @end
 

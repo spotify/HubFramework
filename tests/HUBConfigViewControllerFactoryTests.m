@@ -45,8 +45,7 @@
                                                                                viewURI:viewURI
                                                                      featureIdentifier:@"test"
                                                                           featureTitle:@"Test"
-                                                                         actionHandler:nil
-                                                                           application:[HUBApplicationMock new]];
+                                                                         actionHandler:nil];
     XCTAssertEqualObjects(viewController.viewURI, viewURI);
 }
 @end

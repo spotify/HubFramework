@@ -103,7 +103,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param appendedContentOperationFactory Any content operation factory that should be appended to the chain of content
  *         operation factories for all views. The operations that this factory produces will therefore always be appended
  *         to the content loading chain of any view.
- *  @param application The object exposing UIApplication's properties and methods.
  *
  *  In case you don't want to use all of these customization options, see the initializers available in `HUBManager+Convenience.h`.
  */
@@ -115,8 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
                           defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
                     defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
               prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
-               appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
-                                   application:(id<HUBApplicationProtocol>)application HUB_DESIGNATED_INITIALIZER;
+               appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory HUB_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -129,7 +127,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentMargin The margin to use in between components. Margin will be applied between two components except
  *         when both of them are not stackable (vertical) or when one of them is full width (horizontal). For more information,
  *         see the "Layout programming guide".
- *  @param application The object exposing UIApplication's properties and methods.
  *  @param componentFallbackBlock A block that should return a fallback component in case one couldn't be resolved for a given
  *         component model. The block must always return a `HUBComponent` instance.
  *
@@ -138,16 +135,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  the `componentFallbackBlock` will be used for a default `HUBComponentFallbackHandler`.
  */
 + (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
-                               application:(id<HUBApplicationProtocol>)application
                     componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
-NS_SWIFT_NAME(init(componentMargin:application:componentFallbackClosure:));
+NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:));
 
 /**
  *  Create an instance of this class with its required dependencies
  *
  *  @param componentLayoutManager The object to use to manage layout for components, computing margins using layout traits.
  *         See `HUBComponentLayoutManager` for more information.
- *  @param application The object exposing UIApplication's properties and methods.
  *  @param componentFallbackHandler The object to use to fall back to default components in case a component couldn't be
  *         resolved using the standard mechanism. See `HUBComponentFallbackHandler` for more information.
  *
@@ -155,7 +150,6 @@ NS_SWIFT_NAME(init(componentMargin:application:componentFallbackClosure:));
  *  For more customization options, see this class' designated initializer.
  */
 + (instancetype)managerWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                                      application:(id<HUBApplicationProtocol>)application
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler;
 
 @end

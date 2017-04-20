@@ -41,8 +41,6 @@
 
 @interface HUBManagerTests : XCTestCase
 
-@property (nonatomic, strong) HUBApplicationMock *applicationMock;
-
 @end
 
 @implementation HUBManagerTests
@@ -50,8 +48,6 @@
 - (void)setUp
 {
     [super setUp];
-
-    self.applicationMock = [HUBApplicationMock new];
 }
 
 #pragma mark - Tests
@@ -70,8 +66,7 @@
                                                                defaultActionHandler:nil
                                                          defaultContentReloadPolicy:nil
                                                    prependedContentOperationFactory:nil
-                                                    appendedContentOperationFactory:nil
-                                                                        application:self.applicationMock];
+                                                    appendedContentOperationFactory:nil];
     
     [self verifyManager:manager];
 }
@@ -83,7 +78,6 @@
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
     
     HUBManager * const manager = [HUBManager managerWithComponentLayoutManager:componentLayoutManager
-                                                                   application:self.applicationMock
                                                       componentFallbackHandler:componentFallbackHandler];
     
     [self verifyManager:manager];
@@ -94,7 +88,6 @@
     __block BOOL fallbackComponentUsed = NO;
     
     HUBManager * const manager = [HUBManager managerWithComponentMargin:15
-                                                            application:self.applicationMock
                                                  componentFallbackBlock:^id<HUBComponent>(HUBComponentCategory category) {
                                                      XCTAssertEqualObjects(category, HUBComponentCategoryRow);
                                                      fallbackComponentUsed = YES;

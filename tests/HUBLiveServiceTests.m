@@ -55,7 +55,6 @@
     id<HUBComponentFallbackHandler> const fallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
     
     self.hubManager = [HUBManager managerWithComponentLayoutManager:layoutManager
-                                                        application:[HUBApplicationMock new]
                                            componentFallbackHandler:fallbackHandler];
     self.service = [HUBLiveServiceImplementation new];
     self.service.delegate = self;

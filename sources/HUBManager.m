@@ -60,12 +60,10 @@ NS_ASSUME_NONNULL_BEGIN
                     defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
               prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
-                                   application:(id<HUBApplicationProtocol>)application
 {
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentFallbackHandler != nil);
-    NSParameterAssert(application != nil);
-    
+
     self = [super init];
     
     if (self) {
@@ -98,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                           appendedContentOperationFactory:appendedContentOperationFactory
                                                                                                                                defaultContentReloadPolicy:defaultContentReloadPolicy];
         
-        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionActionAndApplication:application];
+        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionActionAndApplication:[HUBApplication sharedApplication]];
         
         id<HUBImageLoaderFactory> const imageLoaderFactoryToUse = imageLoaderFactory ?: [HUBDefaultImageLoaderFactory new];
         
@@ -109,8 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                                                actionRegistry:actionRegistry
                                                                                                                                          defaultActionHandler:defaultActionHandler
                                                                                                                                        componentLayoutManager:componentLayoutManager
-                                                                                                                                           imageLoaderFactory:imageLoaderFactoryToUse
-                                                                                                                                                  application:application];
+                                                                                                                                           imageLoaderFactory:imageLoaderFactoryToUse];
         
         _featureRegistry = featureRegistry;
         _componentRegistry = componentRegistry;
@@ -145,19 +142,16 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUBManager (Convenience)
 
 + (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
-                               application:(id<HUBApplicationProtocol>)application
                     componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
 {
     id<HUBComponentLayoutManager> const componentLayoutManager = [[HUBDefaultComponentLayoutManager alloc] initWithMargin:componentMargin];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBDefaultComponentFallbackHandler alloc] initWithFallbackBlock:componentFallbackBlock];
     
     return [self managerWithComponentLayoutManager:componentLayoutManager
-                                       application:application
                           componentFallbackHandler:componentFallbackHandler];
 }
 
 + (instancetype)managerWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
-                                      application:(id<HUBApplicationProtocol>)application
                          componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
 {
     return [[self alloc] initWithComponentLayoutManager:componentLayoutManager
@@ -168,8 +162,7 @@ NS_ASSUME_NONNULL_BEGIN
                                    defaultActionHandler:nil
                              defaultContentReloadPolicy:nil
                        prependedContentOperationFactory:nil
-                        appendedContentOperationFactory:nil
-                                            application:application];
+                        appendedContentOperationFactory:nil];
 }
 
 @end

@@ -29,13 +29,21 @@
 
 @implementation HUBApplication
 
-- (instancetype)initWithApplication:(UIApplication *)application
++ (instancetype)sharedApplication
 {
-    NSParameterAssert(application != nil);
-    
+    static HUBApplication *application = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        application = [HUBApplication new];
+    });
+    return application;
+}
+
+- (instancetype)init
+{
     self = [super init];
     if (self) {
-        _application = application;
+        _application = [UIApplication sharedApplication];
     }
     return self;
 }

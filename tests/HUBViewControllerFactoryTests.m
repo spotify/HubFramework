@@ -75,8 +75,7 @@
                                                  defaultActionHandler:self.defaultActionHandler
                                            defaultContentReloadPolicy:self.defaultContentReloadPolicy
                                      prependedContentOperationFactory:nil
-                                      appendedContentOperationFactory:nil
-                                                          application:[HUBApplicationMock new]];
+                                      appendedContentOperationFactory:nil];
 }
 
 - (void)tearDown

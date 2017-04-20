@@ -42,7 +42,6 @@
                                     featureIdentifier:(NSString *)featureIdentifier
                                          featureTitle:(NSString *)featureTitle
                                         actionHandler:(nullable id<HUBActionHandler>)actionHandler
-                                          application:(id<HUBApplicationProtocol>)application
 {
     id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureIdentifier
                                                                                               title:featureTitle];
@@ -61,7 +60,7 @@
     HUBViewModelRenderer * const viewModelRenderer = [HUBViewModelRenderer new];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
     HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:config.componentRegistry
-                                                                                                    application:application];
+                                                                                                    application:[HUBApplication sharedApplication]];
 
     id<HUBActionHandler> const actionHandlerWrapper = [[HUBActionHandlerWrapper alloc] initWithActionHandler:actionHandler
                                                                                               actionRegistry:config.actionRegistry
@@ -82,7 +81,7 @@
                                                       actionHandler:actionHandlerWrapper
                                                       scrollHandler:scrollHandlerToUse
                                                         imageLoader:imageLoader
-                                                        application:application];
+                                                        application:[HUBApplication sharedApplication]];
     
 }
 
