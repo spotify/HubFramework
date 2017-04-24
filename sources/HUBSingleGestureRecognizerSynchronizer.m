@@ -22,24 +22,28 @@
 #import "HUBSingleGestureRecognizerSynchronizer.h"
 
 @interface HUBSingleGestureRecognizerSynchronizer ()
-@property (nonatomic, assign) BOOL shouldPreventGestureRecognizersFromHandlingTouches;
+@property (nonatomic, weak, nullable) HUBComponentGestureRecognizer *recognizingGestureRecognizer;
 @end
 
 @implementation HUBSingleGestureRecognizerSynchronizer
 
 - (void)gestureRecognizerDidBeginHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer
 {
-    self.shouldPreventGestureRecognizersFromHandlingTouches = YES;
+    if (self.recognizingGestureRecognizer == nil) {
+        self.recognizingGestureRecognizer = gestureRecognizer;
+    }
 }
 
 - (void)gestureRecognizerDidFinishHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer
 {
-    self.shouldPreventGestureRecognizersFromHandlingTouches = NO;
+    if (gestureRecognizer == self.recognizingGestureRecognizer) {
+        self.recognizingGestureRecognizer = nil;
+    }
 }
 
 - (BOOL)gestureRecognizerShouldBeginHandlingTouches:(HUBComponentGestureRecognizer *)gestureRecognizer
 {
-    return self.shouldPreventGestureRecognizersFromHandlingTouches == NO;
+    return self.recognizingGestureRecognizer == nil;
 }
 
 @end

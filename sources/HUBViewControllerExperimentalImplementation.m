@@ -168,6 +168,7 @@ NS_ASSUME_NONNULL_BEGIN
     collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;
     collectionView.keyboardDismissMode = [self.scrollHandler keyboardDismissModeForViewController:self];
     collectionView.decelerationRate = [self.scrollHandler scrollDecelerationRateForViewController:self];
+    collectionView.allowsSelection = NO;
     collectionView.bounces = YES;
     collectionView.dataSource = self;
     collectionView.delegate = self;
