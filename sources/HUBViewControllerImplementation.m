@@ -76,7 +76,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSHashTable<id<HUBComponentActionObserver>> *actionObservingComponentWrappers;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *headerComponentWrapper;
 @property (nonatomic, strong, readonly) NSMutableArray<HUBComponentWrapper *> *overlayComponentWrappers;
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByIdentifier;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSUUID *, HUBComponentWrapper *> *componentWrappersByCellIdentifier;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, HUBComponentWrapper *> *componentWrappersByModelIdentifier;
 @property (nonatomic, strong, nullable) HUBComponentWrapper *highlightedComponentWrapper;
@@ -896,7 +895,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 - (void)didAddComponentWrapper:(HUBComponentWrapper *)wrapper
 {
     wrapper.delegate = self;
-    self.componentWrappersByIdentifier[wrapper.identifier] = wrapper;
 }
 
 - (void)configureComponentWrapper:(HUBComponentWrapper *)wrapper withModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
@@ -1079,7 +1077,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (void)removeComponentWrapper:(HUBComponentWrapper *)wrapper
 {
-    self.componentWrappersByIdentifier[wrapper.identifier] = nil;
     self.componentWrappersByModelIdentifier[wrapper.model.identifier] = nil;
     [wrapper.view removeFromSuperview];
 }
