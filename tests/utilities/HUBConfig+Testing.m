@@ -30,7 +30,6 @@
 #import "HUBIconImageResolverMock.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBViewControllerScrollHandlerMock.h"
-#import "HUBApplicationMock.h"
 
 @implementation HUBConfig(Testing)
 
