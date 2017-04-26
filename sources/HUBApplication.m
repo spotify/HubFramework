@@ -19,28 +19,48 @@
  *  under the License.
  */
 
-#import "HUBAction.h"
-#import "HUBHeaderMacros.h"
+#import "HUBApplication.h"
 
-@protocol HUBApplicationProtocol;
+@interface HUBApplication()
 
-NS_ASSUME_NONNULL_BEGIN
-
-/**
- *  An action that gets performed whenever a component is selected
- *
- *  This action opens any `URI` associated with the target of the component that was selected,
- *  using the default `[UIApplication openURL:]` API, and returns the outcome.
- */
-@interface HUBSelectionAction : NSObject <HUBAction>
-
-/**
- *  Initialize an instance of this class.
- *
- *  @param application The object exposing UIApplication's properties and methods.
- */
-- (instancetype)initWithApplication:(id<HUBApplicationProtocol>)application HUB_DESIGNATED_INITIALIZER;
+@property (nonatomic, strong, readonly) UIApplication *application;
 
 @end
 
-NS_ASSUME_NONNULL_END
+@implementation HUBApplication
+
++ (instancetype)sharedApplication
+{
+    static HUBApplication *application = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        application = [HUBApplication new];
+    });
+    return application;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _application = [UIApplication sharedApplication];
+    }
+    return self;
+}
+
+- (UIWindow *)keyWindow
+{
+    return self.application.keyWindow;
+}
+
+- (CGRect)statusBarFrame
+{
+    return self.application.statusBarFrame;
+}
+
+- (BOOL)openURL:(NSURL *)url
+{
+    return [self.application openURL:url];
+}
+
+@end

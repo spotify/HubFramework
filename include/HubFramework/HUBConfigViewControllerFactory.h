@@ -26,6 +26,7 @@
 @protocol HUBActionHandler;
 @protocol HUBContentOperation;
 @protocol HUBViewModel;
+@protocol HUBApplicationProtocol;
 
 NS_ASSUME_NONNULL_BEGIN
 

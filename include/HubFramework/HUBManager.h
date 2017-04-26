@@ -41,6 +41,7 @@
 @protocol HUBComponentLayoutManager;
 @protocol HUBComponentFallbackHandler;
 @protocol HUBContentOperationFactory;
+@protocol HUBApplicationProtocol;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -134,7 +135,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  the `componentFallbackBlock` will be used for a default `HUBComponentFallbackHandler`.
  */
 + (instancetype)managerWithComponentMargin:(CGFloat)componentMargin
-                    componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:));
+                    componentFallbackBlock:(id<HUBComponent>(^)(HUBComponentCategory))componentFallbackBlock
+NS_SWIFT_NAME(init(componentMargin:componentFallbackClosure:));
 
 /**
  *  Create an instance of this class with its required dependencies

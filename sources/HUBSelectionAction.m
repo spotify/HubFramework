@@ -21,13 +21,29 @@
 
 #import "HUBSelectionAction.h"
 
-#import <UIKit/UIKit.h>
-
 #import "HUBActionContext.h"
 #import "HUBComponentModel.h"
 #import "HUBComponentTarget.h"
+#import "HUBApplication.h"
+
+@interface HUBSelectionAction()
+
+@property (nonatomic, strong, readonly) id<HUBApplicationProtocol> application;
+
+@end
 
 @implementation HUBSelectionAction
+
+- (instancetype)initWithApplication:(id<HUBApplicationProtocol>)application
+{
+    NSParameterAssert(application != nil);
+
+    self = [super init];
+    if (self) {
+        _application = application;
+    }
+    return self;
+}
 
 - (BOOL)performWithContext:(id<HUBActionContext>)context
 {
@@ -37,7 +53,7 @@
         return NO;
     }
     
-    return [[UIApplication sharedApplication] openURL:targetURI];
+    return [self.application openURL:targetURI];
 }
 
 @end

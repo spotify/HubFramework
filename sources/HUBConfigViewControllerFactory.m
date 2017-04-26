@@ -32,7 +32,7 @@
 #import "HUBImageLoader.h"
 #import "HUBImageLoaderFactory.h"
 #import "HUBViewControllerImplementation.h"
-
+#import "HUBApplication.h"
 
 @implementation HUBConfigViewControllerFactory
 
@@ -59,7 +59,8 @@
 
     HUBViewModelRenderer * const viewModelRenderer = [HUBViewModelRenderer new];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
-    HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:config.componentRegistry];
+    HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:config.componentRegistry
+                                                                                                    application:[HUBApplication sharedApplication]];
 
     id<HUBActionHandler> const actionHandlerWrapper = [[HUBActionHandlerWrapper alloc] initWithActionHandler:actionHandler
                                                                                               actionRegistry:config.actionRegistry
@@ -79,7 +80,8 @@
                                              componentLayoutManager:config.componentLayoutManager
                                                       actionHandler:actionHandlerWrapper
                                                       scrollHandler:scrollHandlerToUse
-                                                        imageLoader:imageLoader];
+                                                        imageLoader:imageLoader
+                                                        application:[HUBApplication sharedApplication]];
     
 }
 

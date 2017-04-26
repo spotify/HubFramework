@@ -36,6 +36,7 @@
 @interface HUBConfigBuilder ()
 @property (nonatomic, strong) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong) id<HUBComponentFallbackHandler> componentFallbackHandler;
+@property (nonatomic, strong, readonly) id<HUBApplicationProtocol> application;
 @end
 
 @implementation HUBConfigBuilder
@@ -57,6 +58,7 @@
     if (self) {
         _componentLayoutManager = componentLayoutManager;
         _componentFallbackHandler = componentFallbackHandler;
+        _application = [HUBApplication sharedApplication];
     }
 
     return self;
@@ -75,7 +77,7 @@
                                                                                                               componentDefaults:componentDefaults
                                                                                                                      JSONSchema:defaultJSONSchema
                                                                                                               iconImageResolver:self.iconImageResolver];
-    HUBActionRegistryImplementation*actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionAction];
+    HUBActionRegistryImplementation *actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionActionAndApplication:self.application];
     id<HUBJSONSchema> jsonSchema = (id)self.jsonSchema ?: defaultJSONSchema;
 
     id<HUBImageLoaderFactory> imageLoaderFactory = (id)self.imageLoaderFactory ?: [HUBDefaultImageLoaderFactory new];

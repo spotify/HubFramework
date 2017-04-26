@@ -26,6 +26,7 @@
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
 @protocol HUBActionHandler;
+@protocol HUBApplicationProtocol;
 @class HUBViewModelLoaderFactoryImplementation;
 @class HUBFeatureRegistryImplementation;
 @class HUBComponentRegistryImplementation;

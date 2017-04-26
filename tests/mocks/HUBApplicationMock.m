@@ -19,28 +19,16 @@
  *  under the License.
  */
 
-#import "HUBAction.h"
-#import "HUBHeaderMacros.h"
+#import "HUBApplicationMock.h"
 
-@protocol HUBApplicationProtocol;
+@implementation HUBApplicationMock
 
-NS_ASSUME_NONNULL_BEGIN
+@synthesize keyWindow = _keyWindow;
+@synthesize statusBarFrame = _statusBarFrame;
 
-/**
- *  An action that gets performed whenever a component is selected
- *
- *  This action opens any `URI` associated with the target of the component that was selected,
- *  using the default `[UIApplication openURL:]` API, and returns the outcome.
- */
-@interface HUBSelectionAction : NSObject <HUBAction>
-
-/**
- *  Initialize an instance of this class.
- *
- *  @param application The object exposing UIApplication's properties and methods.
- */
-- (instancetype)initWithApplication:(id<HUBApplicationProtocol>)application HUB_DESIGNATED_INITIALIZER;
+- (BOOL)openURL:(NSURL *)url
+{
+    return YES;
+}
 
 @end
-
-NS_ASSUME_NONNULL_END

@@ -24,6 +24,7 @@
 #import "HUBActionFactory.h"
 #import "HUBIdentifier.h"
 #import "HUBSelectionAction.h"
+#import "HUBApplication.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -38,9 +39,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initializers
 
-+ (instancetype)registryWithDefaultSelectionAction
++ (instancetype)registryWithDefaultSelectionActionAndApplication:(id<HUBApplicationProtocol>)application
 {
-    return [[self alloc] initWithSelectionAction:[HUBSelectionAction new]];
+    HUBSelectionAction * const selectionAction = [[HUBSelectionAction alloc] initWithApplication:application];
+    return [[self alloc] initWithSelectionAction:selectionAction];
 }
 
 - (instancetype)initWithSelectionAction:(id<HUBAction>)selectionAction

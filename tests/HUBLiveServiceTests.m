@@ -30,6 +30,7 @@
 #import "HUBViewController.h"
 #import "HUBViewControllerFactory.h"
 #import "HUBViewModel.h"
+#import "HUBApplicationMock.h"
 
 #if HUB_DEBUG
 
@@ -53,7 +54,8 @@
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     id<HUBComponentFallbackHandler> const fallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
     
-    self.hubManager = [HUBManager managerWithComponentLayoutManager:layoutManager componentFallbackHandler:fallbackHandler];
+    self.hubManager = [HUBManager managerWithComponentLayoutManager:layoutManager
+                                           componentFallbackHandler:fallbackHandler];
     self.service = [HUBLiveServiceImplementation new];
     self.service.delegate = self;
 }

@@ -61,6 +61,7 @@
 #import "UIViewController+HUBSimulateLayoutCycle.h"
 #import "HUBUtilities.h"
 #import "HUBTestUtilities.h"
+#import "HUBApplicationMock.h"
 
 @interface HUBViewControllerImplementationTests : XCTestCase <HUBViewControllerDelegate>
 
@@ -93,6 +94,7 @@
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromSelectionDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromApperanceDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<UIView *> *componentViewsFromReuseDelegateMethod;
+@property (nonatomic, strong) HUBApplicationMock *applicationMock;
 @property (nonatomic, assign) BOOL didReceiveViewControllerDidFinishRendering;
 @property (nonatomic, copy) void (^viewControllerDidFinishRenderingBlock)(void);
 @property (nonatomic, copy) BOOL (^viewControllerShouldStartScrollingBlock)(void);
@@ -108,6 +110,8 @@
 - (void)setUp
 {
     [super setUp];
+
+    self.applicationMock = [HUBApplicationMock new];
     
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
@@ -128,7 +132,7 @@
                                                                                       JSONSchema:JSONSchemaRegistry.defaultSchema
                                                                                iconImageResolver:iconImageResolver];
     
-    self.componentReusePool = [[HUBComponentReusePoolMock alloc] initWithComponentRegistry:self.componentRegistry];
+    self.componentReusePool = [[HUBComponentReusePoolMock alloc] initWithComponentRegistry:self.componentRegistry application:self.applicationMock];
     
     self.scrollHandler = [HUBViewControllerScrollHandlerMock new];
     
@@ -234,7 +238,8 @@
                                                             componentLayoutManager:componentLayoutManager
                                                                      actionHandler:actionHandler
                                                                      scrollHandler:self.scrollHandler
-                                                                       imageLoader:self.imageLoader];
+                                                                       imageLoader:self.imageLoader
+                                                                       application:self.applicationMock];
     
     self.viewController.delegate = self;
 }

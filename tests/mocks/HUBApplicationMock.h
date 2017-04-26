@@ -19,27 +19,14 @@
  *  under the License.
  */
 
-#import "HUBAction.h"
-#import "HUBHeaderMacros.h"
+#import <Foundation/Foundation.h>
 
-@protocol HUBApplicationProtocol;
+#import "HUBApplication.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- *  An action that gets performed whenever a component is selected
- *
- *  This action opens any `URI` associated with the target of the component that was selected,
- *  using the default `[UIApplication openURL:]` API, and returns the outcome.
- */
-@interface HUBSelectionAction : NSObject <HUBAction>
-
-/**
- *  Initialize an instance of this class.
- *
- *  @param application The object exposing UIApplication's properties and methods.
- */
-- (instancetype)initWithApplication:(id<HUBApplicationProtocol>)application HUB_DESIGNATED_INITIALIZER;
+/// Mocked HUBApplication, only for use in tests.
+@interface HUBApplicationMock : NSObject <HUBApplicationProtocol>
 
 @end
 

@@ -24,6 +24,7 @@
 #import "HUBContentOperationMock.h"
 #import "HUBConfigViewControllerFactory.h"
 #import "HUBViewController.h"
+#import "HUBApplicationMock.h"
 
 
 @interface HUBConfigViewControllerFactoryTests : XCTestCase

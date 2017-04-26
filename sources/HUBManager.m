@@ -35,6 +35,7 @@
 #import "HUBDefaultComponentLayoutManager.h"
 #import "HUBDefaultComponentFallbackHandler.h"
 #import "HUBLiveServiceFactory.h"
+#import "HUBApplication.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -62,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSParameterAssert(componentLayoutManager != nil);
     NSParameterAssert(componentFallbackHandler != nil);
-    
+
     self = [super init];
     
     if (self) {
@@ -95,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                           appendedContentOperationFactory:appendedContentOperationFactory
                                                                                                                                defaultContentReloadPolicy:defaultContentReloadPolicy];
         
-        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionAction];
+        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionActionAndApplication:[HUBApplication sharedApplication]];
         
         id<HUBImageLoaderFactory> const imageLoaderFactoryToUse = imageLoaderFactory ?: [HUBDefaultImageLoaderFactory new];
         

@@ -36,6 +36,7 @@
 @protocol HUBIconImageResolver;
 @protocol HUBViewControllerScrollHandler;
 @protocol HUBComponentRegistry;
+@protocol HUBApplicationProtocol;
 
 
 NS_ASSUME_NONNULL_BEGIN

@@ -28,6 +28,8 @@
 #import "HUBComponentRegistry.h"
 #import "HUBComponentGestureRecognizer.h"
 #import "HUBSingleGestureRecognizerSynchronizer.h"
+#import "HUBApplication.h"
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -37,12 +39,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) HUBComponentUIStateManager *UIStateManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBIdentifier *, NSMutableSet<HUBComponentWrapper *> *> *componentWrappers;
 @property (nonatomic, strong, readonly) id<HUBGestureRecognizerSynchronizing> gestureRecognizerSynchronizer;
+@property (nonatomic, strong, readonly) id<HUBApplicationProtocol> application;
 
 @end
 
 @implementation HUBComponentReusePool
 
 - (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
+                              application:(id<HUBApplicationProtocol>)application
 {
     NSParameterAssert(componentRegistry != nil);
     
@@ -53,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
         _UIStateManager = [HUBComponentUIStateManager new];
         _componentWrappers = [NSMutableDictionary new];
         _gestureRecognizerSynchronizer = [HUBSingleGestureRecognizerSynchronizer new];
+        _application = application;
     }
     
     return self;
@@ -94,7 +99,8 @@ NS_ASSUME_NONNULL_BEGIN
                                            UIStateManager:self.UIStateManager
                                                  delegate:delegate
                                         gestureRecognizer:gestureRecognizer
-                                                   parent:parent];
+                                                   parent:parent
+                                              application:self.application];
 }
 
 @end

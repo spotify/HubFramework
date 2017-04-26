@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D4553861E9CEDF700DA6BF5 /* HUBApplicationMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5216F11E9BB3950001B887 /* HUBApplicationMock.m */; };
+		1D5216EE1E9BACB20001B887 /* HUBApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5216ED1E9BACB20001B887 /* HUBApplication.m */; };
+		1D5216F21E9BB3950001B887 /* HUBApplicationMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5216F11E9BB3950001B887 /* HUBApplicationMock.m */; };
+		1DF8F3541E9BCD6E0045D66D /* HUBApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D5216E81E9BAC130001B887 /* HUBApplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1DF8F3561E9BCE6D0045D66D /* HUBApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5216ED1E9BACB20001B887 /* HUBApplication.m */; };
 		344E43D11E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */; };
 		344E43D21E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */; };
 		3E73B3C01E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E73B3BF1E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m */; };
@@ -502,6 +507,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1D5216E81E9BAC130001B887 /* HUBApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBApplication.h; sourceTree = "<group>"; };
+		1D5216ED1E9BACB20001B887 /* HUBApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBApplication.m; sourceTree = "<group>"; };
+		1D5216F01E9BB3950001B887 /* HUBApplicationMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBApplicationMock.h; sourceTree = "<group>"; };
+		1D5216F11E9BB3950001B887 /* HUBApplicationMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBApplicationMock.m; sourceTree = "<group>"; };
 		1D98E5BC1DC09FB500607097 /* HUBComponentActionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentActionObserver.h; sourceTree = "<group>"; };
 		2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentFactoryMock.m; sourceTree = "<group>"; };
 		2932EAD3C06CBB869669B382 /* HUBComponentFactoryMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactoryMock.h; sourceTree = "<group>"; };
@@ -897,6 +906,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D5216EF1E9BB3730001B887 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				1D5216F01E9BB3950001B887 /* HUBApplicationMock.h */,
+				1D5216F11E9BB3950001B887 /* HUBApplicationMock.m */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
 		521891EB1DEE40ED00FA3BF7 /* Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -1040,6 +1058,7 @@
 				DD79C3B91D9F0A8800FA77E5 /* HUBKeyPath.h */,
 				DDA41C8E1C6CB5C00056E511 /* HUBUtilities.h */,
 				3E8FB7CE1E5B40820085B978 /* HUBGestureRecognizerSynchronizing.h */,
+				1D5216ED1E9BACB20001B887 /* HUBApplication.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1052,6 +1071,7 @@
 				8A5D7A5A1CB806E200B987BA /* HUBHeaderMacros.h */,
 				8AF21C9D1C6D044700960A06 /* HUBIdentifier.h */,
 				8A0E4B801CB69CD80019DE71 /* HUBSerializable.h */,
+				1D5216E81E9BAC130001B887 /* HUBApplication.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1564,6 +1584,7 @@
 				8A6529F01D82B4BD007B1A15 /* Actions */,
 				8AD152101D9972850008E182 /* Networking */,
 				8A15132D1DB7B59300DE8C7A /* Touches */,
+				1D5216EF1E9BB3730001B887 /* Utilities */,
 			);
 			name = Mocks;
 			path = mocks;
@@ -1721,6 +1742,7 @@
 				9990736B1E8D1BF100A6FB26 /* HUBLiveServiceFactory.h in Headers */,
 				8AE6C0DF1DF6E41B0063B2B1 /* HUBUtilities.h in Headers */,
 				8AE6C0811DF6E4020063B2B1 /* HUBContentOperationWrapper.h in Headers */,
+				1DF8F3541E9BCD6E0045D66D /* HUBApplication.h in Headers */,
 				8AE6C0931DF6E4020063B2B1 /* HUBInitialViewModelRegistry.h in Headers */,
 				8AE6C04A1DF6E3D40063B2B1 /* HUBComponentRegistry.h in Headers */,
 				8AE6C01B1DF6E3BE0063B2B1 /* HUBComponentModelJSONSchema.h in Headers */,
@@ -1979,6 +2001,7 @@
 				521891EA1DEE3E4500FA3BF7 /* HUBContentOperationContextImplementation.m in Sources */,
 				6563FF481E97A4D000070763 /* HUBCollectionContainerView.m in Sources */,
 				521891E61DEE3C6E00FA3BF7 /* HUBBlockContentOperation.m in Sources */,
+				1D5216F21E9BB3950001B887 /* HUBApplicationMock.m in Sources */,
 				8ACB2A7A1C6A2F7C000741D7 /* HUBIdentifier.m in Sources */,
 				8A786BB81C5A4CB400B2AB9E /* HUBMutableJSONPathImplementation.m in Sources */,
 				8AD0646C1C68E7B00086C081 /* HUBComponentCollectionViewCell.m in Sources */,
@@ -1987,6 +2010,7 @@
 				8A6529F91D82DC33007B1A15 /* HUBActionHandlerWrapper.m in Sources */,
 				8A786BB21C5A383800B2AB9E /* HUBViewModelJSONSchemaImplementation.m in Sources */,
 				3E73B3C01E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m in Sources */,
+				1D5216EE1E9BACB20001B887 /* HUBApplication.m in Sources */,
 				652382BD1E7A9B3900B99784 /* HUBComponentWrapperImageLoader.m in Sources */,
 				8A5035221DD473040008B499 /* HUBCollectionView.m in Sources */,
 				8AF5B57F1C64B59E001FF228 /* HUBViewModelLoaderImplementation.m in Sources */,
@@ -2084,6 +2108,7 @@
 				8ABD6CB21DF6ECCD005BCB33 /* UIViewController+HUBSimulateLayoutCycle.m in Sources */,
 				8ABD6CBC1DF6ECF3005BCB33 /* HUBComponentMock.m in Sources */,
 				8ABD6CCA1DF6ECF3005BCB33 /* HUBTouchMock.m in Sources */,
+				1D4553861E9CEDF700DA6BF5 /* HUBApplicationMock.m in Sources */,
 				8ABD6CB31DF6ECF3005BCB33 /* HUBConnectivityStateResolverMock.m in Sources */,
 				8ABD6CD61DF6ECF3005BCB33 /* HUBViewControllerFactoryTests.m in Sources */,
 				8ABD6CD31DF6ECF3005BCB33 /* HUBViewModelLoaderFactoryTests.m in Sources */,
@@ -2259,6 +2284,7 @@
 				8AE6C0A71DF6E40D0063B2B1 /* HUBDefaultComponentLayoutManager.m in Sources */,
 				8AE6C06E1DF6E3F90063B2B1 /* HUBComponentTargetJSONSchemaImplementation.m in Sources */,
 				8AE6C0861DF6E4020063B2B1 /* HUBContentOperationContextImplementation.m in Sources */,
+				1DF8F3561E9BCE6D0045D66D /* HUBApplication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

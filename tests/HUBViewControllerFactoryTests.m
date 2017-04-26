@@ -41,6 +41,7 @@
 #import "HUBComponentModel.h"
 #import "HUBComponentModelBuilder.h"
 #import "HUBActionContext.h"
+#import "HUBApplicationMock.h"
 
 @interface HUBViewControllerFactoryTests : XCTestCase
 

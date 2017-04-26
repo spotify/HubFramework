@@ -33,6 +33,7 @@
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBTestUtilities.h"
 #import "HUBViewControllerScrollHandlerMock.h"
+#import "HUBApplicationMock.h"
 
 @interface HUBConfigTests : XCTestCase
 @property(nonatomic, strong) HUBComponentDefaults *componentDefaults;
@@ -63,7 +64,8 @@
 
 - (void)testBuilderCanCreateConfigThroughConvinienceMethod
 {
-    HUBConfigBuilder * const builder = [[HUBConfigBuilder alloc] initWithComponentMargin:57 componentFallbackHandler:self.componentFallbackHandler];
+    HUBConfigBuilder * const builder = [[HUBConfigBuilder alloc] initWithComponentMargin:57
+                                                                componentFallbackHandler:self.componentFallbackHandler];
     HUBConfig * const config = [builder build];
 
     XCTAssertNotNil(config);
@@ -98,7 +100,7 @@
 - (void)testBuilderCanCreateConfigWithOptionalValuesDefines
 {
     HUBConfigBuilder * const builder = [[HUBConfigBuilder alloc] initWithComponentLayoutManager:self.componentLayoutManager
-                                                                componentFallbackHandler:self.componentFallbackHandler];
+                                                                       componentFallbackHandler:self.componentFallbackHandler];
 
 
     id<HUBJSONSchema> const jsonSchema = [[HUBJSONSchemaImplementation alloc] initWithComponentDefaults:self.componentDefaults

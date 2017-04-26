@@ -31,6 +31,7 @@
 @protocol HUBComponent;
 @protocol HUBComponentModel;
 @protocol HUBComponentImageData;
+@protocol HUBApplicationProtocol;
 @class HUBIdentifier;
 @class HUBComponentWrapper;
 @class HUBComponentUIStateManager;
@@ -186,13 +187,15 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
  *  @param delegate The object that will act as the component wrapper's delegate
  *  @param gestureRecognizer The gesture recognizer to use to detect touches & taps for highlight & selection
  *  @param parent The parent component wrapper if this component wrapper is a child component
+ *  @param application The object exposing UIApplication's properties and methods
  */
 - (instancetype)initWithComponent:(id<HUBComponent>)component
                             model:(id<HUBComponentModel>)model
                    UIStateManager:(HUBComponentUIStateManager *)UIStateManager
                          delegate:(id<HUBComponentWrapperDelegate>)delegate
                 gestureRecognizer:(HUBComponentGestureRecognizer *)gestureRecognizer
-                           parent:(nullable HUBComponentWrapper *)parent HUB_DESIGNATED_INITIALIZER;
+                           parent:(nullable HUBComponentWrapper *)parent
+                      application:(id<HUBApplicationProtocol>)application HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Notify the component wrapper that its view was added to a new superview

@@ -37,12 +37,18 @@
 #import "HUBIdentifier.h"
 #import "HUBTestUtilities.h"
 #import "HUBDefaults.h"
+#import "HUBApplicationMock.h"
 
 @interface HUBManagerTests : XCTestCase
 
 @end
 
 @implementation HUBManagerTests
+
+- (void)setUp
+{
+    [super setUp];
+}
 
 #pragma mark - Tests
 
@@ -51,7 +57,7 @@
     id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
     HUBComponentDefaults * const componentDefaults = [HUBComponentDefaults defaultsForTesting];
     id<HUBComponentFallbackHandler> const componentFallbackHandler = [[HUBComponentFallbackHandlerMock alloc] initWithComponentDefaults:componentDefaults];
-    
+
     HUBManager * const manager = [[HUBManager alloc] initWithComponentLayoutManager:componentLayoutManager
                                                            componentFallbackHandler:componentFallbackHandler
                                                           connectivityStateResolver:nil
