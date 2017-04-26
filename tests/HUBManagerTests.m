@@ -58,6 +58,7 @@
                                                                  imageLoaderFactory:nil
                                                                   iconImageResolver:nil
                                                                defaultActionHandler:nil
+                                                                    selectionAction:nil
                                                          defaultContentReloadPolicy:nil
                                                    prependedContentOperationFactory:nil
                                                     appendedContentOperationFactory:nil];

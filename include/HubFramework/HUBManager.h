@@ -37,6 +37,7 @@
 @protocol HUBImageLoaderFactory;
 @protocol HUBIconImageResolver;
 @protocol HUBActionHandler;
+@protocol HUBAction;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
 @protocol HUBComponentFallbackHandler;
@@ -102,6 +103,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param appendedContentOperationFactory Any content operation factory that should be appended to the chain of content
  *         operation factories for all views. The operations that this factory produces will therefore always be appended
  *         to the content loading chain of any view.
+ *  @param selectionAction An action that gets performed whenever a component is selected. If nil, a default selection
+ *         action is created.
  *
  *  In case you don't want to use all of these customization options, see the initializers available in `HUBManager+Convenience.h`.
  */
@@ -111,6 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
                             imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
                              iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
                           defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
+                               selectionAction:(nullable id<HUBAction>)selectionAction
                     defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
               prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory HUB_DESIGNATED_INITIALIZER;
