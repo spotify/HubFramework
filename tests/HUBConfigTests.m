@@ -33,6 +33,8 @@
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBTestUtilities.h"
 #import "HUBViewControllerScrollHandlerMock.h"
+#import "HUBSelectionAction.h"
+#import "HUBActionRegistry.h"
 
 @interface HUBConfigTests : XCTestCase
 @property(nonatomic, strong) HUBComponentDefaults *componentDefaults;
@@ -93,6 +95,18 @@
 
     XCTAssertNotNil(config.actionRegistry);
     XCTAssertNotNil(config.componentRegistry);
+}
+
+- (void)testBuilderCreatesActionRegistryForCustomSelectionAction
+{
+    HUBConfigBuilder *builder = [[HUBConfigBuilder alloc] initWithComponentLayoutManager:self.componentLayoutManager
+                                                                componentFallbackHandler:self.componentFallbackHandler];
+    id<HUBAction> const customAction = [HUBSelectionAction new];
+    builder.selectionAction = customAction;
+    HUBConfig * const config = [builder build];
+
+    XCTAssertNotNil(config.actionRegistry);
+    XCTAssertTrue(customAction == config.actionRegistry.selectionAction);
 }
 
 - (void)testBuilderCanCreateConfigWithOptionalValuesDefines
