@@ -113,6 +113,7 @@
 #import "HUBActionHandler.h"
 #import "HUBActionContext.h"
 #import "HUBActionTrigger.h"
+#import "HUBSelectionAction.h"
 
 // Live
 #import "HUBLiveService.h"

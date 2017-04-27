@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D9666941EB1D74300022EE4 /* HUBSelectionAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D9666931EB1D74300022EE4 /* HUBSelectionAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		344E43D11E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */; };
 		344E43D21E1D6A230016C7CC /* HUBUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 344E43CF1E1D6A180016C7CC /* HUBUtilitiesTests.m */; };
 		3E73B3C01E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E73B3BF1E5BD48C00B26842 /* HUBSingleGestureRecognizerSynchronizer.m */; };
@@ -411,7 +412,6 @@
 		8AE6C0D21DF6E4140063B2B1 /* HUBActionHandlerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6529F81D82DC33007B1A15 /* HUBActionHandlerWrapper.m */; };
 		8AE6C0D31DF6E4140063B2B1 /* HUBAsyncActionWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9C9CFD1DDC71930070258F /* HUBAsyncActionWrapper.h */; };
 		8AE6C0D41DF6E4140063B2B1 /* HUBAsyncActionWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C9CFE1DDC71930070258F /* HUBAsyncActionWrapper.m */; };
-		8AE6C0D51DF6E4140063B2B1 /* HUBSelectionAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6529FA1D82DF18007B1A15 /* HUBSelectionAction.h */; };
 		8AE6C0D61DF6E4140063B2B1 /* HUBSelectionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6529FB1D82DF18007B1A15 /* HUBSelectionAction.m */; };
 		8AE6C0D71DF6E4180063B2B1 /* HUBLiveServiceImplementation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A1572991D9E735C00E9DD4D /* HUBLiveServiceImplementation.h */; };
 		8AE6C0D81DF6E4180063B2B1 /* HUBLiveServiceImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A15729A1D9E735C00E9DD4D /* HUBLiveServiceImplementation.m */; };
@@ -502,6 +502,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1D9666931EB1D74300022EE4 /* HUBSelectionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBSelectionAction.h; sourceTree = "<group>"; };
 		1D98E5BC1DC09FB500607097 /* HUBComponentActionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentActionObserver.h; sourceTree = "<group>"; };
 		2932E27842AE1C98FD5D1746 /* HUBComponentFactoryMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBComponentFactoryMock.m; sourceTree = "<group>"; };
 		2932EAD3C06CBB869669B382 /* HUBComponentFactoryMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentFactoryMock.h; sourceTree = "<group>"; };
@@ -634,7 +635,6 @@
 		8A6529F61D82D7BE007B1A15 /* HUBActionTrigger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUBActionTrigger.h; sourceTree = "<group>"; };
 		8A6529F71D82DC33007B1A15 /* HUBActionHandlerWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBActionHandlerWrapper.h; sourceTree = "<group>"; };
 		8A6529F81D82DC33007B1A15 /* HUBActionHandlerWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBActionHandlerWrapper.m; sourceTree = "<group>"; };
-		8A6529FA1D82DF18007B1A15 /* HUBSelectionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBSelectionAction.h; sourceTree = "<group>"; };
 		8A6529FB1D82DF18007B1A15 /* HUBSelectionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBSelectionAction.m; sourceTree = "<group>"; };
 		8A69DBA81C7DF8C000F5EFC6 /* HUBCollectionViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBCollectionViewFactory.h; sourceTree = "<group>"; };
 		8A69DBA91C7DF8C000F5EFC6 /* HUBCollectionViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUBCollectionViewFactory.m; sourceTree = "<group>"; };
@@ -1067,6 +1067,7 @@
 				8A6529F51D82D1C7007B1A15 /* HUBActionHandler.h */,
 				F663FE7C1D10BECE003E19B6 /* HUBActionContext.h */,
 				8A6529F61D82D7BE007B1A15 /* HUBActionTrigger.h */,
+				1D9666931EB1D74300022EE4 /* HUBSelectionAction.h */,
 			);
 			name = Actions;
 			sourceTree = "<group>";
@@ -1082,7 +1083,6 @@
 				8A6529F81D82DC33007B1A15 /* HUBActionHandlerWrapper.m */,
 				8A9C9CFD1DDC71930070258F /* HUBAsyncActionWrapper.h */,
 				8A9C9CFE1DDC71930070258F /* HUBAsyncActionWrapper.m */,
-				8A6529FA1D82DF18007B1A15 /* HUBSelectionAction.h */,
 				8A6529FB1D82DF18007B1A15 /* HUBSelectionAction.m */,
 			);
 			name = Actions;
@@ -1752,6 +1752,7 @@
 				8AE6C02A1DF6E3C80063B2B1 /* HUBContentOperationContext.h in Headers */,
 				8AE6C0CD1DF6E4140063B2B1 /* HUBActionRegistryImplementation.h in Headers */,
 				8AE6C0B61DF6E40D0063B2B1 /* HUBComponentTargetBuilderImplementation.h in Headers */,
+				1D9666941EB1D74300022EE4 /* HUBSelectionAction.h in Headers */,
 				8AE6C0151DF6E3AF0063B2B1 /* HubFramework.h in Headers */,
 				8AE6C0321DF6E3CE0063B2B1 /* HUBViewController.h in Headers */,
 				8AE6C05D1DF6E3E00063B2B1 /* HUBActionTrigger.h in Headers */,
@@ -1781,7 +1782,6 @@
 				9902B7461E82746E00823187 /* HUBJSONSchemaFactory.h in Headers */,
 				8AE6C0401DF6E3D40063B2B1 /* HUBComponentCollectionViewCell.h in Headers */,
 				8AE6C0581DF6E3E00063B2B1 /* HUBActionFactory.h in Headers */,
-				8AE6C0D51DF6E4140063B2B1 /* HUBSelectionAction.h in Headers */,
 				8AE6C0951DF6E4020063B2B1 /* HUBViewControllerFactoryImplementation.h in Headers */,
 				8AE6C0291DF6E3C80063B2B1 /* HUBContentOperationActionPerformer.h in Headers */,
 				8AE6C0471DF6E3D40063B2B1 /* HUBComponentImageDataBuilder.h in Headers */,
