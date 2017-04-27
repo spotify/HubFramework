@@ -23,7 +23,6 @@
 
 #import "HUBActionFactory.h"
 #import "HUBIdentifier.h"
-#import "HUBSelectionAction.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -37,11 +36,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize selectionAction = _selectionAction;
 
 #pragma mark - Initializers
-
-+ (instancetype)registryWithDefaultSelectionAction
-{
-    return [[self alloc] initWithSelectionAction:[HUBSelectionAction new]];
-}
 
 - (instancetype)initWithSelectionAction:(id<HUBAction>)selectionAction
 {

@@ -30,15 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Concrete implementation of the `HUBActionRegistry` API
 @interface HUBActionRegistryImplementation : NSObject <HUBActionRegistry>
 
-
-/**
- *  Create an instance of this class with the default selection action
- *
- *  To be able to specify which selection action to use (useful for tests), use this class'
- *  designated initializer instead of this class constructor.
- */
-+ (instancetype)registryWithDefaultSelectionAction;
-
 /**
  *  Initialize an instance of this class with a selection action
  *

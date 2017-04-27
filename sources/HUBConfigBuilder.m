@@ -31,6 +31,7 @@
 #import "HUBDefaultImageLoaderFactory.h"
 #import "HUBDefaultConnectivityStateResolver.h"
 #import "HUBConfig+Internal.h"
+#import "HUBSelectionAction.h"
 
 
 @interface HUBConfigBuilder ()
@@ -75,7 +76,9 @@
                                                                                                               componentDefaults:componentDefaults
                                                                                                                      JSONSchema:defaultJSONSchema
                                                                                                               iconImageResolver:self.iconImageResolver];
-    HUBActionRegistryImplementation*actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionAction];
+    id<HUBAction> action = self.selectionAction ? self.selectionAction : [HUBSelectionAction new];
+    HUBActionRegistryImplementation *actionRegistry = [[HUBActionRegistryImplementation alloc] initWithSelectionAction:action];
+
     id<HUBJSONSchema> jsonSchema = (id)self.jsonSchema ?: defaultJSONSchema;
 
     id<HUBImageLoaderFactory> imageLoaderFactory = (id)self.imageLoaderFactory ?: [HUBDefaultImageLoaderFactory new];
