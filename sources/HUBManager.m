@@ -35,6 +35,7 @@
 #import "HUBDefaultComponentLayoutManager.h"
 #import "HUBDefaultComponentFallbackHandler.h"
 #import "HUBLiveServiceFactory.h"
+#import "HUBSelectionAction.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -56,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
                             imageLoaderFactory:(nullable id<HUBImageLoaderFactory>)imageLoaderFactory
                              iconImageResolver:(nullable id<HUBIconImageResolver>)iconImageResolver
                           defaultActionHandler:(nullable id<HUBActionHandler>)defaultActionHandler
+                               selectionAction:(nullable id<HUBAction>)selectionAction
                     defaultContentReloadPolicy:(nullable id<HUBContentReloadPolicy>)defaultContentReloadPolicy
               prependedContentOperationFactory:(nullable id<HUBContentOperationFactory>)prependedContentOperationFactory
                appendedContentOperationFactory:(nullable id<HUBContentOperationFactory>)appendedContentOperationFactory
@@ -94,9 +96,10 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                                          prependedContentOperationFactory:prependedContentOperationFactory
                                                                                                                           appendedContentOperationFactory:appendedContentOperationFactory
                                                                                                                                defaultContentReloadPolicy:defaultContentReloadPolicy];
-        
-        HUBActionRegistryImplementation * const actionRegistry = [HUBActionRegistryImplementation registryWithDefaultSelectionAction];
-        
+
+        id<HUBAction> action = selectionAction ? selectionAction : [HUBSelectionAction new];
+        HUBActionRegistryImplementation *actionRegistry = [[HUBActionRegistryImplementation alloc] initWithSelectionAction:action];
+
         id<HUBImageLoaderFactory> const imageLoaderFactoryToUse = imageLoaderFactory ?: [HUBDefaultImageLoaderFactory new];
         
         HUBViewControllerFactoryImplementation * const viewControllerFactory = [[HUBViewControllerFactoryImplementation alloc] initWithViewModelLoaderFactory:viewModelLoaderFactory
@@ -159,6 +162,7 @@ NS_ASSUME_NONNULL_BEGIN
                                      imageLoaderFactory:nil
                                       iconImageResolver:nil
                                    defaultActionHandler:nil
+                                        selectionAction:nil
                              defaultContentReloadPolicy:nil
                        prependedContentOperationFactory:nil
                         appendedContentOperationFactory:nil];

@@ -36,6 +36,7 @@
 @protocol HUBIconImageResolver;
 @protocol HUBViewControllerScrollHandler;
 @protocol HUBComponentRegistry;
+@protocol HUBAction;
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -67,6 +68,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// A custom scroll handler to use to handle scroll events and customize scrolling behavior of view controllers created with the
 /// built configuration. See `HUBViewControllerScrollHandler` for more info.
 @property(nonatomic, nullable, strong) id<HUBViewControllerScrollHandler> viewControllerScrollHandler;
+
+/// An action that gets performed whenever a component is selected. If nil, a default selection action is created.
+@property(nonatomic, nullable, strong) id<HUBAction> selectionAction;
 
 
 /**
