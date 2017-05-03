@@ -59,7 +59,7 @@
     __block HUBOperationCompletionBlock asyncOperationCompletionHandler = nil;
     __block BOOL syncOperationPerformed = NO;
     
-    HUBOperation * const asyncOperation = [HUBOperation asynchronousOperationWithBlock:^(HUBOperationCompletionBlock completionHandler) {
+    HUBOperation * const asyncOperation = [HUBOperation asynchronousOperationWithBlock:^(HUBOperationCompletionBlock _Nonnull completionHandler) {
         asyncOperationCompletionHandler = completionHandler;
     }];
     
@@ -80,7 +80,7 @@
     __block HUBOperationCompletionBlock asyncOperationCompletionHandler = nil;
     __block BOOL syncOperationPerformed = NO;
     
-    HUBOperation * const asyncOperation = [HUBOperation asynchronousOperationWithBlock:^(HUBOperationCompletionBlock completionHandler) {
+    HUBOperation * const asyncOperation = [HUBOperation asynchronousOperationWithBlock:^(HUBOperationCompletionBlock _Nonnull completionHandler) {
         asyncOperationCompletionHandler = completionHandler;
     }];
     

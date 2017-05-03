@@ -285,8 +285,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.childBuilders[identifier] = nil;
     [self.childIdentifierOrder removeObject:identifier];
 
-    if (builder.groupIdentifier) {
-        NSString *groupIdentifier = builder.groupIdentifier;
+    NSString *groupIdentifier = builder.groupIdentifier;
+    if (groupIdentifier) {
         NSMutableArray *childBuildersInGroup = self.childBuildersByGroupIdentifier[groupIdentifier];
         [childBuildersInGroup removeObject:builder];
 
@@ -474,7 +474,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (childBuilder.groupIdentifier != nil) {
             NSString *groupIdentifier = childBuilder.groupIdentifier;
 
-            if (copy.childBuildersByGroupIdentifier[groupIdentifier] == nil) {
+            if (groupIdentifier != nil && copy.childBuildersByGroupIdentifier[groupIdentifier] == nil) {
                 copy.childBuildersByGroupIdentifier[groupIdentifier] = [NSMutableArray array];
             }
 

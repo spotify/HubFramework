@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (existingWrappers != nil) {
         [existingWrappers addObject:componentWrapper];
-    } else {
+    } else if (componentIdentifier != nil) {
         self.componentWrappers[componentIdentifier] = [NSMutableSet setWithObject:componentWrapper];
     }
 }

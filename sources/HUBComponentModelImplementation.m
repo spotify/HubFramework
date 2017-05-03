@@ -141,7 +141,7 @@ NS_ASSUME_NONNULL_BEGIN
             
             if (childrenInGroup != nil) {
                 [childrenInGroup addObject:child];
-            } else {
+            } else if (groupIdentifier != nil) {
                 childrenByGroupIdentifier[groupIdentifier] = [NSMutableArray arrayWithObject:child];
             }
         }
