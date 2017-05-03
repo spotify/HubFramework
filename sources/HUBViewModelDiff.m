@@ -349,41 +349,43 @@ static NSArray<HUBDiffStep *> *HUBDiffMyersTracesBetweenViewModels(id<HUBViewMod
             }
             
             /// Here the goal is to follow the diagonal line with additional steps to find the longest common sequence
-            if (step.to.x <= fromCount && step.to.y <= toCount) {
-                [steps addObject:step];
+            if (step.to.x > fromCount || step.to.y > toCount) {
+                continue;
+            }
 
-                NSInteger x = step.to.x;
-                NSInteger y = step.to.y;
-                
-                while (x >= 0 && y >= 0 && x < fromCount && y < toCount) {
-                    id<HUBComponentModel> target = toViewModel.bodyComponentModels[(NSUInteger)y];
-                    id<HUBComponentModel> base = fromViewModel.bodyComponentModels[(NSUInteger)x];
+            [steps addObject:step];
 
-                    /**
-                     * Only the element's identity is compared here, as equality is checked later in order to determine
-                     * the location of updates.
-                     */ 
-                    if ([base.identifier isEqual:target.identifier]) {
-                        // A match is found and another step can be taken diagonally.
-                        x += 1;
-                        y += 1;
+            NSInteger x = step.to.x;
+            NSInteger y = step.to.y;
+            
+            while (x >= 0 && y >= 0 && x < fromCount && y < toCount) {
+                id<HUBComponentModel> target = toViewModel.bodyComponentModels[(NSUInteger)y];
+                id<HUBComponentModel> base = fromViewModel.bodyComponentModels[(NSUInteger)x];
 
-                        HUBDiffStep *nextStep = [[HUBDiffStep alloc] initWithFromPoint:HUBDiffPointMake(x - 1, y - 1) toPoint:HUBDiffPointMake(x, y)];
-                        
-                        [steps addObject:nextStep];
-                    } else {
-                        break;
-                    }
+                /**
+                 * Only the element's identity is compared here, as equality is checked later in order to determine
+                 * the location of updates.
+                 */ 
+                if ([base.identifier isEqual:target.identifier]) {
+                    // A match is found and another step can be taken diagonally.
+                    x += 1;
+                    y += 1;
+
+                    HUBDiffStep *nextStep = [[HUBDiffStep alloc] initWithFromPoint:HUBDiffPointMake(x - 1, y - 1) toPoint:HUBDiffPointMake(x, y)];
+                    
+                    [steps addObject:nextStep];
+                } else {
+                    break;
                 }
+            }
 
-                // Only the x-point needs to be stored since y can be inferred with y = x - k
-                endpoints[index] = x;
+            // Only the x-point needs to be stored since y can be inferred with y = x - k
+            endpoints[index] = x;
 
-                // The end of the graph has been reached, and a solution has been found.
-                if (x >= fromCount && y >= toCount) {
-                    free(endpoints);
-                    return steps;
-                }
+            // The end of the graph has been reached, and a solution has been found.
+            if (x >= fromCount && y >= toCount) {
+                free(endpoints);
+                return steps;
             }
         }
     }
