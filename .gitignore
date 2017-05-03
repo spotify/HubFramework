@@ -39,6 +39,9 @@ Carthage/Build
 fastlane/report.xml
 fastlane/screenshots
 
+# Infer
+infer-out
+
 # Documentation
 documentation/output/
 
