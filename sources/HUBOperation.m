@@ -21,6 +21,8 @@
 
 #import "HUBOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface HUBOperation ()
 
 @property (nonatomic, copy, readonly) HUBOperationAsynchronousBlock block;
@@ -33,7 +35,7 @@
 
 + (HUBOperation *)synchronousOperationWithBlock:(HUBOperationSynchronousBlock)block
 {
-    return [[HUBOperation alloc] initWithBlock:^(HUBOperationCompletionBlock completionHandler) {
+    return [[HUBOperation alloc] initWithBlock:^(HUBOperationCompletionBlock _Nonnull completionHandler) {
         block();
         completionHandler();
     }];
@@ -67,3 +69,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

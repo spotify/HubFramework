@@ -849,7 +849,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (HUBOperation *)createReloadCollectionViewOperation
 {
-    return [HUBOperation asynchronousOperationWithBlock:^(HUBOperationCompletionBlock completionHandler){
+    return [HUBOperation asynchronousOperationWithBlock:^(HUBOperationCompletionBlock _Nonnull completionHandler){
         if (!self.viewHasBeenLaidOut) {
             completionHandler();
             return;
@@ -902,7 +902,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 {
     NSString * const currentModelIdentifier = wrapper.model.identifier;
 
-    if (self.componentWrappersByModelIdentifier[currentModelIdentifier] == wrapper) {
+    if (currentModelIdentifier != nil && self.componentWrappersByModelIdentifier[currentModelIdentifier] == wrapper) {
         self.componentWrappersByModelIdentifier[currentModelIdentifier] = nil;
     }
 

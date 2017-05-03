@@ -21,6 +21,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Block type for completion handlers used with Hub Framework operations
 typedef void(^HUBOperationCompletionBlock)(void);
 
@@ -28,7 +30,7 @@ typedef void(^HUBOperationCompletionBlock)(void);
 typedef void(^HUBOperationSynchronousBlock)(void);
 
 /// Block type for asynchronous Hub Framework operations
-typedef void(^HUBOperationAsynchronousBlock)(HUBOperationCompletionBlock);
+typedef void(^HUBOperationAsynchronousBlock)(HUBOperationCompletionBlock _Nonnull);
 
 /**
  *  Class used to define atomic bodies of work as operations, that can either be synchronous or asynchronous
@@ -68,3 +70,5 @@ typedef void(^HUBOperationAsynchronousBlock)(HUBOperationCompletionBlock);
 - (void)performWithCompletionHandler:(HUBOperationCompletionBlock)completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END
