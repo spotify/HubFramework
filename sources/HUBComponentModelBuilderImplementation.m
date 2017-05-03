@@ -507,7 +507,7 @@ NS_ASSUME_NONNULL_BEGIN
         id<HUBComponentImageData> const imageData = [builder buildWithIdentifier:imageIdentifier type:HUBComponentImageTypeCustom];
         
         if (imageData != nil) {
-            [customImageData setObject:imageData forKey:imageIdentifier];
+            customImageData[imageIdentifier] = imageData;
         }
     }
     
