@@ -973,8 +973,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
     CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
     CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
-    CGFloat const topBarHeight = MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
-    return topBarHeight;
+    return MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
 }
 
 - (BOOL)shouldAutomaticallyManageTopContentInset
