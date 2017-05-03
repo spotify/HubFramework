@@ -82,16 +82,16 @@ NS_ASSUME_NONNULL_BEGIN
 {
     if ([layoutTraits containsObject:HUBComponentLayoutTraitFullWidth]) {
         return 0;
-    } else {
-        BOOL const isCentered = [layoutTraits containsObject:HUBComponentLayoutTraitCentered];
-        BOOL const precedingIsCentered = [precedingComponentLayoutTraits containsObject:HUBComponentLayoutTraitCentered];
-        
-        // Centered components are always grouped toghether
-        if (isCentered != precedingIsCentered) {
-            return CGFLOAT_MAX;
-        }
     }
-    
+
+    BOOL const isCentered = [layoutTraits containsObject:HUBComponentLayoutTraitCentered];
+    BOOL const precedingIsCentered = [precedingComponentLayoutTraits containsObject:HUBComponentLayoutTraitCentered];
+
+    // Centered components are always grouped toghether
+    if (isCentered != precedingIsCentered) {
+        return CGFLOAT_MAX;
+    }
+
     return self.margin;
 }
 

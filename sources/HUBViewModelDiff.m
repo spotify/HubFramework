@@ -224,14 +224,11 @@ static inline HUBDiffStepType HUBDiffStepTypeInfer(NSInteger k, NSInteger d, NSI
         return HUBDiffStepTypeInsert;
     } else if (k == d) {
         return HUBDiffStepTypeDelete;
-    } else {
+    } else if (previousX < nextX) {
         // If the next x is greater than the previous, it is a horizontal movement and thus an insertion.
-        if (previousX < nextX) {
-            return HUBDiffStepTypeInsert;
-        } else {
-            return HUBDiffStepTypeDelete;
-        }
+        return HUBDiffStepTypeInsert;
     }
+    return HUBDiffStepTypeDelete;
 }
 
 @interface HUBDiffStep : NSObject
@@ -262,10 +259,10 @@ static inline HUBDiffStepType HUBDiffStepTypeInfer(NSInteger k, NSInteger d, NSI
     // Vertical movement, insertion
     } else if (self.from.y < self.to.y) {
         return HUBDiffStepTypeInsert;
-    // Horizontal movement, insertion
-    } else {
-        return HUBDiffStepTypeDelete;
     }
+
+    // Horizontal movement, insertion
+    return HUBDiffStepTypeDelete;
 }
 
 @end
@@ -433,9 +430,8 @@ static NSArray<HUBDiffStep *> *HUBDiffStepsBetweenViewModels(id<HUBViewModel> fr
         return HUBDiffInsertionTracesFromViewModel(toViewModel);
     } else if (toViewModel.bodyComponentModels.count == 0) {
         return HUBDiffDeletionTracesFromViewModel(fromViewModel);
-    } else {
-        return HUBDiffMyersTracesBetweenViewModels(fromViewModel, toViewModel);
     }
+    return HUBDiffMyersTracesBetweenViewModels(fromViewModel, toViewModel);
 }
 
 HUBViewModelDiff *HUBDiffMyersAlgorithm(id<HUBViewModel> fromViewModel, id<HUBViewModel> toViewModel) {

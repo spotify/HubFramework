@@ -150,9 +150,8 @@ NS_ASSUME_NONNULL_BEGIN
     BOOL useV2 = [featureRegistration.options[@"HUBViewController"] isEqualToString:@"v2"];
     if (useV2) {
         return [self createExperimentalViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
-    } else {
-        return [self createStandardViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
     }
+    return [self createStandardViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
 }
 
 - (HUBViewController *)createStandardViewControllerForViewURI:(NSURL *)viewURI
