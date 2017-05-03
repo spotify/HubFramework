@@ -1217,7 +1217,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 - (void)scrollToRootBodyComponentAtIndex:(NSUInteger)componentIndex
                           scrollPosition:(HUBScrollPosition)scrollPosition
                                 animated:(BOOL)animated
-                              completion:(void (^)())completion
+                              completion:(void (^)(void))completion
 {
     NSParameterAssert(componentIndex <= (NSUInteger)[self.collectionView numberOfItemsInSection:0]);
 
@@ -1260,7 +1260,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
 
     __weak HUBViewControllerImplementation *weakSelf = self;
-    void (^stepCompletionHandler)() = ^{
+    void (^stepCompletionHandler)(void) = ^{
         HUBViewControllerImplementation *strongSelf = weakSelf;
 
         HUBComponentWrapper *childComponentWrapper = nil;
