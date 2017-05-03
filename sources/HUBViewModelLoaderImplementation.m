@@ -179,13 +179,11 @@ NS_ASSUME_NONNULL_BEGIN
     [self connectivityStateResolverStateDidChange:self.connectivityStateResolver];
     [self.connectivityStateResolver addObserver:self];
 
-    if (self.contentReloadPolicy != nil) {
-        if (self.previouslyLoadedViewModel != nil) {
-            id<HUBViewModel> const previouslyLoadedViewModel = self.previouslyLoadedViewModel;
-            
-            if (![self.contentReloadPolicy shouldReloadContentForViewURI:self.viewURI currentViewModel:previouslyLoadedViewModel]) {
-                return;
-            }
+    if (self.contentReloadPolicy != nil && self.previouslyLoadedViewModel != nil) {
+        id<HUBViewModel> const previouslyLoadedViewModel = self.previouslyLoadedViewModel;
+        
+        if (![self.contentReloadPolicy shouldReloadContentForViewURI:self.viewURI currentViewModel:previouslyLoadedViewModel]) {
+            return;
         }
     }
     

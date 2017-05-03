@@ -35,12 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
 {
     id<HUBCollectionViewDelegate> const delegate = self.delegate;
     
-    if (delegate != nil) {
-        if (![delegate collectionViewShouldBeginScrolling:self]) {
-            self.panGestureRecognizer.enabled = NO;
-            self.panGestureRecognizer.enabled = YES;
-            return;
-        }
+    if (delegate != nil && ![delegate collectionViewShouldBeginScrolling:self]) {
+        self.panGestureRecognizer.enabled = NO;
+        self.panGestureRecognizer.enabled = YES;
+        return;
     }
     
     [super setContentOffset:contentOffset];

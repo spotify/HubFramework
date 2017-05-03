@@ -779,10 +779,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                             currentContentOffset:scrollView.contentOffset
                                                                            proposedContentOffset:*targetContentOffset];
 
-    if (targetContentOffset->y >= (scrollView.contentSize.height - CGRectGetHeight(scrollView.frame))) {
-        if (!self.viewModelLoader.isLoading) {
-            [self.viewModelLoader loadNextPageForCurrentViewModel];
-        }
+    CGFloat threshold = scrollView.contentSize.height - CGRectGetHeight(scrollView.frame);
+    if (targetContentOffset->y >= threshold && !self.viewModelLoader.isLoading) {
+        [self.viewModelLoader loadNextPageForCurrentViewModel];
     }
 }
 
@@ -1103,10 +1102,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         return;
     }
 
-    if (wrapper.viewHasAppearedSinceLastModelChange) {
-        if (!ignorePreviousAppearance) {
-            return;
-        }
+    if (wrapper.viewHasAppearedSinceLastModelChange && !ignorePreviousAppearance) {
+        return;
     }
 
     [self componentWrapperWillAppear:wrapper];
