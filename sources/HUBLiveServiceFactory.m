@@ -29,9 +29,9 @@
 {
 #if HUB_DEBUG
     return [HUBLiveServiceImplementation new];
-#endif
-
+#else
     return nil;
+#endif
 }
 
 @end
