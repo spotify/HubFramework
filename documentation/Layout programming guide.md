@@ -20,6 +20,11 @@ Each `HUBComponent` has the ability to declare a set of layout traits. These tra
 
 The Hub Framework ships with a standard library of layout traits, but more can easily be added by applications using the framework (by declaring a new `HUBComponentLayoutTrait` constant). It's recommended to keep layout traits global in an application, to be able to create clearly defined rules around layout.
 
+```objective-c
+// extend HUBComponentLayoutTrait with a custom trait
+static HUBComponentLayoutTrait const HUBComponentLayoutTraitLeftMarginOnly = @"leftMarginOnly";
+```
+
 An example of a layout trait is `HUBComponentLayoutTraitCompactWidth`, which is used for components that should have horizontal margin on each side (and not stretch the entire view). The opposite of this trait is `HUBComponentLayoutTraitFullWidth`, which tells the layout manager that no horizontal margin should be added.
 
 So layout traits are a way do describe layout, rather than specifying hard rules or metrics. The advantage of this approach is that components can be completely unaware of each other, while still being laid out in a predictable way.
