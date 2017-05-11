@@ -3070,6 +3070,7 @@
   didDisappearFromView:(UIView *)componentView
 {
     XCTAssertEqual(viewController, self.viewController);
+    XCTAssertFalse([componentView isKindOfClass:[HUBComponentCollectionViewCell class]]);
     
     [self.componentModelsFromDisapperanceDelegateMethod addObject:componentModel];
     [self.componentLayoutTraitsFromDisapperanceDelegateMethod addObject:layoutTraits];
