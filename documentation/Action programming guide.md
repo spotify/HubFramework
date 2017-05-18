@@ -117,8 +117,8 @@ Here's an example where we perform an action in response to a `UIGestureRecogniz
 ```objective-c
 - (void)handleGestureRecognizer:(UIGestureRecognizer *)recognizer
 {
-    HUBIdentifier *actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"myFeature" name:@"myAction"];
-    [self.actionDelegate component:self performActionWithIdentifier:actionIdentifier customData:nil];
+	HUBIdentifier *actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"myFeature" name:@"myAction"];
+	[self.actionPerformer performActionWithIdentifier:actionIdentifier customData:nil];
 }
 ```
 
@@ -137,8 +137,8 @@ First, the component which performs the action when the delete button is tapped:
 
 - (void)handleDeleteButtonTapped
 {
-    HUBIdentifier *actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"delete" name:@"song"];
-    [self.actionDelegate component:self performActionWithIdentifier:actionIdentifier];
+	HUBIdentifier *actionIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"delete" name:@"song"];
+	[self.actionPerformer performActionWithIdentifier:actionIdentifier customData:nil];
 }
 
 @end

@@ -716,11 +716,15 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     HUBComponentWrapper * const componentWrapper = [self componentWrapperFromCell:(HUBComponentCollectionViewCell *)cell];
+    UIView * const componentView = componentWrapper.view;
+    NSAssert(componentView != nil, @"Component view shouldn't be nil");
 
-    [self.delegate viewController:self
-               componentWithModel:componentWrapper.model
-                     layoutTraits:componentWrapper.layoutTraits
-             didDisappearFromView:cell];
+    if (componentView) {
+        [self.delegate viewController:self
+                   componentWithModel:componentWrapper.model
+                         layoutTraits:componentWrapper.layoutTraits
+                 didDisappearFromView:componentView];
+    }
 
     [self removeComponentWrapperFromLookupTables:componentWrapper];
 }
