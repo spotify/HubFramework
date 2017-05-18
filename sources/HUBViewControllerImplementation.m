@@ -430,7 +430,7 @@ NS_ASSUME_NONNULL_BEGIN
                                  completion:completion];
 }
 
--(void)reload
+- (void)reload
 {
     [self.viewModelLoader reloadViewModel];
 }
