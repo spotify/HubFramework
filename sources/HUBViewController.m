@@ -59,7 +59,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
 }
 
--(void)reload
+- (void)reload
+{
+}
+
+- (void)setStatusBarToLightContent:(BOOL)wantsLightContent
 {
 }
 

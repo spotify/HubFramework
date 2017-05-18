@@ -160,13 +160,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGPoint)centerPointForOverlayComponentInViewController:(HUBViewController *)viewController
                                       proposedCenterPoint:(CGPoint)proposedCenterPoint;
 
-/**
- * Set the status bar to light content or default (dark) content.
- *
- * @param wantsLightContent A boolean where YES sets UIStatusBarStyleLightContent and NO sets UIStatusBarStyleDefault.
- */
-- (void)setStatusBarToLightContent:(BOOL)wantsLightContent;
-
 @end
 
 /**
@@ -301,6 +294,13 @@ NS_ASSUME_NONNULL_BEGIN
  * Reload the view model of the view controller.
  */
 - (void)reload;
+
+/**
+ * Set the status bar to light content or default (dark) content.
+ *
+ * @param wantsLightContent A boolean where YES sets UIStatusBarStyleLightContent and NO sets UIStatusBarStyleDefault.
+ */
+- (void)setStatusBarToLightContent:(BOOL)wantsLightContent;
 
 #pragma mark - Unavailable initializers
 
