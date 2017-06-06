@@ -1871,7 +1871,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = HUB;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Spotify;
 				TargetAttributes = {
 					8A07549D1C21A79200AFAD38 = {
@@ -2330,6 +2330,7 @@
 					"$(inherited)",
 					"-Wno-documentation-unknown-command",
 					"-Wno-partial-availability",
+					"-Wno-nullable-to-nonnull-conversion",
 				);
 			};
 			name = Debug;
@@ -2345,6 +2346,7 @@
 					"$(inherited)",
 					"-Wno-documentation-unknown-command",
 					"-Wno-partial-availability",
+					"-Wno-nullable-to-nonnull-conversion",
 				);
 			};
 			name = Release;
@@ -2360,6 +2362,7 @@
 					"$(inherited)",
 					"-Wno-documentation-unknown-command",
 					"-Wno-partial-availability",
+					"-Wno-nullable-to-nonnull-conversion",
 				);
 			};
 			name = Debug;
@@ -2375,6 +2378,7 @@
 					"$(inherited)",
 					"-Wno-documentation-unknown-command",
 					"-Wno-partial-availability",
+					"-Wno-nullable-to-nonnull-conversion",
 				);
 			};
 			name = Release;
