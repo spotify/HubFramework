@@ -846,7 +846,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
              completion:(void (^)(void))completionBlock
 {
     __weak __typeof(self) weakSelf = self;
-    void (^renderBlock)() = ^{
+    void (^renderBlock)(void) = ^{
         __strong __typeof(self) strongSelf = weakSelf;
         [strongSelf renderViewModel:viewModel
                     addHeaderMargin:addHeaderMargin
@@ -1259,7 +1259,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 - (void)scrollToRootBodyComponentAtIndex:(NSUInteger)componentIndex
                           scrollPosition:(HUBScrollPosition)scrollPosition
                                 animated:(BOOL)animated
-                              completion:(void (^)())completion
+                              completion:(void (^)(void))completion
 {
     NSParameterAssert(componentIndex <= (NSUInteger)[self.collectionView numberOfItemsInSection:0]);
 
@@ -1302,7 +1302,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     }
 
     __weak HUBViewControllerExperimentalImplementation *weakSelf = self;
-    void (^stepCompletionHandler)() = ^{
+    void (^stepCompletionHandler)(void) = ^{
         HUBViewControllerExperimentalImplementation *strongSelf = weakSelf;
 
         HUBComponentWrapper *childComponentWrapper = nil;
