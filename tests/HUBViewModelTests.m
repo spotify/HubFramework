@@ -33,8 +33,8 @@
 
 - (void)testIdenticalInstancesAreEqual
 {
-    id<HUBViewModel>(^createViewModel)() = ^{
-        id<HUBComponentModel> (^createComponentModel)() = ^{
+    id<HUBViewModel>(^createViewModel)(void) = ^{
+        id<HUBComponentModel> (^createComponentModel)(void) = ^{
             HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
             
             return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"
@@ -73,8 +73,8 @@
 
 - (void)testNonIdentificalInstancesAreNotEqual
 {
-    id<HUBViewModel>(^createViewModel)() = ^{
-        id<HUBComponentModel> (^createComponentModel)() = ^{
+    id<HUBViewModel>(^createViewModel)(void) = ^{
+        id<HUBComponentModel> (^createComponentModel)(void) = ^{
             HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
             
             return [[HUBComponentModelImplementation alloc] initWithIdentifier:@"id"

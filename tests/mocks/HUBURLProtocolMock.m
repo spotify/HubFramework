@@ -150,7 +150,7 @@ static NSArray<HUBRequestFilter *> *urlFilters = nil;
     HUBRequestFilter *filter = [self.class filterMatchingRequest:self.request];
 
     __block BOOL hasResponse = NO, hasBody = NO;
-    void (^completionHandler)() = ^{
+    void (^completionHandler)(void) = ^{
         if (hasResponse && hasBody) {
             [self.client URLProtocolDidFinishLoading:self];
         }

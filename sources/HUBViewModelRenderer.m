@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
              completion:(void (^)(void))completionBlock
 {
     __weak __typeof(self) weakSelf = self;
-    void (^renderBlock)() = ^{
+    void (^renderBlock)(void) = ^{
         __strong __typeof(self) strongSelf = weakSelf;
         [strongSelf renderViewModel:viewModel
                    inCollectionView:collectionView
@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
      synchronously, or called from either of of the collection view's performBatchUpdates:completion: blocks), I've
      tried to separate that logic out into 2 block methods: layoutBlock and postLayoutBlock.
      */
-    void (^layoutBlock)() = ^{
+    void (^layoutBlock)(void) = ^{
         [layout computeForCollectionViewSize:collectionView.frame.size
                                    viewModel:viewModel
                                         diff:diff
@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
     };
 
     __weak __typeof(self) weakSelf = self;
-    void (^postLayoutBlock)() = ^{
+    void (^postLayoutBlock)(void) = ^{
         __strong __typeof(self) strongSelf = weakSelf;
         strongSelf.lastRenderedViewModel = viewModel;
         completionBlock();

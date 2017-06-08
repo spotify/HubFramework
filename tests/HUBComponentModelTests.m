@@ -50,7 +50,7 @@
 
 - (void)testIdenticalInstancesAreEqual
 {
-    id<HUBComponentModel> (^createComponentModel)() = ^() {
+    id<HUBComponentModel> (^createComponentModel)(void) = ^() {
         HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
         
         NSURL * const mainImageURL = [NSURL URLWithString:@"https://image.com/main.jpg"];
@@ -118,7 +118,7 @@
 
 - (void)testNonIdenticalInstancesAreNotEqual
 {
-    id<HUBComponentModel> (^createComponentModel)() = ^() {
+    id<HUBComponentModel> (^createComponentModel)(void) = ^() {
         NSString * const identifier = [NSUUID UUID].UUIDString;
         HUBIdentifier * const componentIdentifier = [[HUBIdentifier alloc] initWithNamespace:@"namespace" name:@"name"];
         

@@ -97,7 +97,7 @@
     [self.service startOnPort:7777];
     
     NSNetService * const netService = self.service.netService;
-    NSOutputStream * const outputStream = nil;
+    NSOutputStream * const outputStream = [NSOutputStream outputStreamToFileAtPath:@"/dev/null" append:NO];
     
     [netService.delegate netService:netService
                          didAcceptConnectionWithInputStream:stream
