@@ -783,10 +783,9 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                                                                             currentContentOffset:scrollView.contentOffset
                                                                            proposedContentOffset:*targetContentOffset];
 
-    if (targetContentOffset->y >= (scrollView.contentSize.height - CGRectGetHeight(scrollView.frame))) {
-        if (!self.viewModelLoader.isLoading) {
-            [self.viewModelLoader loadNextPageForCurrentViewModel];
-        }
+    CGFloat threshold = scrollView.contentSize.height - CGRectGetHeight(scrollView.frame);
+    if (targetContentOffset->y >= threshold && !self.viewModelLoader.isLoading) {
+        [self.viewModelLoader loadNextPageForCurrentViewModel];
     }
 }
 
@@ -943,8 +942,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
     CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
     CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
-    CGFloat const topBarHeight = MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
-    return topBarHeight;
+    return MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
 }
 
 - (BOOL)shouldAutomaticallyManageTopContentInset
@@ -1107,10 +1105,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         return;
     }
 
-    if (wrapper.viewHasAppearedSinceLastModelChange) {
-        if (!ignorePreviousAppearance) {
-            return;
-        }
+    if (wrapper.viewHasAppearedSinceLastModelChange && !ignorePreviousAppearance) {
+        return;
     }
 
     [self componentWrapperWillAppear:wrapper];

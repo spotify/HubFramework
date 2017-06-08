@@ -186,12 +186,10 @@ NS_ASSUME_NONNULL_BEGIN
     BOOL const viewLoaded = (self.view != nil);
     UIView * const view = HUBComponentLoadViewIfNeeded(self.component);
     
-    if (!viewLoaded) {
-        if (HUBConformsToProtocol(self.component, @protocol(HUBComponentViewObserver))) {
-            HUBComponentResizeObservingView * const resizeObservingView = [[HUBComponentResizeObservingView alloc] initWithFrame:view.bounds];
-            resizeObservingView.delegate = self;
-            [view addSubview:resizeObservingView];
-        }
+    if (!viewLoaded && HUBConformsToProtocol(self.component, @protocol(HUBComponentViewObserver))) {
+        HUBComponentResizeObservingView * const resizeObservingView = [[HUBComponentResizeObservingView alloc] initWithFrame:view.bounds];
+        resizeObservingView.delegate = self;
+        [view addSubview:resizeObservingView];
     }
 }
 

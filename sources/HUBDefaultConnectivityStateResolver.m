@@ -115,13 +115,10 @@ void HUBReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkConnectio
 - (SCNetworkReachabilityContext)createReachabilityContext
 {
     __weak __typeof(self) weakSelf = self;
-    
-    SCNetworkReachabilityContext const context = {
+    return (SCNetworkReachabilityContext){
         .version = 0,
         .info = (__bridge void *)weakSelf
     };
-    
-    return context;
 }
 
 - (HUBConnectivityState)connectivityStateFromReachabilityFlags:(SCNetworkReachabilityFlags)flags

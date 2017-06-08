@@ -73,35 +73,36 @@ typedef NSMutableDictionary<NSString *, HUBAutoEquatableComparisonBlock> HUBAuto
     
     HUBAutoEquatableComparisonMap *comparisonMap = comparisonMapsForClassNames[className];
     
-    if (comparisonMap == nil) {
-        NSSet<NSString *> * const ignoredPropertyNames = [[self class] ignoredAutoEquatablePropertyNames];
-        HUBAutoEquatableMutableComparisonMap * const mutableComparisonMap = [HUBAutoEquatableMutableComparisonMap new];
+    if (comparisonMap != nil) {
+        return comparisonMap;
+    }
+
+    NSSet<NSString *> * const ignoredPropertyNames = [[self class] ignoredAutoEquatablePropertyNames];
+    HUBAutoEquatableMutableComparisonMap * const mutableComparisonMap = [HUBAutoEquatableMutableComparisonMap new];
+    
+    unsigned int propertyCount;
+    const objc_property_t * propertyList = class_copyPropertyList([self class], &propertyCount);
+    
+    for (unsigned int i = 0; i < propertyCount; i++) {
+        const objc_property_t property = propertyList[i];
+        const char * propertyNameCString = property_getName(property);
+        NSString * const propertyName = [NSString stringWithUTF8String:propertyNameCString];
         
-        unsigned int propertyCount;
-        const objc_property_t * propertyList = class_copyPropertyList([self class], &propertyCount);
-        
-        for (unsigned int i = 0; i < propertyCount; i++) {
-            const objc_property_t property = propertyList[i];
-            const char * propertyNameCString = property_getName(property);
-            NSString * const propertyName = [NSString stringWithUTF8String:propertyNameCString];
-            
-            if (protocol_getProperty(@protocol(NSObject), propertyNameCString, YES, YES) != NULL) {
-                continue;
-            }
-            
-            if ([ignoredPropertyNames containsObject:propertyName]) {
-                continue;
-            }
-            
-            mutableComparisonMap[propertyName] = ^(NSObject * const objectA, NSObject * const objectB) {
-                return HUBPropertyIsEqual(objectA, objectB, propertyName);
-            };
+        if (protocol_getProperty(@protocol(NSObject), propertyNameCString, YES, YES) != NULL) {
+            continue;
         }
         
-        comparisonMap = mutableComparisonMap;
-        comparisonMapsForClassNames[className] = comparisonMap;
+        if ([ignoredPropertyNames containsObject:propertyName]) {
+            continue;
+        }
+        
+        mutableComparisonMap[propertyName] = ^(NSObject * const objectA, NSObject * const objectB) {
+            return HUBPropertyIsEqual(objectA, objectB, propertyName);
+        };
     }
     
+    comparisonMap = mutableComparisonMap;
+    comparisonMapsForClassNames[className] = comparisonMap;
     return comparisonMap;
 }
 

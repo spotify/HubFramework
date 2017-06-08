@@ -61,9 +61,8 @@
 {
     if (self.isPlaceholder) {
         return [self.imageResolver imageForPlaceholderIconWithIdentifier:self.identifier size:size color:color];
-    } else {
-        return [self.imageResolver imageForComponentIconWithIdentifier:self.identifier size:size color:color];
     }
+    return [self.imageResolver imageForComponentIconWithIdentifier:self.identifier size:size color:color];
 }
 
 @end

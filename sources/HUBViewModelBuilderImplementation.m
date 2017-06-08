@@ -275,7 +275,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (value == nil) {
         [customData removeObjectForKey:key];
     } else {
-        [customData setObject:(id)value forKey:key];
+        customData[key] = value;
     }
 
     self.customData = customData;
