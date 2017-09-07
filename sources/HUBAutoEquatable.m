@@ -78,7 +78,7 @@ typedef NSMutableDictionary<NSString *, HUBAutoEquatableComparisonBlock> HUBAuto
         HUBAutoEquatableMutableComparisonMap * const mutableComparisonMap = [HUBAutoEquatableMutableComparisonMap new];
         
         unsigned int propertyCount;
-        const objc_property_t * propertyList = class_copyPropertyList([self class], &propertyCount);
+        objc_property_t *propertyList = class_copyPropertyList([self class], &propertyCount);
         
         for (unsigned int i = 0; i < propertyCount; i++) {
             const objc_property_t property = propertyList[i];
@@ -96,6 +96,10 @@ typedef NSMutableDictionary<NSString *, HUBAutoEquatableComparisonBlock> HUBAuto
             mutableComparisonMap[propertyName] = ^(NSObject * const objectA, NSObject * const objectB) {
                 return HUBPropertyIsEqual(objectA, objectB, propertyName);
             };
+        }
+
+        if (propertyList) {
+            free(propertyList);
         }
         
         comparisonMap = mutableComparisonMap;
