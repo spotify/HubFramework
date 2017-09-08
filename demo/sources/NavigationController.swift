@@ -38,6 +38,10 @@ class NavigationController: UINavigationController, HUBViewControllerDelegate {
     func viewController(_ viewController: HUBViewController, didFailToUpdateWithError error: Error) {
         // No-op
     }
+
+    func viewController(_ viewController: HUBViewController, didPerformActionWith actionContext: HUBActionContext) {
+        // No-op
+    }
     
     func viewControllerDidFinishRendering(_ viewController: HUBViewController) {
         // No-op

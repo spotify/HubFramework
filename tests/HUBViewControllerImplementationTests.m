@@ -3043,6 +3043,10 @@
     }
 }
 
+- (void)viewController:(HUBViewController *)viewController didPerformActionWithContext:(id<HUBActionContext>)actionContext
+{
+}
+
 - (BOOL)viewControllerShouldStartScrolling:(HUBViewController *)viewController
 {
     if (self.viewControllerShouldStartScrollingBlock) {
