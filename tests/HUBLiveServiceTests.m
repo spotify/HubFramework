@@ -108,7 +108,7 @@
     id<HUBContentOperation> const contentOperation = self.contentOperation;
     XCTAssertNotNil(contentOperation);
 
-    HUBViewController *viewController = [self.hubManager.viewControllerFactory createViewControllerWithContentOperations:@[contentOperation]
+    id<HUBViewController>viewController = [self.hubManager.viewControllerFactory createViewControllerWithContentOperations:@[contentOperation]
                                                                                                             featureTitle:@"Test"];
     [viewController viewWillAppear:YES];
     [viewController viewDidLayoutSubviews];

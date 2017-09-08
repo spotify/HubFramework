@@ -29,7 +29,7 @@
 @protocol HUBViewModel;
 @protocol HUBComponentModel;
 @protocol HUBImageLoader;
-@class HUBViewController;
+@protocol HUBViewController;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  You can use this method to perform any custom UI operations on the whole view controller right before
  *  a new model will be rendered.
  */
-- (void)viewController:(HUBViewController *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel;
+- (void)viewController:(id <HUBViewController>)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel;
 
 /**
  *  Sent to a Hub Framework view controller's delegate when it was updated with a new view model
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  You can use this method to perform any custom UI operations on the whole view controller when a new
  *  view model has been rendered.
  */
-- (void)viewControllerDidUpdate:(HUBViewController *)viewController;
+- (void)viewControllerDidUpdate:(id <HUBViewController>)viewController;
 
 /**
  *  Sent to a Hub Framework view controller's delegate when it failed to be updated because of an error
@@ -72,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Note that you can also use content operations (`HUBContentOperation`) to react to errors, and adjust the UI.
  */
-- (void)viewController:(HUBViewController *)viewController didFailToUpdateWithError:(NSError *)error;
+- (void)viewController:(id <HUBViewController>)viewController didFailToUpdateWithError:(NSError *)error;
 
 /**
  *  Sent to a Hub Framework view controller's delegate when the view finished rendering, due to a view model update.
@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  You can use this method to perform any custom UI operations on the whole view controller right after
  *  a new view model was rendered.
  */
-- (void)viewControllerDidFinishRendering:(HUBViewController *)viewController;
+- (void)viewControllerDidFinishRendering:(id <HUBViewController>)viewController;
 
 /**
  *  Sent to a Hub Framework view controller's delegate to ask it whenever the view controller should start scrolling
@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  This method can be used to veto a scroll event from being started. It will be called every time the user starts
  *  scrolling the view that is rendering body components.
  */
-- (BOOL)viewControllerShouldStartScrolling:(HUBViewController *)viewController;
+- (BOOL)viewControllerShouldStartScrolling:(id <HUBViewController>)viewController;
 
 /**
  *  Sent to a Hub Framework view controller's delegate when a component is about to appear on the screen
@@ -102,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param layoutTraits The layout traits of the component that is about to appear
  *  @param componentView The view that the component is about to appear in
  */
-- (void)viewController:(HUBViewController *)viewController
+- (void)viewController:(id<HUBViewController>)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
       willAppearInView:(UIView *)componentView;
@@ -115,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param layoutTraits The layout traits of the component that disappeared
  *  @param componentView The view that the component disappeared from
  */
-- (void)viewController:(HUBViewController *)viewController
+- (void)viewController:(id<HUBViewController>)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
   didDisappearFromView:(UIView *)componentView;
@@ -126,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewController The view controller in which a component view will be reused
  *  @param componentView The component view that will be reused
  */
-- (void)viewController:(HUBViewController *)viewController
+- (void)viewController:(id<HUBViewController>)viewController
         willReuseComponentWithView:(UIView *)componentView;
 
 /**
@@ -135,7 +135,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param viewController The view controller in which the component was selected
  *  @param componentModel The model of the component that was selected
  */
-- (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
+- (void)viewController:(id<HUBViewController>)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
 
 /**
  *  Sent to a Hub Framework view controller's delegate to ask if view controller should automatically
@@ -146,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @discussion When view controller automatically manages content inset it puts body components
  *  below header component and below navigation bar.
  */
-- (BOOL)viewControllerShouldAutomaticallyManageTopContentInset:(HUBViewController *)viewController;
+- (BOOL)viewControllerShouldAutomaticallyManageTopContentInset:(id<HUBViewController>)viewController;
 
 /**
  *  Return the center point of overlay coponents used in a view controller.
@@ -157,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The Hub Framework will call this method every time a view controller is being laid out, which is usually in
  *  response to that its view model has been changed. The returned value will be set as a center point of the overlay.
  */
-- (CGPoint)centerPointForOverlayComponentInViewController:(HUBViewController *)viewController
+- (CGPoint)centerPointForOverlayComponentInViewController:(id<HUBViewController>)viewController
                                       proposedCenterPoint:(CGPoint)proposedCenterPoint;
 
 @end
@@ -170,7 +170,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  This view controller renders `HUBComponent` instances using a collection view. What components that are rendered
  *  are determined by `HUBContentOperation`s that build a `HUBViewModel`.
  */
-@interface HUBViewController : UIViewController <HUBActionPerformer>
+@protocol HUBViewController
 
 /// The view controller's delegate. See `HUBViewControllerDelegate` for more information.
 @property (nonatomic, weak, nullable) id<HUBViewControllerDelegate> delegate;

@@ -101,7 +101,7 @@
         return YES;
     };
     
-    HUBViewController * const viewController = [manager.viewControllerFactory createViewControllerForViewURI:viewURI
+    id<HUBViewController> const viewController = [manager.viewControllerFactory createViewControllerForViewURI:viewURI
                                                                                            contentOperations:@[contentOperation]
                                                                                            featureIdentifier:@"feature"
                                                                                                 featureTitle:@"Feature"];

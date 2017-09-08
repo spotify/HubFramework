@@ -39,7 +39,7 @@
     id<HUBContentOperation> contentOperation = [HUBContentOperationMock new];
     NSURL *viewURI = (id)[NSURL URLWithString:@"test-uri"];
 
-    HUBViewController * const viewController = [factory createViewControllerWithConfig:config
+    id<HUBViewController> const viewController = [factory createViewControllerWithConfig:config
                                                                      contentOperations:@[contentOperation]
                                                                                viewURI:viewURI
                                                                      featureIdentifier:@"test"

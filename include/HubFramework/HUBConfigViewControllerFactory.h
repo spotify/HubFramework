@@ -20,9 +20,10 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class HUBConfig;
-@class HUBViewController;
+@protocol HUBViewController;
 @protocol HUBActionHandler;
 @protocol HUBContentOperation;
 @protocol HUBViewModel;
@@ -48,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param featureTitle Used to set the `featureInfo` on the created view controller.
  *  @param actionHandler Optional custom action handler. See `HUBActionHandler` for more info.
  */
-- (HUBViewController *)createViewControllerWithConfig:(HUBConfig *)config
+- (id<HUBViewController>)createViewControllerWithConfig:(HUBConfig *)config
                                     contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
                                               viewURI:(NSURL *)viewURI
                                     featureIdentifier:(NSString *)featureIdentifier

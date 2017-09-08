@@ -83,7 +83,7 @@
 @property (nonatomic, strong) HUBActionRegistryImplementation *actionRegistry;
 @property (nonatomic, strong) NSURL *viewURI;
 @property (nonatomic, strong) HUBFeatureInfoImplementation *featureInfo;
-@property (nonatomic, strong) HUBViewController *viewController;
+@property (nonatomic, strong) id<HUBViewController>viewController;
 @property (nonatomic, strong) id<HUBViewModel> viewModelFromDelegateMethod;
 @property (nonatomic, strong) NSError *errorFromDelegateMethod;
 @property (nonatomic, strong) NSMutableArray<id<HUBComponentModel>> *componentModelsFromAppearanceDelegateMethod;
@@ -1666,7 +1666,7 @@
     };
     
     __block NSUInteger numberOfContentInsetCalls = 0;
-    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(HUBViewController *controller, UIEdgeInsets insets) {
+    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(id<HUBViewController>controller, UIEdgeInsets insets) {
         numberOfContentInsetCalls += 1;
         if (numberOfContentInsetCalls == 1) {
             assertInsetsEqualToCollectionViewInsets(UIEdgeInsetsZero);
@@ -1696,7 +1696,7 @@
 
     __block NSUInteger numberOfInsetCalls = 0;
     __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"The content inset handler should be asked for the content inset"];
-    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(HUBViewController *controller, UIEdgeInsets proposedInsets) {
+    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(id<HUBViewController>controller, UIEdgeInsets proposedInsets) {
         assertInsetsEqualToCollectionViewInsets(proposedInsets, expectedInsets);
         numberOfInsetCalls += 1;
         if (numberOfInsetCalls == 2) {
@@ -1735,7 +1735,7 @@
 
     __block NSUInteger numberOfInsetCalls = 0;
     __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"The content inset handler should be asked for the content inset"];
-    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(HUBViewController *controller, UIEdgeInsets proposedInsets) {
+    self.scrollHandler.contentInsetHandler = ^UIEdgeInsets(id<HUBViewController>controller, UIEdgeInsets proposedInsets) {
         assertInsetsEqualToCollectionViewInsets(proposedInsets, UIEdgeInsetsZero);
         numberOfInsetCalls += 1;
         if (numberOfInsetCalls == 2) {
@@ -1826,7 +1826,7 @@
         return YES;
     };
     
-    self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInsets) {
+    self.scrollHandler.contentInsetHandler = ^(id<HUBViewController>viewController, UIEdgeInsets proposedContentInsets) {
         return proposedContentInsets;
     };
     
@@ -2210,7 +2210,7 @@
     self.scrollHandler.shouldAutomaticallyAdjustContentInsets = YES;
     self.scrollHandler.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.scrollHandler.scrollDecelerationRate = UIScrollViewDecelerationRateNormal;
-    self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInset) {
+    self.scrollHandler.contentInsetHandler = ^(id<HUBViewController>viewController, UIEdgeInsets proposedContentInset) {
         return UIEdgeInsetsMake(100, 30, 40, 200);
     };
     
@@ -2725,7 +2725,7 @@
         return YES;
     };
     
-    self.scrollHandler.contentInsetHandler = ^(HUBViewController *viewController, UIEdgeInsets proposedContentInset) {
+    self.scrollHandler.contentInsetHandler = ^(id<HUBViewController>viewController, UIEdgeInsets proposedContentInset) {
         return UIEdgeInsetsMake(100, 30, 40, 200);
     };
 
@@ -3015,25 +3015,25 @@
 
 #pragma mark - HUBViewControllerDelegate
 
-- (void)viewController:(HUBViewController *)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
+- (void)viewController:(id<HUBViewController>)viewController willUpdateWithViewModel:(id<HUBViewModel>)viewModel
 {
     XCTAssertEqual(viewController, self.viewController);
     self.viewModelFromDelegateMethod = viewModel;
 }
 
-- (void)viewControllerDidUpdate:(HUBViewController *)viewController
+- (void)viewControllerDidUpdate:(id<HUBViewController>)viewController
 {
     XCTAssertEqual(viewController, self.viewController);
     XCTAssertEqual(self.viewModelFromDelegateMethod, viewController.viewModel);
 }
 
-- (void)viewController:(HUBViewController *)viewController didFailToUpdateWithError:(NSError *)error
+- (void)viewController:(id<HUBViewController>)viewController didFailToUpdateWithError:(NSError *)error
 {
     XCTAssertEqual(viewController, self.viewController);
     self.errorFromDelegateMethod = error;
 }
 
-- (void)viewControllerDidFinishRendering:(HUBViewController *)viewController
+- (void)viewControllerDidFinishRendering:(id<HUBViewController>)viewController
 {
     XCTAssertEqual(viewController, self.viewController);
     self.didReceiveViewControllerDidFinishRendering = YES;
@@ -3043,7 +3043,7 @@
     }
 }
 
-- (BOOL)viewControllerShouldStartScrolling:(HUBViewController *)viewController
+- (BOOL)viewControllerShouldStartScrolling:(id<HUBViewController>)viewController
 {
     if (self.viewControllerShouldStartScrollingBlock) {
         return self.viewControllerShouldStartScrollingBlock();
@@ -3051,7 +3051,7 @@
     return NO;
 }
 
-- (void)viewController:(HUBViewController *)viewController
+- (void)viewController:(id<HUBViewController>)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
       willAppearInView:(nonnull UIView *)componentView
@@ -3064,7 +3064,7 @@
     [self.componentLayoutTraitsFromAppearanceDelegateMethod addObject:layoutTraits];
 }
 
-- (void)viewController:(HUBViewController *)viewController
+- (void)viewController:(id<HUBViewController>)viewController
     componentWithModel:(id<HUBComponentModel>)componentModel
           layoutTraits:(NSSet<HUBComponentLayoutTrait> *)layoutTraits
   didDisappearFromView:(UIView *)componentView
@@ -3076,20 +3076,20 @@
     [self.componentLayoutTraitsFromDisapperanceDelegateMethod addObject:layoutTraits];
 }
 
-- (void)viewController:(HUBViewController *)viewController willReuseComponentWithView:(UIView *)componentView
+- (void)viewController:(id<HUBViewController>)viewController willReuseComponentWithView:(UIView *)componentView
 {
     XCTAssertEqual(viewController, self.viewController);
 
     [self.componentViewsFromReuseDelegateMethod addObject:componentView];
 }
 
-- (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
+- (void)viewController:(id<HUBViewController>)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel
 {
     XCTAssertEqual(viewController, self.viewController);
     [self.componentModelsFromSelectionDelegateMethod addObject:componentModel];
 }
 
-- (BOOL)viewControllerShouldAutomaticallyManageTopContentInset:(HUBViewController *)viewController
+- (BOOL)viewControllerShouldAutomaticallyManageTopContentInset:(id<HUBViewController>)viewController
 {
     XCTAssertEqual(viewController, self.viewController);
     if (self.viewControllerShouldAutomaticallyManageTopContentInset) {
@@ -3098,7 +3098,7 @@
     return NO;
 }
 
-- (CGPoint)centerPointForOverlayComponentInViewController:(HUBViewController *)viewController
+- (CGPoint)centerPointForOverlayComponentInViewController:(id<HUBViewController>)viewController
                                       proposedCenterPoint:(CGPoint)proposedCenterPoint
 {
     XCTAssertEqual(viewController, self.viewController);

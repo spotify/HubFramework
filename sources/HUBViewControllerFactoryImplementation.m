@@ -96,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [self.viewModelLoaderFactory canCreateViewModelLoaderForViewURI:viewURI];
 }
 
-- (nullable HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
+- (nullable id<HUBViewController>)createViewControllerForViewURI:(NSURL *)viewURI
 {
     HUBFeatureRegistration * const featureRegistration = [self.featureRegistry featureRegistrationForViewURI:viewURI];
     
@@ -107,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [self createViewControllerForViewURI:viewURI featureRegistration:featureRegistration];
 }
 
-- (HUBViewController *)createViewControllerWithContentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
+- (id<HUBViewController>)createViewControllerWithContentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
                                                     featureTitle:(NSString *)featureTitle
 {
     NSString * const identifier = [featureTitle lowercaseString];
@@ -119,7 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
                                    featureTitle:featureTitle];
 }
 
-- (HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
+- (id<HUBViewController>)createViewControllerForViewURI:(NSURL *)viewURI
                                     contentOperations:(NSArray<id<HUBContentOperation>> *)contentOperations
                                     featureIdentifier:(NSString *)featureIdentifier
                                          featureTitle:(NSString *)featureTitle
@@ -144,7 +144,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Private utilities
 
-- (HUBViewController *)createViewControllerForViewURI:(NSURL *)viewURI
+- (id<HUBViewController>)createViewControllerForViewURI:(NSURL *)viewURI
                                   featureRegistration:(HUBFeatureRegistration *)featureRegistration
 {
     BOOL useV2 = [featureRegistration.options[@"HUBViewController"] isEqualToString:@"v2"];
@@ -155,7 +155,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (HUBViewController *)createStandardViewControllerForViewURI:(NSURL *)viewURI
+- (id<HUBViewController>)createStandardViewControllerForViewURI:(NSURL *)viewURI
                                           featureRegistration:(HUBFeatureRegistration *)featureRegistration
 {
     id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureRegistration.featureIdentifier
@@ -190,7 +190,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                         imageLoader:imageLoader];
 }
 
-- (HUBViewController *)createExperimentalViewControllerForViewURI:(NSURL *)viewURI
+- (id<HUBViewController>)createExperimentalViewControllerForViewURI:(NSURL *)viewURI
                                               featureRegistration:(HUBFeatureRegistration *)featureRegistration
 {
     id<HUBFeatureInfo> const featureInfo = [[HUBFeatureInfoImplementation alloc] initWithIdentifier:featureRegistration.featureIdentifier

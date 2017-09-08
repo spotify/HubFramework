@@ -113,7 +113,7 @@
     [self registerFeatureWithViewURI:viewURI options:nil];
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
 
-    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    id<HUBViewController> const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
     XCTAssertTrue([viewController isKindOfClass:[HUBViewControllerImplementation class]]);
 }
 
@@ -123,7 +123,7 @@
     [self registerFeatureWithViewURI:viewURI options:@{@"HUBViewController" : @"unexpectedValue"}];
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
 
-    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    id<HUBViewController> const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
     XCTAssertTrue([viewController isKindOfClass:[HUBViewControllerImplementation class]]);
 }
 
@@ -133,7 +133,7 @@
     [self registerFeatureWithViewURI:viewURI options:@{@"HUBViewController" : @"v2"}];
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
 
-    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    id<HUBViewController> const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
     XCTAssertTrue([viewController isKindOfClass:[HUBViewControllerExperimentalImplementation class]]);
 }
 
@@ -143,7 +143,7 @@
     [self registerFeatureWithViewURI:viewURI options:nil];
     XCTAssertTrue([self.manager.viewControllerFactory canCreateViewControllerForViewURI:viewURI]);
     
-    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    id<HUBViewController> const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
     XCTAssertEqualObjects(viewController.viewURI, viewURI);
 }
 
@@ -166,7 +166,7 @@
         return YES;
     };
     
-    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI
+    id<HUBViewController> const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI
                                                                                                 contentOperations:@[contentOperation]
                                                                                                 featureIdentifier:@"identifier"
                                                                                                      featureTitle:@"Title"];
@@ -187,7 +187,7 @@
         return YES;
     };
     
-    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerWithContentOperations:@[contentOperation]
+    id<HUBViewController> const viewController = [self.manager.viewControllerFactory createViewControllerWithContentOperations:@[contentOperation]
                                                                                                                 featureTitle:@"Feature"];
     
     [viewController viewWillAppear:NO];
@@ -248,7 +248,7 @@
         return YES;
     };
     
-    HUBViewController * const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
+    id<HUBViewController> const viewController = [self.manager.viewControllerFactory createViewControllerForViewURI:viewURI];
     [viewController viewWillAppear:YES];
     
     id<HUBComponentModel> const componentModel = viewController.viewModel.bodyComponentModels[0];
