@@ -29,6 +29,7 @@
 @protocol HUBViewModel;
 @protocol HUBComponentModel;
 @protocol HUBImageLoader;
+@protocol HUBActionContext;
 @class HUBViewController;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -136,6 +137,15 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param componentModel The model of the component that was selected
  */
 - (void)viewController:(HUBViewController *)viewController componentSelectedWithModel:(id<HUBComponentModel>)componentModel;
+
+
+/**
+ *  Sent to a Hub Framework view controller's delegate when actions are performed.
+ *
+ *  @param viewController The view controller in which the component was selected
+ *  @param actionContext The context of which the action was performed with.
+ */
+- (void)viewController:(HUBViewController *)viewController didPerformActionWithContext:(id<HUBActionContext>)actionContext;
 
 /**
  *  Sent to a Hub Framework view controller's delegate to ask if view controller should automatically

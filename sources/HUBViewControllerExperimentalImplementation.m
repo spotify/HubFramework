@@ -1231,6 +1231,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         [observer actionPerformedWithContext:context];
     }
 
+    [self.delegate viewController:self didPerformActionWithContext:context];
+
     return actionWasHandled;
 }
 
