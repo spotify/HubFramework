@@ -24,6 +24,8 @@
 
 @class HUBViewController;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Protocol used to define custom scroll handlers for Hub Framework view controllers
  *
@@ -147,3 +149,5 @@
                                        viewController:(HUBViewController *)viewController;
 
 @end
+
+NS_ASSUME_NONNULL_END
