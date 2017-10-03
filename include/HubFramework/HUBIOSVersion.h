@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2017 Spotify AB.
+ *  Copyright (c) 2016 Spotify AB.
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
