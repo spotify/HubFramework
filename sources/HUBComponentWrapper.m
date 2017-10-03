@@ -185,7 +185,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     BOOL const viewLoaded = (self.view != nil);
     UIView * const view = HUBComponentLoadViewIfNeeded(self.component);
-    
+
     if (!viewLoaded) {
         if (HUBConformsToProtocol(self.component, @protocol(HUBComponentViewObserver))) {
             HUBComponentResizeObservingView * const resizeObservingView = [[HUBComponentResizeObservingView alloc] initWithFrame:view.bounds];
@@ -202,6 +202,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)configureViewWithModel:(id<HUBComponentModel>)model containerViewSize:(CGSize)containerViewSize
 {
+    self.component.view.accessibilityIdentifier = self.model.identifier;
+
     if (self.hasBeenConfigured) {
         if ([self.model isEqual:model]) {
             return;
