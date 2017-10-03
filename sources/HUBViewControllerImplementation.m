@@ -49,6 +49,7 @@
 #import "HUBFeatureInfo.h"
 #import "HUBOperation.h"
 #import "HUBOperationQueue.h"
+#import "HUBIOSVersion.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -167,6 +168,9 @@ NS_ASSUME_NONNULL_BEGIN
 
     HUBCollectionView * const collectionView = [self.collectionViewFactory createCollectionView];
     self.collectionView = collectionView;
+    HUBIfIOS11OrNewer(^{
+        self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    });
     collectionView.showsVerticalScrollIndicator = [self.scrollHandler shouldShowScrollIndicatorsInViewController:self];
     collectionView.showsHorizontalScrollIndicator = collectionView.showsVerticalScrollIndicator;
     collectionView.keyboardDismissMode = [self.scrollHandler keyboardDismissModeForViewController:self];
