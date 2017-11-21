@@ -20,6 +20,7 @@ module Fastlane
           invocation_args = [
             script.path,
             '-X', 'gcov', '-X', 'coveragepy',
+            '-X', 'xcodeplist', # use xccoverage files
             '-u', cc_url,
             '-D', dd_path,
           ]

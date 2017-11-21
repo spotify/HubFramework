@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'danger', '~> 4.3'
+gem 'danger', '~> 5.5'
 gem 'danger-junit'
 gem 'danger-xcode_summary'
-gem 'fastlane', '~> 2.25'
-gem 'jazzy', '~> 0.7'
+gem 'fastlane', '~> 2.66'
+gem 'jazzy', '~> 0.9'
 gem 'xcpretty-json-formatter'
 
 plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
