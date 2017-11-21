@@ -27,7 +27,7 @@
 #import "HUBComponentRegistryImplementation.h"
 #import "HUBComponentReusePoolMock.h"
 #import "HUBIdentifier.h"
-#import "HUBJSONSChemaRegistryImplementation.h"
+#import "HUBJSONSchemaRegistryImplementation.h"
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBImageLoaderMock.h"
