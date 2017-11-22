@@ -66,7 +66,7 @@ class Live {
         
         let filePath = arguments[1]
         
-        guard filePath.characters.count > 0 else {
+        guard filePath.count > 0 else {
             throw LiveError.noFilePath
         }
         
