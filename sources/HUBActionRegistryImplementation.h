@@ -23,7 +23,6 @@
 #import "HUBHeaderMacros.h"
 
 @protocol HUBAction;
-@class HUBIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
 

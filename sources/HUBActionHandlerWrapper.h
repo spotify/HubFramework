@@ -23,8 +23,6 @@
 #import "HUBHeaderMacros.h"
 
 @class HUBActionHandlerWrapper;
-@class HUBIdentifier;
-@class HUBActionRegistryImplementation;
 @class HUBInitialViewModelRegistry;
 @class HUBViewModelLoaderImplementation;
 @protocol HUBActionRegistry;

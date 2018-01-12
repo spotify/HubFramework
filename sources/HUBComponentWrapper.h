@@ -30,7 +30,6 @@
 
 @protocol HUBComponent;
 @protocol HUBComponentModel;
-@protocol HUBComponentImageData;
 @class HUBIdentifier;
 @class HUBComponentWrapper;
 @class HUBComponentUIStateManager;

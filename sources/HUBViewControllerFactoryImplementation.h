@@ -23,7 +23,6 @@
 #import "HUBHeaderMacros.h"
 
 @protocol HUBImageLoaderFactory;
-@protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;
 @protocol HUBActionHandler;
 @class HUBViewModelLoaderFactoryImplementation;

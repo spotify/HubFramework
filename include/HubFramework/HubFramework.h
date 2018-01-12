@@ -33,7 +33,6 @@
 #import "HUBComponentModelJSONSchema.h"
 #import "HUBComponentTargetJSONSchema.h"
 #import "HUBComponentImageDataJSONSchema.h"
-#import "HUBComponentTargetJSONSchema.h"
 #import "HUBJSONCompatibleBuilder.h"
 #import "HUBJSONSchemaRegistry.h"
 #import "HUBJSONPath.h"

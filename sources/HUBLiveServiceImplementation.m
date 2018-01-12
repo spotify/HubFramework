@@ -20,10 +20,10 @@
  */
 
 #import "HUBLiveServiceImplementation.h"
-
 #import "HUBLiveContentOperation.h"
 
 #if HUB_DEBUG
+@protocol HUBViewControllerFactory;
 
 NS_ASSUME_NONNULL_BEGIN
 

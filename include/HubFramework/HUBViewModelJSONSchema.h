@@ -23,7 +23,6 @@
 
 @protocol HUBJSONStringPath;
 @protocol HUBJSONDictionaryPath;
-@protocol HUBJSONURLPath;
 
 NS_ASSUME_NONNULL_BEGIN
 

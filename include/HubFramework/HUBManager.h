@@ -33,7 +33,6 @@
 @protocol HUBComponentShowcaseManager;
 @protocol HUBLiveService;
 @protocol HUBConnectivityStateResolver;
-@protocol HUBDataLoaderFactory;
 @protocol HUBImageLoaderFactory;
 @protocol HUBIconImageResolver;
 @protocol HUBActionHandler;
