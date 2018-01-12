@@ -25,8 +25,6 @@
 #import "HUBComponentCategories.h"
 
 @class HUBConfig;
-@protocol HUBActionRegistry;
-@protocol HUBComponent;
 @protocol HUBJSONSchema;
 @protocol HUBComponentFallbackHandler;
 @protocol HUBContentReloadPolicy;
@@ -35,7 +33,6 @@
 @protocol HUBConnectivityStateResolver;
 @protocol HUBIconImageResolver;
 @protocol HUBViewControllerScrollHandler;
-@protocol HUBComponentRegistry;
 @protocol HUBAction;
 
 

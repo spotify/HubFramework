@@ -22,7 +22,6 @@
 #import "HUBComponentImageDataBuilder.h"
 #import "HUBHeaderMacros.h"
 
-@protocol HUBComponentImageDataJSONSchema;
 @protocol HUBIconImageResolver;
 @class HUBComponentImageDataImplementation;
 

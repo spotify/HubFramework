@@ -23,8 +23,6 @@
 #import "HUBComponentShowcaseManager.h"
 #import "HUBHeaderMacros.h"
 
-@protocol HUBComponent;
-@protocol HUBComponentModel;
 @protocol HUBComponentFallbackHandler;
 @protocol HUBIconImageResolver;
 @class HUBComponentDefaults;

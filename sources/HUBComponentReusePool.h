@@ -25,7 +25,6 @@
 @protocol HUBComponentWrapperDelegate;
 @protocol HUBComponentRegistry;
 @class HUBComponentWrapper;
-@class HUBComponentUIStateManager;
 
 NS_ASSUME_NONNULL_BEGIN
 

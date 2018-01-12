@@ -25,7 +25,6 @@
 @class HUBViewController;
 @protocol HUBActionHandler;
 @protocol HUBContentOperation;
-@protocol HUBViewModel;
 
 NS_ASSUME_NONNULL_BEGIN
 

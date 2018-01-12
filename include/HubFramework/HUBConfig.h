@@ -26,7 +26,6 @@
 
 @protocol HUBActionRegistry;
 @protocol HUBJSONSchema;
-@protocol HUBComponent;
 @protocol HUBComponentFallbackHandler;
 @protocol HUBContentReloadPolicy;
 @protocol HUBComponentLayoutManager;

@@ -28,7 +28,6 @@
 
 @protocol HUBViewModel;
 @protocol HUBComponentModel;
-@protocol HUBImageLoader;
 @protocol HUBActionContext;
 @class HUBViewController;
 

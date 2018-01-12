@@ -21,7 +21,6 @@
 
 #import "HUBComponent.h"
 
-@protocol HUBComponentWrapper;
 @protocol HUBComponentWithChildren;
 
 NS_ASSUME_NONNULL_BEGIN
