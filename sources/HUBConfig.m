@@ -48,8 +48,10 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation HUBConfig
-HUBComponentRegistryImplementation * _componentRegistry;
-HUBActionRegistryImplementation *_actionRegistry;
+{
+    HUBComponentRegistryImplementation * _componentRegistry;
+    HUBActionRegistryImplementation *_actionRegistry;
+}
 
 - (instancetype)initWithComponentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager
                       componentFallbackHandler:(id<HUBComponentFallbackHandler>)componentFallbackHandler
@@ -92,8 +94,4 @@ HUBActionRegistryImplementation *_actionRegistry;
 
 @end
 
-
-
-
 NS_ASSUME_NONNULL_END
-
