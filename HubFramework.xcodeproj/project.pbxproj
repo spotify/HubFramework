@@ -210,7 +210,6 @@
 		8AD151841D9968390008E182 /* HUBURLSessionDataTaskMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD151831D9968390008E182 /* HUBURLSessionDataTaskMock.m */; };
 		8AD151851D9968430008E182 /* HUBURLSessionMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD151801D9966080008E182 /* HUBURLSessionMock.m */; };
 		8AD732031D9AD30100E4B427 /* HUBDefaultConnectivityStateResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD732021D9AD30100E4B427 /* HUBDefaultConnectivityStateResolver.m */; };
-		8AD733601D9BE6F800E4B427 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7335F1D9BE6F800E4B427 /* SystemConfiguration.framework */; };
 		8AD733611D9BE71300E4B427 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7335F1D9BE6F800E4B427 /* SystemConfiguration.framework */; };
 		8ADA48571D784C1400C27F21 /* HUBAutoEquatable.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADA48561D784C1400C27F21 /* HUBAutoEquatable.m */; };
 		8ADD42921C21C81100D1A801 /* HUBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD42911C21C81100D1A801 /* HUBManager.m */; };
@@ -462,8 +461,6 @@
 		DD561C891E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DD561C881E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m */; };
 		DD561C8A1E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DD561C881E5BAE6300BE0A5E /* CGFloat+HUBMathTests.m */; };
 		DD561C8B1E5BAE6A00BE0A5E /* CGFloat+HUBMath.h in Headers */ = {isa = PBXBuildFile; fileRef = DD561C871E5BA44500BE0A5E /* CGFloat+HUBMath.h */; };
-		DDBCF36C1C68DD2300693038 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36B1C68DD2300693038 /* UIKit.framework */; };
-		DDBCF36E1C68DE2C00693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
 		DDBCF36F1C68DE4900693038 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36D1C68DE2C00693038 /* CoreGraphics.framework */; };
 		DDBCF3701C68DE5000693038 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBCF36B1C68DD2300693038 /* UIKit.framework */; };
 		F64C5C2D1DB82CA30077E619 /* HUBViewModelRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = F64C5C2C1DB82CA30077E619 /* HUBViewModelRenderer.m */; };
@@ -856,9 +853,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AD733601D9BE6F800E4B427 /* SystemConfiguration.framework in Frameworks */,
-				DDBCF36E1C68DE2C00693038 /* CoreGraphics.framework in Frameworks */,
-				DDBCF36C1C68DD2300693038 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
