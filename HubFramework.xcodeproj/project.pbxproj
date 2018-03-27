@@ -1865,7 +1865,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = HUB;
-				LastUpgradeCheck = 0910;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = Spotify;
 				TargetAttributes = {
 					8A07549D1C21A79200AFAD38 = {
@@ -2277,6 +2277,7 @@
 			baseConfigurationReference = DD13758E1C68C76000AD3499 /* project.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_TESTABILITY = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
