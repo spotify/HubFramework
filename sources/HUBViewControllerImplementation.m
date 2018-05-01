@@ -87,6 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) CGPoint lastContentOffset;
 @property (nonatomic, copy, nullable) void(^pendingScrollAnimationCallback)(void);
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 
 @end
 
@@ -429,9 +430,20 @@ NS_ASSUME_NONNULL_BEGIN
                                  completion:completion];
 }
 
--(void)reload
+- (void)reload
 {
     [self.viewModelLoader reloadViewModel];
+}
+
+- (void)setStatusBarToLightContent:(BOOL)wantsLightContent
+{
+	self.statusBarStyle = wantsLightContent ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault;
+	[self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+	return self.statusBarStyle;
 }
 
 #pragma mark - HUBViewModelLoaderDelegate

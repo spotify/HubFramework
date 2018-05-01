@@ -304,6 +304,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)reload;
 
+/**
+ * Set the status bar to light content or default (dark) content.
+ *
+ * @param wantsLightContent A boolean where YES sets UIStatusBarStyleLightContent and NO sets UIStatusBarStyleDefault.
+ */
+- (void)setStatusBarToLightContent:(BOOL)wantsLightContent;
+
 #pragma mark - Unavailable initializers
 
 /// Use `HUBViewControllerFactory` to create instances of this class

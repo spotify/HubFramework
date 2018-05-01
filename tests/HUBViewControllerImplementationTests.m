@@ -356,6 +356,21 @@
     XCTAssertEqualObjects(self.viewModelFromDelegateMethod.navigationItem.title, viewModelNavBarTitleB);
 }
 
+- (void)testStatusBarToLightContent
+{
+	[self.viewController setStatusBarToLightContent:YES];
+	
+	XCTAssertEqual(self.viewController.preferredStatusBarStyle, UIStatusBarStyleLightContent);
+}
+
+- (void)testStatusBarReturnToDarkContent
+{
+	[self.viewController setStatusBarToLightContent:YES];
+	[self.viewController setStatusBarToLightContent:NO];
+	
+	XCTAssertEqual(self.viewController.preferredStatusBarStyle, UIStatusBarStyleDefault);
+}
+
 - (void)testDelegateNotifiedOfViewModelUpdateError
 {
     NSError * const error = [NSError errorWithDomain:@"hubFramework" code:4 userInfo:nil];
