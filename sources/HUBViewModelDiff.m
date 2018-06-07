@@ -128,9 +128,7 @@ HUBViewModelDiff *HUBDiffLCSAlgorithm(id<HUBViewModel> fromViewModel, id<HUBView
 
     // The matrix containing all the subproblem results
     NSUInteger *subsequenceMatrix = calloc((fromViewModelCount + 1) * (toViewModelCount + 1), sizeof(NSUInteger));
-    if (subsequenceMatrix == NULL) {
-        return nil;
-    }
+    NSCAssert(subsequenceMatrix != NULL, @"Unable to allocate memory.");
 
     // Populating the subsequence matrix
     for (NSUInteger i = fromViewModelCount; i < NSUIntegerMax; i--) {
