@@ -200,6 +200,12 @@ import HubFramework
         viewController.delegate = navigationController
         viewController.view.backgroundColor = .white
         viewController.view.contentView?.alwaysBounceVertical = (viewController.viewURI == URL.gitHubSearchViewURI)
+
+        // Disable iOS 11’s automatic adjustment of contentInset as it messes up our views and UI tests
+        if #available(iOS 11, *) {
+            viewController.view.contentView?.contentInsetAdjustmentBehavior = .never
+        }
+
         navigationController?.pushViewController(viewController, animated: animated)
     }
 }

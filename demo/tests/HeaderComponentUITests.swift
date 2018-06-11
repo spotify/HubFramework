@@ -93,7 +93,7 @@ class HeaderComponentUITests: UITestCase {
         XCUIApplication().collectionViews.staticTexts["Sticky header"].tap()
     }
 
-    private func execute(until header:XCUIElement, hasHeight expectedHeight:CGFloat, block:() -> Void) {
+    private func execute(until header: XCUIElement, hasHeight expectedHeight: CGFloat, block: () -> Void) {
         var numberOfSwipes = 0
 
         // Perform the block until the header is the expected height
