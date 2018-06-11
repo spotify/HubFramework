@@ -60,7 +60,7 @@ class SelectionUITests: UITestCase {
         navigateToPrettyPictures()
         
         let collectionView = rootCollectionView(for: app)
-        XCTAssertTrue(collectionView.exists)
+        XCTAssertTrue(collectionView.waitForExistence(timeout: 2))
         
         let rootCell = collectionView.children(matching: .cell).element(boundBy: 0)
         XCTAssertTrue(rootCell.exists)

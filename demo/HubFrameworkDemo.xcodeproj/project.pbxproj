@@ -109,12 +109,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3EB3D3471E69988300064452 /* ScrollingUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScrollingUITests.swift; path = tests/ScrollingUITests.swift; sourceTree = SOURCE_ROOT; };
+		3EB3D3471E69988300064452 /* ScrollingUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingUITests.swift; sourceTree = "<group>"; };
 		6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrettyPicturesActionHandler.swift; sourceTree = "<group>"; };
 		657DFE0F1DC8E1B600F20C0E /* HubFrameworkDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HubFrameworkDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		657DFE191DC8E21700F20C0E /* SelectionUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectionUITests.swift; path = tests/SelectionUITests.swift; sourceTree = SOURCE_ROOT; };
-		657DFE1A1DC8E21700F20C0E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = tests/Info.plist; sourceTree = SOURCE_ROOT; };
-		65A790351DDDA8FC00AD4078 /* NavigationItemUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationItemUITests.swift; path = tests/NavigationItemUITests.swift; sourceTree = SOURCE_ROOT; };
+		657DFE191DC8E21700F20C0E /* SelectionUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionUITests.swift; sourceTree = "<group>"; };
+		657DFE1A1DC8E21700F20C0E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65A790351DDDA8FC00AD4078 /* NavigationItemUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationItemUITests.swift; sourceTree = "<group>"; };
 		8A27299D1D9546ED00EF43FC /* RootContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootContentOperation.swift; sourceTree = "<group>"; };
 		8A2729A11D95486A00EF43FC /* URL+ViewURIs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+ViewURIs.swift"; sourceTree = "<group>"; };
 		8A374CFC1DBE659E0013E592 /* TodoListActionFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoListActionFactory.swift; sourceTree = "<group>"; };
@@ -127,11 +127,11 @@
 		8A42E0B11D8C3779004FAC33 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HubFramework.xcodeproj; path = ../HubFramework.xcodeproj; sourceTree = "<group>"; };
 		8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowComponent.swift; sourceTree = "<group>"; };
-		8A9204FC1DDE07810081E0B5 /* HeaderComponentUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HeaderComponentUITests.swift; path = tests/HeaderComponentUITests.swift; sourceTree = SOURCE_ROOT; };
-		8A9204FE1DDE07AF0081E0B5 /* UITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UITestCase.swift; path = tests/UITestCase.swift; sourceTree = SOURCE_ROOT; };
-		8AA124D01DE758300076582D /* ReloadUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReloadUITests.swift; path = tests/ReloadUITests.swift; sourceTree = SOURCE_ROOT; };
+		8A9204FC1DDE07810081E0B5 /* HeaderComponentUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderComponentUITests.swift; sourceTree = "<group>"; };
+		8A9204FE1DDE07AF0081E0B5 /* UITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestCase.swift; sourceTree = "<group>"; };
+		8AA124D01DE758300076582D /* ReloadUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadUITests.swift; sourceTree = "<group>"; };
 		8AA127EF1DE8A3150076582D /* ComponentMargin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentMargin.swift; sourceTree = "<group>"; };
-		8AA98C441DD3778B006CA6AA /* PaginationUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaginationUITests.swift; path = tests/PaginationUITests.swift; sourceTree = SOURCE_ROOT; };
+		8AA98C441DD3778B006CA6AA /* PaginationUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginationUITests.swift; sourceTree = "<group>"; };
 		8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselComponent.swift; sourceTree = "<group>"; };
 		8ABCCEA91D9D1AC3005113B5 /* ReallyLongListContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReallyLongListContentOperation.swift; sourceTree = "<group>"; };
 		8AD14FEC1D9958A90008E182 /* UIImageView+Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Animation.swift"; sourceTree = "<group>"; };
@@ -187,7 +187,7 @@
 				657DFE1A1DC8E21700F20C0E /* Info.plist */,
 			);
 			name = Tests;
-			path = HubFrameworkDemoUITests;
+			path = tests;
 			sourceTree = "<group>";
 		};
 		8A374CFA1DBE65920013E592 /* Todo list */ = {
@@ -401,12 +401,13 @@
 				TargetAttributes = {
 					657DFE0E1DC8E1B600F20C0E = {
 						CreatedOnToolsVersion = 8.0;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 8A42E0911D8C36A3004FAC33;
 					};
 					8A42E0911D8C36A3004FAC33 = {
 						CreatedOnToolsVersion = 8.0;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -576,7 +577,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0.1;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = HubFrameworkDemo;
 			};
 			name = Debug;
@@ -593,7 +594,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0.1;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = HubFrameworkDemo;
 			};
 			name = Release;
@@ -723,7 +724,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -741,7 +742,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

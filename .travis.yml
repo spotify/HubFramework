@@ -9,7 +9,6 @@ bundler_args: --without documentation --without development --deployment --jobs=
 
 script:
   - bundle exec fastlane ci_all
-  - 'if [[ "$RUN_DANGER" == "YES" ]]; then bundle exec fastlane validate_changes; fi'
   - 'if [[ "$UPDATE_DOCUMENTATION" == "YES" ]]; then bundle exec fastlane update_docs; fi'
   # This is a workaround for a Travis-CI bug where the log might get cut-off.
   # See the [Travis-CI issue #4716](https://github.com/travis-ci/travis-ci/issues/4716).
@@ -27,9 +26,9 @@ matrix:
   fast_finish: true
   include:
     # Main job; builds, tests, validates the changes and updates our documentation.
-    - osx_image: xcode8.3
+    - osx_image: xcode9.3
       rvm: 2.2.5
-      env: LINT=YES  RUN_TESTS=YES  RUN_DANGER=YES  BUILD_DEMO_APP=YES  RUN_UI_TESTS=YES  BUILD_LIVE_CLI=YES  UPDATE_DOCUMENTATION=YES
+      env: LINT=YES  RUN_TESTS=YES  BUILD_DEMO_APP=YES  RUN_UI_TESTS=YES  BUILD_LIVE_CLI=YES  UPDATE_DOCUMENTATION=YES
 
 cache: bundler
 

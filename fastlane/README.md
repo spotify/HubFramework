@@ -55,11 +55,6 @@ Build the live CLI
 fastlane ios lint
 ```
 Lint the source code and other linteable artifacts
-### ios validate_changes
-```
-fastlane ios validate_changes
-```
-Validate changes according to a set of rules
 ### ios update_docs
 ```
 fastlane ios update_docs

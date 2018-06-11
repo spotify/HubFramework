@@ -50,7 +50,7 @@ class LabelComponent: HUBComponent {
             return CGSize()
         }
         
-        let size = (text as NSString).size(attributes: [NSFontAttributeName: font])
+        let size = (text as NSString).size(withAttributes: [NSAttributedStringKey.font: font])
         return CGSize(width: ceil(size.width), height: ceil(size.height))
     }
 
