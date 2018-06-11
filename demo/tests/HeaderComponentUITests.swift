@@ -69,11 +69,11 @@ class HeaderComponentUITests: UITestCase {
         
         // Navigate to the "Pretty Pictures" feature
         prettyPicturesLink.tap()
-        XCTAssertTrue(XCUIApplication().navigationBars.staticTexts["Pretty Pictures"].exists)
-        
+        XCTAssertTrue(XCUIApplication().navigationBars.otherElements["Pretty Pictures"].exists)
+
         // Go back
         XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap()
-        XCTAssertFalse(XCUIApplication().navigationBars.staticTexts["Pretty Pictures"].exists)
+        XCTAssertFalse(XCUIApplication().navigationBars.otherElements["Pretty Pictures"].exists)
         
         // Make sure that the view has been reloaded
         XCTAssertTrue(collectionView.staticTexts["Number of reloads: 1"].exists)
