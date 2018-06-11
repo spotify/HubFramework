@@ -116,12 +116,6 @@ platform :ios do
   end
 
 
-  desc 'Validate changes according to a set of rules'
-  lane :validate_changes do
-    danger
-  end
-
-
   desc 'Update the framework documentation and publish it'
   lane :update_docs do
     if git_branch == "master"
