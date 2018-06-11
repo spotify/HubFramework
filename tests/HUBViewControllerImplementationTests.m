@@ -199,6 +199,9 @@
     self.actionRegistry = nil;
     self.viewURI = nil;
     self.featureInfo = nil;
+    // FIXME: We must nil out the delegate even though it’s weak since this test case has retain cycle(s). I.e. the
+    // viewController is never dealloced and due to global state other tests fail.
+    self.viewController.delegate = nil;
     self.viewController = nil;
     self.viewModelFromDelegateMethod = nil;
     self.errorFromDelegateMethod = nil;
