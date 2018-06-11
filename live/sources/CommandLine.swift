@@ -41,7 +41,7 @@ class CommandLine {
         process.launch()
         
         if let errorOuput = output(fromPipe: errorPipe) {
-            if errorOuput.characters.count > 0 {
+            if errorOuput.count > 0 {
                 return .error(errorOuput)
             }
         }

@@ -56,7 +56,7 @@ class GitHubSearchResultsContentOperation: HUBContentOperation {
         }
 
         // Also exit if the search string is empty (no need to call the GitHub web API)
-        guard searchString.characters.count > 0 else {
+        guard searchString.count > 0 else {
             finishAndResetState()
             return
         }
