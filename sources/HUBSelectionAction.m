@@ -36,8 +36,11 @@
     if (targetURI == nil) {
         return NO;
     }
-    
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     return [[UIApplication sharedApplication] openURL:targetURI];
+#pragma clang diagnostic pop
 }
 
 @end
