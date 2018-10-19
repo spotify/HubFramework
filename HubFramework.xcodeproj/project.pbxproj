@@ -486,18 +486,6 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		8A07549C1C21A79200AFAD38 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		1D9666931EB1D74300022EE4 /* HUBSelectionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBSelectionAction.h; sourceTree = "<group>"; };
 		1D98E5BC1DC09FB500607097 /* HUBComponentActionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUBComponentActionObserver.h; sourceTree = "<group>"; };
@@ -1793,7 +1781,6 @@
 			buildPhases = (
 				8A07549A1C21A79200AFAD38 /* Sources */,
 				8A07549B1C21A79200AFAD38 /* Frameworks */,
-				8A07549C1C21A79200AFAD38 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1844,10 +1831,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AE6C0071DF6E3110063B2B1 /* Build configuration list for PBXNativeTarget "HubFramework-iOS" */;
 			buildPhases = (
+				8AE6BFFD1DF6E3110063B2B1 /* Headers */,
 				8AE6BFFB1DF6E3110063B2B1 /* Sources */,
 				8AE6BFFC1DF6E3110063B2B1 /* Frameworks */,
-				8AE6BFFD1DF6E3110063B2B1 /* Headers */,
-				8AE6BFFE1DF6E3110063B2B1 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1921,13 +1907,6 @@
 			files = (
 				6508301B1DD4EBFB008CFB43 /* HUBSerializationTests.json in Resources */,
 				8AC3158E1DEDE2D40093AEA0 /* testImage.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8AE6BFFE1DF6E3110063B2B1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
