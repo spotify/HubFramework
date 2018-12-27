@@ -26,6 +26,7 @@
 @protocol HUBActionHandler;
 @protocol HUBViewControllerScrollHandler;
 @class HUBViewURIPredicate;
+@class HUBFeatureRegistration;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -70,6 +71,17 @@ NS_ASSUME_NONNULL_BEGIN
            customJSONSchemaIdentifier:(nullable NSString *)customJSONSchemaIdentifier
                         actionHandler:(nullable id<HUBActionHandler>)actionHandler
           viewControllerScrollHandler:(nullable id<HUBViewControllerScrollHandler>)viewControllerScrollHandler;
+
+
+/**
+ * Register a feature with the Hub Framework
+ *
+ * @param feature to be registered.
+ *
+ *  Registering a feature with the same identifier as one that is already registered is considered a severe error and will
+ *  trigger an assert.
+ */
+- (void)registerFeature:(HUBFeatureRegistration *)feature;
 
 /**
  *  Register a feature with the Hub Framework
