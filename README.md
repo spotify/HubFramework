@@ -61,7 +61,7 @@ You can choose to install the Hub Framework either manually, or through a depend
 
 - Clone this repo (for example, add it as a submodule).
 - Drag the project `HubFramework.xcproj` into Xcode as a subproject of your app project.
-- Link with `HubFramework` by adding it in "Linked Frameworks and Libaries", under the "General" tab in your app's project settings.
+- Link with `HubFramework` by adding it in "Linked Frameworks and Libraries", under the "General" tab in your app's project settings.
 
 #### Using CocoaPods
 
@@ -97,7 +97,7 @@ $ carthage update
 
 #### Link with `SystemConfiguration`
 
-Once you've installed the Hub Framework, link your app with Apple's `SystemConfiguration` framework. This is done by adding it in "Linked Frameworks and Libaries", under the "General" tab in your app's project settings. This framework is used to determine the connectivity state of an app using the Hub Framework.
+Once you've installed the Hub Framework, link your app with Apple's `SystemConfiguration` framework. This is done by adding it in "Linked Frameworks and Libraries", under the "General" tab in your app's project settings. This framework is used to determine the connectivity state of an app using the Hub Framework.
 
 ## Importing the framework
 
@@ -160,7 +160,7 @@ You can also chat with the team behind the Hub Framework directly! The Spotify F
 
 ## Contributing
 
-Anyone is more than welcome to contribute to the Hub Framework! Together we can make the framework even more capable, and help each other fix any issues that we might find. However, before you contribute, please read [our contribution guidlines](CONTRIBUTING.md).
+Anyone is more than welcome to contribute to the Hub Framework! Together we can make the framework even more capable, and help each other fix any issues that we might find. However, before you contribute, please read [our contribution guidelines](CONTRIBUTING.md).
 
 ## Authors
 
