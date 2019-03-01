@@ -97,7 +97,7 @@ $ carthage update
 
 #### Link with `SystemConfiguration`
 
-Once you've installed the Hub Framework, link your app with Apple's `SystemConfiguration` framework. This is done by adding it in "Linked Frameworks and Libaries", under the "General" tab in your app's project settings. This framework is used to determine the connectivity state of an app using the Hub Framework.
+Once you've installed the Hub Framework, link your app with Apple's `SystemConfiguration` framework. This is done by adding it in "Linked Frameworks and Libraries", under the "General" tab in your app's project settings. This framework is used to determine the connectivity state of an app using the Hub Framework.
 
 ## Importing the framework
 
