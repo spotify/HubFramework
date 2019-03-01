@@ -32,10 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBCollectionViewMock
 
-- (instancetype)init
+- (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout
 {
-    UICollectionViewLayout * const layout = [UICollectionViewFlowLayout new];
-    
     if (!(self = [super initWithFrame:CGRectZero collectionViewLayout:layout])) {
         return nil;
     }

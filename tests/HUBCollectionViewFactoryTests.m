@@ -23,34 +23,51 @@
 
 #import "HUBCollectionViewFactory.h"
 #import "HUBCollectionView.h"
+#import "HUBComponentLayoutManagerMock.h"
+#import "HUBComponentRegistryMock.h"
 
 @interface HUBCollectionViewFactoryTests : XCTestCase
+
+@property (nonatomic, strong) HUBCollectionViewFactory *factory;
 
 @end
 
 @implementation HUBCollectionViewFactoryTests
 
+- (void)setUp
+{
+    [super setUp];
+
+    self.factory = [[HUBCollectionViewFactory alloc] initWithComponentRegistry:[HUBComponentRegistryMock new]
+                                                        componentLayoutManager:[HUBComponentLayoutManagerMock new]];
+
+}
+
+- (void)tearDown
+{
+    self.factory = nil;
+
+    [super tearDown];
+}
+
 - (void)testThatTheFactoryCreatesNonNilInstances
 {
-    HUBCollectionViewFactory *factory = [HUBCollectionViewFactory new];
-    HUBCollectionView *collectionView = [factory createCollectionView];
+    HUBCollectionView *collectionView = [self.factory createCollectionView];
 
     XCTAssertNotNil(collectionView);
 }
 
 - (void)testThatTheCollectionViewHasAccessibilityId
 {
-    HUBCollectionViewFactory *factory = [HUBCollectionViewFactory new];
-    HUBCollectionView *collectionView = [factory createCollectionView];
+    HUBCollectionView *collectionView = [self.factory createCollectionView];
 
     XCTAssertNotNil(collectionView.accessibilityIdentifier);
 }
 
 - (void)testThatTheFactoryCreatesNewCollectionViewInstances
 {
-    HUBCollectionViewFactory *factory = [HUBCollectionViewFactory new];
-    HUBCollectionView *collectionView1 = [factory createCollectionView];
-    HUBCollectionView *collectionView2 = [factory createCollectionView];
+    HUBCollectionView *collectionView1 = [self.factory createCollectionView];
+    HUBCollectionView *collectionView2 = [self.factory createCollectionView];
 
     XCTAssertNotEqual(collectionView1, collectionView2);
 }

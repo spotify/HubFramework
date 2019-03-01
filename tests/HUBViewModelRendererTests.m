@@ -24,6 +24,7 @@
 #import "HUBCollectionViewLayoutMock.h"
 #import "HUBCollectionViewMock.h"
 #import "HUBComponentLayoutManagerMock.h"
+#import "HUBComponentRegistryMock.h"
 #import "HUBViewModelDiff.h"
 #import "HUBViewModelRenderer.h"
 #import "HUBViewModelUtilities.h"
@@ -69,8 +70,8 @@
 {
     [super setUp];
 
-    self.collectionView = [HUBCollectionViewMockWithoutBatchUpdates new];
-    self.collectionViewLayout = [[HUBCollectionViewLayoutMock alloc] init];
+    self.collectionViewLayout = [[HUBCollectionViewLayoutMock alloc] initWithComponentRegistry:[HUBComponentRegistryMock new]];
+    self.collectionView = [[HUBCollectionViewMockWithoutBatchUpdates alloc] initWithCollectionViewLayout:self.collectionViewLayout];
     self.collectionView.collectionViewLayout = self.collectionViewLayout;
     self.viewModelRenderer = [HUBViewModelRenderer new];
 }
